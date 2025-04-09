@@ -34,32 +34,36 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cert-manager-tls
+  name: &app cert-manager-issuers
   namespace: &namespace cert-manager
 spec:
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
-      namespace: cert-manager
-  healthCheckExprs:
-    - apiVersion: cert-manager.io/v1
-      kind: Certificate
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-  interval: 1h
-  path: ./kubernetes/apps/cert-manager/cert-manager/tls
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+      namespace: *namespace
+  path: ./kubernetes/apps/cert-manager/cert-manager/issuers
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 15m
+  healthChecks:
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      name: letsencrypt-production
+      namespace: *namespace
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      name: letsencrypt-staging
+      namespace: *namespace
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      name: selfsigned
+      namespace: *namespace
   wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

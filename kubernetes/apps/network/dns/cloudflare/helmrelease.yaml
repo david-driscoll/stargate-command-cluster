@@ -46,7 +46,7 @@ spec:
       - "crd"
       - "ingress"
       - "service"
-    txtPrefix: eris.
+    txtPrefix: "sgc."
     txtOwnerId: default
     domainFilters: ["${DEFAULT_DOMAIN}"]
     serviceMonitor:

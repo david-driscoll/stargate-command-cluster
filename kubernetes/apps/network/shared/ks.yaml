@@ -12,11 +12,17 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-connect
+      namespace: kube-system
   path: ./kubernetes/apps/network/shared/secrets
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   healthChecks:
     - apiVersion: onepassword.com/v1
       kind: OnePasswordItem

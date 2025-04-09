@@ -12,11 +12,17 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
+      namespace: *namespace
   path: ./kubernetes/apps/cert-manager/trust-manager/app
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -40,11 +46,17 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: trust-manager
+      namespace: *namespace
   path: ./kubernetes/apps/cert-manager/trust-manager/bundles
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   healthChecks:
     - apiVersion: trust.cert-manager.io/v1alpha1
       kind: Bundle

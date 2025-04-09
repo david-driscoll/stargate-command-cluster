@@ -3,6 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app adguard-dns
+  namespace: &namespace network
 spec:
   interval: 30m
   chart:
@@ -80,7 +81,7 @@ spec:
       - "crd"
       - "ingress"
       - "service"
-    txtPrefix: eris.
+    txtPrefix: "sgc."
     txtOwnerId: default
     domainFilters: ["${DEFAULT_DOMAIN}"]
     serviceMonitor:

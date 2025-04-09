@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ishioni/CRDs-catalog/main/source.toolkit.fluxcd.io/helmrepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: kubernetes-dashboard
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  url: https://kubernetes.github.io/dashboard/
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubernetes-dashboard
+spec:
+  chart:
+    spec:
+      chart: kubernetes-dashboard
+      version: 7.11.1
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-dashboard
+        namespace: flux-system
+  interval: 10m0s
+  timeout: 10m0s
+  values:
+    # extraArgs:
+    # - --enable-insecure-login
+    # - --system-banner="${CLUSTER_ENV} Environment"
+    app:
+      mode: dashboard
+      ingress:
+        enabled: true
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        ingressClassName: internal
+        hosts:
+          - "kubeui.${CLUSTER_CNAME}.${DEFAULT_DOMAIN}"
+    settings:
+     global:
+        clusterName: Eris
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: kubernetes-dashboard-tailscale
+#   namespace: flux-system
+#   annotations:
+#     reloader.stakater.com/auto: "true"
+# spec:
+#   ingressClassName: tailscale
+#   defaultBackend:
+#     service:
+#       name: kubernetes-dashboard
+#       port:
+#         number: 9000
+#   rules:
+#     - host: "kubeui.${TAILSCALE_DOMAIN}"
+#       tls:
+#         - hosts:
+#             - "kubeui.${TAILSCALE_DOMAIN}"

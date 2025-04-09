@@ -1,0 +1,13 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: eris
+spec:
+  exitNode: true
+  hostname: eris
+  subnetRouter:
+    advertiseRoutes:
+      - "10.10.0.0/16"
+      - "10.96.0.0/16"
+      - "10.69.0.0/16"

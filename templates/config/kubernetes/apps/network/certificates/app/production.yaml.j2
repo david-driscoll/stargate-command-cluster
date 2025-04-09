@@ -1,0 +1,16 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "le-production"
+spec:
+  secretName: "le-production-tls"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "${DEFAULT_DOMAIN}"
+  dnsNames:
+    - "${DEFAULT_DOMAIN}"
+    - "*.${DEFAULT_DOMAIN}"
+    - "*.${CLUSTER_DOMAIN}"
+    - "*.${CLUSTER_CNAME}.svc.${DEFAULT_DOMAIN}"

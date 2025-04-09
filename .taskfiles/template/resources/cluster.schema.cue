@@ -17,6 +17,9 @@ import (
 	cluster_ingress_addr: net.IPv4 & !=cluster_api_addr & !=cluster_dns_gateway_addr & !=cloudflare_ingress_addr
 	cluster_dns_gateway_addr: net.IPv4 & !=cluster_api_addr & !=cluster_ingress_addr & !=cloudflare_ingress_addr
 	repository_name: string
+	cluster_name: string
+	email: string
+	tailscale_domain: string
 	repository_branch?: string & !=""
 	repository_visibility?: *"public" | "private"
 	cloudflare_domain: net.FQDN

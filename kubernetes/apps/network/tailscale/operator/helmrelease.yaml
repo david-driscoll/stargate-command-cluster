@@ -41,12 +41,12 @@ spec:
 
     operatorConfig:
       defaultTags:
-        - "tag:eris-operator"
+        - "tag:sgc-operator"
       image:
         repository: ghcr.io/tailscale/k8s-operator
         tag: v1.82.0
         pullPolicy: Always
-      hostname: "eris-operator"
+      hostname: "sgc-operator"
       podAnnotations:
         reloader.stakater.com/auto: "true"
     # proxyConfig contains configuraton that will be applied to any ingress/egress
@@ -61,7 +61,7 @@ spec:
       image:
         repository: tailscale/tailscale
         tag: v1.80.3
-      defaultTags: "tag:eris"
+      defaultTags: "tag:sgc"
       podAnnotations:
         reloader.stakater.com/auto: "true"
       firewallMode: auto

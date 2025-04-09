@@ -2,12 +2,12 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: eris
+  name: "#{ cluster_name }#"
 spec:
   exitNode: true
-  hostname: eris
+  hostname: "#{ cluster_name }#"
   subnetRouter:
     advertiseRoutes:
-      - "10.10.0.0/16"
-      - "10.96.0.0/16"
-      - "10.69.0.0/16"
+      - "#{ node_cidr }#"
+      - "#{ cluster_pod_cidr }#"
+      - "#{ cluster_svc_cidr }#"

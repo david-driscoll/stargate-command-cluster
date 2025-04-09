@@ -29,7 +29,11 @@ tasks:
 
   reconcile:
     desc: Force Flux to pull in changes from your Git repository
-    cmd: flux --namespace flux-system reconcile kustomization flux-system --with-source
+    cmd: |
+      flux --namespace flux-system reconcile kustomization flux-system --with-source
+      for namespace in $(kubectl get ns -o jsonpath='{.items[*].metadata.name}'); do
+        flux --namespace $namespace reconcile kustomization $namespace 2>/dev/null
+      done
     preconditions:
       - test -f {{.KUBECONFIG}}
       - which flux

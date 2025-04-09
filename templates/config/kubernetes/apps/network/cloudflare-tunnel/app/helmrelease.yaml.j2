@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: cloudflare
-  namespace: flux-system
+  namespace: network
 spec:
   interval: 1h
   url: https://cloudflare.github.io/helm-charts
@@ -14,6 +14,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app cloudflare-tunnel
+  namespace: &namespace network
 spec:
   interval: 30m
   chart:
@@ -23,7 +24,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cloudflare
-        namespace: flux-system
+        namespace: *namespace
   install:
     remediation:
       retries: 3
@@ -34,6 +35,7 @@ spec:
       retries: 3
   dependsOn:
     - name: cloudflare-dns
+      namespace: *namespace
   valuesFrom:
     - kind: Secret
       name: cloudflare-tunnel

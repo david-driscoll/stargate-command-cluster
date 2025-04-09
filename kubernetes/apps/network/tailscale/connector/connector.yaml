@@ -2,12 +2,12 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: eris
+  name: "sgc"
 spec:
   exitNode: true
-  hostname: eris
+  hostname: "sgc"
   subnetRouter:
     advertiseRoutes:
       - "10.10.0.0/16"
-      - "10.96.0.0/16"
-      - "10.69.0.0/16"
+      - "10.209.0.0/16"
+      - "10.199.0.0/16"

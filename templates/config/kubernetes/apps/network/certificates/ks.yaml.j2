@@ -12,11 +12,17 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager-issuers
+      namespace: cert-manager
   path: ./kubernetes/apps/network/certificates/app
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   healthChecks:
     - apiVersion: cert-manager.io/v1
       kind: Certificate

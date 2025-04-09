@@ -13,7 +13,8 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: trust-manager
+  name: &app trust-manager
+  namespace: &namespace cert-manager
 spec:
   interval: 30m
   chart:
@@ -23,7 +24,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: jetstack
-        namespace: flux-system
+        namespace: *namespace
   install:
     remediation:
       retries: 3
@@ -33,6 +34,7 @@ spec:
       retries: 3
   dependsOn:
     - name: cert-manager
+      namespace: *namespace
   values:
     crds:
       enabled: true

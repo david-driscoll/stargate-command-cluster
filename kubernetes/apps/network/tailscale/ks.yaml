@@ -11,12 +11,18 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/tailscale/operator
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   dependsOn:
     - name: onepassword-connect
+      namespace: kube-system
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   wait: false
   interval: 30m
   retryInterval: 1m
@@ -34,12 +40,17 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/tailscale/connector
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   dependsOn:
     - name: tailscale-operator
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   wait: false
   interval: 30m
   retryInterval: 1m

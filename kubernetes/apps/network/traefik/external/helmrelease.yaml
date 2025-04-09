@@ -1,0 +1,80 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik-external
+  namespace: network
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: traefik
+      version: 34.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: traefik
+      tag: v3.3.5
+    fullnameOverride: traefik-external
+    deployment:
+      replicas: 1
+    service:
+      annotations:
+        reloader.stakater.com/auto: "true"
+        external-dns.alpha.kubernetes.io/hostname: "${EXTERNAL_DOMAIN}"
+        io.cilium/lb-ipam-ips: "${EXTERNAL_IP}"
+      externalIPs:
+        - "${EXTERNAL_IP}"
+    additionalArguments:
+      - '--providers.file.filename=/config/store.yaml'
+    volumes:
+      - name: le-production-tls
+      # - name: le-staging-tls
+        mountPath: '/certs'
+        type: secret
+      - name: cluster-tls
+        mountPath: '/cluster-certs'
+        type: secret
+      - name: traefik-tls-settings
+        mountPath: '/config'
+        type: configMap
+    ingressClass:
+      enabled: true
+      isDefaultClass: false
+      name: external
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespaceSelector:
+          any: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    providers:
+      kubernetesCRD:
+        ingressClass: "external"
+      kubernetesIngress:
+        ingressClass: "external"
+    logs:
+      access:
+        enabled: true
+    api:
+      dashboard: true
+    ingressRoute:
+      dashboard:
+        enabled: true

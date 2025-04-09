@@ -12,6 +12,6 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    url: "https://github.com/davidriscoll/stargate-command-cluster.git"
+    url: "https://github.com/david-driscoll/stargate-command-cluster.git"
     ref: "refs/heads/main"
     path: kubernetes/flux/cluster

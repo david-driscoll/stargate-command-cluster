@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cluster-certificate
+spec:
+  dnsNames:
+  - "*.cluster.local"
+  # - "*.*.cluster.local" ??
+  - "*.svc.cluster.local"
+  secretName: cluster-tls
+  issuerRef:
+    name: selfsigned-ca
+    kind: ClusterIssuer

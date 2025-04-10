@@ -45,6 +45,10 @@ spec:
     - name: cert-manager
       namespace: *namespace
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository

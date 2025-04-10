@@ -31,7 +31,6 @@ spec:
     service:
       annotations:
         reloader.stakater.com/auto: "true"
-        external-dns.alpha.kubernetes.io/hostname: "${EXTERNAL_DOMAIN}"
         io.cilium/lb-ipam-ips: "${EXTERNAL_IP}"
       externalIPs:
         - "${EXTERNAL_IP}"

@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: kubernetes-dashboard
-  namespace: flux-system
+  namespace: kube-system
 spec:
   interval: 10m0s
   url: https://kubernetes.github.io/dashboard/
@@ -13,7 +13,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app kubernetes-dashboard
-  namespace: &namespace flux-system
+  namespace: &namespace kube-system
 spec:
   chart:
     spec:

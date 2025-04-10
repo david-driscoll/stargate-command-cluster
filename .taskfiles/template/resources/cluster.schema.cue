@@ -21,11 +21,18 @@ import (
 	cluster_title: string
 	tailscale_domain: string
 	email: string
+	cluster_external_cname: string
+	cluster_internal_cname: string
 	onepassword_credentials: string
 	onepassword_access_token: string
 	repository_branch?: string & !=""
 	repository_visibility?: *"public" | "private"
 	cloudflare_domain: net.FQDN
+	cloudflare_tunnel_id: string
+	cloudflare_tunnel_secret: string
+	cloudflare_default_domain_secret: string
+	home_assistant_credentials_secret: string
+	tailscale_oauth_secret: string
 	cloudflare_token: string
 	cloudflare_ingress_addr: net.IPv4 & !=cluster_api_addr & !=cluster_ingress_addr & !=cluster_dns_gateway_addr
 	cilium_bgp_router_addr?: net.IPv4 & !=""

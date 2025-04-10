@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: nvidia-device-plugin
-  namespace: flux-system
+  namespace: kube-system
 spec:
   interval: 1h
   url: https://nvidia.github.io/k8s-device-plugin
@@ -19,7 +19,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app nvidia-device-plugin
-  namespace: &namespace flux-system
+  namespace: &namespace kube-system
 spec:
   timeout: 5m
   interval: 30m

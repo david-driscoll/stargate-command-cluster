@@ -3,5 +3,7 @@ apiVersion: onepassword.com/v1
 kind: OnePasswordItem
 metadata:
     name: tailscale-oauth
+    annotations:
+      reloader.stakater.com/auto: "true"
 spec:
-    itemPath: vaults/Eris/items/lsrxxwvqgtx2quc5hpuek7u5pi
+    itemPath: "vaults/Eris/items/lsrxxwvqgtx2quc5hpuek7u5pi"

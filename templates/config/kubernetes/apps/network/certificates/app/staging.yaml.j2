@@ -8,9 +8,9 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: "${DEFAULT_DOMAIN}"
+  commonName: "${ROOT_DOMAIN}"
   dnsNames:
-    - "${DEFAULT_DOMAIN}"
-    - "*.${DEFAULT_DOMAIN}"
+    - "${ROOT_DOMAIN}"
+    - "*.${ROOT_DOMAIN}"
     - "*.${CLUSTER_DOMAIN}"
-    - "*.${CLUSTER_CNAME}.svc.${DEFAULT_DOMAIN}"
+    - "*.${CLUSTER_CNAME}.svc.${ROOT_DOMAIN}"

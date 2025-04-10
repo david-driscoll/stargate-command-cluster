@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: "capacitor.${CLUSTER_DOMAIN}"
+    - host: "capacitor.sgc.driscoll.tech"
       http:
         paths:
           - path: /

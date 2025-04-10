@@ -5,3 +5,6 @@ talosconfig
 kubernetes-othalla.yaml
 kubernetes-pegasus.yaml
 kubernetes-milky-way.yaml
+sgc-milky-way.yaml
+sgc-othalla.yaml
+sgc-pegasus.yaml

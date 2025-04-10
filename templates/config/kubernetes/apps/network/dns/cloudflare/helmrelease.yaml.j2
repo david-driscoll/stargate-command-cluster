@@ -47,8 +47,8 @@ spec:
       - "ingress"
       - "service"
     txtPrefix: "#{ cluster_name }#."
-    txtOwnerId: default
-    domainFilters: ["${DEFAULT_DOMAIN}"]
+    txtOwnerId: "#{ cluster_name }#"
+    domainFilters: ["${ROOT_DOMAIN}"]
     serviceMonitor:
       enabled: true
     podAnnotations:

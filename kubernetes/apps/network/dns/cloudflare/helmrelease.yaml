@@ -47,8 +47,8 @@ spec:
       - "ingress"
       - "service"
     txtPrefix: "sgc."
-    txtOwnerId: default
-    domainFilters: ["${DEFAULT_DOMAIN}"]
+    txtOwnerId: "sgc"
+    domainFilters: ["${ROOT_DOMAIN}"]
     serviceMonitor:
       enabled: true
     podAnnotations:

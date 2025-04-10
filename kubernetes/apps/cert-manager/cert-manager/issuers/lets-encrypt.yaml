@@ -17,7 +17,7 @@ spec:
               key: credential
         selector:
           dnsZones:
-            - "${DEFAULT_DOMAIN}"
+            - "${ROOT_DOMAIN}"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -37,4 +37,4 @@ spec:
               key: credential
         selector:
           dnsZones:
-            - "${DEFAULT_DOMAIN}"
+            - "${ROOT_DOMAIN}"

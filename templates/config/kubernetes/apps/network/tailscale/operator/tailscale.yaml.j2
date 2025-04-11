@@ -1,9 +1,0 @@
----
-apiVersion: onepassword.com/v1
-kind: OnePasswordItem
-metadata:
-    name: tailscale-oauth
-    annotations:
-      reloader.stakater.com/auto: "true"
-spec:
-    itemPath: "#{ tailscale_oauth_secret }#"

@@ -24,7 +24,8 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   healthChecks:
     - apiVersion: v1
       kind: PersistentVolumeClaim
@@ -81,7 +82,8 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-cluster
+    name: flux-system
+    namespace: flux-system
   healthChecks:
     - apiVersion: onepassword.com/v1
       kind: OnePasswordItem

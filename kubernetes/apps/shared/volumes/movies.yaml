@@ -1,0 +1,39 @@
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-movies
+spec:
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: truenas-stash
+  mountOptions:
+    - nfsvers=3
+    - nolock
+    - noatime
+  capacity:
+    storage: 40Ti
+  csi:
+    driver: org.democratic-csi.stash
+    readOnly: false
+    volumeHandle: stash-media-movies
+    volumeAttributes:
+      server: "${SPIKE_IP}"
+      share: /mnt/stash/media/movies
+      node_attach_driver: nfs
+      provisioner_driver: freenas-api-nfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-movies
+spec:
+  storageClassName: truenas-stash
+  volumeName: media-movies
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 40Ti

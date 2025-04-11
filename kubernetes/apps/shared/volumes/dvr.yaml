@@ -1,0 +1,39 @@
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-dvr
+spec:
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: truenas-stash
+  mountOptions:
+    - nfsvers=3
+    - nolock
+    - noatime
+  capacity:
+    storage: 200Gi
+  csi:
+    driver: org.democratic-csi.stash
+    readOnly: false
+    volumeHandle: stash-dvr
+    volumeAttributes:
+      server: "${SPIKE_IP}"
+      share: /mnt/stash/media/dvr
+      node_attach_driver: nfs
+      provisioner_driver: freenas-api-nfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-dvr
+spec:
+  storageClassName: truenas-stash
+  volumeName: media-dvr
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi

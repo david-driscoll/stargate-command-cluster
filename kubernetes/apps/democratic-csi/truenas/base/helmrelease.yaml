@@ -162,7 +162,7 @@ spec:
             - targetGroupPortalGroup: 1
               targetGroupInitiatorGroup: 1
               targetGroupAuthType: None
-          namePrefix: ""
+          namePrefix: "${CLUSTER_CNAME}"
           nameSuffix: ""
           extentInsecureTpc: true
           extentXenCompat: false

@@ -1,0 +1,106 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app truenas-secrets
+  namespace: &namespace democratic-csi
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-connect
+      namespace: kube-system
+  path: ./kubernetes/apps/democratic-csi/truenas/secrets
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-cluster
+  healthChecks:
+    - apiVersion: onepassword.com/v1
+      kind: OnePasswordItem
+      name: truenas-credentials
+      namespace: *namespace
+    - apiVersion: onepassword.com/v1
+      kind: OnePasswordItem
+      name: truenas-ssh-key
+      namespace: *namespace
+
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app truenas-stash
+  namespace: &namespace democratic-csi
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: truenas-secrets
+      namespace: truenas-secrets
+
+  path: ./kubernetes/apps/democratic-csi/truenas/stash
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-cluster
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app truenas-iscsi-stash
+  namespace: &namespace democratic-csi
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: truenas-secrets
+  path: ./kubernetes/apps/democratic-csi/truenas/iscsi-stash
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-cluster
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

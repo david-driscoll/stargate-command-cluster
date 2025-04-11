@@ -1,0 +1,41 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: truenas-stash
+resources:
+  - ../base/
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: truenas-stash
+      - op: replace
+        path: /spec/values/storageClasses/0/name
+        value: truenas-stash
+      - op: replace
+        path: /spec/values/csiDriver/name
+        value: "org.democratic-csi.stash"
+      - op: replace
+        path: /spec/values/driver/config/zfs/datasetParentName
+        value: stash/eris
+      - op: replace
+        path: /spec/values/driver/config/driver
+        value: freenas-api-nfs
+      - op: remove
+        path: /spec/values/node/driver/extraEnv
+      - op: remove
+        path: /spec/values/node/driver/iscsiDirHostPath
+      - op: remove
+        path: /spec/values/node/driver/iscsiDirHostPathType
+      - op: remove
+        path: /spec/values/driver/config/iscsi
+#      - op: remove
+#        path: /spec/valuesFrom/0
+#      - op: remove
+#        path: /spec/valuesFrom/0
+#      - op: remove
+#        path: /spec/values/driver/config/sshConnection
+

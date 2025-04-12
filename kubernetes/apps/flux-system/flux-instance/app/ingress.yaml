@@ -5,6 +5,7 @@ metadata:
   name: flux-webhook
   annotations:
     external-dns.alpha.kubernetes.io/target: "${TUNNEL_DOMAIN}"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   ingressClassName: external
   rules:

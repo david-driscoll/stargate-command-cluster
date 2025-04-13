@@ -7,10 +7,10 @@
     ":automergeBranch",
     ":dependencyDashboard",
     ":disableRateLimiting",
-    ":semanticCommits",
+    ":semanticCommits",z
   ],
   dependencyDashboard: true,
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  dependencyDashboardTitle: "🤖 Renovate Dashboard 🤖",
   suppressNotifications: [
     "prEditedNotification",
     "prIgnoreNotification",

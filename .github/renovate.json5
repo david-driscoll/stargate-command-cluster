@@ -52,6 +52,24 @@
       },
     },
     {
+      description: "Tailscale",
+      groupName: "Tailscale",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/tailscale/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Traefik",
+      groupName: "Traefik",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/traefik/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Spegel Group",
       groupName: "Spegel",
       matchDatasources: ["docker"],

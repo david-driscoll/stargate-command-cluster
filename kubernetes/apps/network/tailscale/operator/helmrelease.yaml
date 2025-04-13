@@ -60,7 +60,7 @@ spec:
     proxyConfig:
       image:
         repository: tailscale/tailscale
-        tag: v1.80.3
+        tag: v1.82.0
       defaultTags: "tag:sgc"
       podAnnotations:
         reloader.stakater.com/auto: "true"

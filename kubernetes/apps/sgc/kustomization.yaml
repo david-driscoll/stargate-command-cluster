@@ -6,4 +6,5 @@ namespace: default
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: []
+resources:
+  - "./shared/ks.yaml"

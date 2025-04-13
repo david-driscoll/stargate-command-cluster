@@ -55,7 +55,7 @@
       description: "Tailscale",
       groupName: "Tailscale",
       matchDatasources: ["docker"],
-      matchPackageNames: ["/tailscale/"],
+      matchPackageNames: ["tailscale"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -64,7 +64,7 @@
       description: "Traefik",
       groupName: "Traefik",
       matchDatasources: ["docker"],
-      matchPackageNames: ["/traefik/"],
+      matchPackageNames: ["traefik"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },

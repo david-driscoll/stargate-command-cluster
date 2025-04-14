@@ -1,0 +1,15 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plex-go2rtc
+spec:
+  defaultBackend:
+    service:
+      name: go2rtc
+      port:
+        number: 80
+  ingressClassName: go2rtc
+  tls:
+    - hosts:
+        - go2rtc

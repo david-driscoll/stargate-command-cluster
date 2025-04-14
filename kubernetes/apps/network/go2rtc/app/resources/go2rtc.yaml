@@ -1,0 +1,31 @@
+---
+api:
+  listen: :80
+rtsp:
+  listen: :554
+webrtc:
+  listen: :8555
+  # candidates:
+  #   - 10.44.0.24:8555
+  #   - stun:8555
+  # ice_servers:
+  #   - urls:
+  #       - stun:stun.cloudflare.com:3478
+streams:
+  front_door:
+    - rtsp://${DISCORD_IP}:7447/8xI6L37x6d3OMcno
+  front_door_package:
+    - rtsp://${DISCORD_IP}:7447/aaAqMdKSSrxquyXX
+  backyard:
+    - rtsp://${DISCORD_IP}:7447/26dgTwGnQcRSzUQC
+
+homekit:
+  front_door:
+    pin: 03123007
+    name: Front Door
+  front_door_package:
+    pin: 03123007
+    name: Front Door Package
+  backyard:
+    pin: 03123007
+    name: Backyard

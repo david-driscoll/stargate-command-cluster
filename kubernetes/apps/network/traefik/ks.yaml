@@ -11,10 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/traefik/shared
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   dependsOn:
     - name: certificates
   prune: true
@@ -47,10 +43,6 @@ spec:
     - name: certificates
     - name: traefik-shared
   path: ./kubernetes/apps/network/traefik/internal
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
@@ -78,10 +70,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/traefik/external
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   dependsOn:
     - name: certificates
     - name: traefik-shared

@@ -37,17 +37,14 @@ spec:
         image:
           repository: ghcr.io/muhlba91/external-dns-provider-adguard
           tag: v8.0.1
-        ports:
-          - containerPort: 8888
-            name: http
-          - containerPort: 8080
-            name: healthz
-        livenessProbe: &probe
+        livenessProbe:
           httpGet:
             path: /healthz
-            port: "8080"
+            port: 8080
           initialDelaySeconds: 10
-          timeoutSeconds: 5
+          periodSeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 5
         readinessProbe: *probe
         env:
           - name: LOG_LEVEL
@@ -77,7 +74,7 @@ spec:
       - "crd"
       - "ingress"
       - "service"
-    txtPrefix: "sgc."
+    txtPrefix: "${CLUSTER_CNAME}."
     txtOwnerId: default
     domainFilters: ["${ROOT_DOMAIN}"]
     serviceMonitor:

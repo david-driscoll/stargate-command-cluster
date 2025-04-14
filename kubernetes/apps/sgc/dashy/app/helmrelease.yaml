@@ -82,8 +82,6 @@ spec:
                   port: *port
       tailscale:
         className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
         hosts:
           - host: "{{ .Release.Name }}"
             paths:
@@ -94,6 +92,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: dashy-config
+        type: configMap
+        name: dashy-config
         globalMounts:
           - path: /app/user-data/

@@ -37,7 +37,7 @@ spec:
         image:
           repository: ghcr.io/muhlba91/external-dns-provider-adguard
           tag: v8.0.1
-        livenessProbe:
+        livenessProbe: &probe
           httpGet:
             path: /healthz
             port: 8080

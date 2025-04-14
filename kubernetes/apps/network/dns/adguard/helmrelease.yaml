@@ -37,10 +37,15 @@ spec:
         image:
           repository: ghcr.io/muhlba91/external-dns-provider-adguard
           tag: v8.0.1
+        ports:
+        - containerPort: 8888
+          name: http
+        - containerPort: 8080
+          name: &port healthz
         livenessProbe: &probe
           httpGet:
             path: /healthz
-            port: healthz
+            port: *port
           initialDelaySeconds: 10
           periodSeconds: 60
           timeoutSeconds: 10

@@ -35,19 +35,19 @@ spec:
               PUID: 568
               PGID: 568
               TZ: America/New_York
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &port 8080
-                  initialDelaySeconds: 10
-                  periodSeconds: 60
-                  timeoutSeconds: 10
-                  failureThreshold: 5
-              readiness: *probes
+            # probes:
+              # liveness: &probes
+              #   enabled: true
+              #   custom: true
+              #   spec:
+              #     httpGet:
+              #       path: /
+              #       port: &port 8080
+              #     initialDelaySeconds: 10
+              #     periodSeconds: 60
+              #     timeoutSeconds: 10
+              #     failureThreshold: 5
+              # readiness: *probes
             # securityContext:
             #   allowPrivilegeEscalation: false
             #   readOnlyRootFilesystem: false

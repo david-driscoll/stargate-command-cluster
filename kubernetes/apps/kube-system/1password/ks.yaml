@@ -10,10 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/kube-system/1password/connect
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository

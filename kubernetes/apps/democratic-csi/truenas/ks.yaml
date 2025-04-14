@@ -13,10 +13,6 @@ spec:
     - name: onepassword-connect
       namespace: kube-system
   path: ./kubernetes/apps/democratic-csi/truenas/secrets
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
@@ -53,10 +49,6 @@ spec:
     - name: truenas-secrets
       namespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/truenas/stash
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
@@ -89,10 +81,6 @@ spec:
     - name: truenas-secrets
       namespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/truenas/iscsi-stash
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository

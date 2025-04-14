@@ -14,10 +14,6 @@ spec:
     - name: onepassword-connect
       namespace: kube-system
   path: ./kubernetes/apps/network/shared/secrets
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository

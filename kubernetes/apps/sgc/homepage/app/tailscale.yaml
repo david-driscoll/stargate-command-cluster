@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/ingress-networking-v1.json
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: library-tailscale
+spec:
+  defaultBackend:
+    service:
+      name: library
+      port:
+        number: 80
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - library
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/ingress-networking-v1.json
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepage-tailscale
+spec:
+  defaultBackend:
+    service:
+      name: library
+      port:
+        number: 80
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - homepage
+

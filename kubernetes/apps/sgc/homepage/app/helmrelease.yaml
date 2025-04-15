@@ -59,17 +59,8 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 5
               readiness: *probes
-              # startup:
-              #   enabled: true
-              #   spec:
-              #     failureThreshold: 50
-              #     periodSeconds: 10
             securityContext:
               runAsNonRoot: true
-              runAsUser: 568
-              runAsGroup: 568
-              fsGroup: 568
-              supplementalGroups: [0, 1, 44, 109, 303, 568, 10000]
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
@@ -78,7 +69,7 @@ spec:
                 cpu: 50m
                 memory: 100Mi
               limits:
-                cpu: 200m
+                cpu: 1000m
                 memory: 2Gi
 
     defaultPodOptions:
@@ -160,8 +151,6 @@ spec:
 
     podAnnotations:
       reloader.stakater.com/auto: "true"
-    # controller:
-    #   strategy: Recreate
 
     enableRbac: true
     serviceAccount:

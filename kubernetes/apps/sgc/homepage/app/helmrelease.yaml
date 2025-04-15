@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app library
+  name: &app homepage
 spec:
   timeout: 5m
   interval: 30m
@@ -181,7 +181,7 @@ spec:
                 service:
                   identifier: app
                   port: 80
-          - host: "homepage.${ROOT_DOMAIN}"
+          - host: "library.${ROOT_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -199,7 +199,7 @@ spec:
                 service:
                   identifier: app
                   port: 80
-          - host: "homepage"
+          - host: "library"
             paths:
               - path: /
                 service:

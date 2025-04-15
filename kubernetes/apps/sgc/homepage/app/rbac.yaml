@@ -4,7 +4,7 @@ kind: ClusterRole
 metadata:
   name: &app homepage
   labels:
-    app.kubernetes.io/instance: *app
+    # app.kubernetes.io/instance: *app
     app.kubernetes.io/name: *app
 rules:
   - apiGroups:
@@ -45,7 +45,7 @@ kind: ClusterRoleBinding
 metadata:
   name: &app homepage
   labels:
-    app.kubernetes.io/instance: *app
+    # app.kubernetes.io/instance: *app
     app.kubernetes.io/name: *app
 roleRef:
   apiGroup: rbac.authorization.k8s.io

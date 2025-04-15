@@ -136,6 +136,8 @@ spec:
           gethomepage.dev/app: "{{ .Release.Name }}"
       tailscale:
         className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
         hosts:
           - host: "{{ .Release.Name }}"
             paths:

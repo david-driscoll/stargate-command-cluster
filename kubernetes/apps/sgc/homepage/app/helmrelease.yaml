@@ -22,9 +22,6 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
-  valuesFrom:
-    - kind: ConfigMap
-      name: dashboard-config-values
 
   values:
     fullnameOverride: *app
@@ -155,6 +152,14 @@ spec:
     enableRbac: true
     serviceAccount:
       create: true
+
+    persistence:
+      config:
+        type: configMap
+        name: homepage-config
+        globalMounts:
+          - path: /app/config/
+
     # Enable the ingress to expose Homepage to the network.
     ingress:
       internal:

@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secrets.sops.yaml
-  - ./tailscale.yaml
   - ./rbac.yaml
 configMapGenerator:
   - name: dashboard-config-values

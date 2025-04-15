@@ -169,7 +169,6 @@ spec:
     # Enable the ingress to expose Homepage to the network.
     ingress:
       internal:
-        nameOverride: *app
         className: internal
         annotations:
           reloader.stakater.com/auto: "true"
@@ -188,7 +187,6 @@ spec:
                   identifier: app
                   port: 80
       tailscale:
-        nameOverride: *app
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"

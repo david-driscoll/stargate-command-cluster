@@ -53,6 +53,7 @@ spec:
         ports:
           http:
             port: 3000
+    enforceServiceAccountCreation: true
     serviceAccount:
       create: true
       name: *app

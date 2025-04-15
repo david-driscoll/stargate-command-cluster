@@ -1,31 +1,11 @@
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: homepage
-  namespace: default
-  labels:
-    app.kubernetes.io/name: homepage
-secrets:
-  - name: homepage
----
-apiVersion: v1
-kind: Secret
-type: kubernetes.io/service-account-token
-metadata:
-  name: homepage
-  namespace: default
-  labels:
-    app.kubernetes.io/name: homepage
-  annotations:
-    kubernetes.io/service-account.name: homepage
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: homepage
+  name: &app homepage
   labels:
-    app.kubernetes.io/name: homepage
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
 rules:
   - apiGroups:
       - ""
@@ -45,21 +25,6 @@ rules:
       - get
       - list
   - apiGroups:
-      - traefik.io
-    resources:
-      - ingressroutes
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - gateway.networking.k8s.io
-    resources:
-      - httproutes
-      - gateways
-    verbs:
-      - get
-      - list
-  - apiGroups:
       - metrics.k8s.io
     resources:
       - nodes
@@ -67,18 +32,26 @@ rules:
     verbs:
       - get
       - list
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions/status
+    verbs:
+      - get
+      - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: homepage
+  name: &app homepage
   labels:
-    app.kubernetes.io/name: homepage
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: homepage
+  name: *app
 subjects:
   - kind: ServiceAccount
-    name: homepage
-    namespace: default
+    name: *app
+    namespace: default # keep

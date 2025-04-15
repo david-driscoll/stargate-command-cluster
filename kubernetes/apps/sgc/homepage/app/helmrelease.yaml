@@ -168,7 +168,7 @@ spec:
       create: true
     # Enable the ingress to expose Homepage to the network.
     ingress:
-      app:
+      internal:
         nameOverride: *app
         className: internal
         annotations:
@@ -182,6 +182,24 @@ spec:
                   identifier: app
                   port: 80
           - host: "homepage.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 80
+      tailscale:
+        nameOverride: *app
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 80
+          - host: "homepage"
             paths:
               - path: /
                 service:

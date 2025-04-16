@@ -48,4 +48,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: *app
-    namespace: default # keep
+    namespace: sgc # keep

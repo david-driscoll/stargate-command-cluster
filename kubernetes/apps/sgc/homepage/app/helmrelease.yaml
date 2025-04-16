@@ -69,17 +69,34 @@ spec:
     ingress:
       internal:
         className: internal
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         hosts:
           - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: *port
+          - host: "library.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
       tailscale:
-        className: internal
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
         hosts:
           - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+          - host: "library"
             paths:
               - path: /
                 service:

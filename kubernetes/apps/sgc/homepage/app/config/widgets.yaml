@@ -13,15 +13,15 @@
 #     text: Greetings, Citizen.
 - kubernetes:
     cluster:
-      cpu: true
-      label: cluster
-      memory: true
       show: true
-      showLabel: true
-    nodes:
       cpu: true
       memory: true
-      show: false
+      showLabel: true
+      label: "Stargate Command"
+    nodes:
+      show: true
+      cpu: true
+      memory: true
       showLabel: true
 # - openmeteo:
 #     label: Home

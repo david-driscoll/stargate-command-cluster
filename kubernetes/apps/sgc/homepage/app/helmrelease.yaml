@@ -32,6 +32,43 @@ spec:
               tag: v1.1.1@sha256:be49a60307fcce7909acdaf2f3b2f3d168a0468d62869bf72d380625dde91fb9
             env:
               TZ: America/New_York
+              HOMEPAGE_ALLOWED_HOSTS: '{{ .Release.Name }}.${ROOT_DOMAIN},homepage.${ROOT_DOMAIN},{{ .Release.Name }}.${TAILSCALE_DOMAIN},homepage.${TAILSCALE_DOMAIN}'
+              HOMEPAGE_VAR_OPENWEATHERMAP_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: homepage-secrets
+                    key: openweathermap
+              HOMEPAGE_VAR_UNIFI_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-credentials
+                    key: username
+              HOMEPAGE_VAR_UNIFI_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-credentials
+                    key: password
+              HOMEPAGE_VAR_TRUENAS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: truenas-credentials
+                    key: credential
+              HOMEPAGE_VAR_HA_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-credentials
+                    key: username
+              HOMEPAGE_VAR_HA_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-credentials
+                    key: password
+              HOMEPAGE_VAR_HA_APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-credentials
+                    key: apikey
+
             envFrom:
               - secretRef:
                   name: homepage-secrets

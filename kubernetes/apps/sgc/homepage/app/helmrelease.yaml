@@ -34,7 +34,7 @@ spec:
               TZ: America/New_York
             envFrom:
               - secretRef:
-                  name: homepage-secret
+                  name: homepage-secrets
             probes:
               liveness: &probes
                 enabled: true

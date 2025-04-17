@@ -6,6 +6,7 @@ namespace: flux-system
 components:
   - ../../components/common
 resources:
+  - ./1password/ks.yaml
   - ./capacitor/ks.yaml
   - ./flux-instance/ks.yaml
   - ./flux-operator/ks.yaml

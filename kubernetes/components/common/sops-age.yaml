@@ -1,0 +1,9 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+    name: sops-age
+    annotations:
+        reloader.stakater.com/auto: "true"
+spec:
+    itemPath: vaults/Eris/items/buyc2pvnbpg7omtgoy6uap67ey

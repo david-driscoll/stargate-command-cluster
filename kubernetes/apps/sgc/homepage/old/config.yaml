@@ -16,7 +16,6 @@ config:
     theme: dark
     color: slate
 
-    disableCollapse: true
     headerStyle: clean
 
     providers:

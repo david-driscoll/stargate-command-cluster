@@ -25,7 +25,7 @@ spec:
       retries: 3
   dependsOn:
     - name: onepassword-connect
-      namespace: flux-system
+      namespace: kube-system
   valuesFrom:
     - kind: Secret
       name: tailscale-oauth

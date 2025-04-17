@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/network/tailscale/operator
   dependsOn:
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: flux-system
   prune: true
   sourceRef:
     kind: GitRepository

@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: flux-system
   path: ./kubernetes/apps/democratic-csi/truenas/secrets
   prune: true
   sourceRef:
@@ -47,7 +47,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: flux-system
     - name: truenas-secrets
       namespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/truenas/stash
@@ -80,7 +80,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: flux-system
     - name: truenas-secrets
       namespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/truenas/iscsi-stash

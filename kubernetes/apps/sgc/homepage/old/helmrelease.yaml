@@ -21,7 +21,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: onepassword-connect
-      namespace: flux-system
+      namespace: kube-system
 
   values:
     fullnameOverride: *app

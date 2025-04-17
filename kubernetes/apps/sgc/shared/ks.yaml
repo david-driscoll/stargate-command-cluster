@@ -16,7 +16,7 @@ spec:
     - name: truenas-iscsi-stash
       namespace: democratic-csi
     - name: onepassword-connect
-      namespace: flux-system
+      namespace: kube-system
   path: ./kubernetes/apps/sgc/shared/volumes
   prune: true
   sourceRef:
@@ -71,7 +71,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-connect
-      namespace: flux-system
+      namespace: kube-system
   path: ./kubernetes/apps/sgc/shared/secrets
   prune: true
   sourceRef:

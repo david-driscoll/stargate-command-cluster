@@ -26,7 +26,7 @@ spec:
       retries: 3
   dependsOn:
     - name: onepassword-connect
-      namespace: flux-system
+      namespace: kube-system
   values:
     logLevel: debug
     interval: 1m

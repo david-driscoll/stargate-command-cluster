@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: flux-system
   valuesFrom:
     - targetPath: driver.config.sshConnection.username
       kind: Secret

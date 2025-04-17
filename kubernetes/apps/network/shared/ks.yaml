@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: flux-system
   path: ./kubernetes/apps/network/shared/secrets
   prune: true
   sourceRef:

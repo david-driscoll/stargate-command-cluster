@@ -17,7 +17,7 @@ jobs:
         uses: kbrashears5/github-action-file-sync@v3.0.0
         with:
           REPOSITORIES: |
-            david-driscoll/equestria-cluster@sgc-sync
+            david-driscoll/equestria-cluster@main
           FILES: |
             kubernetes/apps/cert-manager/=kubernetes/apps/
             kubernetes/apps/democratic-csi/=kubernetes/apps/

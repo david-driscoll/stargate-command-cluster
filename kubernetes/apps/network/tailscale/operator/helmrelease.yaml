@@ -41,12 +41,12 @@ spec:
 
     operatorConfig:
       defaultTags:
-        - "tag:sgc-operator"
+        - "tag:${CLUSTER_CNAME}-operator"
       image:
         repository: ghcr.io/tailscale/k8s-operator
         tag: v1.82.0
         pullPolicy: Always
-      hostname: "sgc-operator"
+      hostname: "${CLUSTER_CNAME}-operator"
       podAnnotations:
         reloader.stakater.com/auto: "true"
     # proxyConfig contains configuraton that will be applied to any ingress/egress
@@ -61,7 +61,7 @@ spec:
       image:
         repository: tailscale/tailscale
         tag: v1.82.0
-      defaultTags: "tag:sgc"
+      defaultTags: "tag:${CLUSTER_CNAME}"
       podAnnotations:
         reloader.stakater.com/auto: "true"
       firewallMode: auto

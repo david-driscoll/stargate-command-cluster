@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: 1.16.1
+      version: 1.15.2
       sourceRef:
         kind: HelmRepository
         name: external-dns
@@ -40,7 +40,7 @@ spec:
         livenessProbe: &probe
           httpGet:
             path: /healthz
-            port: http
+            port: 8080
           initialDelaySeconds: 10
           periodSeconds: 60
           timeoutSeconds: 10

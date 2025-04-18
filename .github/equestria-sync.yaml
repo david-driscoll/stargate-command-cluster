@@ -1,0 +1,9 @@
+david-driscoll/equestria-cluster:
+  - .github/workflows/test.yml
+  - .github/workflows/lint.yml
+  - source: kubernetes/apps/cert-manager/
+    dest: kubernetes/apps/cert-manager/
+  - source: kubernetes/apps/democratic-csi/
+    dest: kubernetes/apps/democratic-csi/
+  - source: kubernetes/apps/network/
+    dest: kubernetes/apps/network/

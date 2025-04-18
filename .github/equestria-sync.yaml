@@ -1,4 +1,7 @@
 david-driscoll/equestria-cluster:
+  - source: .vscode/
+    dest: .vscode/
+    deleteOrphaned: true
   - source: kubernetes/apps/cert-manager/
     dest: kubernetes/apps/cert-manager/
     deleteOrphaned: true
@@ -11,3 +14,5 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true
+  - source: kubernetes/components/common/shared-secrets.sops.yaml
+    dest: kubernetes/components/common/shared-secrets.sops.yaml

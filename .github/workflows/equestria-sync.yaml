@@ -17,10 +17,10 @@ jobs:
         uses: kbrashears5/github-action-file-sync@v3.0.0
         with:
           REPOSITORIES: |
-            david-driscoll/equestria-cluster@main
+            david-driscoll/equestria-cluster@sgc-sync
           FILES: |
-            kubernetes/apps/cert-manager/=kubernetes/apps/cert-manager/
-            kubernetes/apps/democratic-csi/=kubernetes/apps/democratic-csi/
-            kubernetes/apps/network/=kubernetes/apps/network/
+            kubernetes/apps/cert-manager/=kubernetes/apps/
+            kubernetes/apps/democratic-csi/=kubernetes/apps/
+            kubernetes/apps/network/=kubernetes/apps/
           PULL_REQUEST_BRANCH_NAME: sgc-sync
           TOKEN: ${{ secrets.ONEPASSWORD_TOKEN }}

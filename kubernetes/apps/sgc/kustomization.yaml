@@ -9,3 +9,4 @@ components:
 resources:
   - "./homepage/ks.yaml"
   - "./shared/ks.yaml"
+  - "./go2rtc/ks.yaml"

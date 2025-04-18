@@ -46,19 +46,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  healthChecks:
-    - apiVersion: cert-manager.io/v1
-      kind: ClusterIssuer
-      name: letsencrypt-production
-      namespace: *namespace
-    - apiVersion: cert-manager.io/v1
-      kind: ClusterIssuer
-      name: letsencrypt-staging
-      namespace: *namespace
-    - apiVersion: cert-manager.io/v1
-      kind: ClusterIssuer
-      name: selfsigned
-      namespace: *namespace
   wait: true
   interval: 30m
   retryInterval: 1m

@@ -60,6 +60,8 @@ spec:
             substituteFrom:
               - name: cluster-secrets
                 kind: Secret
+              - name: shared-secrets
+                kind: Secret
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization

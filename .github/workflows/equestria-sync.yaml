@@ -19,8 +19,8 @@ jobs:
           REPOSITORIES: |
             david-driscoll/equestria-cluster@main
           FILES: |
-            kubernetes/apps/cert-manager
-            kubernetes/apps/democratic-csi
-            kubernetes/apps/network
+            kubernetes/apps/cert-manager/=kubernetes/apps/cert-manager/
+            kubernetes/apps/democratic-csi/=kubernetes/apps/democratic-csi/
+            kubernetes/apps/network/=kubernetes/apps/network/
           PULL_REQUEST_BRANCH_NAME: sgc-sync
           TOKEN: ${{ secrets.ONEPASSWORD_TOKEN }}

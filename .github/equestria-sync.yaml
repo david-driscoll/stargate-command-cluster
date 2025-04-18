@@ -1,9 +1,10 @@
 david-driscoll/equestria-cluster:
-  - .github/workflows/test.yml
-  - .github/workflows/lint.yml
   - source: kubernetes/apps/cert-manager/
     dest: kubernetes/apps/cert-manager/
+    deleteOrphaned: true
   - source: kubernetes/apps/democratic-csi/
     dest: kubernetes/apps/democratic-csi/
+    deleteOrphaned: true
   - source: kubernetes/apps/network/
     dest: kubernetes/apps/network/
+    deleteOrphaned: true

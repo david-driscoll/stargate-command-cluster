@@ -85,7 +85,8 @@ spec:
             memory: 200Mi
             ephemeral-storage: 5Gi
       driver:
-        imagePullPolicy: Always
+        image:
+          pullPolicy: Always
         resources:
           requests:
             cpu: 20m
@@ -95,7 +96,8 @@ spec:
             memory: 200Mi
             ephemeral-storage: 2Gi
     csiProxy:
-      imagePullPolicy: Always
+      image:
+        pullPolicy: Always
       resources:
         requests:
           cpu: 40m

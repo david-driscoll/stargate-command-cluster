@@ -7,7 +7,7 @@ serviceAccount:
   create: true
 service:
   name: kube-dns
-  clusterIP: "10.199.0.10"
+  clusterIP: "${CLUSTER_IP}"
 replicaCount: 2
 servers:
   - zones:

@@ -3,13 +3,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app go2rtc
-  namespace: &namespace network
+  namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/network/go2rtc/app
+  path: ./kubernetes/apps/sgc/go2rtc/app
   prune: true
   sourceRef:
     kind: GitRepository

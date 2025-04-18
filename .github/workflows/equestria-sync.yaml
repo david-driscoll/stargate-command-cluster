@@ -13,14 +13,10 @@ jobs:
     steps:
       - name: Fetching Local Repository
         uses: actions/checkout@main
-      - name: File Sync
-        uses: kbrashears5/github-action-file-sync@v3.0.0
+      - name: Run GitHub File Sync
+        uses: BetaHuhn/repo-file-sync-action@v1.21.1
         with:
-          REPOSITORIES: |
-            david-driscoll/equestria-cluster@main
-          FILES: |
-            kubernetes/apps/cert-manager=kubernetes/apps/
-            kubernetes/apps/democratic-csi=kubernetes/apps/
-            kubernetes/apps/network=kubernetes/apps/
-          PULL_REQUEST_BRANCH_NAME: sgc-sync
-          TOKEN: ${{ secrets.ONEPASSWORD_TOKEN }}
+          GH_PAT: ${{ secrets.ONEPASSWORD_TOKEN }}
+          OVERWRITE_EXISTING_PR: true
+          BRANCH_PREFIX: "equestria-sync"
+          CONFIG_PATH: ".github/equestria-sync.yaml"

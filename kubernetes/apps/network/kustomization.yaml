@@ -10,7 +10,6 @@ resources:
   - ./certificates/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
   - ./dns/ks.yaml
-  - ./go2rtc/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./shared/ks.yaml
   - ./tailscale/ks.yaml

@@ -2,12 +2,12 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: "sgc"
+  name: "${CLUSTER_CNAME}"
 spec:
   exitNode: true
-  hostname: "sgc"
+  hostname: "${CLUSTER_CNAME}"
   subnetRouter:
     advertiseRoutes:
-      - "10.10.0.0/16"
-      - "10.209.0.0/16"
-      - "10.199.0.0/16"
+      - "${INTERNAL_NETWORK}"
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"

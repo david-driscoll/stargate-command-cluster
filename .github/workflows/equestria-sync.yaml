@@ -1,0 +1,26 @@
+name: Equestria Sync
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  file_sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetching Local Repository
+        uses: actions/checkout@main
+      - name: File Sync
+        uses: kbrashears5/github-action-file-sync@v3.0.0
+        with:
+          REPOSITORIES: |
+            david-driscoll/equestria-cluster@main
+          FILES: |
+            kubernetes/apps/cert-manager
+            kubernetes/apps/democratic-csi
+            kubernetes/apps/network
+          PULL_REQUEST_BRANCH_NAME: sgc-sync
+          TOKEN: ${{ secrets.ONEPASSWORD_TOKEN }}

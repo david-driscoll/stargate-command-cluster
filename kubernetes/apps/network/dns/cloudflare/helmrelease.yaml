@@ -46,8 +46,8 @@ spec:
       - "crd"
       - "ingress"
       - "service"
-    txtPrefix: "sgc."
-    txtOwnerId: "sgc"
+    txtPrefix: "${CLUSTER_CNAME}."
+    txtOwnerId: "${CLUSTER_CNAME}"
     domainFilters: ["${ROOT_DOMAIN}"]
     serviceMonitor:
       enabled: true

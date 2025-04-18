@@ -75,7 +75,7 @@ spec:
       - "ingress"
       - "service"
     txtPrefix: "${CLUSTER_CNAME}."
-    txtOwnerId: default
+    txtOwnerId: "${CLUSTER_CNAME}"
     domainFilters: ["${ROOT_DOMAIN}"]
     serviceMonitor:
       enabled: true

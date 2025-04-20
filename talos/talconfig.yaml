@@ -28,10 +28,10 @@ nodes:
     schematic: &schematic
       customization:
         extraKernelArgs:
-          - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
-          - intel_iommu=on                      # PCI Passthrough
-          - iommu=pt                            # PCI Passthrough
-          - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+          - i915.enable_guc=3
+          - intel_iommu=on
+          - iommu=pt
+          - sysctl.kernel.kexec_load_disabled=1
           # - apparmor=0                          # Less security, faster puter
           # - init_on_alloc=0                     # Less security, faster puter
           # - init_on_free=0                      # Less security, faster puter

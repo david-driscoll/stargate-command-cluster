@@ -30,6 +30,9 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  rollback:
+    force: true
+    recreate: true
   values:
     fullnameOverride: reloader
     reloader:

@@ -38,17 +38,34 @@ spec:
     persistence:
       defaultDataLocality: best-effort
     defaultSettings:
-      createDefaultDiskLabeledNodes: true
+      createDefaultDiskLabeledNodes: false
       defaultDataLocality: best-effort
       defaultLonghornStaticStorageClass: longhorn
-      defaultReplicaCount: 3
-      guaranteedEngineManagerCPU: 20
-      guaranteedReplicaManagerCPU: 20
+      defaultReplicaCount: 2
+      guaranteedEngineManagerCPU: 12
+      guaranteedReplicaManagerCPU: 12
+      guaranteedInstanceManagerCpu: 12
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      volumeAttachmentRecoveryPolicy: never
       orphanAutoDeletion: true
       replicaAutoBalance: true
-      storageMinimalAvailablePercentage: 1
+      storageMinimalAvailablePercentage: 5
       storageReservedPercentageForDefaultDisk: 10
+
+      backupTarget: nfs://${SPIKE_IP}:/stash/backup/sgc/longhorn
+      backupstorePollInterval: 500
+      # backupTargetCredentialSecret: minio-secret
+      defaultDataPath: /var/mnt/longhorn/
+      replicaSoftAntiAffinity: false
+      storageOverProvisioningPercentage: 600
+      upgradeChecker: true
+      priorityClass: high-priority
+      autoSalvage: false
+      # taintToleration: key1=value1:NoSchedule; key2:NoExecute
+      # systemManagedComponentsNodeSelector: "label-key1:label-value1"
+      # disableSchedulingOnCordonedNode: false
+      # replicaZoneSoftAntiAffinity: false
+      # replicaDiskSoftAntiAffinity: false
     ingress:
       enabled: true
       ingressClassName: internal

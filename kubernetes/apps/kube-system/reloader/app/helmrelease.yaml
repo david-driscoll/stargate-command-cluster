@@ -35,6 +35,7 @@ spec:
     recreate: true
   values:
     reloader:
+      fullnameOverride: reloader
       enableHA: true
       readOnlyRootFileSystem: true
       podMonitor:

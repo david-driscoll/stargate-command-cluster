@@ -19,3 +19,5 @@ david-driscoll/equestria-cluster:
     deleteOrphaned: true
   - source: kubernetes/components/common/shared-secrets.sops.yaml
     dest: kubernetes/components/common/shared-secrets.sops.yaml
+  - source: talos/talenv.yaml
+    dest: talos/talenv.yaml

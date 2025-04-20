@@ -42,6 +42,7 @@ nodes:
           officialExtensions:
             - siderolabs/i915
             - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e0:51:d8:19:93:18"

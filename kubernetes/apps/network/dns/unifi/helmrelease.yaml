@@ -75,4 +75,4 @@ spec:
     serviceMonitor:
       enabled: true
     podAnnotations:
-      secret.reloader.stakater.com/reload: true
+      reloader.stakater.com/reload: "true"

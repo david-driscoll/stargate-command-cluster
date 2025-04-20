@@ -35,7 +35,8 @@ spec:
     recreate: true
   values:
     reloader:
+      enableHA: true
       readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
-      reloadStrategy: annotations
+      # reloadStrategy: annotations

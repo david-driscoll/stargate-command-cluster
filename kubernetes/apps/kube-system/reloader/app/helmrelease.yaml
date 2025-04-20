@@ -34,9 +34,8 @@ spec:
     force: true
     recreate: true
   values:
-    fullnameOverride: reloader
     reloader:
       readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
-        namespace: "{{ .Release.Namespace }}"
+      reloadStrategy: annotations

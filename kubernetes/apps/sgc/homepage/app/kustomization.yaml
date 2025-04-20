@@ -6,7 +6,6 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./secrets.yaml
-  # - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: homepage-config
     files:

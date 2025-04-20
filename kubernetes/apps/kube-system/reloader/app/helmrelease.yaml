@@ -30,15 +30,13 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  rollback:
-    force: true
-    recreate: true
   values:
+    nameOverride: reloader
+    fullnameOverride: reloader
     reloader:
-      nameOverride: reloader
-      fullnameOverride: reloader
       enableHA: true
       readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
+        namespace: "{{ .Release.Namespace }}"
       # reloadStrategy: annotations

@@ -58,6 +58,8 @@ tasks:
     cmd: talhelper gencommand upgrade --node {{.IP}} --extra-flags "--timeout=10m" | bash
     requires:
       vars: [IP]
+    deps:
+      - generate-config
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info

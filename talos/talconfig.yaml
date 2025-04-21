@@ -25,6 +25,19 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    nodeLabels: &nodeLabels
+      node.longhorn.io/create-default-disk: 'config'
+    nodeAnnotations: &nodeAnnotations
+      node.longhorn.io/default-disks-config: |
+        {
+          "disks": [
+            {
+              "path": "/var/mnt/longhorn",
+              "allowScheduling": true,
+              "tags":["ssd"]
+            }
+          ]
+        }
     schematic: &schematic
       customization:
         extraKernelArgs:
@@ -61,6 +74,8 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    nodeLabels: *nodeLabels
+    nodeAnnotations: *nodeAnnotations
     schematic: *schematic
     networkInterfaces:
       - deviceSelector:
@@ -80,6 +95,8 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    nodeLabels: *nodeLabels
+    nodeAnnotations: *nodeAnnotations
     schematic: *schematic
     networkInterfaces:
       - deviceSelector:

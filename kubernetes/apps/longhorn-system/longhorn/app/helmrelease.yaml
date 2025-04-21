@@ -36,7 +36,8 @@ spec:
       retries: 3
   values:
     defaultBackupStore:
-      backupTarget: nfs://${SPIKE_IP}:/stash/backup/sgc/longhorn
+      backupTarget: nfs://${SPIKE_IP}:/mnt/stash/backup/sgc/longhorn
+      # backupTargetCredentialSecret: minio-secret
 
     persistence:
       defaultDataLocality: best-effort

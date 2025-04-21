@@ -35,6 +35,9 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    defaultBackupStore:
+      backupTarget: nfs://${SPIKE_IP}:/stash/backup/sgc/longhorn
+
     persistence:
       defaultDataLocality: best-effort
     defaultSettings:
@@ -52,8 +55,6 @@ spec:
       storageMinimalAvailablePercentage: 5
       storageReservedPercentageForDefaultDisk: 10
 
-      backupTarget: nfs://${SPIKE_IP}:/stash/backup/sgc/longhorn
-      backupstorePollInterval: 500
       # backupTargetCredentialSecret: minio-secret
       defaultDataPath: /var/mnt/longhorn/
       replicaSoftAntiAffinity: false
@@ -66,6 +67,8 @@ spec:
       # disableSchedulingOnCordonedNode: false
       # replicaZoneSoftAntiAffinity: false
       # replicaDiskSoftAntiAffinity: false
+
+      allowEmptyDiskSelectorVolume: true
     ingress:
       enabled: true
       ingressClassName: internal

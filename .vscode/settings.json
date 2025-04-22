@@ -14,6 +14,8 @@
       "./kubeconfig"
     ]
   },
+  "path-autocomplete.disableUpOneFolder": false,
+  "path-autocomplete.triggerOutsideStrings": true,
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"

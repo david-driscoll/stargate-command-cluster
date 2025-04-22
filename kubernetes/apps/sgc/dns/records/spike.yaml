@@ -9,7 +9,7 @@ spec:
   externalName: "${SPIKE_DOMAIN}"
   externalIPs:
     - "${SPIKE_IP}"
-  
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
 apiVersion: traefik.io/v1alpha1
@@ -18,7 +18,7 @@ metadata:
   name: spike
 spec:
   entryPoints:
-    - web
+    - websecure
   routes:
   - match: HostSNI(`${SPIKE_DOMAIN}`) or HostSNI(`truenas.${ROOT_DOMAIN}`)
     kind: Rule
@@ -34,6 +34,9 @@ metadata:
   name: spike-dns
 spec:
   endpoints:
+    - dnsName: "${SPIKE_DOMAIN}"
+      recordType: A
+      targets: ["${SPIKE_DOMAIN}"]
     - dnsName: "truenas.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: ["${SPIKE_DOMAIN}"]

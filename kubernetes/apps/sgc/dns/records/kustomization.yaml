@@ -7,3 +7,4 @@ resources:
   - ./spike.yaml
   - ./thorax.yaml
   - ./twilight-sparkle.yaml
+  - ./transports.yaml

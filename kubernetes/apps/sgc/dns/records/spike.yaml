@@ -36,7 +36,7 @@ spec:
   endpoints:
     - dnsName: "${SPIKE_DOMAIN}"
       recordType: A
-      targets: ["${SPIKE_DOMAIN}"]
+      targets: ["${SPIKE_IP}"]
     - dnsName: "truenas.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: ["${SPIKE_DOMAIN}"]

@@ -15,7 +15,13 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: thorax
+  annotations:
+    reloader.stakater.com/auto: "true"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    kubernetes.io/ingress.class: internal
 spec:
+  entryPoints:
+    - websecure
   routes:
     - match: Host(`${THORAX_DOMAIN}`)
       kind: Rule
@@ -24,13 +30,3 @@ spec:
           port: 8006
           passHostHeader: true
           nativeLB: true
----
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
-metadata:
-  name: thorax-dns
-spec:
-  endpoints:
-    - dnsName: "${THORAX_DOMAIN}"
-      recordType: A
-      targets: ["${THORAX_IP}"]

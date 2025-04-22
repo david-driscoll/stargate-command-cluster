@@ -15,6 +15,10 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: pinkie-pie
+  annotations:
+    reloader.stakater.com/auto: "true"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    kubernetes.io/ingress.class: internal
 spec:
   entryPoints:
     - websecure
@@ -26,13 +30,3 @@ spec:
           port: 8006
           passHostHeader: true
           nativeLB: true
----
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
-metadata:
-  name: pinkie-pie-dns
-spec:
-  endpoints:
-    - dnsName: "${PINKIE_PIE_DOMAIN}"
-      recordType: A
-      targets: ["${PINKIE_PIE_IP}"]

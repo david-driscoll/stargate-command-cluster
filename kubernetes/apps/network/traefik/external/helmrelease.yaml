@@ -67,7 +67,7 @@ spec:
         memory: 200Mi
     autoscaling:
       enabled: true
-      maxReplicas: 3
+      maxReplicas: 2
       metrics:
       - type: Resource
         resource:
@@ -94,6 +94,8 @@ spec:
       dashboard:
         enabled: true
         matchRule: Host(`${EXTERNAL_DOMAIN}`)
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "${EXTERNAL_DOMAIN}"
       healthcheck:
         enabled: true
     experimental:

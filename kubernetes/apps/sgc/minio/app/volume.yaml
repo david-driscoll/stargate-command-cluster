@@ -1,0 +1,42 @@
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/persistentvolume-v1.json
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio
+spec:
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: truenas-stash
+  mountOptions:
+    - nfsvers=3
+    - nolock
+    - noatime
+  capacity:
+    storage: 50Gi
+  csi:
+    driver: org.democratic-csi.stash
+    readOnly: false
+    volumeHandle: data-minio
+    volumeAttributes:
+      server: "${SPIKE_IP}"
+      share: /mnt/stash/data/minio
+      node_attach_driver: nfs
+      provisioner_driver: freenas-api-nfs
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio
+spec:
+  storageClassName: truenas-stash
+  volumeName: minio
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+

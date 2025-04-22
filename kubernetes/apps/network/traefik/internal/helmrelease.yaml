@@ -65,8 +65,8 @@ spec:
         cpu: 50m
         memory: 100Mi
       limits:
-        cpu: 1000m
-        memory: 1Gi
+        cpu: 150m
+        memory: 200Mi
     providers:
       kubernetesCRD:
         enabled: true
@@ -87,13 +87,3 @@ spec:
         enabled: true
       healthcheck:
         enabled: true
-    ports:
-      rtsp:
-        port: 554
-        protocol: TCP
-      webrtc-tcp:
-        port: 8555
-        protocol: TCP
-      webrtc-udp:
-        port: 8555
-        protocol: UDP

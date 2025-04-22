@@ -23,7 +23,7 @@ spec:
       services:
         - name: twilight-sparkle
           port: 8006
-          passHostHeader: true
+          # passHostHeader: true
           serversTransport: proxmox
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json

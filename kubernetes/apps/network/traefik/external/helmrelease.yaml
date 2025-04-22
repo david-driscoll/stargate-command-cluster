@@ -77,11 +77,14 @@ spec:
             averageUtilization: 80
     providers:
       kubernetesCRD:
-        enabled: true
         ingressClass: "external"
+        enabled: true
+        allowCrossNamespace: true
+        allowExternalNameServices: true
       kubernetesIngress:
-        enabled: true
         ingressClass: "external"
+        enabled: true
+        allowExternalNameServices: true
       kubernetesGateway:
         enabled: true
         experimentalChannel: true

@@ -16,9 +16,23 @@ kind: IngressRoute
 metadata:
   name: pinkie-pie
 spec:
+  entryPoints:
+    - websecure
   routes:
     - match: Host(`${PINKIE_PIE_DOMAIN}`)
       kind: Rule
       services:
         - name: pinkie-pie
           port: 8006
+          passHostHeader: true
+          nativeLB: true
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: pinkie-pie-dns
+spec:
+  endpoints:
+    - dnsName: "${PINKIE_PIE_DOMAIN}"
+      recordType: A
+      targets: ["${PINKIE_PIE_IP}"]

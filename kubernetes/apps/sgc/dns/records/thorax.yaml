@@ -22,3 +22,15 @@ spec:
       services:
         - name: thorax
           port: 8006
+          passHostHeader: true
+          nativeLB: true
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: thorax-dns
+spec:
+  endpoints:
+    - dnsName: "${THORAX_DOMAIN}"
+      recordType: A
+      targets: ["${THORAX_IP}"]

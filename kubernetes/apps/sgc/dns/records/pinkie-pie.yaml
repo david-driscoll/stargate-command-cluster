@@ -24,6 +24,7 @@ spec:
         - name: pinkie-pie
           port: 8006
           passHostHeader: true
+          serversTransport: proxmox
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1

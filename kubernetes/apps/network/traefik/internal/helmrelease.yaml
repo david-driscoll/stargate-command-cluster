@@ -100,7 +100,7 @@ spec:
     ingressRoute:
       dashboard:
         enabled: true
-        matchRule: Host(`${INTERNAL_DOMAIN}`)
+        matchRule: Host(`internal.${CLUSTER_DOMAIN}`)
         annotations:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       healthcheck:

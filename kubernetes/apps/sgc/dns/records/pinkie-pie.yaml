@@ -23,10 +23,21 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`${PINKIE_PIE_DOMAIN}`)
+    - match: Host(`${PINKIE_PIE_HOST}`)
       kind: Rule
       services:
         - name: pinkie-pie
           port: 8006
           passHostHeader: true
           nativeLB: true
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: pinkie-pie-dns
+spec:
+  endpoints:
+    - dnsName: "${PINKIE_PIE_DOMAIN}"
+      recordType: A
+      targets: ["${PINKIE_PIE_IP}"]

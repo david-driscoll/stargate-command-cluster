@@ -23,10 +23,21 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`${THORAX_DOMAIN}`)
+    - match: Host(`${THORAX_HOST}`)
       kind: Rule
       services:
         - name: thorax
           port: 8006
           passHostHeader: true
           nativeLB: true
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: thorax-dns
+spec:
+  endpoints:
+    - dnsName: "${THORAX_DOMAIN}"
+      recordType: A
+      targets: ["${THORAX_IP}"]

@@ -23,10 +23,22 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`${TWILIGHT_SPARKLE_DOMAIN}`)
+    - match: Host(`${TWILIGHT_SPARKLE_HOST}`)
       kind: Rule
       services:
         - name: twilight-sparkle
           port: 8006
           passHostHeader: true
           nativeLB: true
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: twilight-sparkle-dns
+spec:
+  endpoints:
+    - dnsName: "${TWILIGHT_SPARKLE_DOMAIN}"
+      recordType: A
+      targets: ["${TWILIGHT_SPARKLE_IP}"]
+

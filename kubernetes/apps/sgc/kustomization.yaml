@@ -12,3 +12,4 @@ resources:
   - "./go2rtc/ks.yaml"
   - "./dns/ks.yaml"
   - ./minio/ks.yaml
+  - ./home/ks.yaml

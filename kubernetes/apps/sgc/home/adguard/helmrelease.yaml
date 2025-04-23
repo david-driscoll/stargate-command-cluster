@@ -20,7 +20,7 @@ spec:
       retries: 3
   values:
     controllers:
-      adguard-home:
+      *app :
         type: statefulset
         strategy: RollingUpdate
         annotations:
@@ -111,7 +111,7 @@ spec:
 
     service:
       dns:
-        controller: adguard-home
+        controller: *app
         type: LoadBalancer
         loadBalancerIP: "${ADGUARD_VIP}"
         annotations:
@@ -137,14 +137,14 @@ spec:
           http:
             port: &sync-port 8080
       primary-http: &primary-http
-        controller: adguard-home
+        controller: *app
         ports:
           http:
             port: *ui-port
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "0"
       primary-dns: &primary-dns
-        controller: adguard-home
+        controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Local
         ports: *dns-ports

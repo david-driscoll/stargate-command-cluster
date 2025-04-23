@@ -18,7 +18,7 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   routes:
-    - match: Host(`${TWILIGHT_SPARKLE_HOST}/`)
+    - match: Host(`${TWILIGHT_SPARKLE_HOST}`)
       kind: Rule
       services:
         - name: twilight-sparkle

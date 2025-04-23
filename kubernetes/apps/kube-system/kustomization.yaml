@@ -14,3 +14,4 @@ resources:
   - ./kubernetes-dashboard/ks.yaml
   - ./features/ks.yaml
   - ./spegel/ks.yaml
+  - ./reflector/ks.yaml

@@ -88,7 +88,7 @@ spec:
               subPath: conf
       sync:
         containers:
-          app:
+          node-sync:
             image:
               repository: ghcr.io/bakito/adguardhome-sync
               tag: alpine-v0.7.3@sha256:1a5dfe5814c3239d814f504703ca6e3219f7cd2bb2313b8db04b2eebb5dd36ac
@@ -146,6 +146,11 @@ spec:
             runAsNonRoot: true
 
     persistence:
+      certs:
+        name: le-production-tls
+        type: secret
+        globalMounts:
+          - path: '/certs'
       work:
         type: emptyDir
         globalMounts:

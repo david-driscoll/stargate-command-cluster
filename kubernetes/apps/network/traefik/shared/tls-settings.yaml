@@ -15,5 +15,5 @@ data:
       stores:
         default:
           defaultCertificate:
-            certFile: '/cluster-certs/tls.crt'
-            keyFile: '/cluster-certs/tls.key'
+            certFile: '/certs/tls.crt'
+            keyFile: '/certs/tls.key'

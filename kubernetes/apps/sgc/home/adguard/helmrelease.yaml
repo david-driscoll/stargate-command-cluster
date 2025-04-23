@@ -1,0 +1,223 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app adguard-home
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      adguard-home:
+        type: statefulset
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 3
+        containers:
+          app:
+            image:
+              repository: adguard/adguardhome
+              tag: v0.107.59@sha256:5d5e3aef39a8c8906a324f0c2da0a6123929e459b57c1e3f05e401dca5c7bf02
+              pullPolicy: IfNotPresent
+            env:
+              TZ: America/New_York
+            probes:
+              liveness: &probes
+                enabled: true
+                type: HTTP
+                port: &adguardPort 3000
+                path: /login.html
+              readiness: *probes
+              startup:
+                <<: *probes
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: true
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 1Gi
+        pod:
+          priorityClassName: system-cluster-critical
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/component: *app
+          tolerations:
+          - key: CriticalAddonsOnly
+            operator: Exists
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+          - key: node-role.kubernetes.io/master
+            operator: Exists
+            effect: NoSchedule
+        statefulset:
+          volumeClaimTemplates:
+          - name: data
+            storageClass: longhorn
+            accessMode: ReadWriteOnce
+            size: 4Gi
+            globalMounts:
+            - path: /opt/adguardhome/conf
+              subPath: conf
+            - path: /opt/adguardhome/work
+              subPath: work
+      sync:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/bakito/adguardhome-sync
+              tag: alpine-v0.7.3@sha256:1a5dfe5814c3239d814f504703ca6e3219f7cd2bb2313b8db04b2eebb5dd36ac
+              pullPolicy: IfNotPresent
+            args: [run]
+            env:
+              ORIGIN_URL: "http://{{ .Release.Name }}-primary.${INTERNAL_CLUSTER_SERVICE}:3000"
+              ORIGIN_WEB_URL: https://{{ .Release.Name }}-primary.${INTERNAL_CLUSTER_SERVICE}
+              REPLICA1_URL: "http://{{ .Release.Name }}-secondary.${INTERNAL_CLUSTER_SERVICE}:3000"
+              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-secondary.${INTERNAL_CLUSTER_SERVICE}"
+              REPLICA1_AUTO_SETUP: "true"
+              REPLICA2_URL: http://{{ .Release.Name }}-tertiary.${INTERNAL_CLUSTER_SERVICE}:3000
+              REPLICA2_WEB_URL: https://{{ .Release.Name }}-tertiary.${INTERNAL_CLUSTER_SERVICE}
+              REPLICA2_AUTO_SETUP: "true"
+              CRON: "*/10 * * * *"
+            securityContext:
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+
+    service:
+      dns:
+        controller: adguard-home
+        type: LoadBalancer
+        loadBalancerIP: "${ADGUARD_VIP}"
+        annotations:
+          io.cilium/lb-ipam-ips: "${ADGUARD_VIP}"
+        externalTrafficPolicy: Cluster
+        ports: &dns-ports
+          dns-tcp:
+            port: &dns-port 53
+            protocol: TCP
+          dns-udp:
+            port: *dns-port
+            protocol: UDP
+          dns-https:
+            port: 443
+            protocol: TCP
+          tls-tcp:
+            port: 853
+            protocol: TCP
+
+      sync:
+        controller: sync
+        ports:
+          http:
+            port: &sync-port 8080
+      primary-http: &primary-http
+        controller: adguard-home
+        ports:
+          http:
+            port: *ui-port
+        extraSelectorLabels:
+          apps.kubernetes.io/pod-index: "0"
+      primary-dns: &primary-dns
+        controller: adguard-home
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        ports: *dns-ports
+        extraSelectorLabels:
+          apps.kubernetes.io/pod-index: "0"
+      secondary-http:
+        <<: *primary-http
+        extraSelectorLabels:
+          apps.kubernetes.io/pod-index: "1"
+      secondary-dns:
+        <<: *primary-dns
+        extraSelectorLabels:
+          apps.kubernetes.io/pod-index: "1"
+      tertiary-http:
+        <<: *primary-http
+        extraSelectorLabels:
+          apps.kubernetes.io/pod-index: "2"
+      tertiary-dns:
+        <<: *primary-dns
+        extraSelectorLabels:
+          apps.kubernetes.io/pod-index: "2"
+
+    ingress:
+      internal:
+        className: internal
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: primary-http
+                  port: http
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: primary-http
+                  port: http
+      primary: &ingress
+        className: internal
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        hosts:
+          - host: "{{ .Release.Name }}-primary.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: primary-http
+                  port: http
+      secondary:
+        <<: *ingress
+        hosts:
+          - host: "{{ .Release.Name }}-secondary.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: secondary-http
+                  port: http
+      tertiary:
+        <<: *ingress
+        hosts:
+          - host: "{{ .Release.Name }}-tertiary.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: tertiary-http
+                  port: http

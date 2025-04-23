@@ -136,6 +136,7 @@ spec:
         ports:
           http:
             port: &sync-port 8080
+
       primary: &primary
         controller: *app
         ports:

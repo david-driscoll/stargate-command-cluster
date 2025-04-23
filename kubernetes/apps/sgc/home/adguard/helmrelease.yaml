@@ -38,7 +38,7 @@ spec:
               liveness: &probes
                 enabled: true
                 type: HTTP
-                port: &ui-port 80
+                port: &ui-port 3000
                 path: /login.html
               readiness: *probes
               startup:

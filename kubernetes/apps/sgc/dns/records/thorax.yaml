@@ -18,10 +18,11 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   routes:
-    - match: Host(`${THORAX_HOST}`)
+    - match: Host(`${THORAX_HOST}/`)
       kind: Rule
       services:
         - name: thorax
+          namespace: sgc
           port: 8006
           # passHostHeader: true
           serversTransport: proxmox

@@ -94,13 +94,13 @@ spec:
               pullPolicy: IfNotPresent
             args: [run]
             env:
-              ORIGIN_URL: "http://{{ .Release.Name }}-primary.${INTERNAL_CLUSTER_SERVICE}:3000"
-              ORIGIN_WEB_URL: https://{{ .Release.Name }}-primary.${INTERNAL_CLUSTER_SERVICE}
-              REPLICA1_URL: "http://{{ .Release.Name }}-secondary.${INTERNAL_CLUSTER_SERVICE}:3000"
-              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-secondary.${INTERNAL_CLUSTER_SERVICE}"
+              ORIGIN_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
+              ORIGIN_WEB_URL: https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}
+              REPLICA1_URL: "http://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}:3000"
+              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}"
               REPLICA1_AUTO_SETUP: "true"
-              REPLICA2_URL: http://{{ .Release.Name }}-tertiary.${INTERNAL_CLUSTER_SERVICE}:3000
-              REPLICA2_WEB_URL: https://{{ .Release.Name }}-tertiary.${INTERNAL_CLUSTER_SERVICE}
+              REPLICA2_URL: http://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}:3000
+              REPLICA2_WEB_URL: https://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}
               REPLICA2_AUTO_SETUP: "true"
               CRON: "*/10 * * * *"
             securityContext:

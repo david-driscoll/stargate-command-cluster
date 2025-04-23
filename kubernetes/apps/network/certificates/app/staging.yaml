@@ -3,6 +3,9 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: "le-staging"
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reloader.stakater.com/auto: "true"
 spec:
   secretName: "le-staging-tls"
   issuerRef:

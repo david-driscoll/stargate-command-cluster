@@ -136,7 +136,7 @@ spec:
         ports:
           http:
             port: &sync-port 8080
-      primary-http: &primary-http
+      primary: &primary
         controller: *app
         ports:
           http:
@@ -150,16 +150,16 @@ spec:
         ports: *dns-ports
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "0"
-      secondary-http:
-        <<: *primary-http
+      secondary:
+        <<: *primary
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "1"
       secondary-dns:
         <<: *primary-dns
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "1"
-      tertiary-http:
-        <<: *primary-http
+      tertiary:
+        <<: *primary
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "2"
       tertiary-dns:
@@ -178,7 +178,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: primary-http
+                  identifier: primary
                   port: http
       tailscale:
         className: tailscale
@@ -189,7 +189,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: primary-http
+                  identifier: primary
                   port: http
       primary: &ingress
         className: internal
@@ -201,7 +201,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: primary-http
+                  identifier: primary
                   port: http
       secondary:
         <<: *ingress
@@ -210,7 +210,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: secondary-http
+                  identifier: secondary
                   port: http
       tertiary:
         <<: *ingress
@@ -219,5 +219,5 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: tertiary-http
+                  identifier: tertiary
                   port: http

@@ -18,10 +18,11 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   routes:
-    - match: Host(`${PINKIE_PIE_HOST}`)
+    - match: Host(`${PINKIE_PIE_HOST}/`)
       kind: Rule
       services:
         - name: pinkie-pie
+          namespace: sgc
           port: 8006
           # passHostHeader: true
           serversTransport: proxmox

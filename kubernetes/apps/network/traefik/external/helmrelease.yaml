@@ -106,3 +106,13 @@ spec:
         enabled: true
       kubernetesGateway:
         enabled: true
+    web:
+      forwardedHeaders:
+        insecure: true
+      proxyProtocol:
+        insecure: true
+    websecure:
+      forwardedHeaders:
+        insecure: true
+      proxyProtocol:
+        insecure: true

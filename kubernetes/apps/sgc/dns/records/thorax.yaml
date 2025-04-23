@@ -18,7 +18,7 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   routes:
-    - match: Host(`${THORAX_HOST}/`)
+    - match: Host(`${THORAX_HOST}`)
       kind: Rule
       services:
         - name: thorax

@@ -38,7 +38,7 @@ spec:
               liveness: &probes
                 enabled: true
                 type: HTTP
-                port: &adguardPort 3000
+                port: &ui-port 3000
                 path: /login.html
               readiness: *probes
               startup:

@@ -100,11 +100,9 @@ spec:
     ingressRoute:
       dashboard:
         enabled: true
-        matchRule: Host(`internal.${CLUSTER_DOMAIN}`)
+        matchRule: Host(`internal.${CLUSTER_DOMAIN}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
         annotations:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-      healthcheck:
-        enabled: true
     experimental:
       fastProxy:
         enabled: true

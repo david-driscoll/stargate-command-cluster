@@ -75,6 +75,9 @@ spec:
             operator: Exists
             effect: NoSchedule
         statefulset:
+          persistentVolumeClaimRetentionPolicy:
+            whenDeleted: Delete
+            whenScaled: Delete
           volumeClaimTemplates:
           - name: data
             storageClass: longhorn
@@ -83,8 +86,6 @@ spec:
             globalMounts:
             - path: /opt/adguardhome/conf
               subPath: conf
-            - path: /opt/adguardhome/work
-              subPath: work
       sync:
         containers:
           app:
@@ -94,20 +95,61 @@ spec:
               pullPolicy: IfNotPresent
             args: [run]
             env:
-              ORIGIN_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
-              ORIGIN_WEB_URL: https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}
-              REPLICA1_URL: "http://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}:3000"
-              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}"
+              ORIGIN_URL: "https://adguard.driscoll.tech"
+              ORIGIN_WEB_URL: https://adguard.driscoll.tech
+              ORIGIN_USERNAME:
+                secretKeyRef:
+                  name: home-assistant-credentials
+                  key: username
+              ORIGIN_PASSWORD:
+                secretKeyRef:
+                  name: home-assistant-credentials
+                  key: password
+              REPLICA1_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
+              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}"
               REPLICA1_AUTO_SETUP: "true"
-              REPLICA2_URL: http://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}:3000
-              REPLICA2_WEB_URL: https://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}
+              REPLICA1_USERNAME:
+                secretKeyRef:
+                  name: adguard-secret
+                  key: username
+              REPLICA1_PASSWORD:
+                secretKeyRef:
+                  name: adguard-secret
+                  key: password
+              REPLICA2_URL: "http://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}:3000"
+              REPLICA2_WEB_URL: "https://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}"
               REPLICA2_AUTO_SETUP: "true"
+              REPLICA2_USERNAME:
+                secretKeyRef:
+                  name: adguard-secret
+                  key: username
+              REPLICA2_PASSWORD:
+                secretKeyRef:
+                  name: adguard-secret
+                  key: password
+              REPLICA3_URL: http://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}:3000
+              REPLICA3_WEB_URL: https://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}
+              REPLICA3_AUTO_SETUP: "true"
+              REPLICA3_USERNAME:
+                secretKeyRef:
+                  name: adguard-secret
+                  key: username
+              REPLICA3_PASSWORD:
+                secretKeyRef:
+                  name: adguard-secret
+                  key: password
               CRON: "*/10 * * * *"
             securityContext:
               readOnlyRootFilesystem: true
         pod:
           securityContext:
             runAsNonRoot: true
+
+    persistence:
+      work:
+        type: emptyDir
+        globalMounts:
+        - path: /opt/adguardhome/work
 
     service:
       dns:

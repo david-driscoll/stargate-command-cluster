@@ -4,7 +4,6 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: emberstack-charts
-  namespace: kube-system
 spec:
   interval: 30m
   url: https://emberstack.github.io/helm-charts
@@ -15,7 +14,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: reflector
-  namespace: kube-system
 spec:
   interval: 5m
   chart:
@@ -25,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: emberstack-charts
-        namespace: flux-system
+        namespace: kube-system
       interval: 5m
   values:
     configuration:

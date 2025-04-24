@@ -24,7 +24,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      matter-server:
+      *app :
         type: statefulset
         pod:
           hostNetwork: true
@@ -67,8 +67,11 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: *host
-          # lbipam.cilium.io/ips: 172.16.20.132, ${MATTER_IPV6}
+          external-dns.alpha.kubernetes.io/hostname: "${AUTOMATION_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
+        externalIPs:
+          - "${AUTOMATION_VIP}"
         ports:
           ws:
             protocol: TCP

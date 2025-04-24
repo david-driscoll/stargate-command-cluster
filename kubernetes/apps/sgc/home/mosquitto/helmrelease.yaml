@@ -53,7 +53,24 @@ spec:
                 drop:
                   - ALL
               readOnlyRootFilesystem: true
+        pod:
+          priorityClassName: system-cluster-critical
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/component: *app
+        statefulset:
+          persistentVolumeClaimRetentionPolicy:
+            whenDeleted: Delete
+            whenScaled: Delete
     defaultPodOptions:
+
       securityContext:
         fsGroup: 568
         runAsGroup: 568
@@ -62,15 +79,20 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true
+
     configMaps:
       config:
         data:
           mosquitto-0.conf: |
             listener 1883
             allow_anonymous true
+            persistence true
+            persistence_location /mosquitto /data
           mosquitto-1.conf: |
             listener 1883
             allow_anonymous true
+            persistence true
+            persistence_location /mosquitto /data
 
             connection broker0
             address mosquitto-0.mosquitto.sgc.svc.cluster.local
@@ -79,6 +101,8 @@ spec:
       config:
         name: mosquitto-config
         type: configMap
+      data:
+        type: emptyDir
     service:
       app:
         controller: *app

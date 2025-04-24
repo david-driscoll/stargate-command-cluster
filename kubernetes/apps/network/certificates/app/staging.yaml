@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -8,6 +9,10 @@ metadata:
     reloader.stakater.com/auto: "true"
 spec:
   secretName: "le-staging-tls"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reloader.stakater.com/auto: "true"
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer

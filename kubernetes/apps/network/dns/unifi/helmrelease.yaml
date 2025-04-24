@@ -19,17 +19,28 @@ kind: HelmRelease
 metadata:
   name: &app unifi-dns
 spec:
-  interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: unifi-dns
+  interval: 30m
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.16.1
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
   install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: onepassword-connect
+      namespace: kube-system
   values:
     fullnameOverride: *app
     logLevel: debug

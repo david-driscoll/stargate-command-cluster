@@ -246,7 +246,7 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         hosts:
-          - host: "{{ .Release.Name }}-primary.${ROOT_DOMAIN}"
+          - host: "{{ .Release.Name }}-primary.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -255,7 +255,7 @@ spec:
       secondary:
         <<: *ingress
         hosts:
-          - host: "{{ .Release.Name }}-secondary.${ROOT_DOMAIN}"
+          - host: "{{ .Release.Name }}-secondary.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -264,7 +264,7 @@ spec:
       tertiary:
         <<: *ingress
         hosts:
-          - host: "{{ .Release.Name }}-tertiary.${ROOT_DOMAIN}"
+          - host: "{{ .Release.Name }}-tertiary.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:

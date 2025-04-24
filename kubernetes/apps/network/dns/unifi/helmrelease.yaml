@@ -64,7 +64,6 @@ spec:
     triggerLoopOnEvent: true
     extraArgs:
       - --traefik-disable-legacy
-      - --webhook-provider-url=http://localhost:8888
     sources:
       - "traefik-proxy"
       - "crd"

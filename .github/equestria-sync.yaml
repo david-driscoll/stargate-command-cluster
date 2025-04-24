@@ -21,3 +21,5 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/components/common/shared-secrets.sops.yaml
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
+  - source: kubernetes/apps/system-upgrade/versions.env
+    dest: kubernetes/apps/system-upgrade/versions.env

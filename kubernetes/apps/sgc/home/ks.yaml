@@ -28,6 +28,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      PVC: data-adguard-home-0
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

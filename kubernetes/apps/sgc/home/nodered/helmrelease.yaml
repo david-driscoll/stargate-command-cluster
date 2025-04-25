@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nodered
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: uninstall
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: home-assistant
+      namespace: sgc
+  values:
+    controllers:
+      *app :
+        type: statefulset
+        replicas: 2
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          main:
+            image:
+              repository: docker.io/nodered/node-red
+              tag: 4.0.9@sha256:0b295b3a14c512548567ca99db631bc37b23bfc79fd009ee8248a610fafdb4b5
+            env:
+              TZ: "${TIMEZONE}"
+              NODE_RED_ENABLE_PROJECTS: "true"
+              NODE_RED_ENABLE_SAFE_MODE: "false"
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 25m
+              limits:
+                memory: 500Mi
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      shareProcessNamespace: true
+
+    persistence:
+      data:
+        retain: true
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        volumeName: nodered-data
+
+    service:
+      app:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 1880
+
+    ingress:
+      internal:
+        className: internal
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http

@@ -80,6 +80,8 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
 
+    authentication:
+      passwordEntries: ""
     configMaps:
       config:
         data:
@@ -116,7 +118,10 @@ spec:
         ports:
           mqtt:
             protocol: TCP
-            port: &port 1883
+            port: &mqtt-port 1883
+          wsmqtt:
+            protocol: TCP
+            port: &wsmqtt-port 9090
 
     ingress:
       internal:
@@ -130,4 +135,4 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: *port
+                  port: *mqtt-port

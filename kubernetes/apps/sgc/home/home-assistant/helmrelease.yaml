@@ -47,10 +47,10 @@ spec:
                 secretKeyRef:
                   name: home-assistant-location
                   key: longitude
-              HASS_SECRET_ELEVATION:
-                secretKeyRef:
-                  name: home-assistant-location
-                  key: elevation
+              # HASS_SECRET_ELEVATION:
+              #   secretKeyRef:
+              #     name: home-assistant-location
+              #     key: elevation
               TIMEZONE: "${TIMEZONE}"
               TZ: "${TIMEZONE}"
               # HASS_BEARER_TOKEN: "{{ .HASS_BEARER_TOKEN }}"

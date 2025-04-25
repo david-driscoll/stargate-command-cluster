@@ -8,6 +8,7 @@ data:
     latitude: ENC[AES256_GCM,data:8BWvB05a8JWLv5vOOwDAWurL,iv:IPVB7gE0XB4IkIkbXlm38rGfVMQdLHO6XSEIPnZAHTs=,tag:HLm0kpZZP8A5VGSm6UkwYQ==,type:str]
     longitude: ENC[AES256_GCM,data:Fh/8uV/gSKNHmRy1ViMZ3+7h,iv:m+LGk+kk7mC0EQ9+OpF+zMbWd1Aw3jV1ZfB/stAJKfo=,tag:F8aN9uEl2VNRmiLsEiMCZg==,type:str]
     radius: ENC[AES256_GCM,data:ake0,iv:vCQRJnUaInAZbF/aHtOPXay60lWoX5n9+DjN9qasHe0=,tag:tytZmVpuz29i49yLFg5lrw==,type:str]
+    #ENC[AES256_GCM,data:snZCmw1RPQ7Vr7ljRghq,iv:IGrwLRO9uY9t4Ab3awhnCpSyociT7oXxcWN6gVMuIAA=,tag:eNr/zc/nqoP35d8x8U98kw==,type:comment]
 sops:
     kms: []
     gcp_kms: []
@@ -41,8 +42,8 @@ sops:
             L2M2U3owaHp5RWJRUURFcHZNTWlqRzgKNH6ywFVyXdTmcApMEfuWiKgKXhqsL8Tl
             XkMP0PqgdNIsPpl6kVXitpGkZYQlJSJvnbBoH80gmRWtsuAWWE57FQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-04-25T01:30:18Z"
-    mac: ENC[AES256_GCM,data:egmtNADCiwp8Qnvkw+Vm16+88uDff8FppSfJqbJBjL4IVyhQRTL43/SSVrPyrINRMY4bs/6glkGNXCDFybcuoHfjA83WEQiTk0vJXQc6WUgfwV0B+9ToIwo5j8l//4Ym0ysPHr7ij98wpdBi2Gr1LuuPPDMwbHX1Flk5CgDVIRU=,iv:8IV8eDNjPfa8DElBuQgSbAGxaBk63rRJvRcMD0L57I4=,tag:fhkSgVLYGWGX641x2e0XHw==,type:str]
+    lastmodified: "2025-04-25T04:33:37Z"
+    mac: ENC[AES256_GCM,data:vgOxG99G3HL4YBb6zzkKzN19UEW4wBAqoRemepIgKjEGcNqxLsDz5p54H7OwEZc09lp/g2x/Jrburr2QNsu5Nv1VcJpBRFc+M6gMO6jgb3VaaAbJARBx79bLwEp83QKthLqnfyEIkcLjRjVPLMpY2Sx0My8S0tDkVDeGqEIUElI=,iv:dgQEJFBswW6FqHunQqxWM0cPSBEoIVNK7l9pfg2BBXo=,tag:9uoAc2pUCVjILLQapMsvlg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true

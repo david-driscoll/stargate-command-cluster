@@ -8,3 +8,23 @@ resources:
   - ./namespace.yaml
   - ./democratic-csi.yaml
   - ./sops-age.sops.yaml
+patches:
+  - target:
+      group: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+    patch: |-
+      apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      metadata:
+        name: not-used
+      spec:
+        decryption:
+          provider: sops
+          secretRef:
+            name: sops-age
+        postBuild:
+          substituteFrom:
+            - name: cluster-secrets
+              kind: Secret
+            - name: shared-secrets
+              kind: Secret

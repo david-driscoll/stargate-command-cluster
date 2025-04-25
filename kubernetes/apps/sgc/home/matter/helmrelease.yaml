@@ -100,5 +100,5 @@ spec:
         storageClass: longhorn
         accessMode: ReadWriteOnce
         size: 4Gi
-        nameOverride: matter-data
+        volumeName: matter-data
 

@@ -21,6 +21,11 @@ spec:
       strategy: uninstall
   uninstall:
     keepHistory: false
+  dependsOn:
+    - name: mosquitto
+      namespace: sgc
+    - name: matter
+      namespace: sgc
   values:
     controllers:
       *app :

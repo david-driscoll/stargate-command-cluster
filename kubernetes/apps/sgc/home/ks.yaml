@@ -24,7 +24,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   components:
-    - ../../../../components/volsync/local
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app

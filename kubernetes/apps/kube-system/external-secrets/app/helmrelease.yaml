@@ -22,7 +22,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: onepassword-connect
-      namespace: external-secrets
+      namespace: kube-system
   values:
     installCRDs: true
     image:

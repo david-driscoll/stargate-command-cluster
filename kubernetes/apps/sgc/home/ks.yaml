@@ -23,31 +23,31 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app matter
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/matter
-  prune: true
-  dependsOn:
-    - name: sgc-secrets
-      namespace: *namespace
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app matter
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/home/matter
+#   prune: true
+#   dependsOn:
+#     - name: sgc-secrets
+#       namespace: *namespace
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -75,58 +75,58 @@ spec:
   retryInterval: 1m
   timeout: 5m
 
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app home-assistant
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/home-assistant
-  prune: true
-  dependsOn:
-    - name: sgc-secrets
-      namespace: *namespace
-    - name: mosquitto
-      namespace: *namespace
-    - name: matter
-      namespace: *namespace
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app home-assistant
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/home/home-assistant
+#   prune: true
+#   dependsOn:
+#     - name: sgc-secrets
+#       namespace: *namespace
+#     - name: mosquitto
+#       namespace: *namespace
+#     - name: matter
+#       namespace: *namespace
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
 
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app nodered
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/nodered
-  prune: true
-  dependsOn:
-    - name: home-assistant
-      namespace: *namespace
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app nodered
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/home/nodered
+#   prune: true
+#   dependsOn:
+#     - name: home-assistant
+#       namespace: *namespace
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m

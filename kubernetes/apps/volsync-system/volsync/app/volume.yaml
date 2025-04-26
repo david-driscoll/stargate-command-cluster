@@ -33,7 +33,7 @@ metadata:
   name: volsync
 spec:
   storageClassName: truenas-stash
-  volumeName: minio
+  volumeName: volsync
   accessModes:
     - ReadWriteMany
   resources:

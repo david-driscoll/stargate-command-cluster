@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/adguard
+  path: ./kubernetes/apps/sgc/dns/adguard
   prune: true
   force: true
   dependsOn:

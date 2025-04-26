@@ -97,6 +97,10 @@ spec:
               op: "add", path: "/spec/template/spec/volumes/-",
               value: Object.spec.template.spec.volumes{
                 name: "repository",
+                mountOptions: [
+                  "noatime",
+                  "nfsvers=4"
+                ],
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "10.10.10.10",
                   path: "/mnt/stash/backup/volsync"

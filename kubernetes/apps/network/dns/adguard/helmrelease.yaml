@@ -69,7 +69,7 @@ spec:
     extraArgs:
       # - --ingress-class=internal
       - --traefik-disable-legacy
-      - --webhook-provider-url=http://localhost:8888
+      - --webhook-provider-url=http://localhost:8080
     sources:
       - "traefik-proxy"
       - "crd"

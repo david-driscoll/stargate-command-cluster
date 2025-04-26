@@ -40,6 +40,7 @@ spec:
     - name: external-secrets
       namespace: *namespace
   prune: true
-  wait: false
+  force: true
+  wait: true
   interval: 30m
   timeout: 5m

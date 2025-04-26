@@ -28,6 +28,7 @@ spec:
     - name: onepassword-connect
       namespace: kube-system
   values:
+    fullnameOverride: *app
     logLevel: debug
     interval: 1m
     policy: sync

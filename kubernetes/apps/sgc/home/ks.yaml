@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/adguard
   prune: true
+  force: true
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
@@ -44,6 +45,7 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/matter
   prune: true
+  force: true
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace

@@ -77,7 +77,6 @@ spec:
         storageClass: longhorn
         accessMode: ReadWriteOnce
         size: 10Gi
-        volumeName: "{{ .Release.Name }}-data"
         globalMounts:
           - path: /config
       config-cache:

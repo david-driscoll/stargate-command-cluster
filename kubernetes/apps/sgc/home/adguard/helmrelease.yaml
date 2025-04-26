@@ -103,7 +103,7 @@ spec:
                 secretKeyRef:
                   name: home-assistant-credentials
                   key: username
-              REPLICA1_PASSWORD:
+              ORIGIN_PASSWORD:
                 secretKeyRef:
                   name: home-assistant-credentials
                   key: password
@@ -114,7 +114,7 @@ spec:
                 secretKeyRef:
                   name: adguard-secret
                   key: username
-              ORIGIN_PASSWORD:
+              REPLICA1_PASSWORD:
                 secretKeyRef:
                   name: adguard-secret
                   key: password

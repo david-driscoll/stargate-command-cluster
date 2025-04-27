@@ -11,9 +11,8 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: truenas-stash
   mountOptions:
-    - nfsvers=3
-    - nolock
     - noatime
+    - nfsvers=4
   capacity:
     storage: 50Gi
   csi:

@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app chrony
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: uninstall
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        type: daemonset
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          tolerations:
+            - key: node-role.kubernetes.io/master
+              effect: NoSchedule
+        containers:
+          app:
+            image:
+              repository: docker.io/library/rockylinux
+              tag: 9
+            args:
+              - "/bin/bash"
+              - "-c"
+              - "dnf install -y chrony iputils dnsutils && chronyd -n -d"
+            resources:
+              requests:
+                cpu: 23m
+                memory: 50M
+            securityContext:
+              privileged: true
+
+    persistence:
+      config:
+        type: configMap
+        name: chrony-configmap
+        globalMounts:
+          - path: /etc/chrony.conf
+            subPath: chrony.conf
+            readOnly: true
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/chrony

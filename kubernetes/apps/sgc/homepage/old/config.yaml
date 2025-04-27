@@ -96,10 +96,10 @@ config:
             username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
             password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
       - AdGuard Home:
-          href: https://adguard.${ROOT_DOMAIN}
+          href: https://adguard-home.${ROOT_DOMAIN}
           icon: adguard-home.svg
           widget:
-            url: https://adguard.${ROOT_DOMAIN}
+            url: https://adguard-home.${ROOT_DOMAIN}
             type: adguard
             fields: ["queries", "blocked", "filtered", "latency"]
             username: "{{HOMEPAGE_VAR_HA_USERNAME}}"

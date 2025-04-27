@@ -27,6 +27,22 @@ tasks:
       - test -f {{.TALOSCONFIG}}
       - which talhelper talosctl yq
 
+  reboot:
+    desc: Reboot the cluster without downtime
+    dir: '{{.TALOS_DIR}}'
+    cmd: |
+      talosctl reboot -n 10.10.209.10
+      talosctl reboot -n 10.10.209.11
+      talosctl reboot -n 10.10.209.12
+    vars:
+      MODE: '{{.MODE | default "auto"}}'
+    deps:
+      - generate-config
+    preconditions:
+      - talosctl config info
+      - test -f {{.TALOSCONFIG}}
+      - which talhelper talosctl yq
+
   upgrade:
     desc: Upgrade the talos cluster
     dir: '{{.TALOS_DIR}}'

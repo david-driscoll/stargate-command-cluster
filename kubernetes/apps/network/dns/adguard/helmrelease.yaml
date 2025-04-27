@@ -51,18 +51,18 @@ spec:
           - name: LOG_LEVEL
             value: debug
           - name: ADGUARD_URL
-            value: "https://adguard.${ROOT_DOMAIN}"
+            value: "https://adguard-home.${ROOT_DOMAIN}"
           - name: SERVER_HOST
             value: 0.0.0.0
           - name: ADGUARD_USER
             valueFrom:
               secretKeyRef:
-                name: home-assistant-credentials
+                name: adguard-secret
                 key: username
           - name: ADGUARD_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: home-assistant-credentials
+                name: adguard-secret
                 key: password
         securityContext:
           readOnlyRootFilesystem: true

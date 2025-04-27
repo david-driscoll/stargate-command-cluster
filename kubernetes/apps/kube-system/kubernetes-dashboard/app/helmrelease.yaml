@@ -44,6 +44,9 @@ spec:
     settings:
      global:
         clusterName: "${CLUSTER_CNAME}"
+    web:
+      scaling:
+        replicas: 2
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress

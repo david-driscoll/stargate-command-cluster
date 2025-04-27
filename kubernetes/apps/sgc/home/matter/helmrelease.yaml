@@ -25,11 +25,10 @@ spec:
   values:
     controllers:
       *app :
-        type: statefulset
-        pod:
-          hostNetwork: true
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          hostNetwork: true
         containers:
           app:
             image:

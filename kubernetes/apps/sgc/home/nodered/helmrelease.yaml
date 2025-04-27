@@ -21,9 +21,7 @@ spec:
       strategy: uninstall
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: home-assistant
-      namespace: sgc
+  dependsOn: []
   values:
     controllers:
       *app :
@@ -77,7 +75,7 @@ spec:
         ports:
           http:
             port: &port 1880
-    
+
 
     ingress:
       internal:

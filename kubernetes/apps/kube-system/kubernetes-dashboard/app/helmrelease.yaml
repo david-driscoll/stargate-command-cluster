@@ -47,6 +47,12 @@ spec:
     web:
       scaling:
         replicas: 2
+    api:
+      scaling:
+        replicas: 2
+    auth:
+      scaling:
+        replicas: 2
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress

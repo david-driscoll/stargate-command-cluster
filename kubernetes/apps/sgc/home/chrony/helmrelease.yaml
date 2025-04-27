@@ -25,14 +25,23 @@ spec:
   values:
     controllers:
       *app :
-        type: daemonset
+        type: statefulset
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+        replicas: 2
         pod:
-          tolerations:
-            - key: node-role.kubernetes.io/master
-              effect: NoSchedule
+          priorityClassName: system-cluster-critical
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/component: *app
         containers:
           app:
             image:
@@ -48,6 +57,19 @@ spec:
                 memory: 50M
             securityContext:
               privileged: true
+
+    service:
+      dns:
+        controller: *app
+        type: LoadBalancer
+        loadBalancerIP: "${CHRONY_VIP}"
+        annotations:
+          io.cilium/lb-ipam-ips: "${CHRONY_VIP}"
+        externalTrafficPolicy: Cluster
+        ports:
+          ntp-port:
+            port: &ntp-port 123
+            protocol: TCP
 
     persistence:
       config:

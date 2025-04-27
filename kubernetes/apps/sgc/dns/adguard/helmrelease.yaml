@@ -193,27 +193,12 @@ spec:
             port: *ui-port
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "0"
-      primary-dns: &primary-dns
-        controller: *app
-        type: LoadBalancer
-        externalTrafficPolicy: Local
-        ports: *dns-ports
-        extraSelectorLabels:
-          apps.kubernetes.io/pod-index: "0"
       secondary:
         <<: *primary
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "1"
-      secondary-dns:
-        <<: *primary-dns
-        extraSelectorLabels:
-          apps.kubernetes.io/pod-index: "1"
       tertiary:
         <<: *primary
-        extraSelectorLabels:
-          apps.kubernetes.io/pod-index: "2"
-      tertiary-dns:
-        <<: *primary-dns
         extraSelectorLabels:
           apps.kubernetes.io/pod-index: "2"
 

@@ -27,8 +27,6 @@ spec:
   values:
     controllers:
       *app :
-        type: statefulset
-        replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -71,7 +69,6 @@ spec:
         storageClass: longhorn
         accessMode: ReadWriteOnce
         size: 1Gi
-        volumeName: nodered-data
 
     service:
       app:

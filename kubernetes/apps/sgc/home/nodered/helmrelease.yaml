@@ -62,11 +62,7 @@ spec:
 
     persistence:
       data:
-        retain: true
-        type: persistentVolumeClaim
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 1Gi
+        existingClaim: nodered-data
 
     service:
       app:

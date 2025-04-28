@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app home-assistant
+  name: &app network-ups-tools
 spec:
   interval: 15m
   chartRef:
@@ -21,37 +21,28 @@ spec:
       strategy: uninstall
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: mosquitto
-      namespace: sgc
-    - name: matter
-      namespace: sgc
+  dependsOn: []
   values:
     controllers:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           main:
             image:
-              repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.4.4@sha256:dc7bb47eb6b3f62405c185cbc633771527b9710530023f7177d99a09eb858fc4
+              repository: docker.io/nodered/node-red
+              tag: 4.0.9@sha256:0b295b3a14c512548567ca99db631bc37b23bfc79fd009ee8248a610fafdb4b5
             env:
-              HASS_SECRET_LATITUDE:
-                secretKeyRef:
-                  name: home-assistant-location
-                  key: latitude
-              HASS_SECRET_LONGITUDE:
-                secretKeyRef:
-                  name: home-assistant-location
-                  key: longitude
-              # HASS_SECRET_ELEVATION:
-              #   secretKeyRef:
-              #     name: home-assistant-location
-              #     key: elevation
-              TIMEZONE: "${TIMEZONE}"
               TZ: "${TIMEZONE}"
-              # HASS_BEARER_TOKEN: "{{ .HASS_BEARER_TOKEN }}"
+              NODE_RED_ENABLE_PROJECTS: "true"
+              NODE_RED_ENABLE_SAFE_MODE: "false"
             resources:
               requests:
                 memory: 350Mi
@@ -62,7 +53,6 @@ spec:
     defaultPodOptions:
       securityContext:
         fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
         runAsGroup: 568
         runAsNonRoot: true
         runAsUser: 568
@@ -71,26 +61,8 @@ spec:
       shareProcessNamespace: true
 
     persistence:
-      config:
-        existingClaim: home-assistant-config
-        globalMounts:
-          - path: /config
-      config-cache:
-        type: emptyDir
-        globalMounts:
-          - path: /config/.venv
-      config-logs:
-        type: emptyDir
-        globalMounts:
-          - path: /config/logs
-      config-tts:
-        type: emptyDir
-        globalMounts:
-          - path: /config/tts
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
+      data:
+        existingClaim: network-ups-tools-data
 
     service:
       app:
@@ -99,6 +71,7 @@ spec:
         ports:
           http:
             port: &port 1880
+
 
     ingress:
       internal:

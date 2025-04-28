@@ -72,7 +72,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: home-assistant-config
+        existingClaim: *app
         globalMounts:
           - path: /config
       config-cache:

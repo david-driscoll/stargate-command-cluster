@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: home
-  name: matter-data
+  name: matter-server-data
 spec:
   accessModes:
     - ReadWriteMany
@@ -11,14 +11,14 @@ spec:
   resources:
     requests:
       storage: 21Gi
-  volumeName: matter-data
+  volumeName: matter-server-data
   storageClassName: longhorn
 
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: matter-data
+  name: matter-server-data
   labels:
     type: longhorn
     recurring-job-group.longhorn.io/weekly-backup: enabled
@@ -37,4 +37,4 @@ spec:
     volumeAttributes:
       numberOfReplicas: "2"
       staleReplicaTimeout: "2880"
-    volumeHandle: matter-data
+    volumeHandle: matter-server-data

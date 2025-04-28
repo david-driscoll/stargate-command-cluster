@@ -18,7 +18,7 @@ spec:
   csi:
     driver: org.democratic-csi.stash
     readOnly: false
-    volumeHandle: data-volsync
+    volumeHandle: volsync
     volumeAttributes:
       server: "${SPIKE_IP}"
       share: /mnt/stash/backup/volsync

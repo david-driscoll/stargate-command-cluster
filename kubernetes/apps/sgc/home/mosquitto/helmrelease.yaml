@@ -104,7 +104,7 @@ spec:
         name: mosquitto-config
         type: configMap
       data:
-        existingClaim: mosquitto-config
+        existingClaim: mosquitto-data
     service:
       app:
         controller: *app

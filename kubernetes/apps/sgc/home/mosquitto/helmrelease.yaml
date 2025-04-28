@@ -104,7 +104,7 @@ spec:
         name: mosquitto-config
         type: configMap
       data:
-        type: emptyDir
+        existingClaim: mosquitto-config
     service:
       app:
         controller: *app

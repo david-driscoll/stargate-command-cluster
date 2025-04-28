@@ -40,6 +40,8 @@ spec:
   prune: true
   force: true
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: sgc-secrets
       namespace: *namespace
   sourceRef:
@@ -97,6 +99,8 @@ spec:
   path: ./kubernetes/apps/sgc/home/home-assistant
   prune: true
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: sgc-secrets
       namespace: *namespace
     - name: mosquitto
@@ -133,6 +137,8 @@ spec:
   path: ./kubernetes/apps/sgc/home/nodered
   prune: true
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: sgc-secrets
       namespace: *namespace
   sourceRef:
@@ -164,6 +170,8 @@ spec:
   path: ./kubernetes/apps/sgc/home/nut
   prune: true
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: sgc-secrets
       namespace: *namespace
   sourceRef:

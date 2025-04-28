@@ -62,7 +62,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: network-ups-tools-data
+        existingClaim: *app
 
     service:
       app:

@@ -62,7 +62,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: nodered-data
+        existingClaim: *app
 
     service:
       app:

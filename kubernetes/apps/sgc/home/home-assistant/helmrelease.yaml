@@ -24,7 +24,7 @@ spec:
   dependsOn:
     - name: mosquitto
       namespace: sgc
-    - name: matter
+    - name: matter-server
       namespace: sgc
   values:
     controllers:

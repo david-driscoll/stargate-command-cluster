@@ -36,7 +36,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/matter
+  path: ./kubernetes/apps/sgc/home/matter-server
   prune: true
   force: true
   dependsOn:

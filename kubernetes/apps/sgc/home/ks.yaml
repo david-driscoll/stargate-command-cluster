@@ -106,7 +106,7 @@ spec:
       namespace: *namespace
     - name: mosquitto
       namespace: *namespace
-    - name: matter-server
+    - name: matter
       namespace: *namespace
   sourceRef:
     kind: GitRepository

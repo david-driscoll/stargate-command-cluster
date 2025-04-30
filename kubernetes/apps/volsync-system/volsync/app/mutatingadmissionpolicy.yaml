@@ -97,8 +97,9 @@ spec:
               op: "add", path: "/spec/template/spec/volumes/-",
               value: Object.spec.template.spec.volumes{
                 name: "repository",
-                persistentVolumeClaim: Object.spec.template.spec.volumes.persistentVolumeClaim{
-                  claimName: "volsync"
+                nfs: Object.spec.template.spec.volumes.nfs{
+                  server: "192.168.86.90",
+                  path: "/mnt/stash/backup/volsync"
                 }
               }
             }

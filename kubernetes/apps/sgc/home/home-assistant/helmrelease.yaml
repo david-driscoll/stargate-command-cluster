@@ -39,18 +39,8 @@ spec:
               tag: 2025.4.4
               pullPolicy: IfNotPresent
             env:
-              HASS_SECRET_LATITUDE:
-                secretKeyRef:
-                  name: home-assistant-location
-                  key: latitude
-              HASS_SECRET_LONGITUDE:
-                secretKeyRef:
-                  name: home-assistant-location
-                  key: longitude
-              # HASS_SECRET_ELEVATION:
-              #   secretKeyRef:
-              #     name: home-assistant-location
-              #     key: elevation
+              HOME_ASSISTANT_TRUSTED_PROXIES: "${CLUSTER_NETWORK}"
+              HOME_ASSISTANT_UNIT_SYSTEM: us_customary
               TIMEZONE: "${TIMEZONE}"
               TZ: "${TIMEZONE}"
               # HASS_BEARER_TOKEN: "{{ .HASS_BEARER_TOKEN }}"
@@ -168,3 +158,13 @@ spec:
         existingClaim: *app
       tmp:
         type: emptyDir
+
+# TODO TOMORROW:
+
+      # deploy-key:
+      #   type: secret
+      #   name: git-keys
+      #   defaultMode: 256
+      #   globalMounts:
+      #     - path: /home/coder/.ssh/
+      #       readOnly: true

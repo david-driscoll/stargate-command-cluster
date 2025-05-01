@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  annotations:
+    metadata.weave.works/description: This is the source location for the Weave GitOps
+      Dashboard's helm chart.
+  labels:
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/created-by: weave-gitops-cli
+    app.kubernetes.io/name: weave-gitops-dashboard
+    app.kubernetes.io/part-of: weave-gitops
+  name: weave-gitops
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  type: oci
+  url: oci://ghcr.io/weaveworks/charts
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  annotations:
+    metadata.weave.works/description: This is the Weave GitOps Dashboard.  It provides
+      a simple way to get insights into your GitOps workloads.
+  name: weave-gitops
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: weave-gitops
+      sourceRef:
+        kind: HelmRepository
+        name: weave-gitops
+        namespace: flux-system
+  interval: 1h0m0s
+  values:
+    envVars:
+      - name: WEAVE_GITOPS_FEATURE_TENANCY
+        value: "true"
+      - name: WEAVE_GITOPS_FEATURE_CLUSTER
+        value: "true"
+      - name: WEAVE_GITOPS_FEATURE_TELEMETRY
+        value: "true"
+      # -- Enable this feature flag if you want to expand Flux Runtime UI with other Weave GitOps components like Policy Agent or TF-Controller.
+      # Ensure that Weave GitOps Deployment and CRDs have the label 'app.kubernetes.io/part-of=weave-gitops'. See https://docs.gitops.weaveworks.org/docs/open-source/getting-started/install-OSS for more info.
+      - name: WEAVE_GITOPS_FEATURE_GITOPS_RUNTIME
+        value: "true"
+    adminUser:
+      create: true
+      username: admin
+    ingress:
+      enabled: true
+      className: internal
+      annotations:
+        reloader.stakater.com/auto: "true"
+        external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+      hosts:
+        - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          paths:
+            - path: /
+  valuesFrom:
+    - kind: Secret
+      name: weave-password
+      valuesKey: hashed_password
+      targetPath: adminUser.passwordHash

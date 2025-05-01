@@ -107,7 +107,13 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 8123
+            port: &app-port 8123
+      code:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &code-port 8888
 
     ingress:
       internal:
@@ -121,7 +127,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: *port
+                  port: *app-port
       tailscale:
         className: tailscale
         annotations:
@@ -132,7 +138,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: *port
+                  port: *app-port
       code-internal:
         className: internal
         annotations:
@@ -143,8 +149,8 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: *port
+                  identifier: code
+                  port: *code-port
       code-tailscale:
         className: tailscale
         annotations:
@@ -154,9 +160,8 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: *port
-
+                  identifier: code
+                  port: *code-port
 
     persistence:
       config:

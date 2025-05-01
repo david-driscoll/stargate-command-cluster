@@ -156,6 +156,18 @@ spec:
     persistence:
       config:
         existingClaim: *app
+      config-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /config/.venv
+      config-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+      config-tts:
+        type: emptyDir
+        globalMounts:
+          - path: /config/tts
       tmp:
         type: emptyDir
 

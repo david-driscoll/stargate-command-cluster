@@ -107,7 +107,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 1880
+            port: &port 8123
 
     ingress:
       internal:

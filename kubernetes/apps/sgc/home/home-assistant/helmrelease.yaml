@@ -27,15 +27,17 @@ spec:
     - name: matter
       namespace: sgc
   values:
+    fullnameOverride: *app
     controllers:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.4.4@sha256:dc7bb47eb6b3f62405c185cbc633771527b9710530023f7177d99a09eb858fc4
+              tag: 2025.4.4
+              pullPolicy: IfNotPresent
             env:
               HASS_SECRET_LATITUDE:
                 secretKeyRef:
@@ -58,28 +60,46 @@ spec:
                 cpu: 25m
               limits:
                 memory: 500Mi
+          code:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.99.3@sha256:e822acb286dca144f1a10ef847bc8f905d92ea79998f4f021802064badcae5fe
+            env:
+              TZ: ${TIMEZONE}
+              GIT_SSH_COMMAND: ssh -i /config/.ssh/id_ed25519 -o IdentitiesOnly=yes
+            args:
+              - --auth
+              - none
+              - --user-data-dir
+              - /config/.vscode
+              - --extensions-dir
+              - /config/.vscode
+              - --port
+              - "8888"
+              - /config
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
+            fsGroupChangePolicy: OnRootMismatch
 
     defaultPodOptions:
       securityContext:
         fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroupChangePolicy: OnRootMismatch
         runAsGroup: 568
         runAsNonRoot: true
         runAsUser: 568
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true
-
-    persistence:
-      config:
-        enabled: true
-        existingClaim: *app
-        globalMounts:
-          - path: /config
-      tmp:
-        type: emptyDir
-        advancedMounts:
-          - path: /tmp
 
     service:
       app:
@@ -101,7 +121,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: *port
       tailscale:
         className: tailscale
         annotations:
@@ -112,4 +132,34 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: *port
+      code-internal:
+        className: internal
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        hosts:
+          - host: "{{ .Release.Name }}-code.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+      code-tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}-code"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+
+
+    persistence:
+      config:
+        existingClaim: *app
+      tmp:
+        type: emptyDir

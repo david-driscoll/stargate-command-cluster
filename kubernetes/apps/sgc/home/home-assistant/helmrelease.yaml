@@ -35,13 +35,17 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/home-assistant
+              repository: ghcr.io/home-assistant/home-assistant
               tag: 2025.4.4
-              pullPolicy: IfNotPresent
             env:
-              HOME_ASSISTANT_TRUSTED_PROXIES: "${CLUSTER_NETWORK}"
-              HOME_ASSISTANT_UNIT_SYSTEM: us_customary
-              TIMEZONE: "${TIMEZONE}"
+              # PYTHONPATH: "/config/deps"
+              UV_SYSTEM_PYTHON: "true"
+              UV_NO_CACHE: "true"
+              VENV_FOLDER: /venv
+              HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
+              HASS_HTTP_TRUSTED_PROXY_2: "${SERVICE_NETWORK}"
+              HASS_HTTP_TRUSTED_PROXY_3: 192.168.10.0/24
+              HASS_EXTERNAL_URL: &hostname https://home-assistant.${ROOT_DOMAIN}
               TZ: "${TIMEZONE}"
               # HASS_BEARER_TOKEN: "{{ .HASS_BEARER_TOKEN }}"
             resources:
@@ -112,7 +116,7 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         hosts:
-          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - host: *hostname
             paths:
               - path: /
                 service:
@@ -159,7 +163,7 @@ spec:
       config-cache:
         type: emptyDir
         globalMounts:
-          - path: /config/.venv
+          - path: /venv
       config-logs:
         type: emptyDir
         globalMounts:

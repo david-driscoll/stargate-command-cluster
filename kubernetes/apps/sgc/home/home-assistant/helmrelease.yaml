@@ -42,7 +42,7 @@ spec:
               HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_2: "${SERVICE_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_3: 192.168.10.0/24
-              HASS_EXTERNAL_URL: &hostname "https://home-assistant.${ROOT_DOMAIN}"
+              HASS_EXTERNAL_URL: &hostname "https://{{ .Release.Name }}.${ROOT_DOMAIN}"
               TZ: "${TIMEZONE}"
             resources:
               requests:
@@ -112,7 +112,7 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         hosts:
-          - host: *hostname
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 service:

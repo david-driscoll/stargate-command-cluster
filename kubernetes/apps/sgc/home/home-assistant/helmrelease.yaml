@@ -38,16 +38,12 @@ spec:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2025.4.4
             env:
-              # PYTHONPATH: "/config/deps"
-              UV_SYSTEM_PYTHON: "true"
-              UV_NO_CACHE: "true"
               VENV_FOLDER: /venv
               HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_2: "${SERVICE_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_3: 192.168.10.0/24
               HASS_EXTERNAL_URL: &hostname https://home-assistant.${ROOT_DOMAIN}
               TZ: "${TIMEZONE}"
-              # HASS_BEARER_TOKEN: "{{ .HASS_BEARER_TOKEN }}"
             resources:
               requests:
                 memory: 350Mi

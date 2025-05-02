@@ -35,8 +35,9 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-assistant/home-assistant
+              repository: ghcr.io/home-operations/home-assistant
               tag: 2025.4.4
+              pullPolicy: IfNotPresent
             env:
               VENV_FOLDER: /venv
               HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
@@ -158,7 +159,7 @@ spec:
       config-cache:
         type: emptyDir
         globalMounts:
-          - path: /venv
+          - path: /config/.venv
       config-logs:
         type: emptyDir
         globalMounts:

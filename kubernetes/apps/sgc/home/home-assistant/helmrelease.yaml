@@ -156,6 +156,13 @@ spec:
     persistence:
       config:
         existingClaim: *app
+      deploy-key:
+        type: secret
+        name: home-assistant-ssh
+        defaultMode: 256
+        globalMounts:
+          - path: /home/coder/.ssh/
+            readOnly: true
       config-cache:
         type: emptyDir
         globalMounts:
@@ -170,13 +177,3 @@ spec:
           - path: /config/tts
       tmp:
         type: emptyDir
-
-# TODO TOMORROW:
-
-      # deploy-key:
-      #   type: secret
-      #   name: git-keys
-      #   defaultMode: 256
-      #   globalMounts:
-      #     - path: /home/coder/.ssh/
-      #       readOnly: true

@@ -32,28 +32,6 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          clone:
-            image:
-              repository: alpine/git
-              tag: v2.47.2
-              pullPolicy: IfNotPresent
-            command:
-              - "/bin/sh"
-              - "-c"
-            env:
-              - name: user
-                value: coder
-              - name: home
-                value: /home/coder
-            args: |-
-              if [ ! -d "/config/.git" ]; then
-                echo "Git directory not found. Cloning repository..."
-                git clone --bare ${HOME_ASSISTANT_SSH_URL} /config/.git
-                echo "Hydrating master branch..."
-                git --git-dir=/config/.git --work-tree=/config checkout master
-              fi
-
         containers:
           app:
             image:
@@ -61,7 +39,6 @@ spec:
               tag: 2025.4.4
               pullPolicy: IfNotPresent
             env:
-              VENV_FOLDER: /venv
               HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_2: "${SERVICE_NETWORK}"
               HASS_EXTERNAL_URL: "https://{{ .Release.Name }}.${ROOT_DOMAIN}"
@@ -78,6 +55,8 @@ spec:
               tag: 4.99.3@sha256:e822acb286dca144f1a10ef847bc8f905d92ea79998f4f021802064badcae5fe
             env:
               TZ: ${TIMEZONE}
+              HOME: /user/coder
+              USER: coder
               GIT_SSH_COMMAND: ssh -i /config/.ssh/id_ed25519 -o IdentitiesOnly=yes
             args:
               - --auth
@@ -95,12 +74,6 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 1Gi
-        pod:
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            fsGroup: 0
-            fsGroupChangePolicy: OnRootMismatch
 
     defaultPodOptions:
       securityContext:

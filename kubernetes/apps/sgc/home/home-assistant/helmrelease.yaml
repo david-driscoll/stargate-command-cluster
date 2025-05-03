@@ -185,8 +185,6 @@ spec:
         globalMounts:
           - path: /home/coder/.ssh/
             readOnly: true
-          - path: /home/coder/.ssh/
-            readOnly: true
       config-cache:
         type: emptyDir
         globalMounts:

@@ -32,6 +32,28 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          clone:
+            image:
+              repository: busybox
+              tag: 1.37.0
+              pullPolicy: IfNotPresent
+            command:
+              - "/bin/sh"
+              - "-c"
+            env:
+              - name: user
+                value: coder
+              - name: home
+                value: /home/coder
+            args: |-
+              if [ ! -d "/config/.git" ]; then
+                echo "Git directory not found. Cloning repository..."
+                git clone --bare ${HOME_ASSISTANT_SSH_URL} /config/.git
+                echo "Hydrating master branch..."
+                git --git-dir=/config/.git --work-tree=/config checkout master
+              fi
+
         containers:
           app:
             image:
@@ -161,6 +183,8 @@ spec:
         name: home-assistant-ssh
         defaultMode: 256
         globalMounts:
+          - path: /home/coder/.ssh/
+            readOnly: true
           - path: /home/coder/.ssh/
             readOnly: true
       config-cache:

@@ -35,8 +35,8 @@ spec:
         initContainers:
           clone:
             image:
-              repository: busybox
-              tag: 1.37.0
+              repository: alpine/git
+              tag: v2.47.2
               pullPolicy: IfNotPresent
             command:
               - "/bin/sh"

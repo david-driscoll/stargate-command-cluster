@@ -17,9 +17,6 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/system-upgrade/
     dest: kubernetes/apps/system-upgrade/
     deleteOrphaned: true
-  - source: kubernetes/apps/volsync-system/
-    dest: kubernetes/apps/volsync-system/
-    deleteOrphaned: true
   - source: kubernetes/components/common/shared-secrets.sops.yaml
     dest: kubernetes/components/common/shared-secrets.sops.yaml
   - source: talos/talenv.yaml

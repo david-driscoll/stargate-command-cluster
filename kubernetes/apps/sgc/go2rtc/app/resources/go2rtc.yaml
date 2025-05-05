@@ -13,11 +13,11 @@ webrtc:
   #       - stun:stun.cloudflare.com:3478
 streams:
   front_door:
-    - rtsp://${CHRYSALIS_IP}:7447/8xI6L37x6d3OMcno
+    - rtsp://${SPIKE_IP}:7447/8xI6L37x6d3OMcno
   front_door_package:
-    - rtsp://${CHRYSALIS_IP}:7447/aaAqMdKSSrxquyXX
+    - rtsp://${SPIKE_IP}:7447/aaAqMdKSSrxquyXX
   backyard:
-    - rtsp://${CHRYSALIS_IP}:7447/26dgTwGnQcRSzUQC
+    - rtsp://${SPIKE_IP}:7447/26dgTwGnQcRSzUQC
 
 homekit:
   front_door:

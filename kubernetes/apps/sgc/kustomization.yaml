@@ -13,4 +13,4 @@ resources:
   - "./dns/ks.yaml"
   - ./minio/ks.yaml
   - ./home/ks.yaml
-  # - ./volsync.yaml
+  # - ./scrypted/ks.yaml

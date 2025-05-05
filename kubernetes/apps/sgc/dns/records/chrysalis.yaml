@@ -19,7 +19,7 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   routes:
-    - match: Host(`${CHRYSALIS_HOST}`)
+    - match: Host(`${CHRYSALIS_DOMAIN}`)
       kind: Rule
       services:
         - name: chrysalis

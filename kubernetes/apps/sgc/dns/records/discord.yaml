@@ -19,19 +19,18 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   routes:
-    - match: Host(`${DISCORD_HOST}`)
+    - match: Host(`${DISCORD_DOMAIN}`)
       kind: Rule
       services:
         - name: discord
           port: 443
-          passHostHeader: true
           scheme: https
+          kind: Service
     - match: Host(`unifi.${ROOT_DOMAIN}`)
       kind: Rule
       services:
         - name: discord
           port: 443
-          passHostHeader: true
           scheme: https
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json

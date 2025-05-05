@@ -113,12 +113,24 @@ spec:
                 service:
                   identifier: app
                   port: http
+          - host: "home.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
       tailscale:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
           - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+          - host: "home"
             paths:
               - path: /
                 service:
@@ -136,12 +148,24 @@ spec:
                 service:
                   identifier: code
                   port: http
+          - host: "home-code.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: code
+                  port: http
       code-tailscale:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
           - host: "{{ .Release.Name }}-code"
+            paths:
+              - path: /
+                service:
+                  identifier: code
+                  port: http
+          - host: "home-code"
             paths:
               - path: /
                 service:

@@ -3,9 +3,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./pinkie-pie.yaml
-  - ./spike.yaml
-  - ./thorax.yaml
-  - ./twilight-sparkle.yaml
-  - ./chrysalis.yaml
-  - ./discord.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml

@@ -8,7 +8,9 @@ metadata:
 spec:
   type: ExternalName
   externalName: "${ALPHA_SITE_DOMAIN}"
+  clusterIP: "${ALPHA_SITE_IP}"
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -29,6 +31,7 @@ spec:
               service:
                 name: alpha-site
                 port:
+                  name: host
                   number: 8006
     - host: "adguard.${ROOT_DOMAIN}"
       http:
@@ -39,6 +42,7 @@ spec:
               service:
                 name: alpha-site
                 port:
+                  name: adguard
                   number: 3000
     - host: "netbootxyz.${ROOT_DOMAIN}"
       http:
@@ -49,6 +53,7 @@ spec:
               service:
                 name: alpha-site
                 port:
+                  name: netbootxyz
                   number: 1234
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json

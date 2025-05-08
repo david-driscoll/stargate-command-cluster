@@ -61,12 +61,4 @@ spec:
     - dnsName: "${ALPHA_SITE_HOST}"
       recordType: A
       targets: ["${ALPHA_SITE_HOST_IP}"]
-    - dnsName: "${ALPHA_SITE_DOMAIN}"
-      recordType: CNAME
-      targets: ["${INTERNAL_DOMAIN}"]
-    - dnsName: "adguard.${ROOT_DOMAIN}"
-      recordType: CNAME
-      targets: ["${INTERNAL_DOMAIN}"]
-    - dnsName: "netbootxyz.${ROOT_DOMAIN}"
-      recordType: CNAME
-      targets: ["${INTERNAL_DOMAIN}"]
+

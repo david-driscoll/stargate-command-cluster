@@ -17,6 +17,8 @@ metadata:
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
     kubernetes.io/ingress.class: internal
 spec:
+  entryPoints:
+    - websecure
   routes:
     - match: Host(`${PINKIE_PIE_HOST}`)
       kind: Rule

@@ -4,15 +4,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: discord
+  name: alpha-site
 spec:
   type: ExternalName
-  externalName: "${DISCORD_DOMAIN}"
+  externalName: "${ALPHA_SITE_DOMAIN}"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: discord
+  name: alpha-site
   namespace: flux-system
   annotations:
     reloader.stakater.com/auto: "true"
@@ -20,37 +20,56 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: "${DISCORD_DOMAIN}"
+    - host: "${ALPHA_SITE_HOST}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: discord
+                name: alpha-site
                 port:
-                  number: 443
-    - host: "unifi.${ROOT_DOMAIN}"
+                  number: 8006
+    - host: "adguard.${ROOT_DOMAIN}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: discord
+                name: alpha-site
                 port:
-                  number: 443
+                  number: 3000
+    - host: "netbootxyz.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-site
+                port:
+                  number: 1234
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: discord-dns
+  name: alpha-site-dns
 spec:
   endpoints:
-    - dnsName: "${DISCORD_DOMAIN}"
+    - dnsName: "${ALPHA_SITE_HOST}"
       recordType: A
-      targets: ["${DISCORD_IP}"]
-    - dnsName: "unifi.${ROOT_DOMAIN}"
+      targets: ["${ALPHA_SITE_HOST_IP}"]
+    - dnsName: "${ALPHA_SITE_DOMAIN}"
+      recordType: A
+      targets: ["${ALPHA_SITE_IP}"]
+    - dnsName: "adguard.${ROOT_DOMAIN}"
       recordType: CNAME
-      targets: ["${DISCORD_DOMAIN}"]
+      targets: ["${ALPHA_SITE_DOMAIN}"]
+    - dnsName: "adguard.${ROOT_DOMAIN}"
+      recordType: CNAME
+      targets: ["${ALPHA_SITE_DOMAIN}"]
+    - dnsName: "netbootxyz.${ROOT_DOMAIN}"
+      recordType: CNAME
+      targets: ["${ALPHA_SITE_DOMAIN}"]

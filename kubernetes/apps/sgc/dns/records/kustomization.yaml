@@ -7,5 +7,5 @@ resources:
   - ./spike.yaml
   - ./thorax.yaml
   - ./twilight-sparkle.yaml
-  - ./chrysalis.yaml
+  - ./alpha-site.yaml
   - ./discord.yaml

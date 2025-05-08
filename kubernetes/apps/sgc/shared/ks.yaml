@@ -23,36 +23,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  healthChecks:
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-audiobooks
-      namespace: *namespace
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-books
-      namespace: *namespace
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-downloads
-      namespace: *namespace
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-dvr
-      namespace: *namespace
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-movies
-      namespace: *namespace
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-roms
-      namespace: *namespace
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      name: media-tv
-      namespace: *namespace
-
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -78,35 +48,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  healthChecks:
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: cloudflare-eris-tunnel
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: home-assistant-credentials
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: cloudflare-chrysalis-tunnel
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: cloudflare-tunnel-token
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: tailscale-oauth
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: truenas-credentials
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      namespace: *namespace
-      name: unifi-credentials
   wait: true
   interval: 30m
   retryInterval: 1m

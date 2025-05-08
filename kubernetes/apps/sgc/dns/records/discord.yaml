@@ -24,15 +24,19 @@ spec:
       services:
         - name: discord
           port: 443
+          passHostHeader: true
           scheme: https
           kind: Service
+          nativeLB: true
     - match: Host(`unifi.${ROOT_DOMAIN}`)
       kind: Rule
       services:
         - name: discord
           port: 443
+          passHostHeader: true
           scheme: https
           kind: Service
+          nativeLB: true
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 # apiVersion: externaldns.k8s.io/v1alpha1

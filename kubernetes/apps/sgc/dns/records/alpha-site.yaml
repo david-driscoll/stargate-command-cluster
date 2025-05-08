@@ -29,6 +29,8 @@ spec:
           port: 8006
           passHostHeader: true
           scheme: https
+          kind: Service
+          nativeLB: true
     - match: Host(`adguard.${ROOT_DOMAIN}`)
       kind: Rule
       services:
@@ -36,6 +38,8 @@ spec:
           port: 3000
           passHostHeader: true
           scheme: https
+          kind: Service
+          nativeLB: true
     - match: Host(`netbootxyz.${ROOT_DOMAIN}`)
       kind: Rule
       services:
@@ -43,6 +47,8 @@ spec:
           port: 1234
           passHostHeader: true
           scheme: https
+          kind: Service
+          nativeLB: true
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1

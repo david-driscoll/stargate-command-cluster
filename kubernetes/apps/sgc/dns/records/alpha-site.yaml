@@ -8,7 +8,16 @@ metadata:
 spec:
   type: ExternalName
   externalName: "${ALPHA_SITE_DOMAIN}"
-  clusterIP: "${ALPHA_SITE_IP}"
+  ports:
+    - name: alpha-site
+      port: 8006
+      targetPort: 8006
+    - name: adguard
+      port: 3000
+      targetPort: 3000
+    - name: netbootxyz
+      port: 1234
+      targetPort: 1234
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/traefik.io/ingressroute_v1alpha1.json
 apiVersion: traefik.io/v1alpha1

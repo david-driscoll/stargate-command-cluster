@@ -8,7 +8,9 @@ metadata:
 spec:
   type: ExternalName
   externalName: "${DISCORD_DOMAIN}"
+  clusterIP: "${DISCORD_IP}"
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -29,6 +31,7 @@ spec:
               service:
                 name: discord
                 port:
+                  name: http
                   number: 443
     - host: "unifi.${ROOT_DOMAIN}"
       http:
@@ -39,4 +42,5 @@ spec:
               service:
                 name: discord
                 port:
+                  name: http
                   number: 443

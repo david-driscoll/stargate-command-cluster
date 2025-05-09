@@ -10,7 +10,7 @@ spec:
   externalIPs:
     - "${TWILIGHT_SPARKLE_IP}"
   ports:
-    - name: twilight-sparkle
+    - name: proxmox
       port: 8006
       targetPort: 8006
 ---
@@ -28,7 +28,7 @@ spec:
       kind: Rule
       services:
         - name: twilight-sparkle
-          port: 8006
+          port: proxmox
           passHostHeader: true
           scheme: https
 ---

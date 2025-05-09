@@ -10,7 +10,7 @@ spec:
   externalIPs:
     - "${PINKIE_PIE_IP}"
   ports:
-    - name: pinkie-pie
+    - name: proxmox
       port: 8006
       targetPort: 8006
 ---
@@ -30,7 +30,7 @@ spec:
       kind: Rule
       services:
         - name: pinkie-pie
-          port: pinkie-pie
+          port: proxmox
           passHostHeader: true
           scheme: https
 ---

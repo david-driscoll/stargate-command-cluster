@@ -10,7 +10,7 @@ spec:
   externalIPs:
     - "${THORAX_IP}"
   ports:
-    - name: thorax
+    - name: proxmox
       port: 8006
       targetPort: 8006
 ---
@@ -28,7 +28,7 @@ spec:
       kind: Rule
       services:
         - name: thorax
-          port: thorax
+          port: proxmox
           passHostHeader: true
           scheme: https
 ---

@@ -7,7 +7,8 @@ metadata:
   name: discord
 spec:
   type: ExternalName
-  externalName: "${DISCORD_DOMAIN}"
+  externalIPs:
+    - "${DISCORD_IP}"
   ports:
     - name: discord
       port: 443

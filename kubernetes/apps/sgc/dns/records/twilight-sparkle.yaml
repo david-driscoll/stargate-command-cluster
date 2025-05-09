@@ -6,6 +6,7 @@ metadata:
   name: twilight-sparkle
 spec:
   type: ExternalName
+  externalName: "${TWILIGHT_SPARKLE_DOMAIN}"
   externalIPs:
     - "${TWILIGHT_SPARKLE_IP}"
   ports:

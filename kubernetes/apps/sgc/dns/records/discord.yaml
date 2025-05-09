@@ -42,35 +42,3 @@ spec:
           serversTransport: insecure
           scheme: https
           kind: Service
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: discord
-  annotations:
-    reloader.stakater.com/auto: "true"
-    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-spec:
-  ingressClassName: internal
-  rules:
-    - host: "${DISCORD_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: alpha-site
-                port:
-                  name: alpha-site
-    - host: "unifi.${ROOT_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: alpha-site
-                port:
-                  name: adguard

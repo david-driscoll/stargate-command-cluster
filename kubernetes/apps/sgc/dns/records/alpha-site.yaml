@@ -7,7 +7,8 @@ metadata:
   name: alpha-site
 spec:
   type: ExternalName
-  clusterIP: "${ALPHA_SITE_IP}"
+  externalIPs:
+    - "${ALPHA_SITE_IP}"
   ports:
     - name: alpha-site
       port: 8006

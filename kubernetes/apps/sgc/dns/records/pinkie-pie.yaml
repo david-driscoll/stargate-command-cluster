@@ -6,7 +6,8 @@ metadata:
   name: pinkie-pie
 spec:
   type: ExternalName
-  clusterIP: "${PINKIE_PIE_IP}"
+  externalIPs:
+    - "${PINKIE_PIE_IP}"
   ports:
     - name: pinkie-pie
       port: 8006

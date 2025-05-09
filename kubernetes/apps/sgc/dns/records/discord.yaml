@@ -12,4 +12,3 @@ spec:
     - dnsName: "unifi.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: ["${DISCORD_DOMAIN}"]
-

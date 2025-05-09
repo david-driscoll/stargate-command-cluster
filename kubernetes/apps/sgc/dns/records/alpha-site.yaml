@@ -4,6 +4,21 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: alpha-site-host
+spec:
+  type: ExternalName
+  externalName: "${ALPHA_SITE_HOST_DOMAIN}"
+  externalIPs:
+    - "${ALPHA_SITE_HOST_IP}"
+  ports:
+    - name: proxmox
+      port: 8006
+      targetPort: 8006
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
   name: alpha-site
 spec:
   type: ExternalName
@@ -11,9 +26,6 @@ spec:
   externalIPs:
     - "${ALPHA_SITE_IP}"
   ports:
-    - name: alpha-site
-      port: 8006
-      targetPort: 8006
     - name: adguard
       port: 3000
       targetPort: 3000
@@ -32,16 +44,16 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: "${ALPHA_SITE_HOST}"
+    - host: "${ALPHA_SITE_HOST_DOMAIN}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: alpha-site
+                name: alpha-site-host
                 port:
-                  name: alpha-site
+                  name: proxmox
     - host: "adguard.${ROOT_DOMAIN}"
       http:
         paths:
@@ -70,7 +82,10 @@ metadata:
   name: alpha-site-dns
 spec:
   endpoints:
-    - dnsName: "${ALPHA_SITE_HOST}"
+    - dnsName: "${ALPHA_SITE_HOST_DOMAIN}"
       recordType: A
       targets: ["${ALPHA_SITE_HOST_IP}"]
+    - dnsName: "${ALPHA_SITE_DOMAIN}"
+      recordType: A
+      targets: ["${ALPHA_SITE_IP}"]
 

@@ -6,6 +6,7 @@ metadata:
   name: thorax
 spec:
   type: ExternalName
+  externalName: "${THORAX_DOMAIN}"
   externalIPs:
     - "${THORAX_IP}"
   ports:

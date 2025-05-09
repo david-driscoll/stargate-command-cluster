@@ -6,6 +6,11 @@ metadata:
   name: pinkie-pie
 spec:
   type: ExternalName
+  clusterIP: "${PINKIE_PIE_IP}"
+  ports:
+    - name: pinkie-pie
+      port: 8006
+      targetPort: 8006
   externalName: "${PINKIE_PIE_DOMAIN}"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/traefik.io/ingressroute_v1alpha1.json
@@ -24,7 +29,7 @@ spec:
       kind: Rule
       services:
         - name: pinkie-pie
-          port: 8006
+          port: pinkie-pie
           passHostHeader: true
           scheme: https
 ---

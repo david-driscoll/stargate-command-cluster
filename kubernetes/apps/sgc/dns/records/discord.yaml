@@ -26,17 +26,28 @@ spec:
   routes:
     - match: Host(`${DISCORD_DOMAIN}`)
       kind: Rule
+      observability:
+        accessLogs: true
+        metrics: true
+        tracing: true
       services:
         - name: discord
+          namespace: sgc
           port: 443
           passHostHeader: true
           serversTransport: insecure
           scheme: https
           kind: Service
+
     - match: Host(`unifi.${ROOT_DOMAIN}`)
       kind: Rule
+      observability:
+        accessLogs: true
+        metrics: true
+        tracing: true
       services:
         - name: discord
+          namespace: sgc
           port: 443
           passHostHeader: true
           serversTransport: insecure

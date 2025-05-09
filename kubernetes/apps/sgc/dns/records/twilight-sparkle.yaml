@@ -27,7 +27,7 @@ spec:
       kind: Rule
       services:
         - name: twilight-sparkle
-          port: twilight-sparkle
+          port: 8006
           passHostHeader: true
           scheme: https
 ---

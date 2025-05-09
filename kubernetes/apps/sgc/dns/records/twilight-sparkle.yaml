@@ -6,7 +6,8 @@ metadata:
   name: twilight-sparkle
 spec:
   type: ExternalName
-  clusterIP: "${TWILIGHT_SPARKLE_IP}"
+  externalIPs:
+    - "${TWILIGHT_SPARKLE_IP}"
   ports:
     - name: twilight-sparkle
       port: 8006

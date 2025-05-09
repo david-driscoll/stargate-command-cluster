@@ -6,7 +6,8 @@ metadata:
   name: thorax
 spec:
   type: ExternalName
-  clusterIP: "${THORAX_IP}"
+  externalIPs:
+    - "${THORAX_IP}"
   ports:
     - name: thorax
       port: 8006

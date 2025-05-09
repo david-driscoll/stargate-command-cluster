@@ -70,6 +70,9 @@ spec:
           ntp-port:
             port: &ntp-port 123
             protocol: TCP
+          other:
+            port: 31880
+            protocol: TCP
     ingress:
       *app :
         className: internal
@@ -82,7 +85,7 @@ spec:
               - path: /
                 service:
                   identifier: *app
-                  port: 31880
+                  port: other
 
     persistence:
       config:

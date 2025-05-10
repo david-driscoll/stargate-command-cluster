@@ -4,12 +4,8 @@ metadata:
     name: mosquitto-secret
 type: Opaque
 stringData:
-    users: ENC[AES256_GCM,data:DLz8VUwLUmzp6DSUhmRD8fI3/pCzQBDp4JOcFZ71D6l9Q5BIjrs9UBE=,iv:fWqSSh5cEpGtLaHhknwGNyX48lKMgFvbTHMrLfQHex8=,tag:0imTl4VT30+VAlVI3jeD2A==,type:str]
+    mosquitto_pwd: ENC[AES256_GCM,data:0SKRCsj8ywb8nrtk/mbsG7kAOH0MFWv5ZMmt41yAHcMP5GSUoiEalj8=,iv:yWuUxtlV8WB+kKvRTsP+5SSW9QrbbwgTStc3XJdGuss=,tag:kcD+al4/6CzcsJZAM3A2Dg==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
         - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
           enc: |
@@ -38,9 +34,8 @@ sops:
             OEl6MmVQNkxpbVNDRmRvRzlnUnlYWXMKAd2NS7qwbBv1lnf5kqI0Ttc9tKgdtMDH
             B/upB1SF1xevkZ0o+sgFSQFCKbrdDhf7+2fvqdxQOxj4TERglWtwEA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-04-25T01:35:02Z"
-    mac: ENC[AES256_GCM,data:1ABAdqmAPFlc0CW6vIPIsJWa1YfhvN5jY6ApkEatsH6qMCOdkW2SO+61g/5z9tGaK/3kkj0LhqT4GC1ozFpm2C9SPps7KWQvp6NdH26fU/3HyPohomG+WR1IsqNYUs1vPygx27qN+LCHqh8aZPl42KAslVUUHdsO3WPNi8ia/Q8=,iv:U2DqUlollRYC0d6uPjbQJji7kdH55TqD3ecBTVqWT8w=,tag:0MdoonJwbqcJtjj09c6l1Q==,type:str]
-    pgp: []
+    lastmodified: "2025-05-10T01:16:39Z"
+    mac: ENC[AES256_GCM,data:4NAUxIsB/oM98JSnjKjL1Ic9TrdM2iPWUxu/Ob1TbUcWfPP87n4Q3xr7I/wU5RYFWXhqpSix3ftNpXk45JJmmf1777ai17uQsu89zJ0pWvgoNb257GitwRpD5Qe37bY4bN6Ep2c2YqpyWlC+28Ak0fLGei0azKapIzR0Q5y0hEI=,iv:4uobCEIOVV/McXu17l+OEpoQqjfZwqrUqCkHK0v1a+E=,tag:jcm8AIzkHQrc+sU/srNT8Q==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
-    version: 3.9.3
+    version: 3.10.2

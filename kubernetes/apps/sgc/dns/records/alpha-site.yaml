@@ -27,8 +27,14 @@ spec:
     - "${ALPHA_SITE_IP}"
   ports:
     - name: adguard
-      port: 3000
-      targetPort: 3000
+      port: 4000
+      targetPort: 4000
+    - name: zwave
+      port: 8091
+      targetPort: 8091
+    - name: zigbee
+      port: 8080
+      targetPort: 8080
     - name: netbootxyz
       port: 1234
       targetPort: 1234
@@ -74,6 +80,26 @@ spec:
                 name: alpha-site
                 port:
                   name: netbootxyz
+    - host: "zwave.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-site
+                port:
+                  name: zwave
+    - host: "zigbee.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-site
+                port:
+                  name: zigbee
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1

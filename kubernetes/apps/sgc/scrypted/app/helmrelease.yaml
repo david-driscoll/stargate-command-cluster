@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app go2rtc
+  name: &app scrypted
 spec:
   timeout: 5m
   interval: 30m
@@ -20,22 +20,25 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    fullnameOverride: *app
     controllers:
-      app:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           app:
             image:
               repository: ghcr.io/koush/scrypted
-              tag: 18-bullseye-full-v0.23.0
-              pullPolicy: Always
-            # -- environment variables.
-            # See [image docs](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) for more details.
-            env:
-              TZ: "${TIMEZONE}"
+              tag: v0.139.0-noble-full
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 cpu: 50m
@@ -46,45 +49,36 @@ spec:
                 memory: 6Gi
                 gpu.intel.com/i915: 1
                 # amd.com/gpu: 1
+            securityContext:
+              privileged: true
 
-    # tolerations:
-
-    #   - key: amd.com/gpu
-    #     operator: Exists
-    #     effect: NoSchedule
-
-    defaultPodOptions:
-      securityContext:
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-
-    # -- Configures service settings for the chart.
     service:
-      app:
-        controller: app
-        type: LoadBalancer
+      *app :
+        controller: *app
         ports:
           http:
-            port: *http
-          rtsp:
-            port: &rtsp 554
-            protocol: TCP
-          webrtc-tcp:
-            port: &webrtc 8555
-            protocol: TCP
-          webrtc-udp:
-            port: *webrtc
-            protocol: UDP
+            port: &http 11080
+            primary: true
+          rebroadcast1:
+            port: 39801
+          rebroadcast2:
+            port: 39802
+          rebroadcast3:
+            port: 39803
 
     persistence:
       config:
-        type: configMap
-        name: go2rtc-config
+        existingClaim: *app
         globalMounts:
-          - path: /config/go2rtc.yaml
-            subPath: go2rtc.yaml
-            readOnly: true
-
+          - path: /server/volume
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /.cache
+      cache-npm:
+        type: emptyDir
+        globalMounts:
+          - path: /.npm
     ingress:
       internal:
         className: internal
@@ -93,17 +87,17 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *http
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:6767"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:11080"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media Management
-          gethomepage.dev/icon: go2rtc.svg
-          gethomepage.dev/name: Go2rtc
-          gethomepage.dev/widget.type: "go2rtc"
+          gethomepage.dev/icon: scrypted.svg
+          gethomepage.dev/name: Scrypted
+          gethomepage.dev/widget.type: "scrypted"
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
           gethomepage.dev/app: "{{ .Release.Name }}"
       tailscale:
@@ -115,21 +109,5 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *http
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRouteTCP
-metadata:
-  name: go2rtc
-  namespace: network
-spec:
-  entryPoints:
-    - rtsp
-  routes:
-  - match: HostSNI(`{{ .Release.Name }}.${ROOT_DOMAIN}`)
-    priority: 10
-    services:
-    - name: go2rtc
-      port: rtsp
-      nativeLB: true

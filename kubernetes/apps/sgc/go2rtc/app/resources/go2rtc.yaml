@@ -18,6 +18,8 @@ streams:
     - rtsp://${SPIKE_IP}:7447/aaAqMdKSSrxquyXX
   backyard:
     - rtsp://${SPIKE_IP}:7447/26dgTwGnQcRSzUQC
+  driveway:
+    - rtsp://${SPIKE_IP}:7441/d2k1EYa7mqZ1NZ9T
 
 homekit:
   front_door:
@@ -29,3 +31,6 @@ homekit:
   backyard:
     pin: 03123007
     name: Backyard
+  driveway:
+    pin: 03123007
+    name: Driveway

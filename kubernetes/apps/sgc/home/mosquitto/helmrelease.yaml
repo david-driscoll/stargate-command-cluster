@@ -90,43 +90,10 @@ spec:
 
     authentication:
       passwordEntries: ""
-    configMaps:
-      config:
-        data:
-          mosquitto-0.conf: |
-            listener 1883
-            allow_anonymous false
-            persistence true
-            persistence_location /mosquitto/data
-            autosave_interval 1800
-            connection_messages false
-            autosave_interval 60
-            password_file /mosquitto/external_config/mosquitto_pwd
-          mosquitto-1.conf: |
-            listener 1883
-            allow_anonymous true
-            persistence true
-            persistence_location /mosquitto/data
-            autosave_interval 1800
-            connection_messages false
-            autosave_interval 60
-            password_file /mosquitto/external_config/mosquitto_pwd
-
-            connection broker0
-            address mosquitto-0.mosquitto.sgc.svc.cluster.local
-            topic # both 0
-            remote_clientid broker0
-            remote_password 123
-            863 remote_username admin
     persistence:
       config:
-        name: mosquitto-config
-        type: configMap
-      secret:
         type: secret
         name: mosquitto-secret
-        globalMounts:
-          - path: /mosquitto/external_config
     service:
       app:
         controller: *app

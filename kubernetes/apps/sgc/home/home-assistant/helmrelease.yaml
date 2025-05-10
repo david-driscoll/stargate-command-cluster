@@ -45,10 +45,11 @@ spec:
               TZ: "${TIMEZONE}"
             resources:
               requests:
-                memory: 350Mi
-                cpu: 25m
+                memory: 1Gi
+                cpu: 500m
               limits:
-                memory: 500Mi
+                cpu: 1000m
+                memory: 2Gi
           code:
             image:
               repository: ghcr.io/coder/code-server

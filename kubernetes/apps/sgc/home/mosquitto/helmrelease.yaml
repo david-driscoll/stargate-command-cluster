@@ -66,6 +66,14 @@ spec:
                       app.kubernetes.io/name: *app
                       app.kubernetes.io/component: *app
         statefulset:
+          volumeClaimTemplates:
+          - name: data
+            storageClass: longhorn
+            accessMode: ReadWriteOnce
+            size: 4Gi
+            globalMounts:
+            - path: /mosquitto/data
+              subPath: data
           persistentVolumeClaimRetentionPolicy:
             whenDeleted: Delete
             whenScaled: Delete
@@ -87,14 +95,22 @@ spec:
         data:
           mosquitto-0.conf: |
             listener 1883
-            allow_anonymous true
+            allow_anonymous false
             persistence true
-            persistence_location /mosquitto /data
+            persistence_location /mosquitto/data
+            autosave_interval 1800
+            connection_messages false
+            autosave_interval 60
+            password_file /mosquitto/external_config/mosquitto_pwd
           mosquitto-1.conf: |
             listener 1883
             allow_anonymous true
             persistence true
-            persistence_location /mosquitto /data
+            persistence_location /mosquitto/data
+            autosave_interval 1800
+            connection_messages false
+            autosave_interval 60
+            password_file /mosquitto/external_config/mosquitto_pwd
 
             connection broker0
             address mosquitto-0.mosquitto.sgc.svc.cluster.local
@@ -103,8 +119,11 @@ spec:
       config:
         name: mosquitto-config
         type: configMap
-      data:
-        type: emptyDir
+      secret:
+        type: secret
+        name: mosquitto-secret
+        globalMounts:
+          - path: /mosquitto/external_config
     service:
       app:
         controller: *app

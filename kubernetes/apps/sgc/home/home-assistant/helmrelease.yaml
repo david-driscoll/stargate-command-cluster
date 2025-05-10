@@ -27,9 +27,6 @@ spec:
     - name: matter
       namespace: sgc
   values:
-    defaultPodOptions:
-      # required for mDNS and other host network features
-      hostNetwork: true
     fullnameOverride: *app
     controllers:
       *app :
@@ -79,6 +76,8 @@ spec:
                 memory: 1Gi
 
     defaultPodOptions:
+      # required for mDNS and other host network features
+      hostNetwork: true
       securityContext:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch

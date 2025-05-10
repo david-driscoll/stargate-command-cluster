@@ -67,7 +67,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "${AUTOMATION_DOMAIN}"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "${AUTOMATION_DOMAIN}"
           io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
         externalIPs:
           - "${AUTOMATION_VIP}"

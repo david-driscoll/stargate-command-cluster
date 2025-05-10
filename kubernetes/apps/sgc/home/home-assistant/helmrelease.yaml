@@ -27,6 +27,9 @@ spec:
     - name: matter
       namespace: sgc
   values:
+    defaultPodOptions:
+      # required for mDNS and other host network features
+      hostNetwork: true
     fullnameOverride: *app
     controllers:
       *app :

@@ -162,7 +162,7 @@ spec:
                 secretKeyRef:
                   name: adguard-secret
                   key: password
-              CRON: "*/10 * * * *"
+              CRON: "*/5 * * * *"
             securityContext:
               readOnlyRootFilesystem: true
         pod:

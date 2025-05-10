@@ -115,6 +115,9 @@ spec:
             connection broker0
             address mosquitto-0.mosquitto.sgc.svc.cluster.local
             topic # both 0
+            remote_clientid broker0
+            remote_password 123
+            863 remote_username admin
     persistence:
       config:
         name: mosquitto-config

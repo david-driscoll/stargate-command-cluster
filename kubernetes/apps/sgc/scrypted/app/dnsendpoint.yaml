@@ -6,7 +6,7 @@ metadata:
   name: automation-dns
 spec:
   endpoints:
-    - dnsName: "${AUTOMATION_DOMAIN}"
+    - dnsName: "${SCRYPTED_DOMAIN}"
       recordType: A
-      targets: ["${AUTOMATION_VIP}"]
+      targets: ["${SCRYPTED_VIP}"]
 

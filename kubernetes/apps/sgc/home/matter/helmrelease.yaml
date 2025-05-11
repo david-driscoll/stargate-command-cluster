@@ -47,7 +47,7 @@ spec:
               requests:
                 memory: "100M"
               limits:
-                memory: "500M"
+                memory: "2Gi"
 
     defaultPodOptions:
       securityContext:
@@ -62,7 +62,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
 
     service:
-      app:
+      *app :
         controller: *app
         type: LoadBalancer
         annotations:
@@ -87,7 +87,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *wsPort
 
     persistence:

@@ -65,9 +65,11 @@ spec:
       *app :
         controller: *app
         type: LoadBalancer
-        loadBalancerIP: "${CHRONY_VIP}"
+        loadBalancerIP: "${AUTOMATION_VIP}"
         annotations:
           io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
+        externalIPs:
+          - "${AUTOMATION_VIP}"
         ports:
           ws:
             protocol: TCP

@@ -68,25 +68,25 @@ spec:
           http:
             port: &http 11080
             primary: true
-          generic_rebroadcast:
+          generic-rebroadcast:
             port: 39800
-          homekit_bridge:
+          homekit-bridge:
             port: 32352
-          homekit_front_door:
+          homekit-front-door:
             port: 32353
-          rebroadcast_front_door:
+          rebroadcast-front-door:
             port: 39801
-          homekit_front_door_package:
+          homekit-front-door-package:
             port: 32354
-          rebroadcast_front_door_package:
+          rebroadcast-front-door-package:
             port: 39802
-          homekit_backyard:
+          homekit-backyard:
             port: 32355
-          rebroadcast_backyard:
+          rebroadcast-backyard:
             port: 39803
-          homekit_driveway:
+          homekit-driveway:
             port: 32356
-          rebroadcast_driveway:
+          rebroadcast-driveway:
             port: 39804
 
     persistence:

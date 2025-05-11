@@ -59,22 +59,35 @@ spec:
     service:
       *app :
         controller: *app
+        type: NodePort
         ports:
           http:
             port: &http 11080
             primary: true
           generic-rebroadcast:
             port: 39800
+            targetPort: 39800
+            nodePort: 39800
           homekit-bridge:
             port: 32352
+            targetPort: 32352
+            nodePort: 32352
           homekit-front-door:
             port: 32353
+            targetPort: 32353
+            nodePort: 32353
           homekit-front-door-package:
             port: 32354
+            targetPort: 32354
+            nodePort: 32354
           homekit-backyard:
             port: 32355
+            targetPort: 32355
+            nodePort: 32355
           homekit-driveway:
             port: 32356
+            targetPort: 32356
+            nodePort: 32356
 
     persistence:
       config:

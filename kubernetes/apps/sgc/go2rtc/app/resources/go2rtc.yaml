@@ -20,6 +20,8 @@ streams:
     - rtsp://${DISCORD_IP}:7447/RAC2MT1KIx2XPQJC
   front_door_package:
     - rtsp://${DISCORD_IP}:7447/aaAqMdKSSrxquyXX
+    - ffmpeg:dahua1#video=h264#hardware  # if your camera doesn't support H264, important for HomeKit
+    - ffmpeg:dahua1#audio=opus           # only OPUS audio supported by HomeKit
   backyard_hq:
     - rtsp://${DISCORD_IP}:7447/26dgTwGnQcRSzUQC
   backyard_mq:

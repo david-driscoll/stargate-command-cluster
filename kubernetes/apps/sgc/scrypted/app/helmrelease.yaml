@@ -59,6 +59,11 @@ spec:
     service:
       *app :
         controller: *app
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "${SCRYPTED_VIP}"
+        externalIPs:
+          - "${SCRYPTED_VIP}"
         ports:
           http:
             port: &http 11080
@@ -69,8 +74,14 @@ spec:
             port: 39802
           rebroadcast3:
             port: 39803
-          homekit:
+          homekit_front_door:
             port: 32353
+          homekit_front_door_package:
+            port: 32354
+          homekit_backyard:
+            port: 32355
+          homekit_driveway:
+            port: 32356
 
     persistence:
       config:

@@ -69,6 +69,8 @@ spec:
             port: 39802
           rebroadcast3:
             port: 39803
+          homekit:
+            port: 32353
 
     persistence:
       config:

@@ -70,7 +70,6 @@ spec:
           gethomepage.dev/group: Code Servers
           gethomepage.dev/icon: vscode.svg
           gethomepage.dev/name: "{{ .Release.Name }} Code"
-          # gethomepage.dev/widget.type: "go2rtc"
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
           gethomepage.dev/app: "{{ .Release.Name }} Code"
         hosts:

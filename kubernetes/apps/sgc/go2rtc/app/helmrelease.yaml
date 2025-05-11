@@ -117,7 +117,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -155,7 +155,7 @@ spec:
   entryPoints:
     - rtsp
   routes:
-  - match: HostSNI(`{{ .Release.Name }}.${ROOT_DOMAIN}`)
+  - match: HostSNI(`{{ .Release.Name }}.${CLUSTER_DOMAIN}`)
     priority: 10
     services:
     - name: go2rtc

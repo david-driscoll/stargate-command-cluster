@@ -90,19 +90,27 @@ spec:
     service:
       app:
         controller: app
-        # type: LoadBalancer
         ports:
           http:
             port: *http
-          rtsp:
-            port: &rtsp 554
-            protocol: TCP
           webrtc-tcp:
             port: &webrtc 8555
             protocol: TCP
           webrtc-udp:
             port: *webrtc
             protocol: UDP
+      rtsp:
+        controller: app
+        type: LoadBalancer
+        loadBalancerIP: "${INTERNAL_IP}"
+        annotations:
+          io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
+        externalIPs:
+          - "${INTERNAL_IP}"
+        ports:
+          rtsp:
+            port: &rtsp 554
+            protocol: TCP
 
     persistence:
       config:

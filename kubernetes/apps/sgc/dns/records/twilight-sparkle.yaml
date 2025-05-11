@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: twilight-sparkle
+  name: twilight-sparkle-host
 spec:
   type: ExternalName
   externalName: "${TWILIGHT_SPARKLE_DOMAIN}"
@@ -14,23 +14,27 @@ spec:
       port: 8006
       targetPort: 8006
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/traefik.io/ingressroute_v1alpha1.json
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: twilight-sparkle
   annotations:
+    reloader.stakater.com/auto: "true"
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-    kubernetes.io/ingress.class: internal
 spec:
-  routes:
-    - match: Host(`${TWILIGHT_SPARKLE_HOST}`)
-      kind: Rule
-      services:
-        - name: twilight-sparkle
-          port: proxmox
-          passHostHeader: true
-          scheme: https
+  ingressClassName: internal
+  rules:
+    - host: "${TWILIGHT_SPARKLE_HOST}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: twilight-sparkle-host
+                port:
+                  name: proxmox
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1

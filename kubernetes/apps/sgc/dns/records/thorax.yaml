@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: thorax
+  name: thorax-host
 spec:
   type: ExternalName
   externalName: "${THORAX_DOMAIN}"
@@ -13,7 +13,19 @@ spec:
     - name: proxmox
       port: 8006
       targetPort: 8006
-    - name: homebridge
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: scrypted
+spec:
+  type: ExternalName
+  externalName: "${SCRYPTED_DOMAIN}"
+  externalIPs:
+    - "${SCRYPTED_VIP}"
+  ports:
+    - name: scrypted
       port: 8581
       targetPort: 8581
 ---
@@ -30,15 +42,15 @@ spec:
     - match: Host(`${THORAX_HOST}`)
       kind: Rule
       services:
-        - name: thorax
+        - name: thorax-host
           port: proxmox
           passHostHeader: true
           scheme: https
     - match: Host(`homebridge.${CLUSTER_DOMAIN}`)
       kind: Rule
       services:
-        - name: thorax
-          port: homebridge
+        - name: scrypted
+          port: scrypted
           passHostHeader: true
           scheme: https
 ---
@@ -52,3 +64,6 @@ spec:
     - dnsName: "${THORAX_DOMAIN}"
       recordType: A
       targets: ["${THORAX_IP}"]
+    - dnsName: "${SCRYPTED_DOMAIN}"
+      recordType: A
+      targets: ["${SCRYPTED_VIP}"]

@@ -187,6 +187,8 @@ spec:
         loadBalancerIP: "${ADGUARD_VIP}"
         annotations:
           io.cilium/lb-ipam-ips: "${ADGUARD_VIP}"
+        externalIPs:
+          - "${ADGUARD_VIP}"
         externalTrafficPolicy: Cluster
         ports: &dns-ports
           dns-tcp:

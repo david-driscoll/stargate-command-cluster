@@ -65,6 +65,8 @@ spec:
         loadBalancerIP: "${CHRONY_VIP}"
         annotations:
           io.cilium/lb-ipam-ips: "${CHRONY_VIP}"
+        externalIPs:
+          - "${CHRONY_VIP}"
         externalTrafficPolicy: Cluster
         ports:
           ntp-port:

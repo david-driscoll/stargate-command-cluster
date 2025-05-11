@@ -63,6 +63,8 @@ spec:
         loadBalancerIP: "${SCRYPTED_VIP}"
         annotations:
           io.cilium/lb-ipam-ips: "${SCRYPTED_VIP}"
+        externalIPs:
+          - "${SCRYPTED_VIP}"
         ports:
           http:
             port: &http 11080

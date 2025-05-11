@@ -12,31 +12,55 @@ webrtc:
   #   - urls:
   #       - stun:stun.cloudflare.com:3478
 streams:
-  front_door:
+  front_door_hq:
     - rtsp://${SPIKE_IP}:7441/8xI6L37x6d3OMcno
+  front_door_mq:
     - rtsp://${SPIKE_IP}:7441/GI3q9aneDhIBM4X9
+  front_door_lq:
     - rtsp://${SPIKE_IP}:7441/RAC2MT1KIx2XPQJC
   front_door_package:
     - rtsp://${SPIKE_IP}:7447/aaAqMdKSSrxquyXX
-  backyard:
+  backyard_hq:
     - rtsp://${SPIKE_IP}:7441/26dgTwGnQcRSzUQC
+  backyard_mq:
     - rtsp://${SPIKE_IP}:7441/OA7aS5ddqxbzRug4
+  backyard_lq:
     - rtsp://${SPIKE_IP}:7441/4XZM1SlK671AQnv9
-  driveway:
+  driveway_hq:
     - rtsp://${SPIKE_IP}:7441/d2k1EYa7mqZ1NZ9T
+  driveway_mq:
     - rtsp://${SPIKE_IP}:7441/4d5P4v0GkFV0gqVl
+  driveway_lq:
     - rtsp://${SPIKE_IP}:7441/dkkInQueV35GRH8k
 
 homekit:
-  front_door:
+  front_door_hq:
+    pin: 03123007
+    name: Front Door
+  front_door_mq:
+    pin: 03123007
+    name: Front Door
+  front_door_lq:
     pin: 03123007
     name: Front Door
   front_door_package:
     pin: 03123007
     name: Front Door Package
-  backyard:
+  backyard_hq:
     pin: 03123007
     name: Backyard
-  driveway:
+  backyard_mq:
+    pin: 03123007
+    name: Backyard
+  backyard_lq:
+    pin: 03123007
+    name: Backyard
+  driveway_hq:
+    pin: 03123007
+    name: Driveway
+  driveway_mq:
+    pin: 03123007
+    name: Driveway
+  driveway_lq:
     pin: 03123007
     name: Driveway

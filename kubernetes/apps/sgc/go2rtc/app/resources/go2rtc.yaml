@@ -13,25 +13,25 @@ webrtc:
   #       - stun:stun.cloudflare.com:3478
 streams:
   front_door_hq:
-    - rtsp://${DISCORD_IP}:7441/8xI6L37x6d3OMcno
+    - rtsp://${DISCORD_IP}:7447/8xI6L37x6d3OMcno
   front_door_mq:
-    - rtsp://${DISCORD_IP}:7441/GI3q9aneDhIBM4X9
+    - rtsp://${DISCORD_IP}:7447/GI3q9aneDhIBM4X9
   front_door_lq:
-    - rtsp://${DISCORD_IP}:7441/RAC2MT1KIx2XPQJC
+    - rtsp://${DISCORD_IP}:7447/RAC2MT1KIx2XPQJC
   front_door_package:
     - rtsp://${DISCORD_IP}:7447/aaAqMdKSSrxquyXX
   backyard_hq:
-    - rtsp://${DISCORD_IP}:7441/26dgTwGnQcRSzUQC
+    - rtsp://${DISCORD_IP}:7447/26dgTwGnQcRSzUQC
   backyard_mq:
-    - rtsp://${DISCORD_IP}:7441/OA7aS5ddqxbzRug4
+    - rtsp://${DISCORD_IP}:7447/OA7aS5ddqxbzRug4
   backyard_lq:
-    - rtsp://${DISCORD_IP}:7441/4XZM1SlK671AQnv9
+    - rtsp://${DISCORD_IP}:7447/4XZM1SlK671AQnv9
   driveway_hq:
-    - rtsp://${DISCORD_IP}:7441/d2k1EYa7mqZ1NZ9T
+    - rtsp://${DISCORD_IP}:7447/d2k1EYa7mqZ1NZ9T
   driveway_mq:
-    - rtsp://${DISCORD_IP}:7441/4d5P4v0GkFV0gqVl
+    - rtsp://${DISCORD_IP}:7447/4d5P4v0GkFV0gqVl
   driveway_lq:
-    - rtsp://${DISCORD_IP}:7441/dkkInQueV35GRH8k
+    - rtsp://${DISCORD_IP}:7447/dkkInQueV35GRH8k
 
 homekit:
   front_door_hq:

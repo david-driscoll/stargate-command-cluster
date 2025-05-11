@@ -102,7 +102,6 @@ spec:
       rtsp:
         controller: app
         type: LoadBalancer
-        loadBalancerIP: "${INTERNAL_IP}"
         annotations:
           io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
         externalIPs:

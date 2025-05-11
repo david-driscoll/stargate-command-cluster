@@ -69,16 +69,22 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
-        externalIPs:
-          - "${AUTOMATION_VIP}"
+        type: NodePort
         ports:
           http:
             protocol: TCP
             port: *port
             primary: true
+            targetPort: http
+          m3u:
+            protocol: TCP
+            port: 10110
+            primary: true
+            targetPort: m3u
+          mdns:
+            protocol: UDP
+            port: 5353
+            targetPort: mdns
 
     ingress:
       internal:

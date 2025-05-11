@@ -21,6 +21,7 @@
     "kubernetes": "./kubernetes/**/*.yaml"
   },
   "cSpell.words": [
-    "onepassword"
+    "onepassword",
+    "scrypted"
   ]
 }

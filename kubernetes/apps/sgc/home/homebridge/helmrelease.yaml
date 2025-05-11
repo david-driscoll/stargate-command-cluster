@@ -80,7 +80,9 @@ spec:
           http:
             protocol: TCP
             port: *port
-            primary: true
+          homebridge:
+            protocol: TCP
+            port: 51308
           m3u:
             protocol: TCP
             port: 10110

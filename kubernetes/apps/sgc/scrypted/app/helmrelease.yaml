@@ -74,20 +74,12 @@ spec:
             port: 32352
           homekit-front-door:
             port: 32353
-          rebroadcast-front-door:
-            port: 39801
           homekit-front-door-package:
             port: 32354
-          rebroadcast-front-door-package:
-            port: 39802
           homekit-backyard:
             port: 32355
-          rebroadcast-backyard:
-            port: 39803
           homekit-driveway:
             port: 32356
-          rebroadcast-driveway:
-            port: 39804
 
     persistence:
       config:

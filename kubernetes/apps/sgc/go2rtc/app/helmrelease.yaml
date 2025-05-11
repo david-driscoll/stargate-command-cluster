@@ -90,7 +90,7 @@ spec:
     service:
       app:
         controller: app
-        type: LoadBalancer
+        # type: LoadBalancer
         ports:
           http:
             port: *http

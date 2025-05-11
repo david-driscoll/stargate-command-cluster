@@ -25,7 +25,13 @@ spec:
   values:
     defaultPodOptions:
       hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+      # dnsPolicy: ClusterFirstWithHostNet
+      securityContext:
+        runAsUser: 0 # Must be run as root user
+        runAsGroup: 0
+        runAsNonRoot: false # Must be run as root user
+        fsGroup: 0
+        fsGroupChangePolicy: "OnRootMismatch"
     controllers:
       *app :
         annotations:

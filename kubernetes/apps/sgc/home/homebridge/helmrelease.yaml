@@ -75,21 +75,27 @@ spec:
     service:
       *app :
         controller: *app
-        type: NodePort
+        type: LoadBalancer
+        loadBalancerIP: "${SCRYPTED_VIP}"
+        annotations:
+          io.cilium/lb-ipam-ips: "${SCRYPTED_VIP}"
         ports:
           http:
             protocol: TCP
             port: *port
+            targetPort: http
           homebridge:
             protocol: TCP
             port: 51308
+            targetPort: homebridge
           m3u:
             protocol: TCP
             port: 10110
-            primary: true
+            targetPort: m3u
           mdns:
             protocol: UDP
             port: 5353
+            targetPort: mdns
 
     ingress:
       internal:

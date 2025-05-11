@@ -131,7 +131,7 @@ spec:
                   key: password
               REPLICA1_URL: "https://adguard.driscoll.tech"
               REPLICA1_WEB_URL: https://adguard.driscoll.tech
-              REPLICA1_AUTO_SETUP: "false"
+              REPLICA1_AUTO_SETUP: "true"
               REPLICA1_USERNAME:
                 secretKeyRef:
                   name: adguard-secret

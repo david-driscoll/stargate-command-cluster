@@ -25,7 +25,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/koush/scrypted
               tag: v0.139.0-noble-full
@@ -51,6 +51,10 @@ spec:
                 # amd.com/gpu: 1
             securityContext:
               privileged: true
+
+    defaultPodOptions:
+      # required for mDNS and other host network features
+      hostNetwork: true
 
     service:
       *app :

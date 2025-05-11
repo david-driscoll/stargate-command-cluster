@@ -117,9 +117,9 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
+          io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
         externalIPs:
-          - "${AUTOMATION_VIP}"
+          - "${INTERNAL_IP}"
         ports:
           mqtt:
             protocol: TCP

@@ -13,13 +13,19 @@ webrtc:
   #       - stun:stun.cloudflare.com:3478
 streams:
   front_door:
-    - rtsp://${SPIKE_IP}:7447/8xI6L37x6d3OMcno
+    - rtsp://${SPIKE_IP}:7441/8xI6L37x6d3OMcno
+    - rtsp://${SPIKE_IP}:7441/GI3q9aneDhIBM4X9
+    - rtsp://${SPIKE_IP}:7441/RAC2MT1KIx2XPQJC
   front_door_package:
     - rtsp://${SPIKE_IP}:7447/aaAqMdKSSrxquyXX
   backyard:
-    - rtsp://${SPIKE_IP}:7447/26dgTwGnQcRSzUQC
+    - rtsp://${SPIKE_IP}:7441/26dgTwGnQcRSzUQC
+    - rtsp://${SPIKE_IP}:7441/OA7aS5ddqxbzRug4
+    - rtsp://${SPIKE_IP}:7441/4XZM1SlK671AQnv9
   driveway:
     - rtsp://${SPIKE_IP}:7441/d2k1EYa7mqZ1NZ9T
+    - rtsp://${SPIKE_IP}:7441/4d5P4v0GkFV0gqVl
+    - rtsp://${SPIKE_IP}:7441/dkkInQueV35GRH8k
 
 homekit:
   front_door:

@@ -13,21 +13,21 @@ spec:
     - name: proxmox
       port: 8006
       targetPort: 8006
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
-apiVersion: v1
-kind: Service
-metadata:
-  name: scrypted
-spec:
-  type: ExternalName
-  externalName: "${SCRYPTED_DOMAIN}"
-  externalIPs:
-    - "${SCRYPTED_VIP}"
-  ports:
-    - name: scrypted
-      port: 8581
-      targetPort: 8581
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: scrypted
+# spec:
+#   type: ExternalName
+#   externalName: "${SCRYPTED_DOMAIN}"
+#   externalIPs:
+#     - "${SCRYPTED_VIP}"
+#   ports:
+#     - name: scrypted
+#       port: 8581
+#       targetPort: 8581
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
 apiVersion: networking.k8s.io/v1
@@ -50,16 +50,16 @@ spec:
                 name: thorax-host
                 port:
                   name: proxmox
-    - host: "homebridge.${CLUSTER_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: scrypted
-                port:
-                  name: scrypted
+    # - host: "homebridge.${CLUSTER_DOMAIN}"
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: scrypted
+    #             port:
+    #               name: scrypted
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1
@@ -71,6 +71,6 @@ spec:
     - dnsName: "${THORAX_DOMAIN}"
       recordType: A
       targets: ["${THORAX_IP}"]
-    - dnsName: "${SCRYPTED_DOMAIN}"
-      recordType: A
-      targets: ["${SCRYPTED_VIP}"]
+    # - dnsName: "${SCRYPTED_DOMAIN}"
+    #   recordType: A
+    #   targets: ["${SCRYPTED_VIP}"]

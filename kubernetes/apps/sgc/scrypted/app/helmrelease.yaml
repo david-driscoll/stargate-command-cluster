@@ -59,11 +59,11 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: "${SCRYPTED_VIP}"
-        externalIPs:
-          - "${SCRYPTED_VIP}"
+        type: NodePort
+        # annotations:
+        #   io.cilium/lb-ipam-ips: "${SCRYPTED_VIP}"
+        # externalIPs:
+        #   - "${SCRYPTED_VIP}"
         ports:
           http:
             port: &http 11080

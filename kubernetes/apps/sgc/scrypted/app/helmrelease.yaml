@@ -66,37 +66,26 @@ spec:
             primary: true
           generic-rebroadcast:
             port: 32400
-            nodePort: 32400
           homekit-bridge:
             port: 32352
-            nodePort: 32352
           homekit-bridge-rebroadcast:
             port: 32401
-            nodePort: 32401
           homekit-front-door:
             port: 32353
-            nodePort: 32353
           homekit-front-door-rebroadcast:
             port: 32402
-            nodePort: 32402
           homekit-front-door-package:
             port: 32354
-            nodePort: 32354
           homekit-front-door-package-rebroadcast:
             port: 32403
-            nodePort: 32403
           homekit-backyard:
             port: 32355
-            nodePort: 32355
           homekit-backyard-rebroadcast:
             port: 32404
-            nodePort: 32404
           homekit-driveway:
             port: 32356
-            nodePort: 32356
           homekit-driveway-rebroadcast:
             port: 32405
-            nodePort: 32405
 
     persistence:
       config:

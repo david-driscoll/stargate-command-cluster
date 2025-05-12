@@ -64,6 +64,7 @@ spec:
             image:
               repository: joseluisq/static-web-server
               tag: 2.36.1-alpine
+              pullPolicy: IfNotPresent
             env:
               SERVER_PORT: &http 80
               SERVER_ROOT: /config/

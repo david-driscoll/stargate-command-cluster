@@ -23,3 +23,5 @@ david-driscoll/equestria-cluster:
     dest: talos/talenv.yaml
   - source: .github/renovate.json5
     dest: .github/renovate.json5
+  - source: bootstrap/
+    dest: bootstrap/

@@ -34,9 +34,11 @@ spec:
               - secretRef:
                   name: tivi-secret
             env:
-                tivi__cacheDirectory: /cache/
-                tivi__resultsDirectory: /config/
-                tivi__intervalInSeconds: 600
+                ASPNETCORE_HTTP_PORTS: 8080
+                ASPNETCORE_HTTPS_PORTS: 8081
+                TIVI__CACHEDIRECTORY: /cache/
+                TIVI__RESULTSDIRECTORY: /config/
+                TIVI__INTERVALINSECONDS: 600
             probes:
               liveness: &probes
                 enabled: true

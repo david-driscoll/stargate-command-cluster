@@ -34,9 +34,9 @@ spec:
               - secretRef:
                   name: tivi-secret
             env:
-                cacheDirectory: /cache/
-                resultsDirectory: /config/
-                intervalInSeconds: 300
+                tivi__cacheDirectory: /cache/
+                tivi__resultsDirectory: /config/
+                tivi__intervalInSeconds: 600
             probes:
               liveness: &probes
                 enabled: true
@@ -44,7 +44,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &http 80
+                    port: &http 8080
                   initialDelaySeconds: 1
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -64,7 +64,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &http 80
+            port: *http
             primary: true
 
     persistence:

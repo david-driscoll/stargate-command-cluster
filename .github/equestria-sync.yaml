@@ -14,9 +14,20 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true
-  - source: kubernetes/apps/flux-system/
-    dest: kubernetes/apps/flux-system/
+  - source: kubernetes/apps/flux-system/capacitor/
+    dest: kubernetes/apps/flux-system/capacitor/
     deleteOrphaned: true
+  - source: kubernetes/apps/flux-system/weave/
+    dest: kubernetes/apps/flux-system/weave/
+    deleteOrphaned: true
+  - source: kubernetes/apps/flux-system/flux-operator/
+    dest: kubernetes/apps/flux-system/flux-operator/
+    deleteOrphaned: true
+  - source: kubernetes/apps/flux-system/tofu/
+    dest: kubernetes/apps/flux-system/tofu/
+    deleteOrphaned: true
+  - source: kubernetes/apps/flux-system/kustomization.yaml
+    dest: kubernetes/apps/flux-system/kustomization.yaml
   - source: kubernetes/apps/system-upgrade/
     dest: kubernetes/apps/system-upgrade/
     deleteOrphaned: true

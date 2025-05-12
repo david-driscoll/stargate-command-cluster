@@ -31,8 +31,6 @@ spec:
     remediation:
       retries: 3
     force: true
-  uninstall:
-    deletionPropagation: background 
   values:
     nameOverride: reloader
     fullnameOverride: reloader

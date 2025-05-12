@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tivi
+  name: &app tivi-sync
 spec:
   timeout: 5m
   interval: 30m
@@ -22,8 +22,18 @@ spec:
   values:
     controllers:
       *app :
+        type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          #
+          schedule: "*/15 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
         containers:
           *app :
             image:
@@ -34,40 +44,51 @@ spec:
               - secretRef:
                   name: tivi-secret
             env:
-                ASPNETCORE_HTTP_PORTS: 8080
-                ASPNETCORE_HTTPS_PORTS: 8081
                 TIVI__CACHEDIRECTORY: /cache/
                 TIVI__RESULTSDIRECTORY: /config/
                 TIVI__INTERVALINSECONDS: 600
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &http 8080
-                  initialDelaySeconds: 1
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 3
-              readiness: *probes
             resources:
               requests:
-                cpu: 100m
+                cpu: 1000m
                 # these files are large, we GC immediately.
-                memory: 3Gi
+                memory: Gi
               limits:
-                cpu: 100m
+                cpu: 1000m
                 # these files are large, we GC immediately.
-                memory: 3Gi
+                memory: 6Gi
+      static:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          static:
+            image:
+              repository: joseluisq/static-web-server
+              tag: 2.36.1-alpine
+            env:
+              SERVER_PORT: &http 80
+              SERVER_ROOT: /config/
+              SERVER_DIRECTORY_LISTING: true
+              SERVER_DIRECTORY_LISTING_ORDER: 0
+              SERVER_HEALTH: true
+            probes:
+              liveness: &probe
+                enabled: true
+                path: /health
+                port: *http
+              readiness: *probe
+            resources:
+              requests:
+                cpu: 10m
+                memory: 50Mi
+              limits:
+                memory: 100Mi
+                cpu: 20m
     service:
       *app :
-        controller: *app
+        controller: static
         ports:
           http:
             port: *http
-            primary: true
 
     persistence:
       config:
@@ -78,7 +99,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - host: "tivi.${ROOT_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -87,20 +108,20 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:11080"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media Management
-          gethomepage.dev/icon: scrypted.svg
-          gethomepage.dev/name: Scrypted
-          gethomepage.dev/widget.type: "scrypted"
-          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
-          gethomepage.dev/app: "{{ .Release.Name }}"
+          # gethomepage.dev/widget.url: "http://tivi.${INTERNAL_CLUSTER_SERVICE}:11080"
+          # gethomepage.dev/enabled: "true"
+          # gethomepage.dev/group: Media Management
+          # gethomepage.dev/icon: scrypted.svg
+          # gethomepage.dev/name: Scrypted
+          # gethomepage.dev/widget.type: "scrypted"
+          # gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          # gethomepage.dev/app: "tivi"
       tailscale:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "{{ .Release.Name }}"
+          - host: "tivi"
             paths:
               - path: /
                 service:

@@ -2,14 +2,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tivi
+  name: &app tivi-sync
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/dvr/tivi
+  path: ./kubernetes/apps/sgc/dvr/tivi-sync
   prune: true
   sourceRef:
     kind: GitRepository

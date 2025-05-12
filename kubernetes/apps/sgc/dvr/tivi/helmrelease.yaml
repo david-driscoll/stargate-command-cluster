@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app tivi
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/david-driscoll/tivi-sync
+              tag: latest
+              pullPolicy: Always
+            envFrom:
+              - secretRef:
+                  name: tivi-secret
+            env:
+                cacheDirectory: /cache/
+                resultsDirectory: /config/
+                intervalInSeconds: 300
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &http 80
+                  initialDelaySeconds: 1
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 100m
+                # these files are large, we GC immediately.
+                memory: 3Gi
+              limits:
+                cpu: 100m
+                # these files are large, we GC immediately.
+                memory: 3Gi
+    service:
+      *app :
+        controller: *app
+        ports:
+          http:
+            port: &http 80
+            primary: true
+
+    persistence:
+      config:
+        existingClaim: *app
+      cache:
+        type: emptyDir
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: *http
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:11080"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media Management
+          gethomepage.dev/icon: scrypted.svg
+          gethomepage.dev/name: Scrypted
+          gethomepage.dev/widget.type: "scrypted"
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: *http

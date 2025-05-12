@@ -38,7 +38,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/david-driscoll/tivi-sync
-              tag: main
+              tag: latest
               pullPolicy: Always
             envFrom:
               - secretRef:

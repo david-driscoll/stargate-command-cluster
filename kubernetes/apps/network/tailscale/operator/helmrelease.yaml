@@ -44,7 +44,7 @@ spec:
         - "tag:${CLUSTER_CNAME}-operator"
       image:
         repository: ghcr.io/tailscale/k8s-operator
-        tag: v1.82.0
+        tag: v1.82.5@sha256:0d208c90471dff8d357c27779a12bdbae797ee199f4b30dd6c6aa453006b50cb
         pullPolicy: Always
       hostname: "${CLUSTER_CNAME}-operator"
       podAnnotations:

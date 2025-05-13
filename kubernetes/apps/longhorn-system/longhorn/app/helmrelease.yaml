@@ -62,7 +62,7 @@ spec:
       storageOverProvisioningPercentage: 600
       upgradeChecker: true
       priorityClass: high-priority
-      autoSalvage: false
+      autoSalvage: falsex
       # taintToleration: key1=value1:NoSchedule; key2:NoExecute
       # systemManagedComponentsNodeSelector: "label-key1:label-value1"
       # disableSchedulingOnCordonedNode: false

@@ -38,7 +38,7 @@ nodes:
             }
           ]
         }
-    schematic: &schematic
+    imageSchematic: &schematic
       customization:
         extraKernelArgs:
           - i915.enable_guc=3
@@ -54,6 +54,7 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/i915
+            - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
     networkInterfaces:
@@ -76,7 +77,7 @@ nodes:
     controlPlane: true
     nodeLabels: *nodeLabels
     nodeAnnotations: *nodeAnnotations
-    schematic: *schematic
+    imageSchematic: *schematic
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e0:51:d8:19:d4:98"
@@ -97,7 +98,7 @@ nodes:
     controlPlane: true
     nodeLabels: *nodeLabels
     nodeAnnotations: *nodeAnnotations
-    schematic: *schematic
+    imageSchematic: *schematic
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e0:51:d8:19:d2:b2"

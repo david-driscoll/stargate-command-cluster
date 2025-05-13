@@ -15,6 +15,8 @@ spec:
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
+    - name: sgc-dns-records
+      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,6 +45,8 @@ spec:
     - name: volsync
       namespace: volsync-system
     - name: sgc-secrets
+      namespace: *namespace
+    - name: sgc-dns-records
       namespace: *namespace
   sourceRef:
     kind: GitRepository
@@ -76,6 +80,8 @@ spec:
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
+    - name: sgc-dns-records
+      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -103,6 +109,8 @@ spec:
     - name: volsync
       namespace: volsync-system
     - name: sgc-secrets
+      namespace: *namespace
+    - name: sgc-dns-records
       namespace: *namespace
     - name: mosquitto
       namespace: *namespace
@@ -142,6 +150,8 @@ spec:
       namespace: volsync-system
     - name: sgc-secrets
       namespace: *namespace
+    - name: sgc-dns-records
+      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -175,6 +185,8 @@ spec:
     - name: volsync
       namespace: volsync-system
     - name: sgc-secrets
+      namespace: *namespace
+    - name: sgc-dns-records
       namespace: *namespace
   sourceRef:
     kind: GitRepository
@@ -210,6 +222,8 @@ spec:
 #       namespace: volsync-system
 #     - name: sgc-secrets
 #       namespace: *namespace
+    # - name: sgc-dns-records
+    #   namespace: *namespace
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system

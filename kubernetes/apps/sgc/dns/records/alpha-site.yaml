@@ -38,6 +38,9 @@ spec:
     - name: netbootxyz
       port: 1234
       targetPort: 1234
+    - name: matter
+      port: 5580
+      targetPort: 5580
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
 apiVersion: networking.k8s.io/v1
@@ -100,6 +103,16 @@ spec:
                 name: alpha-site
                 port:
                   name: zigbee
+    - host: "matter.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-site
+                port:
+                  name: matter
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1

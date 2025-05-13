@@ -96,30 +96,8 @@ spec:
               pullPolicy: IfNotPresent
             args: [run]
             env:
-              # ORIGIN_URL: "https://adguard.driscoll.tech"
-              # ORIGIN_WEB_URL: https://adguard.driscoll.tech
-              # ORIGIN_AUTO_SETUP: "false"
-              # ORIGIN_USERNAME:
-              #   secretKeyRef:
-              #     name: home-assistant-credentials
-              #     key: username
-              # ORIGIN_PASSWORD:
-              #   secretKeyRef:
-              #     name: home-assistant-credentials
-              #     key: password
-              # REPLICA1_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
-              # REPLICA1_WEB_URL: "https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}"
-              # REPLICA1_AUTO_SETUP: "true"
-              # REPLICA1_USERNAME:
-              #   secretKeyRef:
-              #     name: adguard-secret
-              #     key: username
-              # REPLICA1_PASSWORD:
-              #   secretKeyRef:
-              #     name: adguard-secret
-              #     key: password
-              ORIGIN_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
-              ORIGIN_WEB_URL: "https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}"
+              ORIGIN_URL: "https://adguard.driscoll.tech"
+              ORIGIN_WEB_URL: https://adguard.driscoll.tech
               ORIGIN_AUTO_SETUP: "true"
               ORIGIN_USERNAME:
                 secretKeyRef:
@@ -129,8 +107,8 @@ spec:
                 secretKeyRef:
                   name: adguard-secret
                   key: password
-              REPLICA1_URL: "https://adguard.driscoll.tech"
-              REPLICA1_WEB_URL: https://adguard.driscoll.tech
+              REPLICA1_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
+              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}"
               REPLICA1_AUTO_SETUP: "true"
               REPLICA1_USERNAME:
                 secretKeyRef:

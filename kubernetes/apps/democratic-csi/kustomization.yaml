@@ -9,5 +9,5 @@ metadata:
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: []
-  # - ./truenas/ks.yaml
+resources:
+  - ./truenas/ks.yaml

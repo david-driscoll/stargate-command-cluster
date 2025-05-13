@@ -9,3 +9,4 @@ resources:
   - ./twilight-sparkle.yaml
   - ./alpha-site.yaml
   - ./discord.yaml
+  - ./automation.yaml

@@ -10,4 +10,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./truenas/ks.yaml
+  # - ./truenas/ks.yaml

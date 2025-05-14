@@ -77,9 +77,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      PROXMOX_DOMAIN: "${THORAX_DOMAIN}"
-      PROXMOX_IP: "${THORAX_IP}"
-      PROXMOX_HOST: "${THORAX_HOST}"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -110,9 +107,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      PROXMOX_DOMAIN: "${TWILIGHT_SPARKLE_DOMAIN}"
-      PROXMOX_IP: "${TWILIGHT_SPARKLE_IP}"
-      PROXMOX_HOST: "${TWILIGHT_SPARKLE_HOST}"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -143,9 +137,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      PROXMOX_DOMAIN: "${PINKIE_PIE_DOMAIN}"
-      PROXMOX_IP: "${PINKIE_PIE_IP}"
-      PROXMOX_HOST: "${PINKIE_PIE_HOST}"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -176,9 +167,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      PROXMOX_DOMAIN: "${ALPHA_SITE_DOMAIN}"
-      PROXMOX_IP: "${ALPHA_SITE_HOST_IP}"
-      PROXMOX_HOST: "${ALPHA_SITE_HOST_DOMAIN}"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -207,11 +195,11 @@ spec:
   components:
     - ../../../../components/proxmox-proxy
   postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: celestia-host
     substitute:
       APP: *app
-      PROXMOX_DOMAIN: "${CELESTIA_DOMAIN}"
-      PROXMOX_IP: "${CELESTIA_HOST_IP}"
-      PROXMOX_HOST: "${CELESTIA_HOST_DOMAIN}"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -242,9 +230,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      PROXMOX_DOMAIN: "${LUNA_DOMAIN}"
-      PROXMOX_IP: "${LUNA_HOST_IP}"
-      PROXMOX_HOST: "${LUNA_HOST_DOMAIN}"
   prune: true
   sourceRef:
     kind: GitRepository

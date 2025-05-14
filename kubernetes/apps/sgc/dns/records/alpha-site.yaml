@@ -4,22 +4,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: alpha-site-host
-spec:
-  type: ExternalName
-  externalName: "${ALPHA_SITE_HOST_DOMAIN}"
-  externalIPs:
-    - "${ALPHA_SITE_HOST_IP}"
-  ports:
-    - name: proxmox
-      port: 8006
-      targetPort: 8006
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
-apiVersion: v1
-kind: Service
-metadata:
-  name: alpha-site
+  name: alpha-site-dockge
 spec:
   type: ExternalName
   externalName: "${ALPHA_SITE_DOMAIN}"
@@ -43,23 +28,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: alpha-site
+  name: alpha-site-dockge
   annotations:
     reloader.stakater.com/auto: "true"
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
 spec:
   ingressClassName: internal
   rules:
-    - host: "${ALPHA_SITE_HOST_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: alpha-site-host
-                port:
-                  name: proxmox
     - host: "adguard.${ROOT_DOMAIN}"
       http:
         paths:
@@ -67,7 +42,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: alpha-site
+                name: alpha-site-dockge
                 port:
                   name: adguard
     - host: "netbootxyz.${ROOT_DOMAIN}"
@@ -77,7 +52,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: alpha-site
+                name: alpha-site-dockge
                 port:
                   name: netbootxyz
     - host: "zwave.${ROOT_DOMAIN}"
@@ -87,7 +62,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: alpha-site
+                name: alpha-site-dockge
                 port:
                   name: zwave
     - host: "zigbee.${ROOT_DOMAIN}"
@@ -97,7 +72,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: alpha-site
+                name: alpha-site-dockge
                 port:
                   name: zigbee
 ---
@@ -105,12 +80,9 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: alpha-site-dns
+  name: alpha-site-dockge-dns
 spec:
   endpoints:
-    - dnsName: "${ALPHA_SITE_HOST_DOMAIN}"
-      recordType: A
-      targets: ["${ALPHA_SITE_HOST_IP}"]
     - dnsName: "${ALPHA_SITE_DOMAIN}"
       recordType: A
       targets: ["${ALPHA_SITE_IP}"]

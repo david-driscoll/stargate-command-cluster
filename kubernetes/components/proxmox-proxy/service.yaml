@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${APP}-host
+spec:
+  type: ExternalName
+  externalName: "${PROXMOX_DOMAIN}"
+  externalIPs:
+    - "${PROXMOX_IP}"
+  ports:
+    - name: proxmox
+      port: 8006
+      targetPort: 8006
+

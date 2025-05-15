@@ -39,7 +39,7 @@ spec:
           concurrencyPolicy: Forbid
           failedJobsHistory: 2
           #
-          schedule: "*/15 * * * *"
+          schedule: "0 */2 * * *"
           startingDeadlineSeconds: 30
           successfulJobsHistory: 3
           suspend: false

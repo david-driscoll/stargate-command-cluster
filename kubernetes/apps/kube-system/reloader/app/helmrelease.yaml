@@ -26,6 +26,7 @@ spec:
   install:
     remediation:
       retries: -1
+    replace: true
   upgrade:
     cleanupOnFail: true
     remediation:

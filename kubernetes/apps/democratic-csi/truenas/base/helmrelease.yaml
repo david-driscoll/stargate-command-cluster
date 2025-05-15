@@ -178,8 +178,8 @@ spec:
         extraEnv:
           - name: ISCSIADM_HOST_STRATEGY
             value: nsenter
-          - name: ISCSIADM_HOST_PATH
-            value: /var/iscsiadm
+          # - name: ISCSIADM_HOST_PATH
+          #   value: /usr/local/sbin/iscsiadm
         iscsiDirHostPath: /var/iscsi
         # iscsiDirHostPath: /var/iscsi
         iscsiDirHostPathType: ""

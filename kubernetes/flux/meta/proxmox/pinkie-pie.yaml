@@ -5,6 +5,6 @@ metadata:
   name: pinkie-pie-host
   namespace: sgc
 data:
-      PROXMOX_DOMAIN: "${PINKIE_PIE_DOMAIN}"
-      PROXMOX_IP: "${PINKIE_PIE_IP}"
-      PROXMOX_HOST: "${PINKIE_PIE_HOST}"
+  PROXMOX_DOMAIN: "${PINKIE_PIE_DOMAIN}"
+  PROXMOX_IP: "${PINKIE_PIE_IP}"
+  PROXMOX_HOST: "${PINKIE_PIE_HOST}"

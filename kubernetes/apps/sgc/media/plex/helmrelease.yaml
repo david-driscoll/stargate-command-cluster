@@ -125,7 +125,7 @@ spec:
 
     service:
       app:
-        controller: plex
+        controller: *app
         type: ClusterIP
         ports:
           http:

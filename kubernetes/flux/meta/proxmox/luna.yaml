@@ -5,6 +5,6 @@ metadata:
   name: luna-host
   namespace: sgc
 data:
-      PROXMOX_DOMAIN: "${LUNA_DOMAIN}"
-      PROXMOX_IP: "${LUNA_HOST_IP}"
-      PROXMOX_HOST: "${LUNA_HOST_DOMAIN}"
+  PROXMOX_DOMAIN: "${LUNA_DOMAIN}"
+  PROXMOX_IP: "${LUNA_HOST_IP}"
+  PROXMOX_HOST: "${LUNA_HOST_DOMAIN}"

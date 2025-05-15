@@ -5,6 +5,6 @@ metadata:
   name: thorax-host
   namespace: sgc
 data:
-      PROXMOX_DOMAIN: "${THORAX_DOMAIN}"
-      PROXMOX_IP: "${THORAX_IP}"
-      PROXMOX_HOST: "${THORAX_HOST}"
+  PROXMOX_DOMAIN: "${THORAX_DOMAIN}"
+  PROXMOX_IP: "${THORAX_IP}"
+  PROXMOX_HOST: "${THORAX_HOST}"

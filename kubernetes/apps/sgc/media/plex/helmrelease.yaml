@@ -4,7 +4,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app plex
+  name: &app plex-alt
 spec:
   timeout: 5m
   interval: 30m
@@ -27,7 +27,7 @@ spec:
       namespace: democratic-csi
   values:
     controllers:
-      plex:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -54,7 +54,7 @@ spec:
                 chmod -R 777 /config
                 echo "Done.";
         containers:
-          plex:
+          *app :
             image:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.6
@@ -103,10 +103,11 @@ spec:
               requests:
                 cpu: 100m
                 memory: 1Gi
+                gpu.intel.com/i915: 1
               limits:
-                # amd.com/gpu: 1
-                memory: 6Gi
-                cpu: 4000m
+                gpu.intel.com/i915: 1
+                memory: 4Gi
+                cpu: 2000m
 
     # tolerations:
     #   - key: amd.com/gpu
@@ -177,17 +178,17 @@ spec:
         existingClaim: media-tv
         globalMounts:
           - path: /media/tv
-      logs:
-        type: emptyDir
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Logs
       tmp:
         type: emptyDir
       transcode:
         type: emptyDir
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Logs
       cache:
         type: persistentVolumeClaim
-        storageClass: truenas-stash
+        storageClass: longhorn
         accessMode: ReadWriteOnce
         size: 100Gi
         globalMounts:

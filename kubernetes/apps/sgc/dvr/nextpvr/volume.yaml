@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nextpvr-config
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: truenas-iscsi-stash
+  volumeMode: Filesystem
+  csi:
+    driver: org.democratic-csi.iscsi.stash
+    readOnly: false
+    volumeHandle: nextpvr
+    volumeAttributes:
+      portal: "${SPIKE_IP}"
+      iqn: iqn.2005-10.org.freenas.ctl:nextpvr
+      lun: "0"
+      node_attach_driver: iscsi
+      provisioner_driver: freenas-api-iscsi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextpvr-config
+spec:
+  storageClassName: truenas-iscsi-stash
+  volumeName: nextpvr-config
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi

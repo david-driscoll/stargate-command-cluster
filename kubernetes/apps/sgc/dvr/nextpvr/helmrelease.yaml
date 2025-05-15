@@ -1,0 +1,150 @@
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nextpvr
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: truenas-iscsi-stash
+      namespace: democratic-csi
+    - name: truenas-stash
+      namespace: democratic-csi
+  values:
+    controllers:
+      nextpvr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          restore:
+            securityContext:
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: true
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
+              supplementalGroups: [0, 1, 44, 109, 303, 568, 10000]
+              capabilities: { drop: ["ALL"] }
+            image:
+              repository: busybox
+              tag: 1.37.0
+              pullPolicy: IfNotPresent
+            command:
+              - "/bin/sh"
+              - "-c"
+            args: |-
+                chown -R 568:568 /config
+                chmod -R 777 /config
+                echo "Done.";
+        containers:
+          nextpvr:
+            image:
+              repository: nextpvr/nextpvr_amd64
+              tag: stable
+            env:
+              TZ: America/New_York
+              PUID: 568
+              PGID: 568
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /identity
+            #         port: &port 8866
+            #       initialDelaySeconds: 10
+            #       periodSeconds: 60
+            #       timeoutSeconds: 10
+            #       failureThreshold: 5
+            #   readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              # capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                # nvidia.com/gpu: 1
+                memory: 8Gi
+                cpu: 4000m
+
+    # tolerations:
+    #   - key: nvidia.com/gpu
+    #     operator: Exists
+    #     effect: NoSchedule
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        supplementalGroups: [44, 109, 303, 568, 10000]
+        seccompProfile: { type: RuntimeDefault }
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+    service:
+      app:
+        controller: nextpvr
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 8866
+
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:8866"
+          # gethomepage.dev/widget.key: "${nextpvr_token}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: nextpvr.svg
+          gethomepage.dev/name: Nextpvr
+          gethomepage.dev/widget.type: nextpvr
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+    persistence:
+      config:
+        existingClaim: nextpvr-config
+      recordings:
+        existingClaim: media-dvr
+      buffer:
+        type: emptyDir

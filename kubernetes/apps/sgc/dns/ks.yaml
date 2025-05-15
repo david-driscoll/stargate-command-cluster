@@ -95,10 +95,11 @@ spec:
       namespace: network
     - name: sgc-proxmox
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/records
-  components:
-    - ../../../../components/proxmox-proxy
+  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
   postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: thorax-host
     substitute:
       APP: *app
   prune: true
@@ -127,10 +128,11 @@ spec:
       namespace: network
     - name: sgc-proxmox
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/records
-  components:
-    - ../../../../components/proxmox-proxy
+  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
   postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: twilight-sparkle-host
     substitute:
       APP: *app
   prune: true
@@ -159,10 +161,11 @@ spec:
       namespace: network
     - name: sgc-proxmox
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/records
-  components:
-    - ../../../../components/proxmox-proxy
+  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
   postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: pinkie-pie-host
     substitute:
       APP: *app
   prune: true
@@ -191,10 +194,11 @@ spec:
       namespace: network
     - name: sgc-proxmox
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/records
-  components:
-    - ../../../../components/proxmox-proxy
+  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
   postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: alpha-site-host
     substitute:
       APP: *app
   prune: true
@@ -223,9 +227,7 @@ spec:
       namespace: network
     - name: sgc-proxmox
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/records
-  components:
-    - ../../../../components/proxmox-proxy
+  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
   postBuild:
     substituteFrom:
       - kind: ConfigMap
@@ -258,10 +260,11 @@ spec:
       namespace: network
     - name: sgc-proxmox
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/records
-  components:
-    - ../../../../components/proxmox-proxy
+  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
   postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: luna-host
     substitute:
       APP: *app
   prune: true

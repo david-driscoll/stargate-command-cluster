@@ -167,7 +167,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: plex-config
+        existingClaim: *app
         globalMounts:
           - path: /config
       media-movies:

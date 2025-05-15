@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: thorax-host
+  namespace: sgc
 data:
       PROXMOX_DOMAIN: "${THORAX_DOMAIN}"
       PROXMOX_IP: "${THORAX_IP}"

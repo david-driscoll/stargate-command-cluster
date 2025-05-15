@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: luna-host
+  namespace: sgc
 data:
       PROXMOX_DOMAIN: "${LUNA_DOMAIN}"
       PROXMOX_IP: "${LUNA_HOST_IP}"

@@ -3,7 +3,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: alpha-site-host
-  namespace: sgc
 data:
   PROXMOX_DOMAIN: "${ALPHA_SITE_DOMAIN}"
   PROXMOX_IP: "${ALPHA_SITE_HOST_IP}"

@@ -13,6 +13,6 @@ resources:
   - "./dns/ks.yaml"
   - ./minio/ks.yaml
   - ./home/ks.yaml
-  - ./scrypted/ks.yaml
+  # - ./scrypted/ks.yaml
   - ./dvr/ks.yaml
   - ./media/ks.yaml

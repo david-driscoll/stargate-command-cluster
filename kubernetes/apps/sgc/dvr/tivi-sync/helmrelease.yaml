@@ -58,11 +58,11 @@ spec:
                 TIVI__INTERVALINSECONDS: 600
             resources:
               requests:
-                cpu: 1000m
+                cpu: 100m
                 # these files are large, we GC immediately.
                 memory: Gi
               limits:
-                cpu: 1000m
+                cpu: 100m
                 # these files are large, we GC immediately.
                 memory: 6Gi
       static:

@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: twilight-sparkle-host
+  namespace: sgc
 data:
       PROXMOX_DOMAIN: "${TWILIGHT_SPARKLE_DOMAIN}"
       PROXMOX_IP: "${TWILIGHT_SPARKLE_IP}"

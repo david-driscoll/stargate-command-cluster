@@ -56,223 +56,205 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app sgc-proxmox
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/dns/proxmox
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app thorax
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-    - name: sgc-proxmox
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: thorax-host
-    substitute:
-      APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app twilight-sparkle
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-    - name: sgc-proxmox
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: twilight-sparkle-host
-    substitute:
-      APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app pinkie-pie
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-    - name: sgc-proxmox
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: pinkie-pie-host
-    substitute:
-      APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app alpha-site
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-    - name: sgc-proxmox
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: alpha-site-host
-    substitute:
-      APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app celestia
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-    - name: sgc-proxmox
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: celestia-host
-    substitute:
-      APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app luna
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-    - name: sgc-proxmox
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/dns/proxmox-proxy
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: luna-host
-    substitute:
-      APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app sgc-proxmox
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/dns/proxmox
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app thorax
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: cloudflare-dns
+#       namespace: network
+#     - name: sgc-proxmox
+#       namespace: *namespace
+#   path: ./kubernetes/apps/sgc/dns/proxmox-proxy
+#   postBuild:
+#     substitute:
+#       APP: *app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app twilight-sparkle
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: cloudflare-dns
+#       namespace: network
+#     - name: sgc-proxmox
+#       namespace: *namespace
+#   path: ./kubernetes/apps/sgc/dns/proxmox-proxy
+#   postBuild:
+#     substitute:
+#       APP: *app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app pinkie-pie
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: cloudflare-dns
+#       namespace: network
+#     - name: sgc-proxmox
+#       namespace: *namespace
+#   path: ./kubernetes/apps/sgc/dns/proxmox-proxy
+#   postBuild:
+#     substitute:
+#       APP: *app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app alpha-site
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: cloudflare-dns
+#       namespace: network
+#     - name: sgc-proxmox
+#       namespace: *namespace
+#   path: ./kubernetes/apps/sgc/dns/proxmox-proxy
+#   postBuild:
+#     substitute:
+#       APP: *app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app celestia
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: cloudflare-dns
+#       namespace: network
+#     - name: sgc-proxmox
+#       namespace: *namespace
+#   path: ./kubernetes/apps/sgc/dns/proxmox-proxy
+#   postBuild:
+#     substitute:
+#       APP: *app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app luna
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: cloudflare-dns
+#       namespace: network
+#     - name: sgc-proxmox
+#       namespace: *namespace
+#   path: ./kubernetes/apps/sgc/dns/proxmox-proxy
+#   postBuild:
+#     substitute:
+#       APP: *app
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   wait: true
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 5m

@@ -71,7 +71,7 @@ spec:
                 cpu: 50m
                 memory: 100Mi
               limits:
-                cpu: 2000m
+                cpu: 500m
                 memory: 6Gi
                 # amd.com/gpu: 1
 

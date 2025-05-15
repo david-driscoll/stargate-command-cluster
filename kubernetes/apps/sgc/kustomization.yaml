@@ -14,5 +14,5 @@ resources:
   - ./minio/ks.yaml
   - ./home/ks.yaml
   - ./scrypted/ks.yaml
-  - ./dvr/ks.yaml
+  # - ./dvr/ks.yaml
   - ./media/ks.yaml

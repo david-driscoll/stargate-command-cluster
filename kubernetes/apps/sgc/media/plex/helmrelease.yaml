@@ -1,0 +1,199 @@
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app plex
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: truenas-iscsi-stash
+      namespace: democratic-csi
+    - name: truenas-stash
+      namespace: democratic-csi
+  values:
+    controllers:
+      plex:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          restore:
+            securityContext:
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: true
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
+              supplementalGroups: [0, 1, 44, 109, 303, 568, 10000]
+              capabilities: { drop: ["ALL"] }
+            image:
+              repository: busybox
+              tag: 1.37.0
+              pullPolicy: IfNotPresent
+            command:
+              - "/bin/sh"
+              - "-c"
+            # chown -R 568:568 /config
+            # chmod -R 777 /config
+            args: |-
+                chown -R 568:568 /config
+                chmod -R 777 /config
+                echo "Done.";
+        containers:
+          plex:
+            image:
+              repository: ghcr.io/home-operations/plex
+              tag: 1.41.6
+            env:
+              TZ: America/New_York
+              PUID: 568
+              PGID: 568
+              PLEX_ADVERTISE_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}:443,https://{{ .Release.Name }}.${TAILSCALE_DOMAIN}:443,http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:32400
+              PLEX_NO_AUTH_NETWORKS: 172.16.0.0/12,10.10.0.0/16,10.69.0.0/16,10.96.0.0/16,192.168.0.0/16,100.64.0.0/10
+              PLEX_PURGE_CODECS: "true"
+              # PLEX_PREFERENCE_FriendlyName: "Eris Plex"
+              # PLEX_PREFERENCE_AcceptedEULA: "1"
+              # PLEX_PREFERENCE_PublishServerOnPlexOnlineKey: "1"
+              # PLEX_PREFERENCE_PlexOnlineHome: "1"
+              # PLEX_PREFERENCE_DlnaEnabled: "1"
+              # PLEX_PREFERENCE_PlexOnlineUsername:
+              #   secretKeyRef:
+              #     name: plex-token
+              #     key: username
+              # PLEX_PREFERENCE_PlexOnlineMail:
+              #   secretKeyRef:
+              #     name: plex-token
+              #     key: email
+              # PLEX_CLAIM_TOKEN:
+              #   secretKeyRef:
+              #     name: media-management-credentials
+              #     key: claim
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: &port 32400
+                  initialDelaySeconds: 10
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              # capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                # amd.com/gpu: 1
+                memory: 6Gi
+                cpu: 4000m
+
+    # tolerations:
+    #   - key: amd.com/gpu
+    #     operator: Exists
+    #     effect: NoSchedule
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        supplementalGroups: [44, 109, 303, 568, 10000]
+        seccompProfile: { type: RuntimeDefault }
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+    service:
+      app:
+        controller: plex
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:32400"
+          # gethomepage.dev/widget.key: "${plex_token}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: plex.svg
+          gethomepage.dev/name: Plex
+          gethomepage.dev/widget.type: plex
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+
+    persistence:
+      config:
+        existingClaim: plex-config
+        globalMounts:
+          - path: /config
+      media-movies:
+        existingClaim: media-movies
+        globalMounts:
+          - path: /media/movies
+      media-tv:
+        existingClaim: media-tv
+        globalMounts:
+          - path: /media/tv
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Logs
+      tmp:
+        type: emptyDir
+      transcode:
+        type: emptyDir
+      cache:
+        type: persistentVolumeClaim
+        storageClass: truenas-stash
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+            subPath: cache
+      # current-config:
+      #   existingClaim: plex-config
+      #   globalMounts:
+      #     - path: /database

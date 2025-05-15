@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque
+data:
+  Preferences.xml: ENC[AES256_GCM,data:oZsA0JUItJ+hLKGKfsjrcprUjcZWdWlzgWfKuYTu3GqdrelJcU5Yf/UL/s21kdIFq3ePbTOoo1SRnjU641iZrY6J4UlvVZU3y8kh4PJuYkW6nlGdEBo4wyDXO5nM3ubsfYqC7wsSFUCMiqaCrs/wWCzif3cWOGwEEPPBxwoyZ2P1cs5BFj73U1NZx4t6utnnryaCtXPkdc2k1z9iKJoS6MkMhatA1IKzP7DVYdk00KB7o5pxl313uf8GP/2ur2a/O41BXceYkAZam1MPWHvJmSaFiRLn1MqdrPKdWZ+uSPet5anIWv3A6wrrTjY8pOAjIB7yZgB36WIIu1UQbcgdha8wn724BKB3bZQl9qNea2IckTETprhC7PxtIFvGzAA5tqvzDb89LBqXCID+TsQYtYTm2/ytR/BiN6LCm36f7jBAzTvJbnccwMWLeMCtAFQecAgW0rzywx63mAHKFYh5PZWUQ+BBHRd//q49TMQkG84Dug6NmcMaUOQmeh1NouLy82DOzCOECEetu4KLovWkniu/Yc3kttTA7InI6eDGBlawmxbZDxlUu++8LLg3yPrXG8J1V+LIXlPKKprVsD03mZ4MzgZk6a/oBQs85F55zsaKC20JaDB/6LKXBjlE0nxOfOyjuUruOU4WDtXKJtZ4zO7X4ZAphDV6t4lvYJNI2Ku74vqv8SxiiRcJzTx5p55J1O+jrdCqipvxPg0XKJTl4wmPF0ZEc8XYAZFxpoP8PDlu0vfR+ImBwvnAKZnCGbm4Oke8MfjtNq7sswemBtvy060HPbTWDZwp3eNa+vGdCYs/+T3gG0bvoc0/oRJuRCfPjtmgjarHr8vx9xbbLFyCSJQT0GBriJjveuCUNm+V7GiDQEJ+lZiGfb0cMkxSUFqrUe4Q8eltQkGLzlo9tbyU7YQlCncF5hPybGA+RG2/17J0f80P5Tj5N3h82rqT3yERYlb8M98YDwqy47C3iDINgyG/Ro9ijPoLwcYUQwVvuH8ghZc4uZ3AjtBzZ4McQ/maFJLjgAwW29i5r7F3yvZN3yUKXHmcMG8rcQu1mwtfmp5TlcZCT2XyTOCGGwJTi2YKKDsAeTZKQ3UWnFb+6mG8RtLk+r+Pg6kffntbdxQkIm5hQLT8qVsgxvzROO4zv23shAZAkSl2ly15SMWctAvcmPOGfxQ+Gq0pJHPCmLKmkl1xPFKPuMentlf2sds+60wQf6iDjG1DalA6jD/vZ8owb1sMl34kPJ9mybe1wxk5r2CvyOcMX/w1JsBpQX4Z/LxQ4foZxfi4DZjKLMlkivqBd7tirWc4DzPFl7x1K2tpbyVMBMgLC7658T3K/sof5BWGszNBvmULiir5xVRCTVdSuKh9MYtnY47LZlo0QdkuZR5TmKpsQ1eQ5ZOiLSGpUxswT/RMpgzVQMLrL497ZV1nsgYjAs2doUQlzotntbMNIwkMWx10l40574dMFG6113rld7/OPSdMoN68+9tka50Y922X7n+XuwQz/35oidho3ZZbBuaD3pWv6W3ya+4H1eRTHsY7TTf0IcWrb01whwhzz0EQBu0RMGYyfH400KXtsSsX9co3bAo8EYoCJlwIIUKTb/VhMTQS7xxkoSriMC8QmQGXudiMQFKemRYjJIzMERNRguOJXIX1iESq9F8WT2WWo54yfr9Gqqb75Jeb5k48TJyNyNPogmWHuh5ti40JSyZLVmGlzRh0CcMpOfsZn4AEjThCREGT+qcA6Ph4CBPu47NVzZI36INoMCARwrIc3sbMFwahjBXg6n+7lLvXzg6zXpNQmTTAEGvnDEvEXyaASgVWBTaENXWNUgNcKLjAEbKSgqRSrLDcQh7sVw0G/OxjjimtIv2HXPNuz5s+QT2YYgpsATpmLhJAOLzICM4mKRREXWlXc8xC++OctGx5pjEVSc8HgokvYFEa6rFVg2sanXou/1FX+pbetXrUS4dWySfbq6D2BPvsXCm9C+CZyZZbnyo9jIPmCf0UWewbhXG7vHP3b/noWtAgz9E8DnYeW2wPH3GGdnqquMUMtqB3OVF35oUy/GATZ2mM4BJQkjEghFz358KVe0HYElX04jwJyHBA/UtF6P01LveOYkelt3W//+Msg6AXDQ/Z4QAFWcyUQn38z2omqyqXvE3nhH0o+b4bxA==,iv:nBS4Lg7QYsMarp4bfEMKrOAZ8xZTfTL/7rQWZEZPuqI=,tag:3XNNkqnxl1aJxcy63TXjzw==,type:str]
+sops:
+  age:
+    - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB6WmhvcmxtWUJ6cyt0U2Z6
+        Z2k0dWtpSDBOVG8vSGczWnNmT1VlcUhHdnlBCmg4V2NPR0hLc2NicmljTFhYZ2Z6
+        TlNyaVB0YnVkWDB6TTZhT1Q0eGlidDAKLS0tIHN5Z3AxNkU3QUNzd29rVkI5NjN4
+        RFlQaTc3b1FCOXlRNFFMcHA5RVZjb3cK6z78L1/tPPYWx0VL2hDXG2cAlnDU/HA7
+        /mKllGVShe5er3JmOLloq+sJXrVYv4bLIB+uuXUW0pJMQMzUV/Szdg==
+        -----END AGE ENCRYPTED FILE-----
+    - recipient: age1klzrc4tp666ykn8u4y2nt80n0tcx52lvezrr54zswz55w2pdsgyqhcdfyr
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKekphcjJiWXVnSGJENHEw
+        dlFkZ2l4SEZ2S0NibG5GZ2xsUTZsTnBpY1ZFCnI0NFJWZHh4SU9nQnpienlWdFBO
+        SCtzSVEzQk9PU213eEFDdjlrRGxpd3MKLS0tIGlOOFJIZVB0anRvTkY4ejMzbWwr
+        NHVITlNOdVZGV2dJT0dGVDdmOFBGTmsKcnSORyYVVlvqPOrOHoYmYniloP+XTUtc
+        O6yzY93iA65c2FmEPIhXO6Fs1u4SwG7Td3rwXI+tbPFSEDMuKTMFsw==
+        -----END AGE ENCRYPTED FILE-----
+    - recipient: age150z0s36kl9vud8728c5e4zqq6nmyywekk76rwvjclcsfc8mrxuuqr0qfg6
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4WnFISndXMDRFNFVybkU4
+        ZU9QQkc3TktycmU2eHFXSk5JcStFS3RGNUc0CjBOSjZaT2VCa2VBc0htdE5NUGhn
+        RDNzQ0JnZ0ZyeE9pRGx3YWVOc0tQVzAKLS0tIGk3T01iM25sZnhGOWxMQ0RKbmIz
+        dVp0OXRMblRsYXN4RW9xTzhiTzdwK0kKQ4UoVLeMdlDPoBi0scS/G+DVYhGjOHlZ
+        FiVPuxPQwQBb4mQCU9NQdfGOJ60rOeaXgCwgqVU0STQYs69J+d1K+w==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-04-11T00:36:02Z"
+  mac: ENC[AES256_GCM,data:AV/u0qB50RF/EhxYwNyMkCCKKVvYBxFaP+dLGz9A/vWinYBbCMsas7VVpqgfu/eWHAr/m9Y6+cE/2YWjRKKQH+cvVVoZk+V1EJP/ivZ8EMnj7+gAlm5GSyOh73viiMjdfJwThTc17PG1uDKHSGb+DR26w3LJBKiw7yd3GysSklc=,iv:tsRweXXfk2AKxWbuiwUbLlQ7MljIih15EEOjyADr85o=,tag:24L5XL8iwRhM9RmaTz8ypg==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.9.3

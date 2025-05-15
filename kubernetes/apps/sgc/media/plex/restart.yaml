@@ -1,0 +1,56 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: plex-restart
+  namespace: eris
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: plex-restart
+  namespace: eris
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["plex"]
+    verbs: ["get", "patch", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: plex-restart
+  namespace: eris
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: plex-restart
+subjects:
+  - kind: ServiceAccount
+    name: plex-restart
+    namespace: eris
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: plex-restart
+  namespace: eris
+spec:
+  concurrencyPolicy: Forbid
+  schedule: '0 8 * * *'
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: plex-restart
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl
+              command:
+                - 'kubectl'
+                - 'rollout'
+                - 'restart'
+                - 'deployment/plex'

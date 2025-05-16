@@ -1,0 +1,168 @@
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# http://channels.eris.svc.cluster.local:8089/devices/ANY/channels.m3u?format=ts&codec=copy
+# http://channels.eris.svc.cluster.local:8089/devices/ANY/guide/xmltv?duration=1209600
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app channels
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: truenas-iscsi-stash
+      namespace: democratic-csi
+    - name: truenas-stash
+      namespace: democratic-csi
+  values:
+    fullnameOverride: *app
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: Recreate
+        initContainers:
+          restore:
+            securityContext:
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: true
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
+              supplementalGroups: [0, 1, 44, 109, 303, 568, 10000]
+              capabilities: { drop: ["ALL"] }
+            image:
+              repository: busybox
+              tag: 1.37.0
+              pullPolicy: IfNotPresent
+            command:
+              - "/bin/sh"
+              - "-c"
+            args: |-
+                chown -R 568:568 /channels-dvr
+                chmod -R 777 /channels-dvr
+                echo "Done.";
+        containers:
+          *app :
+            image:
+              repository: fancybits/channels-dvr
+              tag: latest
+              pullPolicy: Always
+            # -- environment variables.
+            # See [image docs](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) for more details.
+            env:
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: America/New_York
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8089
+                  initialDelaySeconds: 10
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+                gpu.intel.com/i915: 1
+              limits:
+                # nvidia.com/gpu: 1
+                memory: 2Gi
+                cpu: 1000m
+                gpu.intel.com/i915: 1
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        supplementalGroups: [44, 109, 303, 568, 10000]
+        seccompProfile: { type: RuntimeDefault }
+
+    # -- Configures service settings for the chart.
+    service:
+      app:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+
+
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /channels-dvr
+      media-dvr:
+        existingClaim: media-dvr
+        globalMounts:
+          - path: /media/dvr
+      media-movies:
+        existingClaim: media-movies
+        globalMounts:
+          - path: /media/movies
+      media-tv:
+        existingClaim: media-tv
+        globalMounts:
+          - path: /media/tv
+
+    rawResources:
+
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:8089"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: channels.svg
+          gethomepage.dev/name: Channels
+          # gethomepage.dev/widget.type: channels
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port

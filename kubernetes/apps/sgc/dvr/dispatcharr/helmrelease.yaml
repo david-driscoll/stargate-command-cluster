@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app dispatcharr
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: truenas-iscsi-stash
+      namespace: democratic-csi
+    - name: truenas-stash
+      namespace: democratic-csi
+  values:
+    controllers:
+      *app :
+        enabled: true
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/dispatcharr/dispatcharr
+              tag: 0.5.0
+              pullPolicy: IfNotPresent
+
+            env:
+              TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: streammaster-secret
+
+    tolerations:
+      # - key: amd.com/gpu
+      #   operator: Exists
+      #   effect: NoSchedule
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        supplementalGroups: [44, 109, 303, 568, 10000]
+        seccompProfile: { type: RuntimeDefault }
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+    service:
+      app:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 9191
+
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:5004"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: dispatcharr.svg
+          gethomepage.dev/name: dispatcharr
+          gethomepage.dev/widget.type: dispatcharr
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+
+    persistence:
+      config:
+        existingClaim: *app
+      buffer:
+        type: emptyDir
+# confgure the app using hard coded values
+# and setup plugin cloning using the git repos

@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app tvheadend
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: truenas-iscsi-stash
+      namespace: democratic-csi
+    - name: truenas-stash
+      namespace: democratic-csi
+  values:
+    controllers:
+      *app :
+        enabled: true
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/onedr0p/tvheadend
+              tag: 4.3.10004@sha256:d4456865d39c351bff81ab1f2b7f0ab86a7621b5ebfa6b68a643ecb7ac375850
+              pullPolicy: IfNotPresent
+
+            env:
+              TZ: ${TIMEZONE}
+            securityContext:
+              readOnlyRootFilesystem: false
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+                gpu.intel.com/i915: 1
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+                gpu.intel.com/i915: 1
+
+    tolerations:
+      # - key: amd.com/gpu
+      #   operator: Exists
+      #   effect: NoSchedule
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+    service:
+      app:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &http 9981
+          htsp:
+            port: &htsp 9982
+
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *http
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:5004"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: dispatcharr.svg
+          gethomepage.dev/name: dispatcharr
+          gethomepage.dev/widget.type: dispatcharr
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "{{ .Release.Name }}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *http
+
+    persistence:
+      data:
+        existingClaim: *app
+      media-dvr:
+        existingClaim: media-dvr
+        globalMounts:
+          - path: /media/dvr
+      timeshift:
+        enabled: true
+        type: emptyDir
+# confgure the app using hard coded values
+# and setup plugin cloning using the git repos

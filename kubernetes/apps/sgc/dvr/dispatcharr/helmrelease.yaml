@@ -97,7 +97,7 @@ spec:
                   port: *port
 
     persistence:
-      config:
+      data:
         existingClaim: *app
       buffer:
         type: emptyDir

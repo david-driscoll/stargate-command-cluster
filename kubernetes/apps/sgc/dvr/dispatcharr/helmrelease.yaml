@@ -108,8 +108,13 @@ spec:
                   port: *port
 
     persistence:
+      # data:
+      #   existingClaim: *app
       data:
-        existingClaim: *app
+        size: 10Gi
+        storageClass: longhorn
+        type: persistentVolumeClaim
+        accessMode: ReadWriteMany
       buffer:
         type: emptyDir
       tmp:

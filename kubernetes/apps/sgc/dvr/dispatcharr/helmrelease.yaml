@@ -37,7 +37,6 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-
             securityContext:
               readOnlyRootFilesystem: false
 
@@ -101,5 +100,9 @@ spec:
         existingClaim: *app
       buffer:
         type: emptyDir
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /etc/profile.d/
 # confgure the app using hard coded values
 # and setup plugin cloning using the git repos

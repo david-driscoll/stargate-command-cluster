@@ -31,8 +31,8 @@ spec:
         containers:
           *app :
             image:
-              repository: ghcr.io/onedr0p/tvheadend
-              tag: 4.3.10004
+              repository: ghcr.io/tvheadend/tvheadend
+              tag: master
               pullPolicy: IfNotPresent
 
             env:

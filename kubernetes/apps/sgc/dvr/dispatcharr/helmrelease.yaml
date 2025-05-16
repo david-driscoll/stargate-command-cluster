@@ -37,9 +37,6 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-            envFrom:
-              - secretRef:
-                  name: streammaster-secret
 
     tolerations:
       # - key: amd.com/gpu

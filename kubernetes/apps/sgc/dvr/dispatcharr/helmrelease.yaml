@@ -38,6 +38,9 @@ spec:
             env:
               TZ: ${TIMEZONE}
 
+            securityContext:
+              readOnlyRootFilesystem: false
+
     tolerations:
       # - key: amd.com/gpu
       #   operator: Exists
@@ -98,9 +101,5 @@ spec:
         existingClaim: *app
       buffer:
         type: emptyDir
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /etc/profile.d/
 # confgure the app using hard coded values
 # and setup plugin cloning using the git repos

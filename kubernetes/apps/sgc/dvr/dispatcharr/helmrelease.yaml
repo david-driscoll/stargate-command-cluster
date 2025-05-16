@@ -40,6 +40,16 @@ spec:
             securityContext:
               readOnlyRootFilesystem: false
 
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+                gpu.intel.com/i915: 1
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+                gpu.intel.com/i915: 1
+
     tolerations:
       # - key: amd.com/gpu
       #   operator: Exists

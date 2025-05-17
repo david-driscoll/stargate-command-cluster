@@ -60,9 +60,9 @@ spec:
               requests:
                 cpu: 100m
                 # these files are large, we GC immediately.
-                memory: Gi
+                memory: 1Gi
               limits:
-                cpu: 100m
+                cpu: 200m
                 # these files are large, we GC immediately.
                 memory: 6Gi
       static:

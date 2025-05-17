@@ -72,9 +72,10 @@ spec:
             # find all xml files in /tivi-sync
             # and send them to the tvheadend socket
             args: |
-              for i in $(find . -name \*.txt); do # Not recommended, will break on whitespace
-                cat $i | socat - UNIX-CONNECT:.config/hts/epggrab/xmltv.sock
+              find . -name "*.txt" -print0 | while IFS= read -r -d '' file; do
+                socat STDIN UNIX-CONNECT:/.config/hts/epggrab/xmltv.sock < "$file"
               done
+
             resources:
               requests:
                 cpu: 10m

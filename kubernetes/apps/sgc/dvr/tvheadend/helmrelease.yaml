@@ -26,10 +26,10 @@ spec:
       namespace: democratic-csi
   values:
     controllers:
-      *app :
+      backend:
         enabled: true
         containers:
-          *app :
+          backend:
             image:
               repository: ghcr.io/tvheadend/tvheadend
               tag: master
@@ -40,6 +40,28 @@ spec:
             envFrom:
               - secretRef:
                   name: tvheadend-credentials
+            securityContext:
+              readOnlyRootFilesystem: false
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+                gpu.intel.com/i915: 1
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+                gpu.intel.com/i915: 1
+      *app :
+        enabled: true
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/davidborzek/tvhgo
+              tag: v0.2.0
+              pullPolicy: IfNotPresent
+            env:
+              TZ: ${TIMEZONE}
             securityContext:
               readOnlyRootFilesystem: false
 
@@ -69,14 +91,20 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
     service:
-      app:
-        controller: *app
+      backend:
+        controller: backend
         type: ClusterIP
         ports:
           http:
             port: &http 9981
           htsp:
             port: &htsp 9982
+      tvhgo:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &frontend 8080
 
     ingress:
       internal:
@@ -86,8 +114,20 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: *http
+                  identifier: tvhgo
+                  port: http
+          - host: "tvhgo.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: tvhgo
+                  port: http
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: backend
+                  port: http
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
@@ -108,12 +148,20 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: tvhgo
                   port: *http
 
     persistence:
       data:
         existingClaim: *app
+        globalMounts:
+          - path: /data
+            subPath: tvhgo
+      tvhgo:
+        existingClaim: *app
+        globalMounts:
+          - path: /tvhgo
+            subPath: tvhgo
       media-dvr:
         existingClaim: media-dvr
         globalMounts:

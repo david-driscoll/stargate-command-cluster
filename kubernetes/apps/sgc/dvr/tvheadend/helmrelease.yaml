@@ -35,6 +35,7 @@ spec:
               tag: master
               pullPolicy: IfNotPresent
 
+            args: [--firstrun]
             env:
               TZ: ${TIMEZONE}
             envFrom:

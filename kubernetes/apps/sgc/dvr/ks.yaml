@@ -135,3 +135,39 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 1Gi
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app tvhgo
+  namespace: &namespace sgc
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: shared-volumes
+      namespace: *namespace
+  path: ./kubernetes/apps/sgc/dvr/tvhgo
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 1Gi

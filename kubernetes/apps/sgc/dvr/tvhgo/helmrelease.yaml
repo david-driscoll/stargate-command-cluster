@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tvheadend
+  name: &app tvhgo
 spec:
   timeout: 5m
   interval: 30m
@@ -31,15 +31,11 @@ spec:
         containers:
           *app :
             image:
-              repository: ghcr.io/tvheadend/tvheadend
-              tag: master
+              repository: ghcr.io/davidborzek/tvhgo
+              tag: v0.2.0
               pullPolicy: IfNotPresent
-
             env:
               TZ: ${TIMEZONE}
-            envFrom:
-              - secretRef:
-                  name: tvheadend-credentials
             securityContext:
               readOnlyRootFilesystem: false
 
@@ -47,11 +43,9 @@ spec:
               requests:
                 cpu: 50m
                 memory: 100Mi
-                gpu.intel.com/i915: 1
               limits:
                 cpu: 1000m
-                memory: 2Gi
-                gpu.intel.com/i915: 1
+                memory: 1Gi
 
     tolerations:
       # - key: amd.com/gpu
@@ -74,14 +68,18 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &http 9981
-          htsp:
-            port: &htsp 9982
+            port: &http 8080
 
     ingress:
       internal:
         className: internal
         hosts:
+          - host: "tvheadend.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
           - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
@@ -99,6 +97,17 @@ spec:
           gethomepage.dev/widget.type: dispatcharr
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
           gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        annotations:
+          reloader.stakater.com/auto: "true"
+        hosts:
+          - host: "tvheadend"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
 
     persistence:
       *app :

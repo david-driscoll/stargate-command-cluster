@@ -66,7 +66,7 @@ spec:
         containers:
           xmltv:
             image:
-              repository: subfuzion/netcat
+              repository: jesugmz/nc
               tag: latest
               pullPolicy: Always
             # find all xml files in /tivi-sync

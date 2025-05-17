@@ -104,7 +104,7 @@ spec:
       *app :
         existingClaim: *app
         globalMounts:
-          - path: /data
+          - path: /.config/hts
             subPath: *app
       media-dvr:
         existingClaim: media-dvr

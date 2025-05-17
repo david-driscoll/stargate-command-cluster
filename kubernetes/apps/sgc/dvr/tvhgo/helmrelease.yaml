@@ -117,7 +117,7 @@ spec:
       *app :
         existingClaim: *app
         globalMounts:
-          - path: /data
+          - path: /tvhgo
             subPath: *app
       media-dvr:
         existingClaim: media-dvr

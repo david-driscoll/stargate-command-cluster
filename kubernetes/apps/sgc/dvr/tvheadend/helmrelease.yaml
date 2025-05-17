@@ -66,14 +66,14 @@ spec:
         containers:
           xmltv:
             image:
-              repository: alpine/socat
+              repository: subfuzion/netcat
               tag: latest
               pullPolicy: Always
             # find all xml files in /tivi-sync
             # and send them to the tvheadend socket
             args: |
               find . -name "*.txt" -print0 | while IFS= read -r -d '' file; do
-                socat STDIN UNIX-CONNECT:/.config/hts/epggrab/xmltv.sock < "$file"
+                  nc -U /.config/hts/epggrab/xmltv.sock < "$file"
               done
 
             resources:

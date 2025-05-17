@@ -78,7 +78,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "tvheadend.${ROOT_DOMAIN}"
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -106,7 +106,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "tvheadend"
+          - host: "{{ .Release.Name }}"
             paths:
               - path: /
                 service:

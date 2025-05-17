@@ -36,6 +36,10 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
+              TVHGO_TVHEADEND_HOST: "tvheadend.${INTERNAL_CLUSTER_SERVICE}"
+            envFrom:
+              - secretRef:
+                  name: tvhgo-credentials
             securityContext:
               readOnlyRootFilesystem: false
 

@@ -38,9 +38,6 @@ spec:
             args: [--firstrun]
             env:
               TZ: ${TIMEZONE}
-            envFrom:
-              - secretRef:
-                  name: tvheadend-credentials
             securityContext:
               readOnlyRootFilesystem: false
 

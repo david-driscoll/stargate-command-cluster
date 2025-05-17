@@ -26,10 +26,10 @@ spec:
       namespace: democratic-csi
   values:
     controllers:
-      backend:
+      *app :
         enabled: true
         containers:
-          backend:
+          *app :
             image:
               repository: ghcr.io/tvheadend/tvheadend
               tag: master
@@ -52,10 +52,7 @@ spec:
                 cpu: 1000m
                 memory: 1Gi
                 gpu.intel.com/i915: 1
-      *app :
-        enabled: true
-        containers:
-          *app :
+          tvhgo:
             image:
               repository: ghcr.io/davidborzek/tvhgo
               tag: v0.2.0
@@ -91,8 +88,8 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
     service:
-      backend:
-        controller: backend
+      *app :
+        controller: *app
         type: ClusterIP
         ports:
           http:
@@ -103,7 +100,7 @@ spec:
         controller: *app
         type: ClusterIP
         ports:
-          http:
+          tvhgo:
             port: &frontend 8080
 
     ingress:
@@ -115,18 +112,18 @@ spec:
               - path: /
                 service:
                   identifier: tvhgo
-                  port: http
+                  port: tvhgo
           - host: "tvhgo.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: tvhgo
-                  port: http
+                  port: tvhgo
           - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: backend
+                  identifier: *app
                   port: http
         annotations:
           reloader.stakater.com/auto: "true"

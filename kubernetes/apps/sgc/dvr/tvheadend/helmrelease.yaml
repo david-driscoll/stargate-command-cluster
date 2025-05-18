@@ -50,6 +50,14 @@ spec:
                 cpu: 4000m
                 memory: 6Gi
                 gpu.intel.com/i915: 1
+          antennas:
+            image:
+              repository: thejf/antennas
+              tag: 4
+              pullPolicy: IfNotPresent
+            envFrom:
+              - secretRef:
+                  name: antennas-secret
 
     tolerations:
       # - key: amd.com/gpu
@@ -74,6 +82,8 @@ spec:
             port: &http 9981
           htsp:
             port: &htsp 9982
+          antennas:
+            port: &antennas 5004
 
     ingress:
       internal:
@@ -91,6 +101,12 @@ spec:
                 service:
                   identifier: *app
                   port: http
+          - host: "antennas.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: antennas
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
@@ -102,6 +118,21 @@ spec:
           gethomepage.dev/widget.type: dispatcharr
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
           gethomepage.dev/app: "{{ .Release.Name }}"
+      tailscale:
+        className: tailscale
+        hosts:
+          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
+          - host: "antennas.${TAILSCALE_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: antennas
 
     persistence:
       *app :

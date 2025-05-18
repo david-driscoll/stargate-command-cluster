@@ -118,13 +118,5 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /tvhgo
-            subPath: *app
-      media-dvr:
-        existingClaim: media-dvr
-        globalMounts:
-          - path: /media/dvr
-      timeshift:
-        enabled: true
-        type: emptyDir
 # confgure the app using hard coded values
 # and setup plugin cloning using the git repos

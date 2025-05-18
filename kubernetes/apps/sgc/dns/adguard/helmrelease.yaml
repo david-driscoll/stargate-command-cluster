@@ -165,6 +165,7 @@ spec:
         loadBalancerIP: "${ADGUARD_VIP}"
         annotations:
           io.cilium/lb-ipam-ips: "${ADGUARD_VIP}"
+          tailscale.com/expose: "true"
         externalIPs:
           - "${ADGUARD_VIP}"
         externalTrafficPolicy: Cluster
@@ -237,7 +238,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "{{ .Release.Name }}"
+          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:

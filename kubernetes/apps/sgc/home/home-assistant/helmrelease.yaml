@@ -127,7 +127,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "{{ .Release.Name }}"
+          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -162,7 +162,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "{{ .Release.Name }}-code"
+          - host: "{{ .Release.Name }}-code.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:

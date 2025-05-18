@@ -185,13 +185,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "{{ .Release.Name }}"
+          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: 80
-          - host: "library"
+          - host: "library.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:

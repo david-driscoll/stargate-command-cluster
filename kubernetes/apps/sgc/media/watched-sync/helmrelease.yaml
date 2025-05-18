@@ -1,0 +1,170 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app watched-sync
+spec:
+  timeout: 5m
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      app:
+        type: cronjob
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          # every hour
+          schedule: "0 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 1
+          suspend: false
+        containers:
+          app:
+            image:
+              repository: ghcr.io/luigi311/jellyplex-watched
+              tag: 7.0.2
+            env:
+              DRYRUN: "False"
+              ## Additional logging information
+              DEBUG: "True"
+              ## Debugging level, "info" is default, "debug" is more verbose
+              # DEBUG_LEVEL: "debug"
+              ## If set to true then the script will only run once and then exit
+              RUN_ONLY_ONCE: "True"
+              ## Log file where all output will be written to
+              LOGFILE: "/config/log.log"
+              ## Mark file where all shows/movies that have been marked as played will be written to
+              MARK_FILE: "/config/mark.log"
+              ## Timeout for requests for jellyfin
+              REQUEST_TIMEOUT: 300
+              ## Generate guids
+              ## Generating guids is a slow process, so this is a way to speed up the process
+              ## by using the location only, useful when using same files on multiple servers
+              GENERATE_GUIDS: "True"
+              ## Generate locations
+              ## Generating locations is a slow process, so this is a way to speed up the process
+              ## by using the guid only, useful when using different files on multiple servers
+              GENERATE_LOCATIONS: "True"
+              ## Max threads for processing
+              MAX_THREADS: 16
+              ## Map usernames between servers in the event that they are different, order does not matter
+              ## Comma separated for multiple options
+              # MyPlexUser:27591525:Abbie>, <MyPlexUser:10787089:blissfully24>, <MyPlexUser:58201164:bonni828>, <MyPlexUser:25263162:Maddie>, <MyPlexUser:68729278:maddie.d7>, <MyPlexUser:31031872:maskylovesch>, <MyPlexUser:29033449:minecraftm4>, <MyPlexUser:27591375:Nat>, <MyPlexUser:16830607:rodney.32>, <MyPlexAccount:1371852:david.driscoll
+              USER_MAPPING: |-
+                {
+                  "david.driscoll": "david",
+                  "david": "david.driscoll",
+                  "blissfully24": "tami",
+                  "tami": "blissfully24",
+                  "abbie": "maskylovesch",
+                  "maskylovesch": "abbie",
+                  "maddie.d7": "maddie",
+                  "maddie": "maddie.d7",
+                  "minecraftm4": "nat",
+                  "nat": "minecraftm4"
+                }
+
+              ## Map libraries between servers in the event that they are different, order does not matter
+              ## Comma separated for multiple options
+              #LIBRARY_MAPPING: { "Shows": "TV Shows", "Movie": "Movies" }
+
+              ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
+              ## Comma separated for multiple options
+              #BLACKLIST_LIBRARY: ""
+              #WHITELIST_LIBRARY: ""
+              #BLACKLIST_LIBRARY_TYPE: ""
+              #WHITELIST_LIBRARY_TYPE: ""
+              #BLACKLIST_USERS: ""
+              # WHITELIST_USERS: "testuser1,testuser2"
+
+
+              # Plex
+              PLEX_BASEURL: "http://plex.${INTERNAL_CLUSTER_SERVICE}:32400"
+              PLEX_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: plex-token
+                    key: token
+              SSL_BYPASS: "True"
+
+              # Jellyfin
+              JELLYFIN_BASEURL: "http://jellyfin.${INTERNAL_CLUSTER_SERVICE}:8096"
+              JELLYFIN_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellyfin-token
+                    key: token
+
+              # Emby
+              EMBY_BASEURL: "http://emby.${INTERNAL_CLUSTER_SERVICE}:8096"
+              EMBY_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: emby-token
+                    key: token
+
+              # Syncing Options
+              ## control the direction of syncing. e.g. SYNC_FROM_PLEX_TO_JELLYFIN set to true will cause the updates from plex
+              ## to be updated in jellyfin. SYNC_FROM_PLEX_TO_PLEX set to true will sync updates between multiple plex servers
+              SYNC_FROM_PLEX_TO_JELLYFIN: "True"
+              SYNC_FROM_PLEX_TO_PLEX: "True"
+              # SYNC_FROM_PLEX_TO_EMBY: "True"
+
+              SYNC_FROM_JELLYFIN_TO_PLEX: "True"
+              SYNC_FROM_JELLYFIN_TO_JELLYFIN: "True"
+              # SYNC_FROM_JELLYFIN_TO_EMBY: "True"
+
+              SYNC_FROM_EMBY_TO_PLEX: "True"
+              SYNC_FROM_EMBY_TO_JELLYFIN: "True"
+              # SYNC_FROM_EMBY_TO_EMBY: "True"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+              limits:
+                cpu: 500m
+                memory: 500Mi
+    persistence:
+      config:
+        type: emptyDir
+      tmp:
+        type: emptyDir
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        supplementalGroups: [44, 109, 303, 568, 10000]
+        seccompProfile: { type: RuntimeDefault }

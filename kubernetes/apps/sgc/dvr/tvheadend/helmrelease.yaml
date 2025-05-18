@@ -50,14 +50,6 @@ spec:
                 cpu: 4000m
                 memory: 6Gi
                 gpu.intel.com/i915: 1
-          antennas:
-            image:
-              repository: ghcr.io/jfarseneau/antennas
-              tag: latest
-              pullPolicy: IfNotPresent
-            envFrom:
-              - secretRef:
-                  name: antennas-secret
 
     tolerations:
       # - key: amd.com/gpu
@@ -148,10 +140,5 @@ spec:
       timeshift:
         enabled: true
         type: emptyDir
-      npm-cache:
-        enabled: true
-        type: emptyDir
-        globalMounts:
-          - /.npm
 # confgure the app using hard coded values
 # and setup plugin cloning using the git repos

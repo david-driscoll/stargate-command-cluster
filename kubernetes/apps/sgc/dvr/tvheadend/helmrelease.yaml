@@ -66,15 +66,21 @@ spec:
         containers:
           xmltv:
             image:
-              repository: jesugmz/nc
+              repository: alpine/socat
               tag: latest
               pullPolicy: Always
             # find all xml files in /tivi-sync
             # and send them to the tvheadend socket
             args: |
-              find . -name "*.txt" -print0 | while IFS= read -r -d '' file; do
-                  nc -U /.config/hts/epggrab/xmltv.sock < "$file"
+              #!/bin/bash
+              echo "Downloading EPG data..."
+
+              find . -name "*.xml" -print0 | while IFS= read -r -d '' file; do
+                  echo "Processing file: $file"
+                  cat $file | socat - UNIX-CONNECT:/.config/hts/epggrab/xmltv.sock$
               done
+
+              echo "EPG Updated successfully."
 
             resources:
               requests:

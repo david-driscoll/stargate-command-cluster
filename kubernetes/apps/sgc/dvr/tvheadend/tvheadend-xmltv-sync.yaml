@@ -73,10 +73,6 @@ spec:
             #!/bin/sh
             echo "Downloading EPG data..."
 
-            find /tivi-sync
-            ls -al /tvheadend
-            ls -al /tvheadend/epggrab
-
             find /tivi-sync -name "*.xml" -print0 | while IFS= read -r -d '' file; do
                 echo "Processing file: $file"
                 cat $file | socat - UNIX:/tvheadend/epggrab/xmltv.sock

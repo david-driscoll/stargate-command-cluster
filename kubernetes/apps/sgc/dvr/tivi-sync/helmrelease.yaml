@@ -53,7 +53,7 @@ spec:
               - secretRef:
                   name: tivi-secret
             env:
-                TIVI__CACHEDIRECTORY: /cache/
+                TIVI__CACHEDIRECTORY: /config/
                 TIVI__RESULTSDIRECTORY: /config/
                 TIVI__INTERVALINSECONDS: 600
             resources:

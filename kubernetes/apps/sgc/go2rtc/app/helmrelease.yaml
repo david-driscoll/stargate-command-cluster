@@ -104,7 +104,6 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
-          tailscale.com/expose: "true"
         externalIPs:
           - "${INTERNAL_IP}"
         ports:

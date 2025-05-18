@@ -51,33 +51,6 @@ spec:
                 memory: 6Gi
                 gpu.intel.com/i915: 1
 
-      xmltv:
-        type: cronjob
-        annotations:
-          reloader.stakater.com/auto: "true"
-        cronjob:
-          backoffLimit: 6
-          concurrencyPolicy: Forbid
-          failedJobsHistory: 2
-          schedule: "0 */2 * * *"
-          startingDeadlineSeconds: 30
-          successfulJobsHistory: 3
-          suspend: false
-        containers:
-          xmltv:
-            image:
-              repository: alpine/socat
-              tag: latest
-              pullPolicy: Always
-            command:
-              - /epgp/startup.sh
-            resources:
-              requests:
-                cpu: 10m
-                memory: 256Mi
-              limits:
-                cpu: 10m
-                memory: 256Mi
     tolerations:
       # - key: amd.com/gpu
       #   operator: Exists

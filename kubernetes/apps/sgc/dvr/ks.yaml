@@ -29,77 +29,6 @@ spec:
       APP: *app
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_ACCESSMODES: ReadWriteMany
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app dispatcharr
-#   namespace: &namespace sgc
-# spec:
-#   targetNamespace: *namespace
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   dependsOn:
-#     - name: shared-volumes
-#       namespace: *namespace
-#   path: ./kubernetes/apps/sgc/dvr/dispatcharr
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   healthChecks:
-#     - apiVersion: helm.toolkit.fluxcd.io/v2
-#       kind: HelmRelease
-#       name: *app
-#       namespace: *namespace
-#   wait: true
-#   interval: 30m
-#   retryInterval: 1m
-#   timeout: 5m
-#   components:
-#     - ../../../../components/volsync
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       VOLSYNC_CAPACITY: 20Gi
-
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app channels
-#   namespace: &namespace sgc
-# spec:
-#   targetNamespace: *namespace
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   dependsOn:
-#     - name: shared-volumes
-#       namespace: *namespace
-#   path: ./kubernetes/apps/sgc/dvr/channels
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   healthChecks:
-#     - apiVersion: helm.toolkit.fluxcd.io/v2
-#       kind: HelmRelease
-#       name: *app
-#       namespace: *namespace
-#   wait: true
-#   interval: 30m
-#   retryInterval: 1m
-#   timeout: 5m
-#   components:
-#     - ../../../../components/volsync
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       VOLSYNC_CAPACITY: 20Gi
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -113,6 +42,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: shared-volumes
       namespace: *namespace
   path: ./kubernetes/apps/sgc/dvr/tvheadend
@@ -149,7 +80,11 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: shared-volumes
+      namespace: *namespace
+    - name: tvheadend
       namespace: *namespace
   path: ./kubernetes/apps/sgc/dvr/tvhgo
   prune: true

@@ -53,7 +53,7 @@ spec:
           antennas:
             image:
               repository: thejf/antennas
-              tag: 4
+              tag: latest
               pullPolicy: IfNotPresent
             envFrom:
               - secretRef:

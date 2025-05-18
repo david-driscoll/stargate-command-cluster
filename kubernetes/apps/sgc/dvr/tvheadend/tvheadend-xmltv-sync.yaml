@@ -74,9 +74,9 @@ spec:
             echo "Downloading EPG data..."
 
             find /tivi-sync
-            find /tvheadend -name "*.sock"
-            find /.config/hts/ -name "*.sock"
-            find /.config/hts/epggrab/ -name "*.sock"
+            find /tvheadend
+            find /.config/hts/
+            find /.config/hts/epggrab/
 
             find /tivi-sync -name "*.xml" -print0 | while IFS= read -r -d '' file; do
                 echo "Processing file: $file"

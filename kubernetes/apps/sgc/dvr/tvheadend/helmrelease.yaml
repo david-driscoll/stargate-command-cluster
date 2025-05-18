@@ -71,7 +71,7 @@ spec:
               pullPolicy: Always
             # find all xml files in /tivi-sync
             # and send them to the tvheadend socket
-            args: |
+            args: |-
               echo "Downloading EPG data..."
 
               find . -name "*.xml" -print0 | while IFS= read -r -d '' file; do
@@ -103,6 +103,21 @@ spec:
       # nodeSelector:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
+    configMaps:
+      config:
+        enabled: true
+        nameOverride: startup-sh
+        data:
+          startup.sh: |-
+            #!/bin/sh
+            echo "Downloading EPG data..."
+
+            find . -name "*.xml" -print0 | while IFS= read -r -d '' file; do
+                echo "Processing file: $file"
+                cat $file | socat - UNIX:/.config/hts/epggrab/xmltv.sock
+            done
+
+            echo "EPG Updated successfully."
     service:
       *app :
         controller: *app
@@ -160,5 +175,13 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.config/hts/epggrab/
+      startup-sh:
+        enabled: true
+        type: configMap
+        name: startup-sh
+        defaultMode: 493
+        globalMounts:
+          - path: /epgp/startup.sh
+            subPath: startup.sh
 # confgure the app using hard coded values
 # and setup plugin cloning using the git repos

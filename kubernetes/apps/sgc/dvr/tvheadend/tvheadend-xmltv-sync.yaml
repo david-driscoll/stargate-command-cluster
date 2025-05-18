@@ -74,13 +74,12 @@ spec:
             echo "Downloading EPG data..."
 
             find /tivi-sync
-            find /tvheadend
-            find /.config/hts/
-            find /.config/hts/epggrab/
+            ls -al /tvheadend
+            ls -al /tvheadend/epggrab
 
             find /tivi-sync -name "*.xml" -print0 | while IFS= read -r -d '' file; do
                 echo "Processing file: $file"
-                cat $file | socat - UNIX:/.config/hts/epggrab/xmltv.sock
+                cat $file | socat - UNIX:/tvheadend/epggrab/xmltv.sock
             done
 
             echo "EPG Updated successfully."

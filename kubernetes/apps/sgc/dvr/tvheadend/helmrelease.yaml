@@ -94,7 +94,7 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
     configMaps:
-      config:
+      startup-sh:
         enabled: true
         data:
           startup.sh: |-

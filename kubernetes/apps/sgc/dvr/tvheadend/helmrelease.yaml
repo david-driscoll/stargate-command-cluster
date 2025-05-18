@@ -79,6 +79,8 @@ spec:
             port: &http 9981
           htsp:
             port: &htsp 9982
+          hdhr:
+            port: &hdhr 5004
 
     ingress:
       internal:

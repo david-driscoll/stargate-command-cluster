@@ -67,6 +67,11 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
     service:
       *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${TUNER_DOMAIN}"
+          io.cilium/lb-ipam-ips: "${TUNER_VIP}"
+          tailscale.com/expose: "true"
         controller: *app
         type: ClusterIP
         ports:
@@ -74,8 +79,6 @@ spec:
             port: &http 9981
           htsp:
             port: &htsp 9982
-          antennas:
-            port: &antennas 5004
 
     ingress:
       internal:
@@ -93,12 +96,6 @@ spec:
                 service:
                   identifier: *app
                   port: http
-          - host: "antennas.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: antennas
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
@@ -119,12 +116,6 @@ spec:
                 service:
                   identifier: *app
                   port: http
-          - host: "antennas.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: antennas
 
     persistence:
       *app :

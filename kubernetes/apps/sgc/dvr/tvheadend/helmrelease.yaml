@@ -102,6 +102,7 @@ spec:
             echo "Downloading EPG data..."
 
             find /tivi-sync
+            find /tvheadend -name "*.sock"
             find /.config/hts/ -name "*.sock"
             find /.config/hts/epggrab/ -name "*.sock"
 
@@ -155,6 +156,7 @@ spec:
         globalMounts:
           - path: /.config/hts
             subPath: *app
+          - path: /tvheadend
       tivi-sync:
         existingClaim: tivi-sync
       media-dvr:

@@ -6,7 +6,7 @@ metadata:
   name: tuner-dns
 spec:
   endpoints:
-    - dnsName: "${AUTOMATION_DOMAIN}"
+    - dnsName: "${TUNER_DOMAIN}"
       recordType: A
-      targets: ["${AUTOMATION_VIP}"]
+      targets: ["${TUNER_VIP}"]
 

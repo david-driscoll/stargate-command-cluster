@@ -166,6 +166,7 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: "${ADGUARD_VIP}"
           tailscale.com/expose: "true"
+          tailscale.com/hostname: *app
         externalIPs:
           - "${ADGUARD_VIP}"
         externalTrafficPolicy: Cluster

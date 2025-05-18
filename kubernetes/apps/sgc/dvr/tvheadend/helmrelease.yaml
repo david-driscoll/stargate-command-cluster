@@ -74,6 +74,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${TUNER_DOMAIN}"
           io.cilium/lb-ipam-ips: "${TUNER_VIP}"
           tailscale.com/expose: "true"
+          tailscale.com/hostname: "${TUNER_CNAME}"
         externalIPs:
           - "${TUNER_VIP}"
         ports:

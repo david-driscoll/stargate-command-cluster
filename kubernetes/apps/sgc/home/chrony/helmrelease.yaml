@@ -65,6 +65,7 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: "${CHRONY_VIP}"
           tailscale.com/expose: "true"
+          tailscale.com/hostname: *app
         externalIPs:
           - "${CHRONY_VIP}"
         externalTrafficPolicy: Cluster

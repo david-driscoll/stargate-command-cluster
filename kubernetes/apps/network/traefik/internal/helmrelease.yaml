@@ -36,6 +36,7 @@ spec:
         reloader.stakater.com/auto: "true"
         external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
+        tailscale.com/expose: "true"
       externalIPs:
         - "${INTERNAL_IP}"
     additionalArguments:

@@ -127,13 +127,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "homepage"
+          - host: "homepage.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: *port
-          - host: "library"
+          - host: "library.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:

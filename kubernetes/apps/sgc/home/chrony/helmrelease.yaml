@@ -64,6 +64,7 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: "${CHRONY_VIP}"
+          tailscale.com/expose: "true"
         externalIPs:
           - "${CHRONY_VIP}"
         externalTrafficPolicy: Cluster

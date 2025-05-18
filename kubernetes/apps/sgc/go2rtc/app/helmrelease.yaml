@@ -104,6 +104,7 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
+          tailscale.com/expose: "true"
         externalIPs:
           - "${INTERNAL_IP}"
         ports:
@@ -146,7 +147,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         hosts:
-          - host: "{{ .Release.Name }}"
+          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
             paths:
               - path: /
                 service:

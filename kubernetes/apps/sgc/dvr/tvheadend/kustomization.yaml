@@ -5,3 +5,4 @@ resources:
   - ./helmrelease.yaml
   - ./tvheadend-xmltv-sync.yaml
   - ./secret.yaml
+  - ./dnsendpoint.yaml

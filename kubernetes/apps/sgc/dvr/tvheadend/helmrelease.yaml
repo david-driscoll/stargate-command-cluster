@@ -164,10 +164,6 @@ spec:
       timeshift:
         enabled: true
         type: emptyDir
-      epggrab:
-        type: emptyDir
-        globalMounts:
-          - path: /.config/hts/epggrab/
       startup-sh:
         enabled: true
         type: configMap

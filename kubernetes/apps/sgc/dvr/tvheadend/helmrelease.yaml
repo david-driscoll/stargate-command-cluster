@@ -52,7 +52,7 @@ spec:
                 gpu.intel.com/i915: 1
           antennas:
             image:
-              repository: thejf/antennas
+              repository: ghcr.io/jfarseneau/antennas
               tag: latest
               pullPolicy: IfNotPresent
             envFrom:

@@ -148,5 +148,10 @@ spec:
       timeshift:
         enabled: true
         type: emptyDir
+      npm-cache:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - /.npm
 # confgure the app using hard coded values
 # and setup plugin cloning using the git repos

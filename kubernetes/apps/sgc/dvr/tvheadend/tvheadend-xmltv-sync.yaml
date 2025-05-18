@@ -1,0 +1,102 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app tvheadend-xmltv-sync
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: tvheadend
+  values:
+    controllers:
+      *app :
+        type: cronjob
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "0 */2 * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        containers:
+          *app :
+            image:
+              repository: alpine/socat
+              tag: latest
+              pullPolicy: Always
+            command:
+              - /epgp/startup.sh
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                cpu: 10m
+                memory: 256Mi
+    tolerations:
+      # - key: amd.com/gpu
+      #   operator: Exists
+      #   effect: NoSchedule
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+    configMaps:
+      startup-sh:
+        enabled: true
+        data:
+          startup.sh: |-
+            #!/bin/sh
+            echo "Downloading EPG data..."
+
+            find /tivi-sync
+            find /tvheadend -name "*.sock"
+            find /.config/hts/ -name "*.sock"
+            find /.config/hts/epggrab/ -name "*.sock"
+
+            find /tivi-sync -name "*.xml" -print0 | while IFS= read -r -d '' file; do
+                echo "Processing file: $file"
+                cat $file | socat - UNIX:/.config/hts/epggrab/xmltv.sock
+            done
+
+            echo "EPG Updated successfully."
+
+    persistence:
+      tvheadend:
+        existingClaim: tvheadend
+      tivi-sync:
+        existingClaim: tivi-sync
+      startup-sh:
+        enabled: true
+        type: configMap
+        name: tvheadend-startup-sh
+        defaultMode: 493
+        globalMounts:
+          - path: /epgp/startup.sh
+            subPath: startup.sh
+# confgure the app using hard coded values
+# and setup plugin cloning using the git repos

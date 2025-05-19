@@ -90,10 +90,11 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
-        hosts:
-          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        defaultBackend:
+          service:
+            name: "{{ .Release.Name }}"
+            port:
+              name: http
+          tls:
+              - hosts:
+                  - "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"

@@ -140,4 +140,4 @@ spec:
               name: http
           tls:
               - hosts:
-                  - "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
+                  - "{{ .Release.Name }}"

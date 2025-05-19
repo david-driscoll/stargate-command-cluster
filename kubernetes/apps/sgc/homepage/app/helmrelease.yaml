@@ -134,8 +134,8 @@ spec:
               name: http
           tls:
               - hosts:
-                  - "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
-                  - "library.${TAILSCALE_DOMAIN}"
+                  - "{{ .Release.Name }}"
+                  - "library"
     persistence:
       config:
         type: configMap

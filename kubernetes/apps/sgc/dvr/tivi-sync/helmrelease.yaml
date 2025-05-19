@@ -138,4 +138,4 @@ spec:
               name: http
           tls:
               - hosts:
-                  - "tivi.${TAILSCALE_DOMAIN}"
+                  - "tivi"

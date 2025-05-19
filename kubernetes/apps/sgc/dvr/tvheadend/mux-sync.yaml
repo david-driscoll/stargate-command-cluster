@@ -38,7 +38,7 @@ spec:
         containers:
           *app :
             image:
-              repository: alpine/socat
+              repository: alpine/alpine
               tag: latest
               pullPolicy: Always
             command:
@@ -73,7 +73,7 @@ spec:
         enabled: true
         data:
           startup.sh: |-
-            #!/bin/bash
+            #!/bin/sh
             # Network Name to target
             NETWORK_NAME="United States"
 

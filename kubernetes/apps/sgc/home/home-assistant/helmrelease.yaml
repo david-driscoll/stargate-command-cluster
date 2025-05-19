@@ -132,7 +132,7 @@ spec:
             name: *app
             port:
               name: http
-          tls:
+          hosts:
             - hosts:
                 - *app
                 - "home"
@@ -164,7 +164,7 @@ spec:
             name: "home-assistant-code"
             port:
               name: http
-          tls:
+          hosts:
             - hosts:
                 - "home-assistant-code"
                 - "home-code"

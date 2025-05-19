@@ -133,9 +133,9 @@ spec:
             port:
               name: http
           tls:
-              - hosts:
-                  - "{{ .Release.Name }}"
-                  - "home"
+            - hosts:
+                - *app
+                - "home"
       code-internal:
         className: internal
         annotations:
@@ -161,13 +161,13 @@ spec:
           tailscale.com/hostname: home-assistant-code
         defaultBackend:
           service:
-            name: "{{ .Release.Name }}-code"
+            name: "home-assistant-code"
             port:
               name: http
           tls:
-              - hosts:
-                  - "{{ .Release.Name }}-code"
-                  - "home-code"
+            - hosts:
+                - "home-assistant-code"
+                - "home-code"
 
     persistence:
       config:

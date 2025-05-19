@@ -1,4 +1,3 @@
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -50,9 +49,9 @@ spec:
             # chown -R 568:568 /config
             # chmod -R 777 /config
             args: |-
-                chown -R 568:568 /config
-                chmod -R 777 /config
-                echo "Done.";
+              chown -R 568:568 /config
+              chmod -R 777 /config
+              echo "Done.";
         containers:
           *app :
             image:
@@ -164,8 +163,8 @@ spec:
             port:
               name: http
           tls:
-              - hosts:
-                  - "{{ .Release.Name }}"
+            - hosts:
+                - *app
 
     persistence:
       config:

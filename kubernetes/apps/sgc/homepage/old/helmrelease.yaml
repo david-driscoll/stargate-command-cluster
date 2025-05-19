@@ -171,12 +171,14 @@ spec:
           - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: 80
           - host: "library.${ROOT_DOMAIN}"
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: 80

@@ -116,6 +116,7 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
+          tailscale.com/hostname: *app
         defaultBackend:
           service:
             name: *app

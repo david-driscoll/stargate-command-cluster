@@ -133,10 +133,6 @@ spec:
             done
 
     persistence:
-      tvheadend:
-        existingClaim: tvheadend
-      tivi-sync:
-        existingClaim: tivi-sync
       startup-sh:
         enabled: true
         type: configMap

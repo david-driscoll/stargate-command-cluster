@@ -17,6 +17,14 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/system-upgrade/
     dest: kubernetes/apps/system-upgrade/
     deleteOrphaned: true
+  - source: kubernetes/components/tailscale/
+    dest: kubernetes/components/tailscale/
+    deleteOrphaned: true
+  - source: kubernetes/components/volsync/
+    dest: kubernetes/components/volsync/
+    deleteOrphaned: true
+  - source: kubernetes/components/common/democratic-csi.yaml
+    dest: kubernetes/components/common/democratic-csi.yaml
   - source: kubernetes/components/common/shared-secrets.sops.yaml
     dest: kubernetes/components/common/shared-secrets.sops.yaml
   - source: talos/talenv.yaml

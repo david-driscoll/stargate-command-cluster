@@ -126,16 +126,3 @@ spec:
           # gethomepage.dev/widget.type: "scrypted"
           # gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
           # gethomepage.dev/app: "tivi"
-      tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: "tivi"
-        defaultBackend:
-          service:
-            name: "tivi"
-            port:
-              name: http
-          tls:
-              - hosts:
-                  - "tivi"

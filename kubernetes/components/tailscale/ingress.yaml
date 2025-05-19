@@ -1,0 +1,15 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${APP}-tailscale
+spec:
+  defaultBackend:
+    service:
+      name: ${APP}
+      port:
+        name: "${TAILSCALE_PORT:=http}"
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - ${APP}

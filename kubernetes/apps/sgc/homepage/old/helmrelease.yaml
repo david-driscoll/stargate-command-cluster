@@ -186,13 +186,13 @@ spec:
           reloader.stakater.com/auto: "true"
           tailscale.com/hostname: *app
         hosts:
-          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
+          - host: "{{ .Release.Name }}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: 80
-          - host: "library.${TAILSCALE_DOMAIN}"
+          - host: "library"
             paths:
               - path: /
                 service:

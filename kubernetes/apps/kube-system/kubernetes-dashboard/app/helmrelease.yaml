@@ -69,7 +69,7 @@ spec:
 #       port:
 #         number: 9000
 #   rules:
-#     - host: "kubeui.${TAILSCALE_DOMAIN}"
+#     - host: "kubeui"
 #       tls:
 #         - hosts:
-#             - "kubeui.${TAILSCALE_DOMAIN}"
+#             - "kubeui"

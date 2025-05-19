@@ -134,8 +134,8 @@ spec:
               name: http
           tls:
               - hosts:
-                  - "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
-                  - "home.${TAILSCALE_DOMAIN}"
+                  - "{{ .Release.Name }}"
+                  - "home"
       code-internal:
         className: internal
         annotations:
@@ -166,8 +166,8 @@ spec:
               name: http
           tls:
               - hosts:
-                  - "{{ .Release.Name }}-code.${TAILSCALE_DOMAIN}"
-                  - "home-code.${TAILSCALE_DOMAIN}"
+                  - "{{ .Release.Name }}-code"
+                  - "home-code"
 
     persistence:
       config:

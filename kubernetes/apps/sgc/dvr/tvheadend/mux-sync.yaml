@@ -1,0 +1,146 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mux-sync
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: tvheadend
+  values:
+    controllers:
+      *app :
+        type: cronjob
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "0 */1 * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        containers:
+          *app :
+            image:
+              repository: alpine/socat
+              tag: latest
+              pullPolicy: Always
+            command:
+              - /epgp/startup.sh
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                cpu: 10m
+                memory: 256Mi
+    tolerations:
+      # - key: amd.com/gpu
+      #   operator: Exists
+      #   effect: NoSchedule
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+    configMaps:
+      startup-sh:
+        enabled: true
+        data:
+          startup.sh: |-
+            #!/bin/bash
+            # Network Name to target
+            NETWORK_NAME="United States"
+
+            # Fetch all MUXes by requesting a large limit value
+            MUXES=$(curl -s --digest -u "$TVH_USER:$TVH_PASS" "$TVH_URL/api/mpegts/mux/grid?start=0&limit=9999")
+
+            if [[ -z "$MUXES" ]]; then
+                echo "Error: No MUXes found in Tvheadend."
+                exit 1
+            fi
+
+            # Process each MUX in the targeted network
+            echo "$MUXES" | jq -c --arg net_name "$NETWORK_NAME" '.entries[] | select(.network == $net_name)' | while read -r mux; do
+                # Extract MUX UUID, Name, and Current URL
+                MUX_UUID=$(echo "$mux" | jq -r '.uuid')
+                MUX_NAME=$(echo "$mux" | jq -r '.name')
+                CURRENT_URL=$(echo "$mux" | jq -r '.iptv_url')
+
+                # Skip if the URL is already using ffmpeg pipe
+                if [[ "$CURRENT_URL" == pipe* ]]; then
+                    echo "Skipping MUX: $MUX_NAME - already using ffmpeg pipe"
+                    continue
+                fi
+
+                # Construct the new URL with ffmpeg
+                NEW_URL="pipe:///usr/bin/ffmpeg -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 \
+                    -reconnect_delay_max 2000 -probesize 1000k -analyzeduration 0 -fpsprobesize 0 -fflags -nobuffer \
+                    -err_detect ignore_err -i $CURRENT_URL -codec copy -f mpegts -tune zerolatency pipe:1"
+
+                # Form-encode the payload
+                PAYLOAD="node={\"uuid\":\"$MUX_UUID\",\"iptv_url\":\"$NEW_URL\"}"
+
+                # Send the update request
+                RESPONSE=$(curl -s --digest -u "$TVH_USER:$TVH_PASS" -X POST "$TVH_URL/api/idnode/save" \
+                    -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "$PAYLOAD")
+
+                # If the response is empty, warn instead of failing
+                if [[ "$RESPONSE" == "{}" ]]; then
+                    echo "  Warning: No confirmation from API for MUX: $MUX_NAME, re-checking..."
+                    sleep 2  # Wait before re-checking
+
+                    # Fetch updated MUX list with the same pagination parameters
+                    UPDATED_MUXES=$(curl -s --digest -u "$TVH_USER:$TVH_PASS" "$TVH_URL/api/mpegts/mux/grid?start=0&limit=9999")
+                    UPDATED_URL=$(echo "$UPDATED_MUXES" | jq -r --arg uuid "$MUX_UUID" '.entries[] | select(.uuid == $uuid) | .iptv_url')
+
+                    # Verify if the update was actually applied
+                    if [[ "$UPDATED_URL" == "$NEW_URL" ]]; then
+                        echo " Update confirmed for MUX: $MUX_NAME."
+                    else
+                        echo " Failed to confirm update for MUX: $MUX_NAME."
+                    fi
+                elif echo "$RESPONSE" | grep -q '"success":true'; then
+                    echo " Updated MUX: $MUX_NAME successfully."
+                else
+                    echo " Failed to update MUX: $MUX_NAME. Response: $RESPONSE"
+                fi
+            done
+
+    persistence:
+      tvheadend:
+        existingClaim: tvheadend
+      tivi-sync:
+        existingClaim: tivi-sync
+      startup-sh:
+        enabled: true
+        type: configMap
+        name: tvheadend-xmltv-sync-startup-sh
+        defaultMode: 493
+        globalMounts:
+          - path: /epgp/startup.sh
+            subPath: startup.sh
+# confgure the app using hard coded values
+# and setup plugin cloning using the git repos

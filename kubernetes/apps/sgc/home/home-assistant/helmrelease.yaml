@@ -126,6 +126,7 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
+          tailscale.com/hostname: *app
         defaultBackend:
           service:
             name: *app
@@ -157,6 +158,7 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
+          tailscale.com/hostname: home-assistant-code
         defaultBackend:
           service:
             name: "{{ .Release.Name }}-code"

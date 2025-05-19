@@ -151,6 +151,6 @@ spec:
             name: *app
             port:
               name: http
-          tls:
+          hosts:
             - hosts:
                 - *app

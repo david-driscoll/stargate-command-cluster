@@ -132,10 +132,10 @@ spec:
             name: *app
             port:
               name: http
-          hosts:
-            - hosts:
-                - *app
-                - "home"
+        hosts:
+          - *app
+          - "home"
+
       code-internal:
         className: internal
         annotations:
@@ -164,10 +164,9 @@ spec:
             name: "home-assistant-code"
             port:
               name: http
-          hosts:
-            - hosts:
-                - "home-assistant-code"
-                - "home-code"
+        hosts:
+          - "home-assistant-code"
+          - "home-code"
 
     persistence:
       config:

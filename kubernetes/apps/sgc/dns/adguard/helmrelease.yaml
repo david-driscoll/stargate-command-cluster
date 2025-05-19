@@ -234,19 +234,6 @@ spec:
                 service:
                   identifier: primary
                   port: http
-      tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: *app
-        defaultBackend:
-          service:
-            name: *app
-            port:
-              name: http
-          hosts:
-            - hosts:
-                - *app
       primary: &ingress
         className: internal
         annotations:

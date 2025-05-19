@@ -58,6 +58,7 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/volsync
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app
@@ -90,6 +91,11 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  components:
+    - ../../../../components/tailscale
+  postBuild:
+    substitute:
+      APP: *app
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -126,6 +132,7 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/volsync
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app
@@ -162,6 +169,7 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/volsync
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app
@@ -198,6 +206,7 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/volsync
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app

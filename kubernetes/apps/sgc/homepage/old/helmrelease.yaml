@@ -180,21 +180,3 @@ spec:
                 service:
                   identifier: app
                   port: 80
-      tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: *app
-        hosts:
-          - host: "{{ .Release.Name }}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 80
-          - host: "library"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 80

@@ -26,6 +26,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  components:
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app
@@ -42,8 +44,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: volsync
-      namespace: volsync-system
     - name: cloudflare-dns
       namespace: network
   path: ./kubernetes/apps/sgc/dns/records

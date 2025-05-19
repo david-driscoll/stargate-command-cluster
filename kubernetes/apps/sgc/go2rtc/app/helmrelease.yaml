@@ -141,16 +141,3 @@ spec:
           gethomepage.dev/widget.type: "go2rtc"
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
           gethomepage.dev/app: "{{ .Release.Name }}"
-      tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: *app
-        defaultBackend:
-          service:
-            name: *app
-            port:
-              name: http
-          hosts:
-            - hosts:
-                - *app

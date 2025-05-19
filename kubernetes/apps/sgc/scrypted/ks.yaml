@@ -24,6 +24,7 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/volsync
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app

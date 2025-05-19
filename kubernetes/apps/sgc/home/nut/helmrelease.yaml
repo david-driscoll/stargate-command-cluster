@@ -72,7 +72,6 @@ spec:
           http:
             port: &port 1880
 
-
     ingress:
       internal:
         className: internal
@@ -97,5 +96,5 @@ spec:
             port:
               name: http
           tls:
-              - hosts:
-                  - "{{ .Release.Name }}"
+            - hosts:
+                - *app

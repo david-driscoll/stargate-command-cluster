@@ -123,8 +123,8 @@ spec:
             port:
               name: http
           tls:
-              - hosts:
-                  - "{{ .Release.Name }}"
+            - hosts:
+                - *app
 
     persistence:
       *app :

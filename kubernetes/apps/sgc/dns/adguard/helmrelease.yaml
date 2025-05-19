@@ -59,34 +59,34 @@ spec:
           affinity:
             podAntiAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 1
-                podAffinityTerm:
-                  topologyKey: kubernetes.io/hostname
-                  labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: *app
-                      app.kubernetes.io/component: *app
+                - weight: 1
+                  podAffinityTerm:
+                    topologyKey: kubernetes.io/hostname
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: *app
+                        app.kubernetes.io/component: *app
           tolerations:
-          - key: CriticalAddonsOnly
-            operator: Exists
-          - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-            effect: NoSchedule
-          - key: node-role.kubernetes.io/master
-            operator: Exists
-            effect: NoSchedule
+            - key: CriticalAddonsOnly
+              operator: Exists
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/master
+              operator: Exists
+              effect: NoSchedule
         statefulset:
           persistentVolumeClaimRetentionPolicy:
             whenDeleted: Delete
             whenScaled: Delete
           volumeClaimTemplates:
-          - name: data
-            storageClass: longhorn
-            accessMode: ReadWriteOnce
-            size: 4Gi
-            globalMounts:
-            - path: /opt/adguardhome/conf
-              subPath: conf
+            - name: data
+              storageClass: longhorn
+              accessMode: ReadWriteOnce
+              size: 4Gi
+              globalMounts:
+                - path: /opt/adguardhome/conf
+                  subPath: conf
       sync:
         containers:
           node-sync:
@@ -152,11 +152,11 @@ spec:
         name: le-production-tls
         type: secret
         globalMounts:
-          - path: '/certs'
+          - path: "/certs"
       work:
         type: emptyDir
         globalMounts:
-        - path: /opt/adguardhome/work
+          - path: /opt/adguardhome/work
 
     service:
       dns:
@@ -245,8 +245,8 @@ spec:
             port:
               name: http
           tls:
-              - hosts:
-                  - "{{ .Release.Name }}"
+            - hosts:
+                - *app
       primary: &ingress
         className: internal
         annotations:

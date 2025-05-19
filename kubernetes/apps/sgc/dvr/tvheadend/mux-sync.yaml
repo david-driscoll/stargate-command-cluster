@@ -43,6 +43,9 @@ spec:
               pullPolicy: Always
             command:
               - /epgp/startup.sh
+            envFrom:
+              - secretRef:
+                  name: mux-secret-secret
             resources:
               requests:
                 cpu: 10m

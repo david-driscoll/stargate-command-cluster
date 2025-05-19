@@ -110,7 +110,7 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         hosts:
-          - host: "homepage.${ROOT_DOMAIN}"
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -126,19 +126,15 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
-        hosts:
-          - host: "homepage.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
-          - host: "library.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
+        defaultBackend:
+          service:
+            name: "{{ .Release.Name }}"
+            port:
+              name: http
+          tls:
+              - hosts:
+                  - "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
+                  - "library.${TAILSCALE_DOMAIN}"
     persistence:
       config:
         type: configMap

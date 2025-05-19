@@ -130,10 +130,11 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
-        hosts:
-          - host: "tivi.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: *http
+        defaultBackend:
+          service:
+            name: "tivi"
+            port:
+              name: http
+          tls:
+              - hosts:
+                  - "tivi.${TAILSCALE_DOMAIN}"

@@ -126,19 +126,15 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
-        hosts:
-          - host: "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-          - host: "home"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        defaultBackend:
+          service:
+            name: "{{ .Release.Name }}"
+            port:
+              name: http
+          tls:
+              - hosts:
+                  - "{{ .Release.Name }}.${TAILSCALE_DOMAIN}"
+                  - "home.${TAILSCALE_DOMAIN}"
       code-internal:
         className: internal
         annotations:
@@ -161,19 +157,15 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
-        hosts:
-          - host: "{{ .Release.Name }}-code.${TAILSCALE_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: code
-                  port: http
-          - host: "home-code"
-            paths:
-              - path: /
-                service:
-                  identifier: code
-                  port: http
+        defaultBackend:
+          service:
+            name: "{{ .Release.Name }}-code"
+            port:
+              name: http
+          tls:
+              - hosts:
+                  - "{{ .Release.Name }}-code.${TAILSCALE_DOMAIN}"
+                  - "home-code.${TAILSCALE_DOMAIN}"
 
     persistence:
       config:

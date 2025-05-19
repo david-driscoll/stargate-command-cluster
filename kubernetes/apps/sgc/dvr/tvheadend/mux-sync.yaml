@@ -140,7 +140,7 @@ spec:
       startup-sh:
         enabled: true
         type: configMap
-        name: tvheadend-xmltv-sync-startup-sh
+        name: mux-sync-startup-sh
         defaultMode: 493
         globalMounts:
           - path: /mux/startup.sh

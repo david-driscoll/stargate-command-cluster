@@ -135,7 +135,6 @@ spec:
             port:
               name: http
         hosts:
-          - *app
           - "home"
 
       code-internal:
@@ -169,7 +168,6 @@ spec:
             port:
               name: http
         hosts:
-          - "home-assistant-code"
           - "home-code"
 
     persistence:

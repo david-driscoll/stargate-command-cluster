@@ -93,4 +93,8 @@ spec:
       *app :
         existingClaim: *app
         globalMounts:
-          - path: /opt/hlsp/
+          - path: /opt/hlsp/config
+            subPath: config
+          - path: /opt/hlsp/plugins
+            subPath: plugins
+

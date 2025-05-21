@@ -84,7 +84,7 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
-  path: ./kubernetes/apps/sgc/media/watched-sync
+  path: ./kubernetes/apps/sgc/media/watchstate
   prune: true
   sourceRef:
     kind: GitRepository

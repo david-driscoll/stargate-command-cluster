@@ -29,29 +29,6 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          restore:
-            securityContext:
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: true
-              runAsUser: 0
-              runAsGroup: 0
-              fsGroup: 0
-              supplementalGroups: [0, 1, 44, 109, 303, 568, 10000]
-              capabilities: { drop: ["ALL"] }
-            image:
-              repository: busybox
-              tag: 1.37.0
-              pullPolicy: IfNotPresent
-            command:
-              - "/bin/sh"
-              - "-c"
-            # chown -R 568:568 /config
-            # chmod -R 777 /config
-            args: |-
-              chown -R 568:568 /config
-              chmod -R 777 /config
-              echo "Done.";
         containers:
           *app :
             image:

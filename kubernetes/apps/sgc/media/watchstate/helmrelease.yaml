@@ -67,7 +67,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: *port
+            port: &port 8080
 
     ingress:
       internal:

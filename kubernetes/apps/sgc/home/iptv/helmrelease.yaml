@@ -73,9 +73,8 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           iptv:
-            # docker run -it --rm -p 8080:8080/tcp ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy:v3.7.0-arm64 --m3u-url https://tivi.driscoll.tech/us.m3u --port 8080 --user user --password pass --hostname 127.0.0.1
             image:
-              repository: ghcr.io/pierre-emmanuelj/cpiptv-proxy
+              repository: ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy
               tag: v3.7.0
               pullPolicy: IfNotPresent
             env:

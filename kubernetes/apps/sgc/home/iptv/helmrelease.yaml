@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tivi-sync
+  name: &app iptv
 spec:
   timeout: 5m
   interval: 30m
@@ -47,15 +47,18 @@ spec:
           *app :
             image:
               repository: ghcr.io/david-driscoll/tivi-sync
-              tag: latest
+              tag: 1.0.19
               pullPolicy: Always
             envFrom:
               - secretRef:
                   name: tivi-secret
+              - secretRef:
+                  name: iptv-proxy-secret
             env:
                 TIVI__CACHEDIRECTORY: /config/
-                TIVI__RESULTSDIRECTORY: /config/
+                TIVI__RESULTSDIRECTORY: /cache/
                 TIVI__INTERVALINSECONDS: 600
+                PROXY_HOSTNAME: iptv.${ROOT_DOMAIN}
             resources:
               requests:
                 cpu: 100m
@@ -69,6 +72,25 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
+          iptv:
+            # docker run -it --rm -p 8080:8080/tcp ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy:v3.7.0-arm64 --m3u-url https://tivi.driscoll.tech/us.m3u --port 8080 --user user --password pass --hostname 127.0.0.1
+            image:
+              repository: ghcr.io/pierre-emmanuelj/cpiptv-proxy
+              tag: v3.7.0
+              pullPolicy: IfNotPresent
+            env:
+              M3U_URL:
+                secretKeyRef:
+                  name: tivi-secret
+                  key: M3U_URL
+              PORT: &proxy 8080
+              HOSTNAME: "iptv.${ROOT_DOMAIN}"
+              GIN_MODE: release
+              HTTPS: 1
+              ADVERTISED_PORT: 443
+              USER: user
+              PASSWORD: password
+
           static:
             image:
               repository: joseluisq/static-web-server
@@ -99,6 +121,9 @@ spec:
         ports:
           http:
             port: *http
+          proxy:
+            port: *proxy
+
 
     persistence:
       config:
@@ -116,6 +141,18 @@ spec:
                 service:
                   identifier: *app
                   port: *http
+          - host: "iptv.${ROOT_DOMAIN}"
+            paths:
+              - path: /icons/
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *http
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *proxy
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"

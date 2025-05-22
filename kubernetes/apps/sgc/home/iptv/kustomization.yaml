@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret.yaml
-  - ./dnsendpoint.yaml
+  - ./config.sops.yaml

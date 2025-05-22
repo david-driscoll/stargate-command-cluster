@@ -127,8 +127,11 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      cache:
-        type: emptyDir
+        globalMounts:
+          - path: /config
+            subPath: config
+          - path: /cache
+            subPath: cache
     ingress:
       internal:
         className: internal

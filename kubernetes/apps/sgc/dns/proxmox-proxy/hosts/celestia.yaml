@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: celestia-host
-data:
-  PROXMOX_DOMAIN: "${CELESTIA_DOMAIN}"
-  PROXMOX_IP: "${CELESTIA_HOST_IP}"
-  PROXMOX_HOST: "${CELESTIA_HOST_DOMAIN}"

@@ -30,7 +30,7 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
     controllers:
-      *app :
+      iptv-sync :
         type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"
@@ -68,11 +68,12 @@ spec:
                 cpu: 200m
                 # these files are large, we GC immediately.
                 memory: 6Gi
-      static:
+
+      proxy:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          iptv:
+          proxy:
             image:
               repository: ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy
               tag: v3.7.0
@@ -89,7 +90,17 @@ spec:
               ADVERTISED_PORT: 443
               USER: user
               PASSWORD: password
-
+            resources:
+              requests:
+                cpu: 100M
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+                cpu: 1000m
+      static:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
           static:
             image:
               repository: joseluisq/static-web-server
@@ -115,11 +126,14 @@ spec:
                 memory: 100Mi
                 cpu: 20m
     service:
-      *app :
+      static:
         controller: static
         ports:
           http:
             port: *http
+      proxy:
+        controller: proxy
+        ports:
           proxy:
             port: *proxy
 
@@ -141,20 +155,20 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: *app
-                  port: *http
+                  identifier: static
+                  port: http
           - host: "iptv.${ROOT_DOMAIN}"
             paths:
               - path: /icons/
                 pathType: Prefix
                 service:
-                  identifier: *app
-                  port: *http
+                  identifier: static
+                  port: http
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: *app
-                  port: *proxy
+                  identifier: proxy
+                  port: proxy
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"

@@ -55,8 +55,8 @@ spec:
               - secretRef:
                   name: iptv-proxy-secret
             env:
-                TIVI__CACHEDIRECTORY: /config/
-                TIVI__RESULTSDIRECTORY: /cache/
+                TIVI__CACHEDIRECTORY: /cache/
+                TIVI__RESULTSDIRECTORY: /config/
                 TIVI__INTERVALINSECONDS: 600
                 PROXY_HOSTNAME: iptv.${ROOT_DOMAIN}
             resources:

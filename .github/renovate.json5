@@ -75,6 +75,19 @@
       },
     },
     {
+      description: 'Siderolabs',
+      groupName: 'Siderolabs',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'siderolabs',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+    },
+    {
       description: 'Tailscale',
       groupName: 'Tailscale',
       matchDatasources: [

@@ -43,6 +43,17 @@ spec:
           startingDeadlineSeconds: 30
           successfulJobsHistory: 3
           suspend: false
+        initContainers:
+          init:
+            image:
+              repository: busybox
+              tag: 1.35.0
+              pullPolicy: IfNotPresent
+            command:
+              - /bin/sh
+              - -c
+              - |
+                rm -rf /data/*
         containers:
           *app :
             image:
@@ -146,6 +157,7 @@ spec:
             subPath: config
           - path: /cache
             subPath: cache
+          - path: /data
     ingress:
       internal:
         className: internal

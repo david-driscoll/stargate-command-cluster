@@ -30,7 +30,7 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
     controllers:
-      iptv-sync :
+      sync :
         type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"

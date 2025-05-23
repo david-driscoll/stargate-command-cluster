@@ -92,7 +92,7 @@ spec:
               PASSWORD: password
             resources:
               requests:
-                cpu: 100M
+                cpu: 100m
                 memory: 256Mi
               limits:
                 memory: 1Gi

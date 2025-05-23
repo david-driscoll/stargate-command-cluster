@@ -78,7 +78,7 @@
       description: 'Siderolabs',
       groupName: 'Siderolabs',
       matchDepNames: [
-        '*siderolabs*',
+        'ghcr.io/siderolabs/*',
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',

@@ -93,9 +93,6 @@ spec:
               requests:
                 cpu: 100m
                 memory: 256Mi
-              limits:
-                memory: 1Gi
-                cpu: 1000m
       static:
         annotations:
           reloader.stakater.com/auto: "true"

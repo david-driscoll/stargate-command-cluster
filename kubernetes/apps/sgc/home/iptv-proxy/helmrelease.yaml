@@ -87,8 +87,6 @@ spec:
               GIN_MODE: release
               HTTPS: 1
               ADVERTISED_PORT: 443
-              USER: user
-              PASSWORD: password
             resources:
               requests:
                 cpu: 100m

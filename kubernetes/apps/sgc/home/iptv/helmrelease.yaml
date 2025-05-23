@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app iptv
+  name: &app iptv-proxy
 spec:
   timeout: 15m
   interval: 30m
@@ -30,7 +30,7 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
     controllers:
-      sync :
+      sync:
         type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"
@@ -43,17 +43,6 @@ spec:
           startingDeadlineSeconds: 30
           successfulJobsHistory: 3
           suspend: false
-        initContainers:
-          init:
-            image:
-              repository: busybox
-              tag: 1.35.0
-              pullPolicy: IfNotPresent
-            command:
-              - /bin/sh
-              - -c
-              - |
-                rm -rf /data/*
         containers:
           *app :
             image:
@@ -66,10 +55,9 @@ spec:
               - secretRef:
                   name: iptv-proxy-secret
             env:
-                TIVI__CACHEDIRECTORY: /cache/
-                TIVI__RESULTSDIRECTORY: /config/
-                TIVI__INTERVALINSECONDS: 600
-                PROXY_HOSTNAME: iptv.${ROOT_DOMAIN}
+              TIVI__CACHEDIRECTORY: /cache/
+              TIVI__RESULTSDIRECTORY: /config/
+              PROXY_HOSTNAME: iptv.${ROOT_DOMAIN}
             resources:
               requests:
                 cpu: 100m
@@ -147,7 +135,6 @@ spec:
         ports:
           proxy:
             port: *proxy
-
 
     persistence:
       config:

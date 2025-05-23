@@ -251,14 +251,14 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app iptv
+  name: &app iptv-proxy
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/iptv
+  path: ./kubernetes/apps/sgc/home/iptv-proxy
   prune: true
   sourceRef:
     kind: GitRepository

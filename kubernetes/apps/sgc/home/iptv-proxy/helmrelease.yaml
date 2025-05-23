@@ -68,7 +68,7 @@ spec:
                 # these files are large, we GC immediately.
                 memory: 6Gi
 
-      proxy:
+      host:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:

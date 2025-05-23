@@ -87,6 +87,9 @@ spec:
               GIN_MODE: release
               HTTPS: 1
               ADVERTISED_PORT: 443
+            envFrom:
+              - secretRef:
+                  name: iptv-proxy-secret
             resources:
               requests:
                 cpu: 100m

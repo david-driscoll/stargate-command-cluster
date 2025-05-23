@@ -72,7 +72,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          proxy:
+          host:
             image:
               repository: ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy
               tag: v3.7.0
@@ -130,8 +130,8 @@ spec:
         ports:
           http:
             port: *http
-      proxy:
-        controller: proxy
+      host:
+        controller: host
         ports:
           proxy:
             port: *proxy
@@ -166,7 +166,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: proxy
+                  identifier: host
                   port: proxy
         annotations:
           reloader.stakater.com/auto: "true"

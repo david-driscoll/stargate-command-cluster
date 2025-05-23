@@ -82,7 +82,7 @@ spec:
                 secretKeyRef:
                   name: tivi-secret
                   key: M3U_URL
-              PORT: &proxy 8080
+              PORT: &host 8080
               HOSTNAME: "iptv.${ROOT_DOMAIN}"
               GIN_MODE: release
               HTTPS: 1
@@ -133,8 +133,8 @@ spec:
       host:
         controller: host
         ports:
-          proxy:
-            port: *proxy
+          host:
+            port: *host
 
     persistence:
       config:
@@ -158,16 +158,16 @@ spec:
                   port: http
           - host: "iptv.${ROOT_DOMAIN}"
             paths:
-              - path: /icons/
-                pathType: Prefix
-                service:
-                  identifier: static
-                  port: http
               - path: /
                 pathType: Prefix
                 service:
                   identifier: host
-                  port: proxy
+                  port: host
+              - path: /picons/
+                pathType: Prefix
+                service:
+                  identifier: static
+                  port: http
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"

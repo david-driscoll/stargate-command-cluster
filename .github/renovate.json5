@@ -80,8 +80,9 @@
       matchDatasources: [
         'docker',
       ],
+    
       matchPackageNames: [
-        'siderolabs',
+        '*siderolabs*',
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',

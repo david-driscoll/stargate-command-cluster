@@ -1,0 +1,126 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app tailscale-idp
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: uninstall
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+        initContainers:
+          tailscale-init:
+            image:
+              repository: alpine/git
+              tag: v2.47.2
+            command: ["/bin/sh","-c"]
+            args: |
+              git clone git@github.com:tailscale/tailscale /tailscale/
+          idpt-build:
+            dependsOn:
+              - tailscale-init
+            image:
+              repository: golang
+              tag: 1.24.3
+            command: ["/bin/sh","-c"]
+            args: |
+              cd /tailscale/
+              go mod download
+              go build -o /tailscale/tsidp ./cmd/tsidp
+              chmod +x /tailscale/tsidp
+        containers:
+          main:
+            image:
+              repository: golang
+              tag: 1.24.3
+            env:
+              TS_API_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-oauth
+                    key: username
+              TS_API_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-oauth
+                    key: credential
+              TS_HOSTNAME: "idp"
+            command: ["/bin/sh","-c"]
+            args: |
+                export TS_AUTHKEY=$(go run tailscale.com/cmd/get-authkey@latest -ephemeral -tags "tag:${CLUSTER_CNAME}")
+                /tailscale/tsidp
+
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 25m
+              limits:
+                memory: 256Mi
+                cpu: 100m
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      shareProcessNamespace: true
+
+    persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /var/lib/tsidp
+      tailscale:
+        type: emptyDir
+
+    service:
+      app:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 1880
+
+    ingress:
+      internal:
+        className: internal
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        hosts:
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http

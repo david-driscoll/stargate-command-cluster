@@ -16,3 +16,4 @@ resources:
   # - ./scrypted/ks.yaml
   - ./dvr/ks.yaml
   - ./media/ks.yaml
+  - ./idp/ks.yaml

@@ -36,4 +36,11 @@ spec:
     name: intel-gpu-plugin
     nodeFeatureRule: true
     sharedDevNum: 2 # the higher the number, the less resource slices each client gets, consider setting this t
+    image:
+      # renovate: datasource=docker depName=ghcr.io/home-operations/charts-mirror/intel-device-plugins-gpu
+      tag: 0.32.1
+    initImage:
+      # renovate: datasource=docker depName=ghcr.io/home-operations/charts-mirror/intel-device-plugins-gpu
+      tag: 0.32.1
+
 

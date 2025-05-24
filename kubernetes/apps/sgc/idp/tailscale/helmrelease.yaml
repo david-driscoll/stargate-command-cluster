@@ -34,39 +34,11 @@ spec:
             runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
-        initContainers:
-          tailscale-init:
-            image:
-              repository: alpine/git
-              tag: v2.47.2
-            command: ["/bin/sh","-c"]
-            args: |
-              git clone https://github.com/tailscale/tailscale.git /tailscale/
-          idpt-build:
-            dependsOn:
-              - tailscale-init
-            image:
-              repository: golang
-              tag: 1.24.3
-            command: ["/bin/sh","-c"]
-            env:
-              # renovate: datasource=github-releases depName=tailscale/tailscale
-              TAILSCALE_VERSION: 1.84.0
-              HOME: "/user"
-            args: |
-              mkdir ${HOME}
-              touch ${HOME}/.gitconfig
-              git config --global --add safe.directory /tailscale
-              cd /tailscale/
-              git checkout v${TAILSCALE_VERSION}
-              go mod download
-              go build -o /tailscale/tsidp ./cmd/tsidp
-              chmod +x /tailscale/tsidp
         containers:
           main:
             image:
-              repository: golang
-              tag: 1.24.3
+              repository: ghcr.io/david-driscoll/tailscale-idp:v1.84.0
+              tag: v1.84.0
             env:
               TS_API_CLIENT_ID:
                 valueFrom:

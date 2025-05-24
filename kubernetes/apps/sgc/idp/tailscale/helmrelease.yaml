@@ -42,7 +42,6 @@ spec:
             command: ["/bin/sh","-c"]
             args: |
               git clone https://github.com/tailscale/tailscale.git /tailscale/
-
           idpt-build:
             dependsOn:
               - tailscale-init
@@ -54,6 +53,7 @@ spec:
               # renovate: datasource=github-releases depName=tailscale/tailscale
               TAILSCALE_VERSION: 1.84.0
             args: |
+              git config --global --add safe.directory /tailscale
               cd /tailscale/
               git checkout v${TAILSCALE_VERSION}
               go mod download

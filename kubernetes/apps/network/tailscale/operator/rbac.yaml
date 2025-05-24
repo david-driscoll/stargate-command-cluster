@@ -2,30 +2,29 @@
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  name: tailscale-authkey
+  name: tailscale-secret-manager
   namespace: network
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: tailscale-authkey
-  namespace: network
+  namespace: default
+  name: tailscale-secret-manager
 rules:
-  - apiGroups: ["apps", "extensions"]
-    resources: ["deployments"]
-    resourceNames: ["emby"]
-    verbs: ["get", "patch", "list", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "create", "update", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: tailscale-authkey
+  name: tailscale-secret-manager
   namespace: network
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: tailscale-authkey
+  name: tailscale-secret-manager
 subjects:
   - kind: ServiceAccount
-    name: tailscale-authkey
+    name: tailscale-secret-manager
     namespace: network

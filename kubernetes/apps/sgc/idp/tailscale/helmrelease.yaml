@@ -42,8 +42,6 @@ spec:
             command: ["/bin/sh","-c"]
             args: |
               git clone https://github.com/tailscale/tailscale.git /tailscale/
-              chown -R 568:568 /tailscale/
-              chmod 777 /tailscale/
           idpt-build:
             dependsOn:
               - tailscale-init
@@ -54,7 +52,9 @@ spec:
             env:
               # renovate: datasource=github-releases depName=tailscale/tailscale
               TAILSCALE_VERSION: 1.84.0
+              USER: "user"
             args: |
+              git config --global --add safe.directory /tailscale
               cd /tailscale/
               git checkout v${TAILSCALE_VERSION}
               go mod download
@@ -108,6 +108,8 @@ spec:
             subPath: data
           - path: /.cache
             subPath: cache
+          - path: /user
+            subPath: user
       tailscale:
         type: emptyDir
 

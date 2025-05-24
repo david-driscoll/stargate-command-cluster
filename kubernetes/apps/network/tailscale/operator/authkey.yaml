@@ -26,16 +26,18 @@ spec:
       namespace: kube-system
   values:
     controllers:
-      init:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        type: job
-        job:
+        cronjob:
           backoffLimit: 6
-          activeDeadlineSeconds: 3600
-          ttlSecondsAfterFinished: 3600
-          parallelism: 1
-          completions: 1
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "0 0 * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
         containers:
           main: &job
             image:
@@ -83,7 +85,6 @@ spec:
               kubectl annotate secret tailscale-authkey reflector.v1.k8s.emberstack.com/reflection-allowed='true' --dry-run=client -o yaml | kubectl apply -f -
               kubectl annotate secret tailscale-authkey reloader.stakater.com/auto='true' --dry-run=client -o yaml | kubectl apply -f -
 
-            restartPolicy: OnFailure
             resources:
               requests:
                 memory: 128Mi
@@ -91,6 +92,20 @@ spec:
               limits:
                 memory: 256Mi
                 cpu: 20m
+      init:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        type: job
+        job:
+          backoffLimit: 6
+          activeDeadlineSeconds: 3600
+          ttlSecondsAfterFinished: 3600
+          parallelism: 1
+          completions: 1
+        containers:
+          main:
+            <<: *job
+            restartPolicy: OnFailure
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
@@ -104,7 +119,8 @@ spec:
           suspend: false
         type: cronjob
         containers: &containers
-          main: *job
+          main:
+            <<: *job
 
     defaultPodOptions:
       securityContext:

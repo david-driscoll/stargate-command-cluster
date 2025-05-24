@@ -1,0 +1,31 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: tailscale-authkey
+  namespace: network
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: tailscale-authkey
+  namespace: network
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["emby"]
+    verbs: ["get", "patch", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tailscale-authkey
+  namespace: network
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: tailscale-authkey
+subjects:
+  - kind: ServiceAccount
+    name: tailscale-authkey
+    namespace: network

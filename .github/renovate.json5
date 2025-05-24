@@ -87,9 +87,6 @@
     {
       description: 'Tailscale',
       groupName: 'Tailscale',
-      matchDatasources: [
-        'docker',
-      ],
       matchPackageNames: [
         'ghcr.io/tailscale/*',
         'tailscale*',

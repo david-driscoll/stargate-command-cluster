@@ -106,21 +106,6 @@ spec:
           main:
             <<: *job
             restartPolicy: OnFailure
-      *app :
-        annotations:
-          reloader.stakater.com/auto: "true"
-        cronjob:
-          backoffLimit: 6
-          concurrencyPolicy: Forbid
-          failedJobsHistory: 2
-          schedule: "0 0 * * *"
-          startingDeadlineSeconds: 30
-          successfulJobsHistory: 3
-          suspend: false
-        type: cronjob
-        containers: &containers
-          main:
-            <<: *job
 
     defaultPodOptions:
       securityContext:

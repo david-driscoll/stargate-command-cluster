@@ -89,6 +89,7 @@
       groupName: 'Tailscale',
       matchPackageNames: [
         'ghcr.io/tailscale/*',
+        'tailscale/*',
         'tailscale*',
       ],
       group: {
@@ -98,11 +99,10 @@
     {
       description: 'Traefik',
       groupName: 'Traefik',
-      matchDatasources: [
-        'docker',
-      ],
       matchPackageNames: [
-        'traefik',
+        'ghcr.io/traefik/*',
+        'traefik/*',
+        'traefik*',
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',

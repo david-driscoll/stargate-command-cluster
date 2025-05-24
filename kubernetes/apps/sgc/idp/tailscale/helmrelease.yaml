@@ -40,12 +40,8 @@ spec:
               repository: alpine/git
               tag: v2.47.2
             command: ["/bin/sh","-c"]
-            env:
-              # renovate: datasource=github-releases depName=tailscale/tailscale
-              TAILSCALE_VERSION: 1.84.0
             args: |
               git clone https://github.com/tailscale/tailscale.git /tailscale/
-              git checkout v${TAILSCALE_VERSION}
 
           idpt-build:
             dependsOn:
@@ -54,8 +50,12 @@ spec:
               repository: golang
               tag: 1.24.3
             command: ["/bin/sh","-c"]
+            env:
+              # renovate: datasource=github-releases depName=tailscale/tailscale
+              TAILSCALE_VERSION: 1.84.0
             args: |
               cd /tailscale/
+              git checkout v${TAILSCALE_VERSION}
               go mod download
               go build -o /tailscale/tsidp ./cmd/tsidp
               chmod +x /tailscale/tsidp

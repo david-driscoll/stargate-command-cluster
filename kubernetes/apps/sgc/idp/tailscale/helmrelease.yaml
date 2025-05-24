@@ -96,7 +96,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: *app
+        type: emptyDir
         globalMounts:
           - path: /var/lib/tsidp
       tailscale:

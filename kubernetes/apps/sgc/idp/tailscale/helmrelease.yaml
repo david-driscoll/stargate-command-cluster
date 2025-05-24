@@ -55,6 +55,7 @@ spec:
               HOME: "user"
             args: |
               mkdir /${HOME}
+              touch /${HOME}/.gitconfig
               git config --global --add safe.directory /tailscale
               cd /tailscale/
               git checkout v${TAILSCALE_VERSION}

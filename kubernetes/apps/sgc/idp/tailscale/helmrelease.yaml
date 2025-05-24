@@ -54,6 +54,7 @@ spec:
               TAILSCALE_VERSION: 1.84.0
               HOME: "user"
             args: |
+              mkdir /${HOME}
               git config --global --add safe.directory /tailscale
               cd /tailscale/
               git checkout v${TAILSCALE_VERSION}
@@ -104,11 +105,11 @@ spec:
       data:
         type: emptyDir
         globalMounts:
-          - path: /var/lib/tsidp
+          - path: /var/lib/tsidp/
             subPath: data
-          - path: /.cache
+          - path: /.cache/
             subPath: cache
-          - path: /user
+          - path: /user/
             subPath: user
       tailscale:
         type: emptyDir

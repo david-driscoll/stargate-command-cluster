@@ -97,6 +97,8 @@ spec:
                 memory: 256Mi
                 cpu: 20m
       init:
+        serviceAccount:
+          name: tailscale-secret-manager
         annotations:
           reloader.stakater.com/auto: "true"
         type: job

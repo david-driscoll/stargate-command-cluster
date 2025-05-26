@@ -40,22 +40,12 @@ spec:
               repository: ghcr.io/david-driscoll/tailscale-idp
               tag: v1.84.0
             env:
-              TS_API_CLIENT_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: tailscale-oauth
-                    key: username
-              TS_API_CLIENT_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: tailscale-oauth
-                    key: credential
               TS_HOSTNAME: "idp"
-            command: ["/bin/sh","-c"]
-            args: |
-                export TS_AUTHKEY=$(go run tailscale.com/cmd/get-authkey@latest -ephemeral -tags "tag:${CLUSTER_CNAME}")
-                /tailscale/tsidp
-
+              TS_AUTHKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-authkey
+                    key: authkey
             resources:
               requests:
                 memory: 128Mi

@@ -49,12 +49,12 @@ spec:
               tag: 1.24.3-bookworm
               pullPolicy: IfNotPresent
             env:
-              OAUTH_CLIENT_ID:
+              TS_API_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:
                     name: tailscale-oauth
                     key: username
-              OAUTH_CLIENT_SECRET:
+              TS_API_CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
                     name: tailscale-oauth

@@ -47,6 +47,7 @@ spec:
                   secretKeyRef:
                     name: tailscale-authkey
                     key: authkey
+            workingDir: /var/lib/tsidp
             resources:
               requests:
                 memory: 128Mi

@@ -1,7 +1,6 @@
 #!/bin/bash
-export GOROOT=/opt/go
-export GOPATH=/projects/go
-bash <(curl -sL https://git.io/go-installer)
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
 authkey=$(/opt/go/go run tailscale.com/cmd/get-authkey@latest -reusable -preauthorized -tags "tag:${CLUSTER_CNAME}")
 

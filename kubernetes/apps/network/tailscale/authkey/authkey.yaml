@@ -42,6 +42,8 @@ spec:
         type: cronjob
         containers:
           main: &job
+            securityContext:
+              allowPrivilegeEscalation: true
             image:
               repository: alpine/k8s
               tag: 1.33.1
@@ -85,10 +87,10 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
-        runAsGroup: 568
-        runAsNonRoot: true
-        runAsUser: 568
+        fsGroup: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true

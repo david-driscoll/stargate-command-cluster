@@ -41,6 +41,7 @@ spec:
               tag: v1.84.0
             env:
               TS_HOSTNAME: "{{ .Release.Name }}"
+              TS_STATE_DIR: /var/lib/tsidp
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
@@ -66,16 +67,16 @@ spec:
 
     persistence:
       data:
-        type: emptyDir
+        existingClaim: *app
         globalMounts:
           - path: /var/lib/tsidp/
-            subPath: data
+      empty:
+        type: emptyDir
+        globalMounts:
           - path: /.cache/
             subPath: cache
           - path: /user/
             subPath: user
-      tailscale:
-        type: emptyDir
 
     service:
       app:

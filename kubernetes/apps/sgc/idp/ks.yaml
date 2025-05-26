@@ -13,6 +13,8 @@ spec:
   path: ./kubernetes/apps/sgc/idp/tailscale
   prune: true
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: sgc-secrets
       namespace: *namespace
   sourceRef:
@@ -23,3 +25,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app

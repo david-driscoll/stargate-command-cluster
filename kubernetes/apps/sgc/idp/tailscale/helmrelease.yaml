@@ -40,7 +40,7 @@ spec:
               repository: ghcr.io/david-driscoll/tailscale-idp
               tag: v1.84.0
             env:
-              # TS_HOSTNAME: &hostname "idp"
+              TS_HOSTNAME: "{{ .Release.Name }}"
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
@@ -83,18 +83,4 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 1880
-
-    ingress:
-      tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: &hostname "idp"
-        defaultBackend:
-          service:
-            name: *hostname
-            port:
-              name: http
-        hosts:
-          - *hostname
+            port: &port 443

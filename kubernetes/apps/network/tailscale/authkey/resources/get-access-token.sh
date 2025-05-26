@@ -1,6 +1,7 @@
 #!/bin/bash
-
-curl -L https://git.io/vQhTU | bash
+export GOROOT=/opt/go
+export GOPATH=/projects/go
+bash <(curl -sL https://git.io/go-installer)
 
 authkey=$(go run tailscale.com/cmd/get-authkey@latest -reusable -preauthorized -tags "tag:${CLUSTER_CNAME}")
 

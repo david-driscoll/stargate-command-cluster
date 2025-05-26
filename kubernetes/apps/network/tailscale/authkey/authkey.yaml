@@ -45,7 +45,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: true
             image:
-              repository: alpine/golang
+              repository: golang
               tag: 1.24.3-bookworm
               pullPolicy: IfNotPresent
             env:

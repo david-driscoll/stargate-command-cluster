@@ -10,7 +10,7 @@ authkey=$(go run tailscale.com/cmd/get-authkey@latest -reusable -preauth -tags "
 
 echo "authkey: $authkey"
 
-token_response=$(curl -d "client_id=$OAUTH_CLIENT_ID" -d "client_secret=$OAUTH_CLIENT_SECRET" "https://api.tailscale.com/api/v2/oauth/token")
+token_response=$(curl -d "client_id=$TS_API_CLIENT_ID" -d "client_secret=$TS_API_CLIENT_SECRET" "https://api.tailscale.com/api/v2/oauth/token")
 access_token=$(echo $token_response | jq -r '.access_token')
 echo "access_token: $access_token"
 

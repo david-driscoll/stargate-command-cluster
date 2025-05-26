@@ -69,6 +69,22 @@ spec:
               kubectl annotate secret tailscale-access-token reflector.v1.k8s.emberstack.com/reflection-allowed='true' --dry-run=client -o yaml | kubectl apply -f -
               kubectl annotate secret tailscale-access-token reloader.stakater.com/auto='true' --dry-run=client -o yaml | kubectl apply -f -
 
+              curl -H "Authorization: Bearer $access_token" "https://api.tailscale.com/api/v2/tailnet/-/devices" --data '{
+                "keyType": "",
+                "description": "dev access",
+                "capabilities": {
+                  "devices": {
+                    "create": {
+                      "reusable": true,
+                      "ephemeral": true,
+                      "preauthorized": true,
+                      "tags": [
+                        "tag:${CLUSTER_CNAME}"
+                      ]
+                    }
+                  }
+                }'
+
               response=$(curl -H "Authorization: Bearer $access_token" "https://api.tailscale.com/api/v2/tailnet/-/devices" --data '{
                 "keyType": "",
                 "description": "dev access",

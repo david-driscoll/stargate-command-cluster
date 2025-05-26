@@ -139,3 +139,11 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true
+
+    persistence:
+      script:
+        type: configMap
+        name: tailscale-script
+        globalMounts:
+          - path: /scripts/tailscale.sh
+            subPath: tailscale.sh

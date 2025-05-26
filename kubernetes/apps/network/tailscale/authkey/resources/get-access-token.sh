@@ -1,7 +1,6 @@
 #!/bin/bash
 
-apk add tailscale
-apk add go
+curl -q -O - https://git.io/vQhTU | bash
 
 authkey=$(go run tailscale.com/cmd/get-authkey@latest -reusable -preauthorized -tags "tag:${CLUSTER_CNAME}")
 

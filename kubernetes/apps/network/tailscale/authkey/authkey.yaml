@@ -49,6 +49,9 @@ spec:
               tag: 1.33.1
               pullPolicy: IfNotPresent
             env:
+              # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
+              GO_VERSION: 1.24.3
+              TAILSCALE_VERSION: 1.60.0
               OAUTH_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:

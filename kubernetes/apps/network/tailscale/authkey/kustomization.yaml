@@ -5,3 +5,9 @@ kind: Kustomization
 resources:
   - ./authkey.yaml
   - ./rbac.yaml
+configMapGenerator:
+  - files:
+      - tailscale.sh=./resources/get-access-token.sh
+    name: tailscale-script
+generatorOptions:
+  disableNameSuffixHash: true

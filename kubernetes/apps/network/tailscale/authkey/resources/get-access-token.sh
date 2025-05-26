@@ -1,7 +1,7 @@
 #!/bin/bash
 
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-chmod +x kubectl
+chmod +x ./kubectl
 ./kubectl version
 
 authkey=$(go run tailscale.com/cmd/get-authkey@latest -reusable -preauth -tags "tag:${CLUSTER_CNAME}")

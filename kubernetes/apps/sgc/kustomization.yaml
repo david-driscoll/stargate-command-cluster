@@ -11,7 +11,7 @@ resources:
   - ./shared/ks.yaml
   - ./go2rtc/ks.yaml
   - ./dns/ks.yaml
-  - ./minio/ks.yaml
+  - ./datastore/ks.yaml
   - ./home/ks.yaml
   # - ./scrypted/ks.yaml
   - ./dvr/ks.yaml

@@ -14,7 +14,10 @@ spec:
     size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
-
+  plugins:
+    - enabled: true
+      isWALArchiver: false
+      name: wal-g
   superuserSecret:
     name: cloudnative-pg-secret
   postgresql:

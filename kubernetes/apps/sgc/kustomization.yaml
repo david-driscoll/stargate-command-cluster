@@ -7,13 +7,14 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - "./homepage/ks.yaml"
-  - "./shared/ks.yaml"
-  - "./go2rtc/ks.yaml"
-  - "./dns/ks.yaml"
+  - ./homepage/ks.yaml
+  - ./shared/ks.yaml
+  - ./go2rtc/ks.yaml
+  - ./dns/ks.yaml
   - ./minio/ks.yaml
   - ./home/ks.yaml
   # - ./scrypted/ks.yaml
   - ./dvr/ks.yaml
   - ./media/ks.yaml
   - ./idp/ks.yaml
+  - ./cloudnative-pg/ks.yaml

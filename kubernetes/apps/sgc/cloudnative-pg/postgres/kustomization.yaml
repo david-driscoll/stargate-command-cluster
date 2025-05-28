@@ -3,8 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./postgres.yaml
+  - ./cluster.yaml
+  - ./dnsendpoint.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
-  - ./dnsendpoint.yaml
   - ./secret.yaml

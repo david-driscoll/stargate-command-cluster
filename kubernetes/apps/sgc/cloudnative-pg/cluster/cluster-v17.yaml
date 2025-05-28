@@ -12,7 +12,7 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:17.4
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 30Gi
+    size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
   superuserSecret:
@@ -40,7 +40,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgresql/
-      endpointURL: https://s3.${INTERNAL_CLUSTER_SERVICE}
+      endpointURL: http://s3.${INTERNAL_CLUSTER_SERVICE}:9000
       serverName: postgres-v17
       s3Credentials:
         accessKeyId:

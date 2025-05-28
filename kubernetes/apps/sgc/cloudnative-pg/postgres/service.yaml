@@ -8,6 +8,8 @@ spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
   loadBalancerIP: ${POSTGRES_VIP}
+  annotations:
+    io.cilium/lb-ipam-ips: "${POSTGRES_VIP}"
   ports:
     - name: http
       port: 80

@@ -17,4 +17,4 @@ resources:
   - ./dvr/ks.yaml
   - ./media/ks.yaml
   - ./idp/ks.yaml
-  # - ./cloudnative-pg/ks.yaml
+  - ./cloudnative-pg/ks.yaml

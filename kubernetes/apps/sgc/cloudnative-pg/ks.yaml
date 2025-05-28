@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg-chart
+  name: &app cloudnative-pg
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -30,14 +30,14 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 20Gi
+      VOLSYNC_CAPACITY: 4Gi
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg-cluster
+  name: &app postgres
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -51,7 +51,7 @@ spec:
       namespace: *namespace
     - name: cloudnative-pg-chart
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/cloudnative-pg/cluster
+  path: ./kubernetes/apps/sgc/cloudnative-pg/postgres
   prune: true
   sourceRef:
     kind: GitRepository
@@ -67,5 +67,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 20Gi
+      VOLSYNC_CAPACITY: 40Gi
 

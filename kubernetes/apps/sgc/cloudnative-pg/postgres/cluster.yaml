@@ -14,12 +14,8 @@ spec:
     size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
-  plugins:
-    - enabled: true
-      isWALArchiver: false
-      name: wal-g
   superuserSecret:
-    name: cloudnative-pg-secret
+    name: postgres-admin
   postgresql:
     parameters:
       max_connections: "300"
@@ -49,10 +45,10 @@ spec:
       serverName: postgres
       s3Credentials:
         accessKeyId:
-          name: cloudnative-pg-access-key
+          name: postgres-access-key
           key: username
         secretAccessKey:
-          name: cloudnative-pg-access-key
+          name: postgres-access-key
           key: credential
 
   # bootstrap:

@@ -3,8 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres-v17
-  namespace: default
+  name: postgres
 spec:
   # using only 1 replica: very difficult to drain the node where postgres is running
   # using more than 1 replica: write amplification issues when leveraging replicated storage (e.g. ceph)
@@ -15,6 +14,7 @@ spec:
     size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
+  
   superuserSecret:
     name: cloudnative-pg-secret
   postgresql:
@@ -25,14 +25,16 @@ spec:
       pg_stat_statements.track: all
   monitoring:
     enablePodMonitor: true
+
   # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
   enablePDB: false
   resources:
     requests:
-      memory: "512Mi"
-      cpu: "250m"
+      memory: "256Mi"
+      cpu: "100m"
     limits:
-      memory: "4Gi"
+      memory: "1Gi"
+      cpu: "250m"
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
@@ -41,7 +43,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgresql/
       endpointURL: http://s3.${INTERNAL_CLUSTER_SERVICE}:9000
-      serverName: postgres-v17
+      serverName: postgres
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-access-key

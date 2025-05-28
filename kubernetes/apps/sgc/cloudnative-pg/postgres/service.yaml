@@ -4,12 +4,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres-lb
+  annotations:
+    reloader.stakater.com/auto: "true"
+    external-dns.alpha.kubernetes.io/target: "${POSTGRES_DOMAIN}"
+    io.cilium/lb-ipam-ips: "${POSTGRES_VIP}"
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
   loadBalancerIP: ${POSTGRES_VIP}
-  annotations:
-    io.cilium/lb-ipam-ips: "${POSTGRES_VIP}"
+  externalIPs:
+    - "${POSTGRES_VIP}"
   ports:
     - name: http
       port: 80

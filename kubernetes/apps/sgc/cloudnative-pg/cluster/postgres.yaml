@@ -14,7 +14,7 @@ spec:
     size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
-  
+
   superuserSecret:
     name: cloudnative-pg-secret
   postgresql:
@@ -30,10 +30,10 @@ spec:
   enablePDB: false
   resources:
     requests:
-      memory: "256Mi"
+      memory: "1Gi"
       cpu: "100m"
     limits:
-      memory: "1Gi"
+      memory: "2Gi"
       cpu: "250m"
   backup:
     retentionPolicy: 30d

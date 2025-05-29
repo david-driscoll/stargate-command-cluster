@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "tailscale-idp.${TAILSCALE_DOMAIN}"
+  name: tailscale-idp
+spec:
+  externalName: tailscale-idp
+  type: ExternalName

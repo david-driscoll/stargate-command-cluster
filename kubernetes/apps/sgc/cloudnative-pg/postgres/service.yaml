@@ -15,14 +15,6 @@ spec:
   externalIPs:
     - "${POSTGRES_VIP}"
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
-      protocol: TCP
-    - name: https
-      port: 443
-      targetPort: 443
-      protocol: TCP
     - name: postgres
       port: 5432
       protocol: TCP

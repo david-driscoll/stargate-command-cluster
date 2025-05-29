@@ -42,7 +42,6 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgresql/
       endpointURL: http://s3.${INTERNAL_CLUSTER_SERVICE}:9000
-      serverName: postgres
       s3Credentials:
         accessKeyId:
           name: postgres-access-key

@@ -31,7 +31,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app postgres
+  name: &app asgard
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -58,4 +58,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-
+      postgres_admin: "vaults/Eris/items/7fpazykr5wvcmomndbh5m6j4my"
+      postgres_access_key: "vaults/Eris/items/hgvifsmbyv6i6iujwikt3w2mj4"

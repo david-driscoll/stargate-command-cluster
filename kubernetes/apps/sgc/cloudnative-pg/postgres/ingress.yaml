@@ -3,20 +3,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: flux-webhook
+  name: capacitor-internal
+  namespace: flux-system
   annotations:
-    external-dns.alpha.kubernetes.io/target: "${TUNNEL_DOMAIN}"
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    reloader.stakater.com/auto: "true"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
 spec:
-  ingressClassName: external
+  ingressClassName: internal
   rules:
-    - host: "flux-${CLUSTER_CNAME}-webhook.${ROOT_DOMAIN}"
+    - host: "${APP}.${CLUSTER_DOMAIN}"
       http:
         paths:
-          - path: /hook/
+          - path: /
             pathType: Prefix
             backend:
               service:
-                name: webhook-receiver
+                name: ${APP}-rw
                 port:
-                  number: 80
+                  number: 5432

@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres
+  name: ${APP}
 spec:
   # using only 1 replica: very difficult to drain the node where postgres is running
   # using more than 1 replica: write amplification issues when leveraging replicated storage (e.g. ceph)
@@ -40,7 +40,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://postgresql/
+      destinationPath: s3://${APP}/
       endpointURL: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
       s3Credentials:
         accessKeyId:
@@ -52,7 +52,7 @@ spec:
   externalClusters:
   - name: postgres-backup
     barmanObjectStore:
-      destinationPath: s3://postgresql/
+      destinationPath: s3://${APP}/
       endpointURL: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
       wal:
         compression: bzip2
@@ -75,8 +75,8 @@ spec:
           - sgc
         source:
           externalCluster: postgres-backup
-      secret:
-        name: postgres-initdb-secret
+      # secret:
+      #   name: postgres-initdb-secret
 
     # # use this to 'migrate' from an existing cnpg cluster (e.g. "postgres-v15") to the new cluster
     # initdb:

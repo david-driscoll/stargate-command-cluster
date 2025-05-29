@@ -13,7 +13,7 @@ spec:
   storage:
     size: 40Gi
     storageClass: longhorn
-  enableSuperuserAccess: true
+  # enableSuperuserAccess: true
   superuserSecret:
     name: postgres-admin
   postgresql:

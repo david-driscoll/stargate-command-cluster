@@ -19,7 +19,7 @@ spec:
         operator: Exists
   upgrade:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    image: "ghcr.io/siderolabs/talosctl:v1.10.2@sha256:dfa4a3cb6b449f6b6f3e0af83d6683e07e8473db279e15ca179336da85deda8a"
+    image: "ghcr.io/siderolabs/talosctl:v1.10.3@sha256:23f32be2c1b1fe984536d672f251c1187c4628192490920bbde2baf26bc4681e"
     args:
       - --nodes=$(SYSTEM_UPGRADE_NODE_NAME)
       - upgrade-k8s

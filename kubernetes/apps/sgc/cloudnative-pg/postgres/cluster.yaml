@@ -74,7 +74,7 @@ spec:
         databases:
           - sgc
         source:
-          externalCluster: postgres-backup
+          externalCluster: ${APP}-backup
       # secret:
       #   name: postgres-initdb-secret
 

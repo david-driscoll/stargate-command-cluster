@@ -40,6 +40,7 @@ spec:
         - "${EXTERNAL_IP}"
     additionalArguments:
       - '--providers.file.filename=/config/store.yaml'
+      - --entryPoints.postgres.address=:5432/tcp
     volumes:
       # - name: le-staging-tls
       - name: le-production-tls

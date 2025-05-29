@@ -13,7 +13,7 @@ spec:
   storage:
     size: 40Gi
     storageClass: longhorn
-  # enableSuperuserAccess: true
+  enableSuperuserAccess: true
   superuserSecret:
     name: postgres-admin
   postgresql:
@@ -49,11 +49,28 @@ spec:
         secretAccessKey:
           name: postgres-access-key
           key: credential
+  externalClusters:
+  - name: postgres-backup
+    barmanObjectStore:
+      destinationPath: s3://postgresql/
+      endpointURL: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      s3Credentials:
+        accessKeyId:
+          name: postgres-access-key
+          key: username
+        secretAccessKey:
+          name: postgres-access-key
+          key: credential
 
-  # bootstrap:
-  # use this to recover a net-new cluster from a backup
-  #   recovery:
-  #     source: postgres-backup # TODO: fix this to the real name of the backup when on the new cluster
+  bootstrap:
+    recovery:
+      source: postgres-backup # TODO: fix this to the real name of the backup when on the new cluster
+    # initdb:
+    #   secret:
+    #     name:
 
     # # use this to 'migrate' from an existing cnpg cluster (e.g. "postgres-v15") to the new cluster
     # initdb:

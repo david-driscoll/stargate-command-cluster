@@ -9,7 +9,9 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: traefik.${INTERNAL_DOMAIN}
 spec:
   entryPoints:
-    - postgres
+    - traefik
+  tls:
+    secretName: "le-production-tls"
   routes:
     - match: HostSNI(`traefik.${INTERNAL_DOMAIN}`) && ( PathPrefix(`/dashboard`) || (PathPrefix(`/api`) )
       services:

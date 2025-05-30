@@ -41,3 +41,10 @@ spec:
                 name: traefik-internal
                 port:
                   number: 8080
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik-internal
+                port:
+                  number: 8080

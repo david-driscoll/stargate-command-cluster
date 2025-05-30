@@ -42,7 +42,7 @@ spec:
         hosts:
           - "kubeui.${CLUSTER_DOMAIN}"
     settings:
-     global:
+      global:
         clusterName: "${CLUSTER_CNAME}"
     web:
       scaling:

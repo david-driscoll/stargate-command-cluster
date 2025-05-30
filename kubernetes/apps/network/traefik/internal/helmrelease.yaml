@@ -56,8 +56,8 @@ spec:
         type: configMap
     ports:
       traefik:
-        port: 9000
-        expose: true
+        expose:
+          default: true
       web:
         redirectTo: websecure
     ingressClass:

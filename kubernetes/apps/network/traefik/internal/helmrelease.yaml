@@ -54,6 +54,10 @@ spec:
       - name: traefik-tls-settings
         mountPath: '/config'
         type: configMap
+    ports:
+      traefik:
+        port: 9000
+        expose: true
     ingressClass:
       enabled: true
       isDefaultClass: false

@@ -14,9 +14,9 @@ spec:
     secretName: "le-production-tls"
   routes:
     - match: PathPrefix(`/dashboard`) || (PathPrefix(`/api`)
-      middlewares:
-        - name: internal-with-errors
-          namespace: network
+      # middlewares:
+      #   - name: internal-with-errors
+      #     namespace: network
       services:
         - name: api@internal
           kind: TraefikService

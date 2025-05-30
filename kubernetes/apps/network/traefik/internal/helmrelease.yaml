@@ -28,7 +28,8 @@ spec:
       tag: v3.4.1@sha256:cd40ab7bc1f047731d5b22595203812343efcb6538014c4e93221cfc3a77217a
     fullnameOverride: traefik-internal
     deployment:
-      kind: DaemonSet
+      kind: Deployment
+      replicas: 2
     service:
       annotations:
         reloader.stakater.com/auto: "true"

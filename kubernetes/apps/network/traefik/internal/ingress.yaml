@@ -9,7 +9,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
 spec:
   entryPoints:
-    - traefik
+    - websecure
   tls:
     secretName: "le-production-tls"
   routes:
@@ -17,4 +17,3 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
-          port: 8080

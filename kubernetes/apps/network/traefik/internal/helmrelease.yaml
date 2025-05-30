@@ -96,7 +96,7 @@ spec:
         enabled: true
         allowExternalNameServices: true
       kubernetesGateway:
-        enabled: true
+        enabled: false
         experimentalChannel: true
     logs:
       access:
@@ -113,7 +113,7 @@ spec:
       fastProxy:
         enabled: true
       kubernetesGateway:
-        enabled: true
+        enabled: false
     web:
       forwardedHeaders:
         insecure: true

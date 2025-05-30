@@ -38,6 +38,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: traefik-${INTERNAL_CNAME}
+                name: traefik-internal
                 port:
                   number: 8080

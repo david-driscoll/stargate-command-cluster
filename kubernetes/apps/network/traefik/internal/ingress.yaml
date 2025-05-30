@@ -9,7 +9,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
 spec:
   entryPoints:
-    - websecure
+    - traefik
   tls:
     secretName: "le-production-tls"
   routes:

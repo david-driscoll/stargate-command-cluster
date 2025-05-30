@@ -6,14 +6,14 @@ metadata:
   name: ${INTERNAL_CNAME}-dashboard
   annotations:
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-    external-dns.alpha.kubernetes.io/hostname: traefik.${INTERNAL_DOMAIN}
+    external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
 spec:
   entryPoints:
     - traefik
   tls:
     secretName: "le-production-tls"
   routes:
-    - match: HostSNI(`traefik.${INTERNAL_DOMAIN}`) && ( PathPrefix(`/dashboard`) || (PathPrefix(`/api`) )
+    - match: HostSNI(`internal.${CLUSTER_DOMAIN}`) && ( PathPrefix(`/dashboard`) || (PathPrefix(`/api`) )
       services:
         - name: api@internal
           kind: TraefikService

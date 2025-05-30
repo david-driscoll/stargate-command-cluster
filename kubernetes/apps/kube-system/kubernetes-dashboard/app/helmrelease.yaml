@@ -40,7 +40,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         ingressClassName: internal
         tls:
-          enabled: false
+          secretName: "le-production-tls"
         hosts:
           - "kubeui.${CLUSTER_DOMAIN}"
     settings:

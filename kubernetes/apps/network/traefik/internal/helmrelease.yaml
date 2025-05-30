@@ -58,9 +58,6 @@ spec:
       traefik:
         expose:
           default: true
-      web:
-        redirections:
-          entryPoint: websecure
     ingressClass:
       enabled: true
       isDefaultClass: false

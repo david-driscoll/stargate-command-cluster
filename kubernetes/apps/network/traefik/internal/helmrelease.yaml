@@ -58,6 +58,8 @@ spec:
       traefik:
         port: 9000
         expose: true
+      web:
+        redirectTo: websecure
     ingressClass:
       enabled: true
       isDefaultClass: false

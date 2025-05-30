@@ -6,5 +6,5 @@ resources:
   - ./helmrelease.yaml
   - ./ingress.yaml
   - ./middleware/internal-ips.yaml
-  - ./middleware/internal-with-errors.yaml
-  - ./middleware/error-pages.yaml
+  # - ./middleware/internal-with-errors.yaml
+  # - ./middleware/error-pages.yaml

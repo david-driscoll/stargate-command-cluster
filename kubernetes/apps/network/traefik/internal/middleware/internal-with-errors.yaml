@@ -6,5 +6,5 @@ metadata:
 spec:
   chain:
     middlewares:
-    - name: error-pages
+    # - name: error-pages
     - name: internal-ips

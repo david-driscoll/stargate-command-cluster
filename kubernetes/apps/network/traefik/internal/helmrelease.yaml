@@ -100,8 +100,8 @@ spec:
         experimentalChannel: true
     logs:
       access:
-        enabled: true
-        addInternals: true
+        enabled: false
+        addInternals: false
       general:
         # -- Set [logs format](https://doc.traefik.io/traefik/observability/logs/#format)
         format: common

@@ -106,7 +106,7 @@ spec:
         # -- Set [logs format](https://doc.traefik.io/traefik/observability/logs/#format)
         format: common
         # -- Alternative logging levels are TRACE, DEBUG, INFO, WARN, ERROR, FATAL, and PANIC.
-        level: "TRACE"
+        level: "INFO"
     api:
       dashboard: true
     experimental:

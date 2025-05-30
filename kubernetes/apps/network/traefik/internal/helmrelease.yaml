@@ -105,16 +105,6 @@ spec:
         level: "TRACE"
     api:
       dashboard: true
-    ingressRoute:
-      dashboard:
-        enabled: true
-        services:
-        - name: api@internal
-          kind: TraefikService
-        entryPoints: ["traefik"]
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          external-dns.alpha.kubernetes.io/hostname: traefik.${INTERNAL_DOMAIN}
     experimental:
       fastProxy:
         enabled: true

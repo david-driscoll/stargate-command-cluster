@@ -101,6 +101,7 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: "${EXTERNAL_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: dashboard.${EXTERNAL_DOMAIN}.${CLUSTER_DOMAIN}
     experimental:
       fastProxy:
         enabled: true

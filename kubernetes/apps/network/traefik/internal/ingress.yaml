@@ -13,7 +13,7 @@ spec:
   tls:
     secretName: "le-production-tls"
   routes:
-    - match: HostSNI(`internal.${CLUSTER_DOMAIN}`) && ( PathPrefix(`/dashboard`) || (PathPrefix(`/api`) )
+    - match: PathPrefix(`/dashboard`) || (PathPrefix(`/api`)
       services:
         - name: api@internal
           kind: TraefikService

@@ -59,7 +59,8 @@ spec:
         expose:
           default: true
       web:
-        redirectTo: websecure
+        redirections:
+          entryPoint: websecure
     ingressClass:
       enabled: true
       isDefaultClass: false

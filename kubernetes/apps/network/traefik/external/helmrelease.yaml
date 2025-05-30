@@ -99,7 +99,6 @@ spec:
     ingressRoute:
       dashboard:
         enabled: true
-        matchRule: Host(`external.${CLUSTER_DOMAIN}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
         annotations:
           external-dns.alpha.kubernetes.io/target: "${EXTERNAL_DOMAIN}"
     experimental:

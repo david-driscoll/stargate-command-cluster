@@ -22,3 +22,5 @@ spec:
     - "*.${ROOT_DOMAIN}"
     - "*.${CLUSTER_DOMAIN}"
     - "*.${CLUSTER_CNAME}.svc.${ROOT_DOMAIN}"
+    - "*.${INTERNAL_DOMAIN}"
+    - "*.${EXTERNAL_DOMAIN}"

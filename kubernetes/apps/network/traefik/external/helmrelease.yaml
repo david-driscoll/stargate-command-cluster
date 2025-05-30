@@ -29,32 +29,6 @@ spec:
     fullnameOverride: traefik-external
     deployment:
       kind: DaemonSet
-    ports:
-      web:
-        http3:
-          enabled: true
-        port: 80
-        targetPort: 80
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
-      websecure:
-        http3:
-          enabled: true
-        port: 443
-        targetPort: 443
-        forwardedHeaders:
-          trustedIPs:
-            - 10.0.0.0/8
-            - 172.16.0.0/12
-            - 192.168.0.0/16
-        proxyProtocol:
-          trustedIPs:
-            - 10.0.0.0/8
-            - 172.16.0.0/12
-            - 192.168.0.0/16
     service:
       annotations:
         reloader.stakater.com/auto: "true"

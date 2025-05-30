@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ${INTERNAL_CNAME}-dashboard
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    external-dns.alpha.kubernetes.io/hostname: traefik.${INTERNAL_DOMAIN}
+spec:
+  entryPoints:
+    - postgres
+  routes:
+    - match: HostSNI(`traefik.${INTERNAL_DOMAIN}`) && ( PathPrefix(`/dashboard`) || (PathPrefix(`/api`) )
+      services:
+        - name: api@internal
+          kind: TraefikService

@@ -17,3 +17,4 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
+          port: 8080

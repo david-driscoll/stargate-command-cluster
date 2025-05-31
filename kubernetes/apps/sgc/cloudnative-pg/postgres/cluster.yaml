@@ -14,8 +14,8 @@ spec:
     size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
-  superuserSecret:
-    name: postgres-admin
+  # superuserSecret:
+  #   name: postgres-admin
   postgresql:
     parameters:
       max_connections: "300"

@@ -25,6 +25,7 @@ spec:
           port: 5432
   tls:
     secretName: le-production-tls
+    passthrough: true
     options:
       name: no-alpn
 # ---

@@ -1,19 +1,42 @@
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroutetcp_v1alpha1.json
+# apiVersion: traefik.io/v1alpha1
+# kind: IngressRouteTCP
+# metadata:
+#   name: ${APP}-internal
+#   annotations:
+#     kubernetes.io/ingress.class: internal
+#     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+# spec:
+#   entryPoints:
+#     - postgres
+#   routes:
+#     - match: HostSNI(`${APP}.${CLUSTER_DOMAIN}`)
+#       services:
+#         - name: ${APP}-rw
+#           port: 5432
+#   tls:
+#     secretName: le-production-tls
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroutetcp_v1alpha1.json
-apiVersion: traefik.io/v1alpha1
-kind: IngressRouteTCP
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: ${APP}-internal
+  namespace: flux-system
   annotations:
-    kubernetes.io/ingress.class: internal
+    reloader.stakater.com/auto: "true"
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
 spec:
-  entryPoints:
-    - postgres
-  routes:
-    - match: HostSNI(`${APP}.${CLUSTER_DOMAIN}`)
-      services:
-        - name: ${APP}-rw
-          port: 5432
-  tls:
-    secretName: le-production-tls
+  ingressClassName: internal
+  rules:
+    - host: "${APP}.${CLUSTER_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ${APP}-rw
+                port:
+                  number: 5432

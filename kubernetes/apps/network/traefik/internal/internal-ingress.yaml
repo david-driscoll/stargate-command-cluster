@@ -17,7 +17,7 @@ spec:
     - kind: Rule
       match: Host('internalig.${CLUSTER_DOMAIN}') || Host('${INTERNAL_DOMAIN}')
       middlewares:
-        - name: internal-with-errors
+        - name: internal-ips
           namespace: network
       services:
         - name: api@internal

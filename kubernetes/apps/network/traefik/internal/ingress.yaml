@@ -10,41 +10,15 @@ metadata:
 spec:
   entryPoints:
     - traefik
+    - websecure
   tls:
     secretName: "le-production-tls"
   routes:
-    - match: PathPrefix(`/dashboard`) || (PathPrefix(`/api`)
+    - match: Host(`internal.${CLUSTER_DOMAIN}`)
       # middlewares:
       #   - name: internal-with-errors
       #     namespace: network
       services:
         - name: api@internal
           kind: TraefikService
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: ${INTERNAL_CNAME}-dashboard
-#   annotations:
-#     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-# spec:
-#   ingressClassName: internal
-#   rules:
-#     - host: "internal.${CLUSTER_DOMAIN}"
-#       http:
-#         paths:
-#           - path: /dashboard/
-#             pathType: Prefix
-#             backend:
-#               service:
-#                 name: traefik-internal
-#                 port:
-#                   number: 8080
-#           - path: /api/
-#             pathType: Prefix
-#             backend:
-#               service:
-#                 name: traefik-internal
-#                 port:
-#                   number: 8080
+

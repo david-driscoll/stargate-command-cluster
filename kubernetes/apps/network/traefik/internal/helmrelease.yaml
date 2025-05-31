@@ -60,7 +60,8 @@ spec:
         expose:
           default: true
       postgres:
-        expose: true
+        expose:
+          default: true
         port: 5432
         exposedPort: 5432
         protocol: TCP

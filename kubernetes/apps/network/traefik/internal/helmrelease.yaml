@@ -87,7 +87,7 @@ spec:
         enabled: true
         allowExternalNameServices: true
       kubernetesGateway:
-        enabled: false
+        enabled: true
         experimentalChannel: true
     logs:
       access:
@@ -97,7 +97,7 @@ spec:
         # -- Set [logs format](https://doc.traefik.io/traefik/observability/logs/#format)
         format: common
         # -- Alternative logging levels are TRACE, DEBUG, INFO, WARN, ERROR, FATAL, and PANIC.
-        level: "TRACE"
+        level: "INFO"
     ingressRoute:
       dashboard:
         enabled: true
@@ -118,7 +118,7 @@ spec:
       fastProxy:
         enabled: true
       kubernetesGateway:
-        enabled: false
+        enabled: true
     web:
       forwardedHeaders:
         insecure: true

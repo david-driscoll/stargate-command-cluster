@@ -8,3 +8,4 @@ resources:
   - ./scheduledbackup.yaml
   - ./secret.yaml
   - ./ingress.yaml
+  - ./dnsendpoint.yaml

@@ -15,6 +15,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: internal
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    external-dns.alpha.kubernetes.io/hostname: "${APP}.${CLUSTER_DOMAIN}"
 spec:
   entryPoints:
     - postgres
@@ -27,6 +28,7 @@ spec:
     secretName: le-production-tls
     passthrough: true
     options:
+
       name: no-alpn
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json

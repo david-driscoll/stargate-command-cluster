@@ -75,6 +75,8 @@ spec:
       enabled: true
       ingressClassName: internal
       host: "longhorn.${CLUSTER_DOMAIN}"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
     metrics:
       serviceMonitor:
         enabled: true

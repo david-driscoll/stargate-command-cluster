@@ -28,7 +28,8 @@ spec:
       tag: v3.4.1@sha256:cd40ab7bc1f047731d5b22595203812343efcb6538014c4e93221cfc3a77217a
     fullnameOverride: traefik-internal
     deployment:
-      kind: DaemonSet
+      kind: Deployment
+      replicas: 3
     service:
       annotations:
         reloader.stakater.com/auto: "true"
@@ -75,16 +76,6 @@ spec:
       limits:
         cpu: 150m
         memory: 200Mi
-    autoscaling:
-      enabled: true
-      maxReplicas: 3
-      metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 80
     providers:
       kubernetesCRD:
         ingressClass: "internal"

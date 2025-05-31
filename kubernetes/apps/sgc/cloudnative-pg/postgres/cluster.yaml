@@ -31,7 +31,6 @@ spec:
           updateStrategy: patch
           serviceTemplate:
             metadata:
-              name: "${APP}-rw"
               annotations:
                 io.cilium/lb-ipam-ips: "${ASGARD_VIP}"
                 tailscale.com/expose: "true"

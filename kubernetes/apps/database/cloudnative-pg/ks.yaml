@@ -15,7 +15,7 @@ spec:
       namespace: kube-system
     - name: minio
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/cloudnative-pg/chart
+  path: ./kubernetes/apps/database/cloudnative-pg/chart
   prune: true
   sourceRef:
     kind: GitRepository
@@ -40,7 +40,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
-  path: ./kubernetes/apps/sgc/cloudnative-pg/pgadmin
+  path: ./kubernetes/apps/database/cloudnative-pg/pgadmin
   prune: true
   sourceRef:
     kind: GitRepository

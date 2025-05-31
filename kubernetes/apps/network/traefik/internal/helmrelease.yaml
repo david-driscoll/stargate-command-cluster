@@ -117,7 +117,9 @@ spec:
         services:
           - name: api@internal
             kind: TraefikService
-        entryPoints: ["traefik"]
+        entryPoints:
+        - "traefik"
+        - "websecure"
         middlewares: []
         tls:
           secretName: "le-production-tls"

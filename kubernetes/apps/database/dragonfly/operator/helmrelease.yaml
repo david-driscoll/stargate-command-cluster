@@ -23,6 +23,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    serviceAccount:
+      *app : {}
     controllers:
       *app :
         serviceAccount:

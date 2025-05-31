@@ -35,7 +35,7 @@ spec:
               PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
               PGADMIN_DEFAULT_EMAIL:
                 secretKeyRef:
-                  name: pgadmin-credentials
+                  name: cloudflare-default-domain
                   key: username
               PGADMIN_DEFAULT_PASSWORD:
                 secretKeyRef:

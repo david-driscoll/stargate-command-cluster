@@ -28,6 +28,7 @@ spec:
       APP: *app
       POSTGRES_ADMIN: "vaults/Eris/items/7fpazykr5wvcmomndbh5m6j4my"
       POSTGRES_ACCESS_KEY: "vaults/Eris/items/hgvifsmbyv6i6iujwikt3w2mj4"
+      POSTGRES_USER: "vaults/Eris/items/jte46elp7x5lhkwxrxtq77da2m"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

@@ -14,8 +14,8 @@ spec:
     size: 40Gi
     storageClass: longhorn
   enableSuperuserAccess: true
-  # superuserSecret:
-  #   name: postgres-admin
+  superuserSecret:
+    name: ${APP}-admin
   postgresql:
     parameters:
       max_connections: "300"
@@ -29,23 +29,41 @@ spec:
       - connectionLimit: -1
         ensure: present
         inherit: true
-        name: asgard
+        name: ${APP}
         login: true
         createdb: true
         createrole: true
         passwordSecret:
-          name: ${APP}-access-key
+          name: ${APP}-user
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: sgc
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: ${APP}-user
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: authelia
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: ${APP}-user
     services:
       additional:
         - selectorType: rw
-          updateStrategy: patch
+          updateStrategy: replace
           serviceTemplate:
             metadata:
               annotations:
                 io.cilium/lb-ipam-ips: "${ASGARD_VIP}"
                 tailscale.com/expose: "true"
                 tailscale.com/hostname: *app
-              name: asgard-rw
+              name: ${APP}
             spec:
               type: LoadBalancer
               loadBalancerIP: "${ASGARD_VIP}"

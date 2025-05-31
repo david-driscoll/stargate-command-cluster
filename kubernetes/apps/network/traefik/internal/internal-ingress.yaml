@@ -15,7 +15,7 @@ spec:
     secretName: "le-production-tls"
   routes:
     - kind: Rule
-      match: Host('internalig.${CLUSTER_DOMAIN}')
+      match: Host('internalig.${CLUSTER_DOMAIN}') || Host('${INTERNAL_DOMAIN}')
       middlewares:
         - name: internal-with-errors
           namespace: network

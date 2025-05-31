@@ -14,11 +14,11 @@ spec:
   tls:
     secretName: "le-production-tls"
   routes:
-    - match: Host(`internal.${CLUSTER_DOMAIN}`)
+    - kind: Rule
+      match: Host(`internal.${CLUSTER_DOMAIN}`)
       # middlewares:
       #   - name: internal-with-errors
       #     namespace: network
       services:
         - name: api@internal
           kind: TraefikService
-

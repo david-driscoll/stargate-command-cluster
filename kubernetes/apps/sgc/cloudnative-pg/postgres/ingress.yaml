@@ -19,7 +19,7 @@ spec:
   entryPoints:
     - postgres
   routes:
-    - match: HostSNI(`${APP}.${CLUSTER_DOMAIN}`)
+    - match: HostSNI(`*`)
       services:
         - name: ${APP}-rw
           port: 5432

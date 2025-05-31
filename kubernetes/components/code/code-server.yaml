@@ -66,6 +66,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Code Servers
           gethomepage.dev/icon: vscode.svg

@@ -224,9 +224,10 @@ spec:
     ingress:
       internal:
         className: internal
-        annotations:
+        annotations: &ingress-annotations
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
           - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
@@ -237,9 +238,7 @@ spec:
                   port: http
       primary: &ingress
         className: internal
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        annotations: *ingress-annotations
         hosts:
           - host: "{{ .Release.Name }}-primary.${CLUSTER_DOMAIN}"
             paths:

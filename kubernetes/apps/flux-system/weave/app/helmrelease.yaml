@@ -57,6 +57,7 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
         external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
         - host: "gitops.${CLUSTER_DOMAIN}"
           paths:

@@ -113,7 +113,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
-        matchRule: Host(`internal.${CLUSTER_DOMAIN}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+        matchRule: Host(`internal.${CLUSTER_DOMAIN}`)
         services:
           - name: api@internal
             kind: TraefikService

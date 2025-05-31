@@ -59,6 +59,11 @@ spec:
       traefik:
         expose:
           default: true
+      postgres:
+        expose: true
+        port: 5432
+        exposedPort: 5432
+        protocol: TCP
     ingressClass:
       enabled: true
       isDefaultClass: false

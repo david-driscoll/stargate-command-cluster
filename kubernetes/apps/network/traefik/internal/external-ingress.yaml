@@ -15,7 +15,7 @@ spec:
     secretName: "le-production-tls"
   routes:
     - kind: Rule
-      match: Host('external.${CLUSTER_DOMAIN}')
+      match: Host('external.${CLUSTER_DOMAIN}') || Host('${EXTERNAL_DOMAIN}')
       middlewares: []
       services:
         - name: api@external

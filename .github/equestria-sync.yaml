@@ -11,6 +11,9 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/network/
     dest: kubernetes/apps/network/
     deleteOrphaned: true
+  - source: kubernetes/apps/database/
+    dest: kubernetes/apps/database/
+    deleteOrphaned: true
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

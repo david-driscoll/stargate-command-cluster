@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg
+  name: &app asgard-db
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -14,38 +14,10 @@ spec:
     - name: onepassword-connect
       namespace: kube-system
     - name: minio
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/cloudnative-pg/chart
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app asgard
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
-    - name: minio
-      namespace: *namespace
+      namespace: database
     - name: cloudnative-pg
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/cloudnative-pg/postgres
+      namespace: database
+  path: ./kubernetes/apps/sgc/database/asgard
   prune: true
   sourceRef:
     kind: GitRepository
@@ -58,15 +30,12 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      POSTGRES_ADMIN: "vaults/Eris/items/7fpazykr5wvcmomndbh5m6j4my"
-      POSTGRES_ACCESS_KEY: "vaults/Eris/items/hgvifsmbyv6i6iujwikt3w2mj4"
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pgadmin
+  name: &app sgc-db
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -74,9 +43,13 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: minio
+      namespace: database
     - name: cloudnative-pg
-      namespace: *namespace
-  path: ./kubernetes/apps/sgc/cloudnative-pg/pgadmin
+      namespace: database
+  path: ./kubernetes/apps/sgc/database/sgc
   prune: true
   sourceRef:
     kind: GitRepository
@@ -86,9 +59,6 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app

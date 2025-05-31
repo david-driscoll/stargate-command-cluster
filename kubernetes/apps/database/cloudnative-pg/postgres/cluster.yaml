@@ -25,6 +25,7 @@ spec:
   monitoring:
     enablePodMonitor: true
   managed:
+    
     services:
       additional:
         - selectorType: rw
@@ -40,6 +41,7 @@ spec:
               loadBalancerIP: "${ASGARD_VIP}"
               externalIPs:
                 - "${ASGARD_VIP}"
+
 
   # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
   enablePDB: false
@@ -80,23 +82,6 @@ spec:
         secretAccessKey:
           name: ${APP}-access-key
           key: credential
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: sgc
-  namespace: ${APP}
-spec:
-  allowConnections: true
-  cluster:
-    name: asgard
-  name: sgc
-  owner: sgc
-  databaseReclaimPolicy: retain
-  ensure: present
-
-
       # database: sgc
       # owner: sgc
       # import:

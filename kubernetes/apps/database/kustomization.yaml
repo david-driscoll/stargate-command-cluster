@@ -9,3 +9,4 @@ components:
 resources:
   - ./minio/ks.yaml
   - ./cloudnative-pg/ks.yaml
+  - ./dragonfly/ks.yaml

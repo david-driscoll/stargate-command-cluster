@@ -97,5 +97,5 @@ spec:
       log:
         type: emptyDir
         globalMounts:
-          - /var/log/pgadmin
+          - path: /var/log/pgadmin
 

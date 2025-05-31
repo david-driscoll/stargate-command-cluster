@@ -94,4 +94,8 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /var/lib/pgadmin
+      log:
+        type: emptyDir
+        globalMounts:
+          - /var/log/pgadmin
 

@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app asgard
+  name: &app operator-operator
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
-  path: ./kubernetes/apps/database/cloudnative-pg/cluster
+  path: ./kubernetes/apps/database/dragonfly/operator
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,5 +26,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      POSTGRES_ADMIN: "vaults/Eris/items/7fpazykr5wvcmomndbh5m6j4my"
-      POSTGRES_ACCESS_KEY: "vaults/Eris/items/hgvifsmbyv6i6iujwikt3w2mj4"

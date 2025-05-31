@@ -77,7 +77,7 @@ spec:
     name: asgard
   name: sgc
   owner: sgc
-  databaseReclaimPolicy: delete
+  databaseReclaimPolicy: retain
   ensure: present
 
 

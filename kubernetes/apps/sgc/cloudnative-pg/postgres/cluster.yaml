@@ -64,27 +64,28 @@ spec:
         secretAccessKey:
           name: ${APP}-access-key
           key: credential
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sgc
+  namespace: ${APP}
+spec:
+  allowConnections: true
+  cluster:
+    name: asgard
+  name: sgc
+  owner: sgc
+  databaseReclaimPolicy: delete
+  ensure: present
 
-  bootstrap:
-    initdb:
-      database: sgc
-      owner: sgc
-      import:
-        type: microservice
-        databases:
-          - sgc
-        source:
-          externalCluster: ${APP}-backup
-      # secret:
-      #   name: postgres-initdb-secret
 
-    # # use this to 'migrate' from an existing cnpg cluster (e.g. "postgres-v15") to the new cluster
-    # initdb:
-    #   import:
-    #     type: monolith
-    #     databases:
-    #       - "*"
-    #     roles:
-    #       - "*"
-    #     source:
-    #       externalCluster: postgres-v15
+      # database: sgc
+      # owner: sgc
+      # import:
+      #   type: microservice
+      #   databases:
+      #     - sgc
+      #   source:
+      #     externalCluster: ${APP}-backup

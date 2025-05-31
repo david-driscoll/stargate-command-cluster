@@ -60,3 +60,35 @@ spec:
       APP: *app
       POSTGRES_ADMIN: "vaults/Eris/items/7fpazykr5wvcmomndbh5m6j4my"
       POSTGRES_ACCESS_KEY: "vaults/Eris/items/hgvifsmbyv6i6iujwikt3w2mj4"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app pgadmin
+  namespace: &namespace sgc
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: *namespace
+  path: ./kubernetes/apps/sgc/cloudnative-pg/pgadmin
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  components:
+    - ../../../../components/volsync
+    - ../../../../components/tailscale
+  postBuild:
+    substitute:
+      APP: *app

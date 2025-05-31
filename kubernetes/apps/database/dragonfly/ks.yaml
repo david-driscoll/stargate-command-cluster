@@ -13,11 +13,7 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
-    - name: minio
-      namespace: database
-    - name: cloudnative-pg
-      namespace: database
-  path: ./kubernetes/apps/database/cloudnative-pg/postgres
+  path: ./kubernetes/apps/database/cloudnative-pg/cluster
   prune: true
   sourceRef:
     kind: GitRepository

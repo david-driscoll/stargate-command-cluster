@@ -3,13 +3,12 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: asgard
-  namespace: ${APP}
+  name: sgc
 spec:
   allowConnections: true
   cluster:
     name: asgard
-  name: asgard
-  owner: asgard
+  name: sgc
+  owner: sgc
   databaseReclaimPolicy: retain
   ensure: present

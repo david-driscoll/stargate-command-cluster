@@ -25,7 +25,16 @@ spec:
   monitoring:
     enablePodMonitor: true
   managed:
-    
+    roles:
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: asgard
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: ${APP}-access-key
     services:
       additional:
         - selectorType: rw

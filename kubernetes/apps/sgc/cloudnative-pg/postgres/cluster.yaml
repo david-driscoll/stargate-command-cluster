@@ -28,7 +28,7 @@ spec:
     services:
       additional:
         - selectorType: rw
-          updateStrategy: replace
+          updateStrategy: patch
           serviceTemplate:
             metadata:
               name: "${APP}-rw"

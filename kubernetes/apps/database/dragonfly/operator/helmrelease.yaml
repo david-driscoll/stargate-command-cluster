@@ -104,4 +104,4 @@ spec:
             scrapeTimeout: 10s
     serviceAccount:
       create: true
-      name: dragonfly-operator
+      name: *app

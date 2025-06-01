@@ -83,7 +83,9 @@ spec:
       - "service"
     txtOwnerId: "${CLUSTER_CNAME}"
     txtPrefix: "k8s.${CLUSTER_CNAME}."
-    domainFilters: ["${ROOT_DOMAIN}"]
+    domainFilters:
+      - "${ROOT_DOMAIN}"
+      - "${TAILSCALE_DOMAIN}"
     serviceMonitor:
       enabled: true
     podAnnotations:

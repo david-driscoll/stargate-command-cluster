@@ -19,8 +19,7 @@
     {
       hostType: "docker",
       matchHost: "ghcr.io",
-      username: "david-driscoll",
-      password: "{{secrets.GH_PACKAGE_TOKEN}}",
+      token: "{{secrets.GH_PACKAGE_TOKEN}}",
     },
   ],
   flux: {

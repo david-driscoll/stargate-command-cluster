@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.12.1
+    tag: 0.12.1@sha256:6aa09a7c9e7bae6165216748383d7a491eee345fdb5846e93525de498a6b101b
   url: oci://ghcr.io/home-operations/charts-mirror/volsync
   verify:
     provider: cosign

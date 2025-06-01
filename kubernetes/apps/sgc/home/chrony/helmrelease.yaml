@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: docker.io/library/rockylinux
-              tag: 9
+              tag: 9@sha256:d7be1c094cc5845ee815d4632fe377514ee6ebcf8efaed6892889657e5ddaaa6
             args:
               - "/bin/bash"
               - "-c"

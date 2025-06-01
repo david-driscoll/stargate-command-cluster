@@ -13,8 +13,6 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
-    - name: minio
-      namespace: *namespace
   path: ./kubernetes/apps/database/cloudnative-pg/chart
   prune: true
   sourceRef:

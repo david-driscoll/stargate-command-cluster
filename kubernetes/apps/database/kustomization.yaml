@@ -7,6 +7,5 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./minio/ks.yaml
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml

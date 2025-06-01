@@ -39,7 +39,7 @@ spec:
           *app :
             image:
               repository: pnnlmiscscripts/curl-jq
-              tag: latest
+              tag: latest@sha256:46bc6e2747c42af4013edb228df8401d777f7e22d4d3b7ab27a3f74105d1228e
               pullPolicy: Always
             command:
               - /mux/startup.sh

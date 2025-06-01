@@ -38,7 +38,7 @@ spec:
           main:
             image:
               repository: ghcr.io/david-driscoll/tailscale-idp
-              tag: v1.84.0
+              tag: v1.84.0@sha256:750a863826d237c52a4c20995bac9019c00cdb6fa88dd77e44add44dbd5697ee
             env:
               TS_HOSTNAME: "{{ .Release.Name }}"
               TS_STATE_DIR: /var/lib/tsidp

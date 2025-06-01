@@ -19,12 +19,9 @@
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
     pinDigests: true,
   },
-  "docker-compose": {
-    enabled: false,
-  },
   "helm-values": {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
-    pinDigests: true,
+    pinDigests: false,
   },
   helmfile: {
     managerFilePatterns: ["/(^|/)helmfile\\.ya?ml$/"],

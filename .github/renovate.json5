@@ -3,9 +3,9 @@
   extends: [
     "config:recommended",
     "docker:enableMajor",
-    "docker:pinDigests",
     "helpers:pinGitHubActionDigests",
     ":automergeBranch",
+    ":automergeDigests",
     ":dependencyDashboard",
     ":disableRateLimiting",
     ":semanticCommits",
@@ -17,9 +17,11 @@
   ignorePaths: ["**/*.sops.*"],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/"],
+    pinDigests: true,
   },
   "helm-values": {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/"],
+    pinDigests: true,
   },
   helmfile: {
     managerFilePatterns: ["/(^|/)helmfile\\.ya?ml(?:\\.j2)?$/"],
@@ -27,9 +29,11 @@
   },
   kubernetes: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/"],
+    pinDigests: true,
   },
   kustomize: {
     managerFilePatterns: ["/(^|/)kustomization\\.ya?ml(?:\\.j2)?$/"],
+    pinDigests: true,
   },
   packageRules: [
     {

@@ -15,6 +15,18 @@
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
   schedule: ["every weekend"],
   ignorePaths: ["**/*.sops.*"],
+  hostRules: [
+    {
+      hostType: "docker",
+      matchHost: "ghcr.io",
+      username: "david-driscoll",
+      password: "{{secrets.GITHUB_TOKEN}}",
+    },
+    {
+      hostType: "docker",
+      matchHost: "quay.io",
+    },
+  ],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
     pinDigests: true,

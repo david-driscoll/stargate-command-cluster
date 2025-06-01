@@ -1,193 +1,283 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    "config:recommended",
-    "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
-    ":automergeBranch",
-    ":automergeDigest",
-    ":dependencyDashboard",
-    ":disableRateLimiting",
-    ":semanticCommits",
+    'config:recommended',
+    'docker:enableMajor',
+    'helpers:pinGitHubActionDigests',
+    ':automergeBranch',
+    ':automergeDigest',
+    ':dependencyDashboard',
+    ':disableRateLimiting',
+    ':semanticCommits',
   ],
   dependencyDashboard: true,
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
-  schedule: ["every weekend"],
-  ignorePaths: ["**/*.sops.*"],
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
+  suppressNotifications: [
+    'prEditedNotification',
+    'prIgnoreNotification',
+  ],
+  schedule: [
+    'every weekend',
+  ],
+  ignorePaths: [
+    '**/*.sops.*',
+  ],
   enabledManagers: [
-    "github-actions",
-    "helm-values",
-    "helmfile",
-    "kustomize",
-    "regex",
+    'github-actions',
+    'helm-values',
+    'helmfile',
+    'kustomize',
+    'custom.regex',
   ],
   flux: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.ya?ml$/',
+    ],
     pinDigests: true,
   },
-  "helm-values": {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+  'helm-values': {
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.ya?ml$/',
+    ],
     pinDigests: true,
   },
   helmfile: {
-    managerFilePatterns: ["/(^|/)helmfile\\.ya?ml$/"],
+    managerFilePatterns: [
+      '/(^|/)helmfile\\.ya?ml$/',
+    ],
     pinDigests: false,
   },
   kubernetes: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.ya?ml$/',
+    ],
     pinDigests: true,
   },
   kustomize: {
-    managerFilePatterns: ["/(^|/)kustomization\\.ya?ml$/"],
+    managerFilePatterns: [
+      '/(^|/)kustomization\\.ya?ml$/',
+    ],
     pinDigests: true,
   },
   packageRules: [
     {
-      description: "CoreDNS Group",
-      groupName: "CoreDNS",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/coredns/"],
+      description: 'CoreDNS Group',
+      groupName: 'CoreDNS',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/coredns/',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
-      description: "Flux Operator Group",
-      groupName: "Flux Operator",
-      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
-      matchDatasources: ["docker"],
+      description: 'Flux Operator Group',
+      groupName: 'Flux Operator',
+      matchPackageNames: [
+        '/flux-operator/',
+        '/flux-instance/',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
-      description: "Siderolabs",
-      groupName: "Siderolabs",
-      matchDepNames: ["ghcr.io/siderolabs/*"],
+      description: 'Siderolabs',
+      groupName: 'Siderolabs',
+      matchDepNames: [
+        'ghcr.io/siderolabs/*',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
-      description: "Tailscale",
-      groupName: "Tailscale",
-      matchPackageNames: ["ghcr.io/tailscale/*", "tailscale/*", "tailscale*"],
+      description: 'Tailscale',
+      groupName: 'Tailscale',
+      matchPackageNames: [
+        'ghcr.io/tailscale/*',
+        'tailscale/*',
+        'tailscale*',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
-      description: "Traefik",
-      groupName: "Traefik",
-      matchPackageNames: ["ghcr.io/traefik/*", "traefik/*", "traefik*"],
+      description: 'Traefik',
+      groupName: 'Traefik',
+      matchPackageNames: [
+        'ghcr.io/traefik/*',
+        'traefik/*',
+        'traefik*',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
-      description: "Spegel Group",
-      groupName: "Spegel",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/spegel/"],
+      description: 'Spegel Group',
+      groupName: 'Spegel',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/spegel/',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
-      description: "Auto-merge GitHub Actions",
-      matchManagers: ["github-actions"],
+      description: 'Auto-merge GitHub Actions',
+      matchManagers: [
+        'github-actions',
+      ],
       automerge: true,
-      automergeType: "branch",
-      matchUpdateTypes: ["minor", "patch", "digest"],
-      minimumReleaseAge: "3 days",
+      automergeType: 'branch',
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+        'digest',
+      ],
+      minimumReleaseAge: '3 days',
       ignoreTests: true,
     },
     {
-      matchUpdateTypes: ["major"],
-      semanticCommitType: "feat",
-      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      matchUpdateTypes: [
+        'major',
+      ],
+      semanticCommitType: 'feat',
+      commitMessagePrefix: '{{semanticCommitType}}({{semanticCommitScope}})!:',
+      commitMessageExtra: '( {{currentVersion}} → {{newVersion}} )',
     },
     {
-      matchUpdateTypes: ["minor"],
-      semanticCommitType: "feat",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      matchUpdateTypes: [
+        'minor',
+      ],
+      semanticCommitType: 'feat',
+      commitMessageExtra: '( {{currentVersion}} → {{newVersion}} )',
     },
     {
-      matchUpdateTypes: ["patch"],
-      semanticCommitType: "fix",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      matchUpdateTypes: [
+        'patch',
+      ],
+      semanticCommitType: 'fix',
+      commitMessageExtra: '( {{currentVersion}} → {{newVersion}} )',
     },
     {
-      matchUpdateTypes: ["digest"],
-      semanticCommitType: "chore",
-      commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
+      matchUpdateTypes: [
+        'digest',
+      ],
+      semanticCommitType: 'chore',
+      commitMessageExtra: '( {{currentDigestShort}} → {{newDigestShort}} )',
     },
     {
-      matchDatasources: ["docker"],
-      semanticCommitScope: "container",
-      commitMessageTopic: "image {{depName}}",
+      matchDatasources: [
+        'docker',
+      ],
+      semanticCommitScope: 'container',
+      commitMessageTopic: 'image {{depName}}',
     },
     {
-      matchDatasources: ["helm"],
-      semanticCommitScope: "helm",
-      commitMessageTopic: "chart {{depName}}",
+      matchDatasources: [
+        'helm',
+      ],
+      semanticCommitScope: 'helm',
+      commitMessageTopic: 'chart {{depName}}',
     },
     {
-      matchManagers: ["github-actions"],
-      semanticCommitType: "ci",
-      semanticCommitScope: "github-action",
-      commitMessageTopic: "action {{depName}}",
+      matchManagers: [
+        'github-actions',
+      ],
+      semanticCommitType: 'ci',
+      semanticCommitScope: 'github-action',
+      commitMessageTopic: 'action {{depName}}',
     },
     {
-      matchDatasources: ["github-releases"],
-      semanticCommitScope: "github-release",
-      commitMessageTopic: "release {{depName}}",
+      matchDatasources: [
+        'github-releases',
+      ],
+      semanticCommitScope: 'github-release',
+      commitMessageTopic: 'release {{depName}}',
     },
     {
-      matchUpdateTypes: ["major"],
-      labels: ["type/major"],
+      matchUpdateTypes: [
+        'major',
+      ],
+      labels: [
+        'type/major',
+      ],
     },
     {
-      matchUpdateTypes: ["minor"],
-      labels: ["type/minor"],
+      matchUpdateTypes: [
+        'minor',
+      ],
+      labels: [
+        'type/minor',
+      ],
     },
     {
-      matchUpdateTypes: ["patch"],
-      labels: ["type/patch"],
+      matchUpdateTypes: [
+        'patch',
+      ],
+      labels: [
+        'type/patch',
+      ],
     },
     {
-      matchDatasources: ["docker"],
-      addLabels: ["renovate/container"],
+      matchDatasources: [
+        'docker',
+      ],
+      addLabels: [
+        'renovate/container',
+      ],
     },
     {
-      matchDatasources: ["helm"],
-      addLabels: ["renovate/helm"],
+      matchDatasources: [
+        'helm',
+      ],
+      addLabels: [
+        'renovate/helm',
+      ],
     },
     {
-      matchManagers: ["github-actions"],
-      addLabels: ["renovate/github-action"],
+      matchManagers: [
+        'github-actions',
+      ],
+      addLabels: [
+        'renovate/github-action',
+      ],
     },
     {
-      matchDatasources: ["github-releases"],
-      addLabels: ["renovate/github-release"],
+      matchDatasources: [
+        'github-releases',
+      ],
+      addLabels: [
+        'renovate/github-release',
+      ],
     },
   ],
   customManagers: [
     {
-      description: "Process annotated dependencies",
-      customType: "regex",
+      description: 'Process annotated dependencies',
+      customType: 'regex',
       managerFilePatterns: [
-        "/(^|/).+\\.env$/",
-        "/(^|/).+\\.sh$/",
-        "/(^|/).+\\.ya?ml$/",
+        '/(^|/).+\\.env$/',
+        '/(^|/).+\\.sh$/',
+        '/(^|/).+\\.ya?ml$/',
       ],
       matchStrings: [
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)",
+        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)',
+        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)',
       ],
-      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
     },
   ],
 }

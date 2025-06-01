@@ -22,10 +22,6 @@
       username: "david-driscoll",
       password: "{{secrets.GITHUB_TOKEN}}",
     },
-    {
-      hostType: "docker",
-      matchHost: "quay.io",
-    },
   ],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],

@@ -10,7 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 4.0.2@sha256:5d67c049377d6b621bc4a60ed6b9c1ba8212fedc631b4ef1ab734a4ea23c5a6c
+    tag: 4.0.2
+    digest: sha256:5d67c049377d6b621bc4a60ed6b9c1ba8212fedc631b4ef1ab734a4ea23c5a6c
   url: oci://ghcr.io/piraeusdatastore/helm-charts/snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/helm.toolkit.fluxcd.io/helmrelease_v2.json

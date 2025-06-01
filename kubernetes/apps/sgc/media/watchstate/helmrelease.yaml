@@ -29,7 +29,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/arabcoders/watchstate
-              tag: master-20250518-1458e59
+              tag: master-20250518-1458e59@sha256:c7d5bcfe771697d647633310658465a843d36dbdf1008dd1f763920a2494f20e
             env:
               TZ: America/New_York
               WS_UID: 568

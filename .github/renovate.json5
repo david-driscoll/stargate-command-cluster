@@ -15,13 +15,6 @@
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
   schedule: ["every weekend"],
   ignorePaths: ["**/*.sops.*"],
-  hostRules: [
-    {
-      hostType: "docker",
-      matchHost: "ghcr.io",
-      token: "{{secrets.GH_PACKAGE_TOKEN}}",
-    },
-  ],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
     pinDigests: true,

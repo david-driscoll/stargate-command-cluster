@@ -28,7 +28,7 @@ spec:
           *app :
             image:
               repository: riftbit/hls-proxy
-              tag: 8.4.8
+              tag: 8.4.8@sha256:f4ffd9f3cea2975edd80532d72016e5c6383add0885a98a39585a9caefc9a11c
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}

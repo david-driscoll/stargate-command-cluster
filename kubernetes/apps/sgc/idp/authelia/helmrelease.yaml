@@ -71,10 +71,6 @@ spec:
       config:
         type: configMap
         name: authelia-config
-        globalMounts:
-          - path: /config/configuration.yaml
-            subPath: configuration.yaml
-            readOnly: true
       data:
         existingClaim: *app
         globalMounts:

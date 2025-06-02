@@ -27,12 +27,12 @@ session:
   expiration: 1h
   remember_me: 1M
   cookies:
-    - name: milkyway_session
+    - name: ${CLUSTER_CNAME}_session
       domain: ${ROOT_DOMAIN}
       authelia_url: https://auth.${ROOT_DOMAIN}
       default_redirection_url: https://${ROOT_DOMAIN}
   redis:
-    host: dragonfly.database.svc.cluster.local
+    host: zpm.sgc.svc.cluster.local
     database_index: 2
 
 # notifier:
@@ -57,7 +57,7 @@ access_control:
       # - 127.0.0.1/32
   rules:
     # bypass for authelia
-    - domain: auth.${ROOT_DOMAIN}
+    - domain: authelia.${ROOT_DOMAIN}
       policy: bypass
     # bypass for API access
     # - domain:

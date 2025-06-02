@@ -46,7 +46,7 @@ spec:
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
             envFrom:
               - configMapRef:
-                  name: authelia-secret
+                  name: authelia
             resources:
               requests:
                 cpu: 25m

@@ -36,6 +36,9 @@ spec:
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           *app :
+            args:
+              - --config
+              - /config/configuration.yml
             image:
               repository: ghcr.io/authelia/authelia
               tag: 4.38.0
@@ -71,6 +74,7 @@ spec:
         globalMounts:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
+            readOnly: true
       data:
         existingClaim: *app
         globalMounts:

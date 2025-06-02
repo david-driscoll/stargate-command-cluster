@@ -52,7 +52,7 @@ spec:
         createdb: true
         createrole: true
         passwordSecret:
-          name: ${APP}-user
+          name: authelia
     services:
       additional:
         - selectorType: rw

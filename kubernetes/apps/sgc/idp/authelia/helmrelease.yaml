@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app authelia
+spec:
+  interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: uninstall
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/authelia/authelia
+              tag: 4.38.0
+            env:
+              TZ: ${TIMEZONE}
+              AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
+              AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
+              AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
+            resources:
+              requests:
+                cpu: 25m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+                cpu: 100m
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+
+    persistence:
+      config:
+        type: configMap
+        name: authelia-config
+        globalMounts:
+          - path: /config/configuration.yaml
+            subPath: configuration.yaml
+      secrets:
+        type: secret
+        name: authelia-secret
+        globalMounts:
+          - path: /secrets/secrets.yaml
+            subPath: secrets.yaml
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /data/
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 9091
+          metrics:
+            port: 8080
+
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/icon: mdi:shield-account
+        hosts:
+          - host: "authelia.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http

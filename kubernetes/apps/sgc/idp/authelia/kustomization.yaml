@@ -5,8 +5,9 @@ namespace: sgc
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+  - ./middleware.yaml
 configMapGenerator:
-  - name: authelia
+  - name: authelia-config
     files:
       - ./resources/configuration.yaml
 generatorOptions:

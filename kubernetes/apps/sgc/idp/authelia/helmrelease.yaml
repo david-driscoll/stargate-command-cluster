@@ -41,9 +41,12 @@ spec:
               tag: 4.38.0
             env:
               TZ: ${TIMEZONE}
-              AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
+              # AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
+            envFrom:
+              - configMapRef:
+                  name: authelia-secret
             resources:
               requests:
                 cpu: 25m
@@ -68,12 +71,6 @@ spec:
         globalMounts:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
-      secrets:
-        type: secret
-        name: authelia-secret
-        globalMounts:
-          - path: /secrets/secrets.yaml
-            subPath: secrets.yaml
       data:
         existingClaim: *app
         globalMounts:

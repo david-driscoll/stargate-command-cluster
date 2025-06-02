@@ -38,14 +38,14 @@ spec:
           *app :
             image:
               repository: ghcr.io/authelia/authelia
-              tag: 4.39.4@sha256:64b356c30fd817817a4baafb4dbc0f9f8702e46b49e1edb92ff42e19e487b517
+              tag: 4.38.0
             env:
               TZ: ${TIMEZONE}
               # AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
             envFrom:
-              - configMapRef:
+              - secretRef:
                   name: authelia
             resources:
               requests:

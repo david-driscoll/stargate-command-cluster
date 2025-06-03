@@ -145,6 +145,9 @@ spec:
       data:
         type: emptyDir
         sizeLimit: 1Gi
+      shared:
+        type: emptyDir
+        sizeLimit: 1Gi
 
     service:
       app:

@@ -47,8 +47,6 @@ spec:
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
-    - name: lldap-database
-      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system

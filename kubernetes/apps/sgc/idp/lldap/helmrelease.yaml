@@ -25,13 +25,15 @@ spec:
   values:
     controllers:
       *app :
+        replicas: 2
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           *app :
             image:
               repository: ghcr.io/lldap/lldap
-              tag: v0.5.0
+              tag: 2025-05-19-alpine-rootless
             securityContext:
               readOnlyRootFilesystem: false
             env:

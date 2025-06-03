@@ -3,26 +3,16 @@ set -euo pipefail
 
 echo "Starting 1Password user fetch..."
 
-# Default values - these should be set by the environment
-OUTPUT_DIR="${OUTPUT_DIR:-/shared/user-configs}"
-GROUP_CONFIGS_DIR="${GROUP_CONFIGS_DIR:-/shared/group-configs}"
-TAILSCALE_DOMAIN="${TAILSCALE_DOMAIN:-opossum-yo.ts.net}"
-LLDAP_LDAP_BASE_DN="${LLDAP_LDAP_BASE_DN:-dc=example,dc=com}"
-
 # Validate required environment variables
 if [ -z "$TAILSCALE_DOMAIN" ]; then
     echo "Error: TAILSCALE_DOMAIN environment variable not set"
     exit 1
 fi
 
-if [ -z "$LLDAP_LDAP_BASE_DN" ]; then
-    echo "Error: LLDAP_LDAP_BASE_DN environment variable not set"
-    exit 1
-fi
-
 # Create output directories
 mkdir -p "$OUTPUT_DIR"
-mkdir -p "$GROUP_CONFIGS_DIR"
+mkdir -p "$OUTPUT_DIR/groups"
+mkdir -p "$OUTPUT_DIR/users"
 
 # Check if op is authenticated
 if ! op whoami >/dev/null 2>&1; then
@@ -31,13 +21,13 @@ if ! op whoami >/dev/null 2>&1; then
 fi
 
 # Fetch all items with the tag
-echo "Fetching users from 1Password with tag '${TAILSCALE_DOMAIN}/user'..."
+echo "Fetching users from 1Password with tag '$TAILSCALE_DOMAIN/user'..."
 
 # Get all items with the specified tag
-items=$(op item list --tags "${TAILSCALE_DOMAIN}/user" --format json)
+items=$(op item list --tags "$TAILSCALE_DOMAIN/user" --format json)
 
 if [ -z "$items" ] || [ "$items" = "[]" ]; then
-    echo "No users found with tag '${TAILSCALE_DOMAIN}/user'"
+    echo "No users found with tag '$TAILSCALE_DOMAIN/user'"
     # Create empty directory but no files - bootstrap.sh will handle empty configs
     exit 0
 fi
@@ -58,17 +48,17 @@ while IFS= read -r item_id; do
     item_details=$(op item get "$item_id" --format json)
 
     # Extract fields
-    username=$(echo "$item_details" | jq -r '.fields[] | select(.label == "username" or .label == "Username") | .value // empty')
-    password=$(echo "$item_details" | jq -r '.fields[] | select(.label == "password" or .label == "Password") | .value // empty')
-    email=$(echo "$item_details" | jq -r '.fields[] | select(.label == "email" or .label == "Email") | .value // empty')
-    display_name=$(echo "$item_details" | jq -r '.fields[] | select(.label == "display_name" or .label == "Display Name") | .value // empty')
-    first_name=$(echo "$item_details" | jq -r '.fields[] | select(.label == "first_name" or .label == "First Name") | .value // empty')
-    last_name=$(echo "$item_details" | jq -r '.fields[] | select(.label == "last_name" or .label == "Last Name") | .value // empty')
-    groups=$(echo "$item_details" | jq -r '.fields[] | select(.label == "groups" or .label == "Groups") | .value // empty')
+    username=$(echo "$item_details" | jq -r '.fields[] | select(.label == "username" or .label == "Username") | .value')
+    password=$(echo "$item_details" | jq -r '.fields[] | select(.label == "password" or .label == "Password") | .value')
+    email=$(echo "$item_details" | jq -r '.fields[] | select(.label == "email" or .label == "Email") | .value')
+    display_name=$(echo "$item_details" | jq -r '.fields[] | select(.label == "display_name" or .label == "Display Name") | .value')
+    first_name=$(echo "$item_details" | jq -r '.fields[] | select(.label == "first_name" or .label == "First Name") | .value')
+    last_name=$(echo "$item_details" | jq -r '.fields[] | select(.label == "last_name" or .label == "Last Name") | .value')
+    groups=$(echo "$item_details" | jq -r '.fields[] | select(.label == "groups" or .label == "Groups") | .value')
 
     # Use title as display name if display_name is empty
     if [ -z "$display_name" ]; then
-        display_name=$(echo "$item_details" | jq -r '.title // empty')
+        display_name=$(echo "$item_details" | jq -r '.title')
     fi
 
     # Validate required fields
@@ -79,8 +69,8 @@ while IFS= read -r item_id; do
 
     # Default email if not provided
     if [ -z "$email" ]; then
-        email="${username}@${LLDAP_LDAP_BASE_DN#dc=}"
-        email="${email//,dc=/.}"
+        echo "Warning: Skipping item $item_id - missing email"
+        continue
     fi
 
     # Parse display name into first and last name if not provided separately
@@ -146,7 +136,7 @@ while IFS= read -r item_id; do
         }')
 
     # Write individual user config file
-    user_file="$OUTPUT_DIR/user-$(printf "%03d" $user_count)-$username.json"
+    user_file="$OUTPUT_DIR/users/$username.json"
     echo "$user_config" >"$user_file"
     echo "Created user config: $user_file"
 
@@ -169,12 +159,12 @@ for group_name in "${!all_groups[@]}"; do
         }')
 
     # Write group config file
-    group_file="$GROUP_CONFIGS_DIR/group-$(printf "%03d" $group_count)-$group_name.json"
+    group_file="$OUTPUT_DIR/groups/$group_name.json"
     echo "$group_config" >"$group_file"
     echo "Created group config: $group_file"
 
     ((group_count++))
 done
 
-echo "Successfully created $group_count group config files in $GROUP_CONFIGS_DIR"
+echo "Successfully created $group_count group config files in $OUTPUT_DIR"
 echo "User sync preparation completed successfully"

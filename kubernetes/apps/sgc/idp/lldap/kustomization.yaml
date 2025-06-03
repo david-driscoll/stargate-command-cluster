@@ -3,10 +3,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: sgc
 resources:
-  - ./helmrelease.yaml
-  - ./externalsecret.yaml
-  - ./onepassword-connect.yaml
   - ./database.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./secret.yaml
+  - ./onepassword-connect.yaml
 
 configMapGenerator:
   - name: lldap-user-sync-scripts
@@ -15,3 +16,5 @@ configMapGenerator:
       - sync-users.sh=./resources/sync-users.sh
     options:
       disableNameSuffixHash: true
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled

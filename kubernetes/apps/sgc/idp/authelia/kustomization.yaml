@@ -6,6 +6,7 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./ldap-externalsecret.yaml
+  - ./secret.yaml
   - ./middleware.yaml
   - ./database.yaml
 configMapGenerator:

@@ -88,8 +88,7 @@ spec:
                     name: onepassword-connect
                     key: access-token
               TAILSCALE_DOMAIN: ${TAILSCALE_DOMAIN}
-              OUTPUT_DIR: "/shared/user-configs"
-              GROUP_CONFIGS_DIR: "/shared/group-configs"
+              OUTPUT_DIR: "/shared/"
             envFrom:
               - secretRef:
                   name: lldap
@@ -101,11 +100,16 @@ spec:
               tag: v0.5.0
             command: ["/bin/bash", "/scripts/sync-users.sh"]
             env:
-              LLDAP_URL: "http://lldap.sgc.svc.cluster.local:17170"
-              USER_CONFIGS_DIR: "/shared/user-configs"
-              GROUP_CONFIGS_DIR: "/shared/group-configs"
-              DO_CLEANUP: "false"
-              LLDAP_SET_PASSWORD_PATH: "/app/lldap_set_password"
+              LLDAP_URL: http://lldap.sgc.svc.cluster.local:17170
+              LLDAP_ADMIN_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: lldap
+                    key: admin-username
+              LLDAP_ADMIN_PASSWORD: changeme
+              USER_CONFIGS_DIR: "/shared/users"
+              GROUP_CONFIGS_DIR: "/shared/groups"
+              DO_CLEANUP: false
             envFrom:
               - secretRef:
                   name: lldap

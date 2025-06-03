@@ -6,6 +6,7 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./onepassword-connect.yaml
+  - ./database.yaml
 
 configMapGenerator:
   - name: lldap-user-sync-scripts

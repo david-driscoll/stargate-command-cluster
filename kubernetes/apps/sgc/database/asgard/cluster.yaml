@@ -53,6 +53,15 @@ spec:
         createrole: true
         passwordSecret:
           name: authelia
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: lldap
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: lldap
     services:
       additional:
         - selectorType: rw

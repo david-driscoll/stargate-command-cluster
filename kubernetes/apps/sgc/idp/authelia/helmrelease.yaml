@@ -50,6 +50,8 @@ spec:
             envFrom:
               - secretRef:
                   name: authelia
+              - secretRef:
+                  name: authelia-ldap
             resources:
               requests:
                 cpu: 25m

@@ -5,6 +5,7 @@ namespace: sgc
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+  - ./ldap-externalsecret.yaml
   - ./middleware.yaml
   - ./database.yaml
 configMapGenerator:

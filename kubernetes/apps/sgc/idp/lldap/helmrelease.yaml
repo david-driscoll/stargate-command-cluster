@@ -27,18 +27,13 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            runAsNonRoot: true
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           *app :
             image:
               repository: ghcr.io/lldap/lldap
               tag: v0.5.0
+            securityContext:
+              readOnlyRootFilesystem: false
             env:
               TZ: ${TIMEZONE}
               LLDAP_HTTP_PORT: &port 17170
@@ -79,6 +74,8 @@ spec:
             image:
               repository: 1password/op
               tag: 2.31.1
+            securityContext:
+              readOnlyRootFilesystem: false
             command: ["/bin/bash", "/scripts/fetch-users.sh"]
             env:
               OP_CONNECT_HOSTNAME: op-connect.${CLUSTER_DOMAIN}
@@ -95,12 +92,15 @@ spec:
 
         containers: &containers
           main:
+            securityContext:
+              readOnlyRootFilesystem: false
             image:
               repository: ghcr.io/lldap/lldap
               tag: v0.5.0
             command: ["/bin/bash", "/scripts/sync-users.sh"]
             env:
-              LLDAP_URL: http://lldap.sgc.svc.cluster.local:17170
+              LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}
+              LLDAP_LDAP_URL: 3890
               LLDAP_ADMIN_USERNAME:
                 valueFrom:
                   secretKeyRef:
@@ -120,7 +120,7 @@ spec:
           backoffLimit: 6
           concurrencyPolicy: Forbid
           failedJobsHistory: 2
-          schedule: "0 0 * * *"
+          schedule: "0 */1 * * *"
           startingDeadlineSeconds: 30
           successfulJobsHistory: 3
           suspend: false
@@ -129,10 +129,10 @@ spec:
         containers: *containers
     defaultPodOptions:
       securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
+        fsGroup: 568
+        runAsGroup: 568
         runAsNonRoot: true
-        runAsUser: 1000
+        runAsUser: 568
         seccompProfile:
           type: RuntimeDefault
     persistence:
@@ -140,7 +140,7 @@ spec:
         type: configMap
         name: lldap-user-sync-scripts
         defaultMode: 0755
-      shared:
+      data:
         type: emptyDir
         sizeLimit: 1Gi
 

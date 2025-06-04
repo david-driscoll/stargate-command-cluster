@@ -80,7 +80,7 @@ spec:
               readOnlyRootFilesystem: false
             command: ["/bin/bash", "/scripts/fetch-users.sh"]
             env:
-              OP_CONNECT_HOSTNAME: op-connect.${CLUSTER_DOMAIN}
+              OP_CONNECT_HOST: op-connect.${CLUSTER_DOMAIN}
               OP_CONNECT_TOKEN:
                 valueFrom:
                   secretKeyRef:

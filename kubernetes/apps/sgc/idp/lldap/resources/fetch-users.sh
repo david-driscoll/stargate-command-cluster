@@ -14,11 +14,7 @@ mkdir -p "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR/groups"
 mkdir -p "$OUTPUT_DIR/users"
 
-# Check if op is authenticated
-if ! op whoami >/dev/null 2>&1; then
-    echo "Error: Not authenticated with 1Password"
-    exit 1
-fi
+op whoami
 
 # Fetch all items with the tag
 echo "Fetching users from 1Password with tag '$TAILSCALE_DOMAIN/user'..."

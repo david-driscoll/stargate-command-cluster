@@ -145,13 +145,9 @@ spec:
         defaultMode: 0755
       data:
         type: emptyDir
-        sizeLimit: 1Gi
-      shared:
-        type: emptyDir
-        sizeLimit: 1Gi
-      home:
-        type: emptyDir
-        sizeLimit: 1Gi
+        globalMounts:
+          - path: /shared
+          - path: /.config
 
     service:
       app:

@@ -101,6 +101,7 @@ spec:
               tag: v0.6.1@sha256:4931eeeb841b1bbf5774161b5fd9dab88f41ffeb4b08ca656f0b7595cd7cb52a
             command: ["/bin/bash", "/scripts/sync-users.sh"]
             env:
+              HOME: "/home"
               LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}
               LLDAP_LDAP_URL: 3890
               LLDAP_ADMIN_USERNAME:
@@ -148,6 +149,9 @@ spec:
       shared:
         type: emptyDir
         sizeLimit: 1Gi
+      home:
+        type: emptyDir
+        sizeLimit: 1Gi
 
     service:
       app:
@@ -164,7 +168,7 @@ spec:
         annotations:
           hajimari.io/icon: mdi:account-group
         hosts:
-          - host: "ldap.${ROOT_DOMAIN}"
+          - host: "lldap.${ROOT_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -177,4 +181,4 @@ spec:
                 pathType: Prefix
                 service:
                   identifier: app
-                  port: http
+                  port: ldap

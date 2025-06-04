@@ -98,7 +98,7 @@ spec:
               readOnlyRootFilesystem: false
             image:
               repository: ghcr.io/lldap/lldap
-              tag: v0.5.0
+              tag: v0.6.1@sha256:4931eeeb841b1bbf5774161b5fd9dab88f41ffeb4b08ca656f0b7595cd7cb52a
             command: ["/bin/bash", "/scripts/sync-users.sh"]
             env:
               LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}

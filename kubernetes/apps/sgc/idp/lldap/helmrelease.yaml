@@ -148,6 +148,7 @@ spec:
         globalMounts:
           - path: /shared
           - path: /.config
+          - path: /data
 
     service:
       app:

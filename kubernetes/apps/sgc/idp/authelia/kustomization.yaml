@@ -8,7 +8,7 @@ resources:
   - ./ldap-externalsecret.yaml
   - ./secret.yaml
   - ./middleware.yaml
-  - ./database.yaml
+  # - ./database.yaml
 configMapGenerator:
   - name: authelia-config
     files:

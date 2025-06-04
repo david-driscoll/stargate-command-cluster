@@ -56,12 +56,12 @@ spec:
       - connectionLimit: -1
         ensure: present
         inherit: true
-        name: authelia
+        name: lldap
         login: true
         createdb: true
         createrole: true
         passwordSecret:
-          name: authelia
+          name: lldap
     services:
       additional:
         - selectorType: rw

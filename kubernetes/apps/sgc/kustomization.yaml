@@ -16,4 +16,4 @@ resources:
   - ./dvr/ks.yaml
   - ./media/ks.yaml
   - ./idp/ks.yaml
-  # - ./database/ks.yaml
+  - ./database/ks.yaml

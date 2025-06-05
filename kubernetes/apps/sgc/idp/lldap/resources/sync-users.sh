@@ -74,8 +74,10 @@ while IFS= read -r vault_id; do
         item_count=$(echo "$vault_items" | jq length)
         echo "Found $item_count items with tag '$user_tag' in vault $vault_id"
 
-        # Add items to our collection (using mapfile for safer array assignment)
-        mapfile -t -O "${#all_items[@]}" all_items < <(echo "$vault_items" | jq -r '.[].id')
+        # Alternative 1: Using a standard for loop to append items
+        for item_id in $(echo "$vault_items" | jq -r '.[].id'); do
+            all_items+=("$item_id")
+        done
     fi
 
     ((vault_count++))

@@ -153,14 +153,6 @@ spec:
           - path: /shared
           - path: /.config
           - path: /data
-      cache:
-        type: persistentVolumeClaim
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 100Gi
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
-            subPath: cache
 
     service:
       app:

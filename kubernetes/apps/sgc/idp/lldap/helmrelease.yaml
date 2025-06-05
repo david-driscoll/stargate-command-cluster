@@ -24,6 +24,51 @@ spec:
   dependsOn: []
   values:
     controllers:
+      init:
+        containers: &containers
+          main:
+            securityContext:
+              readOnlyRootFilesystem: false
+            image:
+              repository: ghcr.io/lldap/lldap
+              tag: v0.6.1@sha256:4931eeeb841b1bbf5774161b5fd9dab88f41ffeb4b08ca656f0b7595cd7cb52a
+            command: ["/bin/bash", "/scripts/sync-users.sh"]
+            env:
+              OP_CONNECT_HOST: http://onepassword-connect.kube-system.svc.cluster.local:8080
+              OP_CONNECT_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: onepassword-connect
+                    key: access-token
+              TAILSCALE_DOMAIN: ${TAILSCALE_DOMAIN}
+              OUTPUT_DIR: "/shared/"
+              LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}
+              LLDAP_LDAP_URL: 3890
+              LLDAP_ADMIN_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: lldap
+                    key: admin-username
+              LLDAP_ADMIN_PASSWORD: changeme
+              USER_CONFIGS_DIR: "/shared/users"
+              GROUP_CONFIGS_DIR: "/shared/groups"
+              DO_CLEANUP: false
+            envFrom:
+              - secretRef:
+                  name: lldap
+      sync:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "0 */1 * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        containers: *containers
       *app :
         replicas: 2
         strategy: RollingUpdate
@@ -67,69 +112,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-      init:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        type: job
-        initContainers: &initContainers
-          fetch-users:
-            image:
-              repository: 1password/op
-              tag: 2.31.1
-            securityContext:
-              readOnlyRootFilesystem: false
-            command: ["/bin/bash", "/scripts/fetch-users.sh"]
-            env:
-              OP_CONNECT_HOST: http://onepassword-connect.kube-system.svc.cluster.local:8080
-              OP_CONNECT_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: onepassword-connect
-                    key: access-token
-              TAILSCALE_DOMAIN: ${TAILSCALE_DOMAIN}
-              OUTPUT_DIR: "/shared/"
-            envFrom:
-              - secretRef:
-                  name: lldap
-
-        containers: &containers
-          main:
-            securityContext:
-              readOnlyRootFilesystem: false
-            image:
-              repository: ghcr.io/lldap/lldap
-              tag: v0.6.1@sha256:4931eeeb841b1bbf5774161b5fd9dab88f41ffeb4b08ca656f0b7595cd7cb52a
-            command: ["/bin/bash", "/scripts/sync-users.sh"]
-            env:
-              HOME: "/home"
-              LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}
-              LLDAP_LDAP_URL: 3890
-              LLDAP_ADMIN_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: lldap
-                    key: admin-username
-              LLDAP_ADMIN_PASSWORD: changeme
-              USER_CONFIGS_DIR: "/shared/users"
-              GROUP_CONFIGS_DIR: "/shared/groups"
-              DO_CLEANUP: false
-            envFrom:
-              - secretRef:
-                  name: lldap
-      sync:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        cronjob:
-          backoffLimit: 6
-          concurrencyPolicy: Forbid
-          failedJobsHistory: 2
-          schedule: "0 */1 * * *"
-          startingDeadlineSeconds: 30
-          successfulJobsHistory: 3
-          suspend: false
-        type: cronjob
-        initContainers: *initContainers
-        containers: *containers
     defaultPodOptions:
       securityContext:
         fsGroup: 568
@@ -144,11 +126,7 @@ spec:
         name: lldap-user-sync-scripts
         defaultMode: 0755
       data:
-        type: persistentVolumeClaim
-        storageClass: longhorn
-        accessMode: ReadWriteMany
-        size: 2Gi
-        retain: false
+        type: emptyDir
         globalMounts:
           - path: /shared
           - path: /.config

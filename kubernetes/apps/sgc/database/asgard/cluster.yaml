@@ -25,7 +25,7 @@ spec:
   monitoring:
     enablePodMonitor: true
   managed:
-    roles:
+    # roles:
       # - connectionLimit: -1
       #   ensure: present
       #   inherit: true
@@ -44,24 +44,24 @@ spec:
       #   createrole: true
       #   passwordSecret:
       #     name: ${APP}-user
-      - connectionLimit: -1
-        ensure: present
-        inherit: true
-        name: authelia
-        login: true
-        createdb: true
-        createrole: true
-        passwordSecret:
-          name: authelia-user
-      - connectionLimit: -1
-        ensure: present
-        inherit: true
-        name: lldap
-        login: true
-        createdb: true
-        createrole: true
-        passwordSecret:
-          name: lldap-user
+      # - connectionLimit: -1
+      #   ensure: present
+      #   inherit: true
+      #   name: authelia
+      #   login: true
+      #   createdb: true
+      #   createrole: true
+      #   passwordSecret:
+      #     name: authelia-user
+      # - connectionLimit: -1
+      #   ensure: present
+      #   inherit: true
+      #   name: lldap
+      #   login: true
+      #   createdb: true
+      #   createrole: true
+      #   passwordSecret:
+      #     name: lldap-user
     services:
       additional:
         - selectorType: rw

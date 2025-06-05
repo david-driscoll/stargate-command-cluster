@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: authelia-user
+spec:
+  # refreshInterval: "24h"
+  target:
+    name: "authelia"
+    creationPolicy: Owner
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: "authelia"
+        password: "{{ .password }}"
+        pgpass: "${APP}-rw:5432:authelia:authelia:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc:5432/authelia?password={{ .password }}&user=authelia"
+        uri: "postgresql://authelia:{{ .password }}@${APP}-rw.sgc:5432/authelia"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "${APP}-password-generator"

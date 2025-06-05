@@ -9,3 +9,5 @@ resources:
   - ./scheduledbackup.yaml
   - ./secret.yaml
   - ./password-generation.yaml
+  - ./databases/authelia.yaml
+  - ./databases/lldap.yaml

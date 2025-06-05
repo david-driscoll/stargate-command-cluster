@@ -147,7 +147,7 @@ spec:
         type: persistentVolumeClaim
         storageClass: longhorn
         accessMode: ReadWriteOnce
-        size: 100Gi
+        size: 2Gi
         retain: false
         globalMounts:
           - path: /shared

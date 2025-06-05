@@ -17,9 +17,9 @@ spec:
       data:
         username: "lldap"
         password: "{{ .password }}"
-        pgpass: "lldap-rw:5432:lldap:lldap:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://lldap-rw.sgc:5432/lldap?password={{ .password }}&user=lldap"
-        uri: "postgresql://lldap:{{ .password }}@lldap-rw.sgc:5432/lldap"
+        pgpass: "${APP}-rw:5432:lldap:lldap:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc:5432/lldap?password={{ .password }}&user=lldap"
+        uri: "postgresql://lldap:{{ .password }}@${APP}-rw.sgc:5432/lldap"
   dataFrom:
     - sourceRef:
         generatorRef:

@@ -78,7 +78,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/lldap/lldap
-              tag: 2025-05-19-alpine-rootless
+              tag: 2025-05-19-alpine-rootless@sha256:f0b46c85b7bb20ce05f7e12fda9e5e8606b1a944fcb39a570ab6c94c69526663
             securityContext:
               readOnlyRootFilesystem: false
             env:

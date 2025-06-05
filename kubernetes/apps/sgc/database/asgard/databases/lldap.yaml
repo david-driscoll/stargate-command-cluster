@@ -1,0 +1,28 @@
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: "lldap-user"
+spec:
+  # refreshInterval: "24h"
+  target:
+    name: "lldap-user"
+    creationPolicy: Owner
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: "lldap"
+        password: "{{ .password }}"
+        pgpass: "lldap-rw:5432:lldap:lldap:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://lldap-rw.sgc:5432/lldap?password={{ .password }}&user=lldap"
+        uri: "postgresql://lldap:{{ .password }}@lldap-rw.sgc:5432/lldap"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "${APP}-password-generator"

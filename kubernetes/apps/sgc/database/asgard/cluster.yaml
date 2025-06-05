@@ -35,6 +35,15 @@ spec:
         createrole: true
         passwordSecret:
           name: lldap-user
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: authelia
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: authelia-user
       # - connectionLimit: -1
       #   ensure: present
       #   inherit: true

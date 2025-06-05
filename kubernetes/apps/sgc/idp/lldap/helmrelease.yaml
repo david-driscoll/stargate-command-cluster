@@ -47,7 +47,7 @@ spec:
               LLDAP_ADMIN_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: lldap
+                    name: lldap-secret
                     key: username
               LLDAP_ADMIN_PASSWORD: changeme
               USER_CONFIGS_DIR: "/shared/users"

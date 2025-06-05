@@ -143,12 +143,12 @@ spec:
         type: configMap
         name: lldap-user-sync-scripts
         defaultMode: 0755
-      data:
-        type: emptyDir
-        globalMounts:
-          - path: /shared
-          - path: /.config
-          - path: /data
+      # data:
+      #   type: emptyDir
+      #   globalMounts:
+      #     - path: /shared
+      #     - path: /.config
+      #     - path: /data
 
     service:
       app:

@@ -13,9 +13,7 @@ spec:
   storage:
     size: 40Gi
     storageClass: longhorn
-  enableSuperuserAccess: true
-  superuserSecret:
-    name: ${APP}-admin
+  # enableSuperuserAccess: true
   postgresql:
     parameters:
       max_connections: "300"
@@ -78,7 +76,6 @@ spec:
               loadBalancerIP: "${ASGARD_VIP}"
               externalIPs:
                 - "${ASGARD_VIP}"
-
 
   # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
   enablePDB: false

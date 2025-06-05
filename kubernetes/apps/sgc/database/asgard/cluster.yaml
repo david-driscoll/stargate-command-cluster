@@ -26,24 +26,24 @@ spec:
     enablePodMonitor: true
   managed:
     roles:
-      - connectionLimit: -1
-        ensure: present
-        inherit: true
-        name: ${APP}
-        login: true
-        createdb: true
-        createrole: true
-        passwordSecret:
-          name: ${APP}-user
-      - connectionLimit: -1
-        ensure: present
-        inherit: true
-        name: sgc
-        login: true
-        createdb: true
-        createrole: true
-        passwordSecret:
-          name: ${APP}-user
+      # - connectionLimit: -1
+      #   ensure: present
+      #   inherit: true
+      #   name: ${APP}
+      #   login: true
+      #   createdb: true
+      #   createrole: true
+      #   passwordSecret:
+      #     name: ${APP}-user
+      # - connectionLimit: -1
+      #   ensure: present
+      #   inherit: true
+      #   name: sgc
+      #   login: true
+      #   createdb: true
+      #   createrole: true
+      #   passwordSecret:
+      #     name: ${APP}-user
       - connectionLimit: -1
         ensure: present
         inherit: true

@@ -3,11 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: sgc
 resources:
-  - ./helmrelease.yaml
+  - ./database.yaml
   - ./externalsecret.yaml
+  - ./helmrelease.yaml
   - ./ldap-externalsecret.yaml
-  - ./secret.yaml
   - ./middleware.yaml
+  - ./secret.yaml
 configMapGenerator:
   - name: authelia-config
     files:

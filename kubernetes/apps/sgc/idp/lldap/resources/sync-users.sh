@@ -43,15 +43,6 @@ op_connect_request() {
     curl "${curl_args[@]}" "$OP_CONNECT_HOST$endpoint"
 }
 
-# Test connection to 1Password Connect
-echo "Testing connection to 1Password Connect..."
-health_response=$(op_connect_request "GET" "/v1/heartbeat")
-if [ "$health_response" != "." ]; then
-    echo "Error: Failed to connect to 1Password Connect server at $OP_CONNECT_HOST"
-    exit 1
-fi
-echo "Successfully connected to 1Password Connect"
-
 # Get all vaults to find items
 echo "Fetching vaults from 1Password Connect..."
 vaults=$(op_connect_request "GET" "/v1/vaults")
@@ -246,7 +237,6 @@ done
 
 echo "Successfully created $group_count group config files in $OUTPUT_DIR"
 echo "User sync preparation completed successfully"
-
 
 echo "Starting LLDAP user sync using bootstrap.sh..."
 

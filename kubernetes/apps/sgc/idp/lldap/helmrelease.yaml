@@ -49,7 +49,11 @@ spec:
                   secretKeyRef:
                     name: lldap-secret
                     key: username
-              LLDAP_ADMIN_PASSWORD: changeme
+              LLDAP_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: lldap-secret
+                    key: password
               USER_CONFIGS_DIR: "/shared/users"
               GROUP_CONFIGS_DIR: "/shared/groups"
               DO_CLEANUP: false

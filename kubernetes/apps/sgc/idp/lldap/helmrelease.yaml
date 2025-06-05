@@ -143,12 +143,24 @@ spec:
         type: configMap
         name: lldap-user-sync-scripts
         defaultMode: 0755
-      # data:
-      #   type: emptyDir
-      #   globalMounts:
-      #     - path: /shared
-      #     - path: /.config
-      #     - path: /data
+      data:
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        retain: false
+        globalMounts:
+          - path: /shared
+          - path: /.config
+          - path: /data
+      cache:
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+            subPath: cache
 
     service:
       app:

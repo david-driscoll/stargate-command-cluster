@@ -82,6 +82,8 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data/
+      logs:
+        type: emptyDir
 
     service:
       app:

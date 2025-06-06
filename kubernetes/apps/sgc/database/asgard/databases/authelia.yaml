@@ -16,13 +16,13 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: authelia-user
+  name: &name authelia-user
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   # refreshInterval: "24h"
   target:
-    name: "authelia-user"
+    name: *name
     creationPolicy: Owner
     template:
       metadata:

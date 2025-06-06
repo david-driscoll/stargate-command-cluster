@@ -7,11 +7,11 @@ resources:
   - ./helmrelease.yaml
   - ./secret.yaml
   - ./onepassword-connect.yaml
-configMapGenerator:
-  - name: lldap-user-sync-scripts
-    files:
-      - sync-users.sh=./resources/sync-users.sh
-    options:
-      disableNameSuffixHash: true
-      annotations:
-        kustomize.toolkit.fluxcd.io/substitute: disabled
+# configMapGenerator:
+#   - name: lldap-user-sync-scripts
+#     files:
+#       - sync-users.sh=./resources/sync-users.sh
+#     options:
+#       disableNameSuffixHash: true
+#       annotations:
+#         kustomize.toolkit.fluxcd.io/substitute: disabled

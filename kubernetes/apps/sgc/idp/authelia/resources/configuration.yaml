@@ -65,6 +65,8 @@ duo_api:
 #     enable_pkce_plain_challenge: false
 #     discovery_signed_response_alg: RS512
 
+log:
+  level: 'debug'
 
 access_control:
   default_policy: one_factor

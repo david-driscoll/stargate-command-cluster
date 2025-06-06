@@ -22,6 +22,8 @@ session:
 
 notifier:
   disable_startup_check: true
+  filesystem:
+    filename: /logs/notifier.log
   # smtp:
   #   address: ${ROUTER_IP}
   #   sender: Authelia <david@${ROOT_DOMAIN}>

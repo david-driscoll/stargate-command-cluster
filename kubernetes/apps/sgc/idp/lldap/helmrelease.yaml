@@ -95,9 +95,10 @@ spec:
               LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION: "NONE"
               LLDAP_VERBOSE: "true"
               LLDAP_DATABASE_URL:
-                secretKeyRef:
-                  name: lldap-user
-                  key: uri
+                valueFrom:
+                  secretKeyRef:
+                    name: lldap-user
+                    key: uri
             envFrom:
               - secretRef:
                   name: lldap

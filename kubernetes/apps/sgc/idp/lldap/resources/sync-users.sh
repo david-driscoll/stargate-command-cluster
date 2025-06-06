@@ -2,6 +2,9 @@
 set -euo pipefail
 echo "Starting 1Password user fetch..."
 
+# Set default OUTPUT_DIR if not provided
+OUTPUT_DIR="${OUTPUT_DIR:-/tmp/lldap-sync}"
+
 # Validate required environment variables
 if [ -z "$TAILSCALE_DOMAIN" ]; then
     echo "Error: TAILSCALE_DOMAIN environment variable not set"
@@ -76,9 +79,16 @@ while IFS= read -r vault_id; do
         item_count=$(echo "$vault_items" | jq length)
         echo "Found $item_count items with tag '$user_tag' in vault $vault_id"
 
-        # Use jq to extract and append the IDs to our JSON array
-        jq -s '.[0] + [.[1][].id]' "$all_items_file" <(echo "$vault_items") >"${all_items_file}.new"
-        mv "${all_items_file}.new" "$all_items_file"
+        # Extract item IDs and append to our JSON array
+        vault_item_ids=$(echo "$vault_items" | jq -r '.[].id')
+        if [ -n "$vault_item_ids" ]; then
+            while IFS= read -r item_id; do
+                if [ -n "$item_id" ]; then
+                    # Add item ID to our JSON array
+                    jq --arg id "$item_id" '. += [$id]' "$all_items_file" > "${all_items_file}.tmp" && mv "${all_items_file}.tmp" "$all_items_file"
+                fi
+            done <<< "$vault_item_ids"
+        fi
     fi
 
     ((vault_count++))
@@ -113,9 +123,13 @@ while IFS= read -r item_id; do
     for vault_id in $(echo "$vaults" | jq -r '.[].id'); do
         # Try to get the item from this vault
         temp_details=$(op_connect_request "GET" "/v1/vaults/$vault_id/items/$item_id" 2>/dev/null || echo "")
-        if [ -n "$temp_details" ] && [ "$temp_details" != "null" ]; then
-            item_details="$temp_details"
-            break
+        if [ -n "$temp_details" ] && [ "$temp_details" != "null" ] && [ "$temp_details" != "" ]; then
+            # Verify the response is valid JSON
+            if echo "$temp_details" | jq . >/dev/null 2>&1; then
+                item_details="$temp_details"
+                echo "Found item details in vault: $vault_id"
+                break
+            fi
         fi
     done
 
@@ -123,6 +137,8 @@ while IFS= read -r item_id; do
         echo "Warning: Could not retrieve details for item $item_id"
         continue
     fi
+
+    echo "Extracting fields for item: $item_id"
 
     # Extract fields from the item details
     username=$(echo "$item_details" | jq -r '.fields[]? | select(.label == "username" or .label == "Username") | .value // empty')
@@ -132,6 +148,8 @@ while IFS= read -r item_id; do
     first_name=$(echo "$item_details" | jq -r '.fields[]? | select(.label == "first_name" or .label == "First Name") | .value // empty')
     last_name=$(echo "$item_details" | jq -r '.fields[]? | select(.label == "last_name" or .label == "Last Name") | .value // empty')
     groups=$(echo "$item_details" | jq -r '.fields[]? | select(.label == "groups" or .label == "Groups") | .value // empty')
+
+    echo "Extracted fields - username: $username, email: $email, display_name: $display_name"
 
     # Use title as display name if display_name is empty
     if [ -z "$display_name" ]; then
@@ -177,8 +195,15 @@ while IFS= read -r item_id; do
     if [ -z "$groups" ]; then
         groups_array='["lldap_password_manager"]'
     else
-        groups_array=$(echo "$groups" | jq -R 'split(",") | map(select(length > 0) | ltrimstr(" ") | rtrimstr(" "))')
+        # Clean up the groups string and convert to JSON array
+        clean_groups=$(echo "$groups" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        if [ -n "$clean_groups" ]; then
+            groups_array=$(echo "$clean_groups" | jq -R 'split(",") | map(select(length > 0) | ltrimstr(" ") | rtrimstr(" ")) | select(length > 0)')
+        else
+            groups_array='["lldap_password_manager"]'
+        fi
     fi
+    
     # Collect groups for group config generation
     if [ -n "$groups" ]; then
         # Parse comma-separated groups and add to all_groups
@@ -190,10 +215,13 @@ while IFS= read -r item_id; do
                 all_groups["$group"]=1
             fi
         done
+    else
+        # Add default group
+        all_groups["lldap_password_manager"]=1
     fi
 
     # Create user config in bootstrap.sh format
-    user_config=$(jq -n \
+    if ! user_config=$(jq -n \
         --arg id "$username" \
         --arg email "$email" \
         --arg password "$password" \
@@ -209,11 +237,17 @@ while IFS= read -r item_id; do
             firstName: $firstName,
             lastName: $lastName,
             groups: $groups
-        }')
+        }'); then
+        echo "Error: Failed to create user config for $username"
+        continue
+    fi
 
     # Write individual user config file
     user_file="$OUTPUT_DIR/users/$username.json"
-    echo "$user_config" >"$user_file"
+    if ! echo "$user_config" >"$user_file"; then
+        echo "Error: Failed to write user config file $user_file"
+        continue
+    fi
     echo "Created user config: $user_file"
 
     ((user_count++))

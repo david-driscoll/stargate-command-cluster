@@ -24,56 +24,56 @@ spec:
   dependsOn: []
   values:
     controllers:
-      init:
-        type: job
-        containers: &containers
-          main:
-            securityContext:
-              readOnlyRootFilesystem: false
-            image:
-              repository: ghcr.io/lldap/lldap
-              tag: v0.6.1@sha256:4931eeeb841b1bbf5774161b5fd9dab88f41ffeb4b08ca656f0b7595cd7cb52a
-            command: ["/bin/bash", "/scripts/sync-users.sh"]
-            env:
-              OP_CONNECT_HOST: http://onepassword-connect.kube-system.svc.cluster.local:8080
-              OP_CONNECT_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: onepassword-connect
-                    key: access-token
-              TAILSCALE_DOMAIN: ${TAILSCALE_DOMAIN}
-              OUTPUT_DIR: "/shared/"
-              LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}
-              LLDAP_LDAP_URL: 3890
-              LLDAP_ADMIN_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: lldap-secret
-                    key: username
-              LLDAP_ADMIN_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: lldap-secret
-                    key: password
-              USER_CONFIGS_DIR: "/shared/users"
-              GROUP_CONFIGS_DIR: "/shared/groups"
-              DO_CLEANUP: false
-            envFrom:
-              - secretRef:
-                  name: lldap
-      sync:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        cronjob:
-          backoffLimit: 6
-          concurrencyPolicy: Forbid
-          failedJobsHistory: 2
-          schedule: "0 */1 * * *"
-          startingDeadlineSeconds: 30
-          successfulJobsHistory: 3
-          suspend: false
-        type: cronjob
-        containers: *containers
+      # init:
+      #   type: job
+      #   containers: &containers
+      #     main:
+      #       securityContext:
+      #         readOnlyRootFilesystem: false
+      #       image:
+      #         repository: ghcr.io/lldap/lldap
+      #         tag: v0.6.1@sha256:4931eeeb841b1bbf5774161b5fd9dab88f41ffeb4b08ca656f0b7595cd7cb52a
+      #       command: ["/bin/bash", "/scripts/sync-users.sh"]
+      #       env:
+      #         OP_CONNECT_HOST: http://onepassword-connect.kube-system.svc.cluster.local:8080
+      #         OP_CONNECT_TOKEN:
+      #           valueFrom:
+      #             secretKeyRef:
+      #               name: onepassword-connect
+      #               key: access-token
+      #         TAILSCALE_DOMAIN: ${TAILSCALE_DOMAIN}
+      #         OUTPUT_DIR: "/shared/"
+      #         LLDAP_HTTP_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}
+      #         LLDAP_LDAP_URL: 3890
+      #         LLDAP_ADMIN_USERNAME:
+      #           valueFrom:
+      #             secretKeyRef:
+      #               name: lldap-secret
+      #               key: username
+      #         LLDAP_ADMIN_PASSWORD:
+      #           valueFrom:
+      #             secretKeyRef:
+      #               name: lldap-secret
+      #               key: password
+      #         USER_CONFIGS_DIR: "/shared/users"
+      #         GROUP_CONFIGS_DIR: "/shared/groups"
+      #         DO_CLEANUP: false
+      #       envFrom:
+      #         - secretRef:
+      #             name: lldap
+      # sync:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   cronjob:
+      #     backoffLimit: 6
+      #     concurrencyPolicy: Forbid
+      #     failedJobsHistory: 2
+      #     schedule: "0 */1 * * *"
+      #     startingDeadlineSeconds: 30
+      #     successfulJobsHistory: 3
+      #     suspend: false
+      #   type: cronjob
+      #   containers: *containers
       *app :
         replicas: 2
         strategy: RollingUpdate
@@ -131,10 +131,10 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     persistence:
-      scripts:
-        type: configMap
-        name: lldap-user-sync-scripts
-        defaultMode: 0755
+      # scripts:
+      #   type: configMap
+      #   name: lldap-user-sync-scripts
+      #   defaultMode: 0755
       data:
         type: emptyDir
         globalMounts:

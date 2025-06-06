@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://www.authelia.com/schemas/latest/json-schema/configuration.json
 authentication_backend:
   ldap: {} # LDAP configuration is now provided via environment variables from ldap-externalsecret
   password_reset:
@@ -19,8 +20,8 @@ session:
     host: zpm.sgc.svc.cluster.local
     database_index: 2
 
-# notifier:
-#   disable_startup_check: true
+notifier:
+  disable_startup_check: true
   # smtp:
   #   address: ${ROUTER_IP}
   #   sender: Authelia <david@${ROOT_DOMAIN}>
@@ -30,7 +31,7 @@ duo_api:
   disable: true
 
 access_control:
-  default_policy: deny
+  default_policy: one_factor
   networks:
     - name: internal
       networks:

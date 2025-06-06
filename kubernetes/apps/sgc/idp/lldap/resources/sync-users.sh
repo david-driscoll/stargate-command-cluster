@@ -58,7 +58,9 @@ echo "Found $(echo "$vaults" | jq length) vaults"
 user_tag="$TAILSCALE_DOMAIN/user"
 echo "Searching for items with tag '$user_tag' across all vaults..."
 
-all_items=()
+# Instead of a Bash array, use a JSON file to store items
+all_items_file=$(mktemp)
+echo "[]" >"$all_items_file"
 vault_count=0
 
 while IFS= read -r vault_id; do
@@ -74,22 +76,24 @@ while IFS= read -r vault_id; do
         item_count=$(echo "$vault_items" | jq length)
         echo "Found $item_count items with tag '$user_tag' in vault $vault_id"
 
-        # Alternative 1: Using a standard for loop to append items
-        for item_id in $(echo "$vault_items" | jq -r '.[].id'); do
-            all_items+=("$item_id")
-        done
+        # Use jq to extract and append the IDs to our JSON array
+        jq -s '.[0] + [.[1][].id]' "$all_items_file" <(echo "$vault_items") >"${all_items_file}.new"
+        mv "${all_items_file}.new" "$all_items_file"
     fi
 
     ((vault_count++))
 done < <(echo "$vaults" | jq -r '.[].id')
 
-if [ ${#all_items[@]} -eq 0 ]; then
+# Check if we have any items
+item_count=$(jq 'length' "$all_items_file")
+if [ "$item_count" -eq 0 ]; then
     echo "No users found with tag '$user_tag'"
     # Create empty directory but no files - bootstrap.sh will handle empty configs
+    rm "$all_items_file"
     exit 0
 fi
 
-echo "Found ${#all_items[@]} user items total"
+echo "Found $item_count user items total"
 
 # Initialize array to collect all unique groups
 declare -A all_groups
@@ -98,7 +102,8 @@ all_groups["user"]=1 # Always include the default group
 # Process each item to extract user details
 user_count=0
 
-for item_id in "${all_items[@]}"; do
+# Use jq to iterate through the IDs
+while IFS= read -r item_id; do
     echo "Processing item: $item_id"
 
     # First, we need to find which vault this item belongs to
@@ -213,7 +218,10 @@ for item_id in "${all_items[@]}"; do
 
     ((user_count++))
 
-done
+done < <(jq -r '.[]' "$all_items_file")
+
+# Clean up the temporary file
+rm "$all_items_file"
 
 echo "Successfully created $user_count user config files in $OUTPUT_DIR"
 

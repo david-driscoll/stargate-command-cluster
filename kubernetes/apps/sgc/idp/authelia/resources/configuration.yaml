@@ -29,7 +29,7 @@ authentication_backend:
 #   period: 30
 #   skew: 1
 #   secret_size: 32
-# theme: oled
+theme: oled
 
 session:
   same_site: lax

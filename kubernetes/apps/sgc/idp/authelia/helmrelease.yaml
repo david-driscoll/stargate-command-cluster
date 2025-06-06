@@ -47,6 +47,11 @@ spec:
               # AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
+              AUTHELIA_STORAGE_POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: authelia-user
             envFrom:
               - secretRef:
                   name: authelia

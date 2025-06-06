@@ -1,10 +1,35 @@
 ---
 # yaml-language-server: $schema=https://www.authelia.com/schemas/latest/json-schema/configuration.json
 authentication_backend:
-  ldap: {} # LDAP configuration is now provided via environment variables from ldap-externalsecret
   password_reset:
     disable: true
   refresh_interval: 1m
+# default_2fa_method: webauthn
+# webauthn:
+#   disable: true
+#   enable_passkey_login: true
+#   experimental_enable_passkey_uv_two_factors: true
+#   experimental_enable_passkey_upgrade: true
+#   display_name: Authelia
+#   attestation_conveyance_preference: indirect
+#   metadata:
+#     enabled: true
+#     validate_trust_anchor: true
+#     validate_entry: true
+#     validate_entry_permit_zero_aaguid: true
+#     validate_status: true
+#   selection_criteria:
+#     attachment: cross-platform
+#     discoverability: preferred
+#     user_verification: preferred
+# totp:
+#   issuer: Authelia
+#   algorithm: SHA512
+#   digits: 6
+#   period: 30
+#   skew: 1
+#   secret_size: 32
+# theme: oled
 
 session:
   same_site: lax
@@ -31,6 +56,15 @@ notifier:
 
 duo_api:
   disable: true
+
+# identity_providers:
+#   oidc:
+#     enable_client_debug_messages: true
+#     minimum_parameter_entropy: 8
+#     enforce_pkce: public_clients_only
+#     enable_pkce_plain_challenge: false
+#     discovery_signed_response_alg: RS512
+
 
 access_control:
   default_policy: one_factor

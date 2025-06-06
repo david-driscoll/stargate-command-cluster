@@ -5,6 +5,8 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: "lldap-user"
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   # refreshInterval: "24h"
   target:

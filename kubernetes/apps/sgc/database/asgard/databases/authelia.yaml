@@ -20,9 +20,9 @@ spec:
       data:
         username: "authelia"
         password: "{{ .password }}"
-        pgpass: "${APP}-rw:5432:authelia:authelia:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc:5432/authelia?password={{ .password }}&user=authelia"
-        uri: "postgresql://authelia:{{ .password }}@${APP}-rw.sgc:5432/authelia"
+        pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:authelia:authelia:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/authelia?password={{ .password }}&user=authelia"
+        uri: "postgresql://authelia:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/authelia"
   dataFrom:
     - sourceRef:
         generatorRef:

@@ -41,14 +41,23 @@ notifier:
 duo_api:
   disable: true
 
-# identity_providers:
-#   oidc:
-#     enable_client_debug_messages: true
-#     minimum_parameter_entropy: 8
-#     enforce_pkce: public_clients_only
-#     enable_pkce_plain_challenge: false
-#     discovery_signed_response_alg: RS512
+identity_providers:
+  oidc:
+    enable_client_debug_messages: true
+    minimum_parameter_entropy: 8
+    enforce_pkce: public_clients_only
 
+    clients:
+      - client_id: 'unusued'
+        client_name: 'Tailscale'
+        public: true
+        authorization_policy: 'two_factor'
+        jwks_uri: 'https://tailscale-idp.${TAILSCALE_DOMAIN}/.well-known/jwks.json'
+        scopes:
+          - 'openid'
+          - 'profile'
+          - 'groups'
+          - 'email'
 log:
   level: 'debug'
 telemetry:

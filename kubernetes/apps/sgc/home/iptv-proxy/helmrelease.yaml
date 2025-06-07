@@ -64,9 +64,9 @@ spec:
                 # these files are large, we GC immediately.
                 memory: 1Gi
               limits:
-                cpu: 200m
+                cpu: 1
                 # these files are large, we GC immediately.
-                memory: 6Gi
+                memory: 2Gi
 
       host:
         annotations:

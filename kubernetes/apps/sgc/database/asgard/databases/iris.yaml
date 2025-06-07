@@ -6,7 +6,7 @@ metadata:
   name: iris
 spec:
   cluster:
-    name: ${APP}
+    name: asgard
   databaseReclaimPolicy: retain
   ensure: present
   name: iris
@@ -33,6 +33,9 @@ spec:
       data:
         username: "iris"
         password: "{{ .password }}"
+        host: "${APP}-rw.sgc.svc.cluster.local"
+        port: "5432"
+        database: "iris"
         pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:iris:iris:{{ .password }}"
         jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/iris?password={{ .password }}&user=iris"
         uri: "postgresql://iris:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/iris"

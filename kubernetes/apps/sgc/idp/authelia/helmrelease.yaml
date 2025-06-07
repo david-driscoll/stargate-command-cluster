@@ -47,6 +47,7 @@ spec:
               # AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
+              AUTHELIA_CERTIFICATES_DIRECTORY: /certs/
               AUTHELIA_STORAGE_POSTGRES_PASSWORD:
                 valueFrom:
                   secretKeyRef:
@@ -84,6 +85,9 @@ spec:
           - path: /data/
       logs:
         type: emptyDir
+      certs:
+        type: secret
+        name: le-production-tls
 
     service:
       app:

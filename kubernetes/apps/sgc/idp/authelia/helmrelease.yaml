@@ -79,12 +79,12 @@ spec:
       config:
         type: configMap
         name: iris-config
-      secret-files:
-        enabled: true
+      iris-jwks-key:
         type: secret
-        name: iris-files
+        name: iris-jwks-key
         globalMounts:
           - path: /app/secrets
+            subPath: iris-jwks-key.pem
       data:
         existingClaim: *app
         globalMounts:

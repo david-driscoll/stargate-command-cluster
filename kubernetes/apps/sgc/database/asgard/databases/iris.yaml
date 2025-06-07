@@ -3,20 +3,20 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: authelia
+  name: iris
 spec:
   cluster:
     name: asgard
   databaseReclaimPolicy: retain
   ensure: present
-  name: authelia
-  owner: authelia
+  name: iris
+  owner: iris
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name authelia-user
+  name: &name iris-user
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -31,11 +31,11 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        username: "authelia"
+        username: "iris"
         password: "{{ .password }}"
-        pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:authelia:authelia:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/authelia?password={{ .password }}&user=authelia"
-        uri: "postgresql://authelia:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/authelia"
+        pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:iris:iris:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/iris?password={{ .password }}&user=iris"
+        uri: "postgresql://iris:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/iris"
   dataFrom:
     - sourceRef:
         generatorRef:

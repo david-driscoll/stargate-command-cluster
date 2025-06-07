@@ -23,8 +23,8 @@ session:
   cookies:
     - name: ${CLUSTER_CNAME}_session
       domain: ${ROOT_DOMAIN}
-      authelia_url: https://auth.${ROOT_DOMAIN}
-      default_redirection_url: https://${ROOT_DOMAIN}
+      authelia_url: https://iris.${ROOT_DOMAIN}
+      default_redirection_url: https://home.${ROOT_DOMAIN}
   redis:
     host: zpm.sgc.svc.cluster.local
     database_index: 2
@@ -35,7 +35,7 @@ notifier:
     filename: /logs/notifier.log
   # smtp:
   #   address: ${ROUTER_IP}
-  #   sender: Authelia <david@${ROOT_DOMAIN}>
+  #   sender: Iris <david@${ROOT_DOMAIN}>
   #   disable_require_tls: true
 
 duo_api:
@@ -65,7 +65,7 @@ totp:
 
 webauthn:
   enable_passkey_login: true
-  display_name: Authelia
+  display_name: Iris
   attestation_conveyance_preference: indirect
   experimental_enable_passkey_uv_two_factors: true
   experimental_enable_passkey_upgrade: true
@@ -91,8 +91,8 @@ definitions:
 access_control:
   default_policy: one_factor
   rules:
-    # bypass for authelia
-    - domain: authelia.${ROOT_DOMAIN}
+    # bypass for iris
+    - domain: iris.${ROOT_DOMAIN}
       policy: bypass
       networks: [internal, tailscale]
 
@@ -177,8 +177,8 @@ access_control:
 #         pkce_challenge_method: S256
 #         scopes: ["openid", "profile", "groups"]
 #         redirect_uris:
-#           - https://jellyfin.${DOMAIN}/sso/OID/r/authelia
-#           - https://jellyfin.${DOMAIN}/sso/OID/redirect/authelia
+#           - https://jellyfin.${DOMAIN}/sso/OID/r/iris
+#           - https://jellyfin.${DOMAIN}/sso/OID/redirect/iris
 #         userinfo_signed_response_alg: none
 #         token_endpoint_auth_method: client_secret_post
 #       - client_name: Miniflux
@@ -208,5 +208,5 @@ access_control:
 #         authorization_policy: two_factor
 #         scopes: ["openid", "profile", "groups", "email"]
 #         redirect_uris:
-#           - https://paperless.${DOMAIN}/accounts/oidc/authelia/login/callback/
+#           - https://paperless.${DOMAIN}/accounts/oidc/iris/login/callback/
 #         userinfo_signed_response_alg: none

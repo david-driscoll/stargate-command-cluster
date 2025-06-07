@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/middleware_v1alpha1.json
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: tailscale-user
+spec:
+  chain:
+    middlewares:
+      - name: iris
+      - name: tailscale-network

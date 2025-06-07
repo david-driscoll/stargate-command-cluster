@@ -38,12 +38,12 @@ spec:
       - connectionLimit: -1
         ensure: present
         inherit: true
-        name: authelia
+        name: iris
         login: true
         createdb: true
         createrole: true
         passwordSecret:
-          name: authelia-user
+          name: iris-user
       # - connectionLimit: -1
       #   ensure: present
       #   inherit: true
@@ -65,12 +65,12 @@ spec:
       # - connectionLimit: -1
       #   ensure: present
       #   inherit: true
-      #   name: authelia
+      #   name: iris
       #   login: true
       #   createdb: true
       #   createrole: true
       #   passwordSecret:
-      #     name: authelia-user
+      #     name: iris-user
     services:
       additional:
         - selectorType: rw

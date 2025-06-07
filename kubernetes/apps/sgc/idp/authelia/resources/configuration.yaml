@@ -47,8 +47,13 @@ duo_api:
 
 identity_providers:
   oidc:
+    # hmac_secret: "{{ secret '/app/secrets/OIDC_HMAC_SECRET' | msquote }}"
+    jwks:
+      - key: |
+          {{ secret "/app/secrets/OIDC_JWKS_KEY_PEM" | mindent 10 "|" | msquote }}
+    # cors:
+    #   endpoints: ["authorization", "token", "revocation", "introspection"]
     enable_client_debug_messages: true
-    minimum_parameter_entropy: 8
     enforce_pkce: public_clients_only
 
     clients:
@@ -98,71 +103,54 @@ definitions:
     internal:
       - 10.0.0.0/8
       - 192.168.0.0/16
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
+    cluster:
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
     tailscale:
       - 100.64.0.0/10
 
 access_control:
-  default_policy: one_factor
+  default_policy: two_factor
   rules:
     # bypass for iris
     - domain: iris.${ROOT_DOMAIN}
       policy: bypass
-      networks: [internal, tailscale]
+      networks: [internal, tailscale, cluster]
+
+    # bypass for authelia
+    - domain: authelia.${ROOT_DOMAIN}
+      policy: bypass
+      networks: [internal, tailscale, cluster]
+
+    # Allow free access from cluster network
+    - domain: "*.${ROOT_DOMAIN}"
+      networks: [cluster]
+      policy: bypass
 
     # bypass for lldap management interface
     - domain: lldap.${ROOT_DOMAIN}
       subject: "group:lldap_admin"
-      policy: one_factor
+      policy: two_factor
       networks: [internal, tailscale]
 
-    # Admin access - full access for admin group
+    # 2FA if not on cluster network
     - domain: "*.${ROOT_DOMAIN}"
-      subject: "group:lldap_admin"
-      policy: one_factor
+      policy: two_factor
       networks: [internal, tailscale]
+
+    # # Admin access - full access for admin group
+    # - domain: "*.${ROOT_DOMAIN}"
+    #   subject: "group:lldap_admin"
+    #   policy: one_factor
+    #   networks: [internal, tailscale]
 
     # # Regular users - limited access
     # - domain: "*.${ROOT_DOMAIN}"
     #   subject: "group:lldap_password_manager"
     #   policy: two_factor
     #   networks: [internal, tailscale]
-    # bypass for API access
-    # - domain:
-    #     - audiobookshelf.${DOMAIN}
-    #     - lidarr.${DOMAIN}
-    #     - prowlarr.${DOMAIN}
-    #     - radarr.${DOMAIN}
-    #     - readarr-audio.${DOMAIN}
-    #     - readarr.${DOMAIN}
-    #     - sabnzbd.${DOMAIN}
-    #     - sonarr.${DOMAIN}
-    #   resources:
-    #     - "^/api/.*$"
-    #     - "^/ping$"
-    #   policy: bypass
-    # - domain:
-    #     - sabnzbd.${DOMAIN}
-    #   resources:
-    #     - "^/api/.*$"
-    #   policy: bypass
-    # - domain:
-    #     - qb.${DOMAIN}
-    #   resources:
-    #     - "^/api/v2/.*$"
-    #   policy: bypass
-    # - domain:
-    #     - frigate.${DOMAIN}
-    #   resources:
-    #     - "^/api/version$"
-    #   policy: bypass
-    # # one factor for local
-    # - domain: "*.${DOMAIN}"
-    #   networks:
-    #     - internal
-    #   policy: one_factor
-    # # default policy for domain
-    # - domain: "*.${DOMAIN}"
-    #   policy: two_factor
 
 # identity_providers:
 #   oidc:

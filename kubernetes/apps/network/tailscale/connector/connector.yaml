@@ -9,5 +9,5 @@ spec:
   subnetRouter:
     advertiseRoutes:
       - "${INTERNAL_NETWORK}"
-      # - "${CLUSTER_NETWORK}"
-      # - "${SERVICE_NETWORK}"
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"

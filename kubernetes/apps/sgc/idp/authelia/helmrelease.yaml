@@ -79,6 +79,12 @@ spec:
       config:
         type: configMap
         name: iris-config
+      secret-files:
+        enabled: true
+        type: secret
+        name: iris-files
+        globalMounts:
+          - path: /app/secrets
       data:
         existingClaim: *app
         globalMounts:

@@ -10,5 +10,4 @@ resources:
   - ./secret.yaml
   - ./password-generation.yaml
   - ./databases/authentik.yaml
-  - ./databases/iris.yaml
   - ./databases/lldap.yaml

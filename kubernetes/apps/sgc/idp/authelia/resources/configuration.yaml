@@ -49,8 +49,7 @@ identity_providers:
   oidc:
     # hmac_secret: "{{ secret '/app/secrets/OIDC_HMAC_SECRET' | msquote }}"
     jwks:
-      - key: |
-          {{ secret "/app/secrets/OIDC_JWKS_KEY_PEM" | mindent 10 "|" | msquote }}
+      - key: "{{ secret '/app/secrets/OIDC_JWKS_KEY_PEM' | msquote }}"
     # cors:
     #   endpoints: ["authorization", "token", "revocation", "introspection"]
     enable_client_debug_messages: true

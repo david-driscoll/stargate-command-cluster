@@ -90,14 +90,6 @@ definitions:
 
 access_control:
   default_policy: one_factor
-  networks:
-    - name: internal
-      networks:
-      - 10.0.0.0/8
-      - 192.168.0.0/16
-    - name: tailscale
-      networks:
-      - 100.64.0.0/10
   rules:
     # bypass for authelia
     - domain: authelia.${ROOT_DOMAIN}

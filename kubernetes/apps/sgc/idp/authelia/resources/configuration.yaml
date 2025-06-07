@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://www.authelia.com/schemas/latest/json-schema/configuration.json
 authentication_backend:
-  # password_change:
-  #   disable: false
-  # password_reset:
-  #   disable: false
+  password_change:
+    disable: false
+  password_reset:
+    disable: false
   refresh_interval: 1m
     # start_tls: false
     # group_search_mode: filter
@@ -12,32 +12,8 @@ authentication_backend:
     # permit_unauthenticated_bind: false
     # permit_feature_detection_failure: false
 
-# default_2fa_method: webauthn
-# webauthn:
-#   disable: true
-#   enable_passkey_login: true
-#   experimental_enable_passkey_uv_two_factors: true
-#   experimental_enable_passkey_upgrade: true
-#   display_name: Authelia
-#   attestation_conveyance_preference: indirect
-#   metadata:
-#     enabled: true
-#     validate_trust_anchor: true
-#     validate_entry: true
-#     validate_entry_permit_zero_aaguid: true
-#     validate_status: true
-#   selection_criteria:
-#     attachment: cross-platform
-#     discoverability: preferred
-#     user_verification: preferred
-# totp:
-#   issuer: Authelia
-#   algorithm: SHA512
-#   digits: 6
-#   period: 30
-#   skew: 1
-#   secret_size: 32
-theme: dark
+theme: auto
+default_2fa_method: webauthn
 
 session:
   same_site: lax
@@ -75,6 +51,42 @@ duo_api:
 
 log:
   level: 'debug'
+telemetry:
+  metrics:
+    enabled: true
+
+totp:
+  issuer: Driscoll Family
+  algorithm: SHA512
+  digits: 8
+  period: 30
+  skew: 1
+  secret_size: 32
+
+webauthn:
+  enable_passkey_login: true
+  display_name: Authelia
+  attestation_conveyance_preference: indirect
+  experimental_enable_passkey_uv_two_factors: true
+  experimental_enable_passkey_upgrade: true
+  metadata:
+    enabled: true
+    validate_trust_anchor: true
+    validate_entry: true
+    validate_entry_permit_zero_aaguid: true
+    validate_status: true
+  selection_criteria:
+    attachment: cross-platform
+    discoverability: preferred
+    user_verification: preferred
+
+definitions:
+  network:
+    internal:
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+    tailscale:
+      - 100.64.0.0/10
 
 access_control:
   default_policy: one_factor

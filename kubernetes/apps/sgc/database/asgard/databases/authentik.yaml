@@ -3,20 +3,20 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: lldap
+  name: authentik
 spec:
   cluster:
     name: ${APP}
   databaseReclaimPolicy: retain
   ensure: present
-  name: lldap
-  owner: lldap
+  name: authentik
+  owner: authentik
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name "lldap-user"
+  name: &name "authentik-user"
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -31,11 +31,11 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        username: "lldap"
+        username: "authentik"
         password: "{{ .password }}"
-        pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:lldap:lldap:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/lldap?password={{ .password }}&user=lldap"
-        uri: "postgresql://lldap:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/lldap"
+        pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:authentik:authentik:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/authentik?password={{ .password }}&user=authentik"
+        uri: "postgresql://authentik:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/authentik"
   dataFrom:
     - sourceRef:
         generatorRef:

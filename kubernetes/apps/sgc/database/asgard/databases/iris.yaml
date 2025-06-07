@@ -6,7 +6,7 @@ metadata:
   name: iris
 spec:
   cluster:
-    name: asgard
+    name: ${APP}
   databaseReclaimPolicy: retain
   ensure: present
   name: iris

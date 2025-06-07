@@ -29,6 +29,15 @@ spec:
       - connectionLimit: -1
         ensure: present
         inherit: true
+        name: authentik
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: authentik-user
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
         name: lldap
         login: true
         createdb: true

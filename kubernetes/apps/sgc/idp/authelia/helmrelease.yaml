@@ -83,8 +83,8 @@ spec:
         type: secret
         name: iris-jwks-key
         globalMounts:
-          - path: /app/secrets
-            subPath: iris-jwks-key.pem
+          - path: /app/secrets/iris-jwks-key.pem
+            subPath: private-key
       data:
         existingClaim: *app
         globalMounts:

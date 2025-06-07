@@ -52,12 +52,12 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     key: password
-                    name: authelia-user
+                    name: iris-user
             envFrom:
               - secretRef:
-                  name: authelia
+                  name: iris
               - secretRef:
-                  name: authelia-ldap
+                  name: iris-ldap
             resources:
               requests:
                 cpu: 25m
@@ -78,7 +78,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: authelia-config
+        name: iris-config
       data:
         existingClaim: *app
         globalMounts:
@@ -104,7 +104,14 @@ spec:
         annotations:
           hajimari.io/icon: mdi:shield-account
         hosts:
-          - host: "authelia.${ROOT_DOMAIN}"
+          - host: "iris.${ROOT_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

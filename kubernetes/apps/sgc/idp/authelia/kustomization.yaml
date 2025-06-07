@@ -6,10 +6,9 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ldap-externalsecret.yaml
-  - ./middleware.yaml
   - ./secret.yaml
 configMapGenerator:
-  - name: authelia-config
+  - name: iris-config
     files:
       - ./resources/configuration.yaml
 generatorOptions:

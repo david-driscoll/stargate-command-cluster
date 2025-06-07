@@ -1,9 +1,17 @@
 ---
 # yaml-language-server: $schema=https://www.authelia.com/schemas/latest/json-schema/configuration.json
 authentication_backend:
+  password_change:
+    disable: false
   password_reset:
-    disable: true
+    disable: false
   refresh_interval: 1m
+    # start_tls: false
+    # group_search_mode: filter
+    # permit_referrals: false
+    # permit_unauthenticated_bind: false
+    # permit_feature_detection_failure: false
+
 # default_2fa_method: webauthn
 # webauthn:
 #   disable: true

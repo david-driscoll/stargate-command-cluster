@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://www.authelia.com/schemas/latest/json-schema/configuration.json
 authentication_backend:
-  password_change:
-    disable: false
-  password_reset:
-    disable: false
+  # password_change:
+  #   disable: false
+  # password_reset:
+  #   disable: false
   refresh_interval: 1m
     # start_tls: false
     # group_search_mode: filter
@@ -37,7 +37,7 @@ authentication_backend:
 #   period: 30
 #   skew: 1
 #   secret_size: 32
-theme: oled
+theme: dark
 
 session:
   same_site: lax

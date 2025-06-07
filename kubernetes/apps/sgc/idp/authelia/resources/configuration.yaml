@@ -94,29 +94,33 @@ access_control:
     - name: internal
       networks:
       - 10.0.0.0/8
-      # - 172.16.0.0/12
-      - 100.64.0.0/10
       - 192.168.0.0/16
-      # - 127.0.0.1/32
+    - name: tailscale
+      networks:
+      - 100.64.0.0/10
   rules:
     # bypass for authelia
     - domain: authelia.${ROOT_DOMAIN}
       policy: bypass
+      networks: [internal, tailscale]
 
     # bypass for lldap management interface
     - domain: lldap.${ROOT_DOMAIN}
       subject: "group:lldap_admin"
       policy: one_factor
+      networks: [internal, tailscale]
 
     # Admin access - full access for admin group
     - domain: "*.${ROOT_DOMAIN}"
       subject: "group:lldap_admin"
       policy: one_factor
+      networks: [internal, tailscale]
 
-    # Regular users - limited access
-    - domain: "*.${ROOT_DOMAIN}"
-      subject: "group:lldap_password_manager"
-      policy: two_factor
+    # # Regular users - limited access
+    # - domain: "*.${ROOT_DOMAIN}"
+    #   subject: "group:lldap_password_manager"
+    #   policy: two_factor
+    #   networks: [internal, tailscale]
     # bypass for API access
     # - domain:
     #     - audiobookshelf.${DOMAIN}

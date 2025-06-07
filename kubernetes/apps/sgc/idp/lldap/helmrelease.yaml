@@ -90,7 +90,7 @@ spec:
               TZ: ${TIMEZONE}
               LLDAP_HTTP_PORT: &port 17170
               LLDAP_LDAP_PORT: &ldapPort 3890
-              LLDAP_URL: "https://ldap.${ROOT_DOMAIN}"
+              LLDAP_URL: "https://lldap.${ROOT_DOMAIN}"
               LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET: "false"
               LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION: "NONE"
               LLDAP_VERBOSE: "true"
@@ -164,10 +164,3 @@ spec:
                 service:
                   identifier: app
                   port: http
-          - host: "ldap.${ROOT_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: ldap

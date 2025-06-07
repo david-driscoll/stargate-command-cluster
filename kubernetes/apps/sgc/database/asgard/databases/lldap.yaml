@@ -33,6 +33,9 @@ spec:
       data:
         username: "lldap"
         password: "{{ .password }}"
+        host: "${APP}-rw.sgc.svc.cluster.local"
+        port: "5432"
+        database: "lldap"
         pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:lldap:lldap:{{ .password }}"
         jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/lldap?password={{ .password }}&user=lldap"
         uri: "postgresql://lldap:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/lldap"

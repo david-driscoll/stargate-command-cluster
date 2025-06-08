@@ -24,6 +24,7 @@ spec:
   target:
     name: *name
     creationPolicy: Owner
+    deletionPolicy: Delete
     template:
       metadata:
         labels:
@@ -45,8 +46,3 @@ spec:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
           name: "${APP}-password-generator"
-AUTHENTIK_POSTGRESQL__HOST: "{{ .host }}"
-        AUTHENTIK_POSTGRESQL__NAME: "{{ .database }}"
-        AUTHENTIK_POSTGRESQL__PASSWORD: "{{ .password }}"
-        AUTHENTIK_POSTGRESQL__PORT: "{{ .port }}"
-        AUTHENTIK_POSTGRESQL__USER: "{{ .user }}"

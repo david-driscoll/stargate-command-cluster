@@ -42,7 +42,7 @@ spec:
       revisionHistoryLimit: 3
 
       deploymentAnnotations:
-        secret.reloader.stakater.com/reload: authentik-secret
+        reloader.stakater.com/auto: "true"
 
       podAnnotations:
         reloader.stakater.com/auto: "true"

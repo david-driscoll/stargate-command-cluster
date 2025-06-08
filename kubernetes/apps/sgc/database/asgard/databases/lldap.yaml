@@ -20,7 +20,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  # refreshInterval: "24h"
+  refreshInterval: "0"
   target:
     name: *name
     creationPolicy: Owner

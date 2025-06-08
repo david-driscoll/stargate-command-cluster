@@ -4,6 +4,9 @@ apiVersion: tailscale.com/v1alpha1
 kind: DNSConfig
 metadata:
   name: ts-dns
+  annotations:
+    reloader.stakater.com/auto: "true"
+    io.cilium/lb-ipam-ips: "${TAILSCALE_NAMESERVER_IP2}"
 spec:
   nameserver:
     image:

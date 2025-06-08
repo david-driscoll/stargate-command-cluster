@@ -38,18 +38,18 @@ servers:
       - name: loop
       - name: reload
       - name: loadbalance
-  # # Tailscale DNS stub zone for ts.net domains
-  # - zones:
-  #     - zone: ts.net
-  #       scheme: dns://
-  #       use_tcp: false
-  #   port: 53
-  #   plugins:
-  #     - name: errors
-  #     - name: cache
-  #       parameters: 30
-  #     - name: forward
-  #       parameters: . "${TAILSCALE_NAMESERVER_IP}"
+  # Tailscale DNS stub zone for ts.net domains
+  - zones:
+      - zone: ts.net
+        scheme: dns://
+        use_tcp: false
+    port: 53
+    plugins:
+      - name: errors
+      - name: cache
+        parameters: 30
+      - name: forward
+        parameters: . "${TAILSCALE_NAMESERVER_IP}"
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

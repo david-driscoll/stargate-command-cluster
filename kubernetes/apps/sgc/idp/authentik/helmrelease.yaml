@@ -36,14 +36,6 @@ spec:
       strategy: uninstall
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
-    - name: tailscale-idp
-    - name: lldap
-    - name: minio
-    - name: asgard
-    - name: zpm
   values:
     global:
       # fullnameOverride: authentik

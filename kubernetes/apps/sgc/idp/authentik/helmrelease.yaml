@@ -173,10 +173,11 @@ spec:
 
       resources:
         requests:
-          cpu: 50m
-          memory: 500Mi
+          cpu: 100m
+          memory: 512Mi
         limits:
-          memory: 800Mi
+          cpu: 500m
+          memory: 1024Mi
 
     serviceAccount:
       create: true

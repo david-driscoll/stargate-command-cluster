@@ -38,19 +38,61 @@ spec:
   values:
     global:
       # fullnameOverride: authentik
+      revisionHistoryLimit: 3
+
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: authentik-secret
 
+      image:
+        repository: ghcr.io/goauthentik/server
+        tag: 2025.6.1
+        digest: sha256:2d59743abf8cc51eb842bdb5bcb06401d9abdc83448e86ff36bd845eec7510f2
+        pullPolicy: IfNotPresent
+
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+
+      secretAnnotations:
+        reloader.stakater.com/auto: "true"
+
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+
+      env: []
       envFrom:
         - secretRef:
-            name: authentik-secret
-    server:
-      replicas: 3
+            name: ${APP}
 
-      metrics:
+      # volumeMounts:
+      #   - name: custom
+      #     mountPath: /custom
+
+      # volumes:
+      #   - name: custom
+      #     emptyDir: {}
+
+    authentik:
+      enabled: true
+      log_level: info
+      events:
+        context_processors:
+          # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
+          geoip: /geoip/GeoLite2-City.mmdb
+          # -- Path for the GeoIP ASN database. If the file doesn't exist, GeoIP features are disabled.
+          asn: /geoip/GeoLite2-ASN.mmdb
+      error_reporting:
         enabled: true
-        serviceMonitor:
-          enabled: true
+        environment: "${CLUSTER_CNAME}"
+        send_pii: false
+
+    server:
+      enabled: true
+      name: server
+      replicas: 3
 
       resources:
         requests:
@@ -59,144 +101,61 @@ spec:
         limits:
           memory: 800Mi
 
-    controllers:
-      *app :
-        replicas: 2
-        strategy: RollingUpdate
+      envFrom: &envFrom
+        - secretRef:
+            name: authentik
+
+      tolerations: &tolerations
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+
+      affinity: &affinity
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: *app
+                    app.kubernetes.io/component: *app
+
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+
+      ingress:
+        enabled: true
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
-        containers:
-          *app :
-            image:
-              repository: ghcr.io/goauthentik/server
-              tag: 2025.6.1
-
-            command: ["ak"]
-            args: ["server"]
-
-            env:
-              TZ: ${TIMEZONE}
-            envFrom:
-              - secretRef:
-                  name: ${APP}
-              - secretRef:
-                  name: ${APP}-ldap
-              - secretRef:
-                  name: ${APP}-postgres
-              - secretRef:
-                  name: ${APP}-dragonfly
-              - secretRef:
-                  name: ${APP}-minio
-
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /-/health/live/
-                    port: &port 9000
-                  initialDelaySeconds: 50
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /-/health/ready/
-                    port: *port
-                  failureThreshold: 30
-                  periodSeconds: 10
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              runAsNonRoot: true
-              runAsUser: 1000
-              runAsGroup: 1000
-              capabilities:
-                drop:
-                  - ALL
-
-            resources:
-              requests:
-                cpu: 50m
-                memory: 500Mi
-              limits:
-                memory: 800Mi
-
-
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        seccompProfile:
-          type: RuntimeDefault
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
-
-    service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: *port
-            protocol: HTTP
-
-    ingress:
-      app:
-        className: internal
-        annotations:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          hajimari.io/icon: simple-icons:webauthn
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        ingressClassName: internal
         hosts:
-          - host: "auth.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
-          - host: "iris.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+          - "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - "iris.${ROOT_DOMAIN}"
 
-    persistence:
-      config:
-        type: configMap
-        name: authentik-config
-        globalMounts:
-          - path: /config
-      media:
-        type: emptyDir
-        globalMounts:
-          - path: /media
-      templates:
-        type: emptyDir
-        globalMounts:
-          - path: /templates
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
+    worker:
+      enabled: true
+      name: worker
+      replicas: 3
+      envFrom: *envFrom
+      tolerations: *tolerations
+      affinity: *affinity
+
+      resources:
+        requests:
+          cpu: 50m
+          memory: 500Mi
+        limits:
+          memory: 800Mi
+
+    serviceAccount:
+      create: true

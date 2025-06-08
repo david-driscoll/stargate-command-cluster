@@ -140,7 +140,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         ingressClassName: internal
         hosts:
-          - "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - "authentik.${ROOT_DOMAIN}"
           - "iris.${ROOT_DOMAIN}"
 
     worker:

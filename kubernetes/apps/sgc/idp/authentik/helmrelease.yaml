@@ -127,7 +127,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: authentik-user
-              key: user
+              key: username
 
       envFrom: &envFrom
         - secretRef:

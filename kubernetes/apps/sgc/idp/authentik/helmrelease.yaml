@@ -103,12 +103,6 @@ spec:
           memory: 800Mi
 
       env:
-        - name: AUTHENTIK_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: authentik
-              key: SECRET_KEY
-
         - name: AUTHENTIK_POSTGRESQL__HOST
           valueFrom:
             secretKeyRef:

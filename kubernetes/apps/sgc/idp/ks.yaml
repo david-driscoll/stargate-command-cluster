@@ -77,12 +77,8 @@ spec:
     - name: lldap
       namespace: *namespace
     - name: asgard
-      namespace: database
-    - name: dragonfly
-      namespace: database
-    - name: cloudnative-pg
-      namespace: database
-    - name: sgc-secrets
+      namespace: *namespace
+    - name: tailscale-idp
       namespace: *namespace
   sourceRef:
     kind: GitRepository

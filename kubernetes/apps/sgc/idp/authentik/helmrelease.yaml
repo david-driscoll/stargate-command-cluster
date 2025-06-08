@@ -119,13 +119,6 @@ spec:
       name: server
       replicas: 2
 
-      resources:
-        requests:
-          cpu: 100m
-          memory: 512Mi
-        limits:
-          cpu: 500m
-          memory: 1024Mi
       tolerations: &tolerations
         - key: CriticalAddonsOnly
           operator: Exists
@@ -147,6 +140,14 @@ spec:
                     app.kubernetes.io/name: *app
                     app.kubernetes.io/component: *app
 
+      resources: &resources
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1024Mi
+
       metrics:
         enabled: true
         serviceMonitor:
@@ -165,19 +166,11 @@ spec:
 
     worker:
       enabled: true
-      name: worker
       replicas: 2
       envFrom: *envFrom
       tolerations: *tolerations
       affinity: *affinity
-
-      resources:
-        requests:
-          cpu: 100m
-          memory: 512Mi
-        limits:
-          cpu: 500m
-          memory: 1024Mi
+      resources: *resources
 
     serviceAccount:
       create: true

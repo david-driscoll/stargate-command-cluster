@@ -57,10 +57,13 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
 
-      env: []
-      envFrom:
+      envFrom: &envFrom
         - secretRef:
-            name: ${APP}
+            name: authentik
+        - secretRef:
+            name: authentik-lldap
+        - secretRef:
+            name: authentik-minio
 
       # volumeMounts:
       #   - name: custom
@@ -122,14 +125,6 @@ spec:
             secretKeyRef:
               name: authentik-user
               key: username
-
-      envFrom: &envFrom
-        - secretRef:
-            name: authentik
-        - secretRef:
-            name: authentik-lldap
-        - secretRef:
-            name: authentik-minio
 
       tolerations: &tolerations
         - key: CriticalAddonsOnly

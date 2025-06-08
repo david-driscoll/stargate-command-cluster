@@ -11,7 +11,6 @@ spec:
     operation: copy
   ref:
     tag: 0.32.1
-    digest: sha256:a9e6930ba324f7cc5a5dbc892e95ae5507d52b8e095a207737f7e144d904484d
   url: oci://ghcr.io/home-operations/charts-mirror/intel-device-plugins-gpu
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/helm.toolkit.fluxcd.io/helmrelease_v2.json

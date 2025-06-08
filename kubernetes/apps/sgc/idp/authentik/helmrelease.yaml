@@ -132,6 +132,10 @@ spec:
       envFrom: &envFrom
         - secretRef:
             name: authentik
+        - secretRef:
+            name: authentik-ldap
+        - secretRef:
+            name: authentik-minio
 
       tolerations: &tolerations
         - key: CriticalAddonsOnly

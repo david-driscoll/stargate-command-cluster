@@ -44,12 +44,6 @@ spec:
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: authentik-secret
 
-      image:
-        repository: ghcr.io/goauthentik/server
-        tag: 2025.6.1
-        digest: sha256:2d59743abf8cc51eb842bdb5bcb06401d9abdc83448e86ff36bd845eec7510f2
-        pullPolicy: IfNotPresent
-
       podAnnotations:
         reloader.stakater.com/auto: "true"
 
@@ -79,12 +73,12 @@ spec:
     authentik:
       enabled: true
       log_level: info
-      events:
-        context_processors:
-          # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
-          geoip: /geoip/GeoLite2-City.mmdb
-          # -- Path for the GeoIP ASN database. If the file doesn't exist, GeoIP features are disabled.
-          asn: /geoip/GeoLite2-ASN.mmdb
+      # events:
+      #   context_processors:
+      #     # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
+      #     geoip: /geoip/GeoLite2-City.mmdb
+      #     # -- Path for the GeoIP ASN database. If the file doesn't exist, GeoIP features are disabled.
+      #     asn: /geoip/GeoLite2-ASN.mmdb
       error_reporting:
         enabled: true
         environment: "${CLUSTER_CNAME}"

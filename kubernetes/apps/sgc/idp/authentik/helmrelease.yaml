@@ -133,7 +133,7 @@ spec:
         - secretRef:
             name: authentik
         - secretRef:
-            name: authentik-ldap
+            name: authentik-lldap
         - secretRef:
             name: authentik-minio
 

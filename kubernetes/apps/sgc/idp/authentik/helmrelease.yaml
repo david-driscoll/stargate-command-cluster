@@ -50,13 +50,6 @@ spec:
       secretAnnotations:
         reloader.stakater.com/auto: "true"
 
-      # TODO: this is tightly coupled but it should work.
-      # grab the ip from the ts idp container and use it here.
-      hostAliases:
-        - ip: 10.20.30.40
-          hostnames:
-            - my.hostname
-
       securityContext:
         runAsUser: 568
         runAsGroup: 568
@@ -124,7 +117,7 @@ spec:
     server:
       enabled: true
       name: server
-      replicas: 3
+      replicas: 2
 
       resources:
         requests:
@@ -173,7 +166,7 @@ spec:
     worker:
       enabled: true
       name: worker
-      replicas: 3
+      replicas: 2
       envFrom: *envFrom
       tolerations: *tolerations
       affinity: *affinity

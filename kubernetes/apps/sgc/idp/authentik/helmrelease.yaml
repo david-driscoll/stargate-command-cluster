@@ -110,7 +110,7 @@ spec:
       #     # -- Path for the GeoIP ASN database. If the file doesn't exist, GeoIP features are disabled.
       #     asn: /geoip/GeoLite2-ASN.mmdb
       error_reporting:
-        enabled: true
+        enabled: false
         environment: "${CLUSTER_CNAME}"
         send_pii: false
 

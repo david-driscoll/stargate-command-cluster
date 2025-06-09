@@ -10,3 +10,4 @@ spec:
       - name: ak-outpost-${CLUSTER_CNAME}-proxy
         namespace: ${CLUSTER_CNAME}
       - name: internal-network
+        namespace: network

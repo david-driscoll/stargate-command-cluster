@@ -115,8 +115,8 @@ spec:
           - name: api@internal
             kind: TraefikService
         entryPoints:
-        - "traefik"
-        - "websecure"
+          - "traefik"
+          - "websecure"
         middlewares:
           - name: authenticated-user
             namespace: network

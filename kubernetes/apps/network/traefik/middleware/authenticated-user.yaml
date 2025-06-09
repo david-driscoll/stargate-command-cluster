@@ -7,6 +7,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: ak-outpost-proxy
+      - name: ak-outpost-${CLUSTER_CNAME}-proxy
         namespace: ${CLUSTER_CNAME}
       - name: internal-network

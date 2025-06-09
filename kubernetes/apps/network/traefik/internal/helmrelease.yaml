@@ -119,7 +119,8 @@ spec:
         - "traefik"
         - "websecure"
         middlewares:
-          - network-authenticated-user@kubernetescrd
+          - name: authenticated-user
+            namespace: network
         tls:
           secretName: "le-production-tls"
     experimental:

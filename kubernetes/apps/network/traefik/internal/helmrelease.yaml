@@ -118,10 +118,8 @@ spec:
         - "traefik"
         - "websecure"
         middlewares:
-        - name: ak-outpost-${CLUSTER_CNAME}-proxy
-          namespace: ${CLUSTER_CNAME}
-        # - name: internal-network
-        #   namespace: network
+          - name: authenticated-user
+            namespace: network
         tls:
           secretName: "le-production-tls"
     experimental:

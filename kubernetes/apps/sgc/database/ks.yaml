@@ -106,7 +106,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
-  path: ./kubernetes/apps/sgc/cloudnative-pg/pgadmin
+  path: ./kubernetes/apps/sgc/database/pgadmin
   prune: true
   sourceRef:
     kind: GitRepository

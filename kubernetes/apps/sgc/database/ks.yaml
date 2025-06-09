@@ -105,7 +105,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg
-      namespace: *namespace
+      namespace: database
   path: ./kubernetes/apps/sgc/cloudnative-pg/pgadmin
   prune: true
   sourceRef:

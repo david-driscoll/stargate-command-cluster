@@ -117,7 +117,8 @@ spec:
         entryPoints:
         - "traefik"
         - "websecure"
-        middlewares: []
+        middlewares:
+          - network-authenticated-user@kubernetescrd
         tls:
           secretName: "le-production-tls"
     experimental:

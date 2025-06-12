@@ -7,7 +7,6 @@ metadata:
 spec:
   version: ${TALOS_VERSION}
   concurrency: 1
-  postCompleteDelay: 2m
   exclusive: true
   serviceAccountName: system-upgrade-controller
   secrets:

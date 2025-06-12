@@ -43,7 +43,7 @@ spec:
         tls:
           secretName: "le-production-tls"
         hosts:
-          - "kubeui.${CLUSTER_DOMAIN}"  
+          - "kubeui.${CLUSTER_DOMAIN}"
     settings:
       global:
         clusterName: "${CLUSTER_CNAME}"

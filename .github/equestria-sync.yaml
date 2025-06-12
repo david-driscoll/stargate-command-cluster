@@ -2,6 +2,9 @@ david-driscoll/equestria-cluster:
   - source: .vscode/
     dest: .vscode/
     deleteOrphaned: true
+  - source: kubernetes/flux/
+    dest: kubernetes/flux/
+    deleteOrphaned: true
   - source: kubernetes/apps/cert-manager/
     dest: kubernetes/apps/cert-manager/
     deleteOrphaned: true
@@ -36,6 +39,8 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/components/common/democratic-csi.yaml
   - source: kubernetes/components/common/shared-secrets.sops.yaml
     dest: kubernetes/components/common/shared-secrets.sops.yaml
+  - source: kubernetes/components/common/kustomization.yaml
+    dest: kubernetes/components/common/kustomization.yaml
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: .github/renovate.json5

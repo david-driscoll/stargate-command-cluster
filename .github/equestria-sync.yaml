@@ -17,6 +17,12 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true
+  - source: kubernetes/apps/flux-system/weave/
+    dest: kubernetes/apps/flux-system/weave/
+    deleteOrphaned: true
+  - source: kubernetes/apps/flux-system/capacitor/
+    dest: kubernetes/apps/flux-system/capacitor/
+    deleteOrphaned: true
   - source: kubernetes/apps/system-upgrade/
     dest: kubernetes/apps/system-upgrade/
     deleteOrphaned: true

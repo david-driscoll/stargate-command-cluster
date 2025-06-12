@@ -10,3 +10,4 @@ resources:
   - ./github-hook-ips.yaml
   - ./authenticated-user.yaml
   - ./tailscale-user.yaml
+  - ./strip-query-string.yaml

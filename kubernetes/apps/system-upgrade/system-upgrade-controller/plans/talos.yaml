@@ -13,10 +13,6 @@ spec:
     - name: system-upgrade-controller
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
-  nodeSelector:
-    matchExpressions:
-      - key: kubernetes.io/hostname
-        operator: Exists
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.3@sha256:fae8f88015eb231f5131e6c8f16e5f3b55d3c953697b8d4da264de4788661b6a
     envs:

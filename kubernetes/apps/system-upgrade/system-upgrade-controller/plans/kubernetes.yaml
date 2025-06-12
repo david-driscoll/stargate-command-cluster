@@ -12,7 +12,9 @@ spec:
   secrets:
     - name: system-upgrade-controller
       path: /var/run/secrets/talos.dev
-      ignoreUpdates: true
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/os: linux
   upgrade:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
     image: "ghcr.io/siderolabs/talosctl:v1.10.4@sha256:34da1dff73b30d553e751892bbeeeaab980c533e7abc9c75cba49dbd7777e077"

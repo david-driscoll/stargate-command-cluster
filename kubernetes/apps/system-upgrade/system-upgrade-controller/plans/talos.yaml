@@ -5,14 +5,16 @@ kind: Plan
 metadata:
   name: talos
 spec:
-  version: ${TALOS_VERSION}
+  version: "${TALOS_VERSION}"
   concurrency: 1
   exclusive: true
   serviceAccountName: system-upgrade-controller
   secrets:
     - name: system-upgrade-controller
       path: /var/run/secrets/talos.dev
-      ignoreUpdates: true
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/os: linux
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.3@sha256:fae8f88015eb231f5131e6c8f16e5f3b55d3c953697b8d4da264de4788661b6a
     envs:

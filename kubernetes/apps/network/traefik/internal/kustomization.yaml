@@ -8,4 +8,6 @@ configMapGenerator:
   - name: traefik-internal-values
     files:
       - values.yaml=./values.yaml
+    options:
+      disableNameSuffixHash: true
 

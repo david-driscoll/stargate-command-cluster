@@ -44,5 +44,7 @@ david-driscoll/equestria-cluster:
     dest: .github/workflows/flux-local.yaml
   - source: .mise.toml
     dest: .mise.toml
+  - source: versions.env
+    dest: versions.env
   - source: bootstrap/
     dest: bootstrap/

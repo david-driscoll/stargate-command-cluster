@@ -45,8 +45,6 @@ spec:
   path: ./kubernetes/apps/sgc/idp/authentik
   prune: true
   dependsOn:
-    - name: lldap
-      namespace: *namespace
     - name: asgard
       namespace: *namespace
     - name: tailscale-idp

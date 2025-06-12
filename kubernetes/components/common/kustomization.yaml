@@ -8,6 +8,12 @@ resources:
   - ./namespace.yaml
   - ./democratic-csi.yaml
   - ./sops-age.sops.yaml
+configMapGenerator:
+  - name: cluster-versions
+    envs:
+      - ./versions.env
+    options:
+      disableNameSuffixHash: true
 patches:
   - target:
       group: helm.toolkit.fluxcd.io/v2
@@ -26,5 +32,7 @@ patches:
           substituteFrom:
             - name: cluster-secrets
               kind: Secret
+            - name: cluster-versions
+              kind: ConfigMap
             - name: shared-secrets
               kind: Secret

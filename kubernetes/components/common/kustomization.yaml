@@ -11,7 +11,7 @@ resources:
 configMapGenerator:
   - name: cluster-versions
     envs:
-      - ./versions.env
+      - ../../../versions.env
     options:
       disableNameSuffixHash: true
 patches:

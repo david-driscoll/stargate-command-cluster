@@ -79,9 +79,9 @@ spec:
         containers:
           main: &job
             image:
-              repository: alpine
-              tag: 3.20
-              pullPolicy: IfNotPresent
+              repository: pnnlmiscscripts/curl-jq
+              tag: latest@sha256:46bc6e2747c42af4013edb228df8401d777f7e22d4d3b7ab27a3f74105d1228e
+              pullPolicy: Always
             command:
               - sh
               - -c

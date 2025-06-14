@@ -80,7 +80,7 @@ spec:
           main: &job
             image:
               repository: alpine
-              tag: 3.20
+              tag: 3.22@sha256:8a1f59ffb675680d47db6337b49d22281a139e9d709335b492be023728e117150
               pullPolicy: IfNotPresent
             command:
               - sh

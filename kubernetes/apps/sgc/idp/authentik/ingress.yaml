@@ -17,6 +17,7 @@ spec:
           namespace: sgc
           port: api
           passHostHeader: true
+          kind: Service
       middlewares:
         - name: authentik-icons-middleware
           namespace: sgc

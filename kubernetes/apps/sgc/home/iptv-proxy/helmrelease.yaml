@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app iptv-proxy
 spec:
-  timeout: 15m
+  timeout: 5m
   interval: 30m
   chartRef:
     kind: OCIRepository

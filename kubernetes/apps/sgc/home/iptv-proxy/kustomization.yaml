@@ -10,7 +10,7 @@ resources:
   - ./externalsecret.yaml
 configMapGenerator:
   - files:
-      - tailscale.sh=./resources/get-access-token.sh
+      - minio-fetch-config.sh=./resources/minio-fetch-config.sh
     name: iptv-cache-script
 generatorOptions:
   disableNameSuffixHash: true

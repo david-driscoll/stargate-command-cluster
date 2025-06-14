@@ -11,3 +11,4 @@ resources:
   - ./authenticated-user.yaml
   - ./tailscale-user.yaml
   - ./strip-query-string.yaml
+  - ./host-header.yaml

@@ -7,3 +7,10 @@ resources:
   - ./config.sops.yaml
   - ./middleware.yaml
   - ./ingress.yaml
+  - ./externalsecret.yaml
+configMapGenerator:
+  - files:
+      - tailscale.sh=./resources/get-access-token.sh
+    name: iptv-cache-script
+generatorOptions:
+  disableNameSuffixHash: true

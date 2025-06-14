@@ -7,7 +7,6 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
 spec:
-
   entryPoints:
     - websecure
   routes:
@@ -30,6 +29,7 @@ kind: Middleware
 metadata:
   name: authentik-icons-middleware
 spec:
-  addPrefix:
-    prefix: /iris/
+  replacePathRegex:
+    regex: "^(.*)"
+    replacement: "/iris/$1"
 

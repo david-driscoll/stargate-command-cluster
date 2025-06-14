@@ -61,6 +61,30 @@ spec:
               requests:
                 cpu: 100m
                 memory: 256Mi
+              limits:
+                cpu: 1
+                memory: 1Gi
+      minio-fetch:
+        enabled: true
+        type: job
+        containers:
+          minio-fetch:
+            image:
+              repository: alpine
+              tag: 3.20
+              pullPolicy: IfNotPresent
+            command:
+              - sh
+              - -c
+              - |
+                /resources/minio-fetch-config.sh
+            envFrom:
+              - secretRef:
+                  name: iptv-minio
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
       static:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -108,6 +132,14 @@ spec:
           - path: /cache
             subPath: cache
           - path: /data
+      resources:
+        type: configMap
+        name: iptv-cache-script
+        defaultMode: 493
+        globalMounts:
+          - path: /scripts/minio-fetch-config.sh
+            subPath: minio-fetch-config.sh
+
     ingress:
       internal:
         className: internal

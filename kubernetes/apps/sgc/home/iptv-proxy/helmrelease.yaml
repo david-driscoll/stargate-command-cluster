@@ -80,7 +80,7 @@ spec:
           main: &job
             image:
               repository: debian
-              tag: bookworm
+              tag: bookworm@sha256:0d8498a0e9e6a60011df39aab78534cfe940785e7c59d19dfae1eb53ea59babe
               pullPolicy: IfNotPresent
             command:
               - sh

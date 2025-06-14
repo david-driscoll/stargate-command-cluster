@@ -5,3 +5,4 @@ namespace: sgc
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./ingress.yaml

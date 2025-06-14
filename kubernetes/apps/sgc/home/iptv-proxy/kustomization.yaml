@@ -5,3 +5,5 @@ resources:
   - ./helmrelease.yaml
   - ./secret.yaml
   - ./config.sops.yaml
+  - ./middleware.yaml
+  - ./ingress.yaml

@@ -154,6 +154,8 @@ spec:
           - path: /cache
             subPath: cache
           - path: /data
+      tmp:
+        type: emptyDir
       resources:
         type: configMap
         name: iptv-cache-script

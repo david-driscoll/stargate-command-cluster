@@ -159,7 +159,7 @@ spec:
         name: iptv-cache-script
         defaultMode: 493
         globalMounts:
-          - path: /scripts/minio-fetch-config.sh
+          - path: /resources/minio-fetch-config.sh
             subPath: minio-fetch-config.sh
 
     ingress:

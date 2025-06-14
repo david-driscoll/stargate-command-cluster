@@ -1,14 +1,12 @@
 #!/bin/sh
 set -e
 
-# Required ENV variables: MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET
-# Optional: MINIO_REGION, MINIO_USE_SSL
+curl https://dl.min.io/client/mc/release/linux-amd64/mc \
+  --create-dirs \
+  -o /tmp/mc
 
-if ! command -v mc >/dev/null 2>&1; then
-    echo "MinIO client (mc) not found. Installing..."
-    curl -sSL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc
-    chmod +x /usr/local/bin/mc
-fi
+chmod +x /tmp/mc
+export PATH=$PATH:/tmp
 
 MC_ALIAS=minio
 MC_CONFIG_DIR="/tmp/.mc"

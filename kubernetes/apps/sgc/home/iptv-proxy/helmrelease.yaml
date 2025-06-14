@@ -64,11 +64,20 @@ spec:
               limits:
                 cpu: 1
                 memory: 1Gi
-      minio-fetch:
-        enabled: true
-        type: job
+      sync-cache:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "0 0 * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
         containers:
-          minio-fetch:
+          main: &job
             image:
               repository: alpine
               tag: 3.20
@@ -85,6 +94,19 @@ spec:
               requests:
                 cpu: 10m
                 memory: 32Mi
+      fetch-cache:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        type: job
+        job:
+          backoffLimit: 6
+          activeDeadlineSeconds: 3600
+          ttlSecondsAfterFinished: 3600
+          parallelism: 1
+          completions: 1
+        containers:
+          main:
+            <<: *job
       static:
         annotations:
           reloader.stakater.com/auto: "true"

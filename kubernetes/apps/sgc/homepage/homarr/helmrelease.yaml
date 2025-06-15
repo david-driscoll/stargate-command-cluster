@@ -54,6 +54,8 @@ spec:
     envSecrets:
       authOidcCredentials:
         existingSecret: ${APP}-oidc-credentials
+      dbCredentials:
+        existingSecret: ${APP}-db-secret
     mysql:
       internal: true
     rbac:

@@ -30,40 +30,40 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
     controllers:
-      host:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          host:
-            image:
-              repository: ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy
-              tag: v3.7.0@sha256:627be7f4d9947821438d0eef360f80fabc43665055430fdf02179020c8973810
-              pullPolicy: IfNotPresent
-            env:
-              M3U_URL:
-                secretKeyRef:
-                  name: tivi-secret
-                  key: M3U_URL
-              PORT: &host 8080
-              HOSTNAME: "iptv.${ROOT_DOMAIN}"
-              GIN_MODE: release
-              HTTPS: 1
-              ADVERTISED_PORT: 443
-              USER:
-                secretKeyRef:
-                  name: iptv-proxy-secret
-                  key: PROXY_USERNAME
-              PASSWORD:
-                secretKeyRef:
-                  name: iptv-proxy-secret
-                  key: PROXY_PASSWORD
-            resources:
-              requests:
-                cpu: 100m
-                memory: 256Mi
-              limits:
-                cpu: 1
-                memory: 1Gi
+      # host:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   containers:
+      #     host:
+      #       image:
+      #         repository: ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy
+      #         tag: v3.7.0@sha256:627be7f4d9947821438d0eef360f80fabc43665055430fdf02179020c8973810
+      #         pullPolicy: IfNotPresent
+      #       env:
+      #         M3U_URL:
+      #           secretKeyRef:
+      #             name: tivi-secret
+      #             key: M3U_URL
+      #         PORT: &host 8080
+      #         HOSTNAME: "iptv.${ROOT_DOMAIN}"
+      #         GIN_MODE: release
+      #         HTTPS: 1
+      #         ADVERTISED_PORT: 443
+      #         USER:
+      #           secretKeyRef:
+      #             name: iptv-proxy-secret
+      #             key: PROXY_USERNAME
+      #         PASSWORD:
+      #           secretKeyRef:
+      #             name: iptv-proxy-secret
+      #             key: PROXY_PASSWORD
+      #       resources:
+      #         requests:
+      #           cpu: 100m
+      #           memory: 256Mi
+      #         limits:
+      #           cpu: 1
+      #           memory: 1Gi
       sync-cache:
         annotations:
           reloader.stakater.com/auto: "true"

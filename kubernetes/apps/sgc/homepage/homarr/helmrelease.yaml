@@ -45,12 +45,6 @@ spec:
       AUTH_OIDC_CLIENT_NAME: "Homarr"
       AUTH_OIDC_ISSUER: ${OIDC_ISSUER}
       AUTH_PROVIDERS: "oidc"
-      SECRET_ENCRYPTION_KEY:
-        valueFrom:
-          secretKeyRef:
-            key: ${APP}-secret
-            name: SECRET_ENCRYPTION_KEY
-      DB_URL: "/appdata/db/db.sqlite"
     envSecrets:
       authOidcCredentials:
         existingSecret: ${APP}-oidc-credentials

@@ -8,7 +8,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`tivi2.${ROOT_DOMAIN}`)
+    - match: Host(`tivi.${ROOT_DOMAIN}`)
       kind: Rule
       services:
         - name: minio
@@ -18,7 +18,7 @@ spec:
       middlewares:
         - name: redirect-tivi-files
           namespace: sgc
-    - match: Host(`iptv2.${ROOT_DOMAIN}`) && PathPrefix(`/icons/`)
+    - match: Host(`iptv.${ROOT_DOMAIN}`) && PathPrefix(`/picons/`)
       services:
         - name: minio
           namespace: sgc

@@ -1,16 +1,6 @@
 #!/bin/sh
 set -e
 
-apt-get update
-apt-get install -y curl
-
-curl https://dl.min.io/client/mc/release/linux-amd64/mc \
-    --create-dirs \
-    -o /tmp/mc
-
-chmod +x /tmp/mc
-export PATH=$PATH:/tmp
-
 MC_ALIAS=minio
 MC_CONFIG_DIR="/tmp/.mc"
 export MC_CONFIG_DIR

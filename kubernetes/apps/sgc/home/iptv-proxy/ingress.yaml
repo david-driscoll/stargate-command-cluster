@@ -4,6 +4,9 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: tivi-icon-ingress
+  annotations:
+    reloader.stakater.com/auto: "true"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
 spec:
   entryPoints:
     - websecure

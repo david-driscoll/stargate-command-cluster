@@ -60,7 +60,10 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 256Mi
+                memory: 2Gi
+              limits:
+                cpu: 1
+                memory: 6Gi
       sync-cache:
         annotations:
           reloader.stakater.com/auto: "true"

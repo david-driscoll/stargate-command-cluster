@@ -95,6 +95,8 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-minio
+              - secretRef:
+                  name: ${APP}-tivi
             resources:
               requests:
                 cpu: 10m

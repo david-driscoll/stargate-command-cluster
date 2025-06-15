@@ -71,7 +71,7 @@ spec:
           backoffLimit: 6
           concurrencyPolicy: Forbid
           failedJobsHistory: 2
-          schedule: "0 0 * * *"
+          schedule: "*/30 * * * *"
           startingDeadlineSeconds: 30
           successfulJobsHistory: 3
           suspend: false

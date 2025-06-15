@@ -28,14 +28,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app homepage
+  name: &app homarr
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/homarr/app
+  path: ./kubernetes/apps/sgc/homepage/homarr
   prune: true
   dependsOn:
     - name: sgc-secrets

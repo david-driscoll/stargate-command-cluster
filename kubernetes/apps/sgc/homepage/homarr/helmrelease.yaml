@@ -64,6 +64,7 @@ spec:
       homarrImages:
         enabled: true
         volumeClaimName: ${APP}
+        name: ${APP}
     autoscaling:
      enabled: true
      maxReplicas: 3

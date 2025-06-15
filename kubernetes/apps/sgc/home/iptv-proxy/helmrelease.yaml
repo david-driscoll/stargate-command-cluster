@@ -37,7 +37,7 @@ spec:
           host:
             image:
               repository: ghcr.io/pierre-emmanuelj/iptv-proxy/iptv-proxy
-              tag: v3.7.0@sha256:627be7f4d9947821438d0eef360f80fabc43665055430fdf02179020c8973810
+              tag: v3.7.0
               pullPolicy: IfNotPresent
             env:
               M3U_URL:
@@ -61,9 +61,6 @@ spec:
               requests:
                 cpu: 100m
                 memory: 256Mi
-              limits:
-                cpu: 1
-                memory: 1Gi
       sync-cache:
         annotations:
           reloader.stakater.com/auto: "true"

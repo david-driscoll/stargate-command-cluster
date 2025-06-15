@@ -126,8 +126,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /cache
-            subPath: cache
-          - path: /data
       tmp:
         type: emptyDir
       resources:

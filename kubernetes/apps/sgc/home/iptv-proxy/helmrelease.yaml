@@ -79,8 +79,8 @@ spec:
         containers:
           main: &job
             image:
-              repository: debian
-              tag: bookworm@sha256:0d8498a0e9e6a60011df39aab78534cfe940785e7c59d19dfae1eb53ea59babe
+              repository: minio/mc
+              tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead
               pullPolicy: IfNotPresent
             command:
               - sh
@@ -89,7 +89,7 @@ spec:
                 /resources/minio-fetch-config.sh
             envFrom:
               - secretRef:
-                  name: iptv-minio
+                  name: ${APP}-minio
             resources:
               requests:
                 cpu: 10m

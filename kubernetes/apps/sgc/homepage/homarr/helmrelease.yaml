@@ -27,9 +27,11 @@ spec:
   install:
     remediation:
       retries: 3
+    replace: true
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
+    force: true
     remediation:
       retries: 3
       strategy: uninstall

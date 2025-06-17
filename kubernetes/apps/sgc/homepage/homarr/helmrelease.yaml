@@ -45,6 +45,9 @@ spec:
                   secretKeyRef:
                     name: ${APP}-secret
                     key: SECRET_ENCRYPTION_KEY
+            envFrom:
+              - secretRef:
+                  name: ${APP}-oidc-credentials
 
             resources:
               requests:

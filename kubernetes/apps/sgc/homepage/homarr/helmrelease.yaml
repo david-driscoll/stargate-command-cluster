@@ -49,10 +49,7 @@ spec:
               - secretRef:
                   name: ${APP}-oidc-credentials
             securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
             probes:
               liveness: &probes
@@ -79,9 +76,9 @@ spec:
       securityContext:
         fsGroup: 568
         runAsGroup: 568
-        runAsNonRoot: true
+        runAsNonRoot: false
         runAsUser: 568
-        supplementalGroups: [10000]
+        supplementalGroups: [1000]
 
     service:
       *app :

@@ -42,7 +42,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: sgc-redirect-tivi-files@kubernetescrd
 spec:
-  ingressClassName: external
+  ingressClassName: internal
   rules:
     - host: "tivi.${ROOT_DOMAIN}"
       http:

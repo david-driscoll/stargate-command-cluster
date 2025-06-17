@@ -34,9 +34,9 @@ spec:
               tag: v1.24.0
               pullPolicy: IfNotPresent
             env:
-              PUID: 568
-              PGID: 568
-              UMASK: 002
+              # PUID: 568
+              # PGID: 568
+              # UMASK: 002
               TZ: ${TIMEZONE}
               DEFAULT_COLOR_SCHEME: dark
               PORT: &port 7575
@@ -72,13 +72,13 @@ spec:
               limits:
                 memory: "2Gi"
 
-    defaultPodOptions:
-      securityContext:
-        fsGroup: 568
-        runAsGroup: 568
-        runAsNonRoot: false
-        runAsUser: 568
-        supplementalGroups: [1000]
+    # defaultPodOptions:
+    #   securityContext:
+    #     fsGroup: 568
+    #     runAsGroup: 568
+    #     runAsNonRoot: false
+    #     runAsUser: 568
+    #     supplementalGroups: [1000]
 
     service:
       *app :

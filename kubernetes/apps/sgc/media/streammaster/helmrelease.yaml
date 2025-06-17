@@ -27,8 +27,6 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          hostNetwork: true
         containers:
           app:
             image:
@@ -93,7 +91,6 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
           - 34
-      hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
 
     service:

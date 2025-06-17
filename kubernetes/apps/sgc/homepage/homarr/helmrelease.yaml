@@ -50,12 +50,6 @@ spec:
     envSecrets:
       authOidcCredentials:
         existingSecret: ${APP}-oidc-credentials
-      dbCredentials:
-        existingSecret: ${APP}-db-secret
-    mysql:
-      internal: true
-      auth:
-        existingSecret: ${APP}-db-secret
     rbac:
       create: true
     persistence:

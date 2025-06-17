@@ -53,6 +53,15 @@ spec:
         createrole: true
         passwordSecret:
           name: iris-user
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: streammaster
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: streammaster-user
       # - connectionLimit: -1
       #   ensure: present
       #   inherit: true

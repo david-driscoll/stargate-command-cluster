@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: streammaster
+spec:
+  cluster:
+    name: ${APP}
+  databaseReclaimPolicy: retain
+  ensure: present
+  name: streammaster
+  owner: streammaster
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name "streammaster-user"
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshInterval: "0"
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+      data:
+        username: "streammaster"
+        password: "{{ .password }}"
+        host: "${APP}-rw.sgc.svc.cluster.local"
+        port: "5432"
+        database: "streammaster"
+        pgpass: "${APP}-rw.sgc.svc.cluster.local:5432:streammaster:streammaster:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.sgc.svc.cluster.local:5432/streammaster?password={{ .password }}&user=streammaster"
+        uri: "postgresql://streammaster:{{ .password }}@${APP}-rw.sgc.svc.cluster.local:5432/streammaster"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "${APP}-password-generator"

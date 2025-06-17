@@ -65,7 +65,6 @@ spec:
         storageClassName: longhorn
         accessMode: "ReadWriteMany"
         size: "5Gi"
-        volumeClaimName: *app
       homarrImages:
         enabled: true
         storageClassName: longhorn

@@ -48,7 +48,12 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-oidc-credentials
-
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
             resources:
               requests:
                 memory: "100M"
@@ -61,8 +66,7 @@ spec:
         runAsGroup: 568
         runAsNonRoot: true
         runAsUser: 568
-        seccompProfile:
-          type: RuntimeDefault
+        supplementalGroups: [10000]
 
     service:
       *app :

@@ -13,8 +13,6 @@ spec:
   backupURL: s3://tokra/backup
   backupRemoteDeletePolicy: retain
   backupScheduleJobsHistoryLimit: 30
-  initBucketSecretName: tokra-backup-secret
-  initBucketURL: s3://tokra/backup
   volumeSpec:
     persistentVolumeClaim:
       accessModes:

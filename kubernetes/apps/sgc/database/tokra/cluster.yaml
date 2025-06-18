@@ -5,9 +5,14 @@ kind: InnoDBCluster
 metadata:
   name: tokra
 spec:
-  instances: 3
+  instances: 2
   router:
     instances: 1
+    podSpec:
+      resources:
+        requests:
+          cpu: 48m
+          memory: 64M
   secretName: mycluster-cluster-secret
   backupProfiles:
     - name: default
@@ -29,3 +34,22 @@ spec:
     - name: default
       schedule: "0 4 * * *" # Daily at 4 AM
       backupProfileName: default
+
+  podSpec:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 1200M
+      limits:
+        cpu: 300m
+        memory: 2250M
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+                  app.kubernetes.io/component: *app

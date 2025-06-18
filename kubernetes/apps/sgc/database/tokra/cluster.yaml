@@ -12,7 +12,7 @@ spec:
   backupSchedule: "@daily"
   backupURL: s3://tokra/backup
   backupRemoteDeletePolicy: retain
-  backupScheduleJobsHistoryLimit: 10
+  backupScheduleJobsHistoryLimit: 30
   initBucketSecretName: tokra-backup-secret
   initBucketURL: s3://tokra/backup
   volumeSpec:

@@ -6,6 +6,7 @@ metadata:
   name: &app tokra
 spec:
   instances: 2
+  tlsUseSelfSigned: true
   router:
     instances: 1
     podSpec:

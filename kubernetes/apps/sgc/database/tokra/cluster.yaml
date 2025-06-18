@@ -9,7 +9,7 @@ spec:
   replicas: 2
   secretName: tokra-secret
   backupSecretName: tokra-backup-secret
-  backupSchedule: "@weekly"
+  backupSchedule: "@daily"
   backupURL: s3://tokra/backup
   backupRemoteDeletePolicy: retain
   backupScheduleJobsHistoryLimit: 10

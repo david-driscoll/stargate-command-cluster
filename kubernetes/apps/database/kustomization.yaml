@@ -8,5 +8,5 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./cloudnative-pg/ks.yaml
-  # - ./mysql-operator/ks.yaml
+  - ./mysql-operator/ks.yaml
   - ./dragonfly/ks.yaml

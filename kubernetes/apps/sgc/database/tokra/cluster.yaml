@@ -3,7 +3,7 @@
 apiVersion: mysql.oracle.com/v2
 kind: InnoDBCluster
 metadata:
-  name: tokra
+  name: &app tokra
 spec:
   instances: 2
   router:

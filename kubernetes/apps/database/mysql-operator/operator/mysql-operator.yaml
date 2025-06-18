@@ -24,8 +24,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: mysql-charts
-        namespace: flux-system
-
   install:
     crds: Create
     remediation: # perform remediation when helm install fails

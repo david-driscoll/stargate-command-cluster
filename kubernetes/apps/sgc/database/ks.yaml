@@ -104,8 +104,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
+    - name: mysql-operator
+      namespace: database
+    - name: minio
+      namespace: *namespace
   path: ./kubernetes/apps/sgc/database/tokra
   prune: true
   sourceRef:

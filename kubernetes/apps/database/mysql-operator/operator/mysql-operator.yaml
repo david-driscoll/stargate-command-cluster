@@ -1,42 +1,44 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: bitpoke
+  name: mysql-charts
 spec:
-  interval: 15m
-  url: https://helm-charts.bitpoke.io
+  interval: 45m
+  url: https://mysql.github.io/mysql-operator/
+  timeout: 3m
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
-apiVersion: helm.toolkit.fluxcd.io/v2
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: mysql-operator
+  namespace: mysql-operator
 spec:
+  interval: 15m
   chart:
     spec:
+      # renovate: registryUrl=https://mysql.github.io/mysql-operator/ chart=mysql-operator
       chart: mysql-operator
-      version: 0.6.3
+      version: "2.2.4"
       sourceRef:
         kind: HelmRepository
-        name: bitpoke
-  interval: 15m
-  timeout: 5m
-  releaseName: mysql-operator
-  values:
-    podSecurityContext:
-      runAsNonRoot: true
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
+        name: mysql-charts
+        namespace: flux-system
 
-    gracefulShutdown:
-      enabled: true
+  install:
+    crds: Create
+    remediation: # perform remediation when helm install fails
+      retries: 5
 
-    serviceMonitor:
-      enabled: true
+  upgrade:
+    crds: CreateReplace
+    remediation: # perform remediation when helm upgrade fails
+      retries: 5
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
 
-    mysqlClustersGlobalServiceMonitor:
-      enabled: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true

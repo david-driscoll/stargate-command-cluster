@@ -40,3 +40,7 @@ spec:
     timeout: 10m
     recreate: true
     cleanupOnFail: true
+  values:
+    envs:
+      imagesPullPolicy: IfNotPresent
+      k8sClusterDomain: cluster.local

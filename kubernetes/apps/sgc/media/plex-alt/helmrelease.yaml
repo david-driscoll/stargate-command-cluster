@@ -94,6 +94,7 @@ spec:
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [44, 109, 303, 568, 10000]
         seccompProfile: { type: RuntimeDefault }
       # nodeSelector:

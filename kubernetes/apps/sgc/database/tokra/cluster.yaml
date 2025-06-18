@@ -1,23 +1,31 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/mysql.presslabs.org/mysqlcluster_v1alpha1.json
-apiVersion: mysql.presslabs.org/v1alpha1
-kind: MysqlCluster
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/mysql.oracle.com/innodbcluster_v2.json
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
 metadata:
-  name: main
-  namespace: mysql-operator
+  name: tokra
 spec:
-  replicas: 2
-  secretName: tokra-secret
-  backupSecretName: tokra-backup-secret
-  backupSchedule: "@daily"
-  backupURL: s3://tokra/backup
-  backupRemoteDeletePolicy: retain
-  backupScheduleJobsHistoryLimit: 30
-  volumeSpec:
-    persistentVolumeClaim:
-      accessModes:
-       - ReadWriteOnce
-      resources:
-        requests:
-          storage: 10Gi
-      storageClassName: longhorn
+  instances: 3
+  router:
+    instances: 1
+  secretName: mycluster-cluster-secret
+  backupProfiles:
+    - name: default
+      dumpInstance:
+        storage:
+          s3:
+            bucketName: tokra-dump
+            config: ${APP}-backup-secret
+            profile: default
+            endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
+      snapshot:
+        storage:
+          s3:
+            bucketName: tokra-snapshot
+            config: ${APP}-backup-secret
+            profile: default
+            endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
+  backupSchedules:
+    - name: default
+      schedule: "0 4 * * *" # Daily at 4 AM
+      backupProfileName: default

@@ -15,7 +15,7 @@ spec:
           memory: 64M
   secretName: mycluster-cluster-secret
   backupProfiles:
-    - name: default
+    - name: dump
       dumpInstance:
         storage:
           s3:
@@ -23,6 +23,7 @@ spec:
             config: ${APP}-backup-secret
             profile: default
             endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
+    - name: snapshot
       snapshot:
         storage:
           s3:
@@ -31,9 +32,12 @@ spec:
             profile: default
             endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
   backupSchedules:
-    - name: default
+    - name: snapshot
       schedule: "0 4 * * *" # Daily at 4 AM
-      backupProfileName: default
+      backupProfileName: snapshot
+    - name: dump
+      schedule: "0 5 * * *" # Daily at 5 AM
+      backupProfileName: dump
 
   podSpec:
     resources:

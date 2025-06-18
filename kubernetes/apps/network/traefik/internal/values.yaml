@@ -45,7 +45,7 @@ ports:
     protocol: TCP
 ingressClass:
   enabled: true
-  isDefaultClass: true
+  isDefaultClass: false
   name: internal
 metrics:
   enabled: true

@@ -44,10 +44,10 @@ spec:
     resources:
       requests:
         cpu: 50m
-        memory: 1200M
+        memory: 200Mi
       limits:
         cpu: 300m
-        memory: 2250M
+        memory: 2Gi
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:

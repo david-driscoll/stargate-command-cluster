@@ -81,7 +81,7 @@ spec:
       hostNetwork: true
       securityContext:
         fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
+        fsGroupChangePolicy: "OnRootMismatch"
         runAsGroup: 568
         runAsNonRoot: true
         runAsUser: 568

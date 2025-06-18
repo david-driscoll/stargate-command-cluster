@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/mysql.presslabs.org/mysqlcluster_v1alpha1.json
+apiVersion: mysql.presslabs.org/v1alpha1
+kind: MysqlCluster
+metadata:
+  name: main
+  namespace: mysql-operator
+spec:
+  replicas: 2
+  secretName: tokra-secret
+  backupSecretName: tokra-backup-secret
+  backupSchedule: "@weekly"
+  backupURL: s3://tokra/backup
+  backupRemoteDeletePolicy: retain
+  backupScheduleJobsHistoryLimit: 10
+  initBucketSecretName: tokra-backup-secret
+  initBucketURL: s3://tokra/backup
+  volumeSpec:
+    persistentVolumeClaim:
+      accessModes:
+       - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: longhorn

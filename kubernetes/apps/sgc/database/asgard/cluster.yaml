@@ -73,7 +73,7 @@ spec:
       cpu: "2000m"
 
   bootstrap:
-    initdb: {}
+    initdb: null
     recovery:
       source: ${APP}-backup
       owner: authentik

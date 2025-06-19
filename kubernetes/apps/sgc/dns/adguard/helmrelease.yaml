@@ -81,9 +81,8 @@ spec:
             whenScaled: Retain
           volumeClaimTemplates:
             - name: data
-              storageClass: longhorn
-              accessMode: ReadWriteOnce
               size: 4Gi
+              accessMode: ReadWriteOnce
               globalMounts:
                 - path: /opt/adguardhome/conf
                   subPath: conf

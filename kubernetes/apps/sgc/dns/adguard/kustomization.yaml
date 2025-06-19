@@ -5,3 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret.yaml
+  - ./replica-0.yaml
+  - ./replica-1.yaml
+  - ./replica-2.yaml

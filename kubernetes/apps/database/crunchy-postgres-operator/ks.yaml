@@ -10,9 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
   path: ./kubernetes/apps/database/crunchy-postgres-operator/operator
   prune: true
   sourceRef:

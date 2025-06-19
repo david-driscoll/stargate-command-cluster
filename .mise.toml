@@ -30,3 +30,9 @@ TALOS_DIR = "{{config_root}}/talos"
 "aqua:siderolabs/talos" = "1.10.3"
 "aqua:yannh/kubeconform" = "0.7.0"
 "aqua:PowerShell/PowerShell" = "v7.5.1"
+
+[tasks.update]
+description = 'Update all apps that have an update script'
+run = [
+    'dotnet run .mise/tasks/do-update.cs',
+]

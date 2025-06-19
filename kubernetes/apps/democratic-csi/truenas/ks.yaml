@@ -13,22 +13,14 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
   path: ./kubernetes/apps/democratic-csi/truenas/secrets
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  healthChecks:
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      name: truenas-credentials
-      namespace: *namespace
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
-      name: truenas-ssh-key
-      namespace: *namespace
-
   wait: true
   interval: 30m
   retryInterval: 1m
@@ -46,8 +38,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
     - name: truenas-secrets
       namespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/truenas/stash
@@ -79,8 +69,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
     - name: truenas-secrets
       namespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/truenas/iscsi-stash

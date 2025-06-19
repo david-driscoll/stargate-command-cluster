@@ -13,6 +13,7 @@ spec:
   path: ./kubernetes/apps/network/traefik/shared
   dependsOn:
     - name: certificates
+      namespace: *namespace
   prune: true
   sourceRef:
     kind: GitRepository
@@ -40,8 +41,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: certificates
     - name: traefik-shared
+      namespace: *namespace
   path: ./kubernetes/apps/network/traefik/internal
   prune: true
   sourceRef:
@@ -71,8 +72,8 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/traefik/external
   dependsOn:
-    - name: certificates
     - name: traefik-shared
+      namespace: *namespace
   prune: true
   sourceRef:
     kind: GitRepository

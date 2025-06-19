@@ -42,8 +42,6 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: cloudflare-dns
-      namespace: *namespace
     - name: network-secrets
       namespace: *namespace
   wait: true
@@ -86,6 +84,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: network-secrets
+      namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/network/dns/unifi
   prune: true

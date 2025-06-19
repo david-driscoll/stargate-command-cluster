@@ -14,6 +14,16 @@
       "./kubeconfig"
     ]
   },
+  "mcp": {
+    "servers": {
+      "kubernetes": {
+        "command": "npx",
+        "args": [
+          "mcp-server-kubernetes"
+        ]
+      }
+    }
+  },
   "path-autocomplete.disableUpOneFolder": false,
   "path-autocomplete.triggerOutsideStrings": true,
   "yaml.schemaStore.enable": true,

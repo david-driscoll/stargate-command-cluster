@@ -20,16 +20,16 @@ spec:
       dumpInstance:
         storage:
           s3:
-            bucketName: ${APP}2-dump
-            config: ${APP}2-backup-secret
+            bucketName: ${APP}-dump
+            config: ${APP}-backup-secret
             profile: default
             endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
     - name: snapshot
       snapshot:
         storage:
           s3:
-            bucketName: ${APP}2-snapshot
-            config: ${APP}2-backup-secret
+            bucketName: ${APP}-snapshot
+            config: ${APP}-backup-secret
             profile: default
             endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
   backupSchedules:

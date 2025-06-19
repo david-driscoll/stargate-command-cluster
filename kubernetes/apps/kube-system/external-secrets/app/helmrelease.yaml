@@ -20,11 +20,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
-    - name: external-secrets
-      namespace: kube-system
   values:
     installCRDs: true
     image:

@@ -14,6 +14,8 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -38,6 +40,7 @@ spec:
   path: ./kubernetes/apps/network/tailscale/connector
   dependsOn:
     - name: tailscale-operator
+      namespace: *namespace
   prune: true
   sourceRef:
     kind: GitRepository
@@ -63,6 +66,7 @@ spec:
   path: ./kubernetes/apps/network/tailscale/authkey
   dependsOn:
     - name: tailscale-operator
+      namespace: *namespace
   prune: true
   sourceRef:
     kind: GitRepository

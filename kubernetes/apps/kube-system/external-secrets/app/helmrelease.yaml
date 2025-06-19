@@ -23,6 +23,8 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
   values:
     installCRDs: true
     image:

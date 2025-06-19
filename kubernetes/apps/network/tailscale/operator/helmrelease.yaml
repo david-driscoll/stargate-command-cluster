@@ -26,6 +26,8 @@ spec:
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
   valuesFrom:
     - kind: Secret
       name: tailscale-oauth

@@ -26,8 +26,14 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/flux-system/capacitor/
     dest: kubernetes/apps/flux-system/capacitor/
     deleteOrphaned: true
+  - source: kubernetes/apps/longhorn-system/
+    dest: kubernetes/apps/longhorn-system/
+    deleteOrphaned: true
   - source: kubernetes/apps/system-upgrade/
     dest: kubernetes/apps/system-upgrade/
+    deleteOrphaned: true
+  - source: kubernetes/apps/volsync-system/
+    dest: kubernetes/apps/volsync-system/
     deleteOrphaned: true
   - source: kubernetes/components/tailscale/
     dest: kubernetes/components/tailscale/

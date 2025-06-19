@@ -53,7 +53,7 @@ spec:
     volumeSnapshotClassName: "longhorn-snapclass"
     cacheStorageClassName: "longhorn-cache"
     cacheAccessModes: ["ReadWriteOnce"]
-    cacheCapacity: "16Gi"
+    cacheCapacity: "8Gi"
     storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
     capacity: "5Gi"

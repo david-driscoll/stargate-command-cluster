@@ -12,8 +12,8 @@ spec:
     name: "data-adguard-home-1-dst"
   resources:
     requests:
-      storage: "16Gi"
-  storageClassName: "longhorn-snapshot"
+      storage: "5Gi"
+  storageClassName: "longhorn"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
@@ -56,11 +56,11 @@ spec:
     cacheCapacity: "16Gi"
     storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
-    capacity: "16Gi"
+    capacity: "5Gi"
     moverSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
-      fsGroup: 0
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationsource_v1alpha1.json
@@ -77,16 +77,15 @@ spec:
     pruneIntervalDays: 14
     repository: "data-adguard-home-1-volsync-secret"
     volumeSnapshotClassName: "longhorn-snapclass"
-    cacheCapacity: "16Gi"
+    cacheCapacity: "2Gi"
     cacheStorageClassName: "longhorn-cache"
     cacheAccessModes: ["ReadWriteOnce"]
     storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
     moverSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
-      fsGroup: 0
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
     retain:
       hourly: 24
       daily: 7
-

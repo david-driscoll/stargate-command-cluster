@@ -54,6 +54,7 @@ spec:
                 io.cilium/lb-ipam-ips: "${ASGARD_VIP}"
                 tailscale.com/expose: "true"
                 tailscale.com/hostname: *app
+                external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
               name: ${APP}
             spec:
               type: LoadBalancer
@@ -62,7 +63,7 @@ spec:
                 - "${ASGARD_VIP}"
 
   # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
-  enablePDB: false
+  enablePDB: true
   resources:
     requests:
       memory: "1Gi"

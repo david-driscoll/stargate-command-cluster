@@ -59,3 +59,7 @@ david-driscoll/equestria-cluster:
     dest: versions.env
   - source: bootstrap/
     dest: bootstrap/
+  - source: .mise/
+    dest: .mise/
+  - source: .husky/
+    dest: .husky/

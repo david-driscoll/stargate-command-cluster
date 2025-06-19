@@ -38,57 +38,12 @@ spec:
       - connectionLimit: -1
         ensure: present
         inherit: true
-        name: lldap
-        login: true
-        createdb: true
-        createrole: true
-        passwordSecret:
-          name: lldap-user
-      - connectionLimit: -1
-        ensure: present
-        inherit: true
-        name: iris
-        login: true
-        createdb: true
-        createrole: true
-        passwordSecret:
-          name: iris-user
-      - connectionLimit: -1
-        ensure: present
-        inherit: true
         name: streammaster
         login: true
         createdb: true
         createrole: true
         passwordSecret:
           name: streammaster-user
-      # - connectionLimit: -1
-      #   ensure: present
-      #   inherit: true
-      #   name: ${APP}
-      #   login: true
-      #   createdb: true
-      #   createrole: true
-      #   passwordSecret:
-      #     name: ${APP}-user
-      # - connectionLimit: -1
-      #   ensure: present
-      #   inherit: true
-      #   name: sgc
-      #   login: true
-      #   createdb: true
-      #   createrole: true
-      #   passwordSecret:
-      #     name: ${APP}-user
-      # - connectionLimit: -1
-      #   ensure: present
-      #   inherit: true
-      #   name: iris
-      #   login: true
-      #   createdb: true
-      #   createrole: true
-      #   passwordSecret:
-      #     name: iris-user
     services:
       additional:
         - selectorType: rw
@@ -115,6 +70,12 @@ spec:
     limits:
       memory: "4Gi"
       cpu: "2000m"
+
+  bootstrap:
+    recovery:
+      source: ${APP}-backup
+      owner: authentik
+      database: authentik
 
   backup:
     retentionPolicy: 30d

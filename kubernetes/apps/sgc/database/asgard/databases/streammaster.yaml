@@ -24,7 +24,7 @@ spec:
   target:
     name: *name
     creationPolicy: Owner
-    deletionPolicy: Delete
+    deletionPolicy: Retain
     template:
       metadata:
         labels:

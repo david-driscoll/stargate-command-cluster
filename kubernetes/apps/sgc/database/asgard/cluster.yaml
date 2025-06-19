@@ -66,7 +66,8 @@ spec:
   enablePDB: false
   resources:
     requests:
-      memory: "256Mi"
+      # shared buffer
+      memory: "512Mi"
       cpu: "500m"
     limits:
       memory: "1Gi"

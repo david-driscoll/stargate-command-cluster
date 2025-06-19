@@ -32,7 +32,7 @@ Dictionary<string, string> defaults = new Dictionary<string, string>()
 
 };
 
-var filePath = "kubernetes/apps/sgc/dns/adguard/helmrelease.yaml";
+var filePath = "kubernetes/apps/sgc/dns/adguard-home/helmrelease.yaml";
 
 var deserializer = new DeserializerBuilder()
     .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -106,7 +106,7 @@ for (var i = 0; i < replicas; i++)
     ["REPLICA"] = replicaName,
   }
   );
-  File.WriteAllText($"kubernetes/apps/sgc/dns/adguard/replica-{i}.yaml", output);
+  File.WriteAllText($"kubernetes/apps/sgc/dns/adguard-home/replica-{i}.yaml", output);
 }
 
 AnsiConsole.WriteLine("Replica files created successfully!", new Style(foreground: Color.Green));

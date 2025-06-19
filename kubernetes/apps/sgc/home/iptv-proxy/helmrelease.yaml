@@ -62,7 +62,7 @@ spec:
                   key: PROXY_PASSWORD
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
                 memory: 2Gi
               limits:
                 cpu: 1

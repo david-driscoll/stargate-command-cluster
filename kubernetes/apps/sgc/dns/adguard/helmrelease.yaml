@@ -51,7 +51,7 @@ spec:
               allowPrivilegeEscalation: true
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
               limits:
                 memory: 1Gi
         pod:
@@ -81,7 +81,7 @@ spec:
             whenScaled: Retain
           volumeClaimTemplates:
             - name: data
-              size: 4Gi
+              size: 2Gi
               accessMode: ReadWriteOnce
               globalMounts:
                 - path: /opt/adguardhome/conf

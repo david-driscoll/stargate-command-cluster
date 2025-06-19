@@ -115,9 +115,6 @@ spec:
     limits:
       memory: "4Gi"
       cpu: "2000m"
-  bootstrap:
-    recovery:
-      source: ${APP}-backup
 
   backup:
     retentionPolicy: 30d

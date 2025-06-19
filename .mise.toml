@@ -35,4 +35,5 @@ TALOS_DIR = "{{config_root}}/talos"
 description = 'Update all apps that have an update script'
 run = [
     'dotnet run .mise/tasks/do-update.cs',
+    'flux-local test --enable-helm --all-namespaces --path ./kubernetes/flux/cluster/ --verbosity 2'
 ]

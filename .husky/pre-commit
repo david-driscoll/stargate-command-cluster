@@ -1,4 +1,3 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 dotnet husky run
-flux-local test --enable-helm --all-namespaces --path ./kubernetes/flux/cluster/ --verbosity 2

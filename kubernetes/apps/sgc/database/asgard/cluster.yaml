@@ -63,7 +63,7 @@ spec:
                 - "${ASGARD_VIP}"
 
   # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
-  enablePDB: true
+  enablePDB: false
   resources:
     requests:
       memory: "1Gi"
@@ -73,7 +73,6 @@ spec:
       cpu: "2000m"
 
   bootstrap:
-    initdb: null
     recovery:
       source: ${APP}-backup
       owner: authentik

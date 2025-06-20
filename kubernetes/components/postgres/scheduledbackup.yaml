@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: ${APP}
+spec:
+  schedule: "${POSTGRES_BACKUP_SCHEDULE:-0 0 2 * * *}"
+  immediate: true
+  method: barmanObjectStore
+  online: true
+  suspend: false
+  target: prefer-standby
+  backupOwnerReference: self
+  cluster:
+    name: ${APP}

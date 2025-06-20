@@ -14,18 +14,15 @@ kind: HelmRelease
 metadata:
   name: minio-operator
 spec:
-  interval: 60m0s
-  releaseName: minio
-  driftDetection:
-    mode: enabled
+  interval: 1h
   chart:
     spec:
       chart: operator
       sourceRef:
         kind: HelmRepository
         name: minio
-      version: '6.0.4'
-      interval: 60m0s
+      version: '7.1.1'
+      interval: 1h
   values:
     operator:
       image:

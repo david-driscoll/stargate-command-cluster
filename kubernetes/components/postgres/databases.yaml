@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name "${APP}-postgres-user"
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshInterval: "0"
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+      data:
+        username: "${APP}"
+        password: "{{ .password }}"
+        host: "${APP}-rw.database.svc.cluster.local"
+        port: "5432"
+        database: "${APP}"
+        pgpass: "${APP}-rw.database.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-rw.database.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
+        uri: "postgresql://${APP}:{{ .password }}@${APP}-rw.database.svc.cluster.local:5432/${APP}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "${APP}-password-generator"

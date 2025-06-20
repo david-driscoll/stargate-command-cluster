@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: authentik-minio-access-key
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: "15m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: authentik-minio-access-key
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        CONSOLE_ACCESS_KEY: "{{ .username }}"
+        CONSOLE_SECRET_KEY: "{{ .password }}"
+        credentials: |
+          [default]
+          aws_access_key_id = {{ .username }}
+          aws_secret_access_key = {{ .password }}
+        config: |
+          [default]
+          region=home
+        S3_PROVIDER: Minio
+        S3_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+        AWS_ACCESS_KEY_ID: "{{ .username }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        username: "{{ .username }}"
+        credential: "{{ .password }}"
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "${APP}-password-generator"
+      rewrite:
+        - regexp:
+            source: "password"
+            target: "username"
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "${APP}-password-generator"
+      rewrite:
+        - regexp:
+            source: "password"
+            target: "password"
+

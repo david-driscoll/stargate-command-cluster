@@ -14,44 +14,48 @@ spec:
         requests:
           cpu: 48m
           memory: 64M
-  secretName: mycluster-cluster-secret
+  secretName: ${APP}-mysql-secret
   backupProfiles:
     - name: dump
       dumpInstance:
         storage:
           s3:
-            bucketName: ${APP}-dump
-            config: ${APP}-backup-secret
+            bucketName: mysql
+            prefix: ${APP}/dump/
+            config: ${APP}-minio-access-key
             profile: default
-            endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
+            endpoint: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
     - name: snapshot
       snapshot:
         storage:
           s3:
-            bucketName: ${APP}-snapshot
-            config: ${APP}-backup-secret
+            bucketName: mysql
+            prefix: ${APP}/snapshot/
+            config: ${APP}-minio-access-key
             profile: default
-            endpoint: http://minio.${INTERNAL_CLUSTER_SERVICE}:9000
+            endpoint: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
   backupSchedules:
     - name: snapshot
-      schedule: "0 4 * * *" # Daily at 4 AM
+      schedule: "${MYSQL_BACKUP_SCHEDULE:-0 0 4 * * *}" # Daily at 4 AM
       backupProfileName: snapshot
+      timeZone: ${TZ}
     - name: dump
-      schedule: "0 5 * * *" # Daily at 5 AM
+      schedule: "${MYSQL_DUMP_SCHEDULE:-0 0 5 * * *}" # Daily at 5 AM
       backupProfileName: dump
+      timeZone: ${TZ}
   datadirVolumeClaimTemplate:
-    storageClass: longhorn
-    accessMode: ReadWriteOnce
-    size: 10Gi
+    storageClass: ${MYSQL_STORAGE_CLASS:=longhorn}
+    accessMode: ${MYSQL_ACCESS_MODE:=ReadWriteOnce}
+    size: ${MYSQL_STORAGE:=10Gi}
 
   podSpec:
     resources:
       requests:
         cpu: 50m
-        memory: 200Mi
+        memory: "${MYSQL_MIN_MEMORY_IN_MB:=256}Mi"
       limits:
-        cpu: 300m
-        memory: 2Gi
+        cpu: 1
+        memory: "${MYSQL_MAX_MEMORY_IN_MB:=1024}Mi"
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:

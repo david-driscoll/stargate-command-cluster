@@ -88,7 +88,7 @@ var destinationTemplate = GetTemplate("kubernetes/components/volsync/local/repli
   if (!defaults.TryGetValue("VOLSYNC_CAPACITY", out var capacity)) { return; }
   var digit = int.Parse(string.Join("", capacity.Where(char.IsDigit)));
   var unit = string.Join("", capacity.Where(char.IsLetter));
-  z["VOLSYNC_CACHE_CAPACITY"] = $"{digit * 4}{unit}";
+  z["VOLSYNC_CACHE_CAPACITY"] = $"8{unit}";
 });
 
 var template = $"""

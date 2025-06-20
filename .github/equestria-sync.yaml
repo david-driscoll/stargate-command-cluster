@@ -47,6 +47,8 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/components/common/shared-secrets.sops.yaml
   - source: kubernetes/components/common/kustomization.yaml
     dest: kubernetes/components/common/kustomization.yaml
+  - source: kubernetes/components/common/Update.cs
+    dest: kubernetes/components/common/Update.cs
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: .github/renovate.json5

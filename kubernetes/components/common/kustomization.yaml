@@ -14,6 +14,11 @@ configMapGenerator:
       - ../../../versions.env
     options:
       disableNameSuffixHash: true
+  - name: minio-config
+    files:
+      - minio.yaml=minio.yaml
+    options:
+      disableNameSuffixHash: true
 patches:
   - target:
       group: helm.toolkit.fluxcd.io/v2
@@ -33,6 +38,8 @@ patches:
             - name: cluster-secrets
               kind: Secret
             - name: cluster-versions
+              kind: ConfigMap
+            - name: minio-config
               kind: ConfigMap
             - name: shared-secrets
               kind: Secret

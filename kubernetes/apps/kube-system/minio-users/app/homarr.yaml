@@ -43,7 +43,7 @@ spec:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
-          name: "${APP}-password-generator"
+          name: "minio-users-password-generator"
       rewrite:
         - regexp:
             source: "password"
@@ -52,7 +52,7 @@ spec:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
-          name: "${APP}-password-generator"
+          name: "minio-users-password-generator"
       rewrite:
         - regexp:
             source: "password"

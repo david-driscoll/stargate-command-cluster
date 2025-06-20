@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &app ${APP}
+spec:
+  # using only 1 replica: very difficult to drain the node where postgres is running
+  # using more than 1 replica: write amplification issues when leveraging replicated storage (e.g. ceph)
+  instances: 2
+  # renovate: datasource=docker depName=cloudnative-pg/postgresql
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: ${POSTGRES_STORAGE:=10Gi}
+    storageClass: ${POSTGRES_STORAGE_CLASS:=longhorn}
+  enableSuperuserAccess: true
+  # superuserSecret:
+  #   name: ${APP}-postgres-admin
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: ${POSTGRES_MIN_MEMORY_IN_MB:=256}MB
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+  monitoring:
+    enablePodMonitor: true
+
+  # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
+  enablePDB: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: "${POSTGRES_MIN_MEMORY_IN_MB:=256}Mi"
+    limits:
+      cpu: 1
+      memory: "${POSTGRES_MAX_MEMORY_IN_MB:=1024}Mi"
+
+  managed:
+    roles:
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: ${APP}
+        login: true
+        createdb: true
+        createrole: true
+        passwordSecret:
+          name: ${APP}-postgres-user
+
+  bootstrap:
+    recovery:
+      source: ${APP}-backup
+      owner: ${APP}
+      database: ${APP}
+      secret:
+        name: ${APP}-postgres-user
+
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://postgres/${APP}/
+      endpointURL: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+      s3Credentials:
+        accessKeyId:
+          name: ${APP}-postgres-access-key
+          key: username
+        secretAccessKey:
+          name: ${APP}-postgres-access-key
+          key: credential
+
+  externalClusters:
+  - name: ${APP}-backup
+    barmanObjectStore:
+      destinationPath: s3://postgres/${APP}/
+      endpointURL: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      s3Credentials:
+        accessKeyId:
+          name: ${APP}-postgres-access-key
+          key: username
+        secretAccessKey:
+          name: ${APP}-postgres-access-key
+          key: credential

@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app tailscale-idp
+  namespace: &namespace sgc
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/idp/tailscale/app
+  prune: true
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app

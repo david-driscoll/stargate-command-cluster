@@ -1,11 +1,13 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
 resources:
   - ./cluster.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
-  - ./secret.yaml
-  - ./password-generation.yaml
   - ./databases.yaml
+  - ./password-generation.yaml
+components:
+  - ../minio-access-key
+  - ../password-generator

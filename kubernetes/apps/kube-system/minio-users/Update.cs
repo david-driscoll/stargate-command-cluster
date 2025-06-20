@@ -168,7 +168,10 @@ foreach (var item in Directory.EnumerateFiles(usersDirectory, "*.yaml"))
 
 foreach (var user in minioConfig.Users)
 {
-  var yaml = File.ReadAllText(userTemplate).Replace("cluster-user", $"{user}-minio-access-key");
+  var yaml = File.ReadAllText(userTemplate)
+  .Replace("cluster-user", $"{user}-minio-access-key")
+  .Replace("${APP}", $"minio-users")
+  ;
   var fileName = Path.Combine(usersDirectory, $"{user}.yaml");
   File.WriteAllText(fileName, yaml);
   AnsiConsole.WriteLine($"Updated {fileName} with user {user}.");

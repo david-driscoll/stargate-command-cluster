@@ -20,3 +20,5 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
+  components:
+    - ../../../../components/password-generator

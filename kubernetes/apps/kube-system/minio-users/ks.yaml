@@ -22,3 +22,6 @@ spec:
   wait: true
   components:
     - ../../../../components/password-generator
+  postBuild:
+    substitute:
+      APP: *app

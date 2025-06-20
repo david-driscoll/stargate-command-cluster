@@ -40,6 +40,8 @@ spec:
   dependsOn:
     - name: minio-operator
       namespace: *namespace
+    - name: minio-users
+      namespace: kube-system
   sourceRef:
     kind: GitRepository
     name: flux-system

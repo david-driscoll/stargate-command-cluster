@@ -45,7 +45,7 @@ tenant:
   # Configures a Prometheus-compatible scraping endpoint at the specified port.
   metrics:
     enabled: true
-    port: 9443
+    port: 9000
     protocol: http
   certificate:
     requestAutoCert: true
@@ -68,7 +68,7 @@ tenant:
   liveness: &probes
     httpGet:
       path: /minio/health/live
-      port: 9000
+      port: 9443
     initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 10

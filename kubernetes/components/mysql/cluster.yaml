@@ -38,11 +38,11 @@ spec:
     - name: snapshot
       schedule: "${MYSQL_BACKUP_SCHEDULE:-0 0 4 * * *}" # Daily at 4 AM
       backupProfileName: snapshot
-      timeZone: ${TZ}
+      timeZone: ${TIMEZONE}
     - name: dump
       schedule: "${MYSQL_DUMP_SCHEDULE:-0 0 5 * * *}" # Daily at 5 AM
       backupProfileName: dump
-      timeZone: ${TZ}
+      timeZone: ${TIMEZONE}
   datadirVolumeClaimTemplate:
     storageClass: ${MYSQL_STORAGE_CLASS:=longhorn}
     accessMode: ${MYSQL_ACCESS_MODE:=ReadWriteOnce}

@@ -35,7 +35,7 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.8@sha256:40e620ffcdc65331a0c2a7ed9a95700da7d527244f33c21bd35fc30aa25f19ea
             env:
-              TZ: America/New_York
+              TZ: "${TIMEZONE}"
               PUID: 568
               PGID: 568
               PLEX_ADVERTISE_URL: https://{{ .Release.Name }}.${ROOT_DOMAIN}:443,https://{{ .Release.Name }}.${TAILSCALE_DOMAIN}:443,http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:32400

@@ -52,7 +52,7 @@ int? servers = doc.Query("/tenant/pools/0/servers").First() is YamlScalarNode se
 int? volumesPerServer = doc.Query("/tenant/pools/0/volumesPerServer").First() is YamlScalarNode volumesPerServerNode && int.TryParse(volumesPerServerNode.Value, out int volumesPerServerValue) ? volumesPerServerValue : null;
 var tenantName = doc.Query("/tenant/name").First() is YamlScalarNode tenantNameNode ? tenantNameNode.Value : null;
 var poolName = doc.Query("/tenant/pools/0/name").First() is YamlScalarNode poolNameNode ? poolNameNode.Value : null;
-var dataTemplateName = "data";// doc.Query("/tenant/pools/0/volumeClaimTemplate/metadata/name").First() is YamlScalarNode dataTemplateNameNode ? dataTemplateNameNode.Value : null;
+var dataTemplateName = doc.Query("/tenant/pools/0/volumeClaimTemplate/metadata/name").First() is YamlScalarNode dataTemplateNameNode ? dataTemplateNameNode.Value : null;
 
 var secretTemplate = GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");
 var replicationSourceTemplate = GetTemplate("kubernetes/components/volsync/local/replicationsource.yaml");

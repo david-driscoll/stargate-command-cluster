@@ -45,7 +45,7 @@ tenant:
   # Configures a Prometheus-compatible scraping endpoint at the specified port.
   metrics:
     enabled: true
-    port: 9000
+    port: 9443
     protocol: http
   certificate:
     requestAutoCert: true

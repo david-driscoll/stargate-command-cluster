@@ -22,16 +22,6 @@ tenant:
       volumesPerServer: 2
       size: 12Gi
       storageClassName: longhorn
-      volumeClaimTemplate:
-        metadata:
-          name: data
-
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 2Gi
       securityContext:
         runAsUser: 568
         runAsGroup: 568

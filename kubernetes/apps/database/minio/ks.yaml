@@ -41,7 +41,7 @@ spec:
     - name: minio-operator
       namespace: *namespace
     - name: minio-users
-      namespace: kube-system
+      namespace: database
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -54,4 +54,4 @@ spec:
     - ../../../../components/tailscale
   postBuild:
     substitute:
-      APP: minio-${CLUSTER_CNAME}
+      APP: minio

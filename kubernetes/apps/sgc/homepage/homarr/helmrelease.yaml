@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/homarr-labs/homarr
-              tag: v1.24.0@sha256:2a5d045d1611b82261182495271de5d132f62c6846979d423a796f19f78fa49e
+              tag: v1.25.0@sha256:568159d99874f307d57301a88468f2b9e1bf637e5ddb64e39aecb14668de2f6d
               pullPolicy: IfNotPresent
             env:
               # PUID: 568

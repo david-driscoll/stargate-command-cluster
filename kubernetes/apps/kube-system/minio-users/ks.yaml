@@ -19,7 +19,7 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: external-secrets
-      namespace: *namespace
+      namespace: kube-system
   targetNamespace: *namespace
   timeout: 5m
   wait: true

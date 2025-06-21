@@ -4,7 +4,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app minio-users
-  namespace: &namespace database
+  namespace: &namespace kube-system
 spec:
   commonMetadata:
     labels:
@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: kube-system
-  targetNamespace: *namespace
+  targetNamespace: database
   timeout: 5m
   wait: true
   components:

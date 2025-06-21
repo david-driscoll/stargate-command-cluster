@@ -4,6 +4,14 @@ resources:
 - ./secret.yaml
 - ./helmrelease.yaml
 - ./cluster-user.yaml
+- ./replica-0-data0.yaml
+- ./replica-1-data0.yaml
+- ./replica-2-data0.yaml
+- ./replica-3-data0.yaml
+- ./replica-0-data1.yaml
+- ./replica-1-data1.yaml
+- ./replica-2-data1.yaml
+- ./replica-3-data1.yaml
 configMapGenerator:
 - name: minio-values
   files:

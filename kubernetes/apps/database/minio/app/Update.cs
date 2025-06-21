@@ -1,5 +1,7 @@
 #!/usr/bin/dotnet run
 #:package YamlDotNet@16.3.0
+#:package gstocco.YamlDotNet.YamlPath@1.0.26
+#:package System.Collections.Immutable@10.0.0-preview.5.25277.114
 #:package Spectre.Console@0.50.0
 #:package Spectre.Console.Json@0.50.0
 #:package Dumpify@0.6.6
@@ -17,6 +19,7 @@ using YamlDotNet.Core.Events;
 using YamlDotNet.RepresentationModel;
 using System.Text;
 using System.Text.RegularExpressions;
+using gfs.YamlDotNet.YamlPath;
 
 Dictionary<string, string> defaults = new Dictionary<string, string>()
 {
@@ -32,7 +35,7 @@ Dictionary<string, string> defaults = new Dictionary<string, string>()
 
 };
 
-var filePath = "kubernetes/apps/sgc/dns/adguard-home/helmrelease.yaml";
+var filePath = "kubernetes/apps/database/minio/app/values.yaml";
 
 var deserializer = new DeserializerBuilder()
     .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -44,40 +47,12 @@ yaml.Load(textReader);
 
 var databasesContent = new StringBuilder();
 
-int? replicas = null;
-string? templateName = null;
 var doc = yaml.Documents.First().RootNode as YamlMappingNode;
-foreach (var node in doc.AllNodes.OfType<YamlMappingNode>())
-{
-  if (node.Children.TryGetValue("replicas", out var child) && child is YamlScalarNode replicasNode && int.TryParse(replicasNode.Value, out int replicasValue))
-  {
-    replicas = replicasValue;
-  }
-}
-foreach (var node in doc.AllNodes.OfType<YamlMappingNode>())
-{
-  if (node.Children.TryGetValue("volumeClaimTemplates", out var child) && child is YamlSequenceNode volumeClaimTemplatesNode)
-  {
-    var first = volumeClaimTemplatesNode.Children.OfType<YamlMappingNode>().First();
-    if (!first.Children.TryGetValue("name", out var volumeNameNode) || volumeNameNode is not YamlScalarNode volumeNameScalar)
-    {
-      throw new InvalidOperationException("The 'name' node was not found in the YAML document.");
-    }
-    if (first.Children.TryGetValue("size", out var volumeSizeNode) && volumeSizeNode is YamlScalarNode { Value: { Length: > 0 } } volumeSizeScalar)
-    {
-      defaults["VOLSYNC_CAPACITY"] = volumeSizeScalar.Value;
-    }
-    if (first.Children.TryGetValue("accessMode", out var volumeAccessModeNode) && volumeAccessModeNode is YamlScalarNode { Value: { Length: > 0 } } volumeAccessModeScalar)
-    {
-      defaults["VOLSYNC_ACCESS_MODE"] = volumeAccessModeScalar.Value;
-    }
-    templateName = volumeNameScalar.Value;
-  }
-}
-if (!doc.Children.TryGetValue("metadata", out var sn) || sn is not YamlMappingNode metadataNode) throw new InvalidOperationException("The 'metadata' node was not found in the YAML document.");
-if (!metadataNode.Children.TryGetValue("name", out var mn) || mn is not YamlScalarNode nameNode) throw new InvalidOperationException("The 'name' node was not found in the YAML document.");
-var app = nameNode.Value;
-
+int? servers = doc.Query("/tenant/pools/0/servers").First() is YamlScalarNode serversNode && int.TryParse(serversNode.Value, out int serversValue) ? serversValue : null;
+int? volumesPerServer = doc.Query("/tenant/pools/0/volumesPerServer").First() is YamlScalarNode volumesPerServerNode && int.TryParse(volumesPerServerNode.Value, out int volumesPerServerValue) ? volumesPerServerValue : null;
+var tenantName = doc.Query("/tenant/name").First() is YamlScalarNode tenantNameNode ? tenantNameNode.Value : null;
+var poolName = doc.Query("/tenant/pools/0/name").First() is YamlScalarNode poolNameNode ? poolNameNode.Value : null;
+var dataTemplateName = doc.Query("/tenant/pools/0/volumeClaimTemplate/metadata/name").First() is YamlScalarNode dataTemplateNameNode ? dataTemplateNameNode.Value : null;
 
 var secretTemplate = GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");
 var replicationSourceTemplate = GetTemplate("kubernetes/components/volsync/local/replicationsource.yaml");
@@ -98,16 +73,17 @@ var template = $"""
 {replicationSourceTemplate}
 """;
 
-for (var i = 0; i < replicas; i++)
-{
-  var replicaName = $"{templateName}-{app}-{i}";
-  var output = ReplaceTokens(template, new Dictionary<string, string>
+for (var i = 0; i < servers; i++)
+  for (var k = 0; k < volumesPerServer; k++)
   {
-    ["REPLICA"] = replicaName,
+    var replicaName = $"{dataTemplateName}{k}-{tenantName}-{poolName}-{i}";
+    var output = ReplaceTokens(template, new Dictionary<string, string>
+    {
+      ["REPLICA"] = replicaName,
+    }
+    );
+    File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), $"replica-{i}-data{k}.yaml"), output);
   }
-  );
-  File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), $"replica-{i}.yaml"), output);
-}
 
 AnsiConsole.WriteLine("Replica files created successfully!", new Style(foreground: Color.Green));
 

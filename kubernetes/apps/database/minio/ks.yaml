@@ -52,6 +52,7 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/tailscale
+    - ../../../../components/password-generator
   postBuild:
     substitute:
       APP: minio

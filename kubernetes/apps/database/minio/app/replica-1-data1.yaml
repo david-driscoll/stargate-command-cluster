@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "data1-${CLUSTER_CNAME}-minio-1"
+spec:
+  accessModes: ["ReadWriteOnce"]
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: "data1-${CLUSTER_CNAME}-minio-1-dst"
+  resources:
+    requests:
+      storage: "5Gi"
+  storageClassName: "longhorn"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: "data1-${CLUSTER_CNAME}-minio-1-volsync"
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: "data1-${CLUSTER_CNAME}-minio-1-volsync-secret"
+    template:
+      data:
+        RESTIC_REPOSITORY: "/repository/data1-${CLUSTER_CNAME}-minio-1"
+        RESTIC_PASSWORD: "{{ .credential }}"
+  dataFrom:
+    - extract:
+        key: 'Volsync Password'
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: "data1-${CLUSTER_CNAME}-minio-1-dst"
+  labels:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: "data1-${CLUSTER_CNAME}-minio-1-volsync-secret"
+    copyMethod: Snapshot
+    volumeSnapshotClassName: "longhorn-snapclass"
+    cacheStorageClassName: "longhorn-cache"
+    cacheAccessModes: ["ReadWriteOnce"]
+    cacheCapacity: "8Gi"
+    storageClassName: "longhorn-snapshot"
+    accessModes: ["ReadWriteOnce"]
+    capacity: "5Gi"
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: "data1-${CLUSTER_CNAME}-minio-1"
+spec:
+  sourcePVC: "data1-${CLUSTER_CNAME}-minio-1"
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    copyMethod: "Snapshot"
+    pruneIntervalDays: 14
+    repository: "data1-${CLUSTER_CNAME}-minio-1-volsync-secret"
+    volumeSnapshotClassName: "longhorn-snapclass"
+    cacheCapacity: "2Gi"
+    cacheStorageClassName: "longhorn-cache"
+    cacheAccessModes: ["ReadWriteOnce"]
+    storageClassName: "longhorn-snapshot"
+    accessModes: ["ReadWriteOnce"]
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      hourly: 24
+      daily: 7

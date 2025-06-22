@@ -15,7 +15,7 @@ spec:
       namespace: kube-system
     - name: external-secrets
       namespace: kube-system
-  path: ./kubernetes/apps/democratic-csi/truenas/secrets
+  path: ./kubernetes/apps/openebs-system/openebs/app
   prune: true
   sourceRef:
     kind: GitRepository

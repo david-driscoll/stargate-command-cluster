@@ -39,17 +39,29 @@ servers:
       - name: reload
       - name: loadbalance
   # Tailscale DNS stub zone for ts.net domains
-  # - zones:
-  #     - zone: ts.net
-  #       scheme: dns://
-  #       use_tcp: false
-  #   port: 53
-  #   plugins:
-  #     - name: errors
-  #     - name: cache
-  #       parameters: 30
-  #     - name: forward
-  #       parameters: . "${TAILSCALE_NAMESERVER_IP}"
+  - zones:
+      - zone: ts.net
+        scheme: dns://
+        use_tcp: false
+    port: 53
+    plugins:
+      - name: errors
+      - name: health
+        configBlock: |-
+          lameduck 5s
+      - name: ready
+      - name: log
+        configBlock: |-
+          class error
+      - name: prometheus
+        parameters: 0.0.0.0:9153
+      - name: forward
+        parameters: . "${TAILSCALE_NAMESERVER_IP}"
+      - name: cache
+        parameters: 30
+      - name: loop
+      - name: reload
+      - name: loadbalance
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.5/install/kubernetes/cilium/values.schema.json
 autoDirectNodeRoutes: true
 bpf:
   masquerade: true
@@ -20,7 +21,7 @@ envoy:
 dashboards:
   enabled: true
 hubble:
-  enabled: false
+  enabled: true
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: "${CLUSTER_NETWORK}"
@@ -72,3 +73,5 @@ securityContext:
       - SYS_RESOURCE
 socketLB:
   hostNamespaceOnly: true
+debug:
+  enabled: true

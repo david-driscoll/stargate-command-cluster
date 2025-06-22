@@ -9,5 +9,5 @@ components:
 resources:
   # - ./cloudnative-pg/ks.yaml
   # - ./mysql-operator/ks.yaml
-  # - ./dragonfly/ks.yaml
+  - ./dragonfly/ks.yaml
   - ./minio/ks.yaml

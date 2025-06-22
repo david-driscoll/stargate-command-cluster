@@ -1,15 +1,16 @@
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
 kind: Service
 metadata:
   name: alpha-site-dockge
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   type: ExternalName
-  externalName: "${ALPHA_SITE_DOMAIN}"
+  externalName: "${DOCKGE_DOMAIN}"
   externalIPs:
-    - "${ALPHA_SITE_IP}"
+    - "${DOCKGE_IP}"
   ports:
     - name: adguard
       port: 4000
@@ -84,7 +85,6 @@ metadata:
   name: alpha-site-dockge-dns
 spec:
   endpoints:
-    - dnsName: "${ALPHA_SITE_DOMAIN}"
+    - dnsName: "${DOCKGE_DOMAIN}"
       recordType: A
-      targets: ["${ALPHA_SITE_IP}"]
-
+      targets: ["${DOCKGE_IP}"]

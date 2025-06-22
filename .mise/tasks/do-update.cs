@@ -6,6 +6,15 @@ using Cysharp.Diagnostics;
 
 foreach (var item in Directory.EnumerateFiles("kubernetes", "Update.cs", SearchOption.AllDirectories))
 {
-  await ProcessX.StartAsync($"dotnet run {item}").WaitAsync();
+  Console.WriteLine($"Processing: {item}");
+  var (process, stdout, stderr) = ProcessX.GetDualAsyncEnumerable($"dotnet run {item}", workingDirectory: Directory.GetCurrentDirectory());
+  await foreach (var line in stdout)
+  {
+    Console.WriteLine(line);
+  }
+  await foreach (var line in stderr)
+  {
+    Console.Error.WriteLine(line);
+  }
 }
 

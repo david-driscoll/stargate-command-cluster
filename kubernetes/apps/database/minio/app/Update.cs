@@ -23,7 +23,7 @@ using gfs.YamlDotNet.YamlPath;
 
 Dictionary<string, string> defaults = new Dictionary<string, string>()
 {
-  // { "VOLSYNC_CAPACITY", "" },
+  { "VOLSYNC_CAPACITY", "16Gi" },
   // { "VOLSYNC_CACHE_CAPACITY", "" },
   // { "VOLSYNC_STORAGECLASS", "" },
   // { "VOLSYNC_COPYMETHOD", "" },
@@ -57,20 +57,19 @@ var dataTemplateName = doc.Query("/tenant/pools/0/volumeClaimTemplate/metadata/n
 var secretTemplate = GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");
 var replicationSourceTemplate = GetTemplate("kubernetes/components/volsync/local/replicationsource.yaml");
 var pvcTemplate = GetTemplate("kubernetes/components/volsync/pvc.yaml");
-var destinationTemplate = GetTemplate("kubernetes/components/volsync/local/replicationdestination.yaml", z =>
+var replicationDestinationTemplate = GetTemplate("kubernetes/components/volsync/local/replicationdestination.yaml", z =>
 {
-  if (!z.TryGetValue("VOLSYNC_CACHE_CAPACITY", out var cacheCapacity)) { return; }
-  if (!defaults.TryGetValue("VOLSYNC_CAPACITY", out var capacity)) { return; }
-  var digit = int.Parse(string.Join("", capacity.Where(char.IsDigit)));
-  var unit = string.Join("", capacity.Where(char.IsLetter));
-  z["VOLSYNC_CACHE_CAPACITY"] = $"8{unit}";
+  if (!replicationSourceTemplate.tokens.TryGetValue("VOLSYNC_CACHE_CAPACITY", out var cacheCapacity)) { return; }
+  var digit = int.Parse(string.Join("", cacheCapacity.Where(char.IsDigit)));
+  var unit = string.Join("", cacheCapacity.Where(char.IsLetter));
+  z["VOLSYNC_CACHE_CAPACITY"] = $"{digit * 4}{unit}";
 });
 
 var template = $"""
-{pvcTemplate}
-{secretTemplate}
-{destinationTemplate}
-{replicationSourceTemplate}
+{pvcTemplate.template}
+{secretTemplate.template}
+{replicationDestinationTemplate.template}
+{replicationSourceTemplate.template}
 """;
 
 for (var i = 0; i < servers; i++)
@@ -87,16 +86,16 @@ for (var i = 0; i < servers; i++)
 
 AnsiConsole.WriteLine("Replica files created successfully!", new Style(foreground: Color.Green));
 
-string GetTemplate(string path, Action<Dictionary<string, string>>? mapFunc = null)
+(string template, Dictionary<string, string> tokens) GetTemplate(string path, Action<Dictionary<string, string>>? mapFunc = null)
 {
   var template = ReplaceDefaults(File.ReadAllText(path), out var tokens);
   foreach (var item in defaults)
   {
-    if (tokens.ContainsKey(item.Key)) continue;
+    if (item.Key == "VOLSYNC_CACHE_CAPACITY") throw new InvalidOperationException("VOLSYNC_CACHE_CAPACITY is not supported in this context.");
     tokens[item.Key] = item.Value;
   }
   mapFunc?.Invoke(tokens);
-  return ReplaceTokens(template, tokens);
+  return (ReplaceTokens(template, tokens), tokens);
 
 }
 static string ReplaceTokens(string text, Dictionary<string, string> tokens)
@@ -106,7 +105,7 @@ static string ReplaceTokens(string text, Dictionary<string, string> tokens)
     var varName = b.Groups[1].Captures[0].Value;
     if (tokens.TryGetValue(varName, out var value))
     {
-      // AnsiConsole.WriteLine($"Replacing variable: {varName} with value: {value}", new Style(foreground: Color.Cyan1));
+      Console.WriteLine($"Replacing variable: {varName} with value: {value}");
       return value;
     }
     return b.Value;

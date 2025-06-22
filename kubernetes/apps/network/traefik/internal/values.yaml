@@ -15,6 +15,7 @@ service:
     io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
     tailscale.com/expose: "true"
     tailscale.com/hostname: "${INTERNAL_CNAME}"
+    tailscale.com/tailnet-ip: "${INTERNAL_TAILSCALE_VIP}"
   externalIPs:
     - "${INTERNAL_IP}"
 additionalArguments:

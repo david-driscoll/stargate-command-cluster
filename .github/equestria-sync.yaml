@@ -41,6 +41,9 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/components/volsync/
     dest: kubernetes/components/volsync/
     deleteOrphaned: true
+  - source: kubernetes/apps/openebs-system/
+    dest: kubernetes/apps/openebs-system/
+    deleteOrphaned: true
   - source: kubernetes/components/common/democratic-csi.yaml
     dest: kubernetes/components/common/democratic-csi.yaml
   - source: kubernetes/components/common/shared-secrets.sops.yaml

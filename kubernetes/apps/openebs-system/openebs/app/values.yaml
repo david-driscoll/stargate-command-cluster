@@ -1,6 +1,4 @@
 ---
-global:
-  imageRegistry: quay.io/
 localpv-provisioner:
   localpv:
     basePath: &basePath /var/openebs/local

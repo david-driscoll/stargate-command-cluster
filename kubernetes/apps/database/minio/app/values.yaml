@@ -63,18 +63,6 @@ tenant:
   #      region: us-east-1        # optional
   buckets: ${MINIO_BUCKETS}
   users: ${MINIO_USERS}
-  # The `Liveness Probe <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>`__ for monitoring Tenant pod liveness.
-  # Tenant pods will be restarted if the probe fails.
-  liveness: &probes
-    httpGet:
-      path: /minio/health/live
-      port: 9443
-    initialDelaySeconds: 30
-    periodSeconds: 30
-    timeoutSeconds: 10
-    failureThreshold: 6
-  readiness: *probes
-  startup: *probes
   exposeServices:
     minio: true
     console: true

@@ -14,6 +14,7 @@ service:
     io.cilium/lb-ipam-ips: "${EXTERNAL_IP}"
     tailscale.com/expose: "true"
     tailscale.com/hostname: "${EXTERNAL_CNAME}"
+    tailscale.com/tailnet-ip: "${EXTERNAL_TAILSCALE_VIP}"
   externalIPs:
     - "${EXTERNAL_IP}"
 additionalArguments:

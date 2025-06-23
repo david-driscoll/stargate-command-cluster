@@ -6,5 +6,5 @@ namespace: idp
 components:
   - ../../components/common
 resources:
-  # - ./authentik/ks.yaml
+  - ./authentik/ks.yaml
   - ./tailscale/ks.yaml

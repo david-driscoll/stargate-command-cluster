@@ -63,7 +63,7 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
       throw new FileNotFoundException($"Component file {component} does not exist.");
     }
 
-    // new { component, componentName, documentName }.Dump();
+    new { component, componentName, documentName }.Dump();
 
     if (componentName == "minio-access-key".Trim('/', '\\'))
     {
@@ -97,7 +97,7 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
 
 #endregion
 
-var configPath = "kubernetes/apps/kube-system/minio-users/app/minio.yaml";
+var configPath = "kubernetes/apps/kube-system/minio-users/minio.yaml";
 var userTemplate = "kubernetes/apps/database/minio/app/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
 var kustomizationPath = "kubernetes/apps/kube-system/minio-users/app/kustomization.yaml";
@@ -191,7 +191,7 @@ resources:
 configMapGenerator:
   - name: minio-config
     envs:
-      - minio.env
+      - ../minio.env
     options:
       disableNameSuffixHash: true
 """;

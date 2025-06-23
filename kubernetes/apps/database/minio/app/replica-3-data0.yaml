@@ -40,7 +40,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "data0-${CLUSTER_CNAME}-minio-3-dest"
+  name: "data0-${CLUSTER_CNAME}-minio-3-dst"
   labels:
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
@@ -66,7 +66,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "data0-${CLUSTER_CNAME}-minio-3-src"
+  name: "data0-${CLUSTER_CNAME}-minio-3"
 spec:
   sourcePVC: "data0-${CLUSTER_CNAME}-minio-3"
   trigger:

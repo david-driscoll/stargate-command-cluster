@@ -40,7 +40,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "data-adguard-home-2-dest"
+  name: "data-adguard-home-2-dst"
   labels:
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
@@ -66,7 +66,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "data-adguard-home-2-src"
+  name: "data-adguard-home-2"
 spec:
   sourcePVC: "data-adguard-home-2"
   trigger:

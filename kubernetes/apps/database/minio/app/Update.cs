@@ -105,7 +105,7 @@ static string ReplaceTokens(string text, Dictionary<string, string> tokens)
     var varName = b.Groups[1].Captures[0].Value;
     if (tokens.TryGetValue(varName, out var value))
     {
-      Console.WriteLine($"Replacing variable: {varName} with value: {value}");
+      // Console.WriteLine($"Replacing variable: {varName} with value: {value}");
       return value;
     }
     return b.Value;

@@ -1,0 +1,5 @@
+MINIO_BUCKETS:
+- name: authentik
+MINIO_USERS:
+- cluster-user
+- authentik

@@ -97,6 +97,8 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
 
 #endregion
 
+
+var valuesTemplate = "kubernetes/apps/database/minio/app/values.yaml";
 var configPath = "kubernetes/apps/kube-system/minio-users/minio.yaml";
 var userTemplate = "kubernetes/apps/database/minio/app/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
@@ -162,10 +164,6 @@ File.WriteAllText(configPath, $"""
   - cluster-user
   {string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"- {user}"))}
   """);
-File.WriteAllText(Path.ChangeExtension(configPath, ".env"), $"""
-  MINIO_BUCKETS=[{string.Join(",", minioConfig.Buckets)}]
-  MINIO_USERS=[{string.Join(",", minioConfig.Users)}]
-  """);
 
 foreach (var item in Directory.EnumerateFiles(usersDirectory, "*.yaml"))
 {
@@ -186,18 +184,21 @@ foreach (var user in minioConfig.Users)
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-{string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"  - {user}.yaml"))}
 configMapGenerator:
   - name: minio-config
-    envs:
-      - ../minio.env
+    files:
+      - values.yaml=values.yaml
     options:
       disableNameSuffixHash: true
+resources:
+{string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"  - {user}.yaml"))}
 """;
 
-
 File.WriteAllText(kustomizationPath, customizationTemplate);
+
+File.WriteAllText(Path.Combine(Path.GetDirectoryName(kustomizationPath), "values.yaml"), File.ReadAllText(valuesTemplate)
+  .Replace("${MINIO_BUCKETS}", string.Join("\n", minioConfig.Buckets.Select(user => $"- name: {user}")))
+  .Replace("${MINIO_USERS}", string.Join("\n", minioConfig.Users.Select(bucket => $"- {bucket}"))));
 
 static YamlMappingNode? ReadStream(string path)
 {

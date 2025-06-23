@@ -156,8 +156,8 @@ resources:
 File.WriteAllText(kustomizationPath, customizationTemplate);
 
 File.WriteAllText(Path.Combine(Path.GetDirectoryName(kustomizationPath), "values.yaml"), File.ReadAllText(valuesTemplate)
-  .Replace("${MINIO_BUCKETS}", string.Join("\n      ", minioConfig.Buckets.Select(user => $"- name: {user}")))
-  .Replace("${MINIO_USERS}", string.Join("\n      ", minioConfig.Users.Prepend("cluster-user").Select(bucket => $"- {bucket}"))));
+  .Replace("${MINIO_BUCKETS}", string.Join("\n    ", minioConfig.Buckets.Select(user => $"- name: {user}")))
+  .Replace("${MINIO_USERS}", string.Join("\n    ", minioConfig.Users.Prepend("cluster-user").Select(bucket => $"- {bucket}"))));
 
 static YamlMappingNode? ReadStream(string path)
 {

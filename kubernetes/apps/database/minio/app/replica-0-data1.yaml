@@ -40,7 +40,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "data1-${CLUSTER_CNAME}-minio-0-dst"
+  name: "data1-${CLUSTER_CNAME}-minio-0-dest"
   labels:
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
@@ -50,7 +50,7 @@ spec:
     repository: "data1-${CLUSTER_CNAME}-minio-0-volsync-secret"
     copyMethod: Snapshot
     volumeSnapshotClassName: "longhorn-snapclass"
-    cacheStorageClassName: "longhorn-cache"
+    cacheStorageClassName: "openebs-hostpath"
     cacheAccessModes: ["ReadWriteOnce"]
     cacheCapacity: "8Gi"
     storageClassName: "longhorn-snapshot"
@@ -66,7 +66,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "data1-${CLUSTER_CNAME}-minio-0"
+  name: "data1-${CLUSTER_CNAME}-minio-0-src"
 spec:
   sourcePVC: "data1-${CLUSTER_CNAME}-minio-0"
   trigger:
@@ -77,7 +77,7 @@ spec:
     repository: "data1-${CLUSTER_CNAME}-minio-0-volsync-secret"
     volumeSnapshotClassName: "longhorn-snapclass"
     cacheCapacity: "2Gi"
-    cacheStorageClassName: "longhorn-cache"
+    cacheStorageClassName: "openebs-hostpath"
     cacheAccessModes: ["ReadWriteOnce"]
     storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]

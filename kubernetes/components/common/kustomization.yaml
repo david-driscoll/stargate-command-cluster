@@ -15,8 +15,8 @@ configMapGenerator:
     options:
       disableNameSuffixHash: true
   - name: minio-config
-    files:
-      - minio.yaml=minio.yaml
+    envs:
+      - minio.yaml
     options:
       disableNameSuffixHash: true
 patches:

@@ -56,7 +56,3 @@ spec:
   postBuild:
     substitute:
       APP: minio
-    substituteFrom:
-      - kind: ConfigMap
-        name: minio-config
-        optional: false

@@ -157,13 +157,6 @@ if (missingUsers.Count > 0 || missingBuckets.Count > 0)
       minioConfig.Users.AddRange(missingUsers).ToImmutableArray()
   );
 }
-File.WriteAllText(configPath, $"""
-  MINIO_BUCKETS:
-  {string.Join(Environment.NewLine, minioConfig.Buckets.Select(bucket => $"- name: {bucket}"))}
-  MINIO_USERS:
-  - cluster-user
-  {string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"- {user}"))}
-  """);
 
 foreach (var item in Directory.EnumerateFiles(usersDirectory, "*.yaml"))
 {
@@ -185,7 +178,7 @@ var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 configMapGenerator:
-  - name: minio-config
+  - name: minio-values
     files:
       - values.yaml=values.yaml
     options:

@@ -97,44 +97,46 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
 
 #endregion
 
-var configPath = "kubernetes/components/common/minio.yaml";
+var configPath = "kubernetes/apps/kube-system/minio-users/app/minio.yaml";
 var userTemplate = "kubernetes/apps/database/minio/app/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
 var kustomizationPath = "kubernetes/apps/kube-system/minio-users/app/kustomization.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
-const string customizationTemmplate = """
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-""";
 
-var configStream = ReadStream(configPath);
 var buckets = ImmutableArray.CreateBuilder<string>();
 var users = ImmutableArray.CreateBuilder<string>();
-if (configStream == null)
+try
 {
-  AnsiConsole.MarkupLine($"[red]Failed to read minio configuration file: {configPath}.[/]");
-}
-else
-{
-  foreach (var child in configStream.Children)
+  var configStream = ReadStream(configPath);
+  if (configStream == null)
   {
-    if (child.Key is YamlScalarNode keyNode && keyNode.Value == "MINIO_BUCKETS" && child.Value is YamlSequenceNode bucketsNode)
+    AnsiConsole.MarkupLine($"[red]Failed to read minio configuration file: {configPath}.[/]");
+  }
+  else
+  {
+    foreach (var child in configStream.Children)
     {
-      foreach (var bucket in bucketsNode.Children.OfType<YamlMappingNode>())
+      if (child.Key is YamlScalarNode keyNode && keyNode.Value == "MINIO_BUCKETS" && child.Value is YamlSequenceNode bucketsNode)
       {
-        buckets.Add(bucket["name"].ToString());
+        foreach (var bucket in bucketsNode.Children.OfType<YamlMappingNode>())
+        {
+          buckets.Add(bucket["name"].ToString());
+        }
       }
-    }
-    else if (child.Key is YamlScalarNode userKeyNode && userKeyNode.Value == "MINIO_USERS" && child.Value is YamlSequenceNode usersNode)
-    {
-      foreach (var user in usersNode.Children.OfType<YamlScalarNode>())
+      else if (child.Key is YamlScalarNode userKeyNode && userKeyNode.Value == "MINIO_USERS" && child.Value is YamlSequenceNode usersNode)
       {
-        users.Add(user.Value);
-      }
+        foreach (var user in usersNode.Children.OfType<YamlScalarNode>())
+        {
+          users.Add(user.Value);
+        }
 
+      }
     }
   }
+}
+catch (Exception ex)
+{
+  AnsiConsole.MarkupLine($"[red]Error reading minio configuration file: {ex.Message}[/]");
 }
 
 var minioConfig = new MinioConfig(
@@ -181,9 +183,21 @@ foreach (var user in minioConfig.Users)
   AnsiConsole.WriteLine($"Updated {fileName} with user {user}.");
 }
 
-File.WriteAllText(kustomizationPath, customizationTemmplate + Environment.NewLine + minioConfig.Users
-    .Select(user => $"- ./{user}.yaml")
-    .Aggregate((current, next) => current + Environment.NewLine + next));
+var customizationTemplate = $"""
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+{string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"  - {user}.yaml"))}
+configMapGenerator:
+  - name: minio-config
+    envs:
+      - minio.env
+    options:
+      disableNameSuffixHash: true
+""";
+
+
+File.WriteAllText(kustomizationPath, customizationTemplate);
 
 static YamlMappingNode? ReadStream(string path)
 {

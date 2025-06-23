@@ -1,8 +1,0 @@
-MINIO_BUCKETS:
-- name: custom
-- name: authentik
-- name: homarr
-MINIO_USERS:
-- cluster-user
-- authentik
-- homarr

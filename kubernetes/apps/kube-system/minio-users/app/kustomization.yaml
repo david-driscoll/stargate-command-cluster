@@ -1,5 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./authentik.yaml
-- ./homarr.yaml
+
+configMapGenerator:
+  - name: minio-config
+    envs:
+      - minio.env
+    options:
+      disableNameSuffixHash: true

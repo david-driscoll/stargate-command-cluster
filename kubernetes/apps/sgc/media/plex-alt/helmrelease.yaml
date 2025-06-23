@@ -154,7 +154,7 @@ spec:
         type: emptyDir
       transcode:
         type: emptyDir
-      cache2:
+      cache:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce

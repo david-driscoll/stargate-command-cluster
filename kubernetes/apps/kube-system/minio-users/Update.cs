@@ -134,6 +134,7 @@ foreach (var user in minioConfig.Users)
   var yaml = File.ReadAllText(userTemplate)
   .Replace("cluster-user", $"{user}-minio-access-key")
   .Replace("${APP}", $"minio-users")
+  .Replace("${CLUSTER_CNAME}", user)
   ;
   var fileName = Path.Combine(usersDirectory, $"{user}.yaml");
   File.WriteAllText(fileName, yaml);

@@ -12,9 +12,3 @@ resources:
 - ./replica-1-data1.yaml
 - ./replica-2-data1.yaml
 - ./replica-3-data1.yaml
-configMapGenerator:
-- name: minio-values
-  files:
-  - values.yaml=./values.yaml
-  options:
-    disableNameSuffixHash: true

@@ -28,3 +28,4 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: minio-values
+  values:

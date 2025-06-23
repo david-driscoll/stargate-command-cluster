@@ -63,9 +63,9 @@ tenant:
   #      objectLock: false        # optional
   #      region: us-east-1        # optional
     buckets:
-      ${MINIO_BUCKETS}
+      - name: authentik
     users:
-      ${MINIO_USERS}
+      - authentik
   exposeServices:
     minio: true
     console: true

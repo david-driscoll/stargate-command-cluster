@@ -1,7 +1,7 @@
 ---
 localpv-provisioner:
   localpv:
-    basePath: &basePath /var/openebs/local
+    basePath: &basePath /var/mnt/extra/openebs/local
   hostpathClass:
     enabled: true
     name: openebs-hostpath

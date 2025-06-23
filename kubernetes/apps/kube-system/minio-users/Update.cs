@@ -152,14 +152,18 @@ if (missingUsers.Count > 0 || missingBuckets.Count > 0)
       minioConfig.Buckets.AddRange(missingBuckets).ToImmutableArray(),
       minioConfig.Users.AddRange(missingUsers).ToImmutableArray()
   );
-  File.WriteAllText(configPath, $"""
+}
+File.WriteAllText(configPath, $"""
   MINIO_BUCKETS:
   {string.Join(Environment.NewLine, minioConfig.Buckets.Select(bucket => $"- name: {bucket}"))}
   MINIO_USERS:
   - cluster-user
   {string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"- {user}"))}
   """);
-}
+File.WriteAllText(Path.ChangeExtension(configPath, ".env"), $"""
+  MINIO_BUCKETS=[{string.Join(",", minioConfig.Buckets)}]
+  MINIO_USERS=[{string.Join(",", minioConfig.Users)}]
+  """);
 
 foreach (var item in Directory.EnumerateFiles(usersDirectory, "*.yaml"))
 {

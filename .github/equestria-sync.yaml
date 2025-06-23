@@ -54,6 +54,18 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/kube-system/minio-users/Update.cs
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
+  - source: talos/patches/global/machine-kubelet.yaml
+    dest: talos/patches/global/machine-kubelet.yaml
+  - source: talos/patches/global/machine-files.yaml
+    dest: talos/patches/global/machine-files.yaml
+  - source: talos/patches/global/cluster-admissionregistration.yaml
+    dest: talos/patches/global/cluster-admissionregistration.yaml
+  - source: talos/patches/global/machine-time.yaml
+    dest: talos/patches/global/machine-time.yaml
+  - source: talos/patches/controller/cluster.yaml
+    dest: talos/patches/controller/cluster.yaml
+  - source: talos/patches/controller/machine-rbac.yaml
+    dest: talos/patches/controller/machine-rbac.yaml
   - source: .github/renovate.json5
     dest: .github/renovate.json5
   - source: .github/workflows/flux-local.yaml

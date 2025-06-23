@@ -62,10 +62,10 @@ tenant:
   #    - name: my-minio-bucket
   #      objectLock: false        # optional
   #      region: us-east-1        # optional
-    buckets:
-      ${MINIO_BUCKETS}
-    users:
-      ${MINIO_USERS}
+  buckets:
+    ${MINIO_BUCKETS}
+  users:
+    ${MINIO_USERS}
   exposeServices:
     minio: true
     console: true

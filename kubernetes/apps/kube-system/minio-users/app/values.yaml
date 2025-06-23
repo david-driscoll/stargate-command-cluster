@@ -62,10 +62,10 @@ tenant:
   #    - name: my-minio-bucket
   #      objectLock: false        # optional
   #      region: us-east-1        # optional
-    buckets:
-      - name: authentik
-    users:
-      - cluster-user
+  buckets:
+    - name: authentik
+  users:
+    - cluster-user
     - authentik
   exposeServices:
     minio: true

@@ -107,43 +107,9 @@ var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
 var users = ImmutableArray.CreateBuilder<string>();
-try
-{
-  var configStream = ReadStream(configPath);
-  if (configStream == null)
-  {
-    AnsiConsole.MarkupLine($"[red]Failed to read minio configuration file: {configPath}.[/]");
-  }
-  else
-  {
-    foreach (var child in configStream.Children)
-    {
-      if (child.Key is YamlScalarNode keyNode && keyNode.Value == "MINIO_BUCKETS" && child.Value is YamlSequenceNode bucketsNode)
-      {
-        foreach (var bucket in bucketsNode.Children.OfType<YamlMappingNode>())
-        {
-          buckets.Add(bucket["name"].ToString());
-        }
-      }
-      else if (child.Key is YamlScalarNode userKeyNode && userKeyNode.Value == "MINIO_USERS" && child.Value is YamlSequenceNode usersNode)
-      {
-        foreach (var user in usersNode.Children.OfType<YamlScalarNode>())
-        {
-          users.Add(user.Value);
-        }
-
-      }
-    }
-  }
-}
-catch (Exception ex)
-{
-  AnsiConsole.MarkupLine($"[red]Error reading minio configuration file: {ex.Message}[/]");
-}
-
 var minioConfig = new MinioConfig(
     Buckets: buckets.ToImmutable(),
-    Users: users.ToImmutable().Remove("cluster-user")
+    Users: users.ToImmutable()
 );
 minioConfig.Dump();
 
@@ -191,7 +157,7 @@ File.WriteAllText(kustomizationPath, customizationTemplate);
 
 File.WriteAllText(Path.Combine(Path.GetDirectoryName(kustomizationPath), "values.yaml"), File.ReadAllText(valuesTemplate)
   .Replace("${MINIO_BUCKETS}", string.Join("\n", minioConfig.Buckets.Select(user => $"- name: {user}")))
-  .Replace("${MINIO_USERS}", string.Join("\n", minioConfig.Users.Select(bucket => $"- {bucket}"))));
+  .Replace("${MINIO_USERS}", string.Join("\n", minioConfig.Users.Prepend("cluster-user").Select(bucket => $"- {bucket}"))));
 
 static YamlMappingNode? ReadStream(string path)
 {

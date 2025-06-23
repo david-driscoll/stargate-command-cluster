@@ -65,7 +65,8 @@ tenant:
     buckets:
       - name: authentik
     users:
-      - authentik
+      - cluster-user
+- authentik
   exposeServices:
     minio: true
     console: true

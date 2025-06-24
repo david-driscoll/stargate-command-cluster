@@ -54,7 +54,7 @@ tenant:
     bucketDNS: true
     enableSFTP: true
   users:
-    - cluster-user
+    - name: cluster-user
   exposeServices:
     minio: true
     console: true

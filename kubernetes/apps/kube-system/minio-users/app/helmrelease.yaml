@@ -1,0 +1,208 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app minio-users
+spec:
+  timeout: 5m
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+    replace: true
+  upgrade:
+    force: true
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      shareProcessNamespace: true
+    controllers:
+      *app :
+        type: job
+        job:
+          backoffLimit: 6
+          suspend: true
+        containers:
+          bucket-template:
+            image:
+              repository: minio/mc
+              tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
+              pullPolicy: IfNotPresent
+            command:
+            - sh
+            - -c
+            - |
+              mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+              mc mb -p "$MC_ALIAS/$MINIO_BUCKET"
+            env:
+              MC_ALIAS: ${CLUSTER_CNAME}
+              MINIO_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+              MINIO_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: accesskey
+              MINIO_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: secretkey
+              MC_CONFIG_DIR: /tmp/.mc
+              MINIO_BUCKET: authentik
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+            envFrom:
+            - secretRef:
+                name: ${APP}-minio
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+          user-template:
+            image:
+              repository: minio/mc
+              tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
+              pullPolicy: IfNotPresent
+            command:
+            - sh
+            - -c
+            - |
+              mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+              mc admin user add "$MC_ALIAS" "$MINIO_USER" "$MINIO_PASSWORD"
+            env:
+              MC_ALIAS: ${CLUSTER_CNAME}
+              MINIO_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+              MINIO_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: accesskey
+              MINIO_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: secretkey
+              MC_CONFIG_DIR: /tmp/.mc
+              MINIO_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-minio-access-key
+                    key: username
+              MINIO_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-minio-access-key
+                    key: password
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+            envFrom:
+            - secretRef:
+                name: ${APP}-minio
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+          init-bucket-authentik:
+            image:
+              repository: minio/mc
+              tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
+              pullPolicy: IfNotPresent
+            command:
+            - sh
+            - -c
+            - |
+              mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+              mc mb -p "$MC_ALIAS/$MINIO_BUCKET"
+            env:
+              MC_ALIAS: ${CLUSTER_CNAME}
+              MINIO_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+              MINIO_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: accesskey
+              MINIO_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: secretkey
+              MC_CONFIG_DIR: /tmp/.mc
+              MINIO_BUCKET: authentik
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+            envFrom:
+            - secretRef:
+                name: ${APP}-minio
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+          init-user-authentik:
+            image:
+              repository: minio/mc
+              tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
+              pullPolicy: IfNotPresent
+            command:
+            - sh
+            - -c
+            - |
+              mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+              mc admin user add "$MC_ALIAS" "$MINIO_USER" "$MINIO_PASSWORD"
+            env:
+              MC_ALIAS: ${CLUSTER_CNAME}
+              MINIO_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+              MINIO_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: accesskey
+              MINIO_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: secretkey
+              MC_CONFIG_DIR: /tmp/.mc
+              MINIO_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-minio-access-key
+                    key: username
+              MINIO_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-minio-access-key
+                    key: password
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+            envFrom:
+            - secretRef:
+                name: ${APP}-minio
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+    persistence:
+      tmp:
+        type: emptyDir

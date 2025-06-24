@@ -190,7 +190,7 @@ MINIO_SECRET_KEY:
       name: cluster-user
       key: secretkey
 */
-minioUsersStep.Children["command"] = new YamlSequenceNode(commandBuilder.Select(cmd => new YamlScalarNode(cmd)));
+minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1

@@ -13,7 +13,6 @@ spec:
   install:
     remediation:
       retries: 3
-    replace: true
   upgrade:
     force: true
     cleanupOnFail: true

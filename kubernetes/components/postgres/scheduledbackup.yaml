@@ -7,8 +7,6 @@ metadata:
 spec:
   schedule: "${POSTGRES_BACKUP_SCHEDULE:-0 0 2 * * *}"
   immediate: true
-  method: barmanObjectStore
-  online: true
   suspend: false
   target: prefer-standby
   backupOwnerReference: self

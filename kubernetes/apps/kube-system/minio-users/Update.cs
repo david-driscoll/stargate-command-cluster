@@ -63,7 +63,7 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
       throw new FileNotFoundException($"Component file {component} does not exist.");
     }
 
-    new { component, componentName, documentName }.Dump();
+    // new { component, componentName, documentName }.Dump();
 
     if (componentName == "minio-access-key".Trim('/', '\\'))
     {
@@ -95,13 +95,29 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
   }
 }
 
+var serializer = new SerializerBuilder().Build();
+
 #endregion
 
 #region Templates
 var minioUsersRelease = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
 var minioUserReleaseMapping = ReadStream(minioUsersRelease);
-var addBucketsTemplate = minioUserReleaseMapping.Query("/spec/values/controllers/add-buckets").FirstOrDefault();
-var addUsersTemplate = minioUserReleaseMapping.Query("/spec/values/controllers/add-users").FirstOrDefault();
+var containers = minioUserReleaseMapping?.Query("/spec/values/controllers/minio-users/containers").OfType<YamlMappingNode>().Single();
+var addBucketTemplate = containers.Query("/bucket-template").OfType<YamlMappingNode>().Single();
+var addUserTemplate = containers.Query("/user-template").OfType<YamlMappingNode>().Single();
+var others = containers.Children.Values.Except([addBucketTemplate, addUserTemplate]).ToArray();
+foreach (var other in others)
+{
+  containers.Children.Remove(other);
+}
+
+addBucketTemplate.Children.Remove("enabled");
+addUserTemplate.Children.Remove("enabled");
+var userReference = addUserTemplate.Query("/env/MINIO_USER/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
+var passwordReference = addUserTemplate.Query("/env/MINIO_PASSWORD/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
+var minioBucketReference = addBucketTemplate.Query("/env").OfType<YamlMappingNode>().Single();
+
+
 
 // TODO tomorrow:
 
@@ -109,111 +125,13 @@ var addUsersTemplate = minioUserReleaseMapping.Query("/spec/values/controllers/a
 // stamp out each for every user and bucket
 // add the correct environment variables
 
-var creationTemplate = """
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: &app minio-users
-spec:
-  timeout: 5m
-  interval: 30m
-  chartRef:
-    kind: OCIRepository
-    name: app-template
-  install:
-    remediation:
-      retries: 3
-    replace: true
-  upgrade:
-    force: true
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
-  values:
-    defaultPodOptions:
-      securityContext:
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
-        runAsNonRoot: true
-        runAsUser: 568
-        seccompProfile:
-          type: RuntimeDefault
-      shareProcessNamespace: true
-    controllers:
-      add-buckets:
-{buckets}
-      add-users:
-{users}
 
-    persistence:
-      tmp:
-        type: emptyDir
-      resources:
-        type: configMap
-        name: minio-scripts
-        defaultMode: 493
-""";
-
-var bucketsTemplate = """
-        type: job
-        job:
-          backoffLimit: 6
-          suspend: false
-        containers:
-          main: &job
-            image:
-              repository: minio/mc
-              tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
-              pullPolicy: IfNotPresent
-            command:
-              - sh
-              - -c
-              - |
-                mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
-
-                mc mb -p "$MC_ALIAS/$MINIO_BUCKET"
-
-                mc admin user add
-            env:
-              MC_ALIAS: ${CLUSTER_CNAME}
-              MINIO_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
-              MINIO_ACCESS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: cluster-user
-                    key: accesskey
-              MINIO_SECRET_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: cluster-user
-                    key: secretkey
-              MC_CONFIG_DIR: /tmp/.mc
-              PUID: 568
-              PGID: 568
-              UMASK: 002
-              TZ: "${TIMEZONE}"
-            envFrom:
-              - secretRef:
-                  name: ${APP}-minio
-            resources:
-              requests:
-                cpu: 10m
-                memory: 32Mi
-""";
 #endregion
 
-
-
-var valuesTemplate = "kubernetes/apps/database/minio/app/values.yaml";
-var configPath = "kubernetes/apps/kube-system/minio-users/minio.yaml";
 var userTemplate = "kubernetes/apps/database/minio/app/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
 var kustomizationPath = "kubernetes/apps/kube-system/minio-users/app/kustomization.yaml";
+var helmreleasePath = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
@@ -235,11 +153,6 @@ if (missingUsers.Count > 0 || missingBuckets.Count > 0)
   );
 }
 
-foreach (var item in Directory.EnumerateFiles(usersDirectory, "*.yaml"))
-{
-  File.Delete(item);
-}
-
 foreach (var user in minioConfig.Users)
 {
   var yaml = File.ReadAllText(userTemplate)
@@ -251,25 +164,49 @@ foreach (var user in minioConfig.Users)
   File.WriteAllText(fileName, yaml);
   AnsiConsole.WriteLine($"Updated {fileName} with user {user}.");
 }
+foreach (var item in minioConfig.Buckets)
+{
+  minioBucketReference.Children["MINIO_BUCKET"] = item;
+  var yaml = serializer.Serialize(addBucketTemplate);
+  using var reader = new StringReader(yaml);
+  var stream = new YamlStream();
+  stream.Load(reader);
+  var bucketNode = stream.Documents.First().RootNode as YamlMappingNode;
+  if (bucketNode == null)
+  {
+    AnsiConsole.MarkupLine($"[red]Failed to create bucket node for {item}.[/]");
+    continue;
+  }
+  containers.Children[$"init-bucket-{item}"] = bucketNode;
+}
+foreach (var item in minioConfig.Users)
+{
+  userReference.Children["name"] = $"{item}-minio-access-key";
+  passwordReference.Children["name"] = $"{item}-minio-access-key";
+  var yaml = serializer.Serialize(addUserTemplate);
+  using var reader = new StringReader(yaml);
+  var stream = new YamlStream();
+  stream.Load(reader);
+  var userNode = stream.Documents.First().RootNode as YamlMappingNode;
+  if (userNode == null)
+  {
+    AnsiConsole.MarkupLine($"[red]Failed to create user node for {item}.[/]");
+    continue;
+  }
+  containers.Children[$"init-user-{item}"] = userNode;
+}
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-configMapGenerator:
-  - name: minio-values
-    files:
-      - values.yaml=values.yaml
-    options:
-      disableNameSuffixHash: true
 resources:
+  - helmrelease.yaml
 {string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"  - {user}.yaml"))}
 """;
 
 File.WriteAllText(kustomizationPath, customizationTemplate);
+File.WriteAllText(helmreleasePath, serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
 
-File.WriteAllText(Path.Combine(Path.GetDirectoryName(kustomizationPath), "values.yaml"), File.ReadAllText(valuesTemplate)
-  .Replace("${MINIO_BUCKETS}", string.Join("\n    ", minioConfig.Buckets.Select(user => $"- name: {user}")))
-  .Replace("${MINIO_USERS}", string.Join("\n    ", minioConfig.Users.Prepend("cluster-user").Select(bucket => $"- {bucket}"))));
 
 static YamlMappingNode? ReadStream(string path)
 {

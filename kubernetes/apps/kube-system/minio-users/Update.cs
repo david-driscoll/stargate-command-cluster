@@ -111,8 +111,6 @@ foreach (var other in others)
   containers.Children.Remove(other);
 }
 
-addBucketTemplate.Children.Remove("enabled");
-addUserTemplate.Children.Remove("enabled");
 var userReference = addUserTemplate.Query("/env/MINIO_USER/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
 var passwordReference = addUserTemplate.Query("/env/MINIO_PASSWORD/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
 var minioBucketReference = addBucketTemplate.Query("/env").OfType<YamlMappingNode>().Single();
@@ -177,6 +175,7 @@ foreach (var item in minioConfig.Buckets)
     AnsiConsole.MarkupLine($"[red]Failed to create bucket node for {item}.[/]");
     continue;
   }
+  bucketNode.Children.Remove("enabled");
   containers.Children[$"init-bucket-{item}"] = bucketNode;
 }
 foreach (var item in minioConfig.Users)
@@ -193,6 +192,7 @@ foreach (var item in minioConfig.Users)
     AnsiConsole.MarkupLine($"[red]Failed to create user node for {item}.[/]");
     continue;
   }
+  userNode.Children.Remove("enabled");
   containers.Children[$"init-user-{item}"] = userNode;
 }
 

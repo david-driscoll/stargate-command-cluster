@@ -53,15 +53,8 @@ tenant:
   features:
     bucketDNS: true
     enableSFTP: true
-  ###
-  # Array of objects describing one or more buckets to create during tenant provisioning.
-  # Example:
-  #
-  # .. code-block:: yaml
-  #
-  #    - name: my-minio-bucket
-  #      objectLock: false        # optional
-  #      region: us-east-1        # optional
+  users:
+    - cluster-user
   exposeServices:
     minio: true
     console: true

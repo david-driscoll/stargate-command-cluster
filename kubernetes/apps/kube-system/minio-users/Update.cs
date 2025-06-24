@@ -205,7 +205,12 @@ resources:
 """;
 
 File.WriteAllText(kustomizationPath, customizationTemplate);
-File.WriteAllText(helmreleasePath, serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
+File.WriteAllText(helmreleasePath,
+"""
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+""" + "\n" +
+serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
 
 
 static YamlMappingNode? ReadStream(string path)

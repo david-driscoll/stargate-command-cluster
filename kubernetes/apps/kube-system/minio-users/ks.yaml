@@ -20,6 +20,8 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: kube-system
+    - name: minio
+      namespace: database
   targetNamespace: database
   timeout: 5m
   wait: true

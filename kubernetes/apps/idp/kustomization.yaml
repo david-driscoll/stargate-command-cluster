@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: idp
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./authentik/ks.yaml
   - ./tailscale/ks.yaml

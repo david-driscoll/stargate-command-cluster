@@ -1,33 +1,33 @@
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app minio-users
-#   namespace: &namespace kube-system
-# spec:
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   interval: 1h
-#   path: ./kubernetes/apps/kube-system/minio-users/app
-#   prune: true
-#   retryInterval: 2m
-#   force: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   dependsOn:
-#     - name: external-secrets
-#       namespace: kube-system
-#     - name: minio
-#       namespace: database
-#   targetNamespace: database
-#   timeout: 5m
-#   wait: true
-#   components:
-#     - ../../../../components/password-generator
-#   postBuild:
-#     substitute:
-#       APP: *app
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app minio-users
+  namespace: &namespace kube-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 1h
+  path: ./kubernetes/apps/kube-system/minio-users/app
+  prune: true
+  retryInterval: 2m
+  force: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: external-secrets
+      namespace: kube-system
+    - name: minio
+      namespace: database
+  targetNamespace: database
+  timeout: 5m
+  wait: true
+  components:
+    - ../../../../components/password-generator
+  postBuild:
+    substitute:
+      APP: *app

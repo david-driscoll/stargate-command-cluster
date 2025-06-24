@@ -21,22 +21,12 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
-        runAsNonRoot: true
-        runAsUser: 568
-        seccompProfile:
-          type: RuntimeDefault
-      shareProcessNamespace: true
     controllers:
       *app :
         type: job
         job:
           backoffLimit: 6
-          suspend: true
+          suspend: false
         initContainers:
           init-user-cluster-user:
             image:

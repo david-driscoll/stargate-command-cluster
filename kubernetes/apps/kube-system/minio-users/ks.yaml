@@ -13,6 +13,7 @@ spec:
   path: ./kubernetes/apps/kube-system/minio-users/app
   prune: true
   retryInterval: 2m
+  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system

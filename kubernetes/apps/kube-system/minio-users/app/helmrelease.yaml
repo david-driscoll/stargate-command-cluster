@@ -106,9 +106,6 @@ spec:
               PGID: 568
               UMASK: 002
               TZ: "${TIMEZONE}"
-            envFrom:
-            - secretRef:
-                name: ${APP}-minio
             resources:
               requests:
                 cpu: 10m
@@ -153,9 +150,6 @@ spec:
               PGID: 568
               UMASK: 002
               TZ: "${TIMEZONE}"
-            envFrom:
-            - secretRef:
-                name: ${APP}-minio
             resources:
               requests:
                 cpu: 10m
@@ -190,9 +184,6 @@ spec:
               PGID: 568
               UMASK: 002
               TZ: "${TIMEZONE}"
-            envFrom:
-            - secretRef:
-                name: ${APP}-minio
             resources:
               requests:
                 cpu: 10m
@@ -236,9 +227,6 @@ spec:
               PGID: 568
               UMASK: 002
               TZ: "${TIMEZONE}"
-            envFrom:
-            - secretRef:
-                name: ${APP}-minio
             resources:
               requests:
                 cpu: 10m

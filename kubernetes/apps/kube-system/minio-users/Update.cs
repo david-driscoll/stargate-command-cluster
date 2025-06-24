@@ -103,18 +103,9 @@ var serializer = new SerializerBuilder().Build();
 var minioUsersRelease = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
 var minioUserReleaseMapping = ReadStream(minioUsersRelease);
 var containers = minioUserReleaseMapping?.Query("/spec/values/controllers/minio-users/containers").OfType<YamlMappingNode>().Single();
-var addBucketTemplate = containers.Query("/bucket-template").OfType<YamlMappingNode>().Single();
-var addUserTemplate = containers.Query("/user-template").OfType<YamlMappingNode>().Single();
-var others = containers.Children.Values.Except([addBucketTemplate, addUserTemplate]).ToArray();
-foreach (var other in others)
-{
-  containers.Children.Remove(other);
-}
+var minioUsersStep = containers.Query("/minio-users").OfType<YamlMappingNode>().Single();
 
-var userReference = addUserTemplate.Query("/env/MINIO_USER/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
-var passwordReference = addUserTemplate.Query("/env/MINIO_PASSWORD/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
-var minioBucketReference = addBucketTemplate.Query("/env").OfType<YamlMappingNode>().Single();
-
+var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single();
 
 
 // TODO tomorrow:
@@ -162,39 +153,44 @@ foreach (var user in minioConfig.Users)
   File.WriteAllText(fileName, yaml);
   AnsiConsole.WriteLine($"Updated {fileName} with user {user}.");
 }
-foreach (var item in minioConfig.Buckets)
+List<string> commandBuilder = ["mc alias set \"$MC_ALIAS\" \"$MINIO_ENDPOINT\" \"$MINIO_ACCESS_KEY\" \"$MINIO_SECRET_KEY\""];
+foreach (var bucket in minioConfig.Buckets)
 {
-  minioBucketReference.Children["MINIO_BUCKET"] = item;
-  var yaml = serializer.Serialize(addBucketTemplate);
-  using var reader = new StringReader(yaml);
-  var stream = new YamlStream();
-  stream.Load(reader);
-  var bucketNode = stream.Documents.First().RootNode as YamlMappingNode;
-  if (bucketNode == null)
-  {
-    AnsiConsole.MarkupLine($"[red]Failed to create bucket node for {item}.[/]");
-    continue;
-  }
-  bucketNode.Children.Remove("enabled");
-  containers.Children[$"init-bucket-{item}"] = bucketNode;
+  commandBuilder.Add($"mc mb -p \"$MC_ALIAS/{bucket}\"");
 }
+envReference.Children.Where(z => z.Key.ToString().StartsWith("MINIO_USER_") || z.Key.ToString().StartsWith("MINIO_PASSWORD_"))
+  .ToList()
+  .ForEach(z => envReference.Children.Remove(z.Key));
+
+commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_CLUSTER_USER\" \"$MINIO_PASSWORD_CLUSTER_USER\"");
+envReference.Children.Add(new YamlScalarNode($"MINIO_USER_CLUSTER_USER"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"cluster-user", "username"));
+envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"cluster-user", "password"));
 foreach (var item in minioConfig.Users)
 {
-  userReference.Children["name"] = $"{item}-minio-access-key";
-  passwordReference.Children["name"] = $"{item}-minio-access-key";
-  var yaml = serializer.Serialize(addUserTemplate);
+  commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_{item.ToUpperInvariant()}\" \"$MINIO_PASSWORD_{item.ToUpperInvariant()}\"");
+  envReference.Children.Add(new YamlScalarNode($"MINIO_USER_{item.ToUpperInvariant()}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{item}-minio-access-key", "username"));
+  envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_{item.ToUpperInvariant()}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{item}-minio-access-key", "password"));
+}
+static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy, string name, string key)
+{
+  var yaml = serializer.Serialize(copy);
   using var reader = new StringReader(yaml);
   var stream = new YamlStream();
   stream.Load(reader);
   var userNode = stream.Documents.First().RootNode as YamlMappingNode;
-  if (userNode == null)
-  {
-    AnsiConsole.MarkupLine($"[red]Failed to create user node for {item}.[/]");
-    continue;
-  }
-  userNode.Children.Remove("enabled");
-  containers.Children[$"init-user-{item}"] = userNode;
+  var secretRef = userNode.Query("/valueFrom/secretKeyRef").OfType<YamlMappingNode>().Single();
+  secretRef.Children["name"] = new YamlScalarNode(name);
+  secretRef.Children["key"] = new YamlScalarNode(key);
+  return userNode;
 }
+/*
+MINIO_SECRET_KEY:
+  valueFrom:
+    secretKeyRef:
+      name: cluster-user
+      key: secretkey
+*/
+minioUsersStep.Children["command"] = new YamlSequenceNode(commandBuilder.Select(cmd => new YamlScalarNode(cmd)));
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1

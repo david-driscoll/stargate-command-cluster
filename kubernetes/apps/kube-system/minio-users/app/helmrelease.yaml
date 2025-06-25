@@ -27,6 +27,7 @@ spec:
         job:
           backoffLimit: 6
           suspend: false
+          ttlSecondsAfterFinished: 600
         containers:
           minio-users:
             image:

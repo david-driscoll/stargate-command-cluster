@@ -124,23 +124,38 @@ var helmreleasePath = "kubernetes/apps/kube-system/minio-users/app/helmrelease.y
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
+buckets.AddRange(kustomizationUserList);
 var users = ImmutableArray.CreateBuilder<string>();
+users.AddRange(kustomizationUserList);
+
+var config = "kubernetes/apps/kube-system/minio-users/config.yaml";
+if (!File.Exists(config))
+{
+  File.WriteAllText(config, "");
+}
+var configDoc = ReadStream(config);
+if (configDoc is { })
+{
+  var _buckets = configDoc.Query("/buckets").OfType<YamlSequenceNode>().ToList();
+  var _users = configDoc.Query("/users").OfType<YamlSequenceNode>().ToList();
+  buckets.AddRange(_buckets
+      .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+      .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
+  users.AddRange(_users
+  .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+  .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
+
+  // var configUsers = configDoc.Query("/users").OfType<YamlSequenceNode>().ToList().Dump()
+  //     .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value)
+  //     .ToList();
+  // users.AddRange(configUsers);
+}
+
 var minioConfig = new MinioConfig(
     Buckets: buckets.ToImmutable(),
     Users: users.ToImmutable()
 );
 minioConfig.Dump();
-
-var missingUsers = kustomizationUserList.Except(minioConfig.Users).ToList();
-var missingBuckets = kustomizationUserList.Except(minioConfig.Buckets).ToList();
-missingUsers.Dump(label: "Missing Users");
-if (missingUsers.Count > 0 || missingBuckets.Count > 0)
-{
-  minioConfig = new MinioConfig(
-      minioConfig.Buckets.AddRange(missingBuckets).ToImmutableArray(),
-      minioConfig.Users.AddRange(missingUsers).ToImmutableArray()
-  );
-}
 
 foreach (var user in minioConfig.Users)
 {

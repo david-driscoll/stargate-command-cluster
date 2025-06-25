@@ -32,7 +32,7 @@ spec:
           [default]
           region=home
         S3_PROVIDER: Minio
-        S3_ENDPOINT: http://minio.database.${INTERNAL_CLUSTER_DOMAIN}:9000
+        S3_ENDPOINT: http://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}:9000
         AWS_ACCESS_KEY_ID: "authentik"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
         username: "authentik"

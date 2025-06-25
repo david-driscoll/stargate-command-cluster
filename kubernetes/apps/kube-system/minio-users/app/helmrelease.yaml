@@ -46,7 +46,7 @@ spec:
               mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
-              MINIO_ENDPOINT: http://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}:9000
+              MINIO_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
               MINIO_ACCESS_KEY:
                 valueFrom:
                   secretKeyRef:

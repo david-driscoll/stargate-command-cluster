@@ -1,0 +1,6 @@
+---
+buckets:
+- name: tivi-cache
+- name: tivi-results
+users:
+- name: tivi-sync

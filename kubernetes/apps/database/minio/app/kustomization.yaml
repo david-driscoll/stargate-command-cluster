@@ -4,6 +4,7 @@ resources:
 - ./secret.yaml
 - ./helmrelease.yaml
 - ./cluster-user.yaml
+- ./tls.yaml
 - ./replica-0-data0.yaml
 - ./replica-1-data0.yaml
 - ./replica-2-data0.yaml

@@ -41,9 +41,15 @@ spec:
 
               mc mb -p "$MC_ALIAS/authentik"
 
+              mc mb -p "$MC_ALIAS/tivi-cache"
+
+              mc mb -p "$MC_ALIAS/tivi-results"
+
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
+
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI-SYNC" "$MINIO_PASSWORD_TIVI-SYNC"
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
@@ -82,6 +88,16 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: authentik-minio-access-key
+                    key: password
+              MINIO_USER_TIVI-SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-minio-access-key
+                    key: username
+              MINIO_PASSWORD_TIVI-SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-minio-access-key
                     key: password
             resources:
               requests:

@@ -66,10 +66,10 @@ spec:
       endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       s3Credentials:
         accessKeyId:
-          name: ${APP}-postgres-access-key
+          name: ${APP}-minio-access-key
           key: username
         secretAccessKey:
-          name: ${APP}-postgres-access-key
+          name: ${APP}-minio-access-key
           key: credential
 
   externalClusters:
@@ -82,8 +82,8 @@ spec:
         maxParallel: 8
       s3Credentials:
         accessKeyId:
-          name: ${APP}-postgres-access-key
+          name: ${APP}-minio-access-key
           key: username
         secretAccessKey:
-          name: ${APP}-postgres-access-key
+          name: ${APP}-minio-access-key
           key: credential

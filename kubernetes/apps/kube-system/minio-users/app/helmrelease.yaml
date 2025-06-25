@@ -30,7 +30,7 @@ spec:
           suspend: false
           ttlSecondsAfterFinished: 600
         containers:
-          minio-users:
+          de6594ad361a49d34b1d33d26bae7f34e680385bce6c3d1eb3824e158bee7a03:
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -43,9 +43,9 @@ spec:
 
               mc mb -p "$MC_ALIAS/authentik"
 
-              mc mb -p "$MC_ALIAS/tivi-cache"
-
               mc mb -p "$MC_ALIAS/tivi-results"
+
+              mc mb -p "$MC_ALIAS/tivi-cache"
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 

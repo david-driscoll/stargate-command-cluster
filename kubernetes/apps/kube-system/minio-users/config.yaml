@@ -1,6 +1,6 @@
 ---
 buckets:
-- name: tivi-cache
 - name: tivi-results
+- name: tivi-cache
 users:
 - name: tivi-sync

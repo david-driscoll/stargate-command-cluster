@@ -24,6 +24,10 @@ using System.Collections.Immutable;
 using gfs.YamlDotNet.YamlPath;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
+using System.Buffers.Text;
+using System.Text.Json;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
 
 #region Find all applications using minio
 
@@ -103,7 +107,7 @@ var serializer = new SerializerBuilder().Build();
 var minioUsersRelease = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
 var minioUserReleaseMapping = ReadStream(minioUsersRelease);
 var containers = minioUserReleaseMapping?.Query("/spec/values/controllers/minio-users/containers").OfType<YamlMappingNode>().Single();
-var minioUsersStep = containers.Query("/minio-users").OfType<YamlMappingNode>().Single();
+var minioUsersStep = containers.Children.Values.OfType<YamlMappingNode>().Single();
 
 var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single();
 
@@ -198,13 +202,11 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
   secretRef.Children["key"] = new YamlScalarNode(key);
   return userNode;
 }
-/*
-MINIO_SECRET_KEY:
-  valueFrom:
-    secretKeyRef:
-      name: cluster-user
-      key: secretkey
-*/
+
+containers.Children.Clear();
+var key = string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2")));
+containers.Children[key] = minioUsersStep;
+
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
 
 var customizationTemplate = $"""

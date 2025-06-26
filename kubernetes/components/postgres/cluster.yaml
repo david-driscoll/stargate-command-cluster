@@ -25,6 +25,7 @@ spec:
       pg_stat_statements.track: all
   monitoring:
     enablePodMonitor: true
+  logLevel: trace
 
   # https://github.com/cloudnative-pg/cloudnative-pg/issues/2570
   enablePDB: false

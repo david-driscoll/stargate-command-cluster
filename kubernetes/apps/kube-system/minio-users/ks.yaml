@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app minio-users
+  name: &app minio-users-3fe398d21211
   namespace: &namespace kube-system
 spec:
   commonMetadata:
@@ -19,15 +19,15 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: external-secrets
-      namespace: kube-system
-    - name: minio
-      namespace: database
+  - name: external-secrets
+    namespace: kube-system
+  - name: minio
+    namespace: database
   targetNamespace: database
   timeout: 5m
   wait: true
   components:
-    - ../../../../components/password-generator
+  - ../../../../components/password-generator
   postBuild:
     substitute:
       APP: *app

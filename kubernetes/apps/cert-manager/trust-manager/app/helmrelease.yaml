@@ -35,13 +35,6 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: *namespace
-  values:
-    crds:
-      enabled: true
-    app:
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
-      metrics:
-        service:
-          servicemonitor:
-            enabled: true
+  valuesFrom:
+    - kind: ConfigMap
+      name: trust-manager-values

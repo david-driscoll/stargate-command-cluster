@@ -164,12 +164,13 @@ var minioConfig = new MinioConfig(
     Users: users.ToImmutable()
 );
 minioConfig.Dump();
+var key = "minio-users-" + string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2"))).Substring(0, 12);
 
 foreach (var user in minioConfig.Users)
 {
   var yaml = File.ReadAllText(userTemplate)
   .Replace("cluster-user", $"{user}-minio-access-key")
-  .Replace("${APP}", $"minio-users")
+  .Replace("${APP}", key)
   .Replace("${CLUSTER_CNAME}", user)
   ;
   var fileName = Path.Combine(usersDirectory, $"{user}.yaml");
@@ -210,7 +211,6 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
 
 controllers.Children.Clear();
 containers.Children.Clear();
-var key = "minio-users-" + string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2"))).Substring(0, 12);
 containers.Children[key] = minioUsersStep;
 controllers.Children[key] = controller;
 ((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;

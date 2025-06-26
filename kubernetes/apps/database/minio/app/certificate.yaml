@@ -3,16 +3,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cluster-certificate
+  name: minio-certificate
 spec:
   dnsNames:
-  - "*.cluster.local"
-  # - "*.*.cluster.local" ??
-  - "*.svc.cluster.local"
-  - "*.${CLUSTER_CNAME}.svc.cluster.local"
   - "*.database.svc.cluster.local"
-  - "*.network.svc.cluster.local"
-  secretName: cluster-tls
+  - "*.minio.database.svc.cluster.local"
+  - "*.${CLUSTER_CNAME}-hl.database.svc.cluster.local"
+  secretName: minio-certificate
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"

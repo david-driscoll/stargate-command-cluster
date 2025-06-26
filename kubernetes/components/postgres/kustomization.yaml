@@ -6,7 +6,7 @@ resources:
   - ./cluster.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
-  - ./databases.yaml
+  - ./postgres-user.yaml
 components:
   - ../minio-access-key
   - ../password-generator

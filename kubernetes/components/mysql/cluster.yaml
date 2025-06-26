@@ -24,7 +24,7 @@ spec:
             prefix: mysql/dump/
             config: ${APP}-minio-access-key
             profile: default
-            endpoint: https://minio.${CLUSTER_DOMAIN}
+            endpoint: https://minio.database.svc.cluster.local
     - name: snapshot
       snapshot:
         storage:
@@ -33,7 +33,7 @@ spec:
             prefix: mysql/snapshot/
             config: ${APP}-minio-access-key
             profile: default
-            endpoint: https://minio.${CLUSTER_DOMAIN}
+            endpoint: https://minio.database.svc.cluster.local
   backupSchedules:
     - name: snapshot
       schedule: "${MYSQL_BACKUP_SCHEDULE:-0 0 4 * * *}" # Daily at 4 AM

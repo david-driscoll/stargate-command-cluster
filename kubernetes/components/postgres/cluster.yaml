@@ -64,7 +64,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://${APP}/postgres/
-      endpointURL: https://minio.${CLUSTER_DOMAIN}
+      endpointURL: https://minio.database.svc.cluster.local
       endpointCA:
         name: ${APP}-${CLUSTER_CNAME}-tls
         key: public.crt
@@ -83,7 +83,7 @@ spec:
   - name: ${APP}-backup
     barmanObjectStore:
       destinationPath: s3://${APP}/postgres/
-      endpointURL: https://minio.${CLUSTER_DOMAIN}
+      endpointURL: https://minio.database.svc.cluster.local
       endpointCA:
         name: ${APP}-${CLUSTER_CNAME}-tls
         key: public.crt
@@ -91,6 +91,9 @@ spec:
         compression: bzip2
         maxParallel: 8
       s3Credentials:
+        region:
+          name: ${APP}-minio-access-key
+          key: region
         accessKeyId:
           name: ${APP}-minio-access-key
           key: username

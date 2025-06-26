@@ -106,6 +106,8 @@ var serializer = new SerializerBuilder().Build();
 #region Templates
 var minioUsersRelease = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
 var minioUserReleaseMapping = ReadStream(minioUsersRelease)!;
+var minioKsYaml = "kubernetes/apps/kube-system/minio-users/ks.yaml";
+var minioKsYamlMapping = ReadStream(minioKsYaml)!;
 var name = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
 var controller = controllers.Query($"/{name}").OfType<YamlMappingNode>().Single();
@@ -127,7 +129,6 @@ var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single
 var userTemplate = "kubernetes/apps/database/minio/app/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
 var kustomizationPath = "kubernetes/apps/kube-system/minio-users/app/kustomization.yaml";
-var helmreleasePath = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
@@ -212,7 +213,8 @@ containers.Children.Clear();
 var key = "minio-users-" + string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2"))).Substring(0, 12);
 containers.Children[key] = minioUsersStep;
 controllers.Children[key] = controller;
-((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"] = new YamlScalarNode(key);
+((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
+((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
 
@@ -225,12 +227,18 @@ resources:
 """;
 
 File.WriteAllText(kustomizationPath, customizationTemplate);
-File.WriteAllText(helmreleasePath,
+File.WriteAllText(minioUsersRelease,
 """
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 """ + "\n" +
 serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
+File.WriteAllText(minioKsYaml,
+"""
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+""" + "\n" +
+serializer.Serialize(minioKsYamlMapping).Replace("*app:", "*app :"));
 
 
 static YamlMappingNode? ReadStream(string path)

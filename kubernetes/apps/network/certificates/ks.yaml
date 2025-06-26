@@ -50,7 +50,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: trust-manager
-      namespace: *namespace
+      namespace: cert-manager
   path: ./kubernetes/apps/network/certificates/bundles
   prune: true
   sourceRef:

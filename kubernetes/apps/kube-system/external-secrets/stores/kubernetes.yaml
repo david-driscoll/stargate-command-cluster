@@ -42,6 +42,26 @@ subjects:
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
+  name: external-secrets-database
+spec:
+  provider:
+    kubernetes:
+      remoteNamespace: database
+      server:
+        caProvider:
+          type: ConfigMap
+          name: kube-root-ca.crt
+          namespace: kube-system
+          key: ca.crt
+      auth:
+        serviceAccount:
+          name: "external-secrets"
+          namespace: kube-system
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/external-secrets.io/clustersecretstore_v1.json
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
   name: external-secrets-network
 spec:
   provider:

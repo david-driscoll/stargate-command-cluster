@@ -49,13 +49,7 @@ tenant:
     port: 9000
     protocol: http
   certificate:
-    requestAutoCert: false
-    externalCaCertSecret:
-      - name: minio-certificate
-        type: kubernetes.io/tls
-    externalCertSecret:
-      - name: minio-certificate
-        type: kubernetes.io/tls
+    requestAutoCert: true
   features:
     bucketDNS: true
     enableSFTP: true

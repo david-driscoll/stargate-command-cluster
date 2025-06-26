@@ -73,29 +73,27 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
       AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist.[/]");
       throw new FileNotFoundException($"Component file {component.path} does not exist.");
     }
-
-    // new { component, componentName, documentName }.Dump();
-
-    if (component.name == "minio-access-key".Trim('/', '\\'))
+    ResolveSubComponents(allComponents, component);
+    if (allComponents.Contains("minio-access-key"))
     {
       kustomizationUserList.Add(documentName);
     }
+  }
+  static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
+  {
+
     var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml"));
     if (componentDoc == null)
     {
       AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
-      continue;
+      return;
     }
-    var subComponents = GetComponents(path, componentDoc.Query("/components"));
+    var subComponents = GetComponents(component.path, componentDoc.Query("/components"));
 
     foreach (var subComponent in subComponents)
     {
       allComponents.Add(subComponent.name);
-      // AnsiConsole.MarkupLine($"[blue]Processing sub-component: {subComponent.name}[/]");
-      if (subComponent.name == "minio-access-key".Trim('/', '\\'))
-      {
-        kustomizationUserList.Add(documentName);
-      }
+      ResolveSubComponents(allComponents, subComponent);
     }
   }
   kustomizeComponents[documentName] = allComponents;

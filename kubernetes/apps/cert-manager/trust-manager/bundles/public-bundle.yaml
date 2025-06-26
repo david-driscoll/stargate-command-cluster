@@ -19,5 +19,7 @@ spec:
         name: cluster-tls
         key: tls.crt
   target:
+    secret:
+      key: "ca-certificates.crt"
     configMap:
       key: "ca-certificates.crt"

@@ -10,8 +10,11 @@ spec:
   # - "*.*.cluster.local" ??
   - "*.svc.cluster.local"
   - "*.${CLUSTER_CNAME}.svc.cluster.local"
+  - "*.*.${CLUSTER_CNAME}.svc.cluster.local"
   - "*.database.svc.cluster.local"
+  - "*.*.database.svc.cluster.local"
   - "*.network.svc.cluster.local"
+  - "*.*.network.svc.cluster.local"
   secretName: cluster-tls
   secretTemplate:
     annotations:

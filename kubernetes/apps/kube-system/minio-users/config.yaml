@@ -2,7 +2,5 @@
 buckets:
 - name: tivi-cache
 - name: tivi-results
-- name: mysql-backups
-- name: authentik/postgres
 users:
 - name: tivi-sync

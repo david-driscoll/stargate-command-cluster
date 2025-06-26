@@ -20,7 +20,7 @@ spec:
       dumpInstance:
         storage:
           s3:
-            bucketName: mysql
+            bucketName: mysql-backups
             prefix: ${APP}/dump/
             config: ${APP}-minio-access-key
             profile: default
@@ -29,7 +29,7 @@ spec:
       snapshot:
         storage:
           s3:
-            bucketName: mysql
+            bucketName: mysql-backups
             prefix: ${APP}/snapshot/
             config: ${APP}-minio-access-key
             profile: default

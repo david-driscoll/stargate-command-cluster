@@ -50,17 +50,12 @@ spec:
           name: ${APP}-postgres-user
 
   bootstrap:
-    initdb:
-      database: ${APP}
+    recovery:
+      source: ${APP}-backup
       owner: ${APP}
+      database: ${APP}
       secret:
         name: ${APP}-postgres-user
-    # recovery:
-    #   source: ${APP}-backup
-    #   owner: ${APP}
-    #   database: ${APP}
-    #   secret:
-    #     name: ${APP}-postgres-user
 
   backup:
     retentionPolicy: 30d

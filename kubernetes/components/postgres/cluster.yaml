@@ -84,9 +84,6 @@ spec:
     barmanObjectStore:
       destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.database.svc.cluster.local
-      endpointCA:
-        name: ${APP}-${CLUSTER_CNAME}-tls
-        key: public.crt
       wal:
         compression: bzip2
         maxParallel: 8

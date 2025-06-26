@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+components:
+  - ../minio-access-key
+  - ../postgres
+  - ../password-generator
+patchesJson6902:
+  - target:
+      version: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: ${APP}-cluster
+    patch: |-
+      - op: replace
+        path: /spec/bootstrap
+        value:
+          initdb:
+            database: ${APP}
+            owner: ${APP}
+            secret:
+              name: ${APP}-postgres-user

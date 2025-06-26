@@ -64,6 +64,9 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgres/${APP}/
       endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+      endpointCA:
+        key: ca.crt
+        name: ${APP}-postgres-cluster-tls
       s3Credentials:
         accessKeyId:
           name: ${APP}-minio-access-key
@@ -77,6 +80,9 @@ spec:
     barmanObjectStore:
       destinationPath: s3://postgres/${APP}/
       endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+      endpointCA:
+        key: ca.crt
+        name: ${APP}-postgres-cluster-tls
       wal:
         compression: bzip2
         maxParallel: 8
@@ -87,3 +93,12 @@ spec:
         secretAccessKey:
           name: ${APP}-minio-access-key
           key: credential
+---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
+apiVersion: v1
+kind: Secret
+metadata:
+ name: ${APP}-postgres-cluster-tls
+ annotations:
+  reflector.v1.k8s.emberstack.com/reflects: "network/cluster-tls"
+  reloader.stakater.com/auto: "true"

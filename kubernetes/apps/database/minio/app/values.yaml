@@ -49,15 +49,15 @@ tenant:
     port: 9000
     protocol: http
   certificate:
-    requestAutoCert: false
-    externalCaCertSecret:
-      - name: cluster-tls
-        type: kubernetes.io/tls
-    externalCertSecret:
-      - name: cluster-tls
-        type: kubernetes.io/tls
-      - name: le-production-tls
-        type: kubernetes.io/tls
+    requestAutoCert: true
+    # externalCaCertSecret:
+    #   - name: cluster-tls
+    #     type: kubernetes.io/tls
+    # externalCertSecret:
+    #   - name: cluster-tls
+    #     type: kubernetes.io/tls
+    #   - name: le-production-tls
+    #     type: kubernetes.io/tls
   features:
     bucketDNS: true
     enableSFTP: true

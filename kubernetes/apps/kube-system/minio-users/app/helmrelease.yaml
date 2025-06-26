@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-3fe398d21211
+  name: minio-users-74bd47b1c5b0
 spec:
   timeout: 5m
   interval: 30m
@@ -23,14 +23,14 @@ spec:
     keepHistory: false
   values:
     controllers:
-      minio-users-3fe398d21211:
+      minio-users-74bd47b1c5b0:
         type: job
         job:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
         containers:
-          minio-users-3fe398d21211:
+          minio-users-74bd47b1c5b0:
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -46,6 +46,8 @@ spec:
               mc mb -p "$MC_ALIAS/tivi-cache"
 
               mc mb -p "$MC_ALIAS/tivi-results"
+
+              mc mb -p "$MC_ALIAS/iris"
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 

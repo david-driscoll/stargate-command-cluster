@@ -62,7 +62,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://postgres/${APP}/
+      destinationPath: s3://postgres-backups/${APP}/
       endpointURL: https://minio.${CLUSTER_DOMAIN}
       s3Credentials:
         accessKeyId:
@@ -75,7 +75,7 @@ spec:
   externalClusters:
   - name: ${APP}-backup
     barmanObjectStore:
-      destinationPath: s3://postgres/${APP}/
+      destinationPath: s3://postgres-backups/${APP}/
       endpointURL: https://minio.${CLUSTER_DOMAIN}
       wal:
         compression: bzip2

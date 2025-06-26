@@ -31,7 +31,8 @@ using System.Security.Cryptography;
 
 #region Find all applications using minio
 
-var kustomizationUserList = new List<string>();
+var kustomizationUserList = new HashSet<string>();
+var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
 // Now lets search for all the implied users, and update minio.yaml
 foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
@@ -43,60 +44,61 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
     AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {kustomize}.[/]");
     continue;
   }
-  var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
-  var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
-  var components = kustomizeDoc.Query("/spec/components").OfType<YamlSequenceNode>()
+  static IReadOnlyList<(string name, string path)> GetComponents(string path, IEnumerable<YamlNode> nodes)
+  {
+    return nodes.OfType<YamlSequenceNode>()
   .SelectMany(z => z.AllNodes.OfType<YamlScalarNode>())
   .Select(z => Path.Combine(path, z.Value))
   .Select(Path.GetFullPath)
   .Select(z => Path.GetRelativePath(Directory.GetCurrentDirectory(), z))
   .Distinct()
+  .Select(z => (name: Path.GetFileName(z), path: z))
   .ToList();
+  }
+  var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
+  var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
+  var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
   if (components.Count == 0)
   {
     // AnsiConsole.MarkupLine($"[green]No components found in {kustomize}.[/]");
     continue;
   }
+  var allComponents = new HashSet<string>();
   foreach (var component in components)
   {
-    var componentName = Path.GetFileName(component);
-    // AnsiConsole.MarkupLine($"[blue]Processing component: {componentName}[/]");
-    if (!Directory.Exists(component))
+    allComponents.Add(component.name);
+    // AnsiConsole.MarkupLine($"[blue]Processing component: {component.name}[/]");
+    if (!Directory.Exists(component.path))
     {
-      AnsiConsole.MarkupLine($"[red]Component file {component} does not exist.[/]");
-      throw new FileNotFoundException($"Component file {component} does not exist.");
+      AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist.[/]");
+      throw new FileNotFoundException($"Component file {component.path} does not exist.");
     }
 
     // new { component, componentName, documentName }.Dump();
 
-    if (componentName == "minio-access-key".Trim('/', '\\'))
+    if (component.name == "minio-access-key".Trim('/', '\\'))
     {
       kustomizationUserList.Add(documentName);
-      break;
     }
-    var componentDoc = ReadStream(Path.Combine(component, "kustomization.yaml"));
+    var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml"));
     if (componentDoc == null)
     {
-      AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component, "kustomization.yaml")}.[/]");
+      AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
       continue;
     }
-    var subComponents = componentDoc.Query("/components").OfType<YamlSequenceNode>()
-      .SelectMany(z => z.AllNodes.OfType<YamlScalarNode>())
-      .Select(z => Path.Combine(path, z.Value))
-      .Select(Path.GetFullPath)
-      .Select(z => Path.GetRelativePath(Directory.GetCurrentDirectory(), z))
-      .Distinct()
-      .Select(z => new { subComponentName = Path.GetFileName(z), subComponentPath = z })
-      .ToList();
+    var subComponents = GetComponents(path, componentDoc.Query("/components"));
 
-    // new { component, componentName, subComponents }.Dump();
-    if (subComponents
-      .Any(z => z.subComponentName == "minio-access-key".Trim('/', '\\')))
+    foreach (var subComponent in subComponents)
     {
-      kustomizationUserList.Add(documentName);
-      break;
+      allComponents.Add(subComponent.name);
+      // AnsiConsole.MarkupLine($"[blue]Processing sub-component: {subComponent.name}[/]");
+      if (subComponent.name == "minio-access-key".Trim('/', '\\'))
+      {
+        kustomizationUserList.Add(documentName);
+      }
     }
   }
+  kustomizeComponents[documentName] = allComponents;
 }
 
 var serializer = new SerializerBuilder().Build();
@@ -133,6 +135,15 @@ var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
 buckets.AddRange(kustomizationUserList);
+foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres")))
+{
+  buckets.Add($"{item.Key}/postgres");
+}
+foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
+{
+  buckets.Add($"{item.Key}/mysql/dump");
+  buckets.Add($"{item.Key}/mysql/snapshot");
+}
 var users = ImmutableArray.CreateBuilder<string>();
 users.AddRange(kustomizationUserList);
 

@@ -20,8 +20,8 @@ spec:
       dumpInstance:
         storage:
           s3:
-            bucketName: mysql-backups
-            prefix: ${APP}/dump/
+            bucketName: ${APP}
+            prefix: mysql/dump/
             config: ${APP}-minio-access-key
             profile: default
             endpoint: https://minio.${CLUSTER_DOMAIN}
@@ -29,8 +29,8 @@ spec:
       snapshot:
         storage:
           s3:
-            bucketName: mysql-backups
-            prefix: ${APP}/snapshot/
+            bucketName: ${APP}
+            prefix: mysql/snapshot/
             config: ${APP}-minio-access-key
             profile: default
             endpoint: https://minio.${CLUSTER_DOMAIN}

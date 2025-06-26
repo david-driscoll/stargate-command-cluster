@@ -38,6 +38,7 @@ spec:
         username: "${CLUSTER_CNAME}"
         credential: "{{ .password }}"
         password: "{{ .password }}"
+        endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
   dataFrom:
     - sourceRef:
         generatorRef:

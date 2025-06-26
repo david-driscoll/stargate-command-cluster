@@ -38,10 +38,11 @@ spec:
         username: "authentik"
         credential: "{{ .password }}"
         password: "{{ .password }}"
+        endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
   dataFrom:
     - sourceRef:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
-          name: "minio-users-3fe398d21211-password-generator"
+          name: "minio-users-74bd47b1c5b0-password-generator"
 

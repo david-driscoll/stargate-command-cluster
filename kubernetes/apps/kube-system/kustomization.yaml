@@ -20,4 +20,4 @@ resources:
   - ./reflector/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./external-secrets/ks.yaml
-  - ./minio-users/ks.yaml
+  # - ./minio-users/ks.yaml

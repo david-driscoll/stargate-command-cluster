@@ -50,17 +50,17 @@ spec:
           name: ${APP}-postgres-user
 
   bootstrap:
-    initdb:
-      database: ${APP}
-      owner: ${APP}
-      secret:
-        name: ${APP}-postgres-user
-    # recovery:
-    #   source: ${APP}-backup
-    #   owner: ${APP}
+    # initdb:
     #   database: ${APP}
+    #   owner: ${APP}
     #   secret:
     #     name: ${APP}-postgres-user
+    recovery:
+      source: ${APP}-backup
+      owner: ${APP}
+      database: ${APP}
+      secret:
+        name: ${APP}-postgres-user
 
   backup:
     retentionPolicy: 30d
@@ -68,7 +68,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://${APP}/postgres
+      destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.${CLUSTER_DOMAIN}
       s3Credentials:
         accessKeyId:
@@ -81,7 +81,7 @@ spec:
   externalClusters:
   - name: ${APP}-backup
     barmanObjectStore:
-      destinationPath: s3://${APP}/postgres
+      destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.${CLUSTER_DOMAIN}
       wal:
         compression: bzip2

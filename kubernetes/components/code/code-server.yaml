@@ -19,7 +19,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.101.0@sha256:1c317c73dd6a8166b8d51c4eda6eea30992dc542c8027f6ac18ba6f3f896f72d
+              tag: 4.101.2@sha256:5f654c1137f8d87c8cf44253318bf94b85f6f9129e426a9956da46eb602dcc5a
 
             args:
               - --auth

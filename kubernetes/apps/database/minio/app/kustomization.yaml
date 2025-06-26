@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
 - ./secret.yaml
 - ./helmrelease.yaml
-- ./certificate.yaml
 - ./cluster-user.yaml
 - ./replica-0-data0.yaml
 - ./replica-1-data0.yaml

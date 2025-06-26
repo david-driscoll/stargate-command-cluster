@@ -27,11 +27,10 @@ spec:
         type: job
         job:
           backoffLimit: 100
-          activeDeadlineSeconds: 100
+          suspend: false
           ttlSecondsAfterFinished: 600
         containers:
           minio-users-3fe398d21211:
-            restartPolicy: Always
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692

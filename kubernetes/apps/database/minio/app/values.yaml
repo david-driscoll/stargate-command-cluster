@@ -50,6 +50,8 @@ tenant:
     protocol: http
   certificate:
     requestAutoCert: true
+    externalCaCertSecret: [ ]
+    externalCertSecret: [ ]
     certConfig:
       commonName: minio.${CLUSTER_DOMAIN}
       dnsNames:

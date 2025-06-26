@@ -50,6 +50,11 @@ tenant:
     protocol: http
   certificate:
     requestAutoCert: true
+    certConfig:
+      commonName: minio.${CLUSTER_DOMAIN}
+      dnsNames:
+        - minio.database.svc.cluster.local
+        - s3.database.svc.cluster.local
   features:
     bucketDNS: true
     enableSFTP: true

@@ -51,10 +51,10 @@ tenant:
   certificate:
     requestAutoCert: false
     externalCaCertSecret:
-      - name: cluster-tls
+      - name: minio-certificate
         type: kubernetes.io/tls
     externalCertSecret:
-      - name: cluster-tls
+      - name: minio-certificate
         type: kubernetes.io/tls
   features:
     bucketDNS: true

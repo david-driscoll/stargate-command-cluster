@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app minio-users-1feb4e2fb4cc
+  name: &app minio-users-a2f67a8002fa
   namespace: &namespace database
 spec:
   commonMetadata:

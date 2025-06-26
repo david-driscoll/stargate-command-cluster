@@ -54,6 +54,8 @@ tenant:
       - name: cluster-tls
         type: kubernetes.io/tls
     externalCertSecret:
+      - name: cluster-tls
+        type: kubernetes.io/tls
       - name: le-production-tls
         type: kubernetes.io/tls
   features:

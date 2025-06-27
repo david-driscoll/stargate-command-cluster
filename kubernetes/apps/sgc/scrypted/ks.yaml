@@ -28,4 +28,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 10Gi

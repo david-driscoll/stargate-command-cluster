@@ -58,5 +58,6 @@
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 5Gi
 #       VOLSYNC_ACCESSMODES: ReadWriteMany

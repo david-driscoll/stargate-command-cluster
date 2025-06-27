@@ -28,3 +28,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace

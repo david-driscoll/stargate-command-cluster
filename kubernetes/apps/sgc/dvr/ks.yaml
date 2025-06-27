@@ -36,6 +36,7 @@
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 2Gi
 #       VOLSYNC_ACCESSMODES: ReadWriteMany
 
@@ -72,6 +73,7 @@
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 2Gi
 #       VOLSYNC_ACCESSMODES: ReadWriteMany
 
@@ -108,6 +110,7 @@
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 2Gi
 #       VOLSYNC_ACCESSMODES: ReadWriteMany
 
@@ -150,4 +153,5 @@
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 1Gi

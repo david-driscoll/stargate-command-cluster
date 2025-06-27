@@ -30,4 +30,4 @@ spec:
   - ../../../../components/password-generator
   postBuild:
     substitute:
-      APP: *app
+      NAMESPACE: *namespace

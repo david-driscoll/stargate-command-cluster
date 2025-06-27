@@ -51,13 +51,13 @@ tenant:
   certificate:
     requestAutoCert: false
     externalCaCertSecret:
-      - public-bundle
-      - cluster-tls
-      - le-production-tls
+      - name: public-bundle
+      - name: cluster-tls
+      - name: le-production-tls
     externalCertSecret:
-      - public-bundle
-      - cluster-tls
-      - le-production-tls
+      - name: public-bundle
+      - name: cluster-tls
+      - name: le-production-tls
   features:
     bucketDNS: true
     enableSFTP: true

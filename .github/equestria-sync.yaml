@@ -17,6 +17,8 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/database/
     dest: kubernetes/apps/database/
     deleteOrphaned: true
+    exclude: |
+      minio-users/
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

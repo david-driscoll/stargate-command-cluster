@@ -52,7 +52,7 @@ tenant:
     requestAutoCert: false
   features:
     bucketDNS: true
-    enableSFTP: true
+    enableSFTP: false
   users:
     - name: cluster-user
   exposeServices:

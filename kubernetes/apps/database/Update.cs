@@ -134,7 +134,7 @@ var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
 buckets.AddRange(kustomizationUserList);
-foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres")))
+foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres") || z.Value.Contains("postgres-init")))
 {
   buckets.Add($"{item.Key}/postgres");
 }

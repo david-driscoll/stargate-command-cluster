@@ -49,11 +49,7 @@ tenant:
     port: 9000
     protocol: http
   certificate:
-    requestAutoCert: false
-    externalCaCertSecret:
-      - name: public-bundle
-    externalCertSecret:
-      - name: ${CLUSTER_CNAME}-tls
+    requestAutoCert: true
   features:
     bucketDNS: true
     enableSFTP: true

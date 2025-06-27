@@ -58,9 +58,7 @@ tenant:
       commonName: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       dnsNames:
         - "s3.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
-        - "*.s3.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
         - "sss.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
-        - "*.sss.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
   features:
     bucketDNS: true
     enableSFTP: true
@@ -73,3 +71,26 @@ tenant:
   ###
   # Add environment variables to be set in MinIO container (https://github.com/minio/minio/tree/master/docs/config)
   env: [ ]
+ingress:
+  api:
+    enabled: true
+    ingressClassName: internal
+    annotations:
+      reloader.stakater.com/auto: "true"
+      external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # traefik.ingress.kubernetes.io/router.middlewares: TODO?
+    host: s3.${CLUSTER_DOMAIN}
+    path: /
+    pathType: Prefix
+  console:
+    enabled: true
+    ingressClassName: internal
+    annotations:
+      reloader.stakater.com/auto: "true"
+      external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # traefik.ingress.kubernetes.io/router.middlewares: TODO?
+    host: minio.${CLUSTER_DOMAIN}
+    path: /
+    pathType: Prefix

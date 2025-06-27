@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-6d5a0e298d94
+  name: minio-users-57609750c235
 spec:
   timeout: 5m
   interval: 30m
@@ -23,14 +23,14 @@ spec:
     keepHistory: false
   values:
     controllers:
-      minio-users-6d5a0e298d94:
+      minio-users-57609750c235:
         type: job
         job:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
         containers:
-          minio-users-6d5a0e298d94:
+          minio-users-57609750c235:
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -41,13 +41,7 @@ spec:
             - >-
               mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
 
-              mc mb -p "$MC_ALIAS/authentik"
-
-              mc mb -p "$MC_ALIAS/authentik/postgres"
-
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
-
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
@@ -76,16 +70,6 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: cluster-user
-                    key: password
-              MINIO_USER_AUTHENTIK:
-                valueFrom:
-                  secretKeyRef:
-                    name: authentik-minio-access-key
-                    key: username
-              MINIO_PASSWORD_AUTHENTIK:
-                valueFrom:
-                  secretKeyRef:
-                    name: authentik-minio-access-key
                     key: password
             resources:
               requests:

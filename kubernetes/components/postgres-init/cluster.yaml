@@ -64,6 +64,9 @@ spec:
         maxParallel: 8
       destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.database.svc.cluster.local
+      endpointCA:
+        name: public-bundle
+        key: ca-certificates.crt
       s3Credentials:
         accessKeyId:
           name: ${APP}-minio-access-key
@@ -77,6 +80,9 @@ spec:
     barmanObjectStore:
       destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.database.svc.cluster.local
+      endpointCA:
+        name: public-bundle
+        key: ca-certificates.crt
       wal:
         compression: bzip2
         maxParallel: 8

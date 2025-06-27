@@ -37,3 +37,14 @@ patches:
               kind: ConfigMap
             - name: shared-secrets
               kind: Secret
+replacements:
+  - source:
+      kind: Namespace
+      version: v1
+      fieldPath: metadata.name
+    targets:
+      - select:
+          kind: SecretStore
+          name: external-secrets-local
+        fieldPaths:
+          - spec.provider.kubernetes.remoteNamespace

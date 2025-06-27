@@ -50,7 +50,8 @@ tenant:
     protocol: http
   certificate:
     requestAutoCert: true
-    externalCaCertSecret: [ ]
+    externalCaCertSecret:
+      
     externalCertSecret: [ ]
     certConfig:
       commonName: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}

@@ -49,10 +49,10 @@ tenant:
     port: 9000
     protocol: http
   certificate:
-    requestAutoCert: false
+    requestAutoCert: true
   features:
     bucketDNS: true
-    enableSFTP: false
+    enableSFTP: true
   users:
     - name: cluster-user
   exposeServices:
@@ -82,6 +82,6 @@ ingress:
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       # traefik.ingress.kubernetes.io/router.middlewares: TODO?
-    host: minio.${CLUSTER_DOMAIN}
+    host: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
     path: /
     pathType: Prefix

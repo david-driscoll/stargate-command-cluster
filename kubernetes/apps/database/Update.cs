@@ -104,9 +104,9 @@ var serializer = new SerializerBuilder().Build();
 #endregion
 
 #region Templates
-var minioUsersRelease = "kubernetes/apps/kube-system/minio-users/app/helmrelease.yaml";
+var minioUsersRelease = "kubernetes/apps/database/minio-users/app/helmrelease.yaml";
 var minioUserReleaseMapping = ReadStream(minioUsersRelease)!;
-var minioKsYaml = "kubernetes/apps/kube-system/minio-users/ks.yaml";
+var minioKsYaml = "kubernetes/apps/database/minio-users/ks.yaml";
 var minioKsYamlMapping = ReadStream(minioKsYaml)!;
 var name = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
@@ -128,7 +128,7 @@ var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single
 
 var userTemplate = "kubernetes/apps/database/minio/app/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
-var kustomizationPath = "kubernetes/apps/kube-system/minio-users/app/kustomization.yaml";
+var kustomizationPath = "kubernetes/apps/database/minio-users/app/kustomization.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
@@ -145,7 +145,7 @@ foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
 var users = ImmutableArray.CreateBuilder<string>();
 users.AddRange(kustomizationUserList);
 
-var config = "kubernetes/apps/kube-system/minio-users/config.yaml";
+var config = "kubernetes/apps/database/minio-users/config.yaml";
 if (!File.Exists(config))
 {
   File.WriteAllText(config, "");

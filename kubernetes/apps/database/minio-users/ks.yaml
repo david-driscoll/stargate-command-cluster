@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kube-system/minio-users/app
+  path: ./kubernetes/apps/database/minio-users/app
   prune: true
   retryInterval: 2m
   force: true

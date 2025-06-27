@@ -12,18 +12,18 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`${APP}.${ROOT_DOMAIN}`)
-      kind: Rule
-      services:
-        - name: ${APP}-console
-          port: https-console
-          passHostHeader: true
-    - match: Host(`s3.${ROOT_DOMAIN}`) || Host(`*.s3.${ROOT_DOMAIN}`)
-      kind: Rule
-      services:
-        - name: minio
-          port: https-minio
-          passHostHeader: true
+    # - match: Host(`${APP}.${ROOT_DOMAIN}`)
+    #   kind: Rule
+    #   services:
+    #     - name: ${APP}-console
+    #       port: https-console
+    #       passHostHeader: true
+    # - match: Host(`s3.${ROOT_DOMAIN}`) || Host(`*.s3.${ROOT_DOMAIN}`)
+    #   kind: Rule
+    #   services:
+    #     - name: minio
+    #       port: https-minio
+    #       passHostHeader: true
     - match: Host(`sss.${ROOT_DOMAIN}`) || Host(`*.sss.${ROOT_DOMAIN}`)
       kind: Rule
       services:

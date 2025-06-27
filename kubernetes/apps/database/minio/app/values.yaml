@@ -82,6 +82,6 @@ ingress:
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       # traefik.ingress.kubernetes.io/router.middlewares: TODO?
-    host: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+    host: minio.${CLUSTER_DOMAIN}
     path: /
     pathType: Prefix

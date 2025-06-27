@@ -50,6 +50,14 @@ tenant:
     protocol: http
   certificate:
     requestAutoCert: false
+    externalCaCertSecret:
+      - name: public-bundle
+      - name: cluster-tls
+      - name: le-production-tls
+    externalCertSecret:
+      - name: public-bundle
+      - name: cluster-tls
+      - name: le-production-tls
   features:
     bucketDNS: true
     enableSFTP: true

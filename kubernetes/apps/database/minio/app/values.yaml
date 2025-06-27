@@ -51,8 +51,9 @@ tenant:
   certificate:
     requestAutoCert: true
     externalCaCertSecret:
-      
-    externalCertSecret: [ ]
+      - public-bundle
+    externalCertSecret:
+      - public-bundle
     certConfig:
       commonName: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       dnsNames:

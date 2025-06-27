@@ -49,16 +49,15 @@ tenant:
     port: 9000
     protocol: http
   certificate:
-    requestAutoCert: true
+    requestAutoCert: false
     externalCaCertSecret:
       - public-bundle
+      - cluster-tls
+      - le-production-tls
     externalCertSecret:
       - public-bundle
-    certConfig:
-      commonName: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
-      dnsNames:
-        - "s3.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
-        - "sss.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
+      - cluster-tls
+      - le-production-tls
   features:
     bucketDNS: true
     enableSFTP: true

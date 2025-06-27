@@ -63,7 +63,7 @@ spec:
         - secretRef:
             name: authentik-minio
         - secretRef:
-            name: authentik-postgres
+            name: authentik-postgreslocal
 
       # volumeMounts:
       #   - name: custom

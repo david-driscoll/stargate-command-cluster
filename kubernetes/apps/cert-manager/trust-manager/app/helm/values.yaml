@@ -9,3 +9,6 @@ app:
     service:
       servicemonitor:
         enabled: true
+secretTargets:
+  authorizedSecretsAll: true
+  enabled: true

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-c247cb898579
+  name: minio-users-d0f0a8ab9355
 spec:
   timeout: 5m
   interval: 30m
@@ -23,14 +23,14 @@ spec:
     keepHistory: false
   values:
     controllers:
-      minio-users-c247cb898579:
+      minio-users-d0f0a8ab9355:
         type: job
         job:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
         containers:
-          minio-users-c247cb898579:
+          minio-users-d0f0a8ab9355:
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -41,15 +41,11 @@ spec:
             - >-
               mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
 
-              mc mb -p "$MC_ALIAS/tivi-cache"
-
-              mc mb -p "$MC_ALIAS/tivi-results"
-
-              mc mb -p "$MC_ALIAS/iris"
+              mc mb -p "$MC_ALIAS/authentik"
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI_SYNC" "$MINIO_PASSWORD_TIVI_SYNC"
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
@@ -79,15 +75,15 @@ spec:
                   secretKeyRef:
                     name: cluster-user
                     key: password
-              MINIO_USER_TIVI_SYNC:
+              MINIO_USER_AUTHENTIK:
                 valueFrom:
                   secretKeyRef:
-                    name: tivi-sync-minio-access-key
+                    name: authentik-minio-access-key
                     key: username
-              MINIO_PASSWORD_TIVI_SYNC:
+              MINIO_PASSWORD_AUTHENTIK:
                 valueFrom:
                   secretKeyRef:
-                    name: tivi-sync-minio-access-key
+                    name: authentik-minio-access-key
                     key: password
             resources:
               requests:

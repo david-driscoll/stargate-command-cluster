@@ -17,8 +17,6 @@ spec:
   secretName: ${CLUSTER_CNAME}-tls
   secretTemplate:
     annotations:
-      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       reloader.stakater.com/auto: "true"
   issuerRef:
     name: selfsigned-ca

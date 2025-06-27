@@ -53,10 +53,10 @@ tenant:
     externalCaCertSecret: [ ]
     externalCertSecret: [ ]
     certConfig:
-      commonName: minio.${CLUSTER_DOMAIN}
+      commonName: minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       dnsNames:
-        - minio.database.svc.cluster.local
-        - s3.database.svc.cluster.local
+        - minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+        - s3.database.svc.${INTERNAL_CLUSTER_DOMAIN}
   features:
     bucketDNS: true
     enableSFTP: true

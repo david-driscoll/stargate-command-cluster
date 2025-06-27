@@ -53,8 +53,6 @@ spec:
       namespace: volsync-system
     - name: cloudnative-pg
       namespace: database
-    - name: idp-secrets
-      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system

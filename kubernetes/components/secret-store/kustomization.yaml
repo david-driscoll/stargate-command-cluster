@@ -3,37 +3,4 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-  - ./cluster-secrets.sops.yaml
-  - ./shared-secrets.sops.yaml
-  - ./namespace.yaml
-  - ./democratic-csi.yaml
-  - ./sops-age.sops.yaml
   - ./secret-store.yaml
-configMapGenerator:
-  - name: cluster-versions
-    envs:
-      - ../../../versions.env
-    options:
-      disableNameSuffixHash: true
-patches:
-  - target:
-      group: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-    patch: |-
-      apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      metadata:
-        name: not-used
-      spec:
-        decryption:
-          provider: sops
-          secretRef:
-            name: sops-age
-        postBuild:
-          substituteFrom:
-            - name: cluster-secrets
-              kind: Secret
-            - name: cluster-versions
-              kind: ConfigMap
-            - name: shared-secrets
-              kind: Secret

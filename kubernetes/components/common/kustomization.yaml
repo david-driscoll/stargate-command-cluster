@@ -8,7 +8,6 @@ resources:
   - ./namespace.yaml
   - ./democratic-csi.yaml
   - ./sops-age.sops.yaml
-  - ./secret-store.yaml
 configMapGenerator:
   - name: cluster-versions
     envs:

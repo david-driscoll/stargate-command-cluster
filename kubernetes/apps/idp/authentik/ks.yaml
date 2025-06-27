@@ -35,7 +35,9 @@ spec:
     - ../../../../components/postgres-init
     - ../../../../components/tailscale
     - ../../../../components/volsync
+    - ../../../../components/secret-store
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_ACCESSMODES: ReadWriteMany

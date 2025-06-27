@@ -58,6 +58,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 4Gi
 
 ---
@@ -90,6 +91,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -128,6 +130,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 20Gi
 
 ---
@@ -163,6 +166,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 1Gi
 
 ---
@@ -198,6 +202,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 1Gi
 
 # ---
@@ -232,6 +237,7 @@ spec:
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 10Gi
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -263,5 +269,6 @@ spec:
 #   postBuild:
 #     substitute:
 #       APP: *app
+#       NAMESPACE: *namespace
 #       VOLSYNC_CAPACITY: 5Gi
 #       VOLSYNC_ACCESSMODES: ReadWriteMany

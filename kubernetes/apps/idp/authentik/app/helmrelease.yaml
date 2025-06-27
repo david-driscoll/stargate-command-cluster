@@ -57,38 +57,13 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
 
-      env:
-        - name: AUTHENTIK_POSTGRESQL__HOST
-          valueFrom:
-            secretKeyRef:
-              name: authentik-postgres-user
-              key: host
-        - name: AUTHENTIK_POSTGRESQL__NAME
-          valueFrom:
-            secretKeyRef:
-              name: authentik-postgres-user
-              key: database
-        - name: AUTHENTIK_POSTGRESQL__PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: authentik-postgres-user
-              key: password
-        - name: AUTHENTIK_POSTGRESQL__PORT
-          valueFrom:
-            secretKeyRef:
-              name: authentik-postgres-user
-              key: port
-        - name: AUTHENTIK_POSTGRESQL__USER
-          valueFrom:
-            secretKeyRef:
-              name: authentik-postgres-user
-              key: username
-
       envFrom: &envFrom
         - secretRef:
             name: authentik
         - secretRef:
             name: authentik-minio
+        - secretRef:
+            name: authentik-postgres
 
       # volumeMounts:
       #   - name: custom

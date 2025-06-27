@@ -65,7 +65,7 @@ spec:
       destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       endpointCA:
-        name: public-bundle
+        name: ca-bundle
         key: ca-certificates.crt
       s3Credentials:
         accessKeyId:
@@ -81,7 +81,7 @@ spec:
       destinationPath: s3://${APP}/postgres/
       endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       endpointCA:
-        name: public-bundle
+        name: ca-bundle
         key: ca-certificates.crt
       wal:
         compression: bzip2

@@ -7,5 +7,6 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  # - ./authentik/ks.yaml
+  - ./authentik/ks.yaml
   - ./tailscale/ks.yaml
+  - ./shared/ks.yaml

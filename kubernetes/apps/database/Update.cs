@@ -35,13 +35,13 @@ var kustomizationUserList = new HashSet<string>();
 var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
 // Now lets search for all the implied users, and update minio.yaml
-foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
-    .Where(file => file.EndsWith("ks.yaml", StringComparison.OrdinalIgnoreCase)))
+foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
+    .Where(file => file.EndsWith("ks.yaml", StringComparison.OrdinalIgnoreCase))
+    .SelectMany(ReadStream, (doc, path) => (doc, path)))
 {
-  var kustomizeDoc = ReadStream(kustomize);
   if (kustomizeDoc == null)
   {
-    AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {kustomize}.[/]");
+    AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {kustomizePath}.[/]");
     continue;
   }
   static IReadOnlyList<(string name, string path)> GetComponents(string path, IEnumerable<YamlNode> nodes)
@@ -79,10 +79,11 @@ foreach (var kustomize in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml",
       kustomizationUserList.Add(documentName);
     }
   }
+  new { documentName, path, allComponents }.Dump();
   static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
   {
 
-    var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml"));
+    var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml")).Single();
     if (componentDoc == null)
     {
       AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
@@ -105,9 +106,9 @@ var serializer = new SerializerBuilder().Build();
 
 #region Templates
 var minioUsersRelease = "kubernetes/apps/database/minio-users/app/helmrelease.yaml";
-var minioUserReleaseMapping = ReadStream(minioUsersRelease)!;
+var minioUserReleaseMapping = ReadStream(minioUsersRelease)!.Single();
 var minioKsYaml = "kubernetes/apps/database/minio-users/ks.yaml";
-var minioKsYamlMapping = ReadStream(minioKsYaml)!;
+var minioKsYamlMapping = ReadStream(minioKsYaml)!.Single();
 var name = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
 var controller = controllers.Query($"/{name}").OfType<YamlMappingNode>().Single();
@@ -150,17 +151,17 @@ if (!File.Exists(config))
 {
   File.WriteAllText(config, "");
 }
-var configDoc = ReadStream(config);
+var configDoc = ReadStream(config).SingleOrDefault();
 if (configDoc is { })
 {
   var _buckets = configDoc.Query("/buckets").OfType<YamlSequenceNode>().ToList();
   var _users = configDoc.Query("/users").OfType<YamlSequenceNode>().ToList();
-  buckets.AddRange(_buckets
-      .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
-      .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
-  users.AddRange(_users
-  .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
-  .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
+  // buckets.AddRange(_buckets
+  //     .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+  //     .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
+  // users.AddRange(_users
+  // .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+  // .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
 
   // var configUsers = configDoc.Query("/users").OfType<YamlSequenceNode>().ToList().Dump()
   //     .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value)
@@ -250,14 +251,17 @@ File.WriteAllText(minioKsYaml,
 serializer.Serialize(minioKsYamlMapping).Replace("*app:", "*app :"));
 
 
-static YamlMappingNode? ReadStream(string path)
+static IEnumerable<YamlMappingNode> ReadStream(string path)
 {
   var doc = new YamlStream();
   using var reader = new StringReader(File.ReadAllText(path));
   doc.Load(reader);
 
-  var rootNode = doc.Documents.FirstOrDefault()?.RootNode as YamlMappingNode;
-  return rootNode;
+
+  var rootNodes = doc.Documents
+  .Select(z => (z.RootNode as YamlMappingNode)!)
+  .Where(z => z is not null);
+  return rootNodes;
 }
 
 record MinioConfig(ImmutableArray<string> Buckets, ImmutableArray<string> Users);

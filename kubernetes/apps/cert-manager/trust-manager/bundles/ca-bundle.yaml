@@ -3,7 +3,7 @@
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
-  name: public-bundle
+  name: ca-bundle
   annotations:
     reloader.stakater.com/auto: "true"
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
@@ -14,13 +14,10 @@ spec:
     - useDefaultCAs: true
     - secret:
         name: cluster-tls
-        key: tls.crt
-    - secret:
-        name: le-production-tls
-        key: tls.crt
+        key: ca.crt
     - secret:
         name: root-secret
-        key: tls.crt
+        key: ca.crt
   target:
     secret:
       key: "ca-certificates.crt"

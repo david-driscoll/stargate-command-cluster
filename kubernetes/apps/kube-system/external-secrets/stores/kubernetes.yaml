@@ -42,7 +42,7 @@ subjects:
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
-  name: external-secrets-database
+  name: database
 spec:
   provider:
     kubernetes:
@@ -62,7 +62,7 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
-  name: external-secrets-network
+  name: network
 spec:
   provider:
     kubernetes:

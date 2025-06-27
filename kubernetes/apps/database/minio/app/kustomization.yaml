@@ -4,7 +4,7 @@ resources:
 - ./secret.yaml
 - ./cluster-user.yaml
 - ./ingress.yaml
-- ./tenant.yaml
+- ./helmrelease.yaml
 - ./replica-0-data0.yaml
 - ./replica-1-data0.yaml
 - ./replica-2-data0.yaml

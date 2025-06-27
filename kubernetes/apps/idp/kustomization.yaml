@@ -9,4 +9,3 @@ components:
 resources:
   - ./authentik/ks.yaml
   - ./tailscale/ks.yaml
-  - ./shared/ks.yaml

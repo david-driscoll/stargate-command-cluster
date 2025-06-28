@@ -5,11 +5,10 @@ kind: ExternalSecret
 metadata:
   name: cluster-user
 spec:
-  refreshPolicy: Periodic
-  refreshInterval: "15m"
+  refreshPolicy: OnChange
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: ${APP}
   target:
     name: cluster-user
     creationPolicy: Owner
@@ -40,6 +39,27 @@ spec:
         password: "{{ .password }}"
         endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
         region: "homelab"
+  dataFrom:
+    - extract:
+        key: "${APP}-postgres-password"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name "cluster-user-password"
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: CreatedOnce
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      data:
+        password: "{{ .password }}"
   dataFrom:
     - sourceRef:
         generatorRef:

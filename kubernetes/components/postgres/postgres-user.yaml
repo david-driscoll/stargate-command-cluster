@@ -7,8 +7,10 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  refreshPolicy: Periodic
-  refreshInterval: "15m"
+  refreshPolicy: OnChange
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: ${NAMESPACE}
   target:
     name: *name
     creationPolicy: Owner
@@ -28,6 +30,27 @@ spec:
         pgpass: "${APP}-postgres-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
         jdbc-uri: "jdbc:postgresql://${APP}-postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
         uri: "postgresql://${APP}:{{ .password }}@${APP}-postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
+  dataFrom:
+    - extract:
+        key: "${APP}-postgres-password"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name "${APP}-postgres-password"
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: CreatedOnce
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      data:
+        password: "{{ .password }}"
   dataFrom:
     - sourceRef:
         generatorRef:

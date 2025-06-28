@@ -28,6 +28,11 @@ spec:
   target:
     name: "data1-${CLUSTER_CNAME}-minio-0-volsync-secret"
     template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
       data:
         RESTIC_REPOSITORY: "/repository/data1-${CLUSTER_CNAME}-minio-0"
         RESTIC_PASSWORD: "{{ .credential }}"

@@ -47,7 +47,11 @@ spec:
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_CLUSTER_USER" consoleAdmin
+
               mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
+
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_AUTHENTIK" readwrite
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}

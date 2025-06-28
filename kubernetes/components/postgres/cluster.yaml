@@ -66,10 +66,11 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://${APP}/postgres/
-      endpointURL: https://s3.${CLUSTER_DOMAIN}
+      # endpointURL: https://minio.${CLUSTER_DOMAIN}
+      endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       endpointCA:
-        name: ca-bundle
-        key: ca-certificates.crt
+        name: kube-root-ca.crt
+        key: ca.crt
       s3Credentials:
         region:
           name: ${APP}-minio-access-key
@@ -85,10 +86,11 @@ spec:
   - name: ${APP}-backup
     barmanObjectStore:
       destinationPath: s3://${APP}/postgres/
-      endpointURL: https://s3.${CLUSTER_DOMAIN}
+      # endpointURL: https://minio.${CLUSTER_DOMAIN}
+      endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
       endpointCA:
-        name: ca-bundle
-        key: ca-certificates.crt
+        name: kube-root-ca.crt
+        key: ca.crt
       wal:
         compression: bzip2
         maxParallel: 8

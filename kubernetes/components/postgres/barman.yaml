@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: ${APP}
+spec:
+  configuration:
+    destinationPath: s3://${APP}/postgres/
+    endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+    endpointCA:
+      name: kube-root-ca.crt
+      key: ca.crt
+    s3Credentials:
+      accessKeyId:
+        name: ${APP}-minio-access-key
+        key: username
+      secretAccessKey:
+        name: ${APP}-minio-access-key
+        key: credential
+    wal:
+      compression: gzip

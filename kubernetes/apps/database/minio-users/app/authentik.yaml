@@ -41,7 +41,7 @@ spec:
         region: "homelab"
   dataFrom:
     - extract:
-        key: "minio-users-14b9db4210ea-postgres-password"
+        key: "authentik-minio-access-key-password"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json

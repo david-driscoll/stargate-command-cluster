@@ -9,8 +9,8 @@ spec:
     destinationPath: s3://${APP}/postgres/
     endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
     endpointCA:
-      name: kube-root-ca.crt
-      key: ca.crt
+      name: ca-bundle
+      key: ca-certificates.crt
     s3Credentials:
       accessKeyId:
         name: ${APP}-minio-access-key

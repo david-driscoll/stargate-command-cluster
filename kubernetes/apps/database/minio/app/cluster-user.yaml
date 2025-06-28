@@ -41,7 +41,7 @@ spec:
         region: "homelab"
   dataFrom:
     - extract:
-        key: "${APP}-postgres-password"
+        key: "cluster-user-password"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json

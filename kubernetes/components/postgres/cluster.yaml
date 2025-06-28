@@ -59,48 +59,16 @@ spec:
       secret:
         name: ${APP}-postgres-user
 
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://${APP}/postgres/
-      # endpointURL: https://minio.${CLUSTER_DOMAIN}
-      endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
-      endpointCA:
-        name: kube-root-ca.crt
-        key: ca.crt
-      s3Credentials:
-        region:
-          name: ${APP}-minio-access-key
-          key: region
-        accessKeyId:
-          name: ${APP}-minio-access-key
-          key: username
-        secretAccessKey:
-          name: ${APP}-minio-access-key
-          key: credential
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: ${APP}
 
   externalClusters:
-  - name: ${APP}-backup
-    barmanObjectStore:
-      destinationPath: s3://${APP}/postgres/
-      # endpointURL: https://minio.${CLUSTER_DOMAIN}
-      endpointURL: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
-      endpointCA:
-        name: kube-root-ca.crt
-        key: ca.crt
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      s3Credentials:
-        region:
-          name: ${APP}-minio-access-key
-          key: region
-        accessKeyId:
-          name: ${APP}-minio-access-key
-          key: username
-        secretAccessKey:
-          name: ${APP}-minio-access-key
-          key: credential
+    - name: ${APP}-backup
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: ${APP}
+          serverName: ${APP}

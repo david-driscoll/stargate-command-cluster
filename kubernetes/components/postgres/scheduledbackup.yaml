@@ -5,10 +5,13 @@ kind: ScheduledBackup
 metadata:
   name: ${APP}
 spec:
+  cluster:
+    name: ${APP}
   schedule: "${POSTGRES_BACKUP_SCHEDULE:-0 0 2 * * *}"
   immediate: true
   suspend: false
   target: prefer-standby
   backupOwnerReference: self
-  cluster:
-    name: ${APP}
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io

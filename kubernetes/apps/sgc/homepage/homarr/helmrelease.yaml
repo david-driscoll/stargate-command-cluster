@@ -39,7 +39,7 @@ spec:
               # UMASK: 002
               TZ: ${TIMEZONE}
               DEFAULT_COLOR_SCHEME: dark
-              PORT: &port 7575
+              PORT: &port 8585
               SECRET_ENCRYPTION_KEY:
                 valueFrom:
                   secretKeyRef:

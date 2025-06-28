@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: homarr-minio-access-key
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: "15m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: homarr-minio-access-key
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        CONSOLE_ACCESS_KEY: "homarr"
+        CONSOLE_SECRET_KEY: "{{ .password }}"
+        credentials: |
+          [default]
+          aws_access_key_id = homarr
+          aws_secret_access_key = {{ .password }}
+        config: |
+          [default]
+          region=home
+        S3_PROVIDER: Minio
+        S3_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+        AWS_ACCESS_KEY_ID: "homarr"
+        AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        username: "homarr"
+        credential: "{{ .password }}"
+        password: "{{ .password }}"
+        endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
+        region: "homelab"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: "minio-users-bc75f24c4efd-password-generator"

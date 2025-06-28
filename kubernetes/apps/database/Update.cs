@@ -197,12 +197,14 @@ envReference.Children.Where(z => z.Key.ToString().StartsWith("MINIO_USER_") || z
   .ForEach(z => envReference.Children.Remove(z.Key));
 
 commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_CLUSTER_USER\" \"$MINIO_PASSWORD_CLUSTER_USER\"");
+commandBuilder.Add($"mc admin policy attach \"$MC_ALIAS\" --user \"$MINIO_USER_CLUSTER_USER\" consoleAdmin");
 envReference.Children.Add(new YamlScalarNode($"MINIO_USER_CLUSTER_USER"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"cluster-user", "username"));
 envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"cluster-user", "password"));
 foreach (var item in minioConfig.Users)
 {
   var envKey = item.ToUpperInvariant().Replace("-", "_");
   commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_{envKey}\" \"$MINIO_PASSWORD_{envKey}\"");
+  commandBuilder.Add($"mc admin policy attach \"$MC_ALIAS\" --user \"$MINIO_USER_{envKey}\" readwrite");
   envReference.Children.Add(new YamlScalarNode($"MINIO_USER_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{item}-minio-access-key", "username"));
   envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{item}-minio-access-key", "password"));
 }

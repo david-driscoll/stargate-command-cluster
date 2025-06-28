@@ -5,11 +5,10 @@ kind: ExternalSecret
 metadata:
   name: homarr-minio-access-key
 spec:
-  refreshPolicy: Periodic
-  refreshInterval: "15m"
+  refreshPolicy: OnChange
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: minio-users-bc75f24c4efd
   target:
     name: homarr-minio-access-key
     creationPolicy: Owner
@@ -40,6 +39,27 @@ spec:
         password: "{{ .password }}"
         endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
         region: "homelab"
+  dataFrom:
+    - extract:
+        key: "minio-users-bc75f24c4efd-postgres-password"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name "homarr-minio-access-key-password"
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: CreatedOnce
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      data:
+        password: "{{ .password }}"
   dataFrom:
     - sourceRef:
         generatorRef:

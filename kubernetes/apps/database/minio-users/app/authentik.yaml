@@ -5,11 +5,10 @@ kind: ExternalSecret
 metadata:
   name: authentik-minio-access-key
 spec:
-  refreshPolicy: Periodic
-  refreshInterval: "15m"
+  refreshPolicy: OnChange
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: ${NAMESPACE}
   target:
     name: authentik-minio-access-key
     creationPolicy: Owner
@@ -41,8 +40,29 @@ spec:
         endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
         region: "homelab"
   dataFrom:
+    - extract:
+        key: "minio-users-14b9db4210ea-postgres-password"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name "authentik-minio-access-key-password"
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: CreatedOnce
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      data:
+        password: "{{ .password }}"
+  dataFrom:
     - sourceRef:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
-          name: "minio-users-6d5a0e298d94-password-generator"
+          name: "minio-users-14b9db4210ea-password-generator"

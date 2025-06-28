@@ -41,7 +41,7 @@ spec:
         region: "homelab"
   dataFrom:
     - extract:
-        key: "minio-users-bc75f24c4efd-postgres-password"
+        key: "minio-users-14b9db4210ea-postgres-password"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
@@ -65,4 +65,4 @@ spec:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
-          name: "minio-users-bc75f24c4efd-password-generator"
+          name: "minio-users-14b9db4210ea-password-generator"

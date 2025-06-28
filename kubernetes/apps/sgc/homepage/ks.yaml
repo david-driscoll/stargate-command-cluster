@@ -38,6 +38,12 @@ spec:
   path: ./kubernetes/apps/sgc/homepage/homarr
   prune: true
   dependsOn:
+    - name: tailscale-idp
+      namespace: *namespace
+    - name: minio
+      namespace: database
+    - name: volsync
+      namespace: volsync-system
     - name: mysql-operator
       namespace: database
     - name: sgc-secrets

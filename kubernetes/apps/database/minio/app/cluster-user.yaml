@@ -8,7 +8,7 @@ spec:
   refreshPolicy: OnChange
   secretStoreRef:
     kind: ClusterSecretStore
-    name: ${APP}
+    name: ${NAMESPACE}
   target:
     name: cluster-user
     creationPolicy: Owner

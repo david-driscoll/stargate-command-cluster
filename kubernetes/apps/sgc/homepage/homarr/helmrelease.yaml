@@ -1,113 +1,42 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: homarr
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 3.18.1
+  url: oci://ghcr.io/homarr-labs/charts/homarr
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app homarr
 spec:
-  interval: 15m
+  interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: homarr
   maxHistory: 3
   install:
-    createNamespace: true
     remediation:
       retries: 3
+    replace: true
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
+    force: true
     remediation:
       retries: 3
       strategy: uninstall
   uninstall:
     keepHistory: false
-  values:
-    controllers:
-      *app :
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: ghcr.io/homarr-labs/homarr
-              tag: v1.25.0@sha256:568159d99874f307d57301a88468f2b9e1bf637e5ddb64e39aecb14668de2f6d
-              pullPolicy: IfNotPresent
-            env:
-              # PUID: 568
-              # PGID: 568
-              # UMASK: 002
-              TZ: ${TIMEZONE}
-              DEFAULT_COLOR_SCHEME: dark
-              PORT: &port 8585
-              SECRET_ENCRYPTION_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: ${APP}-secret
-                    key: SECRET_ENCRYPTION_KEY
-            envFrom:
-              - secretRef:
-                  name: ${APP}-oidc-credentials
-            securityContext:
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: false
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: false
-            resources:
-              requests:
-                cpu: 50m
-                memory: "256Mi"
-              limits:
-                cpu: 500m
-                memory: "1Gi"
-
-    # defaultPodOptions:
-    #   securityContext:
-    #     fsGroup: 568
-    #     fsGroupChangePolicy: "OnRootMismatch"
-    #     runAsGroup: 568
-    #     runAsNonRoot: false
-    #     runAsUser: 568
-    #     supplementalGroups: [1000]
-
-    service:
-      *app :
-        controller: *app
-        ports:
-          http:
-            protocol: TCP
-            port: *port
-            primary: true
-
-    ingress:
-      internal:
-        className: internal
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hosts:
-          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: *app
-                  port: http
-
-    persistence:
-      appdata:
-        existingClaim: *app
+  valuesFrom:
+    - kind: ConfigMap
+      name: homarr-values

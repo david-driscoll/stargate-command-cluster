@@ -54,8 +54,6 @@ spec:
   replica:
     enabled: true
     source: ${APP}-backup
-    primary: ${APP}-postgres
-    self: ${APP}-postgres
 
   bootstrap:
     recovery:

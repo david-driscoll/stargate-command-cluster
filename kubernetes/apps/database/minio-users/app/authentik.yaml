@@ -5,7 +5,8 @@ kind: ExternalSecret
 metadata:
   name: authentik-minio-access-key
 spec:
-  refreshPolicy: OnChange
+  refreshPolicy: Periodic
+  refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
     name: ${NAMESPACE}

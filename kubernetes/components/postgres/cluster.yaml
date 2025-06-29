@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &app ${APP}-db
+  name: &app ${APP}-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -51,10 +51,9 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
-  # might be too chattyy
-  # replica:
-  #   enabled: true
-  #   source: ${APP}
+  replica:
+    enabled: true
+    source: ${APP}
 
   bootstrap:
     recovery:

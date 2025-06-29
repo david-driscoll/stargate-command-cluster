@@ -31,13 +31,13 @@ spec:
           [default]
           region=home
         S3_PROVIDER: Minio
-        S3_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+        S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
         AWS_ACCESS_KEY_ID: "${CLUSTER_CNAME}"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
         username: "${CLUSTER_CNAME}"
         credential: "{{ .password }}"
         password: "{{ .password }}"
-        endpoint: "https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}"
+        endpoint: "https://s3.${CLUSTER_DOMAIN}"
         region: "homelab"
   dataFrom:
     - extract:

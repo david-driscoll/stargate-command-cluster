@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &app ${APP}-postgres
+  name: &app ${APP}-postgres-replica
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -57,7 +57,7 @@ spec:
 
   bootstrap:
     recovery:
-      source: ${APP}-postgres-backup
+      source: ${APP}-postgres
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
@@ -66,7 +66,7 @@ spec:
         barmanObjectName: ${APP}-minio
 
   externalClusters:
-    - name: ${APP}-postgres-backup
+    - name: ${APP}-postgres
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:

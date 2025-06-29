@@ -51,9 +51,9 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
-  replica:
-    enabled: true
-    source: ${APP}-backup
+  # replica:
+  #   enabled: true
+  #   source: ${APP}-backup
 
   bootstrap:
     recovery:

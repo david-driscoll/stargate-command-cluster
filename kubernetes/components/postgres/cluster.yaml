@@ -53,22 +53,22 @@ spec:
 
   replica:
     enabled: true
-    source: ${APP}
+    source: ${APP}-backup
 
   bootstrap:
     recovery:
-      source: ${APP}
+      source: ${APP}-backup
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName: ${APP}
+        barmanObjectName: ${APP}-minio
 
   externalClusters:
-    - name: ${APP}
+    - name: ${APP}-backup
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: ${APP}
+          barmanObjectName: ${APP}-minio
           serverName: ${APP}

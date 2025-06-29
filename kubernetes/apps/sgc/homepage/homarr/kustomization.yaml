@@ -5,3 +5,10 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+  - ./secret-key.yaml
+configMapGenerator:
+  - name: homarr-values
+    files:
+      - values.yaml=./values.yaml
+    options:
+      disableNameSuffixHash: true

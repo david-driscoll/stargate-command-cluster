@@ -51,6 +51,11 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
+  # might be too chattyy
+  # replica:
+  #   enabled: true
+  #   source: ${APP}
+
   bootstrap:
     recovery:
       source: ${APP}

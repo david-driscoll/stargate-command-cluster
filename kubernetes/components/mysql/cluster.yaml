@@ -36,11 +36,11 @@ spec:
             endpoint: https://s3.${CLUSTER_DOMAIN}
   backupSchedules:
     - name: snapshot
-      schedule: "${MYSQL_BACKUP_SCHEDULE:-0 0 4 * * *}" # Daily at 4 AM
+      schedule: "${MYSQL_BACKUP_SCHEDULE:-0 4 * * *}" # Daily at 4 AM
       backupProfileName: snapshot
       timeZone: ${TIMEZONE}
     - name: dump
-      schedule: "${MYSQL_DUMP_SCHEDULE:-0 0 5 * * *}" # Daily at 5 AM
+      schedule: "${MYSQL_DUMP_SCHEDULE:-0 5 * * *}" # Daily at 5 AM
       backupProfileName: dump
       timeZone: ${TIMEZONE}
   datadirVolumeClaimTemplate:

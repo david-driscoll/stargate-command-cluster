@@ -24,6 +24,7 @@ spec:
   values:
     controllers:
       minio-users-14b9db4210ea:
+        nameOverride: init-minio-users
         type: job
         job:
           backoffLimit: 100
@@ -116,6 +117,7 @@ spec:
                 cpu: 10m
                 memory: 32Mi
       cron-minio-users-14b9db4210ea:
+        nameOverride: cron-minio-users
         cronjob:
           backoffLimit: 6
           concurrencyPolicy: Forbid

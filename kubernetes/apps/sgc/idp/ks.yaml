@@ -47,7 +47,7 @@ spec:
   dependsOn:
     - name: tailscale-idp
       namespace: *namespace
-    - name: minio
+    - name: minio-users
       namespace: database
     - name: volsync
       namespace: volsync-system

@@ -111,9 +111,9 @@ var minioKsYaml = "kubernetes/apps/database/minio-users/ks.yaml";
 var minioKsYamlMapping = ReadStream(minioKsYaml)!.Single();
 var name = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
-var controller = controllers.Query($"/{name}").OfType<YamlMappingNode>().Single();
+var controller = controllers.Query($"/{name}*").OfType<YamlMappingNode>().Single();
 var containers = controller.Query($"/containers").OfType<YamlMappingNode>().Single();
-var minioUsersStep = containers.Query($"/{name}").OfType<YamlMappingNode>().Single();
+var minioUsersStep = containers.Query($"/{name}*").OfType<YamlMappingNode>().Single();
 
 var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single();
 
@@ -225,8 +225,8 @@ controllers.Children.Clear();
 containers.Children.Clear();
 containers.Children[key] = minioUsersStep;
 controllers.Children[key] = controller;
-((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
-((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
+// ((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
+// ((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
 

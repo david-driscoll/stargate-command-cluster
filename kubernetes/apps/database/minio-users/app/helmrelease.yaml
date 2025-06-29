@@ -64,7 +64,7 @@ spec:
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_HOMARR" readwrite
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
-              MINIO_ENDPOINT: https://minio.database.svc.${INTERNAL_CLUSTER_DOMAIN}
+              MINIO_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
               MINIO_ACCESS_KEY:
                 valueFrom:
                   secretKeyRef:

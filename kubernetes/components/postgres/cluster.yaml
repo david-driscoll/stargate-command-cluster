@@ -16,7 +16,6 @@ spec:
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}
     storageClass: ${POSTGRES_STORAGE_CLASS:=longhorn}
-    resizeInUseVolumes: true
   enableSuperuserAccess: true
   # superuserSecret:
   #   name: ${APP}-postgres-admin

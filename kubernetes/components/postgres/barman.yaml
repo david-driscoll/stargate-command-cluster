@@ -3,7 +3,7 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: ${APP}
+  name: ${APP}-minio
 spec:
   configuration:
     destinationPath: s3://${APP}/postgres/

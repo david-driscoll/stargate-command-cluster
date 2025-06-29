@@ -54,6 +54,8 @@ spec:
   replica:
     enabled: true
     source: ${APP}-backup
+    primary: ${APP}-postgres
+    self: ${APP}-postgres
 
   bootstrap:
     recovery:
@@ -71,4 +73,4 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: ${APP}-minio
-          serverName: ${APP}
+          serverName: ${APP}-postgres

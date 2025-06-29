@@ -20,3 +20,8 @@ spec:
         key: credential
     wal:
       compression: gzip
+      maxParallel: 8
+    data:
+      compression: gzip
+      immediateCheckpoint: false
+      jobs: 2

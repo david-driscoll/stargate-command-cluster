@@ -6,12 +6,16 @@ metadata:
   name: ${APP}
 spec:
   cluster:
-    name: ${APP}
+    name: ${APP}-postgres
   schedule: "${POSTGRES_BACKUP_SCHEDULE:-0 0 2 * * *}"
-  immediate: true
+  immediate: false
   suspend: false
   target: prefer-standby
   backupOwnerReference: self
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+  online: true
+  onlineConfiguration:
+    immediateCheckpoint: false
+    waitForArchive: true

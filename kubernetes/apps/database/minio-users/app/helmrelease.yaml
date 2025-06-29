@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users
+  name: minio-users-14b9db4210ea
 spec:
   timeout: 5m
   interval: 30m

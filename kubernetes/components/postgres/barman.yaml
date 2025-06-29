@@ -6,7 +6,7 @@ metadata:
   name: ${APP}-minio
 spec:
   configuration:
-    destinationPath: s3://${APP}/postgres/
+    destinationPath: s3://${APP}/
     endpointURL: https://s3.${CLUSTER_DOMAIN}
     endpointCA:
       name: ca-bundle

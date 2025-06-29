@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &app ${APP}-postgres
+  name: &app ${APP}-postgres-active
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -51,13 +51,15 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
-  # replica:
-  #   enabled: true
-  #   source: ${APP}-backup
+  replica:
+    enabled: true
+    source: ${APP}-hot
+    primary: ${APP}-postgres
+    self: ${APP}-postgres
 
   bootstrap:
     recovery:
-      source: ${APP}-backup
+      source: ${APP}-hot
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
@@ -66,9 +68,15 @@ spec:
         barmanObjectName: ${APP}-minio
 
   externalClusters:
-    - name: ${APP}-backup
+    - name: ${APP}-active
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: ${APP}-minio
           serverName: ${APP}-postgres
+    - name: ${APP}-hot
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: ${APP}-minio
+          serverName: ${APP}-postgres-hot

@@ -225,7 +225,7 @@ controllers.Children.Clear();
 containers.Children.Clear();
 containers.Children[key] = minioUsersStep;
 controllers.Children[key] = controller;
-// ((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
+((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
 // ((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);

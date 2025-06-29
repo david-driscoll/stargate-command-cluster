@@ -29,7 +29,7 @@ spec:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
-        containers:
+        containers: &job
           minio-users-14b9db4210ea:
             image:
               repository: minio/mc
@@ -115,6 +115,17 @@ spec:
               requests:
                 cpu: 10m
                 memory: 32Mi
+      cron-minio-users-14b9db4210ea:
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "*/10 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        containers: *job
     persistence:
       tmp:
         type: emptyDir

@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &app ${APP}-postgres
+  name: &app ${APP}-postgres-init
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -17,6 +17,7 @@ spec:
     size: ${POSTGRES_STORAGE:=10Gi}
     storageClass: ${POSTGRES_STORAGE_CLASS:=longhorn}
   enableSuperuserAccess: true
+
   # superuserSecret:
   #   name: ${APP}-postgres-admin
   postgresql:
@@ -63,11 +64,3 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: ${APP}-minio
-
-  externalClusters:
-    - name: ${APP}-backup
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: ${APP}-minio
-          serverName: ${APP}-backup

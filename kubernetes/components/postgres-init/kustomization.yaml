@@ -5,9 +5,9 @@ kind: Component
 resources:
   - ../postgres/barman.yaml
   - ./cluster.yaml
+  - ./postgres-user.yaml
   - ../postgres/prometheusrule.yaml
   - ../postgres/scheduledbackup.yaml
-  - ../postgres/postgres-user.yaml
 components:
   - ../minio-access-key
   - ../password-generator

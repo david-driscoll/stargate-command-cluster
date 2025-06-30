@@ -8,7 +8,7 @@ spec:
   cluster:
     name: ${APP}-postgres
   schedule: "${POSTGRES_BACKUP_SCHEDULE:-0 0 2 * * *}"
-  immediate: false
+  immediate: true
   suspend: false
   target: prefer-standby
   backupOwnerReference: self

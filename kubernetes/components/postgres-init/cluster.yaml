@@ -51,10 +51,6 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
-  replica:
-    enabled: true
-    source: ${APP}-replica
-
   bootstrap:
     initdb:
       database: ${APP}
@@ -69,9 +65,9 @@ spec:
         barmanObjectName: ${APP}-minio
 
   externalClusters:
-    - name: ${APP}-replica
+    - name: ${APP}-backup
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: ${APP}-minio
-          serverName: ${APP}-replica
+          serverName: ${APP}-backup

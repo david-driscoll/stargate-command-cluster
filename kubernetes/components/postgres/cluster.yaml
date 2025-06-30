@@ -17,6 +17,7 @@ spec:
     size: ${POSTGRES_STORAGE:=10Gi}
     storageClass: ${POSTGRES_STORAGE_CLASS:=longhorn}
   enableSuperuserAccess: true
+
   # superuserSecret:
   #   name: ${APP}-postgres-admin
   postgresql:
@@ -52,10 +53,9 @@ spec:
           name: ${APP}-postgres-user
 
   bootstrap:
-    recovery:
+    initdb:
       database: ${APP}
       owner: ${APP}
-      source: ${APP}-backup
       secret:
         name: ${APP}-postgres-user
 
@@ -71,4 +71,4 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: ${APP}-minio
-          serverName: ${APP}-postgres-init
+          serverName: ${APP}-postgres-backup

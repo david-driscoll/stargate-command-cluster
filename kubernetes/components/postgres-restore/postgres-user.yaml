@@ -25,12 +25,12 @@ spec:
       data:
         username: "${APP}"
         password: "{{ .password }}"
-        host: "${APP}-postgres-init-rw.${NAMESPACE}.svc.cluster.local"
+        host: "${APP}-postgres-restore-rw.${NAMESPACE}.svc.cluster.local"
         port: "5432"
         database: "${APP}"
-        pgpass: "${APP}-postgres-init-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://${APP}-postgres-init-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
-        uri: "postgresql://${APP}:{{ .password }}@${APP}-postgres-init-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
+        pgpass: "${APP}-postgres-restore-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://${APP}-postgres-restore-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
+        uri: "postgresql://${APP}:{{ .password }}@${APP}-postgres-restore-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
   dataFrom:
     - extract:
         key: "${DATABASE_PASSWORD}"

@@ -30,42 +30,42 @@ spec:
       APP: *app
       NAMESPACE: *namespace
 
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app authentik
-#   namespace: &namespace sgc
-# spec:
-#   targetNamespace: *namespace
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   path: ./kubernetes/apps/sgc/idp/authentik
-#   prune: true
-#   dependsOn:
-#     - name: tailscale-idp
-#       namespace: *namespace
-#     - name: minio-users
-#       namespace: database
-#     - name: volsync
-#       namespace: volsync-system
-#     - name: cloudnative-pg
-#       namespace: database
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   wait: true
-#   interval: 30m
-#   retryInterval: 1m
-#   timeout: 5m
-#   components:
-#     - ../../../../components/postgres
-#     - ../../../../components/tailscale
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       NAMESPACE: *namespace
-#       DATABASE_PASSWORD: Authentik Database User
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app authentik
+  namespace: &namespace sgc
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/sgc/idp/authentik
+  prune: true
+  dependsOn:
+    - name: tailscale-idp
+      namespace: *namespace
+    - name: minio-users
+      namespace: database
+    - name: volsync
+      namespace: volsync-system
+    - name: cloudnative-pg
+      namespace: database
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  components:
+    - ../../../../components/postgres-restore
+    - ../../../../components/tailscale
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      DATABASE_PASSWORD: Authentik Database User

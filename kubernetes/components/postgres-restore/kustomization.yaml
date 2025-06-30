@@ -5,7 +5,7 @@ kind: Component
 resources:
   - ../postgres/barman.yaml
   - ./cluster.yaml
-  - ./postgres-user.yaml
+  - ../postgres/postgres-user.yaml
   - ../postgres/prometheusrule.yaml
   - ../postgres/scheduledbackup.yaml
 components:

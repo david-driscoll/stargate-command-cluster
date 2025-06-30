@@ -4,6 +4,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: &app ${APP}-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   # using only 1 replica: very difficult to drain the node where postgres is running
   # using more than 1 replica: write amplification issues when leveraging replicated storage (e.g. ceph)
@@ -49,6 +51,10 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
+  replica:
+    enabled: true
+    source: ${APP}-replica
+
   bootstrap:
     initdb:
       database: ${APP}
@@ -60,12 +66,12 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName: ${APP}
+        barmanObjectName: ${APP}-minio
 
   externalClusters:
-    - name: ${APP}-backup
+    - name: ${APP}-replica
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: ${APP}
-          serverName: ${APP}
+          barmanObjectName: ${APP}-minio
+          serverName: ${APP}-replica

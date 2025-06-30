@@ -60,6 +60,8 @@ spec:
       database: ${APP}
       owner: ${APP}
       source: ${APP}-replica
+      secret:
+        name: ${APP}-postgres-user
 
   # plugins:
   #   - name: barman-cloud.cloudnative-pg.io

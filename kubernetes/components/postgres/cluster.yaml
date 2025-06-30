@@ -71,12 +71,14 @@ spec:
     - name: ${APP}-postgres
       plugin:
         name: barman-cloud.cloudnative-pg.io
+        isWALArchiver: true
         parameters:
           barmanObjectName: ${APP}-minio
           serverName: ${APP}-postgres
     - name: ${APP}-postgres-replica
       plugin:
         name: barman-cloud.cloudnative-pg.io
+        isWALArchiver: true  
         parameters:
           barmanObjectName: ${APP}-minio
           serverName: ${APP}-postgres-replica

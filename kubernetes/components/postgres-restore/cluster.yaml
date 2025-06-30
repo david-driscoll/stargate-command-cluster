@@ -72,4 +72,4 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: ${APP}-minio
-          serverName: ${APP}-postgres-backup
+          serverName: ${APP}-postgres

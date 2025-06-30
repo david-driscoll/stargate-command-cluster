@@ -203,9 +203,7 @@ affinity: {}
 #    For more options see [Mysql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/mysql)
 # @default -- See [values.yaml](https://github.com/homarr-labs/charts/blob/dev/charts/homarr/values.yaml)
 mysql:
-  internal: false
-  auth:
-    existingSecret: ${APP}-mysql-secret
+  internal: true
 
 # -- Enable RBAC resources for Kubernetes integration
 # Creates Role, ClusterRole, and associated bindings for Homarr's Kubernetes features

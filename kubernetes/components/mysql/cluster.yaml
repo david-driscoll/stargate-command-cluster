@@ -3,7 +3,7 @@
 apiVersion: mysql.oracle.com/v2
 kind: InnoDBCluster
 metadata:
-  name: &app ${APP}-mysql
+  name: &app ${APP}-sql
 spec:
   instances: 2
   tlsUseSelfSigned: true

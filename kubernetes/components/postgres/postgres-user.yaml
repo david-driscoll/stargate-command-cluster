@@ -11,7 +11,7 @@ spec:
   refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
-    name: ${NAMESPACE}
+    name: onepassword-connect
   target:
     name: *name
     creationPolicy: Owner
@@ -33,28 +33,4 @@ spec:
         uri: "postgresql://${APP}:{{ .password }}@${APP}-postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
   dataFrom:
     - extract:
-        key: "${APP}-postgres-password"
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: &name "${APP}-postgres-password"
-  annotations:
-    reloader.stakater.com/auto: "true"
-spec:
-  refreshPolicy: CreatedOnce
-  target:
-    name: *name
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    template:
-      data:
-        password: "{{ .password }}"
-  dataFrom:
-    - sourceRef:
-        generatorRef:
-          apiVersion: generators.external-secrets.io/v1alpha1
-          kind: Password
-          name: "${APP}-password-generator"
+        key: "${DATABASE_PASSWORD}"

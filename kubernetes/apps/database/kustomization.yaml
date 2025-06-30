@@ -13,3 +13,4 @@ resources:
   - ./dragonfly/ks.yaml
   - ./minio/ks.yaml
   - ./minio-users/ks.yaml
+  - ./admin/ks.yaml

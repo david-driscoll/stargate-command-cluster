@@ -66,4 +66,4 @@ spec:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Password
-          name: "minio-users-96bd1fb61dda-password-generator"
+          name: "minio-users-d0f0a8ab9355-password-generator"

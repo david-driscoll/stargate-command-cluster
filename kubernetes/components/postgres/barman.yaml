@@ -5,6 +5,7 @@ kind: ObjectStore
 metadata:
   name: ${APP}-minio
 spec:
+  retentionPolicy: "30d"
   configuration:
     destinationPath: s3://${APP}/postgres
     endpointURL: https://s3.${CLUSTER_DOMAIN}

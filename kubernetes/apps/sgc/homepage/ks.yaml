@@ -67,4 +67,4 @@ spec:
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_ACCESSMODES: ReadWriteMany
-      DATABASE_PASSWORD: vaults/Eris/items/y33iocbcawuufh2g6rxp7tafou
+      DATABASE_PASSWORD: Homarr Database User

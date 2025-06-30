@@ -51,9 +51,9 @@ spec:
         passwordSecret:
           name: ${APP}-postgres-user
 
-  replica:
-    enabled: true
-    source: ${APP}-postgres-replica
+  # replica:
+  #   enabled: true
+  #   source: ${APP}-backup
 
   bootstrap:
     recovery:
@@ -74,9 +74,3 @@ spec:
         parameters:
           barmanObjectName: ${APP}-minio
           serverName: ${APP}-postgres
-    - name: ${APP}-postgres-replica
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: ${APP}-minio
-          serverName: ${APP}-postgres-replica

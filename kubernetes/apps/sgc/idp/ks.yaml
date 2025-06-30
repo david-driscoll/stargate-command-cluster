@@ -70,4 +70,4 @@ spec:
 #       APP: *app
 #       NAMESPACE: *namespace
 #       VOLSYNC_ACCESSMODES: ReadWriteMany
-#       DATABASE_PASSWORD: vaults/Eris/items/c7uy4pppw3fmelklx2kblvvnja
+#       DATABASE_PASSWORD: Authentik Database User

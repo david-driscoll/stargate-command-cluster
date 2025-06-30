@@ -57,6 +57,8 @@ spec:
 
   bootstrap:
     recovery:
+      database: ${APP}
+      owner: ${APP}
       source: ${APP}-postgres
 
   plugins:

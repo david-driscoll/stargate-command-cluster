@@ -6,7 +6,7 @@ metadata:
   name: cluster-user
 spec:
   refreshPolicy: Periodic
-  refreshInterval: "5m"
+  refreshInterval: "2m"
   secretStoreRef:
     kind: ClusterSecretStore
     name: ${NAMESPACE}

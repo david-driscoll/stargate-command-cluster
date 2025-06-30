@@ -1,0 +1,142 @@
+---
+# PostgreSQL Cluster for Authentik with Resilient Backup/Restore
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-postgres
+  namespace: sgc
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  instances: 2
+  primaryUpdateStrategy: unsupervised
+
+  # Database configuration
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: "256MB"
+      wal_level: "logical"
+      archive_mode: "on"
+      archive_timeout: "5min"
+
+  # Resource configuration
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+  # Storage configuration
+  storage:
+    size: 10Gi
+    storageClass: longhorn
+    resizeInUseVolumes: true
+
+  # Monitoring
+  monitoring:
+    enabled: true
+    customQueriesConfigMap:
+      - name: cnpg-default-monitoring
+        key: queries
+    enablePodMonitor: true
+
+  # User management
+  managed:
+    roles:
+      - name: authentik
+        ensure: present
+        login: true
+        createdb: true
+        createrole: true
+        connectionLimit: -1
+        inherit: true
+        passwordSecret:
+          name: authentik-postgres-user
+
+  # Backup configuration - this will be the primary backup setup
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      enabled: true
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: authentik-minio
+
+  # Bootstrap configuration - ONLY used for initial restore
+  # This section should be commented out for normal operations
+  # and only enabled when you need to restore from backup
+  # bootstrap:
+  #   recovery:
+  #     database: app
+  #     owner: app
+  #     source: authentik-backup
+  #
+  # externalClusters:
+  #   - name: authentik-backup
+  #     plugin:
+  #       enabled: true
+  #       name: barman-cloud.cloudnative-pg.io
+  #       isWALArchiver: false
+  #       parameters:
+  #         barmanObjectName: authentik-minio
+  #         serverName: authentik-postgres
+
+  # Security and availability
+  enableSuperuserAccess: true
+  enablePDB: false
+
+  # Anti-affinity for high availability
+  affinity:
+    podAntiAffinityType: preferred
+
+  # Timeouts and delays
+  startDelay: 30
+  stopDelay: 30
+  switchoverDelay: 40
+  failoverDelay: 0
+  smartShutdownTimeout: 180
+
+---
+# Scheduled Backup for regular backups
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: authentik-backup
+  namespace: sgc
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  backupOwnerReference: self
+  cluster:
+    name: authentik-postgres
+  target: prefer-standby
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+  suspend: false
+  immediate: false
+
+---
+# ObjectStore configuration remains the same
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: authentik-minio
+  namespace: sgc
+spec:
+  configuration:
+    destinationPath: "s3://authentik/postgres/"
+    endpointURL: "https://s3.sgc.driscoll.tech"
+    endpointCA:
+      name: ca-bundle
+      key: ca-certificates.crt
+    s3Credentials:
+      accessKeyId:
+        name: authentik-minio-access-key
+        key: username
+      secretAccessKey:
+        name: authentik-minio-access-key
+        key: credential
+    wal:
+      compression: gzip

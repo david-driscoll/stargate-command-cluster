@@ -8,7 +8,8 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./cloudnative-pg/ks.yaml
-  - ./mysql-operator/ks.yaml
+  # mysql operator has a bad state on sgc atm
+  # - ./mysql-operator/ks.yaml
   - ./dragonfly/ks.yaml
   - ./minio/ks.yaml
   - ./minio-users/ks.yaml

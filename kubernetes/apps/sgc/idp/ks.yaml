@@ -64,10 +64,8 @@ spec:
   components:
     - ../../../../components/postgres
     - ../../../../components/tailscale
-    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      VOLSYNC_ACCESSMODES: ReadWriteMany
       DATABASE_PASSWORD: Authentik Database User

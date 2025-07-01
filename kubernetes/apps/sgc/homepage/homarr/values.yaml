@@ -170,7 +170,7 @@ persistence:
     # -- Enable homarr-database persistent storage
     enabled: true
     # -- homarr-database persistent storage name
-    name: "homarr"
+    name: "homarr-database"
     # -- homarr-database storage class name
     storageClassName: "longhorn"
     # -- homarr-database access mode

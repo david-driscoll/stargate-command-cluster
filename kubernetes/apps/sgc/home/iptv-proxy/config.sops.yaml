@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
 apiVersion: v1
 kind: Secret
 metadata:
@@ -35,8 +36,8 @@ sops:
             WEx6TFBGMXlIczRXL2h6Q21CL3ErNGcKpZ+XJm2nhaxoxSZtOu0PgxscFbvFQ6Mc
             R52o1U6Hm/cFAiI5XmXhbnGci/8mCE1E7aPicAfllbDECqO1n02A2Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-05-22T20:05:08Z"
-    mac: ENC[AES256_GCM,data:FSQeDvS/swv2MphmeuNDKxrttckdVwDokKdaDlvZ03XcMdofrCwpB/RQR8d1SrWzhCTA2cdoRGpG61RX4GGNE/YdwJFBAGEfOGH4cyydVyNDK2jVdEV6mxHQiB2HmPSbr5gwp7IGXxPoEW8Bc7FyVWKePk/3XdA3wujGURz6C+Y=,iv:fLI7TNnOf40826fwxFqvxDtcBV/lV4XoE8jYXwdz9dk=,tag:VxqynajPqV+yAjeaL37QqQ==,type:str]
+    lastmodified: "2025-07-01T00:06:26Z"
+    mac: ENC[AES256_GCM,data:zxiO3vUrAaOlASBkOAo3R+L3oXt7tJjfkm87k9M9uujvk70XSMIADbRWQKKkOM3S1vx8CvihjfM9XoHqM/myz7525RLQWrOUWR9+DaQ86sQ6JWJgARJ91Z4PJh9KPGgiBIWedAyrX/Sm3A0nZZbcvPh+k7PbG9nKtdxQMg1AbZQ=,iv:mie4WbIv18cV45jA/On5JCllFu/H6G0GDozXPbRlZIE=,tag:F3HX16cCJbANKBFMd8oNmA==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
     version: 3.10.2

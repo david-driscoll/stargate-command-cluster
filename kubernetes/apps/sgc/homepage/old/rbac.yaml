@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/serviceaccount-v1.json
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -9,6 +10,7 @@ metadata:
 secrets:
   - name: homepage
 ---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/service-account-token
@@ -20,6 +22,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: homepage
 ---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1/clusterrole.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -68,6 +71,7 @@ rules:
       - get
       - list
 ---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1/clusterrolebinding.json
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

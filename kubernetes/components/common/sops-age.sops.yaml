@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
 apiVersion: v1
 kind: Secret
 metadata:
@@ -5,10 +6,6 @@ metadata:
 stringData:
     age.agekey: ENC[AES256_GCM,data:1l9UFFx69GKgG3U7SIXIEu4k1SvbbmG5bShTMo1mO+xVbGdxnAf8eaB5APP5BdYpBUaNdsi1KfvB1JeYViaKYUBxOd2cW4PVzlo=,iv:towMdc1y4hZI/VlPlb75FqrYfEgkhOFi6W1hY/QwovA=,tag:eCQeoSvdu9Tok0axZGMNXg==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
         - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
           enc: |
@@ -37,9 +34,8 @@ sops:
             YWtYU3JZUWpidFIrdGc0OHNIQ1dlRVEKpHWGg0D1z+5ypenxFNEAKPnoRNMP2Ies
             EkCjL7Vfb9SqEmug45xX7/7En2gZ2R3uKANVx37K9AYGebpZZenmjg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-04-17T04:01:40Z"
-    mac: ENC[AES256_GCM,data:ZyLDr1JEIQe9VH+WwFHA13/9pP5tlM4S1JGXOHWrn5O5BJ4Khmiq1atO7UTpAZePpfc72szScgDg4AYp2o6JG8lYrwiMOAzMULxPh5+uJXii8hQ8Tre/IZ9nWQ0iKyur/TZS6Nx8MfdWu9uZ60n1N2hOGakoJl7AviQxDh8qgkY=,iv:ecox3HFuWgUwxiJxD92oebQIrSCj5HbkZsSfCEhla/M=,tag:wdgzBikPRNpLCFdmmi6BQw==,type:str]
-    pgp: []
+    lastmodified: "2025-07-01T00:06:57Z"
+    mac: ENC[AES256_GCM,data:Wr1GuKxaocRB3rg9x17OIAgAMhTqKoiOzGnWirBEZJpDbSb8+GDOODqD0jWa3EolU5BvVkjieHXUxw76mysAsUryATlcUbZ4p2cohOdsW5P3me8DS23X53hG8FUC1KdRBNmMuo4hvYoXE2IvT6LmEK1jlJNIkid2dvH6VWbpxP4=,iv:0OumYvIsTbtQu9bbcnViTokLMMCevENnSLYeX89pmME=,tag:/yZDu4x2KUSvfcS2fC+p+Q==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
-    version: 3.10.1
+    version: 3.10.2

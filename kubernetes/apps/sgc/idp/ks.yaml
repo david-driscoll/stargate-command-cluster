@@ -62,7 +62,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   components:
-    - ../../../../components/postgres-restore
+    - ../../../../components/postgres
     - ../../../../components/tailscale
   postBuild:
     substitute:

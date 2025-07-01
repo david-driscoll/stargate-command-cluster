@@ -168,15 +168,15 @@ autoscaling:
 persistence:
   homarrDatabase:
     # -- Enable homarr-database persistent storage
-    enabled: false
+    enabled: true
     # -- homarr-database persistent storage name
     name: "homarr-database"
     # -- homarr-database storage class name
-    storageClassName: "local-path"
+    storageClassName: "longhorn"
     # -- homarr-database access mode
     accessMode: "ReadWriteOnce"
     # -- homarr-database storage size
-    size: "50Mi"
+    size: "2Gi"
     # -- homarr-database mount path inside the pod
     mountPath: "/appdata"
     # -- homarr-database optional volumeClaimName to target specific PV

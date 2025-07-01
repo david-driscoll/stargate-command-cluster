@@ -19,9 +19,9 @@ env:
   # -- Your local time zone
   TZ: "${TIMEZONE}"
   # -- Enabled authentication methods. Multiple providers can be enabled with by separating them with , (ex. AUTH_PROVIDERS=credentials,oidc, it is highly recommended to just enable one provider).
-  AUTH_PROVIDERS: "oidc"
+  AUTH_PROVIDERS: "credentials,oidc"
   # -- URL to redirect to after clicking logging out.
-  AUTH_LOGOUT_REDIRECT_URL: https://home.${CLUSTER_DOMAIN}/
+  # AUTH_LOGOUT_REDIRECT_URL: https://home.${CLUSTER_DOMAIN}/
   # -- Time for the session to time out. Can be set as pure number, which will automatically be used in seconds, or followed by s, m, h or d for seconds, minutes, hours or days. (ex: "30m")
   AUTH_SESSION_EXPIRY_TIME: "30d"
   # -- Issuer URI of OIDC provider without trailing slash (/)
@@ -29,7 +29,7 @@ env:
   # -- Display name of provider (in login screen)
   AUTH_OIDC_CLIENT_NAME: "Authentik"
   # -- Automatically redirect to OIDC login
-  AUTH_OIDC_AUTO_LOGIN: "true"
+  AUTH_OIDC_AUTO_LOGIN: "false"
   # -- Override the OIDC scopes
   AUTH_OIDC_SCOPE_OVERWRITE: "openid email profile groups"
   # -- Attribute used for groups (roles) claim
@@ -170,13 +170,13 @@ persistence:
     # -- Enable homarr-database persistent storage
     enabled: true
     # -- homarr-database persistent storage name
-    name: "homarr-database"
+    name: "homarr"
     # -- homarr-database storage class name
     storageClassName: "longhorn"
     # -- homarr-database access mode
     accessMode: "ReadWriteOnce"
     # -- homarr-database storage size
-    size: "2Gi"
+    size: "5Gi"
     # -- homarr-database mount path inside the pod
     mountPath: "/appdata"
     # -- homarr-database optional volumeClaimName to target specific PV

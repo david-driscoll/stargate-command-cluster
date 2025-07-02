@@ -60,11 +60,12 @@ spec:
       secret:
         name: ${APP}-postgres-user
 
-  # plugins:
-  #   - name: barman-cloud.cloudnative-pg.io
-  #     isWALArchiver: true
-  #     parameters:
-  #       barmanObjectName: ${APP}-minio
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      enabled: false
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: ${APP}-minio
 
   externalClusters:
     - name: ${APP}-backup

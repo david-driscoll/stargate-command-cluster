@@ -1,24 +1,20 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app authentik
+  name: &app tailscale-apps
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/idp/authentik
+  path: ./kubernetes/apps/sgc/tailscale/apps
   prune: true
   dependsOn:
-    - name: minio-users
-      namespace: database
     - name: volsync
       namespace: volsync-system
-    - name: cloudnative-pg
-      namespace: database
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -28,10 +24,8 @@ spec:
   retryInterval: 1m
   timeout: 5m
   components:
-    - ../../../../components/postgres
-    - ../../../../components/tailscale
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      DATABASE_PASSWORD: Authentik Database User

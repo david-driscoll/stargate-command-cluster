@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tailscale-idp
+  name: &app tailscale-apps
 spec:
   interval: 5m
   chartRef:
@@ -36,19 +36,41 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
-          main:
+          tsidp:
             image:
-              repository: ghcr.io/david-driscoll/tailscale-idp
-              tag: v1.84.0@sha256:750a863826d237c52a4c20995bac9019c00cdb6fa88dd77e44add44dbd5697ee
+              repository: golang
+              tag: 1.24.4-bookworm@sha256:ee7ff13d239350cc9b962c1bf371a60f3c32ee00eaaf0d0f0489713a87e51a67
+              pullPolicy: IfNotPresent
             env:
-              TS_HOSTNAME: "{{ .Release.Name }}"
-              TS_STATE_DIR: /var/lib/tsidp
+              TS_HOSTNAME: idp
+              TS_STATE_DIR: /data/tsidp
+              TAILSCALE_USE_WIP_CODE: "1"
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
                     name: tailscale-authkey
                     key: authkey
-            workingDir: /var/lib/tsidp
+            command:
+              - /scripts/tsidp.sh
+            workingDir: /data/tsidp
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 25m
+              limits:
+                memory: 256Mi
+                cpu: 100m
+          golink:
+            image:
+              repository: ghcr.io/tailscale/golink
+              tag: main
+              pullPolicy: IfNotPresent
+            env:
+              TS_AUTHKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-authkey
+                    key: authkey
             resources:
               requests:
                 memory: 128Mi
@@ -72,14 +94,17 @@ spec:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /var/lib/tsidp/
-      empty:
-        type: emptyDir
+          - path: /data/tsidp/
+            subPath: tsidp
+          - path: /home/nonroot/
+            subPath: golink
+      tsidp-script:
+        type: configMap
+        name: tailscale-commands
+        defaultMode: 493
         globalMounts:
-          - path: /.cache/
-            subPath: cache
-          - path: /user/
-            subPath: user
+          - path: /scripts/tsidp.sh
+            subPath: tsidp.sh
 
     service:
       app:

@@ -5,3 +5,10 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret.yaml
+configMapGenerator:
+  - files:
+      - tsidp.sh=./resources/tsidp.sh
+      - golink.sh=./resources/golink.sh
+    name: tailscale-commands
+generatorOptions:
+  disableNameSuffixHash: true

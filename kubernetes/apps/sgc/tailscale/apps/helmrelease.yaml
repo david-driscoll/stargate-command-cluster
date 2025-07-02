@@ -105,6 +105,13 @@ spec:
         globalMounts:
           - path: /scripts/tsidp.sh
             subPath: tsidp.sh
+      empty:
+        type: emptyDir
+        globalMounts:
+          - path: /.cache/
+            subPath: cache
+          - path: /user/
+            subPath: user
 
     service:
       app:

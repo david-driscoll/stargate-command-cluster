@@ -23,7 +23,7 @@ servers:
       - name: ready
       - name: log
         configBlock: |-
-          class all
+          class error
       - name: prometheus
         parameters: 0.0.0.0:9153
       - name: kubernetes

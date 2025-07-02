@@ -12,3 +12,14 @@ spec:
       - "${INTERNAL_NETWORK}"
       - "${CLUSTER_NETWORK}"
       - "${SERVICE_NETWORK}"
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
+  name: tailscale-idp
+spec:
+  externalName: idp
+  type: ExternalName

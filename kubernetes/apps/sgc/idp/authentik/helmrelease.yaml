@@ -75,7 +75,7 @@ spec:
 
     authentik:
       enabled: true
-      log_level: info
+      log_level: trace
       # events:
       #   context_processors:
       #     # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.

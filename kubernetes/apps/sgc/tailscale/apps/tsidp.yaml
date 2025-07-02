@@ -74,13 +74,6 @@ spec:
         globalMounts:
           - path: /data/tsidp/
             subPath: tsidp
-      tsidp-script:
-        type: configMap
-        name: tailscale-commands
-        defaultMode: 493
-        globalMounts:
-          - path: /scripts/tsidp.sh
-            subPath: tsidp.sh
       empty:
         type: emptyDir
         globalMounts:

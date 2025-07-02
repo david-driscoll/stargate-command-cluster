@@ -56,7 +56,7 @@ servers:
       - name: prometheus
         parameters: 0.0.0.0:9153
       - name: forward
-        parameters: . "${TAILSCALE_NAMESERVER_IP}"
+        parameters: . ${TAILSCALE_NAMESERVER_IP}
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

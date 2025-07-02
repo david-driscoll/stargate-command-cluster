@@ -23,7 +23,7 @@ servers:
       - name: ready
       - name: log
         configBlock: |-
-          class error
+          class all
       - name: prometheus
         parameters: 0.0.0.0:9153
       - name: kubernetes
@@ -46,18 +46,21 @@ servers:
     port: 53
     plugins:
       - name: errors
+      - name: health
+        configBlock: |-
+          lameduck 5s
+      - name: ready
       - name: log
         configBlock: |-
-          class error
-      - name: cache
-        parameters: 30
+          class all
+      - name: prometheus
+        parameters: 0.0.0.0:9153
       - name: forward
         parameters: . "${TAILSCALE_NAMESERVER_IP}"
-        configBlock: |-
-          max_fails 3
-          expire 10s
-          health_check 5s
-      - name: ready
+      - name: cache
+        parameters: 30
+      - name: loop
+      - name: reload
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

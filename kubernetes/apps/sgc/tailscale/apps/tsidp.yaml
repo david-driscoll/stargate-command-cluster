@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tailscale-apps
+  name: &app tailscale-idp
 spec:
   interval: 5m
   chartRef:
@@ -36,15 +36,13 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
-          tsidp:
+          *app :
             image:
-              repository: golang
-              tag: 1.24.4-bookworm@sha256:ee7ff13d239350cc9b962c1bf371a60f3c32ee00eaaf0d0f0489713a87e51a67
-              pullPolicy: IfNotPresent
+              repository: ghcr.io/david-driscoll/tailscale-idp
+              tag: v1.84.0@sha256:750a863826d237c52a4c20995bac9019c00cdb6fa88dd77e44add44dbd5697ee
             env:
               TS_HOSTNAME: idp
               TS_STATE_DIR: /data/tsidp
-              TAILSCALE_USE_WIP_CODE: "1"
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
@@ -53,24 +51,6 @@ spec:
             command:
               - /scripts/tsidp.sh
             workingDir: /data/tsidp
-            resources:
-              requests:
-                memory: 128Mi
-                cpu: 25m
-              limits:
-                memory: 256Mi
-                cpu: 100m
-          golink:
-            image:
-              repository: ghcr.io/tailscale/golink
-              tag: main
-              pullPolicy: IfNotPresent
-            env:
-              TS_AUTHKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: tailscale-authkey
-                    key: authkey
             resources:
               requests:
                 memory: 128Mi
@@ -96,8 +76,6 @@ spec:
         globalMounts:
           - path: /data/tsidp/
             subPath: tsidp
-          - path: /home/nonroot/
-            subPath: golink
       tsidp-script:
         type: configMap
         name: tailscale-commands

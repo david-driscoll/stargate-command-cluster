@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app tailscale-golink
+spec:
+  interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: uninstall
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        nameOverride: *app
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/tailscale/golink
+              tag: main
+              pullPolicy: IfNotPresent
+            env:
+              TS_AUTHKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-authkey
+                    key: authkey
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 25m
+              limits:
+                memory: 256Mi
+                cpu: 100m
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+      shareProcessNamespace: true
+
+    persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /home/nonroot/
+            subPath: golink
+
+    service:
+      app:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 443

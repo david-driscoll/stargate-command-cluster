@@ -86,6 +86,8 @@ spec:
               globalMounts:
                 - path: /opt/adguardhome/conf
                   subPath: conf
+                - path: /opt/adguardhome/work
+                  subPath: work
       sync:
         containers:
           node-sync:
@@ -152,10 +154,6 @@ spec:
         type: secret
         globalMounts:
           - path: "/certs"
-      work:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/adguardhome/work
 
     service:
       dns:

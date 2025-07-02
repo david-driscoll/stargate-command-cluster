@@ -33,8 +33,8 @@ servers:
           fallthrough in-addr.arpa ip6.arpa
       - name: forward
         parameters: . /etc/resolv.conf
-      # - name: cache
-      #   parameters: 30
+      - name: cache
+        parameters: 30
       - name: loop
       - name: reload
       - name: loadbalance
@@ -55,8 +55,10 @@ servers:
           class all
       - name: prometheus
         parameters: 0.0.0.0:9153
+      - name: cache
+        parameters: 30
       - name: forward
-        parameters: . ${TAILSCALE_NAMESERVER_IP}
+        parameters: . "${TAILSCALE_NAMESERVER_IP}"
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

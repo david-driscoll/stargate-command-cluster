@@ -84,7 +84,8 @@ spec:
               size: 2Gi
               accessMode: ReadWriteOnce
               globalMounts:
-                - path: /opt/adguardhome
+                - path: /opt/adguardhome/conf
+                  subPath: conf
       sync:
         containers:
           node-sync:
@@ -151,6 +152,10 @@ spec:
         type: secret
         globalMounts:
           - path: "/certs"
+      work:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/adguardhome/work
 
     service:
       dns:

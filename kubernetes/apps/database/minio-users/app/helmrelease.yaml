@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-6d5a0e298d94
+  name: minio-users-d0f0a8ab9355
 spec:
   timeout: 5m
   interval: 30m
@@ -23,7 +23,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      minio-users-6d5a0e298d94:
+      minio-users-d0f0a8ab9355:
         nameOverride: init-minio-users
         type: job
         job:
@@ -31,7 +31,7 @@ spec:
           suspend: false
           ttlSecondsAfterFinished: 600
         containers: &job
-          minio-users-6d5a0e298d94:
+          minio-users-d0f0a8ab9355:
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -43,8 +43,6 @@ spec:
               mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
 
               mc mb -p "$MC_ALIAS/authentik"
-
-              mc mb -p "$MC_ALIAS/authentik/postgres"
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
@@ -96,7 +94,7 @@ spec:
               requests:
                 cpu: 10m
                 memory: 32Mi
-      cron-minio-users-6d5a0e298d94:
+      cron-minio-users-d0f0a8ab9355:
         nameOverride: cron-minio-users
         cronjob:
           backoffLimit: 6

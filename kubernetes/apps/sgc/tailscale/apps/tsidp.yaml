@@ -48,8 +48,6 @@ spec:
                   secretKeyRef:
                     name: tailscale-authkey
                     key: authkey
-            command:
-              - /scripts/tsidp.sh
             workingDir: /data/tsidp
             resources:
               requests:

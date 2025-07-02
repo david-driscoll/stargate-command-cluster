@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &app ${APP}-db
+  name: &app ${APP}-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:

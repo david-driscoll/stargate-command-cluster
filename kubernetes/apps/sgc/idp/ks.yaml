@@ -30,6 +30,7 @@ spec:
   components:
     - ../../../../components/postgres
     - ../../../../components/tailscale
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app

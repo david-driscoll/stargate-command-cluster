@@ -68,7 +68,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: tailscale-apps
         globalMounts:
           - path: /home/nonroot/
             subPath: golink

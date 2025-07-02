@@ -72,7 +72,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: tailscale-apps
         globalMounts:
           - path: /data/tsidp/
             subPath: tsidp

@@ -46,10 +46,18 @@ servers:
     port: 53
     plugins:
       - name: errors
+      - name: log
+        configBlock: |-
+          class error
       - name: cache
         parameters: 30
       - name: forward
         parameters: . "${TAILSCALE_NAMESERVER_IP}"
+        configBlock: |-
+          max_fails 3
+          expire 10s
+          health_check 5s
+      - name: ready
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

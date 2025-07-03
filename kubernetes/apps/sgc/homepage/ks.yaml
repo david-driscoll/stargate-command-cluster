@@ -44,8 +44,6 @@ spec:
       namespace: database
     - name: volsync
       namespace: volsync-system
-    - name: mysql-operator
-      namespace: database
     - name: sgc-secrets
       namespace: *namespace
   sourceRef:

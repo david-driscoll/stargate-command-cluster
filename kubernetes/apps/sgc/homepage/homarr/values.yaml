@@ -2,7 +2,7 @@
 # -- Declare variables to be passed into your templates.
 
 # -- Number of replicas
-replicaCount: 2
+replicaCount: 1
 
 # -- `strategyType` specifies the strategy used to replace old Pods by new ones. `strategyType` can be `"Recreate"` or `"RollingUpdate"`. `"RollingUpdate"` is the default value and updates Pods in a rolling update fashion. `"Recreate"` will kill all existing Pods before new ones are created. The `"Recreate"` strategy is necessary when persistent volume's `accessMode` is set to `"ReadWriteOnce"` when using `helm upgrade`, as pod volume attachments to an existing PersistentVolumeClaim need to be cleared before a new pod can attach to it.
 strategyType: RollingUpdate
@@ -38,7 +38,7 @@ env:
   # AUTH_OIDC_NAME_ATTRIBUTE_OVERWRITE:
 
 database:
-  externalDatabaseEnabled: true
+  externalDatabaseEnabled: false
   migrationEnabled: true
 
 # Sensitive values that need to be passed in through environment variables should use kubernetes secrets. In order
@@ -170,13 +170,13 @@ persistence:
     # -- Enable homarr-database persistent storage
     enabled: true
     # -- homarr-database persistent storage name
-    name: "homarr-database"
+    name: "homarr"
     # -- homarr-database storage class name
     storageClassName: "longhorn"
     # -- homarr-database access mode
     accessMode: "ReadWriteOnce"
     # -- homarr-database storage size
-    size: "5Gi"
+    size: "10Gi"
     # -- homarr-database mount path inside the pod
     mountPath: "/appdata"
     # -- homarr-database optional volumeClaimName to target specific PV
@@ -204,8 +204,6 @@ affinity: {}
 # @default -- See [values.yaml](https://github.com/homarr-labs/charts/blob/dev/charts/homarr/values.yaml)
 mysql:
   internal: false
-  auth:
-    existingSecret: ${APP}-mysql-secret
 
 # -- Enable RBAC resources for Kubernetes integration
 # Creates Role, ClusterRole, and associated bindings for Homarr's Kubernetes features

@@ -89,7 +89,6 @@ ingressRoute:
     annotations:
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
-      traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
     matchRule: Host(`internal.${CLUSTER_DOMAIN}`)
     services:
       - name: api@internal

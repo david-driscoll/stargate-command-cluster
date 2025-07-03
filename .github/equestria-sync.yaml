@@ -46,6 +46,21 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/openebs-system/
     dest: kubernetes/apps/openebs-system/
     deleteOrphaned: true
+  - source: kubernetes/apps/minio-access-key/
+    dest: kubernetes/apps/minio-access-key/
+    deleteOrphaned: true
+  - source: kubernetes/apps/password-generator/
+    dest: kubernetes/apps/password-generator/
+    deleteOrphaned: true
+  - source: kubernetes/apps/postgres/
+    dest: kubernetes/apps/postgres/
+    deleteOrphaned: true
+  - source: kubernetes/apps/mysql/
+    dest: kubernetes/apps/mysql/
+    deleteOrphaned: true
+  - source: kubernetes/apps/postgres-restore/
+    dest: kubernetes/apps/postgres-restore/
+    deleteOrphaned: true
   - source: kubernetes/components/common/democratic-csi.yaml
     dest: kubernetes/components/common/democratic-csi.yaml
   - source: kubernetes/components/common/shared-secrets.sops.yaml

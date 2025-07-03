@@ -97,3 +97,5 @@ david-driscoll/equestria-cluster:
     dest: .mise/
   - source: .husky/
     dest: .husky/
+  - source: .config/
+    dest: .config/

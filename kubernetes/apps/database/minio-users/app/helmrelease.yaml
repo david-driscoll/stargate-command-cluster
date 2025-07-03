@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-96bd1fb61dda
+  name: minio-users-d0f0a8ab9355
 spec:
   timeout: 5m
   interval: 30m
@@ -23,7 +23,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      minio-users-96bd1fb61dda:
+      minio-users-d0f0a8ab9355:
         nameOverride: init-minio-users
         type: job
         job:
@@ -31,7 +31,7 @@ spec:
           suspend: false
           ttlSecondsAfterFinished: 600
         containers: &job
-          minio-users-96bd1fb61dda:
+          minio-users-d0f0a8ab9355:
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -44,12 +44,6 @@ spec:
 
               mc mb -p "$MC_ALIAS/authentik"
 
-              mc mb -p "$MC_ALIAS/homarr"
-
-              mc mb -p "$MC_ALIAS/homarr/mysql/dump"
-
-              mc mb -p "$MC_ALIAS/homarr/mysql/snapshot"
-
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_CLUSTER_USER" consoleAdmin
@@ -57,10 +51,6 @@ spec:
               mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_AUTHENTIK" readwrite
-
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_HOMARR" "$MINIO_PASSWORD_HOMARR"
-
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_HOMARR" readwrite
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
@@ -100,21 +90,11 @@ spec:
                   secretKeyRef:
                     name: authentik-minio-access-key
                     key: password
-              MINIO_USER_HOMARR:
-                valueFrom:
-                  secretKeyRef:
-                    name: homarr-minio-access-key
-                    key: username
-              MINIO_PASSWORD_HOMARR:
-                valueFrom:
-                  secretKeyRef:
-                    name: homarr-minio-access-key
-                    key: password
             resources:
               requests:
                 cpu: 10m
                 memory: 32Mi
-      cron-minio-users-96bd1fb61dda:
+      cron-minio-users-d0f0a8ab9355:
         nameOverride: cron-minio-users
         cronjob:
           backoffLimit: 6

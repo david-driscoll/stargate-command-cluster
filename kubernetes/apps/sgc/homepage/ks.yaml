@@ -58,10 +58,11 @@ spec:
   retryInterval: 1m
   timeout: 5m
   components:
+    - ../../../../components/volsync
     - ../../../../components/tailscale
-    - ../../../../components/mysql
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      VOLSYNC_CAPACITY: 10Gi
       DATABASE_PASSWORD: Homarr Database User

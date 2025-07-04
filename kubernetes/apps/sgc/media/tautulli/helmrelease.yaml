@@ -20,13 +20,10 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: truenas-iscsi-stash
-      namespace: democratic-csi
-    - name: truenas-stash
-      namespace: democratic-csi
+    - name: plex
   values:
     controllers:
-      app:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -36,7 +33,7 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/tautulli/tautulli
               tag: v2.15.2@sha256:0003dd1f2c6d8cd1ce3013ff94f62b17530b3573439de6b52aefa3a10e724f9e
@@ -76,8 +73,8 @@ spec:
                 memory: 2Gi
 
     service:
-      app:
-        controller: app
+      *app :
+        controller: *app
         type: ClusterIP
         ports:
           http:
@@ -92,13 +89,12 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
-                  port: *port
-
+                  identifier: *app
+                  port: http
 
     persistence:
       config:
-        existingClaim: tautulli-config
+        existingClaim: ${APP}
       cache:
         type: emptyDir
         globalMounts:

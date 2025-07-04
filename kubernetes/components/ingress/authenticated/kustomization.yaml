@@ -14,3 +14,18 @@ patches:
         name: not-used
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
+  - target:
+      group: helm.toolkit.fluxcd.io
+      version: v2
+      kind: HelmRelease
+    patch: |-
+      apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      metadata:
+        name: not-used
+      spec:
+        values:
+          ingress:
+            internal:
+              annotations:
+                traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd

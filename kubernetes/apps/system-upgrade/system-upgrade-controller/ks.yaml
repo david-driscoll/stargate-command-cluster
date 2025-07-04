@@ -20,6 +20,10 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -37,6 +41,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/plans
   postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
     substituteFrom:
       - kind: ConfigMap
         name: versions

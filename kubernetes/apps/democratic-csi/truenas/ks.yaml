@@ -85,4 +85,8 @@ spec:
   wait: false
   interval: 30m
   retryInterval: 1m
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
   timeout: 5m

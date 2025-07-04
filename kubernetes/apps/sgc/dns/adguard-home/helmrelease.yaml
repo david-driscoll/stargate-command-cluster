@@ -165,7 +165,7 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: "${ADGUARD_VIP}"
           tailscale.com/expose: "true"
-          tailscale.com/hostname: *app
+          tailscale.com/hostname: ${APP}
           tailscale.com/tailnet-ip: "${ADGUARD_TAILSCALE_VIP}"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         externalIPs:

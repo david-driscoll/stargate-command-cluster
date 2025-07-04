@@ -88,7 +88,7 @@ spec:
 
     persistence:
       *app :
-        existingClaim: *app
+        existingClaim: ${APP}
         globalMounts:
           - path: /var/lib/pgadmin
       log:

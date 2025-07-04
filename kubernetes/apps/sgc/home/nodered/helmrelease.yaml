@@ -63,7 +63,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: ${APP}
 
     service:
       app:

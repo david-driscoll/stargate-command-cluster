@@ -32,10 +32,7 @@ spec:
     substitute:
       APP: plex-alt
       NAMESPACE: *namespace
-      VOLSYNC_CAPACITY: 20Gi
-    substituteFrom:
-      - name: plex-token
-        kind: Secret
+      VOLSYNC_CAPACITY: 40Gi
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -72,9 +69,7 @@ spec:
   postBuild:
     substitute:
       APP: tautulli-alt
-    substituteFrom:
-      - name: tautulli-token
-        kind: Secret
+      NAMESPACE: *namespace
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

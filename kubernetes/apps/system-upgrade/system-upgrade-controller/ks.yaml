@@ -40,6 +40,9 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/plans
+
+  timeout: 5m
+
   postBuild:
     substitute:
       APP: *app
@@ -54,5 +57,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: false

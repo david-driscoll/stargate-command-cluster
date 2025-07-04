@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app plex-alt
+  name: &app plex
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -15,7 +15,7 @@ spec:
       namespace: *namespace
     - name: volsync
       namespace: volsync-system
-  path: ./kubernetes/apps/sgc/media/plex-alt
+  path: ./kubernetes/apps/sgc/media/plex
   prune: true
   sourceRef:
     kind: GitRepository
@@ -30,11 +30,50 @@ spec:
     - ../../../../components/tailscale
   postBuild:
     substitute:
-      APP: *app
+      APP: plex-alt
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 20Gi
     substituteFrom:
       - name: plex-token
+        kind: Secret
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app tautulli
+  namespace: &namespace sgc
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: shared-volumes
+      namespace: *namespace
+  path: ./kubernetes/apps/sgc/media/tautulli
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  components:
+    - ../../../../components/volsync
+    - ../../../../components/tailscale
+  postBuild:
+    substitute:
+      APP: tautulli-alt
+    substituteFrom:
+      - name: tautulli-token
         kind: Secret
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json

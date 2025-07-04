@@ -106,8 +106,8 @@ spec:
                 secretKeyRef:
                   name: adguard-secret
                   key: password
-              REPLICA1_URL: "http://{{ .Release.Name }}-primary.${CLUSTER_CNAME}:3000"
-              REPLICA1_WEB_URL: "https://{{ .Release.Name }}-primary.${CLUSTER_CNAME}"
+              REPLICA1_URL: "http://${APP}-primary.${CLUSTER_CNAME}:3000"
+              REPLICA1_WEB_URL: "https://${APP}-primary.${CLUSTER_CNAME}"
               REPLICA1_AUTO_SETUP: "true"
               REPLICA1_USERNAME:
                 secretKeyRef:
@@ -117,8 +117,8 @@ spec:
                 secretKeyRef:
                   name: adguard-secret
                   key: password
-              REPLICA2_URL: "http://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}:3000"
-              REPLICA2_WEB_URL: "https://{{ .Release.Name }}-secondary.${CLUSTER_CNAME}"
+              REPLICA2_URL: "http://${APP}-secondary.${CLUSTER_CNAME}:3000"
+              REPLICA2_WEB_URL: "https://${APP}-secondary.${CLUSTER_CNAME}"
               REPLICA2_AUTO_SETUP: "true"
               REPLICA2_USERNAME:
                 secretKeyRef:
@@ -128,8 +128,8 @@ spec:
                 secretKeyRef:
                   name: adguard-secret
                   key: password
-              REPLICA3_URL: http://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}:3000
-              REPLICA3_WEB_URL: https://{{ .Release.Name }}-tertiary.${CLUSTER_CNAME}
+              REPLICA3_URL: http://${APP}-tertiary.${CLUSTER_CNAME}:3000
+              REPLICA3_WEB_URL: https://${APP}-tertiary.${CLUSTER_CNAME}
               REPLICA3_AUTO_SETUP: "true"
               REPLICA3_USERNAME:
                 secretKeyRef:
@@ -230,7 +230,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - host: "${APP}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -241,7 +241,7 @@ spec:
         className: internal
         annotations: *ingress-annotations
         hosts:
-          - host: "{{ .Release.Name }}-primary.${CLUSTER_DOMAIN}"
+          - host: "${APP}-primary.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -251,7 +251,7 @@ spec:
       secondary:
         <<: *ingress
         hosts:
-          - host: "{{ .Release.Name }}-secondary.${CLUSTER_DOMAIN}"
+          - host: "${APP}-secondary.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -261,7 +261,7 @@ spec:
       tertiary:
         <<: *ingress
         hosts:
-          - host: "{{ .Release.Name }}-tertiary.${CLUSTER_DOMAIN}"
+          - host: "${APP}-tertiary.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

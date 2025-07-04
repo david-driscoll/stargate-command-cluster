@@ -37,6 +37,9 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/volsync-system/
     dest: kubernetes/apps/volsync-system/
     deleteOrphaned: true
+  - source: kubernetes/components/ingress/
+    dest: kubernetes/components/ingress/
+    deleteOrphaned: true
   - source: kubernetes/components/tailscale/
     dest: kubernetes/components/tailscale/
     deleteOrphaned: true

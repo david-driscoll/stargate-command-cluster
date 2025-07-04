@@ -61,7 +61,6 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
         hosts:
           - host: &host whoami.${CLUSTER_DOMAIN}
             paths:

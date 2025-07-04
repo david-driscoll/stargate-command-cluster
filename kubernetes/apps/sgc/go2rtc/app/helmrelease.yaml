@@ -125,7 +125,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: "${APP}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -135,11 +135,11 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:6767"
+          gethomepage.dev/widget.url: "http://${APP}.${INTERNAL_CLUSTER_SERVICE}:6767"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media Management
           gethomepage.dev/icon: go2rtc.svg
           gethomepage.dev/name: Go2rtc
           gethomepage.dev/widget.type: "go2rtc"
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
-          gethomepage.dev/app: "{{ .Release.Name }}"
+          gethomepage.dev/app: "${APP}"

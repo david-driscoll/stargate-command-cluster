@@ -53,7 +53,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: "${APP}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

@@ -31,7 +31,7 @@ spec:
               - --port
               - "12321"
               - --proxy-domain
-              - &host "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
+              - &host "${APP}-code.${CLUSTER_DOMAIN}"
               - /home/coder
 
             env:
@@ -68,9 +68,9 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Code Servers
           gethomepage.dev/icon: vscode.svg
-          gethomepage.dev/name: "{{ .Release.Name }} Code"
+          gethomepage.dev/name: "${APP} Code"
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
-          gethomepage.dev/app: "{{ .Release.Name }} Code"
+          gethomepage.dev/app: "${APP} Code"
         hosts:
           - host: *host
             paths:

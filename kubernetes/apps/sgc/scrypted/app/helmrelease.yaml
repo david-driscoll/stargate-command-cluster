@@ -111,7 +111,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: "${APP}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -122,11 +122,11 @@ spec:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          gethomepage.dev/widget.url: "http://{{ .Release.Name }}.${INTERNAL_CLUSTER_SERVICE}:11080"
+          gethomepage.dev/widget.url: "http://${APP}.${INTERNAL_CLUSTER_SERVICE}:11080"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media Management
           gethomepage.dev/icon: scrypted.svg
           gethomepage.dev/name: Scrypted
           gethomepage.dev/widget.type: "scrypted"
           gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
-          gethomepage.dev/app: "{{ .Release.Name }}"
+          gethomepage.dev/app: "${APP}"

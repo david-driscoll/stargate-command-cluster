@@ -41,7 +41,7 @@ spec:
             env:
               HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_2: "${SERVICE_NETWORK}"
-              HASS_EXTERNAL_URL: "https://{{ .Release.Name }}.${ROOT_DOMAIN}"
+              HASS_EXTERNAL_URL: "https://${APP}.${ROOT_DOMAIN}"
               TZ: "${TIMEZONE}"
             resources:
               requests:
@@ -111,7 +111,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: "{{ .Release.Name }}.${ROOT_DOMAIN}"
+          - host: "${APP}.${ROOT_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -145,7 +145,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: "{{ .Release.Name }}-code.${ROOT_DOMAIN}"
+          - host: "${APP}-code.${ROOT_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

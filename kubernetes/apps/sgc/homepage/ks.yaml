@@ -13,14 +13,8 @@ spec:
   path: ./kubernetes/apps/sgc/homepage/homarr
   prune: true
   dependsOn:
-    - name: tailscale-apps
-      namespace: *namespace
-    - name: minio-users
-      namespace: database
     - name: volsync
       namespace: volsync-system
-    - name: sgc-secrets
-      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system

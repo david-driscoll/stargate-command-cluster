@@ -133,8 +133,8 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
+  timeout: 5m
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-  timeout: 5m

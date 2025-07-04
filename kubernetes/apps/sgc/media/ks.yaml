@@ -24,7 +24,8 @@ spec:
   wait: true
   interval: 30m
   retryInterval: 1m
-  timeout: 15m
+  # the config can take a while to restore
+  timeout: 1h
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale

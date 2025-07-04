@@ -84,7 +84,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "${APP}.${CLUSTER_DOMAIN}"
+          - host: "tautulli.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

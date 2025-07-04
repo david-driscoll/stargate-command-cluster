@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app plex
 spec:
-  timeout: 5m
+  timeout: 15m
   interval: 30m
   chartRef:
     kind: OCIRepository

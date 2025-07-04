@@ -129,7 +129,7 @@ spec:
         className: tailscale
         annotations:
           reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: *app
+          tailscale.com/hostname: ${APP}
         defaultBackend:
           service:
             name: *app
@@ -174,7 +174,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: ${APP}
       deploy-key:
         type: secret
         name: home-assistant-ssh

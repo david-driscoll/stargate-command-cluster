@@ -65,7 +65,7 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: "${CHRONY_VIP}"
           tailscale.com/expose: "true"
-          tailscale.com/hostname: *app
+          tailscale.com/hostname: ${APP}
           tailscale.com/tailnet-ip: "${CHRONY_TAILSCALE_VIP}"
         externalIPs:
           - "${CHRONY_VIP}"

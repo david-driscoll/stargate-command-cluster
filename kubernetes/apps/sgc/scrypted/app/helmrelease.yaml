@@ -96,7 +96,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: ${APP}
         globalMounts:
           - path: /server/volume
       cache:

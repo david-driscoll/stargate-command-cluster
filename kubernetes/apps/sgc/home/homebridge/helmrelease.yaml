@@ -120,7 +120,7 @@ spec:
             # npm install --save homebridge-camera-ui@latest
     persistence:
       homebridge:
-        existingClaim: *app
+        existingClaim: ${APP}
       startup-sh:
         enabled: true
         type: configMap

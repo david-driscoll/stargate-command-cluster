@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -125,18 +125,18 @@ spec:
                 service:
                   identifier: app
                   port: http
-      tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: ${APP}
-        defaultBackend:
-          service:
-            name: *app
-            port:
-              name: http
-        hosts:
-          - "home"
+      # tailscale:
+      #   className: tailscale
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #     tailscale.com/hostname: ${APP}
+      #   defaultBackend:
+      #     service:
+      #       name: *app
+      #       port:
+      #         name: http
+      #   hosts:
+      #     - "home"
 
       code-internal:
         className: internal
@@ -159,18 +159,18 @@ spec:
                 service:
                   identifier: code
                   port: http
-      code-tailscale:
-        className: tailscale
-        annotations:
-          reloader.stakater.com/auto: "true"
-          tailscale.com/hostname: home-assistant-code
-        defaultBackend:
-          service:
-            name: "home-assistant-code"
-            port:
-              name: http
-        hosts:
-          - "home-code"
+      # code-tailscale:
+      #   className: tailscale
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #     tailscale.com/hostname: home-assistant-code
+      #   defaultBackend:
+      #     service:
+      #       name: "home-assistant-code"
+      #       port:
+      #         name: http
+      #   hosts:
+      #     - "home-code"
 
     persistence:
       config:

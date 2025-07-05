@@ -12,6 +12,7 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/app
   prune: true
+  force: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
@@ -20,6 +21,10 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -35,8 +40,15 @@ spec:
     - name: system-upgrade-controller
       namespace: *namespace
   interval: 1h
+  force: true
   path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/plans
+
+  timeout: 5m
+
   postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
     substituteFrom:
       - kind: ConfigMap
         name: versions
@@ -47,5 +59,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: false

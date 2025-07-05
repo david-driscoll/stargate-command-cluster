@@ -246,7 +246,7 @@ File.WriteAllText(kustomizationPath, customizationTemplate);
 File.WriteAllText(minioUsersRelease,
 """
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 """ + "\n" +
 serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
 File.WriteAllText(minioKsYaml,

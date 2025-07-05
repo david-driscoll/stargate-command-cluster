@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-d0f0a8ab9355
+  name: minio-users
 spec:
   timeout: 5m
   interval: 30m
@@ -23,14 +23,14 @@ spec:
     keepHistory: false
   values:
     controllers:
-      minio-users-d0f0a8ab9355:
+      minio-users:
         type: job
         job:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
         containers: &job
-          minio-users-d0f0a8ab9355:
+          minio-users:
             nameOverride: minio-users
             image:
               repository: minio/mc
@@ -94,7 +94,7 @@ spec:
               requests:
                 cpu: 10m
                 memory: 32Mi
-      cron-minio-users-d0f0a8ab9355:
+      cron-minio-users:
         cronjob:
           backoffLimit: 6
           concurrencyPolicy: Forbid

@@ -30,5 +30,5 @@ spec:
   - ../../../../components/password-generator
   postBuild:
     substitute:
-      APP: *app
+      APP: minio-users-d0f0a8ab9355
       NAMESPACE: *namespace

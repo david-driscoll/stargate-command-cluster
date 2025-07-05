@@ -139,4 +139,4 @@ spec:
       resources: *resources
 
     serviceAccount:
-      create: true
+      *app : {}

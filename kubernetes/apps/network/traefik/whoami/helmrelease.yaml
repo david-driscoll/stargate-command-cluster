@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app whoami
+  name: &app traefik-whoami
   namespace: network
 spec:
   timeout: 5m

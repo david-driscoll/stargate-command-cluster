@@ -175,7 +175,7 @@ var minioConfig = new MinioConfig(
     Users: users.ToImmutable()
 );
 minioConfig.Dump();
-var key = "minio-users-" + string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2"))).Substring(0, 12);
+var key = "minio-users";
 
 foreach (var user in minioConfig.Users)
 {

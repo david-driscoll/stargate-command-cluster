@@ -9,7 +9,7 @@ components:
 resources:
   - ./cloudnative-pg/ks.yaml
   - ./mysql-operator/ks.yaml
-  # - ./dragonfly/ks.yaml
+  - ./dragonfly/ks.yaml
   - ./minio/ks.yaml
-  # - ./minio-users/ks.yaml
-  # - ./admin/ks.yaml
+  - ./minio-users/ks.yaml
+  - ./admin/ks.yaml

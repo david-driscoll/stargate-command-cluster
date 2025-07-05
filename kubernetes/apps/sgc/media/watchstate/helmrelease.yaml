@@ -81,19 +81,6 @@ spec:
                 service:
                   identifier: app
                   port: *port
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          gethomepage.dev/widget.url: "http://${APP}.${INTERNAL_CLUSTER_SERVICE}:32400"
-          # gethomepage.dev/widget.key: "${plex_token}"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: plex.svg
-          gethomepage.dev/name: Plex
-          gethomepage.dev/widget.type: plex
-          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
-          gethomepage.dev/app: "${APP}"
 
     persistence:
       config:

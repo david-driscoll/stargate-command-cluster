@@ -39,7 +39,7 @@ spec:
               TZ: "${TIMEZONE}"
               PUID: 568
               PGID: 568
-              PLEX_ADVERTISE_URL: https://${APP}.${ROOT_DOMAIN}:443,https://plex.${CLUSTER_DOMAIN}:443,https://${APP}.${TAILSCALE_DOMAIN}:443,http://${APP}.${INTERNAL_CLUSTER_SERVICE}:32400
+              PLEX_ADVERTISE_URL: https://${APP}.${ROOT_DOMAIN}:443,https://plex.${CLUSTER_DOMAIN}:443,https://${APP}.${TAILSCALE_DOMAIN}:443,http://plex.${INTERNAL_CLUSTER_SERVICE}:32400
               PLEX_NO_AUTH_NETWORKS: 172.16.0.0/12,10.10.0.0/16,10.69.0.0/16,10.96.0.0/16,192.168.0.0/16,100.64.0.0/10
               PLEX_PURGE_CODECS: "true"
               # PLEX_PREFERENCE_FriendlyName: "Eris Plex"
@@ -127,19 +127,6 @@ spec:
                 service:
                   identifier: app
                   port: *port
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          gethomepage.dev/widget.url: "http://${APP}.${INTERNAL_CLUSTER_SERVICE}:32400"
-          # gethomepage.dev/widget.key: "${plex_token}"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: plex.svg
-          gethomepage.dev/name: Plex
-          gethomepage.dev/widget.type: plex
-          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
-          gethomepage.dev/app: "${APP}"
 
     persistence:
       config:

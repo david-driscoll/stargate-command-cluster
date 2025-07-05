@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: database
 components:
   - ../../components/common
-  - ../../components/repos/app-template
+  - ../../components/repos/app-template4
 resources:
   - ./cloudnative-pg/ks.yaml
   - ./mysql-operator/ks.yaml

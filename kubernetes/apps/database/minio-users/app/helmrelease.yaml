@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.7.3/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -24,7 +24,6 @@ spec:
   values:
     controllers:
       minio-users-d0f0a8ab9355:
-        nameOverride: init-minio-users
         type: job
         job:
           backoffLimit: 100
@@ -32,6 +31,7 @@ spec:
           ttlSecondsAfterFinished: 600
         containers: &job
           minio-users-d0f0a8ab9355:
+            nameOverride: minio-users
             image:
               repository: minio/mc
               tag: RELEASE.2025-05-21T01-59-54Z.hotfix.e98f1ead@sha256:cf700affaa5cddcea9371fd4c961521fff2baff4b90333c4bda2df61bf5e6692
@@ -95,7 +95,6 @@ spec:
                 cpu: 10m
                 memory: 32Mi
       cron-minio-users-d0f0a8ab9355:
-        nameOverride: cron-minio-users
         cronjob:
           backoffLimit: 6
           concurrencyPolicy: Forbid

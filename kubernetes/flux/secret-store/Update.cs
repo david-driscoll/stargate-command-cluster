@@ -35,7 +35,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets
-      namespace: *namespace
+      namespace: kube-system
   interval: 1h
   path: ./kubernetes/flux/secret-store
   prune: true

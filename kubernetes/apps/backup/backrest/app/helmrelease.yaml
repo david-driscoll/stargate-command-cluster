@@ -39,6 +39,9 @@ spec:
               BACKREST_DATA: /app/data
               BACKREST_CONFIG: /app/config.json
               XDG_CACHE_HOME: /app/cache
+            envFrom:
+              - secretRef:
+                  name: ${APP}-secret
             resources:
               requests:
                 cpu: 50m

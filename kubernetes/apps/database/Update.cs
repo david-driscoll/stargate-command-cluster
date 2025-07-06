@@ -32,6 +32,7 @@ using System.Security.Cryptography;
 #region Find all applications using minio
 
 var kustomizationUserList = new HashSet<string>();
+var documentsMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
 // Now lets search for all the implied users, and update minio.yaml
@@ -55,7 +56,13 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
   .Select(z => (name: Path.GetFileName(z), path: z))
   .ToList();
   }
+
+  ;
   var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
+  documentsMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/APP")
+  .OfType<YamlScalarNode>()
+    .SingleOrDefault()
+    ?.Value ?? documentName;
   var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
   var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
   if (components.Count == 0)
@@ -79,7 +86,6 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
       kustomizationUserList.Add(documentName);
     }
   }
-  new { documentName, path, allComponents }.Dump();
   static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
   {
 
@@ -180,9 +186,9 @@ var key = "minio-users";
 foreach (var user in minioConfig.Users)
 {
   var yaml = File.ReadAllText(userTemplate)
-  .Replace("cluster-user", $"{user}-minio-access-key")
   .Replace("${APP}", key)
   .Replace("${CLUSTER_CNAME}", user)
+  .Replace("cluster-user", $"{documentsMapping[user]}-minio-access-key")
   ;
   var fileName = Path.Combine(usersDirectory, $"{user}.yaml");
   File.WriteAllText(fileName, yaml);

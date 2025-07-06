@@ -27,7 +27,7 @@ var template = """
 apiVersion: external-secrets.io/v1
 kind: SecretStore
 metadata:
-  name: ${NAMESPACE}
+  name: local
 spec:
   provider:
     kubernetes:

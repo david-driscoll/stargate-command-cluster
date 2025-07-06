@@ -36,25 +36,3 @@ patches:
               kind: ConfigMap
             - name: shared-secrets
               kind: Secret
-
-  - target:
-      group: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-    patch: |-
-      apiVersion: external-secrets.io/v1
-      kind: SecretStore
-      metadata:
-        name: common
-      spec:
-        decryption:
-          provider: sops
-          secretRef:
-            name: sops-age
-        postBuild:
-          substituteFrom:
-            - name: cluster-secrets
-              kind: Secret
-            - name: cluster-versions
-              kind: ConfigMap
-            - name: shared-secrets
-              kind: Secret

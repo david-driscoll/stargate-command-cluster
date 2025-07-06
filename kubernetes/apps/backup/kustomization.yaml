@@ -7,5 +7,6 @@ components:
   - ../../components/common
   - ../../components/repos/app-template4
 resources:
+  - ./secret-store.yaml
   - ./backrest/ks.yaml
   # - ./restic-server/ks.yaml

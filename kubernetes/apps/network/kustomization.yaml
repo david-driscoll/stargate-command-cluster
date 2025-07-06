@@ -7,6 +7,7 @@ components:
   - ../../components/common
   - ../../components/repos/app-template4
 resources:
+  - ./secret-store.yaml
   - ./certificates/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
   - ./dns/ks.yaml

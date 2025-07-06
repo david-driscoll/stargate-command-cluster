@@ -35,6 +35,7 @@ spec:
             command: ["/bin/sh", "-c"]
             args:
               - yq -o json /config/config.yaml > /app/config/config.json
+              - cat /app/config/config.json
         containers:
           *app :
             image:
@@ -104,19 +105,15 @@ spec:
           - path: /app/config
       processlogs:
         type: emptyDir
-        advancedMounts:
-          backrest:
-            app:
-              - path: /app/data/processlogs
+        globalMounts:
+          - path: /app/data/processlogs
       init-config:
         type: secret
         name: ${APP}-secret
-        advancedMounts:
-          backrest:
-            init-config:
-              - path: /config/config.yaml
-                subPath: config.yaml
-                readOnly: true
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
       volsync-share:
         type: nfs
         server: ${SPIKE_IP}

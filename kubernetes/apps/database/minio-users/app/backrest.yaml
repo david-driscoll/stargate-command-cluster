@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: authentik-minio-access-key
+  name: backrest-minio-access-key
 spec:
   refreshPolicy: Periodic
   refreshInterval: "2m"
@@ -11,7 +11,7 @@ spec:
     kind: SecretStore
     name: common
   target:
-    name: authentik-minio-access-key
+    name: backrest-minio-access-key
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
@@ -22,34 +22,34 @@ spec:
           reloader.stakater.com/auto: "true"
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
-        CONSOLE_ACCESS_KEY: "authentik"
+        CONSOLE_ACCESS_KEY: "backrest"
         CONSOLE_SECRET_KEY: "{{ .password }}"
         credentials: |
           [default]
-          aws_access_key_id = authentik
+          aws_access_key_id = backrest
           aws_secret_access_key = {{ .password }}
         config: |
           [default]
           region=home
         S3_PROVIDER: Minio
         S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
-        AWS_ACCESS_KEY_ID: "authentik"
+        AWS_ACCESS_KEY_ID: "backrest"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
-        username: "authentik"
+        username: "backrest"
         credential: "{{ .password }}"
         password: "{{ .password }}"
         endpoint: "https://s3.${CLUSTER_DOMAIN}"
         region: "homelab"
   dataFrom:
     - extract:
-        key: "authentik-minio-access-key-password"
+        key: "backrest-minio-access-key-password"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name "authentik-minio-access-key-password"
+  name: &name "backrest-minio-access-key-password"
   annotations:
     reloader.stakater.com/auto: "true"
 spec:

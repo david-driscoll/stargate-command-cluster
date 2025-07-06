@@ -37,7 +37,7 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               BACKREST_DATA: /app/data
-              BACKREST_CONFIG: /app/config/config.json
+              BACKREST_CONFIG: /app/config.json
               XDG_CACHE_HOME: /app/cache
             resources:
               requests:

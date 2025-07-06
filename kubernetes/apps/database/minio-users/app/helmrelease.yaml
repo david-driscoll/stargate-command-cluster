@@ -43,6 +43,8 @@ spec:
 
               mc mb -p "$MC_ALIAS/authentik"
 
+              mc mb -p "$MC_ALIAS/backrest"
+
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_CLUSTER_USER" consoleAdmin
@@ -50,6 +52,10 @@ spec:
               mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_AUTHENTIK" readwrite
+
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_BACKREST" "$MINIO_PASSWORD_BACKREST"
+
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_BACKREST" readwrite
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
@@ -88,6 +94,16 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: authentik-minio-access-key
+                    key: password
+              MINIO_USER_BACKREST:
+                valueFrom:
+                  secretKeyRef:
+                    name: backrest-minio-access-key
+                    key: username
+              MINIO_PASSWORD_BACKREST:
+                valueFrom:
+                  secretKeyRef:
+                    name: backrest-minio-access-key
                     key: password
             resources:
               requests:

@@ -27,6 +27,14 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-config:
+            image:
+              repository: docker.io/mikefarah/yq
+              tag: 4.45.4@sha256:7cf28e5d67782f4b274a93a7bc54a840b553447a0807efd843d069f46bff718c
+            command: ["/bin/sh", "-c"]
+            args:
+              - yq -o json /config/config.yaml > /app/config/config.json
         containers:
           *app :
             image:
@@ -84,5 +92,35 @@ spec:
                   port: http
 
     persistence:
-      config:
+      app:
         existingClaim: ${APP}
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /app/cache
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config
+      processlogs:
+        type: emptyDir
+        advancedMounts:
+          backrest:
+            app:
+              - path: /app/data/processlogs
+      init-config:
+        type: secret
+        name: ${APP}-secret
+        advancedMounts:
+          backrest:
+            init-config:
+              - path: /config/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      volsync-share:
+        type: nfs
+        server: ${SPIKE_IP}
+        path: /mnt/stash/backup/volsync/
+        globalMounts:
+          - path: /shares/volsync/
+      # todo add shares for luna and celestia

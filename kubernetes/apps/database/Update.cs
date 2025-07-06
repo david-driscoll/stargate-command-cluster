@@ -212,8 +212,8 @@ foreach (var item in minioConfig.Users)
   var envKey = item.ToUpperInvariant().Replace("-", "_");
   commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_{envKey}\" \"$MINIO_PASSWORD_{envKey}\"");
   commandBuilder.Add($"mc admin policy attach \"$MC_ALIAS\" --user \"$MINIO_USER_{envKey}\" readwrite");
-  envReference.Children.Add(new YamlScalarNode($"MINIO_USER_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{item}-minio-access-key", "username"));
-  envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{item}-minio-access-key", "password"));
+  envReference.Children.Add(new YamlScalarNode($"MINIO_USER_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{documentsMapping[item]}-minio-access-key", "username"));
+  envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{documentsMapping[item]}-minio-access-key", "password"));
 }
 static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy, string name, string key)
 {

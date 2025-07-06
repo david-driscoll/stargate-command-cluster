@@ -9,7 +9,7 @@ spec:
   refreshInterval: "2m"
   secretStoreRef:
     kind: SecretStore
-    name: namespace
+    name: this
   target:
     name: backrest-minio-access-key
     creationPolicy: Owner

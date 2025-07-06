@@ -75,7 +75,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "${APP}.${CLUSTER_DOMAIN}"
+          - host: "backrest.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

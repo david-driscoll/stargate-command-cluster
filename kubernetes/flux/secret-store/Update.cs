@@ -34,7 +34,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets
+    - name: external-secrets-stores
       namespace: kube-system
   interval: 1h
   path: ./kubernetes/flux/secret-store

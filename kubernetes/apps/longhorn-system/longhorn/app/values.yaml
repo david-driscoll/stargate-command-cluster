@@ -1,7 +1,7 @@
 ---
 
 defaultBackupStore:
-  backupTarget: nfs://${SPIKE_IP}:/mnt/stash/backup/sgc/longhorn
+  backupTarget: nfs://${SPIKE_IP}:/mnt/stash/backup/${CLUSTER_CNAME}/longhorn
   # backupTargetCredentialSecret: minio-secret
 
 persistence:

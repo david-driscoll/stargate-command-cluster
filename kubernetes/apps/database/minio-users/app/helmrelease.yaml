@@ -98,12 +98,12 @@ spec:
               MINIO_USER_BACKREST:
                 valueFrom:
                   secretKeyRef:
-                    name: backrest-minio-access-key
+                    name: backrest-${CLUSTER_CNAME}-minio-access-key
                     key: username
               MINIO_PASSWORD_BACKREST:
                 valueFrom:
                   secretKeyRef:
-                    name: backrest-minio-access-key
+                    name: backrest-${CLUSTER_CNAME}-minio-access-key
                     key: password
             resources:
               requests:

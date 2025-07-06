@@ -8,7 +8,7 @@ components:
   - ../../components/repos/app-template4
 resources:
   - ./secret-store.yaml
-  - ./homepage/ks.yaml
+  # - ./homepage/ks.yaml
   - ./shared/ks.yaml
   - ./go2rtc/ks.yaml
   - ./dns/ks.yaml

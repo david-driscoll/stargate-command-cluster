@@ -67,3 +67,11 @@ spec:
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+      - name: cluster-versions
+        kind: ConfigMap
+      - name: shared-secrets
+        kind: Secret

@@ -3,15 +3,15 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: backrest-minio-access-key
+  name: backrest-${CLUSTER_CNAME}-minio-access-key
 spec:
   refreshPolicy: Periodic
-  refreshInterval: "2m"
+  refreshInterval: "1h"
   secretStoreRef:
     kind: SecretStore
     name: this
   target:
-    name: backrest-minio-access-key
+    name: backrest-${CLUSTER_CNAME}-minio-access-key
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
@@ -42,14 +42,14 @@ spec:
         region: "homelab"
   dataFrom:
     - extract:
-        key: "backrest-minio-access-key-password"
+        key: "backrest-${CLUSTER_CNAME}-minio-access-key-password"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name "backrest-minio-access-key-password"
+  name: &name "backrest-${CLUSTER_CNAME}-minio-access-key-password"
   annotations:
     reloader.stakater.com/auto: "true"
 spec:

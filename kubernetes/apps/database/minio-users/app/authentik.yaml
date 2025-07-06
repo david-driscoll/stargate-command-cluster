@@ -6,7 +6,7 @@ metadata:
   name: authentik-minio-access-key
 spec:
   refreshPolicy: Periodic
-  refreshInterval: "2m"
+  refreshInterval: "1h"
   secretStoreRef:
     kind: SecretStore
     name: this

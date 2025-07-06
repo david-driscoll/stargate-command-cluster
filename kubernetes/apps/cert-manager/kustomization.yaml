@@ -6,5 +6,6 @@ namespace: cert-manager
 components:
   - ../../components/common
 resources:
+  - ./secret-store.yaml
   - ./cert-manager/ks.yaml
   - ./trust-manager/ks.yaml

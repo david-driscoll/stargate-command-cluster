@@ -67,12 +67,11 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/components/postgres-restore/
     dest: kubernetes/components/postgres-restore/
     deleteOrphaned: true
-  - source: kubernetes/components/common/democratic-csi.yaml
-    dest: kubernetes/components/common/democratic-csi.yaml
-  - source: kubernetes/components/common/shared-secrets.sops.yaml
-    dest: kubernetes/components/common/shared-secrets.sops.yaml
-  - source: kubernetes/components/common/kustomization.yaml
-    dest: kubernetes/components/common/kustomization.yaml
+  - source: kubernetes/components/common/
+    dest: kubernetes/components/common/
+    exclude: |
+      cluster-secrets.sops.yaml
+      sops-age.sops.yaml
   - source: kubernetes/apps/kube-system/minio-users/Update.cs
     dest: kubernetes/apps/kube-system/minio-users/Update.cs
   - source: talos/talenv.yaml

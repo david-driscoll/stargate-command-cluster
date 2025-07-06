@@ -9,6 +9,7 @@ metadata:
 components:
   - ../../components/common
 resources:
+  - ./secret-store.yaml
   - ./1password/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml

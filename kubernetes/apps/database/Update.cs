@@ -230,9 +230,9 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
 
 controllers.Children.Clear();
 containers.Children.Clear();
-containers.Children["minio-users"] = minioUsersStep;
+containers.Children["job"] = minioUsersStep;
 controllers.Children["minio-users"] = controller;
-controllers.Children[$"cron-minio-users"] = cronController;
+controllers.Children[$"cron"] = cronController;
 ((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
 minioKsYamlMapping.Query("/spec/postBuild/substitute").OfType<YamlMappingNode>().Single()
   .Children["APP"] = new YamlScalarNode(key);

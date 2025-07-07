@@ -15,6 +15,11 @@ spec:
       namespace: cert-manager
   path: ./kubernetes/apps/network/certificates/app
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -32,10 +37,6 @@ spec:
       kind: Certificate
       name: cluster-certificate
       namespace: *namespace
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   postBuild:
     substitute:
       APP: *app

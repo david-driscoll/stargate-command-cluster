@@ -10,19 +10,20 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: network-secrets
+      namespace: *namespace
   path: ./kubernetes/apps/network/dns/cloudflare
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  dependsOn:
-    - name: network-secrets
-      namespace: *namespace
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -35,19 +36,20 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: network-secrets
+      namespace: *namespace
   path: ./kubernetes/apps/network/dns/adguard
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  dependsOn:
-    - name: network-secrets
-      namespace: *namespace
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -65,14 +67,15 @@ spec:
       namespace: *namespace
   path: ./kubernetes/apps/network/dns/records
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -87,18 +90,19 @@ spec:
   dependsOn:
     - name: network-secrets
       namespace: *namespace
-  interval: 1h
   path: ./kubernetes/apps/network/dns/unifi
   prune: true
+  wait: true
+  force: true
+  interval: 1h
   retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-  wait: true

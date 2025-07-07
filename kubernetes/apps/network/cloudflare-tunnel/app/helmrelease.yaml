@@ -16,7 +16,6 @@ metadata:
   name: &app cloudflare-tunnel
   namespace: &namespace network
 spec:
-  interval: 30m
   chart:
     spec:
       chart: cloudflare-tunnel-remote
@@ -25,14 +24,8 @@ spec:
         kind: HelmRepository
         name: cloudflare
         namespace: *namespace
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
+  timeout: 5m
   dependsOn:
     - name: cloudflare-dns
       namespace: *namespace

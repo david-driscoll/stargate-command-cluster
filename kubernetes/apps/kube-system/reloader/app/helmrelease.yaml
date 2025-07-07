@@ -19,19 +19,11 @@ kind: HelmRelease
 metadata:
   name: reloader
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: reloader
-  install:
-    remediation:
-      retries: -1
-    replace: true
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-    force: true
+  interval: 1h
+  timeout: 5m
   values:
     nameOverride: reloader
     fullnameOverride: reloader

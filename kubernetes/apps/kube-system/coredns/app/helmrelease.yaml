@@ -21,18 +21,11 @@ kind: HelmRelease
 metadata:
   name: coredns
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: coredns
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
+  timeout: 5m
   valuesFrom:
     - kind: ConfigMap
       name: coredns-values

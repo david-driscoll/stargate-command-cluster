@@ -19,17 +19,11 @@ kind: HelmRelease
 metadata:
   name: tofu-controller
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: tofu-controller
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
+  timeout: 5m
   values:
     runner:
       image:

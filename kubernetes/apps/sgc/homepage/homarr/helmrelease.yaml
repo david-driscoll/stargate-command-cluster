@@ -23,20 +23,8 @@ spec:
   chartRef:
     kind: OCIRepository
     name: homarr
-  maxHistory: 3
-  install:
-    remediation:
-      retries: 3
-    replace: true
-  upgrade:
-    crds: CreateReplace
-    cleanupOnFail: true
-    force: true
-    remediation:
-      retries: 3
-      strategy: uninstall
-  uninstall:
-    keepHistory: false
+  interval: 1h
+  timeout: 5m
   valuesFrom:
     - kind: ConfigMap
       name: homarr-values

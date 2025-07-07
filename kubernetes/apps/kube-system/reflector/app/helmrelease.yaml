@@ -15,7 +15,6 @@ kind: HelmRelease
 metadata:
   name: reflector
 spec:
-  interval: 5m
   chart:
     spec:
       chart: reflector
@@ -25,6 +24,8 @@ spec:
         name: emberstack-charts
         namespace: kube-system
       interval: 5m
+  interval: 1h
+  timeout: 5m
   values:
     configuration:
       logging:

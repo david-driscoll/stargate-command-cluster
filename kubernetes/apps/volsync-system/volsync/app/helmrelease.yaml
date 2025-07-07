@@ -25,14 +25,8 @@ spec:
   chartRef:
     kind: OCIRepository
     name: volsync
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
+  timeout: 5m
   values:
     manageCRDs: true
     replicaCount: 2

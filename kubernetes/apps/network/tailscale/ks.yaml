@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/tailscale/operator
   prune: true
-  wait: true
+  wait: false
   force: true
   interval: 1h
   retryInterval: 2m
@@ -43,7 +43,7 @@ spec:
       namespace: *namespace
   path: ./kubernetes/apps/network/tailscale/connector
   prune: true
-  wait: true
+  wait: false
   force: true
   interval: 1h
   retryInterval: 2m
@@ -70,7 +70,7 @@ spec:
       namespace: *namespace
   path: ./kubernetes/apps/network/tailscale/authkey
   prune: true
-  wait: true
+  wait: false
   force: true
   interval: 1h
   retryInterval: 2m

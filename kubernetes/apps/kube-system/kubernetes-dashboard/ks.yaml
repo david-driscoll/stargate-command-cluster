@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/kube-system/kubernetes-dashboard/app
   prune: true
-  wait: true
+  wait: false
   force: true
   interval: 1h
   retryInterval: 2m

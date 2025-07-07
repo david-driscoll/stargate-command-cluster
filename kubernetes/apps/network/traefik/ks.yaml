@@ -15,7 +15,7 @@ spec:
       namespace: *namespace
   path: ./kubernetes/apps/network/traefik/shared
   prune: true
-  wait: true
+  wait: false
   force: true
   interval: 1h
   retryInterval: 2m

@@ -10,15 +10,8 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    force: true
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
+  timeout: 5m
   values:
     controllers:
       *app :

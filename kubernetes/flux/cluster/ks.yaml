@@ -52,15 +52,6 @@ spec:
         metadata:
           name: not-used
         spec:
-          install:
-            remediation:
-              retries: -1
-          uninstall:
-            keepHistory: false
-          upgrade:
-            cleanupOnFail: true
-            remediation:
-              retries: -1
           decryption:
             provider: sops
             secretRef:

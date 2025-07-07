@@ -19,7 +19,6 @@ kind: HelmRelease
 metadata:
   name: &app homarr
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: homarr

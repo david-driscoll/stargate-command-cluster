@@ -12,14 +12,15 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/database/cloudnative-pg/chart
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   postBuild:
     substitute:
       APP: *app

@@ -12,6 +12,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/kube-system/kubernetes-dashboard/app
   prune: true
+  wait: false
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -21,11 +26,7 @@ spec:
   #     kind: HelmRelease
   #     name: kubernetes-dashboard
   #     namespace: kube-system
-  wait: false
-  interval: 30m
-  retryInterval: 1m
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-  timeout: 5m

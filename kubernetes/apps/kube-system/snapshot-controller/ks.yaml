@@ -14,10 +14,13 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: *namespace
-  interval: 1h
   path: ./kubernetes/apps/kube-system/snapshot-controller/app
   prune: true
+  wait: true
+  force: true
+  interval: 1h
   retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -27,4 +30,3 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-  timeout: 5m

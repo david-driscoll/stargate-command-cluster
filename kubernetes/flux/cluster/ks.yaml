@@ -67,36 +67,6 @@ spec:
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
-    - patch: |-
-        apiVersion: helm.toolkit.fluxcd.io/v2
-        kind: HelmRelease
-        metadata:
-          name: not-used
-        spec:
-          maxHistory: 3
-          interval: 15m
-          timeout: 5m
-          install:
-            createNamespace: true
-            replace: true
-            remediation:
-              retries: -1
-          upgrade:
-            crds: CreateReplace
-            cleanupOnFail: true
-            remediation:
-              retries: -1
-              strategy: rollback
-          rollback:
-            force: true
-            cleanupOnFail: true
-            recreate: true
-          uninstall:
-            keepHistory: false
-      target:
-        group: helm.toolkit.fluxcd.io
-        kind: HelmRelease
-        version: v2
   postBuild:
     substituteFrom:
       - name: cluster-secrets

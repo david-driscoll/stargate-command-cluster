@@ -105,6 +105,7 @@ spec:
       target:
         group: helm.toolkit.fluxcd.io
         kind: HelmRelease
+        version: v2
   postBuild:
     substituteFrom:
       - name: cluster-secrets

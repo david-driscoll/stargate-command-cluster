@@ -22,8 +22,6 @@ metadata:
   name: &app nvidia-device-plugin
   namespace: &namespace kube-system
 spec:
-  timeout: 5m
-  interval: 30m
   chart:
     spec:
       chart: nvidia-device-plugin
@@ -33,15 +31,8 @@ spec:
         kind: HelmRepository
         name: *app
         namespace: *namespace
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+  interval: 1h
+  timeout: 5m
   values:
     gfd:
       enabled: true

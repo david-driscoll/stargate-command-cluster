@@ -5,7 +5,6 @@ kind: HelmRelease
 metadata:
   name: onepassword-connect
 spec:
-  interval: 30m
   chart:
     spec:
       chart: connect
@@ -14,15 +13,8 @@ spec:
         kind: HelmRepository
         name: 1password
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+  interval: 1h
+  timeout: 5m
   values:
     connect:
       applicationName: onepassword-connect

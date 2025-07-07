@@ -36,11 +36,13 @@ spec:
   dependsOn:
     - name: external-secrets-stores
       namespace: kube-system
-  interval: 1h
   path: ./kubernetes/flux/secret-store
   prune: true
   wait: true
+  force: true
+  interval: 1h
   retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -50,7 +52,6 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-  timeout: 5m
 """;
 
 foreach (var item in Directory.EnumerateDirectories("kubernetes/apps"))

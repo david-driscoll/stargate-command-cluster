@@ -17,15 +17,16 @@ spec:
       namespace: volsync-system
   path: ./kubernetes/apps/sgc/media/plex
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  # the config can take a while to restore
+  timeout: 1h
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  # the config can take a while to restore
-  timeout: 1h
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale
@@ -53,6 +54,11 @@ spec:
       namespace: volsync-system
   path: ./kubernetes/apps/sgc/media/tautulli
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -62,10 +68,6 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: *namespace
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale
@@ -90,14 +92,15 @@ spec:
       namespace: volsync-system
   path: ./kubernetes/apps/sgc/media/watchstate
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale

@@ -10,22 +10,22 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/database/minio-users/app
-  prune: true
-  retryInterval: 2m
-  force: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
   dependsOn:
   - name: external-secrets
     namespace: kube-system
   - name: minio
     namespace: database
-  targetNamespace: *namespace
-  timeout: 5m
+  path: ./kubernetes/apps/database/minio-users/app
+  prune: true
   wait: true
+  force: true
+  retryInterval: 2m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
   components:
   - ../../../../components/password-generator
   postBuild:

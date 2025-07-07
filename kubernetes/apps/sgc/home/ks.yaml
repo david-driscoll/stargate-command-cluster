@@ -10,19 +10,20 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/chrony
-  prune: true
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
+  path: ./kubernetes/apps/sgc/home/chrony
+  prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   postBuild:
     substitute:
       APP: *app
@@ -42,7 +43,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/matter
   prune: true
+  wait: true
   force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   dependsOn:
     - name: volsync
       namespace: volsync-system
@@ -52,10 +57,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale
@@ -79,6 +80,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/mosquitto
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
@@ -86,10 +92,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/tailscale
   postBuild:
@@ -111,6 +113,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/home-assistant
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   dependsOn:
     - name: volsync
       namespace: volsync-system
@@ -124,10 +131,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale
@@ -151,6 +154,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/nodered
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   dependsOn:
     - name: volsync
       namespace: volsync-system
@@ -160,10 +168,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale
@@ -187,6 +191,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/nut
   prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   dependsOn:
     - name: volsync
       namespace: volsync-system
@@ -196,10 +205,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale

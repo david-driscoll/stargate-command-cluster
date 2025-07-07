@@ -14,14 +14,15 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: *namespace
-  interval: 1h
   path: ./kubernetes/apps/flux-system/tofu/app
   prune: true
+  wait: false
+  force: true
+  interval: 1h
   retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
-  wait: false

@@ -23,8 +23,26 @@ spec:
         kind: HelmRepository
         name: k8s-gateway
         namespace: network
+  maxHistory: 3
   interval: 1h
   timeout: 5m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: -1
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
   values:
     fullnameOverride: k8s-gateway
     domain: "${ROOT_DOMAIN}"

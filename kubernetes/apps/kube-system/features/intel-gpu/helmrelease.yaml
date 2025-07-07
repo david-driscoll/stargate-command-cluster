@@ -22,8 +22,26 @@ spec:
   chartRef:
     kind: OCIRepository
     name: intel-device-plugins-gpu
+  maxHistory: 3
   interval: 1h
   timeout: 5m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: -1
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
   values:
     name: intel-gpu-plugin
     nodeFeatureRule: true

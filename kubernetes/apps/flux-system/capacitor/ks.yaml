@@ -19,11 +19,12 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: flux-system
+  prune: true
+  wait: true
+  force: true
   interval: 1h
   retryInterval: 2m
   timeout: 5m
-  wait: true
-  prune: true
   path: "./"
   sourceRef:
     kind: OCIRepository
@@ -45,13 +46,14 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/flux-system/capacitor/app
   prune: true
+  wait: true
+  force: true
   retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
-  wait: true
   components:
     - ../../../../components/ingress/authenticated

@@ -10,20 +10,20 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/homepage/homarr
-  prune: true
   dependsOn:
     - name: volsync
       namespace: volsync-system
+  path: ./kubernetes/apps/sgc/homepage/homarr
+  prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
-  force: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale

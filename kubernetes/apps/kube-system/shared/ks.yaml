@@ -10,15 +10,17 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: reflector
+      namespace: kube-system
   path: ./kubernetes/apps/kube-system/shared/secrets
+  prune: true
+  wait: true
+  force: true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  dependsOn:
-    - name: reflector
-      namespace: kube-system
-  prune: true
-  wait: true
-  interval: 30m
-  timeout: 5m

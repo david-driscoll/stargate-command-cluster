@@ -6,6 +6,7 @@ metadata:
   name: &app weave-gitops
   namespace: &namespace flux-system
 spec:
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -17,11 +18,11 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/flux-system/weave/app
   prune: true
+  wait: false
+  force: true
   retryInterval: 2m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false

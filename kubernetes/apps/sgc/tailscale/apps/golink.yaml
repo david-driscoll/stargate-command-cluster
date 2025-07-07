@@ -4,7 +4,6 @@ kind: HelmRelease
 metadata:
   name: &app tailscale-golink
 spec:
-  interval: 5m
   chartRef:
     kind: OCIRepository
     name: app-template

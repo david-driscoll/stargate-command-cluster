@@ -11,8 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: minio-users
-      namespace: database
     - name: volsync
       namespace: volsync-system
     - name: cloudnative-pg

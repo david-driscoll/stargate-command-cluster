@@ -181,7 +181,7 @@ var minioConfig = new MinioConfig(
     Users: users.ToImmutable()
 );
 minioConfig.Dump();
-var key = "minio-users";
+var key = "minio-users-" + string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2"))).Substring(0, 12);
 
 foreach (var user in minioConfig.Users)
 {
@@ -236,7 +236,7 @@ controllers.Children[$"cron-{key}"] = cronController;
 ((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
 minioKsYamlMapping.Query("/spec/postBuild/substitute").OfType<YamlMappingNode>().Single()
   .Children["APP"] = new YamlScalarNode(key);
-// ((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
+((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
 

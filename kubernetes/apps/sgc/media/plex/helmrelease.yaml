@@ -5,19 +5,12 @@ kind: HelmRelease
 metadata:
   name: &app plex
 spec:
-  # the config can take a while to restore
-  timeout: 1h
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: app-template
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  # the config can take a while to restore
+  interval: 1h
+  timeout: 1h
   uninstall:
     keepHistory: false
   dependsOn:

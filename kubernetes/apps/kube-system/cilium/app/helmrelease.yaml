@@ -16,7 +16,6 @@ metadata:
   name: &app cilium
   namespace: &namespace kube-system
 spec:
-  interval: 1h
   chart:
     spec:
       chart: cilium
@@ -25,13 +24,8 @@ spec:
         kind: HelmRepository
         name: *app
         namespace: *namespace
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
+  timeout: 5m
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values

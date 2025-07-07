@@ -19,20 +19,11 @@ kind: HelmRelease
 metadata:
   name: snapshot-controller
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: snapshot-controller
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
+  timeout: 5m
   values:
     controller:
       replicaCount: 2

@@ -19,20 +19,11 @@ kind: HelmRelease
 metadata:
   name: intel-gpu-plugin
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: intel-device-plugins-gpu
-  install:
-    remediation:
-      retries: -1
-    replace: true
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-    crds: CreateReplace
-    force: true
+  interval: 1h
+  timeout: 5m
   values:
     name: intel-gpu-plugin
     nodeFeatureRule: true

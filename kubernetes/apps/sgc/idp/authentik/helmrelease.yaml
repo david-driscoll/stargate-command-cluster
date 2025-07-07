@@ -15,7 +15,6 @@ kind: HelmRelease
 metadata:
   name: &app authentik
 spec:
-  interval: 30m
   chart:
     spec:
       chart: authentik
@@ -24,18 +23,8 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: authentik
-  maxHistory: 3
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    crds: CreateReplace
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-      strategy: uninstall
-  uninstall:
-    keepHistory: false
+  interval: 1h
+  timeout: 5m
   values:
     global:
       # fullnameOverride: authentik

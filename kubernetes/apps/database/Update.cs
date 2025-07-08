@@ -8,6 +8,7 @@
 
 
 using Spectre.Console;
+using System.Diagnostics;
 using Spectre.Console.Json;
 using System.Reflection;
 using Spectre.Console.Advanced;
@@ -191,8 +192,31 @@ foreach (var user in minioConfig.Users)
   .Replace("cluster-user", $"{documentsMapping[user]}-minio-access-key")
   ;
   var fileName = Path.Combine(usersDirectory, $"{user}.yaml");
+  var sopsFileName = Path.Combine(usersDirectory, $"{user}.sops.yaml");
   File.WriteAllText(fileName, yaml);
   AnsiConsole.WriteLine($"Updated {fileName} with user {user}.");
+
+  if (!File.Exists(sopsFileName))
+  {
+    File.WriteAllText(sopsFileName, $"""
+    # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: sops-age
+    stringData:
+      password: "{Guid.NewGuid():N}"
+    """);
+    Process.Start(new ProcessStartInfo
+    {
+      FileName = "sops",
+      Arguments = $"--encrypt --in-place {sopsFileName}",
+      RedirectStandardOutput = true,
+      RedirectStandardError = true,
+      UseShellExecute = false,
+      CreateNoWindow = true
+    }).WaitForExit();
+  }
 }
 List<string> commandBuilder = ["mc alias set \"$MC_ALIAS\" \"$MINIO_ENDPOINT\" \"$MINIO_ACCESS_KEY\" \"$MINIO_SECRET_KEY\""];
 foreach (var bucket in minioConfig.Buckets)

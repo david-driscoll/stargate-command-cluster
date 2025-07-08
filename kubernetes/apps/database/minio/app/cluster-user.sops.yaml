@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cluster-user-password
+stringData:
+    password: ENC[AES256_GCM,data:qOY3KaVzWAr/eAluHS4nQSQa9xgRMcqBAsq7KG2fFCuk7Oz6,iv:quBivWhbWnPLUl970sDn7eoTxVuE3CJkG6WXnPrzuUY=,tag:fCiMjfGy5RCqUxdSrx2LnA==,type:str]
+sops:
+    age:
+        - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvU1dEOTRqWFNiZVRTdnBL
+            S0dWb05pSEpLUE51eVhtZzlERkFRQlZFK0NnCjJXbC9kd0Q5bExLajIzaXBYNzZy
+            cWZHVTRIWFVieW9xbjBjWXhqc29BVEkKLS0tIGhETVA2L3pUQ3MvWWNna1IxRGl4
+            UG9zaHBoWkhYN3B3ZmxtV1BGSGJoOWsK/QT0Wpl36MdI+IwgP8dI4VtsXddwyM0S
+            w/bziDaURrJ0aAcCwpXODldNImAB6UCvMy1kl//TwHt1ZtJH8tgeTw==
+            -----END AGE ENCRYPTED FILE-----
+        - recipient: age1klzrc4tp666ykn8u4y2nt80n0tcx52lvezrr54zswz55w2pdsgyqhcdfyr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLb3c3WVpYa3ZFMlFhMVRm
+            SlIvYUJSNmNLeERvcVBYOUpydngzdklYb2lNCmp4elJ2czJRSUU1OTZJRVI5cWJY
+            TkljNmxyb3ZEZTNYWUhIeWlaQW15TEUKLS0tIGxPVUxlZWRaYUgvMkJlMTJEWWhZ
+            WWN4bVRmbjZieFhWL3l5S1kxUDRKdmsKSzmsD49o267wPuPfGCSTvWQnJbOdMOLd
+            A92JLz/nbTurit/X8ozjN9gdQ8j2Df//KlHqsSqq+B8t+uZavNGW6w==
+            -----END AGE ENCRYPTED FILE-----
+        - recipient: age150z0s36kl9vud8728c5e4zqq6nmyywekk76rwvjclcsfc8mrxuuqr0qfg6
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBaRVd0ZjVkbVFENFJmbHBL
+            cGhQeTRNeTdHZ2NPdEhmRXFoaE1ZUkZkZlc0CnI0QUE5MUxTY0FrcnN1aHBTVHJW
+            TzR0M2EwQWZWNUpxZm1pcnNQcE9tWXcKLS0tIGdxTGVYemlDRDFpajc1VDZxbEwx
+            NDVPT3R1eFY1T0RyWC9vVlNYQWZQWmsKsxNttWC2m69hbRvbI2BRQy9dwhrcSxmW
+            G4ciDB4B9Qy/KQ/9k+2BiZRsu5vQV7n+y0jAFrCxamGx9jjIjFXUqQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-07-08T20:43:38Z"
+    mac: ENC[AES256_GCM,data:bcDuQJNMEk9EnM6GpM0lK6dHXTk6Xme8Q+6TGSOAZ+IqJSxb6zJTGT6YEXOd9cqS4I7We85NcxDpIR8kJr8r2HZl7pdiujSqqZziP0uhK5n48p5gNYCwr3nkgEX/0oEZJVBGArMhkqY9K5NRVrm95Wj2UONlGm/LXczUa9L4AGI=,iv:U+XLoPC9L+MnHiZOTEi0oyUx9Io3Un07HYwQS5Vf9YE=,tag:M12FkHG7QUH1IHWe4HV8SA==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    mac_only_encrypted: true
+    version: 3.10.2

@@ -43,27 +43,3 @@ spec:
   dataFrom:
     - extract:
         key: "cluster-user-password"
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: &name "cluster-user-password"
-  annotations:
-    reloader.stakater.com/auto: "true"
-spec:
-  refreshPolicy: CreatedOnce
-  target:
-    name: *name
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    template:
-      data:
-        password: "{{ .password }}"
-  dataFrom:
-    - sourceRef:
-        generatorRef:
-          apiVersion: generators.external-secrets.io/v1alpha1
-          kind: Password
-          name: "${APP}-password-generator"

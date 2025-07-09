@@ -22,20 +22,20 @@ spec:
           reloader.stakater.com/auto: "true"
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
-        CONSOLE_ACCESS_KEY: "${CLUSTER_CNAME}"
+        CONSOLE_ACCESS_KEY: "backrest-${CLUSTER_CNAME}"
         CONSOLE_SECRET_KEY: "{{ .password }}"
         credentials: |
           [default]
-          aws_access_key_id = ${CLUSTER_CNAME}
+          aws_access_key_id = backrest-${CLUSTER_CNAME}
           aws_secret_access_key = {{ .password }}
         config: |
           [default]
           region=home
         S3_PROVIDER: Minio
         S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
-        AWS_ACCESS_KEY_ID: "${CLUSTER_CNAME}"
+        AWS_ACCESS_KEY_ID: "backrest-${CLUSTER_CNAME}"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
-        username: "${CLUSTER_CNAME}"
+        username: "backrest-${CLUSTER_CNAME}"
         credential: "{{ .password }}"
         password: "{{ .password }}"
         endpoint: "https://s3.${CLUSTER_DOMAIN}"

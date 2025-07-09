@@ -203,7 +203,7 @@ foreach (var user in minioConfig.Users)
     apiVersion: v1
     kind: Secret
     metadata:
-      name: sops-age
+      name: {documentsMapping[user]}-minio-access-key-password
     stringData:
       password: "{Guid.NewGuid():N}"
     """);

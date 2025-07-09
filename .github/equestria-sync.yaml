@@ -22,6 +22,7 @@ david-driscoll/equestria-cluster:
     deleteOrphaned: true
     exclude: |
       minio-users/
+      minio/app/cluster-user.sops.yaml
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

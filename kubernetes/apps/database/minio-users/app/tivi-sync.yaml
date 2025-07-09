@@ -4,33 +4,33 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: tivi-sync-minio-access-key
-  annotations:
-    reloader.stakater.com/auto: "true"
 spec:
   refreshPolicy: Periodic
   refreshInterval: "1h"
   secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword-connect
+    kind: SecretStore
+    name: this
   target:
     name: tivi-sync-minio-access-key
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
       metadata:
+        labels:
+          cnpg.io/reload: "true"
         annotations:
           reloader.stakater.com/auto: "true"
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
-        CONSOLE_ACCESS_KEY: "tivi-sync"
-        CONSOLE_SECRET_KEY: "{{ .password }}"
-        credentials: |
-          [default]
-          aws_access_key_id = tivi-sync
-          aws_secret_access_key = {{ .password }}
-        config: |
-          [default]
-          region=home
+        # CONSOLE_ACCESS_KEY: "tivi-sync"
+        # CONSOLE_SECRET_KEY: "{{ .password }}"
+        # credentials: |
+        #   [default]
+        #   aws_access_key_id = tivi-sync
+        #   aws_secret_access_key = {{ .password }}
+        # config: |
+        #   [default]
+        #   region=home
         S3_PROVIDER: Minio
         S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
         AWS_ACCESS_KEY_ID: "tivi-sync"
@@ -41,8 +41,5 @@ spec:
         endpoint: "https://s3.${CLUSTER_DOMAIN}"
         region: "homelab"
   dataFrom:
-    - sourceRef:
-        generatorRef:
-          apiVersion: generators.external-secrets.io/v1alpha1
-          kind: Password
-          name: "minio-users-c247cb898579-password-generator"
+    - extract:
+        key: "tivi-sync-minio-access-key-password"

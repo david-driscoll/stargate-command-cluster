@@ -6,7 +6,7 @@ metadata:
   name: backrest-${CLUSTER_CNAME}-minio-access-key
 spec:
   refreshPolicy: Periodic
-  refreshInterval: "1h"
+  refreshInterval: "15m"
   secretStoreRef:
     kind: SecretStore
     name: this

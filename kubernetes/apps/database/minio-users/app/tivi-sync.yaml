@@ -8,8 +8,8 @@ spec:
   refreshPolicy: Periodic
   refreshInterval: "15m"
   secretStoreRef:
-    kind: SecretStore
-    name: this
+    kind: ClusterSecretStore
+    name: database
   target:
     name: tivi-sync-minio-access-key
     creationPolicy: Owner

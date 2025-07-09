@@ -275,7 +275,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - helmrelease.yaml
-{string.Join(Environment.NewLine, minioConfig.Users.Select(user => $"  - {user}.yaml"))}
+{string.Join(Environment.NewLine, minioConfig.Users.SelectMany(user => new[] { $"  - {user}.yaml", $"  - {user}.sops.yaml" }))}
 """;
 
 File.WriteAllText(kustomizationPath, customizationTemplate);

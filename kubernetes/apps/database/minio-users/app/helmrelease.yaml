@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-154288bc2d94
+  name: minio-users-f2d76b95cca7
 spec:
   chartRef:
     kind: OCIRepository
@@ -48,8 +48,6 @@ spec:
             - >-
               mc alias set "$MC_ALIAS" "$MINIO_ENDPOINT" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
 
-              mc mb -p "$MC_ALIAS/authentik"
-
               mc mb -p "$MC_ALIAS/tivi-cache"
 
               mc mb -p "$MC_ALIAS/tivi-results"
@@ -58,21 +56,23 @@ spec:
 
               mc mb -p "$MC_ALIAS/backrest"
 
+              mc mb -p "$MC_ALIAS/authentik"
+
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_CLUSTER_USER" consoleAdmin
 
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI_SYNC" "$MINIO_PASSWORD_TIVI_SYNC"
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_BACKREST" "$MINIO_PASSWORD_BACKREST"
 
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_TIVI_SYNC" readwrite
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_BACKREST" readwrite
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_AUTHENTIK" "$MINIO_PASSWORD_AUTHENTIK"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_AUTHENTIK" readwrite
 
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_BACKREST" "$MINIO_PASSWORD_BACKREST"
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI_SYNC" "$MINIO_PASSWORD_TIVI_SYNC"
 
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_BACKREST" readwrite
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_TIVI_SYNC" readwrite
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
@@ -102,15 +102,15 @@ spec:
                   secretKeyRef:
                     name: cluster-user
                     key: password
-              MINIO_USER_TIVI_SYNC:
+              MINIO_USER_BACKREST:
                 valueFrom:
                   secretKeyRef:
-                    name: tivi-sync-minio-access-key
+                    name: backrest-${CLUSTER_CNAME}-minio-access-key
                     key: username
-              MINIO_PASSWORD_TIVI_SYNC:
+              MINIO_PASSWORD_BACKREST:
                 valueFrom:
                   secretKeyRef:
-                    name: tivi-sync-minio-access-key
+                    name: backrest-${CLUSTER_CNAME}-minio-access-key
                     key: password
               MINIO_USER_AUTHENTIK:
                 valueFrom:
@@ -122,15 +122,15 @@ spec:
                   secretKeyRef:
                     name: authentik-minio-access-key
                     key: password
-              MINIO_USER_BACKREST:
+              MINIO_USER_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:
-                    name: backrest-${CLUSTER_CNAME}-minio-access-key
+                    name: tivi-sync-minio-access-key
                     key: username
-              MINIO_PASSWORD_BACKREST:
+              MINIO_PASSWORD_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:
-                    name: backrest-${CLUSTER_CNAME}-minio-access-key
+                    name: tivi-sync-minio-access-key
                     key: password
             resources:
               requests:

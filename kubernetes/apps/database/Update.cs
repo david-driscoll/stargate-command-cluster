@@ -144,12 +144,12 @@ var buckets = ImmutableArray.CreateBuilder<string>();
 buckets.AddRange(kustomizationUserList);
 foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres") || z.Value.Contains("postgres-init")))
 {
-  buckets.Add($"{item.Key}/postgres");
+  buckets.Add($"{documentsMapping[item.Key]}/postgres");
 }
 foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
 {
-  buckets.Add($"{item.Key}/mysql/dump");
-  buckets.Add($"{item.Key}/mysql/snapshot");
+  buckets.Add($"{documentsMapping[item.Key]}/mysql/dump");
+  buckets.Add($"{documentsMapping[item.Key]}/mysql/snapshot");
 }
 var users = ImmutableList.CreateBuilder<string>();
 users.AddRange(kustomizationUserList);
@@ -165,18 +165,20 @@ if (configDoc is { })
   var _buckets = configDoc.Query("/buckets").OfType<YamlSequenceNode>().ToList();
   var _users = configDoc.Query("/users").OfType<YamlSequenceNode>().ToList();
   buckets.AddRange(_buckets
-      .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+      .SelectMany(z => z.Children.OfType<YamlMappingNode>())
       .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
   users.AddRange(_users
-  .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+  .SelectMany(z => z.Children.OfType<YamlMappingNode>())
   .Select(z => z.Query("/name").OfType<YamlScalarNode>().Single().Value!));
 
   var configUsers = configDoc.Query("/users").OfType<YamlSequenceNode>()
-      .SelectMany(z => z.Children.Dump().OfType<YamlMappingNode>())
+      .SelectMany(z => z.Children.OfType<YamlMappingNode>())
       .Select(z =>
       {
         var documentName = z.Query("/name").OfType<YamlScalarNode>().Single().Value;
-        return documentsMapping[documentName] = documentName;
+        if (!documentsMapping.ContainsKey(documentName))
+          documentsMapping[documentName] = documentName;
+        return documentsMapping[documentName];
       })
       .ToList();
   users.AddRange(configUsers);
@@ -186,6 +188,7 @@ var minioConfig = new MinioConfig(
     Buckets: buckets.ToImmutableHashSet(),
     Users: users.ToImmutableHashSet()
 );
+documentsMapping.Dump();
 minioConfig.Dump();
 var key = "minio-users-" + string.Join("", SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(minioConfig))).Select(z => z.ToString("x2"))).Substring(0, 12);
 
@@ -224,7 +227,7 @@ foreach (var user in minioConfig.Users)
   }
 }
 List<string> commandBuilder = ["mc alias set \"$MC_ALIAS\" \"$MINIO_ENDPOINT\" \"$MINIO_ACCESS_KEY\" \"$MINIO_SECRET_KEY\""];
-foreach (var bucket in minioConfig.Buckets)
+foreach (var bucket in minioConfig.Buckets.Order())
 {
   commandBuilder.Add($"mc mb -p \"$MC_ALIAS/{bucket}\"");
 }
@@ -236,14 +239,13 @@ commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_CLUSTER_USER\
 commandBuilder.Add($"mc admin policy attach \"$MC_ALIAS\" --user \"$MINIO_USER_CLUSTER_USER\" consoleAdmin");
 envReference.Children.Add(new YamlScalarNode($"MINIO_USER_CLUSTER_USER"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"cluster-user", "username"));
 envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"cluster-user", "password"));
-foreach (var item in minioConfig.Users)
+foreach (var user in minioConfig.Users.Order())
 {
-  var envKey = item.ToUpperInvariant().Replace("-", "_");
-  envKey.Dump();
+  var envKey = user.ToUpperInvariant().Replace("-", "_");
   commandBuilder.Add($"mc admin user add \"$MC_ALIAS\" \"$MINIO_USER_{envKey}\" \"$MINIO_PASSWORD_{envKey}\"");
   commandBuilder.Add($"mc admin policy attach \"$MC_ALIAS\" --user \"$MINIO_USER_{envKey}\" readwrite");
-  envReference.Children.Add(new YamlScalarNode($"MINIO_USER_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{documentsMapping[item]}-minio-access-key", "username"));
-  envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{documentsMapping[item]}-minio-access-key", "password"));
+  envReference.Children.Add(new YamlScalarNode($"MINIO_USER_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{documentsMapping[user]}-minio-access-key", "username"));
+  envReference.Children.Add(new YamlScalarNode($"MINIO_PASSWORD_{envKey}"), GetSecretReference(serializer, envReference["MINIO_ACCESS_KEY"], $"{documentsMapping[user]}-minio-access-key", "password"));
 }
 static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy, string name, string key)
 {
@@ -275,7 +277,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - helmrelease.yaml
-{string.Join(Environment.NewLine, minioConfig.Users.SelectMany(user => new[] { $"  - {user}.yaml", $"  - {user}.sops.yaml" }))}
+{string.Join(Environment.NewLine, minioConfig.Users.Order().SelectMany(user => new[] { $"  - {user}.yaml", $"  - {user}.sops.yaml" }))}
 """;
 
 File.WriteAllText(kustomizationPath, customizationTemplate);

@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app minio-users-d12c9ad0573e
+  name: &app minio-users-6e6e0cd0891f
   namespace: &namespace database
 spec:
   commonMetadata:
@@ -30,5 +30,5 @@ spec:
   - ../../../../components/password-generator
   postBuild:
     substitute:
-      APP: minio-users-d12c9ad0573e
+      APP: minio-users-6e6e0cd0891f
       NAMESPACE: *namespace

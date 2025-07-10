@@ -62,9 +62,6 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/components/mysql/
     dest: kubernetes/components/mysql/
     deleteOrphaned: true
-  - source: kubernetes/components/postgres-restore/
-    dest: kubernetes/components/postgres-restore/
-    deleteOrphaned: true
   - source: kubernetes/components/common/
     dest: kubernetes/components/common/
     exclude: |

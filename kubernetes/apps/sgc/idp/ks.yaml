@@ -27,7 +27,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/postgres-restore
+    - ../../../../components/postgres
     - ../../../../components/tailscale
     - ../../../../components/volsync
   postBuild:

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-d82807a86d82
+  name: minio-users-f83c60bf60b1
 spec:
   chartRef:
     kind: OCIRepository

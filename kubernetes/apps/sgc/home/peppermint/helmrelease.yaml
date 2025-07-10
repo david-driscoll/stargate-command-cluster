@@ -36,7 +36,7 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsNonRoot: true
+            runAsNonRoot: false
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           *app :
@@ -61,7 +61,7 @@ spec:
     defaultPodOptions:
       securityContext:
         fsGroupChangePolicy: "OnRootMismatch"
-        runAsNonRoot: true
+        runAsNonRoot: false
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true

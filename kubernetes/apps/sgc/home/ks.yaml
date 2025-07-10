@@ -247,6 +247,7 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      DATABASE_PASSWORD: Peppermint Database User
 
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json

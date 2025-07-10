@@ -152,9 +152,9 @@ auth:
         clientid: "{{ .oidc_username }}"
         clientsecret: "{{ .oidc_credential }}"
         scope: "openid email profile vikunja_scope"
-        usernamefallback: true
-        emailfallback: true
-        forceuserinfo: true
+        # usernamefallback: true
+        # emailfallback: true
+        # forceuserinfo: true
 
 metrics:
   # If set to true, enables a /metrics endpoint for prometheus to collect metrics about Vikunja. You can query it from `/api/v1/metrics`.

@@ -8,8 +8,6 @@ resources:
   - backrest.sops.yaml
   - helpdesk.yaml
   - helpdesk.sops.yaml
-  - peppermint.yaml
-  - peppermint.sops.yaml
   - tasks.yaml
   - tasks.sops.yaml
   - tivi-sync.yaml

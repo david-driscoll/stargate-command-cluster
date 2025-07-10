@@ -35,7 +35,7 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: 568
+            runAsUser: 1
             runAsGroup: 568
             runAsNonRoot: true
             fsGroup: 568

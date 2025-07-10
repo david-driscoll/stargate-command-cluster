@@ -46,7 +46,8 @@ spec:
             image:
               repository: pepperlabs/peppermint
               tag: latest
-            workingDir: /.pm2/
+            securityContext:
+              readOnlyRootFilesystem: false
             env:
               TZ: "${TIMEZONE}"
             envFrom:
@@ -71,11 +72,11 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
 
-    persistence:
-      pm2:
-        type: emptyDir
-        globalMounts:
-          - path: /.pm2/
+    # persistence:
+    #   pm2:
+    #     type: emptyDir
+    #     globalMounts:
+    #       - path: /.pm2/
 
     service:
       app:

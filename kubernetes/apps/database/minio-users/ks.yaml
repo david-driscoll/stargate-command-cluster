@@ -26,8 +26,6 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  components:
-  - ../../../../components/password-generator
   postBuild:
     substitute:
       APP: minio-users-7b6f1789fb9f

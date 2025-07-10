@@ -10,4 +10,3 @@ resources:
   - ./postgres-user.yaml
 components:
   - ../minio-access-key
-  - ../password-generator

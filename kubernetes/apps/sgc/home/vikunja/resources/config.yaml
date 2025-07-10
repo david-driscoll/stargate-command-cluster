@@ -144,7 +144,8 @@ auth:
   openid:
     enabled: true
     providers:
-      - name: "Authentik"
+      authentik:
+        name: "Authentik"
         authurl: "${OIDC_ISSUER}/application/o/vikunja"
         logouturl: "${OIDC_ISSUER}/application/o/vikunja/end-session/"
         clientid: "{{ .oidc_username }}"

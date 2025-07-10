@@ -55,7 +55,7 @@ spec:
           *app :
             image:
               repository: vikunja/vikunja
-              tag: 0.24.6
+              tag: unstable
             env:
               TZ: "${TIMEZONE}"
               VIKUNJA_SERVICE_PUBLICURL: "https://${APP}.${ROOT_DOMAIN}"

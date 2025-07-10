@@ -6,8 +6,6 @@ resources:
   - authentik.sops.yaml
   - backrest.yaml
   - backrest.sops.yaml
-  - helpdesk.yaml
-  - helpdesk.sops.yaml
   - tasks.yaml
   - tasks.sops.yaml
   - tivi-sync.yaml

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-94d931eca0d5
+  name: minio-users-b26354a179f3
 spec:
   chartRef:
     kind: OCIRepository
@@ -54,8 +54,6 @@ spec:
 
               mc mb -p "$MC_ALIAS/backrest"
 
-              mc mb -p "$MC_ALIAS/helpdesk"
-
               mc mb -p "$MC_ALIAS/iris"
 
               mc mb -p "$MC_ALIAS/tasks"
@@ -75,10 +73,6 @@ spec:
               mc admin user add "$MC_ALIAS" "$MINIO_USER_BACKREST" "$MINIO_PASSWORD_BACKREST"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_BACKREST" readwrite
-
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_HELPDESK" "$MINIO_PASSWORD_HELPDESK"
-
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_HELPDESK" readwrite
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_TASKS" "$MINIO_PASSWORD_TASKS"
 
@@ -135,16 +129,6 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: backrest-${CLUSTER_CNAME}-minio-access-key
-                    key: password
-              MINIO_USER_HELPDESK:
-                valueFrom:
-                  secretKeyRef:
-                    name: helpdesk-minio-access-key
-                    key: username
-              MINIO_PASSWORD_HELPDESK:
-                valueFrom:
-                  secretKeyRef:
-                    name: helpdesk-minio-access-key
                     key: password
               MINIO_USER_TASKS:
                 valueFrom:

@@ -33,6 +33,17 @@ spec:
       system-upgrade-controller:
         strategy: RollingUpdate
         replicas: 2
+        pod:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/component: *app
         containers:
           app:
             image:

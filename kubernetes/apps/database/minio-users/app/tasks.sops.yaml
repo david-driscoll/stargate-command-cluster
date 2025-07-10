@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tasks-minio-access-key-password
+stringData:
+  password: ENC[AES256_GCM,data:7oO8zfr9TLXGpHS37LS62zYvz/C/qtLDOERxgr8vVBk=,iv:LOgHPyb7VCMXBKoIyEJdXJQy0ems4mGlDfuGyFa7AbM=,tag:zpHri6tf586sFaLfymNCxQ==,type:str]
+sops:
+  age:
+    - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBUaUtleTJwRUV5NTh1b2NP
+        VlRkeU9TZElhc2dHa3FGTDk2WGE2UlN4Q2g0ClU5VStSM0R0ZjFUMHgzRHB2bjVh
+        T3RjWGJIWGpvcVBJNU1Sck4wMHZ6SVUKLS0tIHQwb0RSMzBIOFZBUkkxUWViNGFH
+        ODVzdTByRU4waDNsZWRoTi93YmxGYzQKkD92Af5XBrfwdOExVpXU+GDg/UI+FjNS
+        8WDhddi0NcZxQFeAkYlpggGZkQ9IuoibMiXehcWNv3+5vjSH0EWIrw==
+        -----END AGE ENCRYPTED FILE-----
+    - recipient: age1klzrc4tp666ykn8u4y2nt80n0tcx52lvezrr54zswz55w2pdsgyqhcdfyr
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXSEtqU0liWmExa3RXNDJx
+        SzNuOGZrY3pTbFFpMGZnOHNRbzl3ZENZNW5RCjN4NHhTdEZCWWJNRkY1SU5XSnhi
+        TDM5Q1RvOFVkdXovYnZRZDRDdDFWY28KLS0tIE1RelpBTUNHUVRhTTQzNE1yMlNh
+        Z2VFbTRyOGltNmhrRXJjLzd0dVZKaGcKiZE03fQFYb7Nt3+GP4XZYR7h1EoNwM8C
+        RFPC2HRGS0+CE/fe64JJK3vZ4xpFEaZu20SMT0jFb8P6+u8ih9q4zg==
+        -----END AGE ENCRYPTED FILE-----
+    - recipient: age150z0s36kl9vud8728c5e4zqq6nmyywekk76rwvjclcsfc8mrxuuqr0qfg6
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwS1pKbm9XeFA1MjBnUWhS
+        QXRQQVVQeFBRL0NEUGcrMmc2bGpPNy9wdjFBCjJSU2lUNGhXZGRSNXEzdm1JQS9z
+        UTRPRlNnOVFyQ253RTVYeFBSbUdJT1kKLS0tIGd2MDNpV3hiSnVUUkIwREVHRDQr
+        UEN2TWZNUmYvMEh4dFhGV1hpdHVhcFEKw4cCiaqWIuLq6D0C6XssG5y2ZLQRZLF6
+        TAyo5jBOkq2FSOc9xtLMHkTDRg92ZuaoZ9n/QHH82G1LLgb8t7dUQw==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-07-10T05:17:50Z"
+  mac: ENC[AES256_GCM,data:/TFBSrAfhZiDietQTFQdWoG4eOiac7H9IBfEvCUfeJQzYucjheW7c8kNH5GUJwADiLJvQt7SVEVz8vfqmCvHfwf+R19HRtNrV14FEMwmpPLdLqwN0rHvt1zGV45FNr3b74buYh6Ri5Aaq1VIZcypJZNyML3uoo7AYL7QE/k/KOo=,iv:9JBJMfAnWNuiBwN9CK3Ch82F49eMv0i3nQU6GzLWsyg=,tag:hc6+k6NCE+5y2L4UVwmPmA==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.10.2

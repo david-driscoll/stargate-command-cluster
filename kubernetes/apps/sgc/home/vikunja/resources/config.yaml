@@ -140,7 +140,7 @@ keyvalue:
 
 auth:
   local:
-    enabled: false
+    enabled: true
   openid:
     enabled: true
     redirecturl: https://${APP}.${ROOT_DOMAIN}/auth/openid/

@@ -35,6 +35,7 @@ spec:
         S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
         AWS_ACCESS_KEY_ID: "peppermint"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        url: https://peppermint:{{ .password }}@s3.${CLUSTER_DOMAIN}
         username: "peppermint"
         credential: "{{ .password }}"
         password: "{{ .password }}"

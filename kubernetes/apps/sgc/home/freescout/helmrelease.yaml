@@ -36,9 +36,9 @@ spec:
         pod:
           securityContext:
             runAsUser: 1
-            runAsGroup: 568
+            runAsGroup: 1
             runAsNonRoot: true
-            fsGroup: 568
+            fsGroup: 1
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           *app :
@@ -60,11 +60,11 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
+        fsGroup: 1
         fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
+        runAsGroup: 1
         runAsNonRoot: true
-        runAsUser: 568
+        runAsUser: 1
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true

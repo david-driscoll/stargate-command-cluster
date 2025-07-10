@@ -9,4 +9,4 @@ resources:
   - ../prometheusrule.yaml
   - ../scheduledbackup.yaml
 components:
-  - ../minio-access-key
+  - ../../minio-access-key

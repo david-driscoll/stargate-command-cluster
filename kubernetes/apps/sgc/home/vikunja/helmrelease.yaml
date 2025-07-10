@@ -33,23 +33,10 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 2
+        replicas: 1
         pod:
-          affinity:
-            podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 1
-                podAffinityTerm:
-                  topologyKey: kubernetes.io/hostname
-                  labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: *app
-                      app.kubernetes.io/component: *app
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
             runAsNonRoot: true
-            fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           *app :
@@ -72,11 +59,8 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
         runAsNonRoot: true
-        runAsUser: 568
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true

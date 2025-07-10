@@ -35,6 +35,7 @@ spec:
         S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
         AWS_ACCESS_KEY_ID: "${CLUSTER_CNAME}"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        url: https://${CLUSTER_CNAME}:{{ .password }}@s3.${CLUSTER_DOMAIN}
         username: "${CLUSTER_CNAME}"
         credential: "{{ .password }}"
         password: "{{ .password }}"

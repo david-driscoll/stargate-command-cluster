@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-77e033c7a96f
+  name: minio-users-da5c007d5aca
 spec:
   chartRef:
     kind: OCIRepository
@@ -55,6 +55,8 @@ spec:
               mc mb -p "$MC_ALIAS/backrest"
 
               mc mb -p "$MC_ALIAS/helpdesk"
+
+              mc mb -p "$MC_ALIAS/helpdesk/postgres"
 
               mc mb -p "$MC_ALIAS/iris"
 

@@ -17,7 +17,7 @@ service:
   customlogourl: ""
   # Enables the public team feature. If enabled, it is possible to configure teams to be public, which makes them
   # discoverable when sharing a project, therefore not only showing teams the user is member of.
-  enablepublicteams: true
+  enablepublicteams: false
   # If enabled, users will only find other users who are part of an existing team when they are searching for a user by their partial name. The other existing team may be created from openid. It is still possible to add users to teams with their exact email address even when this is enabled.
   enableopenidteamusersearch: true
 

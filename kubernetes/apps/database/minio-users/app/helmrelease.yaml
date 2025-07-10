@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-da5c007d5aca
+  name: minio-users-f89b590f18a6
 spec:
   chartRef:
     kind: OCIRepository
@@ -60,6 +60,8 @@ spec:
 
               mc mb -p "$MC_ALIAS/iris"
 
+              mc mb -p "$MC_ALIAS/tasks"
+
               mc mb -p "$MC_ALIAS/tivi-cache"
 
               mc mb -p "$MC_ALIAS/tivi-results"
@@ -79,6 +81,10 @@ spec:
               mc admin user add "$MC_ALIAS" "$MINIO_USER_HELPDESK" "$MINIO_PASSWORD_HELPDESK"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_HELPDESK" readwrite
+
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_TASKS" "$MINIO_PASSWORD_TASKS"
+
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_TASKS" readwrite
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI_SYNC" "$MINIO_PASSWORD_TIVI_SYNC"
 
@@ -141,6 +147,16 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: helpdesk-minio-access-key
+                    key: password
+              MINIO_USER_TASKS:
+                valueFrom:
+                  secretKeyRef:
+                    name: tasks-minio-access-key
+                    key: username
+              MINIO_PASSWORD_TASKS:
+                valueFrom:
+                  secretKeyRef:
+                    name: tasks-minio-access-key
                     key: password
               MINIO_USER_TIVI_SYNC:
                 valueFrom:

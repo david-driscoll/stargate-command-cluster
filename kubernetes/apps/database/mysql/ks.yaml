@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/database/mysql-operator/operator
+  path: ./kubernetes/apps/database/mysql/operator
   prune: true
   wait: true
   force: true

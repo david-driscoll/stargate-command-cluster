@@ -42,10 +42,11 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
-          main:
+          *app :
             image:
               repository: pepperlabs/peppermint
               tag: latest
+            workingDir: /.pm2/
             env:
               TZ: "${TIMEZONE}"
             envFrom:
@@ -82,7 +83,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 1880
+            port: &port 3000
 
     ingress:
       internal:

@@ -70,10 +70,6 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
 
-    persistence:
-      data:
-        existingClaim: ${APP}
-
     service:
       app:
         controller: *app

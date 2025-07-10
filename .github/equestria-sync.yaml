@@ -56,9 +56,6 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/components/minio-access-key/
     dest: kubernetes/components/minio-access-key/
     deleteOrphaned: true
-  - source: kubernetes/components/password-generator/
-    dest: kubernetes/components/password-generator/
-    deleteOrphaned: true
   - source: kubernetes/components/postgres/
     dest: kubernetes/components/postgres/
     deleteOrphaned: true

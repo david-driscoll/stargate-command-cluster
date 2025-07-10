@@ -241,7 +241,7 @@ spec:
     namespace: flux-system
   components:
     - ../../../../components/ingress/internal
-    - ../../../../components/postgres/init
+    - ../../../../components/postgres
     - ../../../../components/tailscale
   postBuild:
     substitute:

@@ -39,7 +39,6 @@ spec:
   dataFrom:
     - extract:
         key: 'Volsync Password'
-        conversionStrategy: Unicode
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationdestination_v1alpha1.json

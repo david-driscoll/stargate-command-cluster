@@ -2,6 +2,8 @@ david-driscoll/equestria-cluster:
   - source: .vscode/
     dest: .vscode/
     deleteOrphaned: true
+    exclude: |
+      settings.json
   - source: kubernetes/flux/
     dest: kubernetes/flux/
     deleteOrphaned: true

@@ -36,10 +36,7 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
             runAsNonRoot: true
-            fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           *app :
@@ -63,20 +60,17 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
         runAsNonRoot: true
-        runAsUser: 568
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true
 
-    # persistence:
-    #   pm2:
-    #     type: emptyDir
-    #     globalMounts:
-    #       - path: /.pm2/
+    persistence:
+      pm2:
+        type: emptyDir
+        globalMounts:
+          - path: /.pm2/
 
     service:
       app:

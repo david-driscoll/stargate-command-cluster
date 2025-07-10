@@ -60,6 +60,7 @@ cors:
   # A list of origins which may access the api. These need to include the protocol (`http://` or `https://`) and port, if any.
   origins:
     - "https://${APP}.${ROOT_DOMAIN}"
+    - "https://vikunja.${ROOT_DOMAIN}"
     # - "http://127.0.0.1:*"
     # - "http://localhost:*"
 #

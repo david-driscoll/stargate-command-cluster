@@ -143,10 +143,11 @@ auth:
     enabled: false
   openid:
     enabled: true
+    redirecturl: https://${APP}.${ROOT_DOMAIN}/auth/openid/
     providers:
       authentik:
         name: "Authentik"
-        authurl: "${OIDC_ISSUER}/application/o/vikunja"
+        authurl: "${OIDC_ISSUER}/application/o/vikunja/"
         logouturl: "${OIDC_ISSUER}/application/o/vikunja/end-session/"
         clientid: "{{ .oidc_username }}"
         clientsecret: "{{ .oidc_credential }}"

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-7b6f1789fb9f
+  name: minio-users-98ebbeb0bb4b
 spec:
   chartRef:
     kind: OCIRepository
@@ -50,13 +50,13 @@ spec:
 
               mc mb -p "$MC_ALIAS/authentik"
 
+              mc mb -p "$MC_ALIAS/authentik/postgres"
+
               mc mb -p "$MC_ALIAS/backrest"
 
+              mc mb -p "$MC_ALIAS/helpdesk"
+
               mc mb -p "$MC_ALIAS/iris"
-
-              mc mb -p "$MC_ALIAS/peppermint"
-
-              mc mb -p "$MC_ALIAS/peppermint/postgres"
 
               mc mb -p "$MC_ALIAS/tivi-cache"
 
@@ -74,9 +74,9 @@ spec:
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_BACKREST" readwrite
 
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_PEPPERMINT" "$MINIO_PASSWORD_PEPPERMINT"
+              mc admin user add "$MC_ALIAS" "$MINIO_USER_HELPDESK" "$MINIO_PASSWORD_HELPDESK"
 
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_PEPPERMINT" readwrite
+              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_HELPDESK" readwrite
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI_SYNC" "$MINIO_PASSWORD_TIVI_SYNC"
 
@@ -130,15 +130,15 @@ spec:
                   secretKeyRef:
                     name: backrest-${CLUSTER_CNAME}-minio-access-key
                     key: password
-              MINIO_USER_PEPPERMINT:
+              MINIO_USER_HELPDESK:
                 valueFrom:
                   secretKeyRef:
-                    name: peppermint-minio-access-key
+                    name: helpdesk-minio-access-key
                     key: username
-              MINIO_PASSWORD_PEPPERMINT:
+              MINIO_PASSWORD_HELPDESK:
                 valueFrom:
                   secretKeyRef:
-                    name: peppermint-minio-access-key
+                    name: helpdesk-minio-access-key
                     key: password
               MINIO_USER_TIVI_SYNC:
                 valueFrom:

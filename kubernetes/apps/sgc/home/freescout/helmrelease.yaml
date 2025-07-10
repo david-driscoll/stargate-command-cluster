@@ -2,8 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app peppermint
-
+  name: &app helpdesk
 spec:
   chartRef:
     kind: OCIRepository
@@ -44,10 +43,8 @@ spec:
         containers:
           *app :
             image:
-              repository: pepperlabs/peppermint
+              repository: ghcr.io/tiredofit/docker-freescout
               tag: latest
-            securityContext:
-              readOnlyRootFilesystem: false
             env:
               TZ: "${TIMEZONE}"
             envFrom:
@@ -84,7 +81,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 3000
+            port: &port 80
 
     ingress:
       internal:

@@ -96,14 +96,14 @@ log:
   standard: "stdout"
   # Change the log level. Possible values (case-insensitive) are CRITICAL, ERROR, WARNING, NOTICE, INFO, DEBUG.
   level: "INFO"
-  database: "off"
-  databaselevel: "WARNING"
-  http: "stdout"
-  echo: "off"
-  events: "off"
-  eventslevel: "info"
+  database: "stdout"
+  databaselevel: "INFO"
+  http: "off"
+  echo: "stdout"
+  events: "true"
+  eventslevel: "INFO"
   mail: "off"
-  maillevel: "info"
+  maillevel: "INFO"
 
 files:
   basepath: "/data/files/"

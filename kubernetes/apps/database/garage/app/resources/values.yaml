@@ -10,7 +10,7 @@ garage:
       index: "index.html"
   rpcSecret: "{{ .password }}"
 deployment:
-  replicaCount: ${REPLICA_NODES}
+  replicaCount: "${REPLICA_NODES}"
 
 persistence:
   meta:

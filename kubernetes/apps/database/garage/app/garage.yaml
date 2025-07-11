@@ -67,7 +67,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`web.${APP}.${CLUSTER_DOMAIN}`) || Host(`*.web.${APP}.${CLUSTER_DOMAIN}`)
+    - match: Host(`web.garage.${CLUSTER_DOMAIN}`) || Host(`*.web.garage.${CLUSTER_DOMAIN}`)
       kind: Rule
       services:
         - name: ${APP}
@@ -76,10 +76,10 @@ spec:
       middlewares:
         - name: internal-network
           namespace: network
-    - match: Host(`s3.${APP}.${CLUSTER_DOMAIN}`) || Host(`*.s3.${APP}.${CLUSTER_DOMAIN}`)
+    - match: Host(`s3.garage.${CLUSTER_DOMAIN}`) || Host(`*.s3.garage.${CLUSTER_DOMAIN}`)
       kind: Rule
       services:
-        - name: ${APP}
+        - name: garage
           port: s3-api
           passHostHeader: true
       middlewares:

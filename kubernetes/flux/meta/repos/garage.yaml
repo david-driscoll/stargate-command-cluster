@@ -6,7 +6,7 @@ metadata:
   name: garage
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 1h
   url: https://git.deuxfleurs.fr/Deuxfleurs/garage.git
   ref:
     tag: v2.0.0

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-f05215fc894e
+  name: minio-users-2084c299d60c
 spec:
   chartRef:
     kind: OCIRepository
@@ -56,13 +56,9 @@ spec:
 
               mc mb -p "$MC_ALIAS/iris"
 
-              mc mb -p "$MC_ALIAS/peppermint"
-
               mc mb -p "$MC_ALIAS/tivi-cache"
 
               mc mb -p "$MC_ALIAS/tivi-results"
-
-              mc mb -p "$MC_ALIAS/vikunja"
 
               mc admin user add "$MC_ALIAS" "$MINIO_USER_CLUSTER_USER" "$MINIO_PASSWORD_CLUSTER_USER"
 
@@ -76,17 +72,9 @@ spec:
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_BACKREST" readwrite
 
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_PEPPERMINT" "$MINIO_PASSWORD_PEPPERMINT"
-
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_PEPPERMINT" readwrite
-
               mc admin user add "$MC_ALIAS" "$MINIO_USER_TIVI_SYNC" "$MINIO_PASSWORD_TIVI_SYNC"
 
               mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_TIVI_SYNC" readwrite
-
-              mc admin user add "$MC_ALIAS" "$MINIO_USER_VIKUNJA" "$MINIO_PASSWORD_VIKUNJA"
-
-              mc admin policy attach "$MC_ALIAS" --user "$MINIO_USER_VIKUNJA" readwrite
             env:
               MC_ALIAS: ${CLUSTER_CNAME}
               MINIO_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
@@ -136,16 +124,6 @@ spec:
                   secretKeyRef:
                     name: backrest-${CLUSTER_CNAME}-minio-access-key
                     key: password
-              MINIO_USER_PEPPERMINT:
-                valueFrom:
-                  secretKeyRef:
-                    name: peppermint-minio-access-key
-                    key: username
-              MINIO_PASSWORD_PEPPERMINT:
-                valueFrom:
-                  secretKeyRef:
-                    name: peppermint-minio-access-key
-                    key: password
               MINIO_USER_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:
@@ -155,16 +133,6 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: tivi-sync-minio-access-key
-                    key: password
-              MINIO_USER_VIKUNJA:
-                valueFrom:
-                  secretKeyRef:
-                    name: vikunja-minio-access-key
-                    key: username
-              MINIO_PASSWORD_VIKUNJA:
-                valueFrom:
-                  secretKeyRef:
-                    name: vikunja-minio-access-key
                     key: password
             resources:
               requests:

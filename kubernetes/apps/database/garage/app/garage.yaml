@@ -1,19 +1,19 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: garage
-spec:
-  interval: 1m
-  url: https://git.deuxfleurs.fr/Deuxfleurs/garage
-  ref:
-    branch: main
-  ignore: |
-    # exclude all
-    /*
-    # include charts directory
-    !/script/helm/garage/
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+# apiVersion: source.toolkit.fluxcd.io/v1
+# kind: GitRepository
+# metadata:
+#   name: garage
+# spec:
+#   interval: 1h
+#   url: https://github.com/deuxfleurs-org/garage.git
+#   ref:
+#     branch: v2.0.0
+#   ignore: |
+#     # exclude all
+#     /*
+#     # include charts directory
+#     !/script/helm/garage/
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -23,10 +23,11 @@ metadata:
 spec:
   chart:
     spec:
-      chart: ./script/helm/garage
+      chart: ".local/garage"
       sourceRef:
         kind: GitRepository
-        name: garage
+        name: flux-system
+        namespace: flux-system
       interval: 15m
   maxHistory: 3
   interval: 1h

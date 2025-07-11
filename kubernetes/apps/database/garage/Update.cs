@@ -164,8 +164,6 @@ var serializer = new SerializerBuilder().Build();
 #region Templates
 var minioUsersRelease = "kubernetes/apps/database/garage/app/garage-users.yaml";
 var minioUserReleaseMapping = ReadStream(minioUsersRelease)!.Single();
-var minioKsYaml = "kubernetes/apps/database/garage/ks.yaml";
-var minioKsYamlMapping = ReadStream(minioKsYaml)!.Single();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
 var cronController = controllers.Query($"/garage-users-cron").OfType<YamlMappingNode>().Single();
@@ -277,10 +275,6 @@ containers.Children.Clear();
 containers.Children["job"] = minioUsersStep;
 controllers.Children["garage-users"] = controller;
 controllers.Children[$"garage-users-cron"] = cronController;
-// ((YamlScalarNode)((YamlMappingNode)minioUserReleaseMapping.Children["metadata"]).Children["name"]).Value = key;
-// minioKsYamlMapping.Query("/spec/postBuild/substitute").OfType<YamlMappingNode>().Single()
-// .Children["APP"] = new YamlScalarNode(key);
-// ((YamlScalarNode)((YamlMappingNode)minioKsYamlMapping.Children["metadata"]).Children["name"]).Value = key;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
 
@@ -300,13 +294,6 @@ File.WriteAllText(minioUsersRelease,
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 """ + "\n" +
 serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
-File.WriteAllText(minioKsYaml,
-"""
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-""" + "\n" +
-serializer.Serialize(minioKsYamlMapping).Replace("*app:", "*app :"));
-
 
 static IEnumerable<YamlMappingNode> ReadStream(string path)
 {

@@ -173,7 +173,7 @@ static async ValueTask<IEnumerable<YamlMappingNode>> ReadStream(string path)
 
 static async ValueTask<string> ReadFile(string path)
 {
-  return path.EndsWith(".sops.yaml", StringComparison.OrdinalIgnoreCase) ? (await ProcessX.StartAsync($"sops -d {path}", workingDirectory: Directory.GetCurrentDirectory())
+  return path.EndsWith(".sops.yaml", StringComparison.OrdinalIgnoreCase) ? (await ProcessX.StartAsync($"sops -d {path}".Dump(), workingDirectory: Directory.GetCurrentDirectory())
     .AggregateAsync(new StringBuilder(), (sb, line, ct) =>
   {
     sb.AppendLine(line);

@@ -62,7 +62,7 @@ spec:
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
-      enabled: true
+      enabled: false
       isWALArchiver: true
       parameters:
         barmanObjectName: ${APP}-minio

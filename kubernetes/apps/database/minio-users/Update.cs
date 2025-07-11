@@ -57,7 +57,6 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
   .Select(z => (name: Path.GetFileName(z), path: z))
   .ToList();
   }
-
   ;
   var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
   documentsMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/APP")

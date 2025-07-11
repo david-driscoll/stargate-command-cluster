@@ -1,0 +1,11 @@
+---
+users:
+- name: tivi-sync
+  buckets:
+  - name: tivi-cache
+  - name: tivi-results
+    public: true
+- name: authentik
+  buckets:
+  - name: iris
+    public: true

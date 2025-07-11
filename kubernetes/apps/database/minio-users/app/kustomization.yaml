@@ -6,9 +6,5 @@ resources:
   - authentik.sops.yaml
   - backrest.yaml
   - backrest.sops.yaml
-  - peppermint.yaml
-  - peppermint.sops.yaml
   - tivi-sync.yaml
   - tivi-sync.sops.yaml
-  - vikunja.yaml
-  - vikunja.sops.yaml

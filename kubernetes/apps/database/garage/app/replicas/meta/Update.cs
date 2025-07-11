@@ -28,9 +28,9 @@ using YamlDotNet.Serialization.NamingConventions;
 
 Dictionary<string, string> defaults = new Dictionary<string, string>()
 {
-  { "VOLSYNC_CAPACITY", "32Gi" },
+  { "VOLSYNC_CAPACITY", "2Gi" },
   // { "VOLSYNC_CACHE_CAPACITY", "" },
-  { "VOLSYNC_STORAGECLASS", "openebs-hostpath" },
+  // { "VOLSYNC_STORAGECLASS", "openebs-hostpath" },
   // { "VOLSYNC_COPYMETHOD", "" },
   // { "VOLSYNC_SNAPSHOTCLASS", "" },
   // { "VOLSYNC_CACHE_ACCESSMODES", "ReadWriteOnce" },
@@ -40,7 +40,7 @@ Dictionary<string, string> defaults = new Dictionary<string, string>()
 
 };
 
-var filePath = "kubernetes/apps/database/garage/app/replicas/kustomization.yaml";
+var filePath = "kubernetes/apps/database/garage/app/replicas/meta/kustomization.yaml";
 
 var databasesContent = new StringBuilder();
 
@@ -76,18 +76,6 @@ for (var i = 0; i < servers; i++)
   }
   );
   var fileName = $"replica-{i}-meta.yaml";
-  File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), fileName), output);
-  replicas.Add(fileName);
-}
-for (var i = 0; i < servers; i++)
-{
-  var replicaName = $"data-garage-{i}";
-  var output = ReplaceTokens(template, new Dictionary<string, string>
-  {
-    ["REPLICA"] = replicaName,
-  }
-  );
-  var fileName = $"replica-{i}-data.yaml";
   File.WriteAllText(Path.Combine(Path.GetDirectoryName(filePath), fileName), output);
   replicas.Add(fileName);
 }

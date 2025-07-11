@@ -3,30 +3,30 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "data-garage-2"
+  name: "data-garage-0"
 spec:
   accessModes: ["ReadWriteOnce"]
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: "data-garage-2-dst"
+    name: "data-garage-0-dst"
   resources:
     requests:
       storage: "32Gi"
-  storageClassName: "openebs-hostpath"
+  storageClassName: "longhorn"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: "data-garage-2-volsync"
+  name: "data-garage-0-volsync"
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: "data-garage-2-volsync-secret"
+    name: "data-garage-0-volsync-secret"
     template:
       metadata:
         labels:
@@ -34,7 +34,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        RESTIC_REPOSITORY: "/repository/data-garage-2"
+        RESTIC_REPOSITORY: "/repository/data-garage-0"
         RESTIC_PASSWORD: "{{ .credential }}"
   dataFrom:
     - extract:
@@ -45,20 +45,20 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "data-garage-2-dst"
+  name: "data-garage-0-dst"
   labels:
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "data-garage-2-volsync-secret"
+    repository: "data-garage-0-volsync-secret"
     copyMethod: Snapshot
     volumeSnapshotClassName: "longhorn-snapclass"
     cacheStorageClassName: "openebs-hostpath"
     cacheAccessModes: ["ReadWriteOnce"]
     cacheCapacity: "8Gi"
-    storageClassName: "openebs-hostpath"
+    storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
     capacity: "32Gi"
     moverSecurityContext:
@@ -71,20 +71,20 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "data-garage-2"
+  name: "data-garage-0"
 spec:
-  sourcePVC: "data-garage-2"
+  sourcePVC: "data-garage-0"
   trigger:
     schedule: "0 * * * *"
   restic:
     copyMethod: "Snapshot"
     pruneIntervalDays: 14
-    repository: "data-garage-2-volsync-secret"
+    repository: "data-garage-0-volsync-secret"
     volumeSnapshotClassName: "longhorn-snapclass"
     cacheCapacity: "2Gi"
     cacheStorageClassName: "openebs-hostpath"
     cacheAccessModes: ["ReadWriteOnce"]
-    storageClassName: "openebs-hostpath"
+    storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
     moverSecurityContext:
       runAsUser: 568

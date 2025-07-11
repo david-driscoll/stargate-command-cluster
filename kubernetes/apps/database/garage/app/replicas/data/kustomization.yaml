@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./data
-  - ./meta
+  - replica-0-data.yaml
+  - replica-1-data.yaml
+  - replica-2-data.yaml

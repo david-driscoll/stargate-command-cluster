@@ -7,7 +7,8 @@ resources:
   - ./garage.yaml
   - ./garage-users.yaml
   - ./users
-  - ./replicas
+  - ./replicas/data
+  - ./replicas/meta
 configMapGenerator:
 - name: ${APP}-values
   files:

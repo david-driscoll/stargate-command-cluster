@@ -1,0 +1,33 @@
+---
+garage:
+  replicationMode: "2"
+  s3:
+    api:
+      region: "${CLUSTER_CNAME}"
+      rootDomain: ".s3.${APP}.${CLUSTER_DOMAIN}"
+    web:
+      rootDomain: ".web.${APP}.${CLUSTER_DOMAIN}"
+      index: "index.html"
+  rpcSecret: "{{ .password }}"
+deployment:
+  replicaCount: ${REPLICA_NODES}
+
+persistence:
+  meta:
+    storageClass: "openebs-hostpath"
+    size: 1Gi
+  data:
+    storageClass: "openebs-hostpath"
+    size: 32Gi
+
+ingress:
+  s3:
+    api:
+      enabled: false
+    web:
+      enabled: false
+monitoring:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true

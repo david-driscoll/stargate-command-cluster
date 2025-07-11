@@ -213,79 +213,79 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 1Gi
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app peppermint
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/peppermint
-  prune: true
-  wait: true
-  force: true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  components:
-    - ../../../../components/ingress/internal
-    - ../../../../components/postgres/init
-    - ../../../../components/tailscale
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace
-      DATABASE_PASSWORD: Peppermint Database User
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app tasks
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/vikunja
-  prune: true
-  wait: true
-  force: true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  components:
-    - ../../../../components/ingress/internal
-    - ../../../../components/postgres/init
-    - ../../../../components/tailscale
-    - ../../../../components/volsync
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace
-      DATABASE_PASSWORD: Vikunja Database User
-      VOLSYNC_CAPACITY: 20Gi
-      VOLSYNC_ACCESSMODES: ReadWriteMany
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app peppermint
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/home/peppermint
+#   prune: true
+#   wait: true
+#   force: true
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 5m
+#   dependsOn:
+#     - name: volsync
+#       namespace: volsync-system
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   components:
+#     - ../../../../components/ingress/internal
+#     - ../../../../components/postgres/init
+#     - ../../../../components/tailscale
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       NAMESPACE: *namespace
+#       DATABASE_PASSWORD: Peppermint Database User
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app vikunja
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/home/vikunja
+#   prune: true
+#   wait: true
+#   force: true
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 5m
+#   dependsOn:
+#     - name: volsync
+#       namespace: volsync-system
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   components:
+#     - ../../../../components/ingress/internal
+#     - ../../../../components/postgres/init
+#     - ../../../../components/tailscale
+#     - ../../../../components/volsync
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       NAMESPACE: *namespace
+#       DATABASE_PASSWORD: Vikunja Database User
+#       VOLSYNC_CAPACITY: 20Gi
+#       VOLSYNC_ACCESSMODES: ReadWriteMany
 
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json

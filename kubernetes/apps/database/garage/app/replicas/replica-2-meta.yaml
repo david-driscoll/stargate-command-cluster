@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/persistentvolumeclaim-v1.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "meta-garage-2"
+spec:
+  accessModes: ["ReadWriteOnce"]
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: "meta-garage-2-dst"
+  resources:
+    requests:
+      storage: "32Gi"
+  storageClassName: "openebs-hostpath"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: "meta-garage-2-volsync"
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: "meta-garage-2-volsync-secret"
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+      data:
+        RESTIC_REPOSITORY: "/repository/meta-garage-2"
+        RESTIC_PASSWORD: "{{ .credential }}"
+  dataFrom:
+    - extract:
+        key: 'Volsync Password'
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: "meta-garage-2-dst"
+  labels:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: "meta-garage-2-volsync-secret"
+    copyMethod: Snapshot
+    volumeSnapshotClassName: "longhorn-snapclass"
+    cacheStorageClassName: "openebs-hostpath"
+    cacheAccessModes: ["ReadWriteOnce"]
+    cacheCapacity: "8Gi"
+    storageClassName: "openebs-hostpath"
+    accessModes: ["ReadWriteOnce"]
+    capacity: "32Gi"
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: "meta-garage-2"
+spec:
+  sourcePVC: "meta-garage-2"
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    copyMethod: "Snapshot"
+    pruneIntervalDays: 14
+    repository: "meta-garage-2-volsync-secret"
+    volumeSnapshotClassName: "longhorn-snapclass"
+    cacheCapacity: "2Gi"
+    cacheStorageClassName: "openebs-hostpath"
+    cacheAccessModes: ["ReadWriteOnce"]
+    storageClassName: "openebs-hostpath"
+    accessModes: ["ReadWriteOnce"]
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      hourly: 24
+      daily: 7

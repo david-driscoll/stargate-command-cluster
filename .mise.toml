@@ -39,5 +39,5 @@ gh = "2.74.2"
 description = 'Update all apps that have an update script'
 run = [
     'dotnet run .mise/tasks/do-update.cs',
-    'flux-local test --enable-helm --all-namespaces --path ./kubernetes/flux/cluster/ --verbosity 2'
+    'flux-local test --enable-helm --all-namespaces --sources "flux-system" --path ./kubernetes/flux/cluster/ --verbosity 2'
 ]

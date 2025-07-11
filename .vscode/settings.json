@@ -10,9 +10,7 @@
   "sops.creationEnabled": true,
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": [
-      "./kubeconfig"
-    ]
+    "vs-kubernetes.knownKubeconfigs": []
   },
   "mcp": {
     "servers": {
@@ -54,5 +52,6 @@
     "titleBar.inactiveBackground": "#1f6fd099",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#1857a4"
+  "peacock.color": "#1857a4",
+  "dotnet.previewSolution-freeWorkspaceMode": true,
 }

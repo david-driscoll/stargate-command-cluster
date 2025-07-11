@@ -1,0 +1,147 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: garage-users
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 5m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: -1
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn:
+  - name: garage
+  values:
+    controllers:
+      garage-users:
+        type: job
+        job:
+          backoffLimit: 100
+          suspend: false
+          ttlSecondsAfterFinished: 600
+        containers: &job
+          job:
+            image:
+              repository: dxflrs/garage
+              tag: v2.0.0
+              pullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - >-
+              garage alias set "$G_ALIAS" "$GARAGE_ENDPOINT" "$GARAGE_ACCESS_KEY" "$GARAGE_SECRET_KEY"
+
+              garage key import -n cluster-user "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER"
+
+              garage key allow --create-bucket cluster-user
+
+              garage bucket allow --read --write --owner cluster-user --key cluster-user
+
+              garage key import -n authentik "$GARAGE_USER_AUTHENTIK" "$GARAGE_PASSWORD_AUTHENTIK"
+
+              garage bucket create authentik/postgres
+
+              garage bucket allow --read --write --owner authentik/postgres --key authentik
+
+              garage bucket create iris
+
+              garage bucket allow --read --write --owner iris --key authentik
+
+              garage bucket website --allow iris
+
+              garage key import -n tivi-sync "$GARAGE_USER_TIVI_SYNC" "$GARAGE_PASSWORD_TIVI_SYNC"
+
+              garage bucket create tivi-cache
+
+              garage bucket allow --read --write --owner tivi-cache --key tivi-sync
+
+              garage bucket create tivi-results
+
+              garage bucket allow --read --write --owner tivi-results --key tivi-sync
+
+              garage bucket website --allow tivi-results
+            env:
+              G_ALIAS: ${CLUSTER_CNAME}
+              GARAGE_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
+              GARAGE_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: minio-admin-secret
+                    key: username
+              GARAGE_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: minio-admin-secret
+                    key: password
+              MC_CONFIG_DIR: /tmp/.mc
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+              GARAGE_USER_CLUSTER_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: username
+              GARAGE_PASSWORD_CLUSTER_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: cluster-user
+                    key: password
+              GARAGE_USER_AUTHENTIK:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-garage-access-key
+                    key: username
+              GARAGE_PASSWORD_AUTHENTIK:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-garage-access-key
+                    key: password
+              GARAGE_USER_TIVI_SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-garage-access-key
+                    key: username
+              GARAGE_PASSWORD_TIVI_SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-garage-access-key
+                    key: password
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+      garage-users-cron:
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "*/10 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        containers: *job
+    persistence:
+      tmp:
+        type: emptyDir

@@ -8,7 +8,7 @@ resources:
   - backrest.sops.yaml
   - peppermint.yaml
   - peppermint.sops.yaml
-  - tasks.yaml
-  - tasks.sops.yaml
   - tivi-sync.yaml
   - tivi-sync.sops.yaml
+  - vikunja.yaml
+  - vikunja.sops.yaml

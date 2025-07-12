@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app garage-ui
+  name: &app garage2-ui
 spec:
   chartRef:
     kind: OCIRepository

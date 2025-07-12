@@ -4,9 +4,9 @@ garage:
   s3:
     api:
       region: "${CLUSTER_CNAME}"
-      rootDomain: ".s3.${APP}.${CLUSTER_DOMAIN}"
+      rootDomain: ".s3.${APP}.database.cluster.local"
     web:
-      rootDomain: ".web.${APP}.${CLUSTER_DOMAIN}"
+      rootDomain: ".web.${APP}.database.cluster.local"
       index: "index.html"
   rpcSecret: "{{ .password }}"
 deployment:

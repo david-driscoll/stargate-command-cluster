@@ -5,18 +5,19 @@
 #:package Spectre.Console@0.50.0
 #:package Spectre.Console.Json@0.50.0
 #:package Dumpify@0.6.6
-
-
+#:package ProcessX@1.5.6
 using System.Buffers.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Cysharp.Diagnostics;
 using Dumpify;
 using gfs.YamlDotNet.YamlPath;
 using Microsoft.VisualBasic;
@@ -55,9 +56,10 @@ void AddBucket(string keyName, string bucketName, bool isPublic)
 var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
 // Now lets search for all the implied users, and update minio.yaml
-foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
+await foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
     .Where(file => file.EndsWith("ks.yaml", StringComparison.OrdinalIgnoreCase))
-    .SelectMany(ReadStream, (doc, path) => (doc, path)))
+    .ToAsyncEnumerable()
+    .SelectMany(z => ReadStream(z), (doc, path) => (doc, path)))
 {
   if (kustomizeDoc == null)
   {
@@ -99,16 +101,16 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
       AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist.[/]");
       throw new FileNotFoundException($"Component file {component.path} does not exist.");
     }
-    ResolveSubComponents(allComponents, component);
+    await ResolveSubComponents(allComponents, component);
     if (allComponents.Contains("garage-access-key"))
     {
       AddBucket(documentName, documentName, false);
     }
   }
-  static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
+  static async Task ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
   {
 
-    var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml")).Single();
+    var componentDoc = await ReadStream(Path.Combine(component.path, "kustomization.yaml")).SingleAsync();
     if (componentDoc == null)
     {
       AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
@@ -119,7 +121,7 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
     foreach (var subComponent in subComponents)
     {
       allComponents.Add(subComponent.name);
-      ResolveSubComponents(allComponents, subComponent);
+      await ResolveSubComponents(allComponents, subComponent);
     }
   }
   kustomizeComponents[documentName] = allComponents;
@@ -135,12 +137,20 @@ foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
   AddBucket(item.Key, $"{GetName(item.Key)}/mysql/snapshot", false);
 }
 
+var clusterConfig = ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml");
+var clusterCname = (await clusterConfig.OfType<YamlMappingNode>().SingleAsync()).Query("/stringData/CLUSTER_CNAME").OfType<YamlScalarNode>().Single().Value!;
+
+documentNamesMapping = documentNamesMapping.ToDictionary(
+    kvp => kvp.Key,
+    kvp => kvp.Value.Replace("${CLUSTER_CNAME}", clusterCname),
+    StringComparer.OrdinalIgnoreCase);
+
 var config = "kubernetes/apps/database/garage/config.yaml";
 if (!File.Exists(config))
 {
   File.WriteAllText(config, "");
 }
-var configDoc = ReadStream(config).SingleOrDefault();
+var configDoc = await ReadStream(config).SingleOrDefaultAsync();
 if (configDoc is { })
 {
   foreach (var item in configDoc.Query("/users").OfType<YamlSequenceNode>()
@@ -163,7 +173,7 @@ var serializer = new SerializerBuilder().Build();
 
 #region Templates
 var minioUsersRelease = "kubernetes/apps/database/garage/app/garage-users.yaml";
-var minioUserReleaseMapping = ReadStream(minioUsersRelease)!.Single();
+var minioUserReleaseMapping = await ReadStream(minioUsersRelease).SingleAsync();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
 var cronController = controllers.Query($"/garage-users-cron").OfType<YamlMappingNode>().Single();
@@ -298,18 +308,31 @@ File.WriteAllText(minioUsersRelease,
 """ + "\n" +
 serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
 
-static IEnumerable<YamlMappingNode> ReadStream(string path)
+static async IAsyncEnumerable<YamlMappingNode> ReadStream(string path)
 {
   var doc = new YamlStream();
-  using var reader = new StringReader(File.ReadAllText(path));
+  using var reader = new StringReader(await ReadFile(path));
   doc.Load(reader);
-
 
   var rootNodes = doc.Documents
   .Select(z => (z.RootNode as YamlMappingNode)!)
   .Where(z => z is not null);
-  return rootNodes;
+  foreach (var item in rootNodes)
+  {
+    yield return item;
+  }
 }
+
+static async ValueTask<string> ReadFile(string path)
+{
+  return path.EndsWith(".sops.yaml", StringComparison.OrdinalIgnoreCase) ? (await ProcessX.StartAsync($"sops -d {path}".Dump(), workingDirectory: Directory.GetCurrentDirectory())
+    .AggregateAsync(new StringBuilder(), (sb, line, ct) =>
+  {
+    sb.AppendLine(line);
+    return ValueTask.FromResult(sb);
+  }, CancellationToken.None)).ToString() : File.ReadAllText(path);
+}
+
 
 class MinioConfig
 {

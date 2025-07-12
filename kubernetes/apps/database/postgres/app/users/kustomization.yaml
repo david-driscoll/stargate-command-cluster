@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - postgres-user.yaml
+  - postgres-user.sops.yaml
+  - authentik.yaml
+  - authentik.sops.yaml

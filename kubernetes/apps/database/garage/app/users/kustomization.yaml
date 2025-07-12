@@ -5,5 +5,7 @@ resources:
   - cluster-user.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
+  - postgres-sgc.yaml
+  - postgres-sgc.sops.yaml
   - tivi-sync.yaml
   - tivi-sync.sops.yaml

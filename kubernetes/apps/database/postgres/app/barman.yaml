@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: ${APP}-garage
+spec:
+  retentionPolicy: "30d"
+  configuration:
+    destinationPath: s3://${APP}/
+    endpointURL: https://s3.${CLUSTER_DOMAIN}
+    endpointCA:
+      name: ca-bundle
+      key: ca-certificates.crt
+    s3Credentials:
+      accessKeyId:
+        name: ${APP}-garage-access-key
+        key: username
+      secretAccessKey:
+        name: ${APP}-garage-access-key
+        key: credential
+    wal:
+      compression: gzip
+      maxParallel: 8
+    data:
+      compression: gzip
+      immediateCheckpoint: false
+      jobs: 2

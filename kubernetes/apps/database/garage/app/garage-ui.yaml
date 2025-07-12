@@ -34,6 +34,19 @@ spec:
     controllers:
       *app :
         enabled: true
+        initContainers:
+          init-config:
+            image:
+              repository: busybox
+              tag: latest
+              pullPolicy: IfNotPresent
+            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
+            env:
+              RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-rpc-secret
+                    key: rpcSecret
         containers:
           *app :
             image:
@@ -73,12 +86,14 @@ spec:
           http:
             port: 3909
     persistence:
+      etc:
+        type: emptyDir
       config:
         type: configMap
         defaultMode: 420
         name: garage-config
         globalMounts:
-        - path: /etc/garage.toml
+        - path: /mnt/garage.toml
           subPath: garage.toml
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json

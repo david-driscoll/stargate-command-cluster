@@ -38,6 +38,19 @@ spec:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
+        initContainers: &init
+          init-config:
+            image:
+              repository: busybox
+              tag: latest
+              pullPolicy: IfNotPresent
+            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
+            env:
+              RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-rpc-secret
+                    key: rpcSecret
         containers: &job
           job:
             image:
@@ -76,6 +89,16 @@ spec:
                   secretKeyRef:
                     name: authentik-garage-access-key
                     key: password
+              GARAGE_USER_POSTGRES_SGC:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-sgc-garage-access-key
+                    key: username
+              GARAGE_PASSWORD_POSTGRES_SGC:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-sgc-garage-access-key
+                    key: password
               GARAGE_USER_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:
@@ -100,16 +123,17 @@ spec:
           successfulJobsHistory: 3
           suspend: false
         type: cronjob
+        initContainers: *init
         containers: *job
     persistence:
-      tmp:
+      etc:
         type: emptyDir
       config:
         type: configMap
         defaultMode: 420
         name: garage-config
         globalMounts:
-        - path: /etc/garage.toml
+        - path: /mnt/garage.toml
           subPath: garage.toml
       scripts:
         type: configMap

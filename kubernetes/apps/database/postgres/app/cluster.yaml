@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &app postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: ${POSTGRES_STORAGE:=10Gi}
+    storageClass: longhorn
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: "256MB"
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+  monitoring:
+    enablePodMonitor: true
+  logLevel: trace
+  enablePDB: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: "256Mi"
+    limits:
+      cpu: 1
+      memory: "1024Mi"
+  managed:
+    roles:
+    - connectionLimit: -1
+      ensure: present
+      inherit: true
+      name: ${CLUSTER_CNAME}
+      login: true
+      createdb: true
+      createrole: true
+      passwordSecret:
+        name: postgres-user
+    - connectionLimit: -1
+      ensure: present
+      inherit: true
+      name: authentik
+      login: true
+      createdb: true
+      createrole: true
+      passwordSecret:
+        name: authentik-garage-password
+  bootstrap:
+    recovery:
+      database: ${CLUSTER_CNAME}
+      owner: ${CLUSTER_CNAME}
+      source: ${APP}-backup
+      secret:
+        name: postgres-user
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    enabled: false
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: ${APP}-garage
+  externalClusters:
+  - name: ${APP}-backup
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        barmanObjectName: ${APP}-garage
+        serverName: ${APP}

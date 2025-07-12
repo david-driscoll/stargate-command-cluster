@@ -41,42 +41,13 @@ spec:
         containers: &job
           job:
             image:
-              repository: dxflrs/garage
-              tag: v2.0.0
+              repository: alpine
+              tag: 3.22.0
               pullPolicy: IfNotPresent
             command:
             - /bin/sh
             - -c
-            - >-
-              garage key import -n cluster-user "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER"
-
-              garage key allow --create-bucket cluster-user
-
-              garage bucket allow --read --write --owner cluster-user --key cluster-user
-
-              garage key import -n authentik "$GARAGE_USER_AUTHENTIK" "$GARAGE_PASSWORD_AUTHENTIK"
-
-              garage bucket create authentik/postgres
-
-              garage bucket allow --read --write --owner authentik/postgres --key authentik
-
-              garage bucket create iris
-
-              garage bucket allow --read --write --owner iris --key authentik
-
-              garage bucket website --allow iris
-
-              garage key import -n tivi-sync "$GARAGE_USER_TIVI_SYNC" "$GARAGE_PASSWORD_TIVI_SYNC"
-
-              garage bucket create tivi-cache
-
-              garage bucket allow --read --write --owner tivi-cache --key tivi-sync
-
-              garage bucket create tivi-results
-
-              garage bucket allow --read --write --owner tivi-results --key tivi-sync
-
-              garage bucket website --allow tivi-results
+            - /scripts/init-users.sh
             env:
               G_ALIAS: ${CLUSTER_CNAME}
               GARAGE_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
@@ -136,7 +107,14 @@ spec:
       config:
         type: configMap
         defaultMode: 420
-        name: garage-config
+        name: ${APP}-config
         globalMounts:
         - path: /mnt/garage.toml
           subPath: garage.toml
+      scripts:
+        type: configMap
+        name: ${APP}-scripts
+        defaultMode: 493
+        globalMounts:
+        - path: /resources/init-users.sh
+          subPath: init-users.sh

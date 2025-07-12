@@ -86,8 +86,6 @@ spec:
           http:
             port: 3909
     persistence:
-      etc:
-        type: emptyDir
       config:
         type: configMap
         defaultMode: 420

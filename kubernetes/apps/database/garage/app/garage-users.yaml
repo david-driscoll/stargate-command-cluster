@@ -45,6 +45,8 @@ spec:
               tag: latest
               pullPolicy: IfNotPresent
             command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
+            securityContext:
+              readOnlyRootFilesystem: false
             env:
               RPC_SECRET:
                 valueFrom:
@@ -131,12 +133,6 @@ spec:
         runAsNonRoot: false
         runAsGroup: 0
     persistence:
-      etc:
-        type: emptyDir
-      var:
-        type: emptyDir
-        globalMounts:
-        - path: /var/cache/
       config:
         type: configMap
         defaultMode: 420

@@ -133,3 +133,10 @@ spec:
     persistence:
       tmp:
         type: emptyDir
+      config:
+        type: configMap
+        defaultMode: 420
+        name: garage-config
+        globalMounts:
+        - path: /mnt/garage.toml
+          subPath: garage.toml

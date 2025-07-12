@@ -72,6 +72,14 @@ spec:
         ports:
           http:
             port: 3909
+    persistence:
+      config:
+        type: configMap
+        defaultMode: 420
+        name: garage-config
+        globalMounts:
+        - path: /mnt/garage.toml
+          subPath: garage.toml
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
 apiVersion: traefik.io/v1alpha1

@@ -8,7 +8,7 @@ components:
   - ../../components/repos/app-template4
 resources:
   - ./secret-store.yaml
-  - ./cloudnative-pg/ks.yaml
+  - ./postgres/ks.yaml
   - ./mysql/ks.yaml
   # TODO
   # - ./typesense/ks.yaml

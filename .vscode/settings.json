@@ -54,4 +54,5 @@
   },
   "peacock.color": "#1857a4",
   "dotnet.previewSolution-freeWorkspaceMode": true,
+  "dotnetAcquisitionExtension.existingDotnetPath": 
 }

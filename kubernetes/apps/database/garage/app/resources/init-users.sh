@@ -10,6 +10,9 @@ garage bucket allow --read --write --owner authentik/postgres --key authentik
 garage bucket create iris
 garage bucket allow --read --write --owner iris --key authentik
 garage bucket website --allow iris
+garage key import -n postgres-sgc \"$GARAGE_USER_POSTGRES_SGC\" \"$GARAGE_PASSWORD_POSTGRES_SGC\"
+garage bucket create postgres
+garage bucket allow --read --write --owner postgres --key postgres-sgc
 garage key import -n tivi-sync \"$GARAGE_USER_TIVI_SYNC\" \"$GARAGE_PASSWORD_TIVI_SYNC\"
 garage bucket create tivi-cache
 garage bucket allow --read --write --owner tivi-cache --key tivi-sync

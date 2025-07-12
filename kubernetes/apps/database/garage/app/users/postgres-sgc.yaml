@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: postgres-sgc-garage-access-key
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: postgres-sgc-garage-access-key
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        # CONSOLE_ACCESS_KEY: "postgres-sgc"
+        # CONSOLE_SECRET_KEY: "{{ .password }}"
+        # credentials: |
+        #   [default]
+        #   aws_access_key_id = postgres-sgc
+        #   aws_secret_access_key = {{ .password }}
+        # config: |
+        #   [default]
+        #   region=home
+        S3_PROVIDER: Minio
+        S3_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
+        AWS_ACCESS_KEY_ID: "postgres-sgc"
+        AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        url: https://postgres-sgc:{{ .password }}@s3.${APP}.${CLUSTER_DOMAIN}
+        username: "postgres-sgc"
+        credential: "{{ .password }}"
+        password: "{{ .password }}"
+        endpoint: "https://s3.${APP}.${CLUSTER_DOMAIN}"
+        region: "homelab"
+  dataFrom:
+    - extract:
+        key: "postgres-sgc-garage-password"

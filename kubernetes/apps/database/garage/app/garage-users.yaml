@@ -44,9 +44,9 @@ spec:
               repository: busybox
               tag: latest
               pullPolicy: IfNotPresent
-            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
             securityContext:
               readOnlyRootFilesystem: false
+            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
             env:
               RPC_SECRET:
                 valueFrom:
@@ -59,6 +59,8 @@ spec:
               repository: pnnlmiscscripts/curl-jq
               tag: latest@sha256:46bc6e2747c42af4013edb228df8401d777f7e22d4d3b7ab27a3f74105d1228e
               pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
             command:
             - /bin/sh
             - -c

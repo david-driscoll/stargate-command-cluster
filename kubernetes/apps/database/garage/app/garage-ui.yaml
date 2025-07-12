@@ -40,6 +40,8 @@ spec:
               repository: busybox
               tag: latest
               pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
             command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
             env:
               RPC_SECRET:
@@ -53,12 +55,12 @@ spec:
               repository: khairul169/garage-webui
               tag: latest
               pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
             env:
               TZ: ${TIMEZONE}
               API_BASE_URL: "http://garage.database.svc.cluster.local:3902"
               S3_ENDPOINT_URL: "http://garage.database.svc.cluster.local:3900"
-            securityContext:
-              readOnlyRootFilesystem: false
             resources:
               requests:
                 cpu: 50m

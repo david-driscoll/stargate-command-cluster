@@ -107,7 +107,7 @@ spec:
       config:
         type: configMap
         defaultMode: 420
-        name: ${APP}-config
+        name: garage-config
         globalMounts:
         - path: /mnt/garage.toml
           subPath: garage.toml

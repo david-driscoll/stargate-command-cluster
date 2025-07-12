@@ -60,8 +60,8 @@ spec:
         name: postgres-user
   plugins:
   - name: barman-cloud.cloudnative-pg.io
-    enabled: false
-    isWALArchiver: true
+    enabled: true
+    isWALArchiver: false
     parameters:
       barmanObjectName: ${APP}-garage
   externalClusters:

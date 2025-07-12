@@ -240,28 +240,28 @@ foreach (var user in minioConfig.Users)
   }
 }
 var referenceSecret = envReference["GARAGE_USER_CLUSTER_USER"];
-List<string> commandBuilder = ["#!/bin/sh", "set -e", "apk add garage"];
+List<string> commandBuilder = [];
 envReference.Children.Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || z.Key.ToString().StartsWith("GARAGE_PASSWORD_"))
   .ToList()
   .ForEach(z => envReference.Children.Remove(z.Key));
 
-commandBuilder.Add($"garage key import -n cluster-user \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\"");
-commandBuilder.Add($"garage key allow --create-bucket cluster-user");
-commandBuilder.Add($"garage bucket allow --read --write --owner cluster-user --key cluster-user");
+commandBuilder.Add($"key import -n cluster-user \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\"");
+commandBuilder.Add($"key allow --create-bucket cluster-user");
+commandBuilder.Add($"bucket allow --read --write --owner cluster-user --key cluster-user");
 envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "username"));
 envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "password"));
 foreach (var user in minioConfig.Users.Order())
 {
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
-  commandBuilder.Add($"garage key import -n {user.Username} \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\"");
+  commandBuilder.Add($"key import -n {user.Username} \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\"");
 
   foreach (var bucket in user.Buckets.Order())
   {
-    commandBuilder.Add($"garage bucket create {bucket.Name}");
-    commandBuilder.Add($"garage bucket allow --read --write --owner {bucket.Name} --key {user.Username}");
+    commandBuilder.Add($"bucket create {bucket.Name}");
+    commandBuilder.Add($"bucket allow --read --write --owner {bucket.Name} --key {user.Username}");
     if (bucket.IsPublic)
     {
-      commandBuilder.Add($"garage bucket website --allow {bucket.Name}");
+      commandBuilder.Add($"bucket website --allow {bucket.Name}");
     }
   }
 
@@ -289,7 +289,12 @@ controllers.Children[$"garage-users-cron"] = cronController;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/scripts/init-users.sh"]);
 
-File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh", string.Join("\n", commandBuilder.Select(cmd => cmd.Replace("\"", "\\\""))));
+File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh", $"""
+#!/bin/sh
+set -e
+curl -L -o /tmp/garage https://garagehq.deuxfleurs.fr/_releases/v2.0.0/x86_64-unknown-linux-musl/garage && chmod +x /tmp/garage
+{string.Join("\n", commandBuilder.Select(cmd => $"/tmp/garage {cmd.Replace("\"", "\\\"")}"))}
+""");
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1

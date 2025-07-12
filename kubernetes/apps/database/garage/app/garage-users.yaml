@@ -135,6 +135,8 @@ spec:
         type: emptyDir
       var:
         type: emptyDir
+        globalMounts:
+        - path: /var/cache/
       config:
         type: configMap
         defaultMode: 420

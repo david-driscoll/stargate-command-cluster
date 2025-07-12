@@ -88,12 +88,12 @@ spec:
               GARAGE_USER_CLUSTER_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: cluster-user
+                    name: garage-cluster-user
                     key: username
               GARAGE_PASSWORD_CLUSTER_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: cluster-user
+                    name: garage-cluster-user
                     key: password
               GARAGE_USER_AUTHENTIK:
                 valueFrom:

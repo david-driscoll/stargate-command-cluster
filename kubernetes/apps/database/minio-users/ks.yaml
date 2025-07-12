@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app minio-users-c969937182aa
+  name: &app minio-users-f3252998f0ee
   namespace: &namespace database
 spec:
   commonMetadata:
@@ -28,5 +28,5 @@ spec:
   targetNamespace: *namespace
   postBuild:
     substitute:
-      APP: minio-users-c969937182aa
+      APP: minio-users-f3252998f0ee
       NAMESPACE: *namespace

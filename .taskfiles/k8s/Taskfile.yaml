@@ -12,6 +12,5 @@ tasks:
           matrix:
             PHASE:
               - Failed
-              - Pending
               - Succeeded
         cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true

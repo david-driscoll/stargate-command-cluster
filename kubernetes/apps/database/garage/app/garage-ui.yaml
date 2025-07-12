@@ -78,7 +78,7 @@ spec:
         defaultMode: 420
         name: garage-config
         globalMounts:
-        - path: /mnt/garage.toml
+        - path: /etc/garage.toml
           subPath: garage.toml
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json

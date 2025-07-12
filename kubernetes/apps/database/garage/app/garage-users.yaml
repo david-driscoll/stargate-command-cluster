@@ -109,7 +109,7 @@ spec:
         defaultMode: 420
         name: garage-config
         globalMounts:
-        - path: /mnt/garage.toml
+        - path: /etc/garage.toml
           subPath: garage.toml
       scripts:
         type: configMap

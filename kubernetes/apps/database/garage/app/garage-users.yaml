@@ -48,8 +48,6 @@ spec:
             - /bin/sh
             - -c
             - >-
-              garage alias set "$G_ALIAS" "$GARAGE_ENDPOINT" "$GARAGE_ACCESS_KEY" "$GARAGE_SECRET_KEY"
-
               garage key import -n cluster-user "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER"
 
               garage key allow --create-bucket cluster-user
@@ -82,16 +80,6 @@ spec:
             env:
               G_ALIAS: ${CLUSTER_CNAME}
               GARAGE_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
-              GARAGE_ACCESS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: minio-admin-secret
-                    key: username
-              GARAGE_SECRET_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: minio-admin-secret
-                    key: password
               MC_CONFIG_DIR: /tmp/.mc
               PUID: 568
               PGID: 568

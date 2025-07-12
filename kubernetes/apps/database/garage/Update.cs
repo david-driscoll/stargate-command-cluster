@@ -229,16 +229,17 @@ foreach (var user in minioConfig.Users)
     }).WaitForExit();
   }
 }
-List<string> commandBuilder = ["garage alias set \"$G_ALIAS\" \"$GARAGE_ENDPOINT\" \"$GARAGE_ACCESS_KEY\" \"$GARAGE_SECRET_KEY\""];
-envReference.Children.Dump().Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || z.Key.ToString().StartsWith("GARAGE_PASSWORD_"))
+var referenceSecret = envReference["GARAGE_USER_CLUSTER_USER"];
+List<string> commandBuilder = [];
+envReference.Children.Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || z.Key.ToString().StartsWith("GARAGE_PASSWORD_"))
   .ToList()
   .ForEach(z => envReference.Children.Remove(z.Key));
 
 commandBuilder.Add($"garage key import -n cluster-user \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\"");
 commandBuilder.Add($"garage key allow --create-bucket cluster-user");
 commandBuilder.Add($"garage bucket allow --read --write --owner cluster-user --key cluster-user");
-envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_CLUSTER_USER"), GetSecretReference(serializer, envReference["GARAGE_ACCESS_KEY"], $"cluster-user", "username"));
-envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, envReference["GARAGE_ACCESS_KEY"], $"cluster-user", "password"));
+envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"cluster-user", "username"));
+envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"cluster-user", "password"));
 foreach (var user in minioConfig.Users.Order())
 {
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
@@ -254,8 +255,8 @@ foreach (var user in minioConfig.Users.Order())
     }
   }
 
-  envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_{envKey}"), GetSecretReference(serializer, envReference["GARAGE_ACCESS_KEY"], user.AccessKeyName, "username"));
-  envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_{envKey}"), GetSecretReference(serializer, envReference["GARAGE_ACCESS_KEY"], user.AccessKeyName, "password"));
+  envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "username"));
+  envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "password"));
 }
 static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy, string name, string key)
 {

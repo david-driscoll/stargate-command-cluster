@@ -4,9 +4,9 @@ garage:
   s3:
     api:
       region: "${CLUSTER_CNAME}"
-      rootDomain: ".s3.${APP}.database.cluster.local"
+      rootDomain: ".s3.${CLUSTER_DOMAIN}"
     web:
-      rootDomain: ".web.${APP}.database.cluster.local"
+      rootDomain: ".web.${CLUSTER_DOMAIN}"
       index: "index.html"
   rpcSecret: "{{ .password }}"
 deployment:
@@ -14,10 +14,10 @@ deployment:
 
 persistence:
   meta:
-    storageClass: "openebs-hostpath"
+    storageClass: "longhorn-local"
     size: 1Gi
   data:
-    storageClass: "openebs-hostpath"
+    storageClass: "longhorn-local"
     size: 32Gi
 
 ingress:

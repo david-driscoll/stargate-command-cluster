@@ -68,7 +68,7 @@ spec:
             env:
               G_ALIAS: ${CLUSTER_CNAME}
               GARAGE_CONFIG_FILE: /data/garage.toml
-              GARAGE_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
+              GARAGE_ENDPOINT: https://s3.${APP}.databse.cluster.local
               PUID: 568
               PGID: 568
               UMASK: 002

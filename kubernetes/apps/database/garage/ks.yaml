@@ -26,34 +26,3 @@ spec:
     substitute:
       APP: garage-${CLUSTER_CNAME}
       NAMESPACE: *namespace
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app garage-ui
-  namespace: &namespace database
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/database/garage/ui
-  dependsOn:
-    - name: garage
-      namespace: *namespace
-  prune: true
-  wait: true
-  force: true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  components: []
-  postBuild:
-    substitute:
-      APP: garage-ui-${CLUSTER_CNAME}
-      NAMESPACE: *namespace

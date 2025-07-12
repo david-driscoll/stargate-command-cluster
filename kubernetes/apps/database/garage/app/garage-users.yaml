@@ -67,8 +67,7 @@ spec:
             - /scripts/init-users.sh
             env:
               G_ALIAS: ${CLUSTER_CNAME}
-              GARAGE_CONFIG_FILE: /data/garage.toml
-              GARAGE_ENDPOINT: https://s3.${APP}.databse.cluster.local
+              GARAGE_RPC_HOST: http://garage.database.svc.cluster.local:3902
               PUID: 568
               PGID: 568
               UMASK: 002

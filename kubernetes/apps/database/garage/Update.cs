@@ -293,6 +293,8 @@ File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh",
 #!/bin/sh
 set -e
 curl -L -o /tmp/garage https://garagehq.deuxfleurs.fr/_releases/v2.0.0/x86_64-unknown-linux-musl/garage && chmod +x /tmp/garage
+cat /mnt/garage.toml
+cat /data/garage.toml
 {string.Join("\n", commandBuilder.Select(cmd => $"/tmp/garage {cmd.Replace("\"", "\\\"")}"))}
 """);
 

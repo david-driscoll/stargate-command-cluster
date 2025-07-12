@@ -135,6 +135,8 @@ spec:
         runAsNonRoot: false
         runAsGroup: 0
     persistence:
+      tmp:
+        type: emptyDir
       data:
         type: emptyDir
       config:

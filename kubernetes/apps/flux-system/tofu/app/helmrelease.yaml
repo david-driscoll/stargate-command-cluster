@@ -30,12 +30,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true
@@ -48,12 +48,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true
@@ -66,12 +66,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true
@@ -83,12 +83,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true
@@ -101,12 +101,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true
@@ -119,12 +119,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true

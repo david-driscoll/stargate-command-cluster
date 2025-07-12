@@ -19,7 +19,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: garage2
+  name: garage
 spec:
   chart:
     spec:

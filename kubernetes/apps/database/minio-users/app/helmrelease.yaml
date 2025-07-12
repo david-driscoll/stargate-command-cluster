@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-users-7678b563a24f
+  name: minio-users-855e4c38d329
 spec:
   chartRef:
     kind: OCIRepository
@@ -15,12 +15,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: -1
+      retries: 7
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: -1
+      retries: 7
       strategy: rollback
   rollback:
     force: true

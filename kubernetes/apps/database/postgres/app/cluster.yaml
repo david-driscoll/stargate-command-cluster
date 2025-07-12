@@ -12,7 +12,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}
-    storageClass: longhorn
+    storageClass: longhorn-local
   enableSuperuserAccess: true
   postgresql:
     parameters:

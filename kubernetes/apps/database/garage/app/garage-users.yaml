@@ -46,7 +46,7 @@ spec:
               pullPolicy: IfNotPresent
             securityContext:
               readOnlyRootFilesystem: false
-            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /etc/garage.toml"]
+            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /data/garage.toml"]
             env:
               RPC_SECRET:
                 valueFrom:
@@ -67,8 +67,8 @@ spec:
             - /scripts/init-users.sh
             env:
               G_ALIAS: ${CLUSTER_CNAME}
+              GARAGE_CONFIG_FILE: /data/garage.toml
               GARAGE_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
-              MC_CONFIG_DIR: /tmp/.mc
               PUID: 568
               PGID: 568
               UMASK: 002
@@ -135,6 +135,8 @@ spec:
         runAsNonRoot: false
         runAsGroup: 0
     persistence:
+      data:
+        type: emptyDir
       config:
         type: configMap
         defaultMode: 420

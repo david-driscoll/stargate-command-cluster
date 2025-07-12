@@ -230,7 +230,7 @@ foreach (var user in minioConfig.Users)
   }
 }
 var referenceSecret = envReference["GARAGE_USER_CLUSTER_USER"];
-List<string> commandBuilder = [];
+List<string> commandBuilder = ["#!/bin/sh", "set -e", "apk add garage"];
 envReference.Children.Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || z.Key.ToString().StartsWith("GARAGE_PASSWORD_"))
   .ToList()
   .ForEach(z => envReference.Children.Remove(z.Key));
@@ -277,7 +277,9 @@ containers.Children["job"] = minioUsersStep;
 controllers.Children["garage-users"] = controller;
 controllers.Children[$"garage-users-cron"] = cronController;
 
-minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", string.Join("\n", commandBuilder.Select(cmd => cmd))]);
+minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/scripts/init-users.sh"]);
+
+File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh", string.Join("\n", commandBuilder.Select(cmd => cmd.Replace("\"", "\\\""))));
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1

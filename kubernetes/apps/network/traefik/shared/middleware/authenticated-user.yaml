@@ -5,10 +5,10 @@ kind: Middleware
 metadata:
   name: authenticated-user
 spec:
-  
+
   chain:
     middlewares:
-      - name: ak-outpost-${CLUSTER_CNAME}
-        namespace: ${CLUSTER_CNAME}
+      # - name: ak-outpost-${CLUSTER_CNAME}
+      #   namespace: ${CLUSTER_CNAME}
       - name: internal-network
         namespace: network

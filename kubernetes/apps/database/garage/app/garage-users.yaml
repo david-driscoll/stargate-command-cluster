@@ -116,5 +116,5 @@ spec:
         name: ${APP}-scripts
         defaultMode: 493
         globalMounts:
-        - path: /resources/init-users.sh
+        - path: /scripts/init-users.sh
           subPath: init-users.sh

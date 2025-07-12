@@ -133,6 +133,8 @@ spec:
     persistence:
       etc:
         type: emptyDir
+      var:
+        type: emptyDir
       config:
         type: configMap
         defaultMode: 420

@@ -37,7 +37,6 @@ Dictionary<string, string> defaults = new Dictionary<string, string>()
   // { "VOLSYNC_CACHE_SNAPSHOTCLASS", "" },
   // { "VOLSYNC_PUID", 568 },
   // { "VOLSYNC_PGID", 568 },
-
 };
 
 var filePath = "kubernetes/apps/database/garage/app/replicas/data/kustomization.yaml";

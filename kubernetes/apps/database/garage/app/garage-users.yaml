@@ -38,21 +38,6 @@ spec:
           backoffLimit: 100
           suspend: false
           ttlSecondsAfterFinished: 600
-        initContainers: &init
-          init-config:
-            image:
-              repository: busybox
-              tag: latest
-              pullPolicy: IfNotPresent
-            securityContext:
-              readOnlyRootFilesystem: false
-            command: ["sh", "-c", "sed \"s/__RPC_SECRET_REPLACE__/$RPC_SECRET/\" /mnt/garage.toml > /data/garage.toml"]
-            env:
-              RPC_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: garage-rpc-secret
-                    key: rpcSecret
         containers: &job
           job:
             image:
@@ -67,7 +52,12 @@ spec:
             - /scripts/init-users.sh
             env:
               G_ALIAS: ${CLUSTER_CNAME}
-              GARAGE_RPC_HOST: http://garage.database.svc.cluster.local:3902
+              GARAGE_RPC_HOST: http://garage.database.svc.cluster.local:3901
+              GARAGE_RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-rpc-secret
+                    key: rpcSecret
               PUID: 568
               PGID: 568
               UMASK: 002
@@ -126,7 +116,6 @@ spec:
           successfulJobsHistory: 3
           suspend: false
         type: cronjob
-        initContainers: *init
         containers: *job
     defaultPodOptions:
       securityContext:
@@ -138,13 +127,6 @@ spec:
         type: emptyDir
       data:
         type: emptyDir
-      config:
-        type: configMap
-        defaultMode: 420
-        name: garage-config
-        globalMounts:
-        - path: /mnt/garage.toml
-          subPath: garage.toml
       scripts:
         type: configMap
         name: ${APP}-scripts

@@ -3,16 +3,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./externalsecret.yaml
-  - ./garage.yaml
-  - ./garage-ui.yaml
   - ./garage-users.yaml
-  - ./users
-  - ./replicas/data
-  - ./replicas/meta
+  - ./generated
 configMapGenerator:
-- name: ${APP}-values
+- name: ${APP}-scripts
   files:
-  - values.yaml=./resources/values.yaml
+    - init-users.sh=./resources/init-users.sh
 generatorOptions:
   disableNameSuffixHash: true

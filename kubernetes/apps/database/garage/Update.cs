@@ -172,7 +172,7 @@ var serializer = new SerializerBuilder().Build();
 #endregion
 
 #region Templates
-var minioUsersRelease = "kubernetes/apps/database/garage/app/garage-users.yaml";
+var minioUsersRelease = "kubernetes/apps/database/garage/users/garage-users.yaml";
 var minioUserReleaseMapping = await ReadStream(minioUsersRelease).SingleAsync();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
@@ -193,9 +193,9 @@ var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single
 
 #endregion
 
-var userTemplate = "kubernetes/apps/database/garage/app/users/cluster-user.yaml";
+var userTemplate = "kubernetes/apps/database/garage/users/generated/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
-var kustomizationPath = "kubernetes/apps/database/garage/app/users/kustomization.yaml";
+var kustomizationPath = "kubernetes/apps/database/garage/users/generated/kustomization.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
@@ -289,12 +289,10 @@ controllers.Children[$"garage-users-cron"] = cronController;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/scripts/init-users.sh"]);
 
-File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh", $"""
+File.WriteAllText("kubernetes/apps/database/garage/users/resources/init-users.sh", $"""
 #!/bin/sh
 set -e
 curl -L -o /tmp/garage https://garagehq.deuxfleurs.fr/_releases/v2.0.0/x86_64-unknown-linux-musl/garage && chmod +x /tmp/garage
-cat /mnt/garage.toml
-cat /data/garage.toml
 {string.Join("\n", commandBuilder.Select(cmd => $"/tmp/garage {cmd}"))}
 """);
 

@@ -59,8 +59,10 @@ spec:
       #   effect: NoSchedule
     defaultPodOptions:
       securityContext:
+        runAsUser: 0
+        runAsNonRoot: false
+        runAsGroup: 0
         fsGroupChangePolicy: "OnRootMismatch"
-        runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
       # nodeSelector:

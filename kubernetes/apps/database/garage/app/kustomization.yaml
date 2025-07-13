@@ -6,8 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./garage.yaml
   - ./garage-ui.yaml
-  - ./garage-users.yaml
-  - ./users
   - ./replicas/data
   - ./replicas/meta
 configMapGenerator:

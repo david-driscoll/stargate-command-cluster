@@ -10,7 +10,7 @@
   "sops.creationEnabled": true,
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": []
+    "vs-kubernetes.crd-code-completion": "enabled",
   },
   "mcp": {
     "servers": {
@@ -54,5 +54,5 @@
   },
   "peacock.color": "#1857a4",
   "dotnet.previewSolution-freeWorkspaceMode": true,
-  "dotnetAcquisitionExtension.existingDotnetPath": 
+  "dotnetAcquisitionExtension.existingDotnetPath":
 }

@@ -88,7 +88,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`${APP}.${CLUSTER_DOMAIN}`)
+    - match: Host(`garage.${CLUSTER_DOMAIN}`)
       kind: Rule
       services:
         - name: garage-ui

@@ -13,5 +13,5 @@ resources:
   # TODO
   # - ./typesense/ks.yaml
   - ./dragonfly/ks.yaml
-  # - ./garage/ks.yaml
+  - ./garage/ks.yaml
   - ./admin/ks.yaml

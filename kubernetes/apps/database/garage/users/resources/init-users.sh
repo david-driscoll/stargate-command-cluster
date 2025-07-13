@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 curl -L -o /tmp/garage https://garagehq.deuxfleurs.fr/_releases/v2.0.0/x86_64-unknown-linux-musl/garage && chmod +x /tmp/garage
-cat /mnt/garage.toml
-cat /data/garage.toml
 /tmp/garage key import -n cluster-user "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER"
 /tmp/garage key allow --create-bucket cluster-user
 /tmp/garage bucket allow --read --write --owner cluster-user --key cluster-user

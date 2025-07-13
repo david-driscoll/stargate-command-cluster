@@ -43,7 +43,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/database/garage/app
+  path: ./kubernetes/apps/database/garage/users
   dependsOn:
     - name: garage
       namespace: *namespace

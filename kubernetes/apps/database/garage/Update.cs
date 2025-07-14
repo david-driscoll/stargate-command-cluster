@@ -176,7 +176,7 @@ var minioUsersRelease = "kubernetes/apps/database/garage/users/garage-users.yaml
 var minioUserReleaseMapping = await ReadStream(minioUsersRelease).SingleAsync();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
-var cronController = controllers.Query($"/garage-users-cron").OfType<YamlMappingNode>().Single();
+var cronController = controllers.Query($"/cron").OfType<YamlMappingNode>().Single();
 var controller = controllers.Children.Values.Except([cronController]).OfType<YamlMappingNode>().Single(); ;
 var containers = controller.Query($"/containers").OfType<YamlMappingNode>().Single();
 var minioUsersStep = containers.Query($"/job").OfType<YamlMappingNode>().Single();
@@ -284,8 +284,8 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
 controllers.Children.Clear();
 containers.Children.Clear();
 containers.Children["job"] = minioUsersStep;
-controllers.Children["garage-users"] = controller;
-controllers.Children[$"garage-users-cron"] = cronController;
+controllers.Children["job"] = controller;
+controllers.Children[$"cron"] = cronController;
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/scripts/init-users.sh"]);
 

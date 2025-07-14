@@ -1,4 +1,3 @@
-{{- if ne .Values.deployment.kind "StatefulSet" -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -26,7 +25,6 @@ spec:
       name: admin
   selector:
     {{- include "garage.selectorLabels" . | nindent 4 }}
-{{- end }}
 {{- if .Values.monitoring.metrics.enabled }}
 ---
 apiVersion: v1

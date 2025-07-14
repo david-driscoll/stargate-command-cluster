@@ -90,7 +90,7 @@ spec:
           garage-ui:
             image:
               repository: khairul169/garage-webui
-              tag: latest
+              tag: latest@sha256:c931455c25bfbededa450cd7ec6f389ce52ad1bc861f8d0b93d00ced78e438dd
               pullPolicy: IfNotPresent
             securityContext:
               readOnlyRootFilesystem: false

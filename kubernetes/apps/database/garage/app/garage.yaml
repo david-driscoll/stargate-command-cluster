@@ -30,8 +30,8 @@ spec:
         namespace: flux-system
       interval: 15m
   maxHistory: 3
-  interval: 1h
-  timeout: 5m
+  interval: 15m
+  timeout: 10m
   install:
     createNamespace: true
     replace: true

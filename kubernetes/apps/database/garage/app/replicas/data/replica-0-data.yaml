@@ -12,7 +12,7 @@ spec:
     name: "data-garage-0-dst"
   resources:
     requests:
-      storage: "32Gi"
+      storage: "64Gi"
   storageClassName: "longhorn-local"
 
 ---
@@ -60,7 +60,7 @@ spec:
     cacheCapacity: "8Gi"
     storageClassName: "longhorn-local"
     accessModes: ["ReadWriteOnce"]
-    capacity: "32Gi"
+    capacity: "64Gi"
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568

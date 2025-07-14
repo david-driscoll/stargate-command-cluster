@@ -7,7 +7,7 @@ metadata:
 spec:
   cluster:
     name: ${APP}
-  schedule: "${POSTGRES_BACKUP_SCHEDULE:}"
+  schedule: "${POSTGRES_BACKUP_SCHEDULE:=0 * * * *}" # Hourly
   immediate: true
   suspend: false
   target: prefer-standby

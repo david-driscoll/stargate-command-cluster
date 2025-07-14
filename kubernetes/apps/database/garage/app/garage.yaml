@@ -1,34 +1,13 @@
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
-# apiVersion: source.toolkit.fluxcd.io/v1
-# kind: GitRepository
-# metadata:
-#   name: garage
-# spec:
-#   interval: 1h
-#   url: https://github.com/deuxfleurs-org/garage.git
-#   ref:
-#     branch: v2.0.0
-#   ignore: |
-#     # exclude all
-#     /*
-#     # include charts directory
-#     !/script/helm/garage/
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: garage
+  name: &app garage
 spec:
-  chart:
-    spec:
-      chart: ".local/garage"
-      sourceRef:
-        kind: GitRepository
-        name: flux-system
-        namespace: flux-system
-      interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   maxHistory: 3
   interval: 15m
   timeout: 10m
@@ -50,8 +29,130 @@ spec:
   uninstall:
     keepHistory: false
   valuesFrom:
-    - kind: Secret
-      name: ${APP}-values
+  - kind: Secret
+    name: ${APP}-config
+  values:
+    controllers:
+      garage:
+        enabled: true
+        type: statefulset
+        replicas: 3
+        serviceAccount:
+          name: garage
+        containers:
+          garage:
+            image:
+              repository: deuxfleurs/garage
+              tag: v2.0.0
+              pullPolicy: IfNotPresent
+            env:
+              TZ: ${TIMEZONE}
+              GARAGE_RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-config
+                    key: rpcSecret
+              GARAGE_ADMIN_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-config
+                    key: API_ADMIN_KEY
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            securityContext:
+              runAsUser: 65534
+              runAsNonRoot: true
+              runAsGroup: 65534
+              fsGroupChangePolicy: "OnRootMismatch"
+              seccompProfile:
+                type: RuntimeDefault
+        statefulset:
+          volumeClaimTemplates:
+          - name: meta
+            size: 7Gi
+            storageClass: "longhorn-local"
+            accessMode: ReadWriteOnce
+            globalMounts:
+            - path: /mnt/meta
+          - name: data
+            size: 64Gi
+            storageClass: "longhorn-local"
+            accessMode: ReadWriteOnce
+            globalMounts:
+            - path: /mnt/data
+      garage-ui:
+        enabled: true
+        containers:
+          garage-ui:
+            image:
+              repository: khairul169/garage-webui
+              tag: latest
+              pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
+            env:
+              TZ: ${TIMEZONE}
+              API_BASE_URL: "http://garage.database.svc.cluster.local:3903"
+              API_ADMIN_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-config
+                    key: API_ADMIN_KEY
+              S3_ENDPOINT_URL: "http://garage.database.svc.cluster.local:3900"
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+    service:
+      garage:
+        controller: garage
+        type: ClusterIP
+        ports:
+          s3-api:
+            port: 3900
+          rpc:
+            port: 3901
+          web-api:
+            port: 3902
+          admin:
+            port: 3903
+          http:
+            port: 3909
+    serviceAccount:
+      garage: {}
+    rbac:
+      roles:
+        garage:
+          type: Role
+          rules:
+          - apiGroups: ["apiextensions.k8s.io"]
+            resources: ["customresourcedefinitions"]
+            verbs: ["get", "list", "watch", "create", "patch"]
+          - apiGroups: ["deuxfleurs.fr"]
+            resources: ["garagenodes"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      bindings:
+        garage:
+          type: RoleBinding
+          subjects:
+          - kind: ServiceAccount
+            name: garage
+            namespace: garage
+          roleRef:
+            kind: Role
+            name: garage
+    servicemonitor:
+      enabled: true
+      endpoints:
+      - port: admin
+        interval: 30s
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
 apiVersion: traefik.io/v1alpha1
@@ -64,24 +165,32 @@ metadata:
     kubernetes.io/ingress.class: internal
 spec:
   entryPoints:
-    - websecure
+  - websecure
   routes:
-    - match: Host(`web.${CLUSTER_DOMAIN}`) || Host(`*.web.${CLUSTER_DOMAIN}`)
-      kind: Rule
-      services:
-        - name: ${APP}
-          port: web-api
-          passHostHeader: true
-      middlewares:
-        - name: internal-network
-          namespace: network
-    - match: Host(`s3.${CLUSTER_DOMAIN}`) || Host(`*.s3.${CLUSTER_DOMAIN}`)
-      kind: Rule
-      services:
-        - name: garage
-          port: s3-api
-          passHostHeader: true
-      middlewares:
-        - name: internal-network
-          namespace: network
-    # admin api is not exposed externally atm
+  - match: Host(`web.${CLUSTER_DOMAIN}`) || Host(`*.web.${CLUSTER_DOMAIN}`)
+    kind: Rule
+    services:
+    - name: ${APP}
+      port: web-api
+      passHostHeader: true
+    middlewares:
+    - name: internal-network
+      namespace: network
+  - match: Host(`s3.${CLUSTER_DOMAIN}`) || Host(`*.s3.${CLUSTER_DOMAIN}`)
+    kind: Rule
+    services:
+    - name: ${APP}
+      port: s3-api
+      passHostHeader: true
+    middlewares:
+    - name: internal-network
+      namespace: network
+  - match: Host(`${APP}.${CLUSTER_DOMAIN}`)
+    kind: Rule
+    services:
+    - name: ${APP}
+      port: http
+      passHostHeader: true
+    middlewares:
+    - name: authenticated-user
+      namespace: network

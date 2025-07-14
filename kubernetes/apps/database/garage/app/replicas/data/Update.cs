@@ -49,15 +49,19 @@ int servers = int.Parse(clusterConfig.OfType<YamlMappingNode>().Single().Query("
 int volumeCapacity = int.Parse(clusterConfig.OfType<YamlMappingNode>().Single().Query("/stringData/GARAGE_VOLUME_CAPACITY").OfType<YamlScalarNode>().Single().Value);
 defaults["VOLSYNC_CAPACITY"] = $"{volumeCapacity}Gi";
 
-var clusterValues = await ReadStream("kubernetes/apps/database/garage/app/resources/values.yaml");
-var clusterValuesRoot = clusterValues.OfType<YamlMappingNode>().Single();
-if (clusterValuesRoot.Query("/persistence/data/size").OfType<YamlScalarNode>().SingleOrDefault() is { } dataSizeNode)
+var clusterValues = await ReadStream("kubernetes/apps/database/garage/app/garage.yaml");
+var clusterValuesRoot = clusterValues.OfType<YamlMappingNode>().First();
+if (clusterValuesRoot.Query("/spec/values/controllers/garage/statefulset/volumeClaimTemplates/1/size").OfType<YamlScalarNode>().SingleOrDefault() is { } dataSizeNode)
 {
   dataSizeNode.Value = defaults["VOLSYNC_CAPACITY"];
 }
-File.WriteAllText("kubernetes/apps/database/garage/app/resources/values.yaml", $"""
+File.WriteAllText("kubernetes/apps/database/garage/app/garage.yaml", $"""
 ---
-{serializer.Serialize(clusterValuesRoot)}
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+{serializer.Serialize(clusterValues.First())}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
+{serializer.Serialize(clusterValues.Last())}
 """);
 
 var secretTemplate = await GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");

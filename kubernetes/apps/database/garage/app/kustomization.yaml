@@ -5,12 +5,11 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./garage.yaml
-  - ./garage-ui.yaml
   - ./replicas/data
   - ./replicas/meta
 configMapGenerator:
-- name: ${APP}-values
+- name: ${APP}-config
   files:
-  - values.yaml=./resources/values.yaml
+  - config.toml=./resources/config.toml
 generatorOptions:
   disableNameSuffixHash: true

@@ -2,16 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: database
+namespace: monitoring
 components:
   - ../../components/common
   - ../../components/repos/app-template4
 resources:
   - ./secret-store.yaml
-  - ./postgres/ks.yaml
-  - ./mysql/ks.yaml
-  # TODO
-  # - ./typesense/ks.yaml
-  - ./dragonfly/ks.yaml
-  - ./garage/ks.yaml
-  - ./admin/ks.yaml
+  - ./uptime-kuma/ks.yaml

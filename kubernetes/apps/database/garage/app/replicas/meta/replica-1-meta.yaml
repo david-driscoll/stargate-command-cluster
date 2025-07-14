@@ -12,7 +12,7 @@ spec:
     name: "meta-garage-1-dst"
   resources:
     requests:
-      storage: "2Gi"
+      storage: "7Gi"
   storageClassName: "longhorn"
 
 ---
@@ -60,7 +60,7 @@ spec:
     cacheCapacity: "8Gi"
     storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
-    capacity: "2Gi"
+    capacity: "7Gi"
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568

@@ -13,15 +13,13 @@ garage:
   adminToken: "{{ .credential }}"
 deployment:
   replicaCount: "${REPLICA_NODES}"
-
 persistence:
   meta:
     storageClass: "longhorn-local"
-    size: 1Gi
+    size: 7Gi
   data:
     storageClass: "longhorn-local"
     size: 64Gi
-
 ingress:
   s3:
     api:

@@ -28,7 +28,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 Dictionary<string, string> defaults = new Dictionary<string, string>()
 {
-  { "VOLSYNC_CAPACITY", "32Gi" },
+  { "VOLSYNC_CAPACITY", "64Gi" },
   // { "VOLSYNC_CACHE_CAPACITY", "" },
   { "VOLSYNC_STORAGECLASS", "longhorn-local" },
   // { "VOLSYNC_COPYMETHOD", "" },

@@ -32,7 +32,7 @@ spec:
   - name: garage
   values:
     controllers:
-      garage-users:
+      job:
         type: job
         job:
           backoffLimit: 100
@@ -52,7 +52,7 @@ spec:
             - /scripts/init-users.sh
             env:
               G_ALIAS: ${CLUSTER_CNAME}
-              GARAGE_RPC_HOST: http://garage.database.svc.cluster.local:3901
+              GARAGE_RPC_HOST: "${GARAGE_NODE_ID}@garage-0.garage.database.svc.cluster.local:3901"
               GARAGE_RPC_SECRET:
                 valueFrom:
                   secretKeyRef:
@@ -106,7 +106,7 @@ spec:
               requests:
                 cpu: 10m
                 memory: 32Mi
-      garage-users-cron:
+      cron:
         cronjob:
           backoffLimit: 6
           concurrencyPolicy: Forbid

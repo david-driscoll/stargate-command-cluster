@@ -1,7 +1,0 @@
----
-buckets:
-- name: tivi-cache
-- name: tivi-results
-- name: iris
-users:
-- name: tivi-sync

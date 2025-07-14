@@ -33,6 +33,8 @@ spec:
   values:
     controllers:
       job:
+        serviceAccount:
+          name: garage-users
         type: job
         job:
           backoffLimit: 100
@@ -41,8 +43,8 @@ spec:
         containers: &job
           job:
             image:
-              repository: pnnlmiscscripts/curl-jq
-              tag: latest@sha256:46bc6e2747c42af4013edb228df8401d777f7e22d4d3b7ab27a3f74105d1228e
+              repository: alpine/k8s
+              tag: 1.33.2@sha256:329cf13af9ee678e3afd71b6af44447029f119f713bec278db2fb53571e857f5
               pullPolicy: IfNotPresent
             securityContext:
               readOnlyRootFilesystem: false
@@ -134,3 +136,26 @@ spec:
         globalMounts:
         - path: /scripts/init-users.sh
           subPath: init-users.sh
+    serviceAccount:
+      garage-users: {}
+    rbac:
+      bindings:
+        garage-users:
+          type: RoleBinding
+          subjects:
+          - kind: ServiceAccount
+            name: garage-users
+            namespace: garage
+          roleRef:
+            kind: Role
+            name: garage-users
+      roles:
+        garage-users:
+          type: Role
+          rules:
+          - apiGroups: [""]
+            resources: ["pods/exec"]
+            verbs: ["create", "get"]
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]

@@ -292,8 +292,13 @@ minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/sc
 File.WriteAllText("kubernetes/apps/database/garage/users/resources/init-users.sh", $"""
 #!/bin/sh
 set -e
-curl -L -o /tmp/garage https://garagehq.deuxfleurs.fr/_releases/v2.0.0/x86_64-unknown-linux-musl/garage && chmod +x /tmp/garage
-{string.Join("\n", commandBuilder.Select(cmd => $"/tmp/garage {cmd}"))}
+
+# Set the namespace and pod name for garage
+NAMESPACE="garage"
+POD="garage-0"
+GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- garage"
+
+{string.Join("\n", commandBuilder.Select(cmd => "$GARAGE_CMD " + cmd))}
 """);
 
 var customizationTemplate = $"""

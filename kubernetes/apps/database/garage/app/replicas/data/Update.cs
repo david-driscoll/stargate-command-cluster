@@ -39,12 +39,26 @@ Dictionary<string, string> defaults = new Dictionary<string, string>()
   // { "VOLSYNC_PGID", 568 },
 };
 
+var serializer = new SerializerBuilder().Build();
 var filePath = "kubernetes/apps/database/garage/app/replicas/data/kustomization.yaml";
 
 var databasesContent = new StringBuilder();
 
 var clusterConfig = await ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml");
 int servers = int.Parse(clusterConfig.OfType<YamlMappingNode>().Single().Query("/stringData/REPLICA_NODES").OfType<YamlScalarNode>().Single().Value);
+int volumeCapacity = int.Parse(clusterConfig.OfType<YamlMappingNode>().Single().Query("/stringData/GARAGE_VOLUME_CAPACITY").OfType<YamlScalarNode>().Single().Value);
+defaults["VOLSYNC_CAPACITY"] = $"{volumeCapacity}Gi";
+
+var clusterValues = await ReadStream("kubernetes/apps/database/garage/app/resources/values.yaml");
+var clusterValuesRoot = clusterValues.OfType<YamlMappingNode>().Single();
+if (clusterValuesRoot.Query("/persistence/data/size").OfType<YamlScalarNode>().SingleOrDefault() is { } dataSizeNode)
+{
+  dataSizeNode.Value = defaults["VOLSYNC_CAPACITY"];
+}
+File.WriteAllText("kubernetes/apps/database/garage/app/resources/values.yaml", $"""
+---
+{serializer.Serialize(clusterValuesRoot)}
+""");
 
 var secretTemplate = await GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");
 var replicationSourceTemplate = await GetTemplate("kubernetes/components/volsync/local/replicationsource.yaml");

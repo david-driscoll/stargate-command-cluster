@@ -43,7 +43,7 @@ spec:
   prune: true
   wait: true
   force: true
-  suspend: true
+  suspend: false
   interval: 1h
   retryInterval: 2m
   timeout: 5m

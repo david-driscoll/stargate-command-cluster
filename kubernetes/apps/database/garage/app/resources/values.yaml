@@ -1,6 +1,6 @@
 ---
 garage:
-  replicationFactor: "2"
+  replicationFactor: 2
   consistencyMode: "degraded"
   s3:
     api:

@@ -47,16 +47,6 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
-              GARAGE_RPC_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: ${APP}-config
-                    key: rpcSecret
-              GARAGE_ADMIN_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: ${APP}-config
-                    key: API_ADMIN_KEY
             resources:
               requests:
                 cpu: 100m

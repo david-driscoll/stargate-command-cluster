@@ -29,6 +29,7 @@ garage:
   rpcBindAddr: "[::]:3901"
   # -- If not given, a random secret will be generated and stored in a Secret object
   rpcSecret: ""
+  adminToken: ""
   # -- This is not required if you use the integrated kubernetes discovery
   bootstrapPeers: []
   # -- Set to true if you want to use k8s discovery but install the CRDs manually outside
@@ -128,8 +129,12 @@ service:
   s3:
     api:
       port: 3900
+    rpc:
+      port: 3901
     web:
       port: 3902
+    admin:
+      port: 3903
     # NOTE: the admin API is excluded for now as it is not consistent across nodes
 
 ingress:

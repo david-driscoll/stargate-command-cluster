@@ -84,3 +84,4 @@ spec:
       middlewares:
         - name: internal-network
           namespace: network
+    # admin api is not exposed externally atm

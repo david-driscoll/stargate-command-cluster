@@ -47,6 +47,7 @@ data:
 
     [admin]
     api_bind_addr = "[::]:3903"
+    admin_token = "{{ .Values.garage.adminToken }}"
     {{- if .Values.monitoring.tracing.sink }}
     trace_sink = "{{ .Values.monitoring.tracing.sink }}"
     {{- end }}

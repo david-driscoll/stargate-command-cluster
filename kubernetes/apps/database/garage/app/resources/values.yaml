@@ -10,6 +10,7 @@ garage:
       rootDomain: ".web.${CLUSTER_DOMAIN}"
       index: "index.html"
   rpcSecret: "{{ .password }}"
+  adminToken: "{{ .credential }}"
 deployment:
   replicaCount: "${REPLICA_NODES}"
 
@@ -19,7 +20,7 @@ persistence:
     size: 1Gi
   data:
     storageClass: "longhorn-local"
-    size: 32Gi
+    size: 64Gi
 
 ingress:
   s3:

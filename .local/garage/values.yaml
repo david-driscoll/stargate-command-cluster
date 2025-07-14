@@ -15,7 +15,7 @@ garage:
 
   # -- Default to 3 replicas, see the replication_mode section at
   # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication-mode
-  replicationFactor: "2"
+  replicationFactor: 2
   consistencyMode: "degraded"
 
   # -- zstd compression level of stored blocks

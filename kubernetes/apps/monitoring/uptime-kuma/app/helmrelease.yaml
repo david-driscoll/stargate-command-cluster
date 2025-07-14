@@ -67,10 +67,10 @@ spec:
       shareProcessNamespace: true
 
     persistence:
-      pm2:
-        type: emptyDir
+      config:
+        existingClaim: ${APP}
         globalMounts:
-          - path: /.pm2/
+          - path: /app/data
 
     service:
       app:

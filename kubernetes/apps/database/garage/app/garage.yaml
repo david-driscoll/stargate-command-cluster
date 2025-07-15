@@ -114,7 +114,7 @@ spec:
           admin:
             port: 3903
       garage-webui:
-        controller: garage
+        controller: garage-webui
         type: ClusterIP
         ports:
           http:
@@ -173,7 +173,7 @@ spec:
   - match: Host(`web.${CLUSTER_DOMAIN}`) || Host(`*.web.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: ${APP}
+    - name: garage
       port: web-api
       passHostHeader: true
     middlewares:
@@ -182,7 +182,7 @@ spec:
   - match: Host(`s3.${CLUSTER_DOMAIN}`) || Host(`*.s3.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: ${APP}
+    - name: garage
       port: s3-api
       passHostHeader: true
     middlewares:
@@ -191,7 +191,7 @@ spec:
   - match: Host(`garage.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: ${APP}
+    - name: garage-webui
       port: http
       passHostHeader: true
     middlewares:

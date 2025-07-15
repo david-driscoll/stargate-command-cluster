@@ -44,12 +44,27 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
+              RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: ${APP}-config
+                    key: rpcSecret
             resources:
               requests:
                 cpu: 100m
                 memory: 256Mi
               limits:
                 memory: 1Gi
+            probes:
+              liveness: &probe
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3903
+                    initialDelaySeconds: 5
+                    periodSeconds: 30
+              readiness: *probe
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -58,20 +73,24 @@ spec:
               fsGroupChangePolicy: "OnRootMismatch"
               seccompProfile:
                 type: RuntimeDefault
+              capabilities:
+                drop:
+                - ALL
         statefulset:
+          podManagementPolicy: Parallel
           volumeClaimTemplates:
           - name: meta
             size: 7Gi
             storageClass: "longhorn-local"
             accessMode: ReadWriteOnce
             globalMounts:
-            - path: /mnt/meta
+            - path: /var/lib/garage/meta
           - name: data
             size: 64Gi
             storageClass: "longhorn-local"
             accessMode: ReadWriteOnce
             globalMounts:
-            - path: /mnt/data
+            - path: /var/lib/garage/data
       garage-webui:
         enabled: true
         serviceAccount:
@@ -107,6 +126,9 @@ spec:
               fsGroupChangePolicy: "OnRootMismatch"
               seccompProfile:
                 type: RuntimeDefault
+              capabilities:
+                drop:
+                - ALL
     service:
       garage:
         controller: garage
@@ -133,7 +155,7 @@ spec:
         name: ${APP}-config
         globalMounts:
         - path: /etc/garage.toml
-          subPath: config.toml
+          subPath: garage.toml
     serviceAccount:
       garage: {}
     rbac:

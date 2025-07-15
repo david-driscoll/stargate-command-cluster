@@ -23,8 +23,14 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/database/
     deleteOrphaned: true
     exclude: |
-      minio-users/
-      minio/app/cluster-user.sops.yaml
+      garage/users/generated/
+      garage/users/resources/
+      garage/users/garage-users.yaml
+      garage/config.yaml
+      postgres/app/users/
+      postgres/app/cluster.yaml
+      postgres/app/init/
+      postgres/app/restore/
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

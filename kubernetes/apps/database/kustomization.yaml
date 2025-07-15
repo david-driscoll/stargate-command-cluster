@@ -10,8 +10,6 @@ resources:
   - ./secret-store.yaml
   - ./postgres/ks.yaml
   - ./mysql/ks.yaml
-  # TODO
-  # - ./typesense/ks.yaml
   - ./dragonfly/ks.yaml
   - ./garage/ks.yaml
   - ./admin/ks.yaml

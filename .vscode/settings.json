@@ -9,8 +9,11 @@
   "sops.beta": false,
   "sops.creationEnabled": true,
   "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
     "vs-kubernetes.crd-code-completion": "enabled",
+    // "vs-kubernetes.knownKubeconfigs": [
+    //   "./kubeconfig"
+    // ],
+    // "vs-kubernetes.kubeconfig": "./kubeconfig"
   },
   "mcp": {
     "servers": {

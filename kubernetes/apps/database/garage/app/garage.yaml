@@ -28,9 +28,6 @@ spec:
     recreate: true
   uninstall:
     keepHistory: false
-  valuesFrom:
-  - kind: Secret
-    name: ${APP}-config
   values:
     controllers:
       garage:

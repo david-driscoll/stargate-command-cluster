@@ -4,7 +4,7 @@ set -e
 # Set the namespace and pod name for garage
 NAMESPACE="database"
 POD="garage-0"
-GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- garage"
+GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 
 $GARAGE_CMD key import -n cluster-user "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER"
 $GARAGE_CMD key allow --create-bucket cluster-user

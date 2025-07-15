@@ -115,6 +115,14 @@ spec:
             port: 3903
           http:
             port: 3909
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: ${APP}-config
+        globalMounts:
+        - path: /etc/garage.toml
+          subPath: garage.toml
     serviceAccount:
       garage: {}
     rbac:

@@ -75,6 +75,7 @@ spec:
         enabled: true
         serviceAccount:
           name: garage
+        forceRename: garage-webui
         containers:
           garage-webui:
             nameOverride: garage-webui

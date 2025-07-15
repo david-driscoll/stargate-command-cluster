@@ -51,9 +51,10 @@ spec:
               limits:
                 memory: 1Gi
             securityContext:
-              runAsUser: 65534
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
               runAsNonRoot: true
-              runAsGroup: 65534
               fsGroupChangePolicy: "OnRootMismatch"
               seccompProfile:
                 type: RuntimeDefault
@@ -83,8 +84,6 @@ spec:
               repository: khairul169/garage-webui
               tag: latest@sha256:c931455c25bfbededa450cd7ec6f389ce52ad1bc861f8d0b93d00ced78e438dd
               pullPolicy: IfNotPresent
-            securityContext:
-              readOnlyRootFilesystem: false
             env:
               TZ: ${TIMEZONE}
               API_BASE_URL: "http://garage.database.svc.cluster.local:3903"
@@ -100,6 +99,14 @@ spec:
                 memory: 100Mi
               limits:
                 memory: 500Mi
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              runAsNonRoot: true
+              fsGroupChangePolicy: "OnRootMismatch"
+              seccompProfile:
+                type: RuntimeDefault
     service:
       garage:
         controller: garage

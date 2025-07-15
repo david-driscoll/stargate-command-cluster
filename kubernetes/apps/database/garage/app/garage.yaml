@@ -71,10 +71,13 @@ spec:
             accessMode: ReadWriteOnce
             globalMounts:
             - path: /mnt/data
-      garage-ui:
+      garage-webui:
         enabled: true
+        serviceAccount:
+          name: garage
         containers:
-          garage-ui:
+          garage-webui:
+            nameOverride: garage-webui
             image:
               repository: khairul169/garage-webui
               tag: latest

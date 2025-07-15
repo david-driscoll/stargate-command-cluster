@@ -2,5 +2,9 @@ machine:
   network:
     disableSearchDomain: true
     nameservers:
-      - 1.1.1.1
-      - 1.0.0.1
+      # - 1.1.1.1
+      # - 1.0.0.1
+      - 10.10.10.9
+      - 10.10.0.1
+      # does this make sense?
+      #- 10.10.209.201

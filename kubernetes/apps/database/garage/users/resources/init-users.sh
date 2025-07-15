@@ -2,7 +2,7 @@
 set -e
 
 # Set the namespace and pod name for garage
-NAMESPACE="garage"
+NAMESPACE="database"
 POD="garage-0"
 GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- garage"
 

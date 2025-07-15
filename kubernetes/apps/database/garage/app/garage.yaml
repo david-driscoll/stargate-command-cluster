@@ -29,6 +29,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      securityContext: &podSecurityContext
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile:
+          type: RuntimeDefault
     controllers:
       garage:
         enabled: true
@@ -37,14 +46,7 @@ spec:
         serviceAccount:
           name: garage
         pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            runAsNonRoot: true
-            fsGroupChangePolicy: "OnRootMismatch"
-            seccompProfile:
-              type: RuntimeDefault
+          securityContext: *podSecurityContext
         containers:
           garage:
             image:
@@ -74,6 +76,11 @@ spec:
                     initialDelaySeconds: 5
                     periodSeconds: 30
               readiness: *probe
+            securityContext:
+              <<: *podSecurityContext
+              capabilities:
+                drop:
+                - ALL
         statefulset:
           podManagementPolicy: Parallel
           volumeClaimTemplates:
@@ -97,14 +104,7 @@ spec:
           name: garage
         forceRename: garage-webui
         pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            runAsNonRoot: true
-            fsGroupChangePolicy: "OnRootMismatch"
-            seccompProfile:
-              type: RuntimeDefault
+          securityContext: *podSecurityContext
         containers:
           garage-webui:
             nameOverride: garage-webui
@@ -120,6 +120,11 @@ spec:
                 memory: 100Mi
               limits:
                 memory: 500Mi
+            securityContext:
+              <<: *podSecurityContext
+              capabilities:
+                drop:
+                - ALL
     service:
       garage:
         controller: garage

@@ -10,6 +10,6 @@ resources:
 configMapGenerator:
 - name: ${APP}-config
   files:
-  - config.toml=./resources/config.toml
+  - garage.toml=./resources/garage.toml
 generatorOptions:
   disableNameSuffixHash: true

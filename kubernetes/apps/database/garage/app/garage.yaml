@@ -126,7 +126,7 @@ spec:
         name: ${APP}-config
         globalMounts:
         - path: /etc/garage.toml
-          subPath: garage.toml
+          subPath: config.toml
     serviceAccount:
       garage: {}
     rbac:

@@ -113,6 +113,10 @@ spec:
             port: 3902
           admin:
             port: 3903
+      garage-webui:
+        controller: garage
+        type: ClusterIP
+        ports:
           http:
             port: 3909
     persistence:
@@ -184,7 +188,7 @@ spec:
     middlewares:
     - name: internal-network
       namespace: network
-  - match: Host(`${APP}.${CLUSTER_DOMAIN}`)
+  - match: Host(`garage.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
     - name: ${APP}

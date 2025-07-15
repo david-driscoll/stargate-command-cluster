@@ -14,7 +14,7 @@ compression_level = 1
 
 rpc_bind_addr = "[::]:3901"
 # rpc_secret will be populated by the init container from a k8s secret object
-rpc_secret = "{{ .secret | b64enc }}"
+rpc_secret = "{{ .secret }}"
 
 bootstrap_peers = []
 

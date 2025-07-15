@@ -171,7 +171,7 @@ spec:
           subjects:
           - kind: ServiceAccount
             name: garage
-            namespace: garage
+            namespace: ${NAMESPACE}
           roleRef:
             kind: Role
             name: garage

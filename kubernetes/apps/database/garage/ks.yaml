@@ -21,7 +21,7 @@ spec:
   force: true
   interval: 1h
   retryInterval: 2m
-  timeout: 20m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -52,7 +52,7 @@ spec:
   force: true
   interval: 1h
   retryInterval: 2m
-  timeout: 20m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system

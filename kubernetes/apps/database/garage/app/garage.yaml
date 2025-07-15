@@ -139,6 +139,7 @@ spec:
           admin:
             port: 3903
       garage-webui:
+        forceRename: garage-webui
         controller: garage-webui
         type: ClusterIP
         ports:

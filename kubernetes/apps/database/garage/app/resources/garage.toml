@@ -19,7 +19,7 @@ rpc_secret = "{{ .secret }}"
 bootstrap_peers = []
 
 [kubernetes_discovery]
-namespace = "garage"
+namespace = "${NAMESPACE}"
 service_name = "garage"
 skip_crd = false
 

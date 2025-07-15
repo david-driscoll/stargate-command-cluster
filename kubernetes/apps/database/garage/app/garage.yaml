@@ -39,7 +39,7 @@ spec:
         containers:
           garage:
             image:
-              repository: deuxfleurs/garage
+              repository: dxflrs/garage
               tag: v2.0.0
               pullPolicy: IfNotPresent
             env:

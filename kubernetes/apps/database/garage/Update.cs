@@ -245,7 +245,7 @@ envReference.Children.Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || 
   .ToList()
   .ForEach(z => envReference.Children.Remove(z.Key));
 
-commandBuilder.Add($"key import -n cluster-user \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\"");
+commandBuilder.Add($"key import -n cluster-user --yes \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\"");
 commandBuilder.Add($"key allow --create-bucket cluster-user");
 commandBuilder.Add($"bucket allow --read --write --owner cluster-user --key cluster-user");
 envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "username"));

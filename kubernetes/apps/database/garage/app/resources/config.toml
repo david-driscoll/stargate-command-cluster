@@ -11,7 +11,7 @@ consistency_mode = "degraded"
 
 compression_level = "1"
 
-# metadata_auto_snapshot_interval = {{ .Values.garage.metadataAutoSnapshotInterval | quote }}
+# metadata_auto_snapshot_interval = .Values.garage.metadataAutoSnapshotInterval | quote
 
 rpc_bind_addr = "[::]:3901"
 # rpc_secret will be populated by the init container from a k8s secret object
@@ -37,4 +37,4 @@ index = "index.html"
 [admin]
 api_bind_addr = "[::]:3903"
 admin_token = "{{ .credential }}"
-#trace_sink = "{{ .Values.monitoring.tracing.sink }}"
+#trace_sink = ".Values.monitoring.tracing.sink"

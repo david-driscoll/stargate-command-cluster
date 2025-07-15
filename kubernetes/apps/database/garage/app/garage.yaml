@@ -83,14 +83,16 @@ spec:
             size: 7Gi
             storageClass: "longhorn-local"
             accessMode: ReadWriteOnce
-            globalMounts:
-            - path: /var/lib/garage/meta
+            advancedMounts:
+              garage:
+              - path: /var/lib/garage/meta
           - name: data
             size: 64Gi
             storageClass: "longhorn-local"
             accessMode: ReadWriteOnce
-            globalMounts:
-            - path: /var/lib/garage/data
+            advancedMounts:
+              garage:
+              - path: /var/lib/garage/data
       garage-webui:
         enabled: true
         serviceAccount:
@@ -105,13 +107,6 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
-              API_BASE_URL: "http://garage.database.svc.cluster.local:3903"
-              API_ADMIN_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: ${APP}-config
-                    key: API_ADMIN_KEY
-              S3_ENDPOINT_URL: "http://garage.database.svc.cluster.local:3900"
             resources:
               requests:
                 cpu: 50m

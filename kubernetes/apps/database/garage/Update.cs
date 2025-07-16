@@ -257,7 +257,7 @@ envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_CLUSTER_USER"), G
 foreach (var user in minioConfig.Users.Order())
 {
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
-  commandBuilder.Add($"key import -n {user.Username} \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\" || true");
+  commandBuilder.Add($"key import -n {user.Username} --yes \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\" || true");
 
   foreach (var bucket in user.Buckets.Order())
   {

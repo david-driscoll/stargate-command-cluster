@@ -29,6 +29,8 @@ spec:
   components: []
   postBuild:
     substitute:
+      # these are artifacts of how this was setup
+      # I don't want to redo garage again at the moment, so will just move the backups to the new location
       APP: garage-${CLUSTER_CNAME}
       NAMESPACE: *namespace
 ---

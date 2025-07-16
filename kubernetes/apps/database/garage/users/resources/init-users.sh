@@ -1,6 +1,4 @@
 #!/bin/sh
-set -e
-
 # Set the namespace and pod name for garage
 NAMESPACE="database"
 POD="garage-0"

@@ -34,7 +34,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        RESTIC_REPOSITORY: "/repository/meta-garage-0"
+        RESTIC_REPOSITORY: "/repository/$APP"
         RESTIC_PASSWORD: "{{ .credential }}"
   dataFrom:
     - extract:

@@ -11,6 +11,8 @@ spec:
   - "*.svc.cluster.local"
   - "*.${CLUSTER_CNAME}.svc.cluster.local"
   - "*.database.svc.cluster.local"
+  - "*.s3.database.svc.cluster.local"
+  - "*.web.database.svc.cluster.local"
   - "*.network.svc.cluster.local"
   secretName: cluster-tls
   secretTemplate:

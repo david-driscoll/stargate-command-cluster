@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name authentik-garage-access-key
+  name: &name authentik-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -23,14 +23,14 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        username: "${APP}"
+        username: "authentik"
         password: "{{ .password }}"
-        host: "${APP}-rw.${NAMESPACE}.svc.cluster.local"
+        host: "authentik-rw.${NAMESPACE}.svc.cluster.local"
         port: "5432"
-        database: "${APP}"
-        pgpass: "${APP}-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://${APP}-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
-        uri: "postgresql://${APP}:{{ .password }}@${APP}-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
+        database: "authentik"
+        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:authentik:authentik:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/authentik?password={{ .password }}&user=authentik"
+        uri: "postgresql://authentik:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/authentik"
   dataFrom:
     - extract:
-        key: "authentik-garage-access-key-password"
+        key: "authentik-postgres-password"

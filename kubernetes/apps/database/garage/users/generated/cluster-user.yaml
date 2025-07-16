@@ -36,6 +36,7 @@ spec:
         AWS_ACCESS_KEY_ID: "${CLUSTER_CNAME}"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
         url: https://${CLUSTER_CNAME}:{{ .password }}@s3.${APP}.${CLUSTER_DOMAIN}
+        id: "{{ .id }}"
         username: "${CLUSTER_CNAME}"
         credential: "{{ .password }}"
         password: "{{ .password }}"

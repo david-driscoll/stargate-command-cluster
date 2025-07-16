@@ -252,7 +252,6 @@ envReference.Children.Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || 
 
 commandBuilder.Add($"key import -n cluster-user --yes \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\"");
 commandBuilder.Add($"key allow --create-bucket cluster-user");
-commandBuilder.Add($"bucket allow --read --write --owner cluster-user --key cluster-user");
 envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "id"));
 envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "password"));
 foreach (var user in minioConfig.Users.Order())

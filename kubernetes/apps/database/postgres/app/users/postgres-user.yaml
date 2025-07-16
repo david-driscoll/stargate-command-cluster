@@ -11,7 +11,7 @@ spec:
   refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: database
   target:
     name: *name
     creationPolicy: Owner

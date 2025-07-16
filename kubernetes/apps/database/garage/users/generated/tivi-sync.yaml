@@ -36,6 +36,7 @@ spec:
         AWS_ACCESS_KEY_ID: "tivi-sync"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
         url: https://tivi-sync:{{ .password }}@s3.${APP}.${CLUSTER_DOMAIN}
+        id: "{{ .id }}"
         username: "tivi-sync"
         credential: "{{ .password }}"
         password: "{{ .password }}"

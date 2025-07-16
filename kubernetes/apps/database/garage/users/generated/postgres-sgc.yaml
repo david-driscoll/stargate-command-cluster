@@ -36,6 +36,7 @@ spec:
         AWS_ACCESS_KEY_ID: "postgres-sgc"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
         url: https://postgres-sgc:{{ .password }}@s3.${APP}.${CLUSTER_DOMAIN}
+        id: "{{ .id }}"
         username: "postgres-sgc"
         credential: "{{ .password }}"
         password: "{{ .password }}"

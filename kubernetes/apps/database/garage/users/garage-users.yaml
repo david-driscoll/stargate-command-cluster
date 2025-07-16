@@ -68,7 +68,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: garage-cluster-user
-                    key: username
+                    key: id
               GARAGE_PASSWORD_CLUSTER_USER:
                 valueFrom:
                   secretKeyRef:
@@ -78,7 +78,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: authentik-garage-access-key
-                    key: username
+                    key: id
               GARAGE_PASSWORD_AUTHENTIK:
                 valueFrom:
                   secretKeyRef:
@@ -88,7 +88,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: postgres-sgc-garage-access-key
-                    key: username
+                    key: id
               GARAGE_PASSWORD_POSTGRES_SGC:
                 valueFrom:
                   secretKeyRef:
@@ -98,7 +98,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: tivi-sync-garage-access-key
-                    key: username
+                    key: id
               GARAGE_PASSWORD_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:

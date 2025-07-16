@@ -19,6 +19,7 @@ spec:
     - "${ROOT_DOMAIN}"
     - "*.${ROOT_DOMAIN}"
     - "*.${CLUSTER_DOMAIN}"
+    - "*.${CLUSTER_CNAME}.svc.${ROOT_DOMAIN}"
     - "*.s3.${CLUSTER_DOMAIN}"
     - "*.web.${CLUSTER_DOMAIN}"
     - "*.${INTERNAL_DOMAIN}"

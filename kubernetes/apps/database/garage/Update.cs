@@ -261,6 +261,11 @@ foreach (var user in minioConfig.Users.Order())
 
   foreach (var bucket in user.Buckets.Order())
   {
+    if (bucket.Name.Contains("/"))
+    {
+      continue;
+    }
+
     commandBuilder.Add($"bucket create {bucket.Name} || true");
     commandBuilder.Add($"bucket allow --read --write --owner {bucket.Name} --key {user.Username}");
     if (bucket.IsPublic)

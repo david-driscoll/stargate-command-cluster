@@ -42,7 +42,7 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: kuma
+    - name: uptime-kuma
   values:
     kumaIngressWatcher:
       watchInterval: 10

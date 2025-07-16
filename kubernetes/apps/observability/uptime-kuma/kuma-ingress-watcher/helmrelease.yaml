@@ -50,7 +50,7 @@ spec:
         enabled: true
         traefikv3: true
       ingress:
-        enabled: False
+        enabled: true
       fileBasedMonitors:
         enabled: False
         monitorsFilePath: "/etc/kuma-controller/monitors.yaml"

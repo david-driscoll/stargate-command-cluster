@@ -162,10 +162,10 @@ foreach (var database in databases)
 {
   var roleName = GetName(database);
   var yaml = File.ReadAllText(userTemplate)
-  //.Replace("${APP}", key)
-  .Replace("${CLUSTER_CNAME}", database)
-  .Replace("postgres-user", $"{roleName}-garage-access-key")
-  .Replace("postgres-password", $"{roleName}-garage-password")
+  .Replace("${APP}", database)
+  // .Replace("${CLUSTER_CNAME}", database)
+  .Replace("postgres-user", $"{roleName}-postgres")
+  .Replace("postgres-user-password", $"{roleName}-postgres-password")
   ;
   var fileName = Path.Combine(usersDirectory, $"{database.Replace("-${CLUSTER_CNAME}", "")}.yaml");
   var sopsFileName = Path.Combine(usersDirectory, $"{database.Replace("-${CLUSTER_CNAME}", "")}.sops.yaml");
@@ -179,7 +179,7 @@ foreach (var database in databases)
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {roleName}-garage-password
+      name: {roleName}-postgres-password
     stringData:
       password: "{Guid.NewGuid():N}"
     """);

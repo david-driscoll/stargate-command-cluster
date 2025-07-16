@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: postgres-password
+    name: postgres-user-password
 stringData:
     password: ENC[AES256_GCM,data:e6JPQxq8FffiH31Qpkzu4RtTGaF3svUok8E0F2IUJM+dlbsOOQR8Ta8EfnTvRSj7Z9jW4bJyJQ3gZ7GIzveoug==,iv:BSvi5NMxrDhTC5LcVOVIiF5yjPki9ZTtPmDvKdx7GHQ=,tag:0s0OFDuLeH+U7A02milhgw==,type:str]
 sops:
@@ -34,8 +34,8 @@ sops:
             QzJ6b2hPa0ZWay9icFVxSTlRSHNUSzgK1nERKEFysd7J/DqZ5gUXb0M5W9HouzIP
             AdU8dGFh+IgYZhCiYjYSPdVWivWmGU/9BARF/WpQ7AKlE7xIeUaYCA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T03:36:43Z"
-    mac: ENC[AES256_GCM,data:7TvrHmgV+qaSjn9YautD1rOHZvb66xzAA4fmjNfV2omlSDn0mJ2XEhR5vEcY3OUCCmfeHv6Izq3Ckv3VBa/LWJ9AAKSYUgSkeOWIQN3dwMdYUD23xuztQwfmiuQnd+K93/LLmFVnp68kHqGUIQPJj/rSXnQcbwv9/niqQVKC//I=,iv:8rl4grsoyoWnHq2FoMspm2Rfpi3oHBWAMWjGvSojYM4=,tag:Jo4Zxc6uOF2ZV7YyRrdFYQ==,type:str]
+    lastmodified: "2025-07-16T02:33:52Z"
+    mac: ENC[AES256_GCM,data:G89kLtFi0hmGYawK7sdIERVwelwPY2OvY6JYPrrOwNNkSfPuJ2K0yZ0anEbWwcPBhyI917m3FE6t/2ksC+hYg7RqMj6H435VClWkf8DxPb65qHF/4/nUTVWZYnSg4MO1CvFNgMInjXcL1n040gxUTzPZatjTD0jQxwqOmM7NHiU=,iv:eJSC8ukcCZdFcytZAqvJr72nmxIChNkVDhsL3bwTEt4=,tag:Nw7g0M06XcyR6fWUpLVfyA==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
     version: 3.10.2

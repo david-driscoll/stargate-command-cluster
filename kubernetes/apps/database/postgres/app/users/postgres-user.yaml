@@ -28,9 +28,9 @@ spec:
         host: "${APP}-rw.${NAMESPACE}.svc.cluster.local"
         port: "5432"
         database: "${APP}"
-        pgpass: "${APP}-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://${APP}-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
-        uri: "postgresql://${APP}:{{ .password }}@${APP}-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
+        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
+        uri: "postgresql://${APP}:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
   dataFrom:
     - extract:
         key: "postgres-user-password"

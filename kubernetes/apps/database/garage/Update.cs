@@ -51,6 +51,7 @@ void AddBucket(string keyName, string bucketName, bool isPublic)
     user = (keyName, []);
     users[keyName] = user;
   }
+  bucketName = GetName(bucketName.Split('/')[0]);
   user.Buckets.Add((bucketName, isPublic));
 }
 var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
@@ -259,7 +260,7 @@ foreach (var user in minioConfig.Users.Order())
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
   commandBuilder.Add($"key import -n {user.Username} --yes \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\" || true");
 
-  foreach (var bucket in user.Buckets.Where(bucket => !bucket.Name.Contains("/")).Order().Distinct())
+  foreach (var bucket in user.Buckets.Order().Distinct())
   {
     commandBuilder.Add($"bucket create {bucket.Name} || true");
     commandBuilder.Add($"bucket allow --read --write --owner {bucket.Name} --key {user.Username}");

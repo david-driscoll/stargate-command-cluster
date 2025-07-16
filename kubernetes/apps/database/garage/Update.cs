@@ -219,6 +219,10 @@ foreach (var user in minioConfig.Users)
 
   if (!File.Exists(sopsFileName))
   {
+    byte[] usernameBytes = new byte[12];
+    byte[] passwordBytes = new byte[32];
+    RandomNumberGenerator.Fill(usernameBytes);
+    RandomNumberGenerator.Fill(passwordBytes);
     File.WriteAllText(sopsFileName, $"""
     # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
     apiVersion: v1
@@ -226,7 +230,8 @@ foreach (var user in minioConfig.Users)
     metadata:
       name: {user.PasswordName}
     stringData:
-      password: "{Guid.NewGuid():N}"
+      id: "GH{BitConverter.ToString(usernameBytes).Replace("-", "").ToLowerInvariant()}"
+      password: "{BitConverter.ToString(passwordBytes).Replace("-", "").ToLowerInvariant()}"
     """);
     Process.Start(new ProcessStartInfo
     {

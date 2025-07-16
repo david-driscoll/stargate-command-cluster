@@ -32,15 +32,15 @@ spec:
         #   [default]
         #   region=home
         S3_PROVIDER: Minio
-        S3_ENDPOINT: https://s3.${APP}.${CLUSTER_DOMAIN}
-        AWS_ACCESS_KEY_ID: "tivi-sync"
+        S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
+        AWS_ACCESS_KEY_ID: "{{ .id }}"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
-        url: https://tivi-sync:{{ .password }}@s3.${APP}.${CLUSTER_DOMAIN}
+        url: https://{{ .id }}:{{ .password }}@s3.${CLUSTER_DOMAIN}
         id: "{{ .id }}"
-        username: "tivi-sync"
+        username: "{{ .id }}"
         credential: "{{ .password }}"
         password: "{{ .password }}"
-        endpoint: "https://s3.${APP}.${CLUSTER_DOMAIN}"
+        endpoint: "https://s3.${CLUSTER_DOMAIN}"
         region: "homelab"
   dataFrom:
     - extract:

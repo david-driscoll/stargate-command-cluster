@@ -28,7 +28,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 Dictionary<string, string> defaults = new Dictionary<string, string>()
 {
-  { "VOLSYNC_CAPACITY", "5Gi" },
+  // { "VOLSYNC_CAPACITY", "5Gi" },
   // { "VOLSYNC_CACHE_CAPACITY", "" },
   // { "VOLSYNC_STORAGECLASS", "openebs-hostpath" },
   // { "VOLSYNC_COPYMETHOD", "" },

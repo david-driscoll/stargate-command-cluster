@@ -4,7 +4,7 @@ kind: Secret
 metadata:
     name: garage-cluster-password
 stringData:
-    id: ENC[AES256_GCM,data:8iNtWmWyJS9AcqZzwzKSYgzrem0YbKCk8DM=,iv:i7yzTHWHe4DsTVoX3J0EnZZ+bfW5B7/g0YpIwZdsh6c=,tag:/TBe+7adxty2KPnJ5FrX+w==,type:str]
+    id: ENC[AES256_GCM,data:H1i2ZEPX4wyspMwTUFMgMt/cpYtW2E8YV98=,iv:i+cPrwU8sKRsJ6sEVIoz83+Xz8Fcu34z7As7aFc1bqM=,tag:SXWAXU2Vm9H8kEP4Le6JlQ==,type:str]
     password: ENC[AES256_GCM,data:nsbAJ/WbX+xQhAaxaTeZAparidUlfslqA51Em3rFwBh8k42zB/HaOh7F0HuL7cVS8Iqj2olTPkB+7ZDFbybluQ==,iv:O/JaVhFPS2Otyxjkj1YmfFW2V2d3DY/Vu42Szlj2MqY=,tag:vpwOHJF++M1kXwKctv6Hdw==,type:str]
 sops:
     age:
@@ -35,8 +35,8 @@ sops:
             eW1XMXJDNkhjcjRFYVUrZUd6dHhKdDAKLafnCWC5WFb19gGGKJy99PmyPkxiAX4l
             BgtHksuy3hfdf0z9R28ari+L7zWYPuETF5hm1mdJ0aB1vDZF7zOzZw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-16T00:09:00Z"
-    mac: ENC[AES256_GCM,data:c3ShDNizrlnNZDjevf90cyNN9ojimIBCRXrBzhJkuy+1qj/bXEP/GJgPMeXdsDua4gRF2muxBhAy6wV7Y0bO8aWyi825lWLOl0L/VyHjlSB67+m8/gh/jH3z3MOD6h4cQoKSnKVoFWUySpSz1sUEq8icNsv9bpB/7Gc34P0CC/o=,iv:ZgV8+fysKw+CHlgp/p2Ldyhoci2pQr7Kx3mEolZMR1k=,tag:76m7uL8fyia1KUq0kB5ntA==,type:str]
+    lastmodified: "2025-07-16T00:11:43Z"
+    mac: ENC[AES256_GCM,data:Mmeo4LkRs7IprWxYZVuxmTOeE24SSnbXY/BtkcdHqLaNxizOMwVJ5nKpnyLX5ItZ2YliAFh3uyQRhw7uNqv+pR6MMIVjGMqlJZnEiEf5jtda4YJnQ9khviVjwwGmvE0RcsxC2elIEn1h93esM8Mf1sxN762NsjdXOTveQOXW1bM=,iv:aDmd5HXtR8FOzh9CArz7beYMiLpLdPMQyVnf5kpjPH4=,tag:hvXya9UhZypNt1lbgh5SuQ==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
     version: 3.10.2

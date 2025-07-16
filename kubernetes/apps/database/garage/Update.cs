@@ -230,7 +230,7 @@ foreach (var user in minioConfig.Users)
     metadata:
       name: {user.PasswordName}
     stringData:
-      id: "GH{BitConverter.ToString(usernameBytes).Replace("-", "").ToLowerInvariant()}"
+      id: "GK{BitConverter.ToString(usernameBytes).Replace("-", "").ToLowerInvariant()}"
       password: "{BitConverter.ToString(passwordBytes).Replace("-", "").ToLowerInvariant()}"
     """);
     Process.Start(new ProcessStartInfo

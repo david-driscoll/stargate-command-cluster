@@ -8,7 +8,6 @@ GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 
 $GARAGE_CMD key import -n cluster-user --yes "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER"
 $GARAGE_CMD key allow --create-bucket cluster-user
-$GARAGE_CMD bucket allow --read --write --owner cluster-user --key cluster-user
 $GARAGE_CMD key import -n authentik "$GARAGE_USER_AUTHENTIK" "$GARAGE_PASSWORD_AUTHENTIK"
 $GARAGE_CMD bucket create authentik/postgres
 $GARAGE_CMD bucket allow --read --write --owner authentik/postgres --key authentik

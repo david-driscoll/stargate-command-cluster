@@ -68,7 +68,7 @@ spec:
         - secretRef:
             name: authentik
         - secretRef:
-            name: authentik-minio
+            name: authentik-garage
         - secretRef:
             name: authentik-postgres
 

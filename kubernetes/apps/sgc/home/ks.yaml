@@ -140,42 +140,42 @@ spec:
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: 20Gi
 
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app nodered
-  namespace: &namespace sgc
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/home/nodered
-  prune: true
-  wait: true
-  force: true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
-    - name: sgc-secrets
-      namespace: *namespace
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/tailscale
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace
-      VOLSYNC_CAPACITY: 1Gi
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app nodered
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: ./kubernetes/apps/sgc/home/nodered
+#   prune: true
+#   wait: true
+#   force: true
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 5m
+#   dependsOn:
+#     - name: volsync
+#       namespace: volsync-system
+#     - name: sgc-secrets
+#       namespace: *namespace
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   components:
+#     - ../../../../components/volsync
+#     - ../../../../components/tailscale
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       NAMESPACE: *namespace
+#       VOLSYNC_CAPACITY: 1Gi
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json

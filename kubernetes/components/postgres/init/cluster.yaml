@@ -64,12 +64,12 @@ spec:
       enabled: false
       isWALArchiver: true
       parameters:
-        barmanObjectName: ${APP}-minio
+        barmanObjectName: ${APP}-garage
 
   externalClusters:
     - name: ${APP}-backup
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: ${APP}-minio
+          barmanObjectName: ${APP}-garage
           serverName: ${APP}-postgres-backup

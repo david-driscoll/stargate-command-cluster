@@ -22,7 +22,7 @@ spec:
         s3:
           bucketName: ${APP}
           prefix: mysql/dump/
-          config: ${APP}-minio-access-key
+          config: ${APP}-garage-access-key
           profile: default
           endpoint: https://s3.${CLUSTER_DOMAIN}
   backupProfiles:
@@ -32,7 +32,7 @@ spec:
           s3:
             bucketName: ${APP}
             prefix: mysql/dump/
-            config: ${APP}-minio-access-key
+            config: ${APP}-garage-access-key
             profile: default
             endpoint: https://s3.${CLUSTER_DOMAIN}
     - name: snapshot
@@ -41,7 +41,7 @@ spec:
           s3:
             bucketName: ${APP}
             prefix: mysql/snapshot/
-            config: ${APP}-minio-access-key
+            config: ${APP}-garage-access-key
             profile: default
             endpoint: https://s3.${CLUSTER_DOMAIN}
   backupSchedules:

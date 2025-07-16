@@ -3,7 +3,7 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: ${APP}-minio
+  name: ${APP}-garage
 spec:
   retentionPolicy: "30d"
   configuration:
@@ -14,10 +14,10 @@ spec:
       key: ca-certificates.crt
     s3Credentials:
       accessKeyId:
-        name: ${APP}-minio-access-key
+        name: ${APP}-garage-access-key
         key: username
       secretAccessKey:
-        name: ${APP}-minio-access-key
+        name: ${APP}-garage-access-key
         key: credential
     wal:
       compression: gzip

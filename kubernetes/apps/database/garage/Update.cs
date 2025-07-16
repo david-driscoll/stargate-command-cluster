@@ -295,8 +295,6 @@ minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/sc
 
 File.WriteAllText("kubernetes/apps/database/garage/users/resources/init-users.sh", $"""
 #!/bin/sh
-set -e
-
 # Set the namespace and pod name for garage
 NAMESPACE="database"
 POD="garage-0"

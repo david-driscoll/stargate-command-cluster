@@ -6,3 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./tailscale.yaml
   - ./dns-config.yaml
+  # - ./proxy-group.yaml

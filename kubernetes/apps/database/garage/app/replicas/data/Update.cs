@@ -86,10 +86,10 @@ var template = $"""
 List<string> replicas = [];
 for (var i = 0; i < servers; i++)
 {
-  var replicaName = $"data-garage-{i}";
+  var replicaName = "data-${APP}-" + i;
   var output = ReplaceTokens(template, new Dictionary<string, string>
   {
-    ["REPLICA"] = replicaName,
+    ["APP"] = replicaName,
   }
   );
   var fileName = $"replica-{i}-data.yaml";
@@ -138,9 +138,9 @@ static string ReplaceDefaults(string text, out Dictionary<string, string> tokens
 {
   var innerTokens = new Dictionary<string, string>()
   {
-    ["APP"] = "${REPLICA}",
+    // ["APP"] = "${REPLICA}",
   };
-  var result = Regex.Replace(text, @"\$\{(.*?)(?:\:\=(.*))?\}", (b) =>
+  var result = Regex.Replace(text, @"\$\{(.*?)(?:\:[\=|\-](.*))?\}", (b) =>
   {
     var varName = b.Groups[1].Captures[0].Value;
     if (b.Groups.Count < 3 || b.Groups[2].Captures.Count == 0)

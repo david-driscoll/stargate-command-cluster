@@ -4,6 +4,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: "data-adguard-home-0"
+  labels:
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   accessModes: ["ReadWriteOnce"]
   dataSourceRef:
@@ -47,6 +49,7 @@ kind: ReplicationDestination
 metadata:
   name: "data-adguard-home-0-dst"
   labels:
+    kustomize.toolkit.fluxcd.io/force: enabled
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
 spec:
   trigger:
@@ -72,6 +75,8 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: "data-adguard-home-0"
+  labels:
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   sourcePVC: "data-adguard-home-0"
   trigger:

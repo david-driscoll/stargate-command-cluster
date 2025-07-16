@@ -2,7 +2,7 @@
 
 defaultBackupStore:
   backupTarget: nfs://${SPIKE_IP}:/mnt/stash/backup/${CLUSTER_CNAME}/longhorn
-  # backupTargetCredentialSecret: minio-secret
+  # backupTargetCredentialSecret: garage-secret
 
 persistence:
   defaultDataLocality: best-effort
@@ -21,7 +21,7 @@ defaultSettings:
   storageMinimalAvailablePercentage: 5
   storageReservedPercentageForDefaultDisk: 10
 
-  # backupTargetCredentialSecret: minio-secret
+  # backupTargetCredentialSecret: garage-secret
   defaultDataPath: /var/mnt/longhorn/
   storageOverProvisioningPercentage: 600
   upgradeChecker: true

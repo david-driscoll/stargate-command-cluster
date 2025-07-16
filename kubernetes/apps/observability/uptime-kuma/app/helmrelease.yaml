@@ -80,6 +80,8 @@ spec:
     ingress:
       internal:
         className: internal
+        annotations:
+          uptime-kuma.autodiscovery.probe.enabled: "false"
         hosts:
           - host: "uptime.${CLUSTER_DOMAIN}"
             paths:

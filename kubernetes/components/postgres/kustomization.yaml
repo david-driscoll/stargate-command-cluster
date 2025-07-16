@@ -9,4 +9,4 @@ resources:
   - ./scheduledbackup.yaml
   - ./postgres-user.yaml
 components:
-  - ../minio-access-key
+  - ../garage-access-key

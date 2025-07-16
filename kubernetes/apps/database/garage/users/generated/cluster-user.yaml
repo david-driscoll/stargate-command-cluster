@@ -41,7 +41,7 @@ spec:
         credential: "{{ .password }}"
         password: "{{ .password }}"
         endpoint: "https://s3.${CLUSTER_DOMAIN}"
-        region: "homelab"
+        region: "garage"
   dataFrom:
     - extract:
         key: "garage-cluster-password"

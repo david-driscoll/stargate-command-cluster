@@ -259,15 +259,11 @@ foreach (var user in minioConfig.Users.Order())
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
   commandBuilder.Add($"key import -n {user.Username} --yes \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\" || true");
 
-  foreach (var bucket in user.Buckets.Order())
+  foreach (var bucket in user.Buckets.Where(bucket => !bucket.Name.Contains("/")).Order().Distinct())
   {
-    if (bucket.Name.Contains("/"))
-    {
-      continue;
-    }
-
     commandBuilder.Add($"bucket create {bucket.Name} || true");
     commandBuilder.Add($"bucket allow --read --write --owner {bucket.Name} --key {user.Username}");
+    commandBuilder.Add($"bucket allow --read --write {bucket.Name} --key cluster-user");
     if (bucket.IsPublic)
     {
       commandBuilder.Add($"bucket website --allow {bucket.Name}");

@@ -15,6 +15,7 @@ patches:
         name: not-used
         annotations:
           reloader.stakater.com/auto: "true"
+          uptime-kuma.autodiscovery.probe.name: "${APP}"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
   - target:
@@ -32,6 +33,7 @@ patches:
             internal:
               annotations:
                 reloader.stakater.com/auto: "true"
+                uptime-kuma.autodiscovery.probe.name: "${APP}"
                 external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
                 traefik.ingress.kubernetes.io/router.entrypoints: websecure
 

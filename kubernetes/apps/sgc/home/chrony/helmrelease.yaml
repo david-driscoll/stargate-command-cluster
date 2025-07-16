@@ -84,20 +84,6 @@ spec:
           other:
             port: 31880
             protocol: TCP
-    ingress:
-      *app :
-        className: internal
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hosts:
-          - host: "${APP}.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: other
 
     persistence:
       config:

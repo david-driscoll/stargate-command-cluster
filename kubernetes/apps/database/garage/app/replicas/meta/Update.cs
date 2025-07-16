@@ -48,6 +48,7 @@ var databasesContent = new StringBuilder();
 var clusterConfig = await ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml");
 int servers = int.Parse(clusterConfig.OfType<YamlMappingNode>().Single().Query("/stringData/REPLICA_NODES").OfType<YamlScalarNode>().Single().Value);
 int volumeCapacity = int.Parse(clusterConfig.OfType<YamlMappingNode>().Single().Query("/stringData/GARAGE_VOLUME_CAPACITY").OfType<YamlScalarNode>().Single().Value);
+string cname = clusterConfig.OfType<YamlMappingNode>().Single().Query("/stringData/CLUSTER_CNAME").OfType<YamlScalarNode>().Single().Value;
 defaults["VOLSYNC_CAPACITY"] = $"{volumeCapacity / 9}Gi";
 
 var clusterValues = await ReadStream("kubernetes/apps/database/garage/app/garage.yaml");
@@ -87,10 +88,11 @@ var template = $"""
 List<string> replicas = [];
 for (var i = 0; i < servers; i++)
 {
-  var replicaName = $"meta-garage-{i}";
+  var replicaName = "meta-${APP}-" + i;
   var output = ReplaceTokens(template, new Dictionary<string, string>
   {
-    ["REPLICA"] = replicaName,
+    ["APP"] = replicaName,
+    // ["CLUSTER_CNAME"] = cname,
   }
   );
   var fileName = $"replica-{i}-meta.yaml";
@@ -139,9 +141,9 @@ static string ReplaceDefaults(string text, out Dictionary<string, string> tokens
 {
   var innerTokens = new Dictionary<string, string>()
   {
-    ["APP"] = "${REPLICA}",
+    // ["APP"] = "${REPLICA}",
   };
-  var result = Regex.Replace(text, @"\$\{(.*?)(?:\:\=(.*))?\}", (b) =>
+  var result = Regex.Replace(text, @"\$\{(.*?)(?:\:[\=|\-](.*))?\}", (b) =>
   {
     var varName = b.Groups[1].Captures[0].Value;
     if (b.Groups.Count < 3 || b.Groups[2].Captures.Count == 0)

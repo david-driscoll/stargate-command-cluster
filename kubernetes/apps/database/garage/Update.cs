@@ -46,12 +46,13 @@ string GetName(string keyName)
 }
 void AddBucket(string keyName, string bucketName, bool isPublic)
 {
+  keyName = keyName.Split('/')[0];
+  bucketName = bucketName.Split('/')[0];
   if (!users.TryGetValue(keyName, out var user))
   {
     user = (keyName, []);
     users[keyName] = user;
   }
-  bucketName = GetName(bucketName.Split('/')[0]);
   user.Buckets.Add((bucketName, isPublic));
 }
 var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);

@@ -32,5 +32,5 @@ spec:
     - ../../../../components/ingress/authenticated
   postBuild:
     substitute:
-      APP: restic-server-${CLUSTER_CNAME}
+      APP: *app
       NAMESPACE: *namespace

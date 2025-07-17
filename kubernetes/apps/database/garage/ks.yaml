@@ -31,7 +31,7 @@ spec:
     substitute:
       # these are artifacts of how this was setup
       # I don't want to redo garage again at the moment, so will just move the backups to the new location
-      APP: garage-${CLUSTER_CNAME}
+      APP: *app
       NAMESPACE: *namespace
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json

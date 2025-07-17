@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "meta-${APP}-1"
+  name: "meta-garage-1"
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
 spec:
@@ -11,7 +11,7 @@ spec:
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: "meta-${APP}-1-dst"
+    name: "meta-garage-1-dst"
   resources:
     requests:
       storage: "7Gi"
@@ -22,13 +22,13 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: "meta-${APP}-1-volsync"
+  name: "meta-garage-1-volsync"
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: "meta-${APP}-1-volsync-secret"
+    name: "meta-garage-1-volsync-secret"
     template:
       metadata:
         labels:
@@ -36,7 +36,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        RESTIC_REPOSITORY: "/repository/meta-${APP}-1"
+        RESTIC_REPOSITORY: "/repository/meta-garage-1"
         RESTIC_PASSWORD: "{{ .credential }}"
   dataFrom:
     - extract:
@@ -47,7 +47,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "meta-${APP}-1-dst"
+  name: "meta-garage-1-dst"
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
@@ -55,7 +55,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "meta-${APP}-1-volsync-secret"
+    repository: "meta-garage-1-volsync-secret"
     copyMethod: Snapshot
     volumeSnapshotClassName: "longhorn-snapclass"
     cacheStorageClassName: "openebs-hostpath"
@@ -74,17 +74,17 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "meta-${APP}-1"
+  name: "meta-garage-1"
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
 spec:
-  sourcePVC: "meta-${APP}-1"
+  sourcePVC: "meta-garage-1"
   trigger:
     schedule: "0 * * * *"
   restic:
     copyMethod: "Snapshot"
     pruneIntervalDays: 14
-    repository: "meta-${APP}-1-volsync-secret"
+    repository: "meta-garage-1-volsync-secret"
     volumeSnapshotClassName: "longhorn-snapclass"
     cacheCapacity: "2Gi"
     cacheStorageClassName: "openebs-hostpath"

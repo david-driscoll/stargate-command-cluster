@@ -15,7 +15,7 @@ spec:
   resources:
     requests:
       storage: "64Gi"
-  storageClassName: "longhorn-local"
+  storageClassName: "longhorn"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
@@ -61,7 +61,7 @@ spec:
     cacheStorageClassName: "openebs-hostpath"
     cacheAccessModes: ["ReadWriteOnce"]
     cacheCapacity: "8Gi"
-    storageClassName: "longhorn-local"
+    storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
     capacity: "64Gi"
     moverSecurityContext:
@@ -89,7 +89,7 @@ spec:
     cacheCapacity: "2Gi"
     cacheStorageClassName: "openebs-hostpath"
     cacheAccessModes: ["ReadWriteOnce"]
-    storageClassName: "longhorn-local"
+    storageClassName: "longhorn-snapshot"
     accessModes: ["ReadWriteOnce"]
     moverSecurityContext:
       runAsUser: 568

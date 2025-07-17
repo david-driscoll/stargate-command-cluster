@@ -30,7 +30,7 @@ Dictionary<string, string> defaults = new Dictionary<string, string>()
 {
   { "VOLSYNC_CAPACITY", "64Gi" },
   // { "VOLSYNC_CACHE_CAPACITY", "" },
-  { "VOLSYNC_STORAGECLASS", "longhorn-local" },
+  // { "VOLSYNC_STORAGECLASS", "longhorn-local" },
   // { "VOLSYNC_COPYMETHOD", "" },
   // { "VOLSYNC_SNAPSHOTCLASS", "" },
   // { "VOLSYNC_CACHE_ACCESSMODES", "ReadWriteOnce" },

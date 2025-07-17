@@ -82,7 +82,7 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
-  name: ${CLUSTER_CNAME}
+  name: cluster
 spec:
   provider:
     kubernetes:

@@ -45,6 +45,8 @@ spec:
         replicas: 3
         serviceAccount:
           name: *app
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
         pod:
           securityContext: *podSecurityContext
         containers:
@@ -101,6 +103,8 @@ spec:
               - path: /var/lib/garage/data
       webui:
         enabled: true
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
         serviceAccount:
           name: *app
         pod:
@@ -132,6 +136,8 @@ spec:
                 drop:
                 - ALL
       job:
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
         serviceAccount:
           name: *app
         type: job
@@ -152,12 +158,11 @@ spec:
             - -c
             - /scripts/init-users.sh
             env:
-              G_ALIAS: ${CLUSTER_CNAME}
               GARAGE_RPC_HOST: "${GARAGE_NODE_ID}@garage-0.garage.database.svc.cluster.local:3901"
               GARAGE_RPC_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: garage-${CLUSTER_CNAME}-config
+                    name: garage-config
                     key: rpcSecret
               PUID: 568
               PGID: 568
@@ -183,15 +188,15 @@ spec:
                   secretKeyRef:
                     name: authentik-garage-access-key
                     key: password
-              GARAGE_USER_POSTGRES_SGC:
+              GARAGE_USER_POSTGRES:
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-sgc-garage-access-key
+                    name: postgres-garage-access-key
                     key: id
-              GARAGE_PASSWORD_POSTGRES_SGC:
+              GARAGE_PASSWORD_POSTGRES:
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-sgc-garage-access-key
+                    name: postgres-garage-access-key
                     key: password
               GARAGE_USER_TIVI_SYNC:
                 valueFrom:
@@ -208,6 +213,8 @@ spec:
                 cpu: 10m
                 memory: 32Mi
       init:
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
         serviceAccount:
           name: *app
         type: job
@@ -234,6 +241,8 @@ spec:
                 cpu: 10m
                 memory: 32Mi
       cron:
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
         serviceAccount:
           name: *app
         cronjob:

@@ -39,16 +39,16 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      garage:
+      *app :
         enabled: true
         type: statefulset
         replicas: 3
         serviceAccount:
-          name: garage
+          name: *app
         pod:
           securityContext: *podSecurityContext
         containers:
-          garage:
+          *app :
             image:
               repository: dxflrs/garage
               tag: v2.0.0@sha256:15b40e0dddd2e611aa746ff6f7c3bfe9f22735e4a2cc29e0abd89c268e9b79d9
@@ -90,25 +90,23 @@ spec:
             storageClass: "longhorn-local"
             accessMode: ReadWriteOnce
             advancedMounts:
-              garage:
+              *app :
               - path: /var/lib/garage/meta
           - name: data
             size: 64Gi
             storageClass: "longhorn-local"
             accessMode: ReadWriteOnce
             advancedMounts:
-              garage:
+              *app :
               - path: /var/lib/garage/data
-      garage-webui:
+      webui:
         enabled: true
         serviceAccount:
-          name: garage
-        forceRename: garage-webui
+          name: *app
         pod:
           securityContext: *podSecurityContext
         containers:
-          garage-webui:
-            nameOverride: garage-webui
+          webui:
             image:
               repository: khairul169/garage-webui
               tag: latest@sha256:c931455c25bfbededa450cd7ec6f389ce52ad1bc861f8d0b93d00ced78e438dd
@@ -133,9 +131,124 @@ spec:
               capabilities:
                 drop:
                 - ALL
+      job:
+        serviceAccount:
+          name: *app
+        type: job
+        job:
+          backoffLimit: 100
+          suspend: false
+          ttlSecondsAfterFinished: 600
+        containers: &job
+          job:
+            image:
+              repository: alpine/k8s
+              tag: 1.33.2@sha256:329cf13af9ee678e3afd71b6af44447029f119f713bec278db2fb53571e857f5
+              pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
+            command:
+            - /bin/sh
+            - -c
+            - /scripts/init-users.sh
+            env:
+              G_ALIAS: ${CLUSTER_CNAME}
+              GARAGE_RPC_HOST: "${GARAGE_NODE_ID}@garage-0.garage.database.svc.cluster.local:3901"
+              GARAGE_RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-${CLUSTER_CNAME}-config
+                    key: rpcSecret
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+              GARAGE_USER_CLUSTER_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-cluster-user
+                    key: id
+              GARAGE_PASSWORD_CLUSTER_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-cluster-user
+                    key: password
+              GARAGE_USER_AUTHENTIK:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_AUTHENTIK:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-garage-access-key
+                    key: password
+              GARAGE_USER_POSTGRES_SGC:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-sgc-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_POSTGRES_SGC:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-sgc-garage-access-key
+                    key: password
+              GARAGE_USER_TIVI_SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_TIVI_SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-garage-access-key
+                    key: password
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+      init:
+        serviceAccount:
+          name: *app
+        type: job
+        job:
+          backoffLimit: 100
+          suspend: false
+          ttlSecondsAfterFinished: 600
+        containers:
+          init:
+            image:
+              repository: alpine/k8s
+              tag: 1.33.2@sha256:329cf13af9ee678e3afd71b6af44447029f119f713bec278db2fb53571e857f5
+              pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
+            command:
+            - /bin/sh
+            - -c
+            - /scripts/boostrap-garage.sh
+            env:
+              TZ: "${TIMEZONE}"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+      cron:
+        serviceAccount:
+          name: *app
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "*/10 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        containers: *job
     service:
-      garage:
-        controller: garage
+      *app :
+        controller: *app
         type: ClusterIP
         ports:
           s3-api:
@@ -146,9 +259,8 @@ spec:
             port: 3902
           admin:
             port: 3903
-      garage-webui:
-        forceRename: garage-webui
-        controller: garage-webui
+      webui:
+        controller: webui
         type: ClusterIP
         ports:
           http:
@@ -161,11 +273,21 @@ spec:
         globalMounts:
         - path: /etc/garage.toml
           subPath: garage.toml
+      scripts:
+        enabled: true
+        type: secret
+        name: ${APP}-scripts
+        defaultMode: 493
+        globalMounts:
+        - path: /etc/bootstrap-garage.sh
+          subPath: bootstrap-garage.sh
+        - path: /scripts/init-users.sh
+          subPath: init-users.sh
     serviceAccount:
-      garage: {}
+      *app : {}
     rbac:
       roles:
-        garage:
+        *app :
           type: Role
           rules:
           - apiGroups: ["apiextensions.k8s.io"]
@@ -175,59 +297,17 @@ spec:
             resources: ["garagenodes"]
             verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
       bindings:
-        garage:
+        *app :
           type: RoleBinding
           subjects:
           - kind: ServiceAccount
-            name: garage
+            name: *app
             namespace: ${NAMESPACE}
           roleRef:
             kind: Role
-            name: garage
+            name: *app
     servicemonitor:
       enabled: true
       endpoints:
       - port: admin
         interval: 30s
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: ${APP}-internal
-  annotations:
-    reloader.stakater.com/auto: "true"
-    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-    kubernetes.io/ingress.class: internal
-spec:
-  entryPoints:
-  - websecure
-  routes:
-  - match: Host(`web.${CLUSTER_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: garage
-      port: web-api
-      passHostHeader: true
-    middlewares:
-    - name: internal-network
-      namespace: network
-  - match: Host(`s3.${CLUSTER_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: garage
-      port: s3-api
-      passHostHeader: true
-    middlewares:
-    - name: internal-network
-      namespace: network
-  - match: Host(`garage.${CLUSTER_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: garage-webui
-      port: http
-      passHostHeader: true
-    middlewares:
-    - name: authenticated-user
-      namespace: network

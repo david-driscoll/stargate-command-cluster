@@ -60,10 +60,7 @@ if (clusterValuesRoot.Query("/spec/values/controllers/garage/statefulset/volumeC
 File.WriteAllText("kubernetes/apps/database/garage/app/garage.yaml", $"""
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
-{serializer.Serialize(clusterValues.First())}
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroute_v1alpha1.json
-{serializer.Serialize(clusterValues.Last())}
+{serializer.Serialize(clusterValues.First()).Replace("*app:", "*app :")}
 """);
 
 var secretTemplate = await GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");

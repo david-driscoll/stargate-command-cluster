@@ -32,6 +32,8 @@ spec:
   values:
     controllers:
       *app :
+        serviceAccount:
+          name: *app
         annotations:
           reloader.stakater.com/auto: "true"
         pod:

@@ -99,7 +99,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "10.10.10.10",
-                  path: "/mnt/stash/backup/volsync"
+                  path: "/mnt/stash/backup/${CLUSTER_CNAME}/volsync"
                 }
               }
             }

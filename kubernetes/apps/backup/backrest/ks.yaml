@@ -33,5 +33,5 @@ spec:
     - ../../../../components/ingress/authenticated
   postBuild:
     substitute:
-      APP: backrest-${CLUSTER_CNAME}
+      APP: *app
       NAMESPACE: *namespace

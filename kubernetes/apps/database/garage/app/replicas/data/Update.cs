@@ -86,7 +86,7 @@ var template = $"""
 List<string> replicas = [];
 for (var i = 0; i < servers; i++)
 {
-  var replicaName = "data-${APP}-" + i;
+  var replicaName = "data-garage-" + i;
   var output = ReplaceTokens(template, new Dictionary<string, string>
   {
     ["APP"] = replicaName,

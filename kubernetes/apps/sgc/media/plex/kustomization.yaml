@@ -6,3 +6,4 @@ components:
   - ../../../../components/ingress/internal
 resources:
   - ./helmrelease.yaml
+  - ./uptime.yaml

@@ -47,6 +47,9 @@ spec:
               readOnlyRootFilesystem: false
             env:
               TZ: "${TIMEZONE}"
+            envFrom:
+              - secretRef:
+                  name: ${APP}-config
             resources:
               requests:
                 cpu: 50m

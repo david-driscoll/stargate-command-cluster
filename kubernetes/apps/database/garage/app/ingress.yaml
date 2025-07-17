@@ -15,7 +15,7 @@ spec:
   - match: Host(`web.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: garage
+    - name: ${APP}
       port: web-api
       passHostHeader: true
     middlewares:
@@ -24,16 +24,16 @@ spec:
   - match: Host(`s3.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: garage
+    - name: ${APP}
       port: s3-api
       passHostHeader: true
     middlewares:
     - name: internal-network
       namespace: network
-  - match: Host(`garage.${CLUSTER_DOMAIN}`)
+  - match: Host(`${APP}.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: garage-webui
+    - name: webui
       port: http
       passHostHeader: true
     middlewares:

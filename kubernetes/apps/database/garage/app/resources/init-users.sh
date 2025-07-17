@@ -15,9 +15,9 @@ $GARAGE_CMD bucket create iris || true
 $GARAGE_CMD bucket allow --read --write --owner iris --key authentik
 $GARAGE_CMD bucket allow --read --write iris --key cluster-user
 $GARAGE_CMD bucket website --allow iris
-$GARAGE_CMD key import -n postgres-sgc --yes "$GARAGE_USER_POSTGRES_SGC" "$GARAGE_PASSWORD_POSTGRES_SGC" || true
+$GARAGE_CMD key import -n postgres --yes "$GARAGE_USER_POSTGRES" "$GARAGE_PASSWORD_POSTGRES" || true
 $GARAGE_CMD bucket create postgres || true
-$GARAGE_CMD bucket allow --read --write --owner postgres --key postgres-sgc
+$GARAGE_CMD bucket allow --read --write --owner postgres --key postgres
 $GARAGE_CMD bucket allow --read --write postgres --key cluster-user
 $GARAGE_CMD key import -n tivi-sync --yes "$GARAGE_USER_TIVI_SYNC" "$GARAGE_PASSWORD_TIVI_SYNC" || true
 $GARAGE_CMD bucket create tivi-cache || true

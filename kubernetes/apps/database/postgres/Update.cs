@@ -163,14 +163,13 @@ foreach (var database in databases)
   var roleName = GetName(database);
   var yaml = File.ReadAllText(userTemplate)
   .Replace("${APP}", database)
-  // .Replace("${CLUSTER_CNAME}", database)
   .Replace("postgres-user", $"{roleName}-postgres")
   .Replace("postgres-user-password", $"{roleName}-postgres-password")
   ;
-  var fileName = Path.Combine(usersDirectory, $"{database.Replace("-${CLUSTER_CNAME}", "")}.yaml");
-  var sopsFileName = Path.Combine(usersDirectory, $"{database.Replace("-${CLUSTER_CNAME}", "")}.sops.yaml");
+  var fileName = Path.Combine(usersDirectory, $"{database}.yaml");
+  var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
   File.WriteAllText(fileName, yaml);
-  AnsiConsole.WriteLine($"Updated {fileName} with user {database.Replace("-${CLUSTER_CNAME}", "")}.");
+  AnsiConsole.WriteLine($"Updated {fileName} with user {database}.");
 
   if (!File.Exists(sopsFileName))
   {

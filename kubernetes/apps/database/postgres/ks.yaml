@@ -56,5 +56,5 @@ spec:
     - ../../../../components/garage-access-key
   postBuild:
     substitute:
-      APP: postgres-${CLUSTER_CNAME}
+      APP: *app
       NAMESPACE: *namespace

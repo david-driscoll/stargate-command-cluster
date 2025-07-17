@@ -63,12 +63,6 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
 
-    persistence:
-      config:
-        existingClaim: ${APP}
-        globalMounts:
-          - path: /app/data
-
     service:
       app:
         controller: *app
@@ -107,23 +101,23 @@ spec:
 
 
     serviceAccount:
-      ${APP}: {}
+      *app : {}
     rbac:
       roles:
-        ${APP}:
+        *app :
           type: Role
           rules:
             - apiGroups: ["autokuma.bigboot.dev"]
               resources: ["*"]
               verbs: ["list", "patch", "watch"]
       bindings:
-        ${APP}:
+        *app :
           type: RoleBinding
           subjects:
             - kind: ServiceAccount
-              name: ${APP}
+              name: *app
               namespace: ${NAMESPACE}
           roleRef:
             kind: Role
-            name: ${APP}
+            name: *app
             apiGroup: rbac.authorization.k8s.io

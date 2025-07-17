@@ -47,6 +47,16 @@ spec:
           name: garage
         pod:
           securityContext: *podSecurityContext
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/component: *app
         containers:
           garage:
             image:

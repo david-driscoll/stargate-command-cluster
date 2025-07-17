@@ -142,6 +142,16 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /config
+      # This must be commented on initial install in order to avoid permission issues in '/config/Library/Application Support/Plex Media Server'
+      # plex-cache:
+      #   type: persistentVolumeClaim
+      #   forceRename: plex-cache
+      #   storageClass: openebs-hostpath
+      #   accessMode: ReadWriteOnce
+      #   size: 128Gi
+      #   globalMounts:
+      #     - path: /config/Library/Application Support/Plex Media Server/Cache
+      #       subPath: cache
       media-movies:
         existingClaim: media-movies
         globalMounts:
@@ -154,17 +164,14 @@ spec:
         existingClaim: media-dvr
         globalMounts:
           - path: /media/dvr
-      tmp:
+      tmpfs:
         type: emptyDir
-      transcode:
-        type: emptyDir
-      cache:
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        size: 128Gi
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
-            subPath: cache
-          - path: /config/Library/Application Support/Plex Media Server/Logs
-            subPath: logs
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
+                subPath: logs
+              - path: /transcode
+                subPath: transcode
+              - path: /tmp
+                subPath: tmp

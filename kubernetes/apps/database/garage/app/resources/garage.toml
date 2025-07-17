@@ -3,7 +3,7 @@ data_dir = "/var/lib/garage/data"
 
 db_engine = "lmdb"
 
-block_size = "1048576"
+block_size = "102400"
 
 replication_factor = 2
 consistency_mode = "degraded"

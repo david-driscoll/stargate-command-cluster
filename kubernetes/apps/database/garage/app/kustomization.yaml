@@ -7,9 +7,14 @@ resources:
   - ./garage.yaml
   - ./replicas/data
   - ./replicas/meta
+  - ./ingress.yaml
 configMapGenerator:
 - name: ${APP}-config
   files:
   - garage.toml=./resources/garage.toml
+- name: ${APP}-scripts
+  files:
+    - bootstrap-garage.sh=./resources/bootstrap-garage.sh
+    - init-users.sh=./resources/init-users.sh
 generatorOptions:
   disableNameSuffixHash: true

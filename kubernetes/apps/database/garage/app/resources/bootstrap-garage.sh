@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+# Fetch all garage node IDs from the garagenodes.deuxfleurs.fr CRD in the cluster
+NODES=$(kubectl get garagenodes.deuxfleurs.fr -A -o json | jq -r '.items[].metadata.name')
+NODE_COUNT=$(echo "$NODES" | wc -l)
+
+# Get garage status and count "pending..." phrases
+STATUS=$(kubectl exec --stdin --tty -n database garage-0 -- ./garage status)
+PENDING_COUNT=$(echo "$STATUS" | grep -c "pending...")
+
+# Count running containers in the garage stateful set
+RUNNING_CONTAINERS=$(kubectl get pods -n database -l app.kubernetes.io/controller=garage -o json | jq '[.items[].status.containerStatuses[] | select(.ready == true)] | length')
+
+echo "Garage nodes: $NODE_COUNT, Pending: $PENDING_COUNT, Running containers: $RUNNING_CONTAINERS"
+echo $STATUS
+
+if [ "$PENDING_COUNT" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NODE_COUNT" ]; then
+  echo "No layout assigned yet. Assigning layout..."
+  for NODE_ID in $NODES; do
+    kubectl exec --stdin --tty -n database garage-0 -- ./garage layout assign "$NODE_ID" -z sgc -c 64G
+  done
+
+  kubectl exec --stdin --tty -n database garage-0 -- ./garage layout show
+  kubectl exec --stdin --tty -n database garage-0 -- ./garage layout apply --version 1
+else
+  echo "Layout already assigned. Skipping assignment."
+fi

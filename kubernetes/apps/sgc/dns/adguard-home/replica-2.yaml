@@ -68,6 +68,13 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+    moverResources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "4Gi"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationsource_v1alpha1.json
@@ -95,6 +102,13 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+    moverResources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "4Gi"
     retain:
       hourly: 24
       daily: 7

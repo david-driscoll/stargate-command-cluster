@@ -104,3 +104,26 @@ spec:
                 service:
                   identifier: app
                   port: http
+
+    
+    serviceAccount:
+      ${APP}: {}
+    rbac:
+      roles:
+        ${APP}:
+          type: Role
+          rules:
+            - apiGroups: ["autokuma.bigboot.dev"]
+              resources: ["*"]
+              verbs: ["list", "patch", "watch"]
+      bindings:
+        ${APP}:
+          type: RoleBinding
+          subjects:
+            - kind: ServiceAccount
+              name: ${APP}
+              namespace: ${NAMESPACE}
+          roleRef:
+            kind: Role
+            name: ${APP}
+            apiGroup: rbac.authorization.k8s.io

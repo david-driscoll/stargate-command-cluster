@@ -84,16 +84,6 @@ spec:
                   secretKeyRef:
                     name: authentik-garage-access-key
                     key: password
-              GARAGE_USER_POSTGRES_SGC:
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-sgc-garage-access-key
-                    key: id
-              GARAGE_PASSWORD_POSTGRES_SGC:
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-sgc-garage-access-key
-                    key: password
               GARAGE_USER_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:

@@ -10,7 +10,7 @@ spec:
     name: app-template
   maxHistory: 3
   interval: 15m
-  timeout: 20m
+  timeout: 10m
   install:
     createNamespace: true
     replace: true

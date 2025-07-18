@@ -24,7 +24,7 @@ spec:
     active: true
     name: Primary
     type: http
-    url: https://${APP}-primary.${CLUSTER_CNAME}
+    url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
     interval: 300
@@ -42,7 +42,7 @@ spec:
     active: true
     name: Secondary
     type: http
-    url: https://${APP}-secondary.${CLUSTER_DOMAIN}
+    url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
     interval: 300
@@ -60,7 +60,7 @@ spec:
     active: true
     name: Tertiary
     type: http
-    url: https://${APP}-tertiary.${CLUSTER_DOMAIN}
+    url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
     interval: 300

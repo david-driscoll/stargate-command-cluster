@@ -21,6 +21,7 @@ spec:
     active: true
     name: ${CLUSTER_TITLE} Applications
     type: group
+    parent_name: "${CLUSTER_TITLE}"
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -33,6 +34,7 @@ spec:
     active: true
     name: ${CLUSTER_TITLE} System
     type: group
+    parent_name: "${CLUSTER_TITLE}"
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -45,6 +47,7 @@ spec:
     active: true
     name: ${CLUSTER_TITLE} Networking
     type: group
+    parent_name: "${CLUSTER_TITLE}"
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -57,4 +60,5 @@ spec:
     active: true
     name: ${CLUSTER_TITLE} Observability
     type: group
+    parent_name: "${CLUSTER_TITLE}"
 

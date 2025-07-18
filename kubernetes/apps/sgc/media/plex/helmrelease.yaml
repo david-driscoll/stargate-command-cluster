@@ -122,14 +122,14 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: "plex.${CLUSTER_DOMAIN}"
+          - host: "${APP}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: *port
-          - host: "${APP}.${ROOT_DOMAIN}"
+          - host: "plex-alt.${ROOT_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

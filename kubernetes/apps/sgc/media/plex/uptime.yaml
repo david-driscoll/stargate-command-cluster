@@ -11,4 +11,4 @@ spec:
     url: https://${APP}.${CLUSTER_DOMAIN} # /connections?X-Plex-Token=${SECRET_TOKEN}
     method: GET
     accepted_statuscodes: "401"
-    parent: "Stargate Command / Apps"
+    parent: 6

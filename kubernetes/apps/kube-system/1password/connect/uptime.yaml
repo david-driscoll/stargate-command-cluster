@@ -7,12 +7,12 @@ metadata:
 spec:
   config:
     active: true
-    name: Tautulli
+    name: 1Password Connect
     type: http
-    url: https://${APP}.${CLUSTER_DOMAIN}/status
+    url: https://op-connect.${CLUSTER_DOMAIN}/health
     method: GET
     accepted_statuscodes: ["200"]
     interval: 300
     retry_interval: 60
     max_retries: 3
-    parent_name: "${CLUSTER_CNAME}-apps"
+    parent_name: "${CLUSTER_CNAME}-system"

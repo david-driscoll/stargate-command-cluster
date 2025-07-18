@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${APP}
+spec:
+  config:
+    active: true
+    name: ${APP}
+    type: http
+    url: https://${APP}.${CLUSTER_DOMAIN}/status
+    method: GET
+    accepted_statuscodes: ["401"]
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
+    parent_name: "${CLUSTER_CNAME}-apps"

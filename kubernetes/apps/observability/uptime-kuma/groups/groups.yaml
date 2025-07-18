@@ -42,33 +42,33 @@ spec:
     retry_interval: 60
     max_retries: 3
 
----
-# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
-metadata:
-  name: ${CLUSTER_CNAME}-networking
-spec:
-  config:
-    name: Networking
-    type: group
-    parent_name: "${CLUSTER_CNAME}"
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
+# ---
+# # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+# apiVersion: autokuma.bigboot.dev/v1
+# kind: KumaEntity
+# metadata:
+#   name: ${CLUSTER_CNAME}-networking
+# spec:
+#   config:
+#     name: Networking
+#     type: group
+#     parent_name: "${CLUSTER_CNAME}"
+#     interval: 300
+#     retry_interval: 60
+#     max_retries: 3
 
----
-# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
-metadata:
-  name: ${CLUSTER_CNAME}-observability
-spec:
-  config:
-    name: Observability
-    type: group
-    parent_name: "${CLUSTER_CNAME}"
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
+# ---
+# # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+# apiVersion: autokuma.bigboot.dev/v1
+# kind: KumaEntity
+# metadata:
+#   name: ${CLUSTER_CNAME}-observability
+# spec:
+#   config:
+#     name: Observability
+#     type: group
+#     parent_name: "${CLUSTER_CNAME}"
+#     interval: 300
+#     retry_interval: 60
+#     max_retries: 3
 

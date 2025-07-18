@@ -8,3 +8,4 @@ resources:
   - ./replica-0.yaml
   - ./replica-1.yaml
   - ./replica-2.yaml
+  - ./uptime.yaml

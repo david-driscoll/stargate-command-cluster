@@ -22,7 +22,7 @@ spec:
   config:
     name: ${CLUSTER_TITLE} Applications
     type: group
-    parent_name: "${CLUSTER_TITLE}"
+    parent_name: "cluster"
     interval: 300
     retry_interval: 60
     max_retries: 3
@@ -37,7 +37,7 @@ spec:
   config:
     name: ${CLUSTER_TITLE} System
     type: group
-    parent_name: "${CLUSTER_TITLE}"
+    parent_name: "cluster"
     interval: 300
     retry_interval: 60
     max_retries: 3
@@ -52,7 +52,7 @@ spec:
   config:
     name: ${CLUSTER_TITLE} Networking
     type: group
-    parent_name: "${CLUSTER_TITLE}"
+    parent_name: "cluster"
     interval: 300
     retry_interval: 60
     max_retries: 3
@@ -67,7 +67,7 @@ spec:
   config:
     name: ${CLUSTER_TITLE} Observability
     type: group
-    parent_name: "${CLUSTER_TITLE}"
+    parent_name: "cluster"
     interval: 300
     retry_interval: 60
     max_retries: 3

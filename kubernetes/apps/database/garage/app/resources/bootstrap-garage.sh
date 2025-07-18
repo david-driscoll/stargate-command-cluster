@@ -9,17 +9,15 @@ GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 NODES=$(kubectl get garagenodes.deuxfleurs.fr -A -o json | jq -r '.items[].metadata.name')
 NODE_COUNT=$(echo "$NODES" | wc -l)
 
-# Get garage status and count "pending..." phrases
+# Get garage status and count "NO ROLE ASSIGNED" phrases
 STATUS=$($GARAGE_CMD status)
-PENDING_COUNT=$(echo "$STATUS" | grep -c "pending...")
 NO_ROLE_ASSIGNED=$(echo "$STATUS" | grep -c "NO ROLE ASSIGNED")
-echo "Pending count: $PENDING_COUNT, No role assigned count: $NO_ROLE_ASSIGNED"
-TOTAL_COUNT=$((PENDING_COUNT + NO_ROLE_ASSIGNED))
+echo "No role assigned count: $NO_ROLE_ASSIGNED"
 
 # Count running containers in the garage stateful set
 RUNNING_CONTAINERS=$(kubectl get pods -n database -l app.kubernetes.io/controller=garage -o json | jq '[.items[].status.containerStatuses[] | select(.ready == true)] | length')
 
-echo "Garage nodes: $NODE_COUNT, Waiting Nodes: $TOTAL_COUNT, Running containers: $RUNNING_CONTAINERS"
+echo "Garage nodes: $NODE_COUNT, No role assigned: $NO_ROLE_ASSIGNED, Running containers: $RUNNING_CONTAINERS"
 echo $STATUS
 
 if [ -z "$NODES" ]; then
@@ -27,7 +25,7 @@ if [ -z "$NODES" ]; then
   exit 1
 fi
 
-if [ "$TOTAL_COUNT" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NODE_COUNT" ]; then
+if [ "$NO_ROLE_ASSIGNED" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NO_ROLE_ASSIGNED" ]; then
   echo "No layout assigned yet. Assigning layout..."
   for NODE_ID in $NODES; do
     $GARAGE_CMD layout assign "$NODE_ID" -z sgc -c 64G

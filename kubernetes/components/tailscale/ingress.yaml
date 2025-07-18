@@ -5,7 +5,6 @@ metadata:
   name: ${APP}-tailscale
   annotations:
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    uptime-kuma.autodiscovery.probe.enabled: "false"
 spec:
   defaultBackend:
     service:
@@ -15,4 +14,4 @@ spec:
   ingressClassName: tailscale
   tls:
     - hosts:
-        - ${APP}
+        - ${TAILSCALE_HOST:=${APP}}

@@ -296,6 +296,12 @@ spec:
           - apiGroups: ["deuxfleurs.fr"]
             resources: ["garagenodes"]
             verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+          - apiGroups: [""]
+            resources: ["pods/exec"]
+            verbs: ["create", "get"]
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
       bindings:
         *app :
           type: RoleBinding

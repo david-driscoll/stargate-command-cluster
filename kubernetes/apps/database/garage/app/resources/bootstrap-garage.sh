@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -ex
 
 NAMESPACE="database"
 POD="garage-0"
@@ -14,13 +14,18 @@ STATUS=$($GARAGE_CMD status)
 PENDING_COUNT=$(echo "$STATUS" | grep -c "pending...")
 NO_ROLE_ASSIGNED=$(echo "$STATUS" | grep -c "NO ROLE ASSIGNED")
 echo "Pending count: $PENDING_COUNT, No role assigned count: $NO_ROLE_ASSIGNED"
-TOTAL_COUNT=$(echo $PENDING_COUNT + $NO_ROLE_ASSIGNED)
+TOTAL_COUNT=$((PENDING_COUNT + NO_ROLE_ASSIGNED))
 
 # Count running containers in the garage stateful set
 RUNNING_CONTAINERS=$(kubectl get pods -n database -l app.kubernetes.io/controller=garage -o json | jq '[.items[].status.containerStatuses[] | select(.ready == true)] | length')
 
 echo "Garage nodes: $NODE_COUNT, Waiting Nodes: $TOTAL_COUNT, Running containers: $RUNNING_CONTAINERS"
 echo $STATUS
+
+if [ -z "$NODES" ]; then
+  echo "No garage nodes found. Exiting."
+  exit 1
+fi
 
 if [ "$TOTAL_COUNT" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NODE_COUNT" ]; then
   echo "No layout assigned yet. Assigning layout..."

@@ -7,7 +7,7 @@ metadata:
 spec:
   config:
     active: true
-    name: Plex (${CLUSTER_TITLE})
+    name: Plex
     type: http
     url: https://${APP}.${CLUSTER_DOMAIN} # /connections?X-Plex-Token=${SECRET_TOKEN}
     method: GET

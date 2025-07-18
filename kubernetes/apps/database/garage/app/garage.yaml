@@ -147,6 +147,11 @@ spec:
           ttlSecondsAfterFinished: 600
         containers: &job
           job:
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                  - /scripts/bootstrap-garage.sh
             image:
               repository: alpine/k8s
               tag: 1.33.2@sha256:329cf13af9ee678e3afd71b6af44447029f119f713bec278db2fb53571e857f5
@@ -208,34 +213,6 @@ spec:
                   secretKeyRef:
                     name: tivi-sync-garage-access-key
                     key: password
-            resources:
-              requests:
-                cpu: 10m
-                memory: 32Mi
-      init:
-        labels:
-          kustomize.toolkit.fluxcd.io/force: enabled
-        serviceAccount:
-          name: *app
-        type: job
-        job:
-          backoffLimit: 100
-          suspend: false
-          ttlSecondsAfterFinished: 600
-        containers:
-          init:
-            image:
-              repository: alpine/k8s
-              tag: 1.33.2@sha256:329cf13af9ee678e3afd71b6af44447029f119f713bec278db2fb53571e857f5
-              pullPolicy: IfNotPresent
-            securityContext:
-              readOnlyRootFilesystem: false
-            command:
-            - /bin/sh
-            - -c
-            - /scripts/boostrap-garage.sh
-            env:
-              TZ: "${TIMEZONE}"
             resources:
               requests:
                 cpu: 10m

@@ -2,15 +2,13 @@
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: mysecret
+  name: ${APP}
 spec:
   config:
-    type: http
-    name: ${APP}
-    url: https://${APP}.${CLUSTER_DOMAIN}
-    method: GET
     active: true
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
-    
+    name: ${APP}
+    type: http
+    url: https://${APP}.${CLUSTER_DOMAIN} # /connections?X-Plex-Token=${SECRET_TOKEN}
+    method: GET
+    accepted_statuscodes: "401"
+    parent: "Stargate Command / Apps"

@@ -10,5 +10,5 @@ spec:
     type: http
     url: https://${APP}.${CLUSTER_DOMAIN} # /connections?X-Plex-Token=${SECRET_TOKEN}
     method: GET
-    accepted_statuscodes: "401"
+    accepted_statuscodes: ["401"]
     parent: 6

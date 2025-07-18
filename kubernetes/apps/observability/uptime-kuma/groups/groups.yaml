@@ -8,7 +8,7 @@ spec:
   config:
     name: ${CLUSTER_TITLE}
     type: group
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
 
@@ -23,7 +23,7 @@ spec:
     name: Applications
     type: group
     parent_name: "${CLUSTER_CNAME}"
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
 
@@ -38,7 +38,7 @@ spec:
     name: System
     type: group
     parent_name: "${CLUSTER_CNAME}"
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
 
@@ -53,7 +53,7 @@ spec:
 #     name: Networking
 #     type: group
 #     parent_name: "${CLUSTER_CNAME}"
-#     interval: 300
+#     interval: 120
 #     retry_interval: 60
 #     max_retries: 3
 
@@ -68,7 +68,7 @@ spec:
 #     name: Observability
 #     type: group
 #     parent_name: "${CLUSTER_CNAME}"
-#     interval: 300
+#     interval: 120
 #     retry_interval: 60
 #     max_retries: 3
 

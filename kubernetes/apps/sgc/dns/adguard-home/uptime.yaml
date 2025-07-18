@@ -9,7 +9,7 @@ spec:
     active: true
     name: Adguard Home
     type: group
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
     parent_name: "${CLUSTER_CNAME}-apps"
@@ -27,7 +27,7 @@ spec:
     url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
     parent_name: "${APP}-group"
@@ -45,7 +45,7 @@ spec:
     url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
     parent_name: "${APP}-group"
@@ -63,7 +63,7 @@ spec:
     url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
-    interval: 300
+    interval: 120
     retry_interval: 60
     max_retries: 3
     parent_name: "${APP}-group"

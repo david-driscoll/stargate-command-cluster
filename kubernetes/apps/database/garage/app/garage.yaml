@@ -279,7 +279,7 @@ spec:
         name: ${APP}-scripts
         defaultMode: 493
         globalMounts:
-        - path: /etc/bootstrap-garage.sh
+        - path: /scripts/bootstrap-garage.sh
           subPath: bootstrap-garage.sh
         - path: /scripts/init-users.sh
           subPath: init-users.sh

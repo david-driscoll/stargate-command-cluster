@@ -6,9 +6,11 @@ metadata:
   name: cluster
 spec:
   config:
-    active: true
     name: ${CLUSTER_TITLE}
     type: group
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -18,10 +20,12 @@ metadata:
   name: applications
 spec:
   config:
-    active: true
     name: ${CLUSTER_TITLE} Applications
     type: group
     parent_name: "${CLUSTER_TITLE}"
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -31,10 +35,12 @@ metadata:
   name: system
 spec:
   config:
-    active: true
     name: ${CLUSTER_TITLE} System
     type: group
     parent_name: "${CLUSTER_TITLE}"
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -44,10 +50,12 @@ metadata:
   name: networking
 spec:
   config:
-    active: true
     name: ${CLUSTER_TITLE} Networking
     type: group
     parent_name: "${CLUSTER_TITLE}"
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 
 ---
 # yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
@@ -57,8 +65,10 @@ metadata:
   name: observability
 spec:
   config:
-    active: true
     name: ${CLUSTER_TITLE} Observability
     type: group
     parent_name: "${CLUSTER_TITLE}"
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 

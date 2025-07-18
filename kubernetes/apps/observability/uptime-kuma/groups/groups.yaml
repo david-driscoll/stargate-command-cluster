@@ -3,7 +3,7 @@
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: cluster
+  name: ${CLUSTER_CNAME}
 spec:
   config:
     name: ${CLUSTER_TITLE}
@@ -17,12 +17,12 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: applications
+  name: ${CLUSTER_CNAME}-apps
 spec:
   config:
-    name: ${CLUSTER_TITLE} Applications
+    name: Applications
     type: group
-    parent_name: "cluster"
+    parent_name: "${CLUSTER_CNAME}"
     interval: 300
     retry_interval: 60
     max_retries: 3
@@ -32,12 +32,12 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: system
+  name: ${CLUSTER_CNAME}-system
 spec:
   config:
-    name: ${CLUSTER_TITLE} System
+    name: System
     type: group
-    parent_name: "cluster"
+    parent_name: "${CLUSTER_CNAME}"
     interval: 300
     retry_interval: 60
     max_retries: 3
@@ -47,12 +47,12 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: networking
+  name: ${CLUSTER_CNAME}-networking
 spec:
   config:
-    name: ${CLUSTER_TITLE} Networking
+    name: Networking
     type: group
-    parent_name: "cluster"
+    parent_name: "${CLUSTER_CNAME}"
     interval: 300
     retry_interval: 60
     max_retries: 3
@@ -62,12 +62,12 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: observability
+  name: ${CLUSTER_CNAME}-observability
 spec:
   config:
-    name: ${CLUSTER_TITLE} Observability
+    name: Observability
     type: group
-    parent_name: "cluster"
+    parent_name: "${CLUSTER_CNAME}"
     interval: 300
     retry_interval: 60
     max_retries: 3

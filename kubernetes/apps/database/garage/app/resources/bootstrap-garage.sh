@@ -2,12 +2,13 @@
 
 set -e
 
+GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 # Fetch all garage node IDs from the garagenodes.deuxfleurs.fr CRD in the cluster
 NODES=$(kubectl get garagenodes.deuxfleurs.fr -A -o json | jq -r '.items[].metadata.name')
 NODE_COUNT=$(echo "$NODES" | wc -l)
 
 # Get garage status and count "pending..." phrases
-STATUS=$(kubectl exec --stdin --tty -n database garage-0 -- ./garage status)
+STATUS=$($GARAGE_CMD status)
 PENDING_COUNT=$(echo "$STATUS" | grep -c "pending...")
 NO_ROLE_ASSIGNED=$(echo "$STATUS" | grep -c "NO ROLE ASSIGNED")
 echo "Pending count: $PENDING_COUNT, No role assigned count: $NO_ROLE_ASSIGNED"
@@ -22,11 +23,11 @@ echo $STATUS
 if [ "$TOTAL_COUNT" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NODE_COUNT" ]; then
   echo "No layout assigned yet. Assigning layout..."
   for NODE_ID in $NODES; do
-    kubectl exec --stdin --tty -n database garage-0 -- ./garage layout assign "$NODE_ID" -z sgc -c 64G
+    $GARAGE_CMD layout assign "$NODE_ID" -z sgc -c 64G
   done
 
-  kubectl exec --stdin --tty -n database garage-0 -- ./garage layout show
-  kubectl exec --stdin --tty -n database garage-0 -- ./garage layout apply --version 1
+  $GARAGE_CMD layout show
+  $GARAGE_CMD layout apply --version 1
 else
   echo "Layout already assigned. Skipping assignment."
 fi

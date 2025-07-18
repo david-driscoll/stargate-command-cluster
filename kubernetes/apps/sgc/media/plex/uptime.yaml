@@ -15,4 +15,4 @@ spec:
     interval: 300
     retry_interval: 60
     max_retries: 3
-    parent_name: "${CLUSTER_TITLE}"
+    parent_name: "cluster"

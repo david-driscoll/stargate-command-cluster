@@ -22,7 +22,7 @@ metadata:
 spec:
   config:
     active: true
-    name: Adguard Home (Primary)
+    name: Primary
     type: http
     url: https://${APP}-primary.${CLUSTER_CNAME}
     method: GET
@@ -40,7 +40,7 @@ metadata:
 spec:
   config:
     active: true
-    name: Adguard Home (Secondary)
+    name: Secondary
     type: http
     url: https://${APP}-secondary.${CLUSTER_DOMAIN}
     method: GET
@@ -58,7 +58,7 @@ metadata:
 spec:
   config:
     active: true
-    name: Adguard Home (Tertiary)
+    name: Tertiary
     type: http
     url: https://${APP}-tertiary.${CLUSTER_DOMAIN}
     method: GET

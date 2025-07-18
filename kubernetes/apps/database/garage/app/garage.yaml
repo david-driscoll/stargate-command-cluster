@@ -274,7 +274,7 @@ spec:
     rbac:
       roles:
         *app :
-          type: ClusterRole
+          type: Role
           rules:
           - apiGroups: ["apiextensions.k8s.io"]
             resources: ["customresourcedefinitions"]
@@ -284,13 +284,13 @@ spec:
             verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
       bindings:
         *app :
-          type: ClusterRoleBinding
+          type: RoleBinding
           subjects:
           - kind: ServiceAccount
             name: *app
             namespace: ${NAMESPACE}
           roleRef:
-            kind: ClusterRole
+            kind: Role
             name: *app
     servicemonitor:
       enabled: true

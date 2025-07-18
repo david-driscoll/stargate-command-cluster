@@ -44,6 +44,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "proxy_id": { "type": "string" },
                 "resend_interval": { "type": "integer" },
                 "retry_interval": { "type": "integer" },
@@ -89,6 +90,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -105,6 +107,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -136,6 +139,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -150,6 +154,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "port": { "type": "integer" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" },
@@ -168,6 +173,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -189,6 +195,7 @@
                 "max_redirects": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
@@ -225,6 +232,7 @@
                 "oauth_scopes": { "type": "string" },
                 "oauth_token_url": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "proxy_id": { "type": "string" },
                 "resend_interval": { "type": "integer" },
                 "retry_interval": { "type": "integer" },
@@ -253,6 +261,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -286,6 +295,7 @@
                 "oauth_scopes": { "type": "string" },
                 "oauth_token_url": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "proxy_id": { "type": "string" },
                 "resend_interval": { "type": "integer" },
                 "retry_interval": { "type": "integer" },
@@ -307,6 +317,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -331,6 +342,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -346,6 +358,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "radius_password": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -363,6 +376,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -378,6 +392,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -393,6 +408,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -414,6 +430,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -431,6 +448,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -446,6 +464,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -462,6 +481,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -477,6 +497,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }
@@ -492,6 +513,7 @@
                 "max_retries": { "type": "integer" },
                 "name": { "type": "string" },
                 "parent": { "type": "integer" },
+                "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
               }

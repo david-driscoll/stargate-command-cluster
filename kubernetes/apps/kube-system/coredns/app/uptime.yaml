@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${APP}
+spec:
+  config:
+    active: true
+    name: 
+    type: dns
+    url: https://op-connect.${CLUSTER_DOMAIN}/health
+    method: GET
+    accepted_statuscodes: ["200"]
+    interval: 120
+    retry_interval: 60
+    max_retries: 3
+    parent_name: "${CLUSTER_CNAME}-system"

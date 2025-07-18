@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -x
 
 NAMESPACE="database"
 POD="garage-0"

@@ -3,7 +3,7 @@
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: ${CLUSTER_TITLE}
+  name: cluster
 spec:
   config:
     active: true
@@ -15,7 +15,7 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: ${CLUSTER_TITLE} Applications
+  name: applications
 spec:
   config:
     active: true
@@ -27,7 +27,7 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: ${CLUSTER_TITLE} System
+  name: system
 spec:
   config:
     active: true
@@ -51,7 +51,7 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: ${CLUSTER_TITLE} Observability
+  name: observability
 spec:
   config:
     active: true

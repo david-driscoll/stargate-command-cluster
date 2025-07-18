@@ -261,7 +261,7 @@ spec:
           subPath: garage.toml
       scripts:
         enabled: true
-        type: secret
+        type: configMap
         name: ${APP}-scripts
         defaultMode: 493
         globalMounts:

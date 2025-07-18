@@ -73,19 +73,19 @@ spec:
     rbac:
       roles:
         *app :
-          type: Role
+          type: ClusterRole
           rules:
             - apiGroups: ["autokuma.bigboot.dev"]
               resources: ["*"]
               verbs: ["list", "patch", "watch"]
       bindings:
         *app :
-          type: RoleBinding
+          type: ClusterRoleBinding
           subjects:
             - kind: ServiceAccount
               name: *app
               namespace: ${NAMESPACE}
           roleRef:
-            kind: Role
+            kind: ClusterRole
             name: *app
             apiGroup: rbac.authorization.k8s.io

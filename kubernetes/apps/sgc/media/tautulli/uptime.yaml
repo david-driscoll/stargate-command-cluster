@@ -7,11 +7,11 @@ metadata:
 spec:
   config:
     active: true
-    name: ${APP}
+    name: Tautulli (${CLUSTER_TITLE})
     type: http
     url: https://${APP}.${CLUSTER_DOMAIN}/status
     method: GET
-    accepted_statuscodes: ["401"]
+    accepted_statuscodes: ["200"]
     interval: 300
     retry_interval: 60
     max_retries: 3

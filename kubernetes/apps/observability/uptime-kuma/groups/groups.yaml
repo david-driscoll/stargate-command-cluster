@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${CLUSTER_TITLE}
+spec:
+  config:
+    active: true
+    name: ${CLUSTER_TITLE}
+    type: group
+
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${CLUSTER_TITLE} Applications
+spec:
+  config:
+    active: true
+    name: ${CLUSTER_TITLE} Applications
+    type: group
+
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${CLUSTER_TITLE} System
+spec:
+  config:
+    active: true
+    name: ${CLUSTER_TITLE} System
+    type: group
+
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${CLUSTER_TITLE} Networking
+spec:
+  config:
+    active: true
+    name: ${CLUSTER_TITLE} Networking
+    type: group
+
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${CLUSTER_TITLE} Observability
+spec:
+  config:
+    active: true
+    name: ${CLUSTER_TITLE} Observability
+    type: group
+

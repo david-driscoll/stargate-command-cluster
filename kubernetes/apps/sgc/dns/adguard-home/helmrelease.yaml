@@ -85,6 +85,7 @@ spec:
               operator: Exists
               effect: NoSchedule
         statefulset:
+          podManagementPolicy: Parallel
           persistentVolumeClaimRetentionPolicy:
             whenDeleted: Retain
             whenScaled: Retain

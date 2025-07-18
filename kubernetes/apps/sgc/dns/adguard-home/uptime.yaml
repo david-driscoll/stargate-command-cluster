@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${APP}-group
+spec:
+  config:
+    active: true
+    name: Adguard Home
+    type: group
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
+    parent_name: "${CLUSTER_CNAME}-apps"
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${APP}-primary
+spec:
+  config:
+    active: true
+    name: Adguard Home (Primary)
+    type: http
+    url: https://${APP}-primary.${CLUSTER_CNAME}
+    method: GET
+    accepted_statuscodes: ["200"]
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
+    parent_name: "${APP}-group"
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${APP}
+spec:
+  config:
+    active: true
+    name: Adguard Home (Secondary)
+    type: http
+    url: https://${APP}-secondary.${CLUSTER_DOMAIN}
+    method: GET
+    accepted_statuscodes: ["200"]
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
+    parent_name: "${APP}-group"
+---
+# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: ${APP}-tertiary
+spec:
+  config:
+    active: true
+    name: Adguard Home (Tertiary)
+    type: http
+    url: https://${APP}-tertiary.${CLUSTER_DOMAIN}
+    method: GET
+    accepted_statuscodes: ["200"]
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
+    parent_name: "${APP}-group"

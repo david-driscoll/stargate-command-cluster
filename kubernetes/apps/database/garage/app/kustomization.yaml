@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./garage.yaml
+  - ./generated
   - ./replicas/data
   - ./replicas/meta
   - ./ingress.yaml

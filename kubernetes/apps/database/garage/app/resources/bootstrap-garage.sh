@@ -2,6 +2,8 @@
 
 set -e
 
+NAMESPACE="database"
+POD="garage-0"
 GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 # Fetch all garage node IDs from the garagenodes.deuxfleurs.fr CRD in the cluster
 NODES=$(kubectl get garagenodes.deuxfleurs.fr -A -o json | jq -r '.items[].metadata.name')

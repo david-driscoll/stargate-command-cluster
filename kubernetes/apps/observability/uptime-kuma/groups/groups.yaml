@@ -39,7 +39,7 @@ spec:
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: ${CLUSTER_TITLE} Networking
+  name: networking
 spec:
   config:
     active: true

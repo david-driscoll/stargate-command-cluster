@@ -291,6 +291,18 @@ spec:
           - apiGroups: ["deuxfleurs.fr"]
             resources: ["garagenodes"]
             verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+        ${APP}-secret-creator:
+          type: Role
+          rules:
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list", "watch"]
+          - apiGroups: [""]
+            resources: ["secrets"]
+            verbs: ["get", "create", "update", "patch"]
+          - apiGroups: [""]
+            resources: ["configmaps"]
+            verbs: ["get", "create", "update", "patch"]
           - apiGroups: [""]
             resources: ["pods/exec"]
             verbs: ["create", "get"]
@@ -307,6 +319,16 @@ spec:
           roleRef:
             kind: ClusterRole
             name: *app
+        ${APP}-secret-creator:
+          type: RoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: ${APP}-secret-creator
+          subjects:
+          - kind: ServiceAccount
+            name: *app
+            namespace: ${NAMESPACE}
     servicemonitor:
       enabled: true
       endpoints:

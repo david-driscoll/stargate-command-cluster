@@ -47,3 +47,4 @@ if [ "$NO_ROLE_ASSIGNED" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NO
 else
   echo "Layout already assigned. Skipping assignment."
 fi
+

@@ -6,8 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./garage.yaml
   - ./generated
-  - ./replicas/data
-  - ./replicas/meta
   - ./ingress.yaml
 configMapGenerator:
 - name: ${APP}-config

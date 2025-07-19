@@ -19,6 +19,10 @@ $GARAGE_CMD key import -n mysql --yes "$GARAGE_USER_MYSQL" "$GARAGE_PASSWORD_MYS
 $GARAGE_CMD bucket create mysql || true
 $GARAGE_CMD bucket allow --read --write --owner mysql --key mysql
 $GARAGE_CMD bucket allow --read --write mysql --key cluster-user
+$GARAGE_CMD key import -n postgres --yes "$GARAGE_USER_POSTGRES" "$GARAGE_PASSWORD_POSTGRES" || true
+$GARAGE_CMD bucket create postgres || true
+$GARAGE_CMD bucket allow --read --write --owner postgres --key postgres
+$GARAGE_CMD bucket allow --read --write postgres --key cluster-user
 $GARAGE_CMD key import -n tivi-sync --yes "$GARAGE_USER_TIVI_SYNC" "$GARAGE_PASSWORD_TIVI_SYNC" || true
 $GARAGE_CMD bucket create tivi-cache || true
 $GARAGE_CMD bucket allow --read --write --owner tivi-cache --key tivi-sync

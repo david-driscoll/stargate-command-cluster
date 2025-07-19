@@ -283,8 +283,9 @@ spec:
           - apiGroups: ["deuxfleurs.fr"]
             resources: ["garagenodes"]
             verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-        secret-creator:
+        garage-secret-creator:
           type: Role
+          forceRename: garage-secret-creator
           rules:
           - apiGroups: [""]
             resources: ["pods"]
@@ -311,12 +312,13 @@ spec:
           roleRef:
             kind: ClusterRole
             name: *app
-        secret-creator:
+        garage-secret-creator:
           type: RoleBinding
+          forceRename: garage-secret-creator
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: Role
-            name: secret-creator
+            name: garage-secret-creator
           subjects:
           - kind: ServiceAccount
             name: *app

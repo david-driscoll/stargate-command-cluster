@@ -176,12 +176,6 @@ spec:
             - -c
             - /scripts/init-users.sh
             env:
-              GARAGE_RPC_HOST: "${GARAGE_NODE_ID}@garage-0.garage.database.svc.cluster.local:3901"
-              GARAGE_RPC_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: garage-config
-                    key: rpcSecret
               PUID: 568
               PGID: 568
               UMASK: 002

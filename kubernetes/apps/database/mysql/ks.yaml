@@ -71,7 +71,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: mysql-operator
+    - name: mysql
       namespace: *namespace
   path: ./kubernetes/apps/database/mysql/phpmyadmin
   prune: true

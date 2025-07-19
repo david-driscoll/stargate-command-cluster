@@ -48,3 +48,7 @@ else
   echo "Layout already assigned. Skipping assignment."
 fi
 
+# TOKEN=$($GARAGE_CMD admin-token create webui)
+# kubectl create secret generic tailscale-authkey --from-literal=authkey="$authkey" --dry-run=client -o yaml | kubectl apply -f -
+# kubectl annotate secret tailscale-authkey reflector.v1.k8s.emberstack.com/reflection-allowed='true' --dry-run=client -o yaml | kubectl apply -f -
+# kubectl annotate secret tailscale-authkey reloader.stakater.com/auto='true' --dry-run=client -o yaml | kubectl apply -f -

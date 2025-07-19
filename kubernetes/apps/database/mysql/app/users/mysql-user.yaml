@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name ${APP}-secret
+  name: &name mysql-user
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -11,7 +11,7 @@ spec:
   refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: database
   target:
     name: *name
     creationPolicy: Owner
@@ -26,11 +26,11 @@ spec:
         rootHost: '%'
         rootUser: "${APP}"
         rootPassword: "{{ .password }}"
-        url: mysql://${APP}:{{ .password }}@${APP}.${NAMESPACE}.svc.cluster.local:3306/${APP}
+        url: mysql://${APP}:{{ .password }}@${APP}-rw.${NAMESPACE}.svc.cluster.local:3306/${APP}
         username: "${APP}"
         password: "{{ .password }}"
         database: "${APP}"
-        hostname: "${APP}.${NAMESPACE}.svc.cluster.local"
+        hostname: "${APP}-rw.${NAMESPACE}.svc.cluster.local"
   dataFrom:
     - extract:
-        key: "${DATABASE_PASSWORD}"
+        key: "mysql-user-password"

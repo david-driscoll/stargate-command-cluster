@@ -124,35 +124,35 @@ var serializer = new SerializerBuilder().Build();
 #endregion
 
 #region Update mysql cluster yaml with roles
-var mysqlClusterPath = "kubernetes/apps/database/postgres/app/cluster.yaml";
-var postgresClusterDoc = ReadStream(postgresClusterPath).SingleOrDefault();
-if (postgresClusterDoc == null)
+var mysqlClusterPath = "kubernetes/apps/database/mysql/app/cluster.yaml";
+var mysqlClusterDoc = ReadStream(mysqlClusterPath).SingleOrDefault();
+if (mysqlClusterDoc == null)
 {
-  AnsiConsole.MarkupLine($"[red]Failed to read Postgres cluster file: {postgresClusterPath}.[/]");
+  AnsiConsole.MarkupLine($"[red]Failed to read Mysql cluster file: {mysqlClusterPath}.[/]");
   return;
 }
-var clusterRoles = postgresClusterDoc.Query("/spec/managed/roles").OfType<YamlSequenceNode>().Single();
-var defaultRole = clusterRoles.First();
-clusterRoles.Children.Clear();
-clusterRoles.Children.Add(defaultRole);
+// var clusterRoles = mysqlClusterDoc.Query("/spec/managed/roles").OfType<YamlSequenceNode>().Single();
+// var defaultRole = clusterRoles.First();
+// clusterRoles.Children.Clear();
+// clusterRoles.Children.Add(defaultRole);
 
-var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
+var userTemplate = "kubernetes/apps/database/mysql/app/users/mysql-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
-var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
+var kustomizationPath = "kubernetes/apps/database/mysql/app/users/kustomization.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
-foreach (var database in databases)
-{
-  var roleName = GetName(database);
-  var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-garage-password");
-  clusterRoles.Children.Add(roleNode);
-}
+// foreach (var database in databases)
+// {
+//   var roleName = GetName(database);
+//   // var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-garage-password");
+//   // clusterRoles.Children.Add(roleNode);
+// }
 
-File.WriteAllText(postgresClusterPath, $"""
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
-{serializer.Serialize(postgresClusterDoc)}
-""");
+// File.WriteAllText(mysqlClusterPath, $"""
+// ---
+// # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/mysqlql.cnpg.io/cluster_v1.json
+// {serializer.Serialize(mysqlClusterDoc)}
+// """);
 
 #endregion
 
@@ -163,8 +163,8 @@ foreach (var database in databases)
   var roleName = GetName(database);
   var yaml = File.ReadAllText(userTemplate)
   .Replace("${APP}", database)
-  .Replace("postgres-user", $"{roleName}-postgres")
-  .Replace("postgres-user-password", $"{roleName}-postgres-password")
+  .Replace("mysql-user", $"{roleName}-mysql")
+  .Replace("mysql-user-password", $"{roleName}-mysql-password")
   ;
   var fileName = Path.Combine(usersDirectory, $"{database}.yaml");
   var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
@@ -178,7 +178,7 @@ foreach (var database in databases)
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {roleName}-postgres-password
+      name: {roleName}-mysql-password
     stringData:
       password: "{Guid.NewGuid():N}"
     """);
@@ -198,8 +198,8 @@ var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - postgres-user.yaml
-  - postgres-user.sops.yaml
+  - mysql-user.yaml
+  - mysql-user.sops.yaml
 {string.Join(Environment.NewLine, databases.Order().SelectMany(database => new[] { $"  - {database}.yaml", $"  - {database}.sops.yaml" }))}
 """;
 

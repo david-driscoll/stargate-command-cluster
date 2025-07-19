@@ -8,7 +8,7 @@ spec:
   instances: 2
   tlsUseSelfSigned: true
   router:
-    instances: 1
+    instances: 2
     podSpec:
       resources:
         requests:

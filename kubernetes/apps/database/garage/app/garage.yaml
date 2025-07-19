@@ -246,11 +246,13 @@ spec:
     persistence:
       data:
         existingClaim: *app
-        globalMounts:
-        - path: /var/lib/garage/data
-          subPath: data
-        - path: /var/lib/garage/meta
-          subPath: meta
+        advancedMounts:
+          *app :
+            *app :
+              - path: /var/lib/garage/data
+                subPath: data
+              - path: /var/lib/garage/meta
+                subPath: meta
       config:
         enabled: true
         type: secret

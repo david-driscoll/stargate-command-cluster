@@ -14,7 +14,7 @@ spec:
         requests:
           cpu: 48m
           memory: 64M
-  secretName: ${APP}-secret
+  secretName: ${APP}-user
   initDB:
     dump:
       name: ${APP}-initdb

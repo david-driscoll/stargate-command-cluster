@@ -12,6 +12,12 @@ NODE_COUNT=$(echo "$NODES" | wc -l)
 # Get garage status and count "NO ROLE ASSIGNED" phrases
 STATUS=$($GARAGE_CMD status)
 NO_ROLE_ASSIGNED=$(echo "$STATUS" | grep -c "NO ROLE ASSIGNED")
+# if no role assigned is zero exit 0
+if [ "$NO_ROLE_ASSIGNED" -eq 0 ]; then
+  echo "All nodes have roles assigned."
+  exit 0
+fi
+
 echo "No role assigned count: $NO_ROLE_ASSIGNED"
 
 # Count running containers in the garage stateful set

@@ -193,6 +193,16 @@ spec:
                   secretKeyRef:
                     name: mysql-garage-access-key
                     key: password
+              GARAGE_USER_POSTGRES:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_POSTGRES:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-garage-access-key
+                    key: password
               GARAGE_USER_TIVI_SYNC:
                 valueFrom:
                   secretKeyRef:
@@ -249,10 +259,10 @@ spec:
         advancedMounts:
           *app :
             *app :
-              - path: /var/lib/garage/data
-                subPath: data
-              - path: /var/lib/garage/meta
-                subPath: meta
+            - path: /var/lib/garage/data
+              subPath: data
+            - path: /var/lib/garage/meta
+              subPath: meta
       config:
         enabled: true
         type: secret

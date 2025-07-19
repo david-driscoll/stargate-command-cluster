@@ -295,7 +295,7 @@ File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh",
 set -x
 # Set the namespace and pod name for garage
 NAMESPACE="database"
-POD="garage-0"
+POD="garage"
 GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 
 {string.Join("\n", commandBuilder.Select(cmd => "$GARAGE_CMD " + cmd))}

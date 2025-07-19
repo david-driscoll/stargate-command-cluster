@@ -119,6 +119,7 @@ spec:
     rbac:
       roles:
         tailscale-secret-manager:
+          forceRename: tailscale-secret-manager
           type: Role
           rules:
             - apiGroups: [""]

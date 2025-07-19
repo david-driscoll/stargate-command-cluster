@@ -12,4 +12,3 @@ resources:
   - ./mysql/ks.yaml
   - ./dragonfly/ks.yaml
   - ./garage/ks.yaml
-  - ./admin/ks.yaml

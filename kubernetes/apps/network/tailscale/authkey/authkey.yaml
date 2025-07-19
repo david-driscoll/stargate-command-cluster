@@ -112,3 +112,31 @@ spec:
         globalMounts:
           - path: /scripts/tailscale.sh
             subPath: tailscale.sh
+
+    serviceAccount:
+      *app : {}
+    rbac:
+      roles:
+        *app :
+          type: Role
+          rules:
+            - apiGroups: [""]
+              resources: ["pods"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: [""]
+              resources: ["secrets"]
+              verbs: ["get", "create", "update", "patch"]
+            - apiGroups: [""]
+              resources: ["configmaps"]
+              verbs: ["get", "create", "update", "patch"]
+      bindings:
+        *app :
+          type: RoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: *app
+          subjects:
+            - kind: ServiceAccount
+              name: *app
+              namespace: ${NAMESPACE}

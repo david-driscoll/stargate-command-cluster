@@ -71,7 +71,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg
+    - name: postgres
       namespace: *namespace
   path: ./kubernetes/apps/database/postgres/pgadmin
   prune: true

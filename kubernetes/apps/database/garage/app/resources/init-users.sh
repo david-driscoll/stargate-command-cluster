@@ -2,7 +2,7 @@
 set -x
 # Set the namespace and pod name for garage
 NAMESPACE="database"
-POD="garage"
+POD=$(kubectl get pods -n database -l app.kubernetes.io/controller=garage -o json | jq -r '.items[0].metadata.name')
 GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
 
 $GARAGE_CMD key import -n cluster-user --yes "$GARAGE_USER_CLUSTER_USER" "$GARAGE_PASSWORD_CLUSTER_USER" || true

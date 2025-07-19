@@ -41,8 +41,7 @@ spec:
     controllers:
       *app :
         enabled: true
-        type: statefulset
-        replicas: 3
+        type: deployment
         serviceAccount:
           name: *app
         labels:
@@ -84,23 +83,6 @@ spec:
               capabilities:
                 drop:
                 - ALL
-        statefulset:
-          podManagementPolicy: Parallel
-          volumeClaimTemplates:
-          - name: meta
-            size: 7Gi
-            storageClass: "longhorn-local"
-            accessMode: ReadWriteOnce
-            advancedMounts:
-              *app :
-              - path: /var/lib/garage/meta
-          - name: data
-            size: 64Gi
-            storageClass: "longhorn-local"
-            accessMode: ReadWriteOnce
-            advancedMounts:
-              *app :
-              - path: /var/lib/garage/data
       garage-webui:
         enabled: true
         labels:
@@ -262,6 +244,13 @@ spec:
           http:
             port: 3909
     persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+        - path: /var/lib/garage/data
+          subPath: data
+        - path: /var/lib/garage/meta
+          subPath: meta
       config:
         enabled: true
         type: secret

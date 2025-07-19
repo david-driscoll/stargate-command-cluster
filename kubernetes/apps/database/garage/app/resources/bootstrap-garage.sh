@@ -17,9 +17,9 @@ NODES=$(kubectl get garagenodes.deuxfleurs.fr -A -o json | jq -r '.items[].metad
 NODE_COUNT=$(echo "$NODES" | wc -l)
 
 # Get garage status and count "NO ROLE ASSIGNED" phrases
-NO_ROLE_ASSIGNED=$($GARAGE_CMD status | grep -c "NO ROLE ASSIGNED")
+NO_ROLE_ASSIGNED=$($GARAGE_CMD status | grep -c "NO ROLE ASSIGNED" || echo 0)
 # if no role assigned is zero exit 0
-if [ "$NO_ROLE_ASSIGNED" -eq "0" ]; then
+if [ "$NO_ROLE_ASSIGNED" -eq 0 ]; then
   echo "All nodes have roles assigned."
   exit 0
 fi

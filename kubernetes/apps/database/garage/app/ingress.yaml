@@ -33,7 +33,7 @@ spec:
   - match: Host(`${APP}.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
-    - name: webui
+    - name: garage-webui
       port: http
       passHostHeader: true
     middlewares:

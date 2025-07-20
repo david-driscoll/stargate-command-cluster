@@ -1,8 +1,6 @@
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: kube-system
 resources:
-  # renovate: datasource=github-releases depName=external-secrets-inc/reloader
-  - https://github.com/external-secrets-inc/reloader/releases/download/0.0.4/bundle.yaml
-  - ./reloader.yaml
+- https://github.com/external-secrets-inc/reloader/releases/download/0.0.4/bundle.yaml
+- ./reloader.yaml

@@ -29,7 +29,7 @@ spec:
   components:
     - ../../../../components/volsync
     - ../../../../components/tailscale
-    - ../../../../components/minio-access-key
+    - ../../../../components/garage-access-key
     - ../../../../components/ingress/authenticated
   postBuild:
     substitute:

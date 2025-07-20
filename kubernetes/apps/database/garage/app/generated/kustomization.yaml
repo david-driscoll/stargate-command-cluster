@@ -5,6 +5,8 @@ resources:
   - cluster-user.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
+  - backrest.yaml
+  - backrest.sops.yaml
   - mysql.yaml
   - mysql.sops.yaml
   - postgres.yaml

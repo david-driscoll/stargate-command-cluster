@@ -25,7 +25,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/volsync
+    - ../../../../components/volsync/remote
     - ../../../../components/tailscale
   postBuild:
     substitute:

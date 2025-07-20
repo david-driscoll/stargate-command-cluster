@@ -26,6 +26,7 @@ david-driscoll/equestria-cluster:
       garage/app/generated/
       garage/app/resources/
       garage/config.yaml
+      postgres/app/cluster.yaml
       postgres/app/users/
       postgres/app/init/
       postgres/app/restore/

@@ -39,7 +39,7 @@ fi
 if [ "$NO_ROLE_ASSIGNED" -eq "$NODE_COUNT" ] && [ "$RUNNING_CONTAINERS" -eq "$NO_ROLE_ASSIGNED" ]; then
   echo "No layout assigned yet. Assigning layout..."
   for NODE_ID in $NODES; do
-    $GARAGE_CMD layout assign "$NODE_ID" -z sgc -c 64G
+    $GARAGE_CMD layout assign "$NODE_ID" -z ${CLUSTER_CNAME} -c 64G
   done
 
   $GARAGE_CMD layout show

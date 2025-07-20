@@ -32,4 +32,4 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      VOLSYNC_CAPACITY: 120Gi
+      VOLSYNC_CAPACITY: ${GARAGE_VOLUME_CAPACITY}Gi

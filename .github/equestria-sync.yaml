@@ -28,7 +28,6 @@ david-driscoll/equestria-cluster:
       garage/users/garage-users.yaml
       garage/config.yaml
       postgres/app/users/
-      postgres/app/cluster.yaml
       postgres/app/init/
       postgres/app/restore/
   - source: kubernetes/apps/kube-system/

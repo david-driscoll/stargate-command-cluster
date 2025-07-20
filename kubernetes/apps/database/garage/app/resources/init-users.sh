@@ -15,6 +15,10 @@ $GARAGE_CMD bucket create iris || true
 $GARAGE_CMD bucket allow --read --write --owner iris --key authentik
 $GARAGE_CMD bucket allow --read --write iris --key cluster-user
 $GARAGE_CMD bucket website --allow iris
+$GARAGE_CMD key import -n mysql --yes "$GARAGE_USER_MYSQL" "$GARAGE_PASSWORD_MYSQL" || true
+$GARAGE_CMD bucket create mysql || true
+$GARAGE_CMD bucket allow --read --write --owner mysql --key mysql
+$GARAGE_CMD bucket allow --read --write mysql --key cluster-user
 $GARAGE_CMD key import -n postgres --yes "$GARAGE_USER_POSTGRES" "$GARAGE_PASSWORD_POSTGRES" || true
 $GARAGE_CMD bucket create postgres || true
 $GARAGE_CMD bucket allow --read --write --owner postgres --key postgres

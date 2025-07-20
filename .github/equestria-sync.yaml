@@ -23,9 +23,8 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/database/
     deleteOrphaned: true
     exclude: |
-      garage/users/generated/
-      garage/users/resources/
-      garage/users/garage-users.yaml
+      garage/app/generated/
+      garage/app/resources/
       garage/config.yaml
       postgres/app/users/
       postgres/app/init/

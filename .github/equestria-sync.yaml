@@ -48,32 +48,18 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/volsync-system/
     dest: kubernetes/apps/volsync-system/
     deleteOrphaned: true
-  - source: kubernetes/components/ingress/
-    dest: kubernetes/components/ingress/
-    deleteOrphaned: true
-  - source: kubernetes/components/tailscale/
-    dest: kubernetes/components/tailscale/
-    deleteOrphaned: true
-  - source: kubernetes/components/volsync/
-    dest: kubernetes/components/volsync/
+  - source: kubernetes/components/
+    dest: kubernetes/components/
+    exclude: |
+      common/cluster-secrets.sops.yaml
+      common/sops-age.sops.yaml
     deleteOrphaned: true
   - source: kubernetes/apps/openebs-system/
     dest: kubernetes/apps/openebs-system/
     deleteOrphaned: true
-  - source: kubernetes/components/garage-access-key/
-    dest: kubernetes/components/garage-access-key/
+  - source: kubernetes/apps/observability/
+    dest: kubernetes/apps/observability/
     deleteOrphaned: true
-  - source: kubernetes/components/postgres/
-    dest: kubernetes/components/postgres/
-    deleteOrphaned: true
-  - source: kubernetes/components/mysql/
-    dest: kubernetes/components/mysql/
-    deleteOrphaned: true
-  - source: kubernetes/components/common/
-    dest: kubernetes/components/common/
-    exclude: |
-      cluster-secrets.sops.yaml
-      sops-age.sops.yaml
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: talos/patches/global/machine-kubelet.yaml

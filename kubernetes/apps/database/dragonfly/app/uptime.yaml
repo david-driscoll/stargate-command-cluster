@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=../../../observability/uptime-kuma/autokuma/crds.schema.json
+# yaml-language-server: $schema=../../../observability/crds/kuma/kuma.schema.json
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:

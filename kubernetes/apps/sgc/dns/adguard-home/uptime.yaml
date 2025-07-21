@@ -12,7 +12,7 @@ spec:
     interval: 300
     retry_interval: 60
     max_retries: 3
-    parent_name: "${CLUSTER_CNAME}-apps"
+    parent_name: "apps"
 ---
 # yaml-language-server: $schema=../../../observability/crds/kuma/kuma.schema.json
 apiVersion: autokuma.bigboot.dev/v1

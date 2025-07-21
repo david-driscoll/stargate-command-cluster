@@ -1,0 +1,237 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app garage-sync
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 15m
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: -1
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext: &podSecurityContext
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      job:
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
+        serviceAccount:
+          name: *app
+        type: job
+        job:
+          backoffLimit: 100
+          suspend: false
+          ttlSecondsAfterFinished: 600
+        initContainers: &init
+          init:
+            image:
+              repository: alpine/k8s
+              tag: 1.33.3@sha256:47e4ea4c263fb4e14e51d7c5ca841da756673f18e2340f38c0cf1f7219d05e85
+              pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
+            command:
+            - /bin/sh
+            - -c
+            - /scripts/bootstrap-garage.sh
+            env:
+              TZ: "${TIMEZONE}"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+        containers: &job
+          job:
+            image:
+              repository: alpine/k8s
+              tag: 1.33.3@sha256:47e4ea4c263fb4e14e51d7c5ca841da756673f18e2340f38c0cf1f7219d05e85
+              pullPolicy: IfNotPresent
+            securityContext:
+              readOnlyRootFilesystem: false
+            command:
+            - /bin/sh
+            - -c
+            - /scripts/init-users.sh
+            env:
+              PUID: 568
+              PGID: 568
+              UMASK: 002
+              TZ: "${TIMEZONE}"
+              GARAGE_USER_CLUSTER_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-cluster-user
+                    key: id
+              GARAGE_PASSWORD_CLUSTER_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-cluster-user
+                    key: password
+              GARAGE_USER_AUTHENTIK:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_AUTHENTIK:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-garage-access-key
+                    key: password
+              GARAGE_USER_BACKREST:
+                valueFrom:
+                  secretKeyRef:
+                    name: backrest-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_BACKREST:
+                valueFrom:
+                  secretKeyRef:
+                    name: backrest-garage-access-key
+                    key: password
+              GARAGE_USER_MYSQL:
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_MYSQL:
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-garage-access-key
+                    key: password
+              GARAGE_USER_POSTGRES:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_POSTGRES:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-garage-access-key
+                    key: password
+              GARAGE_USER_TIVI_SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-garage-access-key
+                    key: id
+              GARAGE_PASSWORD_TIVI_SYNC:
+                valueFrom:
+                  secretKeyRef:
+                    name: tivi-sync-garage-access-key
+                    key: password
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+      cron:
+        labels:
+          kustomize.toolkit.fluxcd.io/force: enabled
+        serviceAccount:
+          name: *app
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "*/10 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        initContainers: *init
+        containers: *job
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: ${APP}-config
+        globalMounts:
+        - path: /etc/garage.toml
+          subPath: garage.toml
+      scripts:
+        enabled: true
+        type: configMap
+        name: ${APP}-scripts
+        defaultMode: 493
+        globalMounts:
+        - path: /scripts/bootstrap-garage.sh
+          subPath: bootstrap-garage.sh
+        - path: /scripts/init-users.sh
+          subPath: init-users.sh
+    serviceAccount:
+      *app : {}
+    rbac:
+      roles:
+        *app :
+          type: ClusterRole
+          rules:
+          - apiGroups: ["apiextensions.k8s.io"]
+            resources: ["customresourcedefinitions"]
+            verbs: ["get", "list", "watch", "create", "patch"]
+          - apiGroups: ["deuxfleurs.fr"]
+            resources: ["garagenodes"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+        garage-secret-creator:
+          type: Role
+          forceRename: garage-secret-creator
+          rules:
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list", "watch"]
+          - apiGroups: [""]
+            resources: ["secrets"]
+            verbs: ["get", "create", "update", "patch"]
+          - apiGroups: [""]
+            resources: ["configmaps"]
+            verbs: ["get", "create", "update", "patch"]
+          - apiGroups: [""]
+            resources: ["pods/exec"]
+            verbs: ["create", "get"]
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
+      bindings:
+        *app :
+          type: ClusterRoleBinding
+          subjects:
+          - kind: ServiceAccount
+            name: *app
+            namespace: ${NAMESPACE}
+          roleRef:
+            kind: ClusterRole
+            name: *app
+        garage-secret-creator:
+          type: RoleBinding
+          forceRename: garage-secret-creator
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: garage-secret-creator
+          subjects:
+          - kind: ServiceAccount
+            name: *app
+            namespace: ${NAMESPACE}

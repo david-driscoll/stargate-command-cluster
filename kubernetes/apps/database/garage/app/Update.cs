@@ -174,7 +174,7 @@ var serializer = new SerializerBuilder().Build();
 #endregion
 
 #region Templates
-var minioUsersRelease = "kubernetes/apps/database/garage/app/garage.yaml";
+var minioUsersRelease = "kubernetes/apps/database/garage/app/sync.yaml";
 var minioUserReleaseMapping = await ReadStream(minioUsersRelease).SingleAsync();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();

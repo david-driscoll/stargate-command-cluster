@@ -34,6 +34,15 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "*/10 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
         pod:
           securityContext:
             runAsNonRoot: false

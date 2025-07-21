@@ -60,7 +60,6 @@ david-driscoll/equestria-cluster:
     deleteOrphaned: true
   - source: kubernetes/apps/observability/
     dest: kubernetes/apps/observability/
-    deleteOrphaned: true
     exclude: |
       autokuma/
       uptime-kuma/

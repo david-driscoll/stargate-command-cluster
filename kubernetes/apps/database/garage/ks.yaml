@@ -33,3 +33,4 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: ${GARAGE_VOLUME_CAPACITY}Gi
+      VOLSYNC_ACCESSMODES: ReadWriteMany

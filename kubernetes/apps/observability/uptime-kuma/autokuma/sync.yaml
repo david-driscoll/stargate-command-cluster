@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kuma-sync
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 15m
+  timeout: 5m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: false
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          *app :
+            image:
+              repository: mcr.microsoft.com/dotnet/sdk
+              tag: 10.0-preview
+              pullPolicy: Always
+            securityContext:
+              readOnlyRootFilesystem: false
+            env:
+              TZ: "${TIMEZONE}"
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                cpu: 100m
+                memory: 512Mi
+            command:
+              - dotnet
+              - run
+              - /script/PopulateCluster.cs
+
+    persistence:
+      data:
+        existingClaim: *app
+      script:
+        type: configMap
+        name: PopulateCluster.cs
+        defaultMode: 493
+      cluster_kubeconfig:
+        type: secret
+        name: ${APP}-${CLUSTER_CNAME}-kubeconfig
+        globalMounts:
+          - path: /config/${APP}-${CLUSTER_CNAME}-kubeconfig
+            subPath: ${APP}-${CLUSTER_CNAME}-kubeconfig
+      equestria_kubeconfig:
+        type: secret
+        name: ${APP}-equestria-kubeconfig
+        globalMounts:
+          - path: /config/${APP}-equestria-kubeconfig
+            subPath: ${APP}-equestria-kubeconfig
+
+    defaultPodOptions:
+      securityContext:
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsNonRoot: false
+        seccompProfile:
+          type: RuntimeDefault
+      shareProcessNamespace: true

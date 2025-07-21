@@ -5,3 +5,11 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+  - ./cluster-kubeconfig.yaml
+  - ./equestria-kubeconfig.yaml
+  - ./sync.yaml
+configMapGenerator:
+- name: ${APP}-config
+  files:
+  - kubeconfig-template.yaml=./resources/kubeconfig-template.yaml
+  - PopulateCluster.cs=./resources/PopulateCluster.cs

@@ -8,4 +8,5 @@ components:
   - ../../components/repos/app-template4
 resources:
   - ./secret-store.yaml
+  - ./crds/ks.yaml
   - ./uptime-kuma/ks.yaml

@@ -61,8 +61,6 @@ spec:
               - /script/PopulateCluster.cs
 
     persistence:
-      data:
-        existingClaim: *app
       script:
         type: configMap
         name: PopulateCluster.cs

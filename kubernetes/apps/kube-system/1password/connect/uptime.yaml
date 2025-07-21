@@ -3,11 +3,11 @@
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: ${CLUSTER_CNAME}-${APP}
+  name: ${APP}
 spec:
   config:
     active: true
-    name: 1Password Connect
+    name: 1Password Connect (${CLUSTER_TITLE})
     type: http
     url: https://op-connect.${CLUSTER_DOMAIN}/health
     method: GET

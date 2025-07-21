@@ -64,6 +64,7 @@ david-driscoll/equestria-cluster:
     exclude: |
       autokuma/
       uptime-kuma/
+      kustomization.yaml
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: talos/patches/global/machine-kubelet.yaml

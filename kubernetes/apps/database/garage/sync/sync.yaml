@@ -168,7 +168,7 @@ spec:
       config:
         enabled: true
         type: secret
-        name: ${APP}-config
+        name: garage-config
         globalMounts:
         - path: /etc/garage.toml
           subPath: garage.toml

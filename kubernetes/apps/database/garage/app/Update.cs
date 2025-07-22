@@ -174,7 +174,7 @@ var serializer = new SerializerBuilder().Build();
 #endregion
 
 #region Templates
-var minioUsersRelease = "kubernetes/apps/database/garage/app/sync.yaml";
+var minioUsersRelease = "kubernetes/apps/database/garage/sync/sync.yaml";
 var minioUserReleaseMapping = await ReadStream(minioUsersRelease).SingleAsync();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
@@ -290,7 +290,7 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
 
 minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/scripts/init-users.sh"]);
 
-File.WriteAllText("kubernetes/apps/database/garage/app/resources/init-users.sh", $"""
+File.WriteAllText("kubernetes/apps/database/garage/sync/resources/init-users.sh", $"""
 #!/bin/sh
 set -x
 # Set the namespace and pod name for garage

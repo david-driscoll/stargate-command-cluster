@@ -25,8 +25,9 @@ david-driscoll/equestria-cluster:
     exclude: |
       garage/app/generated/
       garage/app/resources/
+      garage/sync/resources/
       garage/config.yaml
-      garage/app/sync.yaml
+      garage/sync/sync.yaml
       postgres/app/cluster.yaml
       postgres/app/users/
       postgres/app/init/

@@ -18,10 +18,10 @@ rpc_secret = "{{ .secret }}"
 
 bootstrap_peers = []
 
-# [kubernetes_discovery]
-# namespace = "${NAMESPACE}"
-# service_name = "garage"
-# skip_crd = false
+[kubernetes_discovery]
+namespace = "${NAMESPACE}"
+service_name = "garage"
+skip_crd = false
 
 [s3_api]
 s3_region = "garage"

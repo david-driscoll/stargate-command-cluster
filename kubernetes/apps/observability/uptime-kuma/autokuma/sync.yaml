@@ -51,7 +51,7 @@ spec:
           *app :
             image:
               repository: mcr.microsoft.com/dotnet/sdk
-              tag: 10.0-preview
+              tag: 10.0-preview@sha256:aa91dfd21ccb90953974025d59ba78fc0375ca6a63cfc09c1e1ea4c81582bf72
               pullPolicy: Always
             securityContext:
               readOnlyRootFilesystem: false

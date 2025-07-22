@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/database/postgres/app
   dependsOn:
     - name: cloudnative-pg
-    - name: garage
+    - name: rclone-s3
   prune: true
   wait: true
   force: true
@@ -53,7 +53,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/garage-access-key
+    - ../../../../components/s3-access-key
   postBuild:
     substitute:
       APP: *app

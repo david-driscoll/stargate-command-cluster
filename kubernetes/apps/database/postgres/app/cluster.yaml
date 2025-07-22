@@ -50,7 +50,7 @@ spec:
       createdb: true
       createrole: true
       passwordSecret:
-        name: authentik-garage-password
+        name: authentik-s3-password
   bootstrap:
     initdb:
       database: ${CLUSTER_CNAME}
@@ -62,11 +62,11 @@ spec:
     enabled: true
     isWALArchiver: true
     parameters:
-      barmanObjectName: ${APP}-garage
+      barmanObjectName: ${APP}-s3
   externalClusters:
   - name: ${APP}-backup
     plugin:
       name: barman-cloud.cloudnative-pg.io
       parameters:
-        barmanObjectName: ${APP}-garage
+        barmanObjectName: ${APP}-s3
         serverName: ${APP}

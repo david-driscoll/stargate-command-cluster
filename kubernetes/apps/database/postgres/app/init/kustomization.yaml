@@ -9,4 +9,4 @@ resources:
   - ../prometheusrule.yaml
   - ../scheduledbackup.yaml
 components:
-  - ../../garage-access-key
+  - ../../s3-access-key

@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/database/mysql/app
   dependsOn:
     - name: mysql-operator
-    - name: garage
+    - name: rclone-s3
   prune: true
   wait: true
   force: true
@@ -53,7 +53,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/garage-access-key
+    - ../../../../components/s3-access-key
   postBuild:
     substitute:
       APP: *app

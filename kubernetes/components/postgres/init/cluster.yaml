@@ -64,12 +64,12 @@ spec:
       enabled: false
       isWALArchiver: true
       parameters:
-        barmanObjectName: ${APP}-garage
+        barmanObjectName: ${APP}-s3
 
   externalClusters:
     - name: ${APP}-backup
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: ${APP}-garage
+          barmanObjectName: ${APP}-s3
           serverName: ${APP}-postgres-backup

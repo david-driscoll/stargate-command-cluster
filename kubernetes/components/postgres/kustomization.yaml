@@ -9,4 +9,4 @@ resources:
   - ./scheduledbackup.yaml
   - ./postgres-user.yaml
 components:
-  - ../garage-access-key
+  - ../s3-access-key

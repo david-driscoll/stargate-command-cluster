@@ -30,3 +30,5 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      VOLSYNC_CAPACITY: ${S3_VOLUME_CAPACITY}Gi
+      VOLSYNC_ACCESSMODES: ReadWriteMany

@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: tivi-sync-garage-access-key
+  name: tivi-sync-s3-access-key
 spec:
   refreshPolicy: Periodic
   refreshInterval: "5m"
@@ -11,7 +11,7 @@ spec:
     kind: ClusterSecretStore
     name: database
   target:
-    name: tivi-sync-garage-access-key
+    name: tivi-sync-s3-access-key
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
@@ -33,4 +33,4 @@ spec:
         region: "tivi-sync"
   dataFrom:
     - extract:
-        key: "tivi-sync-garage-password"
+        key: "tivi-sync-s3-password"

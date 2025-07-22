@@ -104,7 +104,7 @@ await foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("ku
       throw new FileNotFoundException($"Component file {component.path} does not exist.");
     }
     await ResolveSubComponents(allComponents, component);
-    if (allComponents.Contains("garage-access-key"))
+    if (allComponents.Contains("s3-access-key"))
     {
       AddBucket(documentName, documentName, false);
     }
@@ -257,8 +257,8 @@ envReference.Children.Where(z => z.Key.ToString().StartsWith("R3_USER_") || z.Ke
 
 List<string> commandBuilder = ["serve", "s3", "--cache-dir", "/cache", "--vfs-cache-mode", "writes"];
 commandBuilder.AddRange(["--auth-key", "$R3_USER_CLUSTER_USER,$R3_PASSWORD_CLUSTER_USER"]);
-envReference.Children.Add(new YamlScalarNode($"R3_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "id"));
-envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "password"));
+envReference.Children.Add(new YamlScalarNode($"R3_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"s3-cluster-user", "id"));
+envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"s3-cluster-user", "password"));
 foreach (var user in minioConfig.Users.Order())
 {
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
@@ -336,7 +336,7 @@ class MinioConfig
     .Select(user =>
     {
       var username = documentNamesMapping.TryGetValue(user.Username, out var mappedUsername) ? mappedUsername : user.Username;
-      return (username, $"{username}-garage-access-key", $"{username}-garage-password", user.Buckets.ToImmutableHashSet());
+      return (username, $"{username}-s3-access-key", $"{username}-s3-password", user.Buckets.ToImmutableHashSet());
     })
     );
   }

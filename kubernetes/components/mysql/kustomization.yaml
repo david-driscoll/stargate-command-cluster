@@ -6,4 +6,4 @@ resources:
   - ./cluster.yaml
   - ./externalsecret.yaml
 components:
-  - ../garage-access-key
+  - ../s3-access-key

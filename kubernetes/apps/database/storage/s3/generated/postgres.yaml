@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: postgres-garage-access-key
+  name: postgres-s3-access-key
 spec:
   refreshPolicy: Periodic
   refreshInterval: "5m"
@@ -11,7 +11,7 @@ spec:
     kind: ClusterSecretStore
     name: database
   target:
-    name: postgres-garage-access-key
+    name: postgres-s3-access-key
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
@@ -33,4 +33,4 @@ spec:
         region: "postgres"
   dataFrom:
     - extract:
-        key: "postgres-garage-password"
+        key: "postgres-s3-password"

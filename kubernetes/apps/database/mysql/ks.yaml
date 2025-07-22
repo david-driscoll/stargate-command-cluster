@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/database/mysql/app
   dependsOn:
     - name: mysql-operator
-    - name: rclone-s3
+    - name: storage-s3
   prune: true
   wait: true
   force: true

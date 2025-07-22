@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/database/postgres/app
   dependsOn:
     - name: cloudnative-pg
-    - name: rclone-s3
+    - name: storage-s3
   prune: true
   wait: true
   force: true

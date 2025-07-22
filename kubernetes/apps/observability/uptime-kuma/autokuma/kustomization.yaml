@@ -13,3 +13,5 @@ configMapGenerator:
   files:
   - kubeconfig-template.yaml=./resources/kubeconfig-template.yaml
   - PopulateCluster.cs=./resources/PopulateCluster.cs
+generatorOptions:
+  disableNameSuffixHash: true

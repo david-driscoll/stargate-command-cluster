@@ -210,8 +210,8 @@ foreach (var user in minioConfig.Users)
   var yaml = File.ReadAllText(userTemplate)
   //.Replace("${APP}", key)
   .Replace("${CLUSTER_CNAME}", user.Username)
-  .Replace("rclone-cluster-user", user.AccessKeyName)
-  .Replace("rclone-cluster-password", user.PasswordName)
+  .Replace("s3-cluster-user", user.AccessKeyName)
+  .Replace("s3-cluster-password", user.PasswordName)
   ;
   var fileName = Path.Combine(usersDirectory, $"{user.Username}.yaml");
   var sopsFileName = Path.Combine(usersDirectory, $"{user.Username}.sops.yaml");

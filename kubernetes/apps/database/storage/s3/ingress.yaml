@@ -12,30 +12,12 @@ spec:
   entryPoints:
   - websecure
   routes:
-  - match: Host(`web.${CLUSTER_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: ${APP}
-      port: web-api
-      passHostHeader: true
-    middlewares:
-    - name: internal-network
-      namespace: network
   - match: Host(`s3.${CLUSTER_DOMAIN}`)
     kind: Rule
     services:
     - name: ${APP}
-      port: s3-api
+      port: s3
       passHostHeader: true
     middlewares:
     - name: internal-network
-      namespace: network
-  - match: Host(`${APP}.${CLUSTER_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: garage-webui
-      port: http
-      passHostHeader: true
-    middlewares:
-    - name: authenticated-user
       namespace: network

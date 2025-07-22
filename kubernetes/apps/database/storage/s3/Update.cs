@@ -147,7 +147,7 @@ documentNamesMapping = documentNamesMapping.ToDictionary(
     kvp => kvp.Value.Replace("${CLUSTER_CNAME}", clusterCname),
     StringComparer.OrdinalIgnoreCase);
 
-var config = "kubernetes/apps/database/garage/config.yaml";
+var config = "kubernetes/apps/database/storage/config.yaml";
 if (!File.Exists(config))
 {
   File.WriteAllText(config, "");
@@ -174,14 +174,13 @@ var serializer = new SerializerBuilder().Build();
 #endregion
 
 #region Templates
-var minioUsersRelease = "kubernetes/apps/database/garage/sync/sync.yaml";
+var minioUsersRelease = "kubernetes/apps/database/storage/s3/helmrelease.yaml";
 var minioUserReleaseMapping = await ReadStream(minioUsersRelease).SingleAsync();
 var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlScalarNode>().Single().Value;
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
-var cronController = controllers.Query($"/cron").OfType<YamlMappingNode>().Single();
-var jobController = controllers.Query($"/job").OfType<YamlMappingNode>().Single();
-var containers = jobController.Query($"/containers").OfType<YamlMappingNode>().Single();
-var minioUsersStep = containers.Query($"/job").OfType<YamlMappingNode>().Single();
+var controller = controllers.Children.Values.OfType<YamlMappingNode>().Single();
+var containers = controller.Query($"/containers").OfType<YamlMappingNode>().Single();
+var minioUsersStep = containers.Children.Values.OfType<YamlMappingNode>().Single();
 
 var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single();
 
@@ -195,9 +194,9 @@ var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single
 
 #endregion
 
-var userTemplate = "kubernetes/apps/database/garage/app/generated/cluster-user.yaml";
+var userTemplate = "kubernetes/apps/database/storage/s3/generated/cluster-user.yaml";
 // We also want to update the kustomization.yaml file to include this user.
-var kustomizationPath = "kubernetes/apps/database/garage/app/generated/kustomization.yaml";
+var kustomizationPath = "kubernetes/apps/database/storage/s3/generated/kustomization.yaml";
 var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
 var buckets = ImmutableArray.CreateBuilder<string>();
@@ -211,8 +210,8 @@ foreach (var user in minioConfig.Users)
   var yaml = File.ReadAllText(userTemplate)
   //.Replace("${APP}", key)
   .Replace("${CLUSTER_CNAME}", user.Username)
-  .Replace("garage-cluster-user", user.AccessKeyName)
-  .Replace("garage-cluster-password", user.PasswordName)
+  .Replace("rclone-cluster-user", user.AccessKeyName)
+  .Replace("rclone-cluster-password", user.PasswordName)
   ;
   var fileName = Path.Combine(usersDirectory, $"{user.Username}.yaml");
   var sopsFileName = Path.Combine(usersDirectory, $"{user.Username}.sops.yaml");
@@ -246,35 +245,29 @@ foreach (var user in minioConfig.Users)
     }).WaitForExit();
   }
 }
-var referenceSecret = envReference["GARAGE_USER_CLUSTER_USER"];
-List<string> commandBuilder = [];
-envReference.Children.Where(z => z.Key.ToString().StartsWith("GARAGE_USER_") || z.Key.ToString().StartsWith("GARAGE_PASSWORD_"))
+var referenceSecret = envReference["R3_USER_CLUSTER_USER"] ?? envReference["R3_PASSWORD_CLUSTER_USER"] ?? throw new InvalidOperationException("Reference secret not found");
+envReference.Children.Where(z => z.Key.ToString().StartsWith("R3_USER_") || z.Key.ToString().StartsWith("R3_PASSWORD_"))
+  .ToList()
+  .ForEach(z => envReference.Children.Remove(z.Key));
+envReference.Children.Where(z => z.Key.ToString().StartsWith("R3_USER_") || z.Key.ToString().StartsWith("R3_PASSWORD_"))
   .ToList()
   .ForEach(z => envReference.Children.Remove(z.Key));
 
-commandBuilder.Add($"key import -n cluster-user --yes \"$GARAGE_USER_CLUSTER_USER\" \"$GARAGE_PASSWORD_CLUSTER_USER\" || true");
-commandBuilder.Add($"key allow --create-bucket cluster-user");
-envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "id"));
-envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "password"));
+
+
+List<string> commandBuilder = ["serve", "s3", "--cache-dir", "/cache", "--vfs-cache-mode", "writes"];
+commandBuilder.AddRange(["--auth-key", "$R3_USER_CLUSTER_USER,$R3_PASSWORD_CLUSTER_USER"]);
+envReference.Children.Add(new YamlScalarNode($"R3_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "id"));
+envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"garage-cluster-user", "password"));
 foreach (var user in minioConfig.Users.Order())
 {
   var envKey = user.Username.ToUpperInvariant().Replace("-", "_");
-  commandBuilder.Add($"key import -n {user.Username} --yes \"$GARAGE_USER_{envKey}\" \"$GARAGE_PASSWORD_{envKey}\" || true");
-
-  foreach (var bucket in user.Buckets.Order().Distinct())
-  {
-    commandBuilder.Add($"bucket create {bucket.Name} || true");
-    commandBuilder.Add($"bucket allow --read --write --owner {bucket.Name} --key {user.Username}");
-    commandBuilder.Add($"bucket allow --read --write {bucket.Name} --key cluster-user");
-    if (bucket.IsPublic)
-    {
-      commandBuilder.Add($"bucket website --allow {bucket.Name}");
-    }
-  }
-
-  envReference.Children.Add(new YamlScalarNode($"GARAGE_USER_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "id"));
-  envReference.Children.Add(new YamlScalarNode($"GARAGE_PASSWORD_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "password"));
+  commandBuilder.AddRange(["--auth-key", $"$R3_USER_{envKey},$R3_PASSWORD_{envKey}"]);
+  envReference.Children.Add(new YamlScalarNode($"R3_USER_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "id"));
+  envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "password"));
 }
+
+commandBuilder.Add("local:/data");
 static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy, string name, string key)
 {
   var yaml = serializer.Serialize(copy);
@@ -288,18 +281,7 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
   return userNode;
 }
 
-minioUsersStep.Children["command"] = new YamlSequenceNode(["/bin/sh", "-c", "/scripts/init-users.sh"]);
-
-File.WriteAllText("kubernetes/apps/database/garage/sync/resources/init-users.sh", $"""
-#!/bin/sh
-set -x
-# Set the namespace and pod name for garage
-NAMESPACE="database"
-POD=$(kubectl get pods -n database -l app.kubernetes.io/controller=garage -o json | jq -r '.items[0].metadata.name')
-GARAGE_CMD="kubectl exec -n $NAMESPACE $POD -- ./garage"
-
-{string.Join("\n", commandBuilder.Select(cmd => "$GARAGE_CMD " + cmd))}
-""");
+minioUsersStep.Children["command"] = new YamlSequenceNode(commandBuilder.Select(cmd => new YamlScalarNode(cmd)));
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1

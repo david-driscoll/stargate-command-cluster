@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: rclone-cluster-password
+    name: s3-cluster-password
 stringData:
     id: ENC[AES256_GCM,data:H1i2ZEPX4wyspMwTUFMgMt/cpYtW2E8YV98=,iv:i+cPrwU8sKRsJ6sEVIoz83+Xz8Fcu34z7As7aFc1bqM=,tag:SXWAXU2Vm9H8kEP4Le6JlQ==,type:str]
     password: ENC[AES256_GCM,data:nsbAJ/WbX+xQhAaxaTeZAparidUlfslqA51Em3rFwBh8k42zB/HaOh7F0HuL7cVS8Iqj2olTPkB+7ZDFbybluQ==,iv:O/JaVhFPS2Otyxjkj1YmfFW2V2d3DY/Vu42Szlj2MqY=,tag:vpwOHJF++M1kXwKctv6Hdw==,type:str]
@@ -35,8 +35,8 @@ sops:
             eW1XMXJDNkhjcjRFYVUrZUd6dHhKdDAKLafnCWC5WFb19gGGKJy99PmyPkxiAX4l
             BgtHksuy3hfdf0z9R28ari+L7zWYPuETF5hm1mdJ0aB1vDZF7zOzZw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-22T17:07:00Z"
-    mac: ENC[AES256_GCM,data:1lgH6gXBj7cmOOOhtRrwfWWUEBLF53fhhzrSIkSDeRhf4c1+NchNET6KWPG0Sa4ebCLizk5yjvmGOU9rPxm8ixdrHSwXpZVqWXjSKORwWBEc1vN2A+TeFoIFAH6BBDxOkPoCvhrb6/fu+uL12FUqk7U2clo5YOsHZg4a6QNQAhs=,iv:ezJjFU9Vh9iX7ymce0u8XIuVYvopyQeGRyL0f1BoxWE=,tag:yW4ft2kO5A0nfcJ63iFADA==,type:str]
+    lastmodified: "2025-07-22T23:51:27Z"
+    mac: ENC[AES256_GCM,data:4x/uVkrC68YE/eM4X2GvQ3QzEZBIc9ZofdJcHjlHVTBOvMS74PO4RsysCRsSi5eYMrTiVtIZHWptUW0ogw9rMHu65CZhxfTg+bF9UPMR+gSBBy7sbFKtszNC3HGHrb3fPdnRE4x53kLdJad5Cak76mXpiFnJl4uXqT4IIdSgkvc=,iv:r5+ao1fJr64EQm0ghXhiZXwO4VzT5LlmAxitwJoLNVE=,tag:OmCkwE5ZdHayed8688S20g==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
     version: 3.10.2

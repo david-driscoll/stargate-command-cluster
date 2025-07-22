@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: rclone-cluster-user
+  name: s3-cluster-user
 spec:
   refreshPolicy: Periodic
   refreshInterval: "5m"
@@ -11,7 +11,7 @@ spec:
     kind: ClusterSecretStore
     name: database
   target:
-    name: rclone-cluster-user
+    name: s3-cluster-user
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
@@ -33,4 +33,4 @@ spec:
         region: "${CLUSTER_CNAME}"
   dataFrom:
     - extract:
-        key: "rclone-cluster-password"
+        key: "s3-cluster-password"

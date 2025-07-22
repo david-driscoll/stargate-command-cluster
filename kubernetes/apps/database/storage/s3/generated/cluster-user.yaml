@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: postgres-sgc-garage-access-key
+  name: rclone-cluster-user
 spec:
   refreshPolicy: Periodic
   refreshInterval: "5m"
@@ -11,7 +11,7 @@ spec:
     kind: ClusterSecretStore
     name: database
   target:
-    name: postgres-sgc-garage-access-key
+    name: rclone-cluster-user
     creationPolicy: Owner
     deletionPolicy: Delete
     template:
@@ -22,17 +22,6 @@ spec:
           reloader.stakater.com/auto: "true"
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
-        # CONSOLE_ACCESS_KEY: "postgres-sgc"
-        # CONSOLE_SECRET_KEY: "{{ .password }}"
-        # credentials: |
-        #   [default]
-        #   aws_access_key_id = postgres-sgc
-        #   aws_secret_access_key = {{ .password }}
-        # config: |
-        #   [default]
-        #   region=home
-        S3_PROVIDER: Minio
-        S3_ENDPOINT: https://s3.${CLUSTER_DOMAIN}
         AWS_ACCESS_KEY_ID: "{{ .id }}"
         AWS_SECRET_ACCESS_KEY: "{{ .password }}"
         url: https://{{ .id }}:{{ .password }}@s3.${CLUSTER_DOMAIN}
@@ -41,7 +30,7 @@ spec:
         credential: "{{ .password }}"
         password: "{{ .password }}"
         endpoint: "https://s3.${CLUSTER_DOMAIN}"
-        region: "garage"
+        region: "${CLUSTER_CNAME}"
   dataFrom:
     - extract:
-        key: "postgres-sgc-garage-password"
+        key: "rclone-cluster-password"

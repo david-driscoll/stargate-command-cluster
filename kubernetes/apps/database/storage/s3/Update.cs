@@ -267,7 +267,7 @@ foreach (var user in minioConfig.Users.Order())
   envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "password"));
 }
 
-commandBuilder.Add("local:/data");
+commandBuilder.Add("/data");
 static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy, string name, string key)
 {
   var yaml = serializer.Serialize(copy);

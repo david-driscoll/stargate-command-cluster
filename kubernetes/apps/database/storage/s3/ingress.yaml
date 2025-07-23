@@ -16,7 +16,7 @@ spec:
     kind: Rule
     services:
     - name: ${APP}
-      port: s3
+      port: http
       passHostHeader: true
     middlewares:
     - name: internal-network

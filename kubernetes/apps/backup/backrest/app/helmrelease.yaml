@@ -95,6 +95,8 @@ spec:
     persistence:
       app:
         existingClaim: ${APP}
+        globalMounts:
+          - path: /app/data/
       cache:
         type: emptyDir
         globalMounts:

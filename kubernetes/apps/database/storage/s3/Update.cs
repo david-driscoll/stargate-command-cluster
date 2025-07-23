@@ -255,7 +255,7 @@ envReference.Children.Where(z => z.Key.ToString().StartsWith("R3_USER_") || z.Ke
 
 
 
-List<string> commandBuilder = ["serve", "s3", "--cache-dir", "/cache", "--vfs-cache-mode", "writes"];
+List<string> commandBuilder = ["rclone", "serve", "s3", "--cache-dir", "/cache", "--vfs-cache-mode", "writes"];
 commandBuilder.AddRange(["--auth-key", "$R3_USER_CLUSTER_USER,$R3_PASSWORD_CLUSTER_USER"]);
 envReference.Children.Add(new YamlScalarNode($"R3_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"s3-cluster-user", "id"));
 envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"s3-cluster-user", "password"));

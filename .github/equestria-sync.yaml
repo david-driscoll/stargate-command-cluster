@@ -26,6 +26,7 @@ david-driscoll/equestria-cluster:
       storage/config.yaml
       storage/s3/generated/
       storage/s3/helmrelease.yaml
+      storage/s3/resources/
       postgres/app/cluster.yaml
       postgres/app/users/
       postgres/app/init/

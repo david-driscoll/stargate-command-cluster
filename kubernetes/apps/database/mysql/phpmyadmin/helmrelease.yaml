@@ -38,7 +38,7 @@ spec:
           *app :
             image:
               repository: phpmyadmin
-              tag: 5.2.2-apache@sha256:167d118153d351966f8a245b7d0dbaeaa9c1b26d52bddb19f452b4ba21d4364d
+              tag: 5.2.2-apache@sha256:a2b082df312f6f9b83bf97aa44159eacaf1ae701280a03ff6072253a3bb7d876
               pullPolicy: IfNotPresent
             env:
               PMA_ARBITRARY: 1

@@ -72,7 +72,7 @@ spec:
             - $R3_USER_POSTGRES,$R3_PASSWORD_POSTGRES
             - --auth-key
             - $R3_USER_TIVI_SYNC,$R3_PASSWORD_TIVI_SYNC
-            - local:/data
+            - /data
             env:
               PUID: 568
               PGID: 568

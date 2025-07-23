@@ -53,6 +53,7 @@ spec:
             securityContext:
               readOnlyRootFilesystem: false
             command:
+            - rclone
             - serve
             - s3
             - --cache-dir

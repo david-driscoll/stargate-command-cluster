@@ -13,6 +13,8 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
+    - name: storage-s3
+      namespace: database
     - name: traefik-internal
       namespace: network
   path: ./kubernetes/apps/backup/backrest/app

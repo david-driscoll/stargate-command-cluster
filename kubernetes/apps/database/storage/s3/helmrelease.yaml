@@ -135,6 +135,12 @@ spec:
         globalMounts:
         - path: /scripts/start.sh
           subPath: start.sh
+    service:
+      *app :
+        ports:
+          - name: http
+            port: 80
+            targetPort: http
     serviceAccount:
       *app : {}
     rbac:

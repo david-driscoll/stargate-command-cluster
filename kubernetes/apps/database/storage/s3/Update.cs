@@ -256,6 +256,8 @@ envReference.Children.Where(z => z.Key.ToString().StartsWith("R3_USER_") || z.Ke
 
 
 List<string> commandBuilder = ["rclone", "serve", "s3", "--cache-dir", "/cache", "--vfs-cache-mode", "writes"];
+List<string> startBuilder = ["#!/bin/sh", ""];
+
 commandBuilder.AddRange(["--auth-key", "$R3_USER_CLUSTER_USER,$R3_PASSWORD_CLUSTER_USER"]);
 envReference.Children.Add(new YamlScalarNode($"R3_USER_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"s3-cluster-user", "id"));
 envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_CLUSTER_USER"), GetSecretReference(serializer, referenceSecret, $"s3-cluster-user", "password"));
@@ -265,6 +267,10 @@ foreach (var user in minioConfig.Users.Order())
   commandBuilder.AddRange(["--auth-key", $"$R3_USER_{envKey},$R3_PASSWORD_{envKey}"]);
   envReference.Children.Add(new YamlScalarNode($"R3_USER_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "id"));
   envReference.Children.Add(new YamlScalarNode($"R3_PASSWORD_{envKey}"), GetSecretReference(serializer, referenceSecret, user.AccessKeyName, "password"));
+
+  foreach (var bucket in user.Buckets.Order()) {
+    startBuilder.Add($"rclone mkdir /data/{bucket.Name}");
+  }
 }
 
 commandBuilder.Add("/data");
@@ -281,7 +287,7 @@ static YamlMappingNode GetSecretReference(ISerializer serializer, YamlNode copy,
   return userNode;
 }
 
-minioUsersStep.Children["command"] = new YamlSequenceNode(commandBuilder.Select(cmd => new YamlScalarNode(cmd)));
+minioUsersStep.Children["command"] = new YamlSequenceNode(["/scripts/start.sh"]);
 
 var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -299,6 +305,9 @@ File.WriteAllText(minioUsersRelease,
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 """ + "\n" +
 serializer.Serialize(minioUserReleaseMapping).Replace("*app:", "*app :"));
+
+startBuilder.Add(string.Join(" ", commandBuilder));
+File.WriteAllLines("kubernetes/apps/database/storage/s3/resources/start.sh", startBuilder);
 
 static async IAsyncEnumerable<YamlMappingNode> ReadStream(string path)
 {

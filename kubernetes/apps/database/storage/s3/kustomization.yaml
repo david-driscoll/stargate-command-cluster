@@ -6,3 +6,9 @@ resources:
   - ./helmrelease.yaml
   - ./ingress.yaml
   - ./generated
+configMapGenerator:
+  - files:
+      - start.sh=./resources/start.sh
+    name: ${APP}-script
+generatorOptions:
+  disableNameSuffixHash: true

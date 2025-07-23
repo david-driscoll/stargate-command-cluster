@@ -137,10 +137,10 @@ spec:
           subPath: start.sh
     service:
       *app :
+        controller: *app
         ports:
-          - name: http
-            port: 80
-            targetPort: http
+          http:
+            port: 8080
     serviceAccount:
       *app : {}
     rbac:

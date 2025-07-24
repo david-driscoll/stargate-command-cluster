@@ -5,5 +5,5 @@ kind: Secret
 metadata:
   name: backblaze-db-access-key
   annotations:
-    reflector.v1.k8s.emberstack.com/reflects: "network/backblaze-db-access-key"
+    reflector.v1.k8s.emberstack.com/reflects: "backup/backblaze-db-access-key"
     reloader.stakater.com/auto: "true"

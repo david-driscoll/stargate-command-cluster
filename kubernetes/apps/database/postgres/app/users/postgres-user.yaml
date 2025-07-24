@@ -23,14 +23,14 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        username: "${APP}"
+        username: "${CLUSTER_CNAME}"
         password: "{{ .password }}"
-        host: "${APP}-rw.${NAMESPACE}.svc.cluster.local"
+        host: "postgres-rw.${NAMESPACE}.svc.cluster.local"
         port: "5432"
-        database: "${APP}"
-        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:${APP}:${APP}:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}?password={{ .password }}&user=${APP}"
-        uri: "postgresql://${APP}:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${APP}"
+        database: "${CLUSTER_CNAME}"
+        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:${CLUSTER_CNAME}:${CLUSTER_CNAME}:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${CLUSTER_CNAME}?password={{ .password }}&user=${CLUSTER_CNAME}"
+        uri: "postgresql://${CLUSTER_CNAME}:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${CLUSTER_CNAME}"
   dataFrom:
     - extract:
         key: "postgres-user-password"

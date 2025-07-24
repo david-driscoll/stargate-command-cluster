@@ -162,9 +162,9 @@ foreach (var database in databases)
 {
   var roleName = GetName(database);
   var yaml = File.ReadAllText(userTemplate)
-  .Replace("${APP}", database)
-  .Replace("postgres-user", $"{roleName}-postgres")
+  .Replace("${CLUSTER_CNAME}", database)
   .Replace("postgres-user-password", $"{roleName}-postgres-password")
+  .Replace("postgres-user", $"{roleName}-postgres")
   ;
   var fileName = Path.Combine(usersDirectory, $"{database}.yaml");
   var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");

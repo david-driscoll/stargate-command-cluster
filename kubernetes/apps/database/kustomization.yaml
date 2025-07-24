@@ -8,6 +8,7 @@ components:
   - ../../components/repos/app-template4
 resources:
   - ./secret-store.yaml
+  - ./backblaze.yaml
   - ./postgres/ks.yaml
   # - ./mysql/ks.yaml
   - ./dragonfly/ks.yaml

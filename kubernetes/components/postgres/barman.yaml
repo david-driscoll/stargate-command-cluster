@@ -3,21 +3,21 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: ${APP}-s3
+  name: ${APP}-backblaze
 spec:
   retentionPolicy: "30d"
   configuration:
-    destinationPath: s3://${APP}/postgres/
-    endpointURL: https://s3.${CLUSTER_DOMAIN}
+    destinationPath: s3://${BACKBLAZE_DATABASE_BUCKET}/${APP}/
+    endpointURL: https://${BACKBLAZE_DOMAIN}/
     endpointCA:
       name: ca-bundle
       key: ca-certificates.crt
     s3Credentials:
       accessKeyId:
-        name: ${APP}-s3-access-key
+        name: backblaze-db-access-key
         key: username
       secretAccessKey:
-        name: ${APP}-s3-access-key
+        name: backblaze-db-access-key
         key: credential
     wal:
       compression: gzip

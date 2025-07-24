@@ -48,7 +48,7 @@ spec:
           *app :
             image:
               repository: rclone/rclone
-              tag: master@sha256:38c809d6ae7df7b2e5bd365ac375e96ec42b75a4663fb70cb2c226cf1ba061b5
+              tag: master@sha256:9c836b55eba324198fce2624adff08686a983a2c8ae8e5f6d4f4fee6c23a7777
               pullPolicy: Always
             securityContext:
               readOnlyRootFilesystem: false

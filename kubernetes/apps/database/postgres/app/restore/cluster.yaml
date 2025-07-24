@@ -65,12 +65,12 @@ spec:
       enabled: false
       isWALArchiver: true
       parameters:
-        barmanObjectName: ${APP}-s3
+        barmanObjectName: ${APP}-backblaze
 
   externalClusters:
     - name: ${APP}-backup
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: ${APP}-s3
+          barmanObjectName: ${APP}-backblaze
           serverName: ${APP}-postgres

@@ -22,9 +22,9 @@ spec:
         s3:
           bucketName: ${APP}
           prefix: mysql/dump/
-          config: ${APP}-s3-access-key
+          config: backblaze-db-access-key
           profile: default
-          endpoint: https://s3.${CLUSTER_DOMAIN}
+          endpoint: https://${BACKBLAZE_DOMAIN}/${APP}/
   backupProfiles:
     - name: dump
       dumpInstance:
@@ -32,18 +32,18 @@ spec:
           s3:
             bucketName: ${APP}
             prefix: mysql/dump/
-            config: ${APP}-s3-access-key
+            config: backblaze-db-access-key
             profile: default
-            endpoint: https://s3.${CLUSTER_DOMAIN}
+            endpoint: https://${BACKBLAZE_DOMAIN}/${APP}/
     - name: snapshot
       snapshot:
         storage:
           s3:
             bucketName: ${APP}
             prefix: mysql/snapshot/
-            config: ${APP}-s3-access-key
+            config: backblaze-db-access-key
             profile: default
-            endpoint: https://s3.${CLUSTER_DOMAIN}
+            endpoint: https://${BACKBLAZE_DOMAIN}/${APP}/
   backupSchedules:
     - name: snapshot
       schedule: "${MYSQL_BACKUP_SCHEDULE:-0 4 * * *}" # Daily at 4 AM

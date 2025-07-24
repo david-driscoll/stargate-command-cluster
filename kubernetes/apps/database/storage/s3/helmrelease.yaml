@@ -79,6 +79,16 @@ spec:
                   secretKeyRef:
                     name: authentik-s3-access-key
                     key: password
+              R3_USER_BACKBLAZE_KEYS:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-keys-s3-access-key
+                    key: id
+              R3_PASSWORD_BACKBLAZE_KEYS:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-keys-s3-access-key
+                    key: password
               R3_USER_BACKREST:
                 valueFrom:
                   secretKeyRef:

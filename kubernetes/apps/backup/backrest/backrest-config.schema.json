@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft/2020-12/schema#",
+  "title": "Config",
+  "type": "object",
+  "properties": {
+    "instance": {
+      "type": "string"
+    },
+    "repos": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Repo"
+      }
+    },
+    "plans": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Plan"
+      }
+    },
+    "auth": {
+      "$ref": "#/$defs/Auth"
+    },
+    "sync": {
+      "$ref": "#/$defs/Multihost"
+    }
+  },
+  "required": ["instance", "repos", "plans", "auth"],
+  "$defs": {
+    "Repo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "guid": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "env": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoUnlock": {
+          "type": "boolean"
+        },
+        "autoInitialize": {
+          "type": "boolean"
+        }
+      },
+      "required": ["id", "uri"]
+    },
+    "Plan": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "excludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "iexcludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skipIfUnchanged": {
+          "type": "boolean"
+        }
+      },
+      "required": ["id", "repo"]
+    },
+    "Auth": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/User"
+          }
+        }
+      },
+      "required": ["users"]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "passwordBcrypt": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "Multihost": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": "string"
+        },
+        "knownHosts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Peer"
+          }
+        },
+        "authorizedClients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Peer"
+          }
+        }
+      }
+    },
+    "Peer": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "keyId": {
+          "type": "string"
+        },
+        "keyIdVerified": {
+          "type": "boolean"
+        },
+        "instanceUrl": {
+          "type": "string"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Permission"
+          }
+        }
+      }
+    },
+    "Permission": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "PERMISSION_UNKNOWN",
+            "PERMISSION_READ_OPERATIONS",
+            "PERMISSION_READ_CONFIG",
+            "PERMISSION_READ_WRITE_CONFIG"
+          ]
+        },
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["type"]
+    }
+  }
+}

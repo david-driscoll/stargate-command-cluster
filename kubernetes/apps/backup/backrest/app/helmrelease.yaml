@@ -33,6 +33,24 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init:
+            image:
+              repository: pnnlmiscscripts/curl-jq
+              tag: latest@sha256:46bc6e2747c42af4013edb228df8401d777f7e22d4d3b7ab27a3f74105d1228e
+              pullPolicy: Always
+            command:
+              - /scripts/init.sh
+            envFrom:
+              - secretRef:
+                  name: mux-secret-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                cpu: 10m
+                memory: 256Mi
         containers:
           *app :
             image:
@@ -97,6 +115,13 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /app/data/
+      script:
+        type: configMap
+        name: ${APP}-script
+        defaultMode: 493
+        globalMounts:
+        - path: /scripts/init.sh
+          subPath: init.sh
       cache:
         type: emptyDir
         globalMounts:

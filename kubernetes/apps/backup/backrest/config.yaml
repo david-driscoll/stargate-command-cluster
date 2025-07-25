@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=./backrest-config.schema.json
+instance: "${APP}"
+auth:
+  disabled: true
+  users: []
+# volsync items here
+repos:
+  - id: "${REPO_ID}"
+    uri: "${REPO_URI}"
+    password: "${REPO_PASSWORD}"
+plans:
+  - id: "${PLAN_ID}"
+    repo: "${REPO_ID}"

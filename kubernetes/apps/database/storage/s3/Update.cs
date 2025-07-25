@@ -180,7 +180,7 @@ var releaseName = minioUserReleaseMapping.Query("/metadata/name").OfType<YamlSca
 var controllers = minioUserReleaseMapping.Query($"/spec/values/controllers").OfType<YamlMappingNode>().Single();
 var controller = controllers.Children.Values.OfType<YamlMappingNode>().Single();
 var containers = controller.Query($"/containers").OfType<YamlMappingNode>().Single();
-var minioUsersStep = containers.Children.Values.OfType<YamlMappingNode>().Single();
+var minioUsersStep = containers.Children.Values.OfType<YamlMappingNode>().First();
 
 var envReference = minioUsersStep.Query("/env").OfType<YamlMappingNode>().Single();
 

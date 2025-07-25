@@ -62,7 +62,7 @@ spec:
   plugins:
   - name: barman-cloud.cloudnative-pg.io
     enabled: true
-    isWALArchiver: true
+    isWALArchiver: false
     parameters:
       barmanObjectName: ${APP}-backblaze
   externalClusters:

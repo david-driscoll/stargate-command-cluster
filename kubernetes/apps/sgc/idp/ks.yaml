@@ -27,11 +27,9 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/postgres
     - ../../../../components/tailscale
     - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      DATABASE_PASSWORD: Authentik Database User

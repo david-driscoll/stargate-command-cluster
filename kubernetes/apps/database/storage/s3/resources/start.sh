@@ -1,5 +1,6 @@
 #!/bin/sh
 
+rclone mkdir /data/authentik
 rclone mkdir /data/iris
 rclone mkdir /data/backrest
 rclone mkdir /data/mysql

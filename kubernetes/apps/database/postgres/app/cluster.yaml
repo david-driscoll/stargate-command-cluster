@@ -44,6 +44,15 @@ spec:
       createrole: true
       passwordSecret:
         name: postgres-user
+    - connectionLimit: -1
+      ensure: present
+      inherit: true
+      name: authentik
+      login: true
+      createdb: true
+      createrole: true
+      passwordSecret:
+        name: authentik-postgres
   bootstrap:
     initdb:
       database: ${CLUSTER_CNAME}

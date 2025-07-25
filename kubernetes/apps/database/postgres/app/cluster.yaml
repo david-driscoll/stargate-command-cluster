@@ -17,7 +17,7 @@ spec:
   postgresql:
     parameters:
       max_connections: "300"
-      shared_buffers: "256MB"
+      shared_buffers: "1024MB"
       pg_stat_statements.max: "10000"
       pg_stat_statements.track: all
   monitoring:
@@ -29,10 +29,10 @@ spec:
   resources:
     requests:
       cpu: 50m
-      memory: "256Mi"
-    limits:
-      cpu: 1
       memory: "1024Mi"
+    limits:
+      cpu: "1200m"
+      memory: "4Gi"
   managed:
     roles:
     - connectionLimit: -1

@@ -50,7 +50,7 @@ spec:
       createdb: true
       createrole: true
       passwordSecret:
-        name: authentik-s3-password
+        name: authentik-postgres-password
   bootstrap:
     initdb:
       database: ${CLUSTER_CNAME}

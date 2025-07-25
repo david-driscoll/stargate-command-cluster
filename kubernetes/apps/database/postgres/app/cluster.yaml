@@ -24,6 +24,8 @@ spec:
     enablePodMonitor: true
   logLevel: trace
   enablePDB: false
+  superuserSecret:
+    name: postgres-user
   resources:
     requests:
       cpu: 50m

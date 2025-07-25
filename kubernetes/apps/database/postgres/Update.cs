@@ -144,7 +144,7 @@ var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 foreach (var database in databases)
 {
   var roleName = GetName(database);
-  var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres-password");
+  var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres");
   clusterRoles.Children.Add(roleNode);
 }
 

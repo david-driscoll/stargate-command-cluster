@@ -112,7 +112,7 @@ var initScripts = new List<string>()
   #!/bin/sh
 
   set -e
-  CONFIG_PATH=/data/config.json
+  CONFIG_PATH=/app/data/config.json
   TEMP_CONFIG_PATH=/tmp/config.json.tmp
 
   if [ ! -f "$CONFIG_PATH" ]; then

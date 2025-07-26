@@ -10,6 +10,8 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/backup/
     dest: kubernetes/apps/backup/
     deleteOrphaned: true
+    exclude: |
+      backrest/app/resources/
   - source: kubernetes/apps/cert-manager/
     dest: kubernetes/apps/cert-manager/
     deleteOrphaned: true

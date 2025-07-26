@@ -126,6 +126,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/cache
+          - path: /tmp/
       processlogs:
         type: emptyDir
         globalMounts:

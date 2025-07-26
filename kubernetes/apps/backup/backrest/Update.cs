@@ -119,23 +119,23 @@ var initScripts = new List<string>()
     echo "{\"repos\": []}" > $CONFIG_PATH
   fi
   cat $CONFIG_PATH | jq
-  jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
-  jq ".version = 4" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
-  jq ".auth.disabled = true" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp -f $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq ".version = 4" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp -f $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq ".auth.disabled = true" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp -f $TEMP_CONFIG_PATH $CONFIG_PATH
   """,
 };
 foreach (var volume in volsyncVolume)
 {
   initScripts.Add($$$"""
   repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, auto_initialize: true}');
-  jq --argjson repo "$repo_json" '.repos += [$repo]' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq --argjson repo "$repo_json" '.repos += [$repo]' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp -f $TEMP_CONFIG_PATH $CONFIG_PATH
   """);
 }
 
 initScripts.AddRange([
   """
   # remove any duplicate repos by id
-  jq '.repos |= (group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq '.repos |= (group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp -f $TEMP_CONFIG_PATH $CONFIG_PATH
   cat /app/config.json | jq
   """
 ]);

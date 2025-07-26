@@ -121,9 +121,7 @@ var initScripts = new List<string>()
   cat $CONFIG_PATH | jq
   jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   jq ".version = 4" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
-  cat $CONFIG_PATH | jq
   jq ".auth.disabled = true" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
-  cat $CONFIG_PATH | jq
   """,
 };
 foreach (var volume in volsyncVolume)
@@ -131,7 +129,6 @@ foreach (var volume in volsyncVolume)
   initScripts.Add($$$"""
   repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password}');
   jq --argjson repo "$repo_json" '.repos += [$repo]' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
-  cat $CONFIG_PATH | jq
   """);
 }
 

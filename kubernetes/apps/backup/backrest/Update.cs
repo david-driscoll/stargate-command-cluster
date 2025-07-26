@@ -127,7 +127,7 @@ var initScripts = new List<string>()
 foreach (var volume in volsyncVolume)
 {
   initScripts.Add($$$"""
-  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password}');
+  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, auto_initialize: true}');
   jq --argjson repo "$repo_json" '.repos += [$repo]' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   """);
 }

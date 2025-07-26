@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -e
-CONFIG_PATH=./config.json
+CONFIG_PATH=/app/config.json
 
 if [ ! -f "$CONFIG_PATH" ]; then
   echo "{\"repos\": []}" > $CONFIG_PATH

@@ -118,9 +118,11 @@ var initScripts = new List<string>()
   if [ ! -f "$CONFIG_PATH" ]; then
     echo "{\"repos\": []}" > $CONFIG_PATH
   fi
-
+  cat /app/data/config.json | jq
   jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  cat /app/data/config.json | jq
   jq ".auth.disabled = true" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  cat /app/data/config.json | jq
   """,
 };
 foreach (var volume in volsyncVolume)
@@ -128,6 +130,7 @@ foreach (var volume in volsyncVolume)
   initScripts.Add($$$"""
   repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password}');
   jq --argjson repo "$repo_json" '.repos += [$repo]' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  cat /app/data/config.json | jq
   """);
 }
 
@@ -135,6 +138,7 @@ initScripts.AddRange([
   """
   # remove any duplicate repos by id
   jq '(.repos | group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  cat /app/data/config.json | jq
   """
 ]);
 

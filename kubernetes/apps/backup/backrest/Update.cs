@@ -135,6 +135,12 @@ initScripts.AddRange([
   cat $CONFIG_PATH | jq
   """
 ]);
+initScripts.Clear();
+initScripts.AddRange([
+  """
+  cat $CONFIG_PATH | jq
+  """
+]);
 
 #endregion
 

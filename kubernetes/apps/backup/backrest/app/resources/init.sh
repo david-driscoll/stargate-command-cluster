@@ -4,9 +4,7 @@ set -e
 CONFIG_PATH=/app/config.json
 TEMP_CONFIG_PATH=/tmp/config.json.tmp
 
-if [ ! -f "$CONFIG_PATH" ]; then
-  echo "{\"repos\": []}" > $CONFIG_PATH
-fi
+echo "{\"repos\": []}" > $CONFIG_PATH
 cat $CONFIG_PATH | jq
 jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
 jq ".version = 4" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH

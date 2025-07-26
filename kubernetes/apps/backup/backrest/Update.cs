@@ -119,7 +119,7 @@ var initScripts = new List<string>()
     echo "{\"repos\": []}" > $CONFIG_PATH
   fi
 
-  jq ".instance = ${CLUSTER_CNAME}" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq ".instance = '${CLUSTER_CNAME}'" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   jq ".auth.disabled = true" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   """,
 };

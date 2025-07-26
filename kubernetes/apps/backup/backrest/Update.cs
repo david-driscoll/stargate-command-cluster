@@ -131,6 +131,8 @@ foreach (var volume in volsyncVolume)
 initScripts.AddRange([
   """
   cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH
+
+  cat $CONFIG_PATH | jq
   """
 ]);
 

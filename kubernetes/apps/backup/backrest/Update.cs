@@ -117,7 +117,7 @@ var initScripts = new List<string>()
   if [ ! -f "$CONFIG_PATH" ]; then
     echo "{\"repos\": []}" > $CONFIG_PATH
   fi
-  cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | tee $CONFIG_PATH
+  cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | jq ".plans = []" | jq ".repos = []" | tee $CONFIG_PATH
   """,
 };
 foreach (var volume in volsyncVolume)
@@ -132,12 +132,6 @@ initScripts.AddRange([
   """
   cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH
 
-  cat $CONFIG_PATH | jq
-  """
-]);
-initScripts.Clear();
-initScripts.AddRange([
-  """
   cat $CONFIG_PATH | jq
   """
 ]);

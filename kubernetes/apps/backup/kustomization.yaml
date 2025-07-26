@@ -9,5 +9,5 @@ components:
 resources:
   - ./secret-store.yaml
   - ./backrest/ks.yaml
-  - ./backblaze/ks.yaml
+  # - ./backblaze/ks.yaml
   # - ./restic-server/ks.yaml

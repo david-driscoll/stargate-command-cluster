@@ -117,20 +117,20 @@ var initScripts = new List<string>()
   if [ ! -f "$CONFIG_PATH" ]; then
     echo "{\"repos\": []}" > $CONFIG_PATH
   fi
-  cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | tee $CONFIG_PATH | jq
+  cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | tee $CONFIG_PATH
   """,
 };
 foreach (var volume in volsyncVolume)
 {
   initScripts.Add($$$"""
-  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, auto_initialize: true}');
+  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, autoInitialize: true}');
   cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
   """);
 }
 
 initScripts.AddRange([
   """
-  cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH | jq
+  cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH
   """
 ]);
 

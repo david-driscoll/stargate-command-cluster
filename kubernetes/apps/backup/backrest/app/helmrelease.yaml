@@ -39,6 +39,14 @@ spec:
               repository: pnnlmiscscripts/curl-jq
               tag: latest@sha256:46bc6e2747c42af4013edb228df8401d777f7e22d4d3b7ab27a3f74105d1228e
               pullPolicy: Always
+            securityContext: &securityContext
+              fsGroupChangePolicy: "OnRootMismatch"
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+              fsGroup: 568
+              runAsGroup: 568
+              runAsUser: 568
             command:
               - /scripts/init.sh
             resources:
@@ -54,10 +62,10 @@ spec:
               repository: docker.io/garethgeorge/backrest
               tag: v1.8.1@sha256:b680907d1255129a692ae13102dbd2c9dafa308d142582e16b41ecac66e145dd
               pullPolicy: IfNotPresent
-
+            securityContext: *securityContext
             env:
               TZ: "${TIMEZONE}"
-              BACKREST_DATA: /app/data
+              BACKREST_DATA: /app/data/
               BACKREST_CONFIG: /app/config.json
               XDG_CACHE_HOME: /app/cache
             envFrom:
@@ -77,16 +85,6 @@ spec:
                 enabled: true
               startup:
                 enabled: false
-
-    defaultPodOptions:
-      securityContext:
-        fsGroupChangePolicy: "OnRootMismatch"
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
-        fsGroup: 568
-        runAsGroup: 568
-        runAsUser: 568
 
     service:
       app:
@@ -111,7 +109,9 @@ spec:
       app:
         existingClaim: ${APP}
         globalMounts:
-          - path: /app/
+          - path: /app/data/
+          - path: /app/config.json
+            subPath: config.json
       script:
         type: configMap
         name: ${APP}-script

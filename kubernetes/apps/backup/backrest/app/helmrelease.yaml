@@ -41,6 +41,15 @@ spec:
               pullPolicy: Always
             command:
               - /scripts/init.sh
+
+            securityContext:
+              fsGroup: 568
+              fsGroupChangePolicy: "OnRootMismatch"
+              runAsGroup: 568
+              runAsNonRoot: true
+              runAsUser: 568
+              seccompProfile:
+                type: RuntimeDefault
             resources:
               requests:
                 cpu: 10m
@@ -63,6 +72,15 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-secret
+
+            securityContext:
+              fsGroup: 568
+              fsGroupChangePolicy: "OnRootMismatch"
+              runAsGroup: 568
+              runAsNonRoot: true
+              runAsUser: 568
+              seccompProfile:
+                type: RuntimeDefault
             resources:
               requests:
                 cpu: 50m

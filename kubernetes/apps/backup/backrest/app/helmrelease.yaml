@@ -41,9 +41,6 @@ spec:
               pullPolicy: Always
             command:
               - /scripts/init.sh
-            envFrom:
-              - secretRef:
-                  name: mux-secret-secret
             resources:
               requests:
                 cpu: 10m

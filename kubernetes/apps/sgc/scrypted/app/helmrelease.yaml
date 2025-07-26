@@ -38,7 +38,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/koush/scrypted
-              tag: v0.140.5-noble-full@sha256:61f975bb4b9e16e5632e22749b385a9b6162ddd0d82011c72ae03bd0e51019f8
+              tag: v0.142.0-noble-full@sha256:07f5a82058cd70b58d3c5ce29537c687406839c023c2f0e1abd673f7486a0fe7
             probes:
               liveness:
                 enabled: false

@@ -4,9 +4,7 @@ set -e
 CONFIG_PATH=/app/config.json
 TEMP_CONFIG_PATH=/tmp/config.json.tmp
 
-if [ ! -f "$CONFIG_PATH" ]; then
-  echo "{\"repos\": []}" > $CONFIG_PATH
-fi
+echo "{\"repos\": []}" > $CONFIG_PATH
 cat $CONFIG_PATH | jq
 jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
 cat $CONFIG_PATH | jq
@@ -49,5 +47,5 @@ repo_json=$(jq -n --arg id "restic-server" --arg uri "/shares/volsync/restic-ser
 jq --argjson repo "$repo_json" '.repos += [$repo]' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
 cat $CONFIG_PATH | jq
 # remove any duplicate repos by id
-jq '(.repos | group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+jq '.repos |= (group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
 cat /app/config.json | jq

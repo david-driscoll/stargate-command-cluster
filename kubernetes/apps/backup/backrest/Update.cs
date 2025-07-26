@@ -115,9 +115,7 @@ var initScripts = new List<string>()
   CONFIG_PATH=/app/config.json
   TEMP_CONFIG_PATH=/tmp/config.json.tmp
 
-  if [ ! -f "$CONFIG_PATH" ]; then
-    echo "{\"repos\": []}" > $CONFIG_PATH
-  fi
+  echo "{\"repos\": []}" > $CONFIG_PATH
   cat $CONFIG_PATH | jq
   jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   cat $CONFIG_PATH | jq
@@ -137,7 +135,7 @@ foreach (var volume in volsyncVolume)
 initScripts.AddRange([
   """
   # remove any duplicate repos by id
-  jq '(.repos | group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq '.repos |= (group_by(.id) | map(.[0]))' $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   cat /app/config.json | jq
   """
 ]);

@@ -115,9 +115,12 @@ var initScripts = new List<string>()
   CONFIG_PATH=/app/config.json
   TEMP_CONFIG_PATH=/tmp/config.json.tmp
 
-  echo "{\"repos\": []}" > $CONFIG_PATH
+  if [ ! -f "$CONFIG_PATH" ]; then
+    echo "{\"repos\": []}" > $CONFIG_PATH
+  fi
   cat $CONFIG_PATH | jq
   jq ".instance = \"${CLUSTER_CNAME}\"" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
+  jq ".version = 4" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   cat $CONFIG_PATH | jq
   jq ".auth.disabled = true" $CONFIG_PATH > $TEMP_CONFIG_PATH && cp $TEMP_CONFIG_PATH $CONFIG_PATH
   cat $CONFIG_PATH | jq

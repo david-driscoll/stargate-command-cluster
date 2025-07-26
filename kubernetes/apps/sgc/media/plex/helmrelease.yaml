@@ -143,17 +143,17 @@ spec:
         globalMounts:
           - path: /config
       # This must be commented on initial install in order to avoid permission issues in '/config/Library/Application Support/Plex Media Server'
-      # plex-cache:
-      #   type: persistentVolumeClaim
-      #   forceRename: plex-cache
-      #   storageClass: openebs-hostpath
-      #   accessMode: ReadWriteOnce
-      #   size: 128Gi
-      #   globalMounts:
-      #     - path: /config/Library/Application Support/Plex Media Server/Cache
-      #       subPath: cache
-      #     - path: /config/Library/Application Support/Plex Media Server/Plug-in Support/Caches
-      #       subPath: plugincache
+      plex-cache:
+        type: persistentVolumeClaim
+        forceRename: plex-cache
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 128Gi
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+            subPath: cache
+          - path: /config/Library/Application Support/Plex Media Server/Plug-in Support/Caches
+            subPath: plugincache
       media-movies:
         existingClaim: media-movies
         globalMounts:

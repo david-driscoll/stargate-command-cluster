@@ -81,7 +81,7 @@ spec:
     defaultPodOptions:
       securityContext:
         fsGroupChangePolicy: "OnRootMismatch"
-        runAsNonRoot: true
+        # runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
         # fsGroup: 568

@@ -32,3 +32,5 @@ cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CON
 repo_json=$(jq -n --arg id "restic-server" --arg uri "/shares/volsync/restic-server" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, autoInitialize: true}');
 cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
 cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH
+
+cat $CONFIG_PATH | jq

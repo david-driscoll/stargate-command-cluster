@@ -111,7 +111,7 @@ spec:
       app:
         existingClaim: ${APP}
         globalMounts:
-          - path: /app/data/
+          - path: /app/
       script:
         type: configMap
         name: ${APP}-script

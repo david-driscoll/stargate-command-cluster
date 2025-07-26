@@ -87,7 +87,7 @@ metadata:
 spec:
   sourcePVC: "data-adguard-home-2"
   trigger:
-    schedule: "0 * * * *"
+    schedule: "0 14 * * *"
   restic:
     copyMethod: "Snapshot"
     pruneIntervalDays: 14

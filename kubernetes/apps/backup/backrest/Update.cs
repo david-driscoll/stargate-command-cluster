@@ -112,7 +112,7 @@ var initScripts = new List<string>()
   #!/bin/sh
 
   set -e
-  CONFIG_PATH=/app/config.json
+  CONFIG_PATH=/app/config/config.json
 
   if [ ! -f "$CONFIG_PATH" ]; then
     echo "{\"repos\": []}" > $CONFIG_PATH
@@ -123,7 +123,7 @@ var initScripts = new List<string>()
 foreach (var volume in volsyncVolume)
 {
   initScripts.Add($$$"""
-  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, autoInitialize: true}');
+  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "RESTIC_PASSWORD" '{id: $id, uri: $uri, password: $password, autoInitialize: true}');
   cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
   """);
 }

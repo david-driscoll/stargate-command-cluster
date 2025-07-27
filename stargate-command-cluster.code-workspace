@@ -24,6 +24,8 @@
     "vs-kubernetes": {
       "vs-kubernetes.crd-code-completion": "enabled"
     },
+    "sops.configPath": "./.sopsrc",
+    "sops.defaults.ageKeyFile": "./sgc.age.key",
     "yaml.schemaStore.enable": true,
     "yaml.schemas": {
       "kubernetes": "./kubernetes/**/*.yaml"

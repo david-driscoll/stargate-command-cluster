@@ -6,7 +6,7 @@ metadata:
   name: mysql-s3-access-key
 spec:
   refreshPolicy: Periodic
-  refreshInterval: "5m"
+  refreshInterval: 10m
   secretStoreRef:
     kind: ClusterSecretStore
     name: database

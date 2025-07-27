@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vikunja-s3-access-key
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: vikunja-s3-access-key
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        AWS_ACCESS_KEY_ID: "{{ .id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        url: https://{{ .id }}:{{ .password }}@s3.${CLUSTER_DOMAIN}
+        id: "{{ .id }}"
+        username: "{{ .id }}"
+        credential: "{{ .password }}"
+        password: "{{ .password }}"
+        endpoint: "https://s3.${CLUSTER_DOMAIN}"
+        region: "vikunja"
+  dataFrom:
+    - extract:
+        key: "vikunja-s3-password"

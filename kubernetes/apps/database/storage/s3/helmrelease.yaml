@@ -119,6 +119,16 @@ spec:
                   secretKeyRef:
                     name: tivi-sync-s3-access-key
                     key: password
+              R3_USER_VIKUNJA:
+                valueFrom:
+                  secretKeyRef:
+                    name: vikunja-s3-access-key
+                    key: id
+              R3_PASSWORD_VIKUNJA:
+                valueFrom:
+                  secretKeyRef:
+                    name: vikunja-s3-access-key
+                    key: password
             resources:
               requests:
                 cpu: 100m

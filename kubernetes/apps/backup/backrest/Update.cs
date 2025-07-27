@@ -123,26 +123,7 @@ var initScripts = new List<string>()
 foreach (var volume in volsyncVolume)
 {
   initScripts.Add($$$"""
-  # Prepare repo_json for volsync volume
-  repo_json=$(jq -n \
-    --arg id "${volume}" \  # Volume ID
-    --arg uri "/shares/volsync/${volume}" \
-    --arg password "RESTIC_PASSWORD" \
-    '{
-      id: $id,
-      uri: $uri,
-      password: $password,
-      prunePolicy: {
-        schedule: { disabled: true, clock: "CLOCK_LAST_RUN_TIME" },
-        maxUnusedPercent: 10
-      },
-      checkPolicy: {
-        schedule: { disabled: true, clock: "CLOCK_LAST_RUN_TIME" },
-        readDataSubsetPercent: 0
-      },
-      commandPrefix: {}
-    }'
-  )
+  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "RESTIC_PASSWORD" '{id: $id, uri: $uri, password: $password, prunePolicy: { schedule: { disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, maxUnusedPercent: 10 }, checkPolicy: { schedule: {disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, readDataSubsetPercent: 0 }, commandPrefix: {}}');
   cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
   """);
 }

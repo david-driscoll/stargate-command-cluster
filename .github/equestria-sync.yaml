@@ -31,8 +31,6 @@ david-driscoll/equestria-cluster:
       storage/s3/resources/
       postgres/app/cluster.yaml
       postgres/app/users/
-      postgres/app/init/
-      postgres/app/restore/
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

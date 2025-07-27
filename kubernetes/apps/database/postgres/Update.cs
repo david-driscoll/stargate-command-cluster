@@ -114,7 +114,7 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
 
 var databases = new List<string>();
 
-foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres") || z.Value.Contains("postgres/init") || z.Value.Contains("postgres/restore")))
+foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres")))
 {
   databases.Add(item.Key);
 }

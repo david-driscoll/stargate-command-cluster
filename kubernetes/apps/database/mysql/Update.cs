@@ -114,7 +114,7 @@ foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernet
 
 var databases = new List<string>();
 
-foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql") || z.Value.Contains("mysql/init") || z.Value.Contains("mysql/restore")))
+foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
 {
   databases.Add(item.Key);
 }

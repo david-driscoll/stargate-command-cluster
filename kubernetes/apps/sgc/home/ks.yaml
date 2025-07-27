@@ -276,14 +276,13 @@ spec:
 #     namespace: flux-system
 #   components:
 #     - ../../../../components/ingress/internal
-#     - ../../../../components/postgres/init
+#     - ../../../../components/postgres
 #     - ../../../../components/tailscale
 #     - ../../../../components/volsync
 #   postBuild:
 #     substitute:
 #       APP: *app
 #       NAMESPACE: *namespace
-#       DATABASE_PASSWORD: Vikunja Database User
 #       VOLSYNC_CAPACITY: 20Gi
 #       VOLSYNC_ACCESSMODES: ReadWriteMany
 

@@ -43,7 +43,7 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               BACKREST_DATA: /app/data
-              BACKREST_CONFIG: /app/config.json
+              BACKREST_CONFIG: /app/config/config.json
               XDG_CACHE_HOME: /app/cache
             envFrom:
               - secretRef:
@@ -97,6 +97,9 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /app/data/
+            subPath: data
+          - path: /app/config/
+            subPath: config
       cache:
         type: emptyDir
         globalMounts:

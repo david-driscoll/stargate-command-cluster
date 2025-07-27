@@ -1,10 +1,10 @@
 #!/bin/sh
 
-set -e
 CONFIG_PATH=/app/config/config.json
 
 cat $CONFIG_PATH | jq
 rm $CONFIG_PATH
+exit 0
 # cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | jq ".plans = []" | jq ".repos = []" | tee $CONFIG_PATH
 # cat $CONFIG_PATH | jq
 

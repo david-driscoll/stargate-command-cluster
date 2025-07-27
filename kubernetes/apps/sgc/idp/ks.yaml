@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
-    - name: postgres-operator
+    - name: postgres
       namespace: database
   path: ./kubernetes/apps/sgc/idp/authentik
   prune: true

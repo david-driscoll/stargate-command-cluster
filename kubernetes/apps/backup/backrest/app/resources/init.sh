@@ -3,10 +3,10 @@
 set -e
 CONFIG_PATH=/app/config.json
 
-if [ ! -f "$CONFIG_PATH" ]; then
-  echo "{\"repos\": []}" > $CONFIG_PATH
-fi
+echo "{}" > $CONFIG_PATH
 cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | jq ".plans = []" | jq ".repos = []" | tee $CONFIG_PATH
+cat $CONFIG_PATH | jq
+
 repo_json=$(jq -n --arg id "pgadmin" --arg uri "/shares/volsync/pgadmin" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, autoInitialize: true}');
 cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
 repo_json=$(jq -n --arg id "uptime-kuma" --arg uri "/shares/volsync/uptime-kuma" --arg password "VOLSYNC_PASSWORD" '{id: $id, uri: $uri, password: $password, autoInitialize: true}');

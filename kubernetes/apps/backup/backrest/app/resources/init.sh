@@ -1,9 +1,10 @@
 #!/bin/sh
 
 set -e
-CONFIG_PATH=/app/config.json
+CONFIG_PATH=/app/config/config.json
 
-echo "{}" > $CONFIG_PATH
+cat $CONFIG_PATH | jq
+rm $CONFIG_PATH
 # cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | jq ".plans = []" | jq ".repos = []" | tee $CONFIG_PATH
 # cat $CONFIG_PATH | jq
 
@@ -33,4 +34,3 @@ echo "{}" > $CONFIG_PATH
 # cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
 # cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH
 
-cat $CONFIG_PATH | jq

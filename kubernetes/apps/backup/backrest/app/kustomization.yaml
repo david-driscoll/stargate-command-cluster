@@ -5,9 +5,3 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
-configMapGenerator:
-  - files:
-      - init.sh=./resources/init.sh
-    name: ${APP}-script
-generatorOptions:
-  disableNameSuffixHash: true

@@ -5,5 +5,3 @@ resources:
   - postgres-user.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
-  - vikunja.yaml
-  - vikunja.sops.yaml

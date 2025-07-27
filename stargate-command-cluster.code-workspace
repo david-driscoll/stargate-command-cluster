@@ -1,0 +1,54 @@
+{
+  "folders": [
+    {
+      "path": "./kubernetes/apps/sgc/",
+      "name": "sgc"
+    },
+    {
+      "path": "../equestria-cluster/kubernetes/apps/equestria/",
+      "name": "equestria"
+    },
+    {
+      "path": ".",
+      "name": "Stargate Command Cluster"
+    },
+    {
+      "path": "../equestria-cluster",
+      "name": "Equestria Cluster",
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "**/*.json5": "json5"
+    },
+    "vs-kubernetes": {
+      "vs-kubernetes.crd-code-completion": "enabled"
+    },
+    "yaml.schemaStore.enable": true,
+    "yaml.schemas": {
+      "kubernetes": "./kubernetes/**/*.yaml"
+    },
+    "workbench.colorCustomizations": {
+      "activityBar.activeBackground": "#1857a4",
+      "activityBar.background": "#1857a4",
+      "activityBar.foreground": "#e7e7e7",
+      "activityBar.inactiveForeground": "#e7e7e799",
+      "activityBarBadge.background": "#530c2c",
+      "activityBarBadge.foreground": "#e7e7e7",
+      "commandCenter.border": "#e7e7e799",
+      "sash.hoverBorder": "#1857a4",
+      "statusBar.background": "#1857a4",
+      "statusBar.foreground": "#e7e7e7",
+      "statusBarItem.hoverBackground": "#1f6fd0",
+      "statusBarItem.remoteBackground": "#1857a4",
+      "statusBarItem.remoteForeground": "#e7e7e7",
+      "tab.activeBorder": "#1857a4",
+      "titleBar.activeBackground": "#1f6fd0",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveBackground": "#1f6fd099",
+      "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#1857a4",
+    "dotnet.previewSolution-freeWorkspaceMode": true
+  }
+}

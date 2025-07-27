@@ -53,15 +53,6 @@ spec:
       createrole: true
       passwordSecret:
         name: authentik-postgres
-    - connectionLimit: -1
-      ensure: present
-      inherit: true
-      name: vikunja
-      login: true
-      createdb: true
-      createrole: true
-      passwordSecret:
-        name: vikunja-postgres
   bootstrap:
     initdb:
       database: ${CLUSTER_CNAME}

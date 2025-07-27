@@ -108,7 +108,7 @@ await foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("ku
 }
 var serializer = new SerializerBuilder().Build();
 
-List<string> jqSteps = [".instance = \"${CLUSTER_CNAME}\"", ".version = 4", ".auth.disabled = true", ".plans = []", ".repos = []"];
+List<string> jqSteps = ["jq '.instance = \"${CLUSTER_CNAME}\"'", "jq '.version = 4'", "jq '.auth.disabled = true'", "jq '.plans = []'", "jq '.repos = []'"];
 
 
 var initScripts = new List<string>()
@@ -122,7 +122,6 @@ var initScripts = new List<string>()
   if [ ! -f "$CONFIG_PATH" ]; then
     echo "{\"repos\": []}" > $CONFIG_PATH
   fi
-  cat $CONFIG_PATH | jq ".instance = \"${CLUSTER_CNAME}\"" | jq ".version = 4" | jq ".auth.disabled = true" | jq ".plans = []" | jq ".repos = []" | tee $CONFIG_PATH
   """,
 };
 foreach (var volume in volsyncVolume)
@@ -131,12 +130,12 @@ foreach (var volume in volsyncVolume)
   volsync_{{{volume.Camelize()}}}=$(jq -n --arg id "volsync_{{{volume.Camelize()}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "RESTIC_PASSWORD" '{id: $id, uri: $uri, password: $password, prunePolicy: { schedule: { disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, maxUnusedPercent: 10 }, checkPolicy: { schedule: {disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, readDataSubsetPercent: 0 }, commandPrefix: {}}');
   """);
   jqSteps.Add($$$"""
-  --argjson repo "$volsync_{{{volume.Camelize()}}}" '.repos += [$repo]'
+  jq --argjson repo "$volsync_{{{volume.Camelize()}}}" '.repos += [$repo]'
   """);
 }
-jqSteps.Add("'.repos |= (group_by(.id) | map(.[0]))'");
+jqSteps.Add("jq '.repos |= (group_by(.id) | map(.[0]))'");
 initScripts.Add($$$"""
-  cat $CONFIG_PATH | jq {{{string.Join(" | jq ", jqSteps)}}} | tee $CONFIG_PATH
+  cat $CONFIG_PATH | {{{string.Join(" | ", jqSteps)}}} | tee $CONFIG_PATH
   """);
 
 initScripts.AddRange([

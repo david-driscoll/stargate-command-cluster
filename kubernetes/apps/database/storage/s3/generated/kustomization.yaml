@@ -13,3 +13,5 @@ resources:
   - postgres.sops.yaml
   - tivi-sync.yaml
   - tivi-sync.sops.yaml
+  - vikunja.yaml
+  - vikunja.sops.yaml

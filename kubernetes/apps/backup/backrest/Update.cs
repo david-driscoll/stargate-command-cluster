@@ -6,6 +6,7 @@
 #:package Spectre.Console.Json@0.50.0
 #:package Dumpify@0.6.6
 #:package ProcessX@1.5.6
+#:package Humanizer@3.0.0-beta.96
 using System.Buffers.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ using System.Text.RegularExpressions;
 using Cysharp.Diagnostics;
 using Dumpify;
 using gfs.YamlDotNet.YamlPath;
+using Humanizer;
 using Microsoft.VisualBasic;
 using Spectre.Console;
 using Spectre.Console.Advanced;
@@ -106,6 +108,9 @@ await foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("ku
 }
 var serializer = new SerializerBuilder().Build();
 
+List<string> jqSteps = [".instance = \"${CLUSTER_CNAME}\"", ".version = 4", ".auth.disabled = true", ".plans = []", ".repos = []"];
+
+
 var initScripts = new List<string>()
 {
   """
@@ -123,15 +128,19 @@ var initScripts = new List<string>()
 foreach (var volume in volsyncVolume)
 {
   initScripts.Add($$$"""
-  repo_json=$(jq -n --arg id "{{{volume}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "RESTIC_PASSWORD" '{id: $id, uri: $uri, password: $password, prunePolicy: { schedule: { disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, maxUnusedPercent: 10 }, checkPolicy: { schedule: {disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, readDataSubsetPercent: 0 }, commandPrefix: {}}');
-  cat $CONFIG_PATH | jq --argjson repo "$repo_json" '.repos += [$repo]' | tee $CONFIG_PATH
+  volsync_{{{volume.Camelize()}}}=$(jq -n --arg id "volsync_{{{volume.Camelize()}}}" --arg uri "/shares/volsync/{{{volume}}}" --arg password "RESTIC_PASSWORD" '{id: $id, uri: $uri, password: $password, prunePolicy: { schedule: { disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, maxUnusedPercent: 10 }, checkPolicy: { schedule: {disabled: true, clock: "CLOCK_LAST_RUN_TIME" }, readDataSubsetPercent: 0 }, commandPrefix: {}}');
+  """);
+  jqSteps.Add($$$"""
+  --argjson repo "$volsync_{{{volume.Camelize()}}}" '.repos += [$repo]'
   """);
 }
+jqSteps.Add("'.repos |= (group_by(.id) | map(.[0]))'");
+initScripts.Add($$$"""
+  cat $CONFIG_PATH | jq {{{string.Join(" | jq ", jqSteps)}}} | tee $CONFIG_PATH
+  """);
 
 initScripts.AddRange([
   """
-  cat $CONFIG_PATH | jq '.repos |= (group_by(.id) | map(.[0]))' | tee $CONFIG_PATH
-
   cat $CONFIG_PATH | jq
   """
 ]);

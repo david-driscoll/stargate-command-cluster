@@ -14,7 +14,3 @@ spec:
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
-  schemas:
-    - ensure: present
-      name: ${APP}
-      owner: ${CLUSTER_CNAME}

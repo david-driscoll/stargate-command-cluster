@@ -1,0 +1,118 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/charts/refs/heads/main/charts/cluster/values.schema.json
+nameOverride: "postgres"
+fullnameOverride: "postgres"
+type: postgresql
+version:
+  postgresql: "17.4"
+mode: standalone
+recovery:
+  method: object_store
+  clusterName: "${CLUSTER_CNAME}"
+  endpointURL: https://{{ .backblaze_hostname }}/
+  provider: s3
+  s3:
+    region: "${CLUSTER_CNAME}"
+    bucket: "{{ .backblaze_bucket }}"
+    path: "/"
+    accessKey: "{{ .backblaze_username }}"
+    secretKey: "{{ .backblaze_credential }}"
+backups:
+  enabled: true
+  endpointURL: https://{{ .backblaze_hostname }}/
+  provider: s3
+  s3:
+    region: "${CLUSTER_CNAME}"
+    bucket: "{{ .backblaze_bucket }}"
+    path: "/"
+    accessKey: "{{ .backblaze_username }}"
+    secretKey: "{{ .backblaze_credential }}"
+  wal:
+    compression: gzip
+    encryption: ''
+    maxParallel: 4
+  data:
+    compression: gzip
+    encryption: ''
+    jobs: 2
+  scheduledBackups:
+  - name: daily-backup
+    schedule: "${POSTGRES_BACKUP_SCHEDULE:=0 0 16 * * *}"
+    backupOwnerReference: self
+    method: barmanObjectStore
+  retentionPolicy: "30d"
+cluster:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+  storage:
+    size: ${POSTGRES_STORAGE:=10Gi}
+    storageClass: longhorn-local
+  resources:
+    requests:
+      cpu: 100m
+      memory: 1Gi
+    limits:
+      cpu: 1200m
+      memory: 4Gi
+  logLevel: "info"
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        podAffinityTerm:
+          topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: ${APP}
+  tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  enableSuperuserAccess: true
+  superuserSecret: "postgres-superuser"
+  roles:
+  - name: ${CLUSTER_CNAME}
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: postgres-user
+  - name: vikunja
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: vikunja-postgres
+  - name: peppermint
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: peppermint-postgres
+  monitoring:
+    enabled: true
+    podMonitor:
+      enabled: true
+    disableDefaultQueries: false
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: "256MB"
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all
+    pg_hba: []
+    pg_ident: []
+    shared_preload_libraries: []
+    ldap: {}
+  serviceAccountTemplate: {}
+  additionalLabels: {}
+  annotations: {}
+imageCatalog:
+  create: true
+  images: []
+poolers: []

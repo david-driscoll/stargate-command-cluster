@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/database/postgres/app
   dependsOn:
-    - name: cloudnative-pg
+    - name: postgres-operator
       namespace: cloudnative-pg
     - name: storage-s3
   prune: true

@@ -10,7 +10,7 @@ spec:
   cluster:
     name: postgres
   name: ${APP}
-  owner: ${CLUSTER_CNAME}
+  owner: ${APP}
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain

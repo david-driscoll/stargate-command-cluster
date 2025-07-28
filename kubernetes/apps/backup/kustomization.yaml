@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: backup
 components:
   - ../../components/common
-  - ../../components/repos/app-template4
+  - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
   - ./backrest/ks.yaml

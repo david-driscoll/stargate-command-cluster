@@ -47,7 +47,7 @@ spec:
   cluster:
     name: postgres
   name: authentik
-  owner: ${CLUSTER_CNAME}
+  owner: authentik
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain

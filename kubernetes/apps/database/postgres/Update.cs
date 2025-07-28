@@ -254,8 +254,10 @@ static YamlMappingNode UpdateRoleNode(ISerializer serializer, YamlNode copy, str
   stream.Load(reader);
   var userNode = stream.Documents.First().RootNode as YamlMappingNode;
   var nameRef = userNode.Query("/name").OfType<YamlScalarNode>().Single();
+  var superuserRef = userNode.Query("/superuser").OfType<YamlScalarNode>().Single();
   var secretRef = userNode.Query("/passwordSecret").OfType<YamlMappingNode>().Single();
   nameRef.Value = name;
+  superuserRef.Value = "false";
   secretRef.Children["name"] = new YamlScalarNode(key);
   return userNode;
 }

@@ -3,14 +3,18 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: &app ${APP}-postgres
+  name: &app ${APP}
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   cluster:
     name: postgres
+  name: ${APP}
+  owner: ${APP}
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
-  name: ${APP}
-  owner: ${APP}
+  schemas:
+    - ensure: present
+      name: ${APP}
+      owner: ${APP}

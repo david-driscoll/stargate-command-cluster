@@ -31,149 +31,166 @@ using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 #region Find all applications using postgres
-
-var kustomizationUserList = new HashSet<string>();
-var users = new Dictionary<string, (string Username, HashSet<(string Name, bool IsPublic)> Buckets)>();
-var documentNamesMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-string GetName(string keyName)
+try
 {
-  if (!documentNamesMapping.TryGetValue(keyName, out var user))
-  {
-    return keyName;
-  }
-  return user ?? keyName;
-}
-var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
-// Now lets search for all the implied users, and update minio.yaml
-foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
-    .Where(file => file.EndsWith("ks.yaml", StringComparison.OrdinalIgnoreCase))
-    .SelectMany(ReadStream, (doc, path) => (doc, path)))
-{
-  if (kustomizeDoc == null)
+  var kustomizationUserList = new HashSet<string>();
+  var users = new Dictionary<string, (string Username, HashSet<(string Name, bool IsPublic)> Buckets)>();
+  var documentNamesMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+  string GetName(string keyName)
   {
-    AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {kustomizePath}.[/]");
-    continue;
-  }
-  static IReadOnlyList<(string name, string path)> GetComponents(string path, IEnumerable<YamlNode> nodes)
-  {
-    return nodes.OfType<YamlSequenceNode>()
-  .SelectMany(z => z.AllNodes.OfType<YamlScalarNode>())
-  .Select(z => Path.Combine(path, z.Value))
-  .Select(Path.GetFullPath)
-  .Select(z => Path.GetRelativePath(Directory.GetCurrentDirectory(), z))
-  .Distinct()
-  .Select(z => (name: Path.GetFileName(z), path: z))
-  .ToList();
-  }
-
-  ;
-  var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
-  documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/APP")
-  .OfType<YamlScalarNode>()
-    .SingleOrDefault()
-    ?.Value ?? documentName;
-  var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
-  var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
-  if (components.Count == 0)
-  {
-    // AnsiConsole.MarkupLine($"[green]No components found in {kustomize}.[/]");
-    continue;
-  }
-  var allComponents = new HashSet<string>();
-  foreach (var component in components)
-  {
-    allComponents.Add(component.name);
-    // AnsiConsole.MarkupLine($"[blue]Processing component: {component.name}[/]");
-    if (!Directory.Exists(component.path))
+    if (!documentNamesMapping.TryGetValue(keyName, out var user))
     {
-      AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist.[/]");
-      throw new FileNotFoundException($"Component file {component.path} does not exist.");
+      return keyName;
     }
-    ResolveSubComponents(allComponents, component);
+    return user ?? keyName;
   }
-  static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
+  var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+
+  // Now lets search for all the implied users, and update minio.yaml
+  foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
+      .Where(file => file.EndsWith("ks.yaml", StringComparison.OrdinalIgnoreCase))
+      .SelectMany(ReadStream, (doc, path) => (doc, path)))
   {
-
-    var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml")).Single();
-    if (componentDoc == null)
+    if (kustomizeDoc == null)
     {
-      AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
-      return;
+      AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {kustomizePath}.[/]");
+      continue;
     }
-    var subComponents = GetComponents(component.path, componentDoc.Query("/components"));
-
-    foreach (var subComponent in subComponents)
+    static IReadOnlyList<(string name, string path)> GetComponents(string path, IEnumerable<YamlNode> nodes)
     {
-      allComponents.Add(subComponent.name);
-      ResolveSubComponents(allComponents, subComponent);
+      return nodes.OfType<YamlSequenceNode>()
+    .SelectMany(z => z.AllNodes.OfType<YamlScalarNode>())
+    .Select(z => Path.Combine(path, z.Value))
+    .Select(Path.GetFullPath)
+    .Select(z => Path.GetRelativePath(Directory.GetCurrentDirectory(), z))
+    .Distinct()
+    .Select(z => (name: Path.GetFileName(z), path: z))
+    .ToList();
     }
+
+    ;
+    var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
+    documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/APP")
+    .OfType<YamlScalarNode>()
+      .SingleOrDefault()
+      ?.Value ?? documentName;
+    var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
+    var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
+    if (components.Count == 0)
+    {
+      // AnsiConsole.MarkupLine($"[green]No components found in {kustomize}.[/]");
+      continue;
+    }
+    var allComponents = new HashSet<string>();
+    foreach (var component in components)
+    {
+      allComponents.Add(component.name);
+      // AnsiConsole.MarkupLine($"[blue]Processing component: {component.name}[/]");
+      if (!Directory.Exists(component.path))
+      {
+        AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist.[/]");
+        throw new FileNotFoundException($"Component file {component.path} does not exist.");
+      }
+      try
+      {
+        ResolveSubComponents(allComponents, component);
+      }
+      catch (Exception ex)
+      {
+        continue;
+      }
+    }
+    static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
+    {
+
+      var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml")).Single();
+      if (componentDoc == null)
+      {
+        AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
+        return;
+      }
+      var subComponents = GetComponents(component.path, componentDoc.Query("/components"));
+
+      foreach (var subComponent in subComponents)
+      {
+        allComponents.Add(subComponent.name);
+        ResolveSubComponents(allComponents, subComponent);
+      }
+    }
+    kustomizeComponents[documentName] = allComponents;
   }
-  kustomizeComponents[documentName] = allComponents;
-}
 
-var databases = new List<string>();
+  var databases = new List<string>();
 
-foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres")))
-{
-  databases.Add(item.Key);
-}
+  foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres")))
+  {
+    databases.Add(item.Key);
+  }
 
-var serializer = new SerializerBuilder().Build();
+  var serializer = new SerializerBuilder().Build();
 
-#endregion
+  #endregion
 
-#region Update postgres cluster yaml with roles
-var postgresClusterPath = "kubernetes/apps/database/postgres/app/cluster.yaml";
-var postgresClusterDoc = ReadStream(postgresClusterPath).SingleOrDefault();
-if (postgresClusterDoc == null)
-{
-  AnsiConsole.MarkupLine($"[red]Failed to read Postgres cluster file: {postgresClusterPath}.[/]");
-  return;
-}
-var clusterRoles = postgresClusterDoc.Query("/spec/managed/roles").OfType<YamlSequenceNode>().Single();
-var defaultRole = clusterRoles.First();
-clusterRoles.Children.Clear();
-clusterRoles.Children.Add(defaultRole);
+  #region Update postgres cluster yaml with roles
+  var postgresClusterPath = "kubernetes/apps/database/postgres/app/resources/values.yaml";
+  var postgresClusterDoc = ReadStream(postgresClusterPath).SingleOrDefault();
+  if (postgresClusterDoc == null)
+  {
+    AnsiConsole.MarkupLine($"[red]Failed to read Postgres cluster file: {postgresClusterPath}.[/]");
+    return;
+  }
+  var clusterRoles = postgresClusterDoc.Query("/cluster/roles").OfType<YamlSequenceNode>().Single();
+  var defaultRole = clusterRoles.First();
+  clusterRoles.Children.Clear();
+  clusterRoles.Children.Add(defaultRole);
 
-var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
-// We also want to update the kustomization.yaml file to include this user.
-var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
-var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
+  var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
+  var databaseTemplate = "kubernetes/components/postgres/database.yaml";
+  // We also want to update the kustomization.yaml file to include this user.
+  var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
+  var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
-foreach (var database in databases)
-{
-  var roleName = GetName(database);
-  var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres");
-  clusterRoles.Children.Add(roleNode);
-}
+  foreach (var database in databases)
+  {
+    var roleName = GetName(database);
+    var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres");
+    clusterRoles.Children.Add(roleNode);
 
-File.WriteAllText(postgresClusterPath, $"""
+  }
+
+  File.WriteAllText(postgresClusterPath, $"""
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/charts/refs/heads/main/charts/cluster/values.schema.json
 {serializer.Serialize(postgresClusterDoc)}
 """);
 
-#endregion
+  #endregion
 
-#region Create database users
+  #region Create database users
 
-foreach (var database in databases)
-{
-  var roleName = GetName(database);
-  var yaml = File.ReadAllText(userTemplate)
-  .Replace("${CLUSTER_CNAME}", database)
-  .Replace("postgres-user-password", $"{roleName}-postgres-password")
-  .Replace("postgres-user", $"{roleName}-postgres")
-  ;
-  var fileName = Path.Combine(usersDirectory, $"{database}.yaml");
-  var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
-  File.WriteAllText(fileName, yaml);
-  AnsiConsole.WriteLine($"Updated {fileName} with user {database}.");
-
-  if (!File.Exists(sopsFileName))
+  foreach (var database in databases)
   {
-    File.WriteAllText(sopsFileName, $"""
+    var roleName = GetName(database);
+    var userYaml = File.ReadAllText(userTemplate)
+    .Replace("${CLUSTER_CNAME}", database)
+    .Replace("postgres-user-password", $"{roleName}-postgres-password")
+    .Replace("postgres-user", $"{roleName}-postgres")
+    ;
+    var databaseYaml = File.ReadAllText(databaseTemplate)
+    .Replace("${APP}", database)
+    ;
+    var fileName = Path.Combine(usersDirectory, $"{database}.yaml");
+    var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
+    File.WriteAllText(fileName, $"""
+  {userYaml}
+  {databaseYaml}
+  """);
+    AnsiConsole.WriteLine($"Updated {fileName} with user {database}.");
+
+    if (!File.Exists(sopsFileName))
+    {
+      File.WriteAllText(sopsFileName, $"""
     # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
     apiVersion: v1
     kind: Secret
@@ -182,29 +199,36 @@ foreach (var database in databases)
     stringData:
       password: "{Guid.NewGuid():N}"
     """);
-    Process.Start(new ProcessStartInfo
-    {
-      FileName = "sops",
-      Arguments = $"--encrypt --in-place {sopsFileName}",
-      RedirectStandardOutput = true,
-      RedirectStandardError = true,
-      UseShellExecute = false,
-      CreateNoWindow = true
-    }).WaitForExit();
+      Process.Start(new ProcessStartInfo
+      {
+        FileName = "sops",
+        Arguments = $"--encrypt --in-place {sopsFileName}",
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        UseShellExecute = false,
+        CreateNoWindow = true
+      }).WaitForExit();
+    }
   }
-}
 
-var customizationTemplate = $"""
+  var customizationTemplate = $"""
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - postgres-user.yaml
   - postgres-user.sops.yaml
+  - postgres-superuser.yaml
+  - postgres-superuser.sops.yaml
 {string.Join(Environment.NewLine, databases.Order().SelectMany(database => new[] { $"  - {database}.yaml", $"  - {database}.sops.yaml" }))}
 """;
 
-File.WriteAllText(kustomizationPath, customizationTemplate);
-
+  File.WriteAllText(kustomizationPath, customizationTemplate);
+}
+catch (Exception ex)
+{
+  ex.Dump();
+  return;
+}
 
 #endregion
 

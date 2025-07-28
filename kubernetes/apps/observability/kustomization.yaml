@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: observability
 components:
   - ../../components/common
-  - ../../components/repos/app-template4
+  - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
   - ./crds/ks.yaml

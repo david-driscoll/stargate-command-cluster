@@ -23,14 +23,14 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
       data:
-        username: "${CLUSTER_CNAME}"
+        username: "sa"
         password: "{{ .password }}"
         host: "postgres-rw.${NAMESPACE}.svc.cluster.local"
         port: "5432"
-        database: "${CLUSTER_CNAME}"
-        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:${CLUSTER_CNAME}:${CLUSTER_CNAME}:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${CLUSTER_CNAME}?password={{ .password }}&user=${CLUSTER_CNAME}"
-        uri: "postgresql://${CLUSTER_CNAME}:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${CLUSTER_CNAME}"
+        database: "sa"
+        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:sa:sa:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/sa?password={{ .password }}&user=sa"
+        uri: "postgresql://sa:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/sa"
   dataFrom:
     - extract:
-        key: "postgres-user-password"
+        key: "postgres-superuser-password"

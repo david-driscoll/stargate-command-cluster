@@ -6,17 +6,17 @@ type: postgresql
 version:
   postgresql: "17.4"
 mode: standalone
-recovery:
-  method: object_store
-  clusterName: "${CLUSTER_CNAME}"
-  endpointURL: https://{{ .backblaze_hostname }}/
-  provider: s3
-  s3:
-    region: "${CLUSTER_CNAME}"
-    bucket: "{{ .backblaze_bucket }}"
-    path: "/"
-    accessKey: "{{ .backblaze_username }}"
-    secretKey: "{{ .backblaze_credential }}"
+# recovery:
+#   method: object_store
+#   clusterName: "${CLUSTER_CNAME}"
+#   endpointURL: https://{{ .backblaze_hostname }}/
+#   provider: s3
+#   s3:
+#     region: "${CLUSTER_CNAME}"
+#     bucket: "{{ .backblaze_bucket }}"
+#     path: "/"
+#     accessKey: "{{ .backblaze_username }}"
+#     secretKey: "{{ .backblaze_credential }}"
 backups:
   enabled: true
   endpointURL: https://{{ .backblaze_hostname }}/

@@ -25,12 +25,12 @@ spec:
       data:
         username: "authentik"
         password: "{{ .password }}"
-        host: "postgres-rw.${NAMESPACE}.svc.cluster.local"
+        host: "postgres-rw.database.svc.cluster.local"
         port: "5432"
-        database: "authentik"
-        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:authentik:authentik:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/authentik?password={{ .password }}&user=authentik"
-        uri: "postgresql://authentik:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/authentik"
+        database: "postgres"
+        pgpass: "postgres-rw.database.svc.cluster.local:5432:postgres:authentik:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.database.svc.cluster.local:5432/postgres?password={{ .password }}&user=authentik"
+        uri: "postgresql://authentik:{{ .password }}@postgres-rw.database.svc.cluster.local:5432/postgres"
   dataFrom:
     - extract:
         key: "authentik-postgres-password"

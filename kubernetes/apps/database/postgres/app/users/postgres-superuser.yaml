@@ -25,12 +25,12 @@ spec:
       data:
         username: "postgres"
         password: "{{ .password }}"
-        host: "postgres-rw.${NAMESPACE}.svc.cluster.local"
+        host: "postgres-rw.database.svc.cluster.local"
         port: "5432"
         database: "postgres"
-        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:postgres:postgres:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/postgres?password={{ .password }}&user=postgres"
-        uri: "postgresql://postgres:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/postgres"
+        pgpass: "postgres-rw.database.svc.cluster.local:5432:postgres:postgres:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.database.svc.cluster.local:5432/postgres?password={{ .password }}&user=postgres"
+        uri: "postgresql://postgres:{{ .password }}@postgres-rw.database.svc.cluster.local:5432/postgres"
   dataFrom:
     - extract:
         key: "postgres-superuser-password"

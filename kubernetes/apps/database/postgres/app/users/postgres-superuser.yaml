@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name postgres-superuser
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 10m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+      data:
+        username: "${CLUSTER_CNAME}"
+        password: "{{ .password }}"
+        host: "postgres-rw.${NAMESPACE}.svc.cluster.local"
+        port: "5432"
+        database: "${CLUSTER_CNAME}"
+        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:${CLUSTER_CNAME}:${CLUSTER_CNAME}:{{ .password }}"
+        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${CLUSTER_CNAME}?password={{ .password }}&user=${CLUSTER_CNAME}"
+        uri: "postgresql://${CLUSTER_CNAME}:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/${CLUSTER_CNAME}"
+  dataFrom:
+    - extract:
+        key: "postgres-user-password"

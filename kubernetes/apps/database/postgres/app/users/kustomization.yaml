@@ -3,5 +3,7 @@ kind: Kustomization
 resources:
   - postgres-user.yaml
   - postgres-user.sops.yaml
+  - postgres-superuser.yaml
+  - postgres-superuser.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml

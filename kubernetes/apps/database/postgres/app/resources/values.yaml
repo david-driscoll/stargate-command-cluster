@@ -82,18 +82,12 @@ cluster:
     superuser: false
     passwordSecret:
       name: postgres-user
-  - name: vikunja
+  - name: authentik
     ensure: present
     login: true
     superuser: false
     passwordSecret:
-      name: vikunja-postgres
-  - name: peppermint
-    ensure: present
-    login: true
-    superuser: false
-    passwordSecret:
-      name: peppermint-postgres
+      name: authentik-postgres
   monitoring:
     enabled: true
     podMonitor:

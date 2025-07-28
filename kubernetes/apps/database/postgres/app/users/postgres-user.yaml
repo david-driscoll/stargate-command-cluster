@@ -22,15 +22,13 @@ spec:
           cnpg.io/reload: "true"
         annotations:
           reloader.stakater.com/auto: "true"
-      data:
-        username: "${CLUSTER_CNAME}"
-        password: "{{ .password }}"
-        host: "postgres-rw.database.svc.cluster.local"
-        port: "5432"
-        database: "postgres"
-        pgpass: "postgres-rw.database.svc.cluster.local:5432:postgres:${CLUSTER_CNAME}:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://postgres-rw.database.svc.cluster.local:5432/postgres?password={{ .password }}&user=${CLUSTER_CNAME}"
-        uri: "postgresql://${CLUSTER_CNAME}:{{ .password }}@postgres-rw.database.svc.cluster.local:5432/postgres"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: ${APP}-values
+            items:
+              - key: user-template.yaml
+                templateAs: Values
   dataFrom:
     - extract:
         key: "postgres-user-password"

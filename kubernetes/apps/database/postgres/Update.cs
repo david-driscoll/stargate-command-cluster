@@ -187,28 +187,41 @@ try
   {databaseYaml}
   """);
     AnsiConsole.WriteLine($"Updated {fileName} with user {database}.");
+  }
 
-    if (!File.Exists(sopsFileName))
+  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userTemplate), "*.yaml").Where(z => !z.EndsWith("sops.yaml", StringComparison.OrdinalIgnoreCase)))
+  {
+    var database = Path.GetFileNameWithoutExtension(item);
+    var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
+    YamlMappingNode? sopsDoc = null;
+    if (File.Exists(sopsFileName))
     {
-      File.WriteAllText(sopsFileName, $"""
+      continue;
+      sopsDoc = ReadStream(sopsFileName).Single();
+    }
+    File.WriteAllText(sopsFileName, $"""
     # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {roleName}-postgres-password
+      name: {database}-postgres-password
     stringData:
-      password: "{Guid.NewGuid():N}"
+      username: "{database}"
+      database: "{database}"
+      port: "5432"
+      host: "postgres-rw.database.svc.cluster.local"
+      password: "{sopsDoc?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
     """);
-      Process.Start(new ProcessStartInfo
-      {
-        FileName = "sops",
-        Arguments = $"--encrypt --in-place {sopsFileName}",
-        RedirectStandardOutput = true,
-        RedirectStandardError = true,
-        UseShellExecute = false,
-        CreateNoWindow = true
-      }).WaitForExit();
-    }
+    Process.Start(new ProcessStartInfo
+    {
+      FileName = "sops",
+      Arguments = $"--encrypt --in-place {sopsFileName}",
+      RedirectStandardOutput = true,
+      RedirectStandardError = true,
+      UseShellExecute = false,
+      CreateNoWindow = true
+    }).WaitForExit();
+
   }
 
   var customizationTemplate = $"""

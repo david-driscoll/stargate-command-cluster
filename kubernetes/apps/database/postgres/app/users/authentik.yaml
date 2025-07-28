@@ -51,7 +51,3 @@ spec:
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
-  schemas:
-    - ensure: present
-      name: authentik
-      owner: ${CLUSTER_CNAME}

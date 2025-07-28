@@ -79,7 +79,7 @@ cluster:
   - name: ${CLUSTER_CNAME}
     ensure: present
     login: true
-    superuser: false
+    superuser: true
     passwordSecret:
       name: postgres-user
   - name: authentik

@@ -9,9 +9,9 @@ spec:
   configuration:
     destinationPath: s3://${BACKBLAZE_DATABASE_BUCKET}/
     endpointURL: https://${BACKBLAZE_DOMAIN}/
-    endpointCA:
-      name: ca-bundle
-      key: ca-certificates.crt
+    # endpointCA:
+    #   name: ca-bundle
+    #   key: ca-certificates.crt
     s3Credentials:
       accessKeyId:
         name: backblaze-db-access-key

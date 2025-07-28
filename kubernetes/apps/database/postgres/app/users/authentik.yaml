@@ -51,3 +51,10 @@ spec:
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: authentik
+    - ensure: present
+      name: authentik
+      owner: authentik

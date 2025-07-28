@@ -14,3 +14,10 @@ spec:
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: ${APP}
+    - ensure: present
+      name: ${APP}
+      owner: ${APP}

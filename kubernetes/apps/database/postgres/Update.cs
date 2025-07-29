@@ -189,7 +189,10 @@ try
     AnsiConsole.WriteLine($"Updated {fileName} with user {database}.");
   }
 
-  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userTemplate), "*.yaml").Where(z => !z.EndsWith("sops.yaml", StringComparison.OrdinalIgnoreCase)))
+  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userTemplate), "*.yaml")
+  .Where(z => !z.EndsWith("sops.yaml", StringComparison.OrdinalIgnoreCase))
+  .Where(z => !z.EndsWith("kustomization.yaml", StringComparison.OrdinalIgnoreCase))
+  )
   {
     var database = Path.GetFileNameWithoutExtension(item);
     var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
@@ -209,7 +212,7 @@ try
       username: "{database}"
       database: "{database}"
       port: "5432"
-      host: "postgres-rw.database.svc.cluster.local"
+      hostname: "postgres-rw.database.svc.cluster.local"
       password: "{sopsDoc?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
     """);
     Process.Start(new ProcessStartInfo

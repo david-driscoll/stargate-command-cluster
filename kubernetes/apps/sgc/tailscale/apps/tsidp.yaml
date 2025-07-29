@@ -44,9 +44,10 @@ spec:
           *app :
             nameOverride: *app
             image:
-              repository: ghcr.io/david-driscoll/tailscale-idp
-              tag: v1.84.0@sha256:750a863826d237c52a4c20995bac9019c00cdb6fa88dd77e44add44dbd5697ee
+              repository: golang
+              tag: 1.24.5-bookworm@sha256:ef8c5c733079ac219c77edab604c425d748c740d8699530ea6aced9de79aea40
             env:
+              TAILSCALE_USE_WIP_CODE: "1"
               TS_HOSTNAME: idp
               TS_STATE_DIR: /data/tsidp
               TS_AUTHKEY:
@@ -55,6 +56,8 @@ spec:
                     name: tailscale-authkey
                     key: authkey
             workingDir: /data/tsidp
+            command:
+              - /scripts/tsidp.sh
             resources:
               requests:
                 memory: 128Mi
@@ -75,6 +78,13 @@ spec:
       shareProcessNamespace: true
 
     persistence:
+      script:
+        type: configMap
+        name: tsidp-script
+        defaultMode: 493
+        globalMounts:
+          - path: /scripts/tsidp.sh
+            subPath: tsidp.sh
       data:
         existingClaim: tailscale-apps
         globalMounts:

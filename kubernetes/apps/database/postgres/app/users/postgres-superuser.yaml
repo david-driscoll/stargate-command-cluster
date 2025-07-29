@@ -25,10 +25,24 @@ spec:
       templateFrom:
         - target: Data
           configMap:
-            name: ${APP}-values
+            name: ${APP}-user-template
             items:
-              - key: user-template.yaml
-                templateAs: Values
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc
+              templateAs: Values
+            - key: uri
+              templateAs: Values
   dataFrom:
     - extract:
         key: "postgres-superuser-password"

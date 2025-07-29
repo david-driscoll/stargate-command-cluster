@@ -6,10 +6,10 @@ resources:
   - ./users
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./user-template.yaml
 configMapGenerator:
 - name: ${APP}-values
   files:
   - values.yaml=./resources/values.yaml
-  - user-template.yaml=./resources/user-template.yaml
   options:
     disableNameSuffixHash: true

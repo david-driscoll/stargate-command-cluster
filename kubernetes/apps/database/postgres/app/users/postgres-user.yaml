@@ -39,7 +39,7 @@ spec:
               templateAs: Values
             - key: pgpass
               templateAs: Values
-            - key: jdbc
+            - key: jdbc-uri
               templateAs: Values
             - key: uri
               templateAs: Values

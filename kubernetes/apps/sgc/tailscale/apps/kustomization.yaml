@@ -6,9 +6,3 @@ resources:
   - ./golink.yaml
   - ./tsidp.yaml
   - ./secret.yaml
-configMapGenerator:
-  - files:
-      - tsidp.sh=./resources/tsidp.sh
-    name: tsidp-script
-generatorOptions:
-  disableNameSuffixHash: true

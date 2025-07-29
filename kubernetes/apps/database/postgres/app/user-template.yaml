@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/configmap-v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${APP}-user-template
+data:
+  username: "{{ .username }}"
+  password: "{{ .password }}"
+  hostname: "{{ .hostname }}"
+  port: "{{ .port }}"
+  database: "{{ .database }}"
+  pgpass: "{{ .hostname }}:{{ .port }}:{{ .database }}:{{ .username }}:{{ .password }}"
+  jdbc-uri: "jdbc:postgresql://{{ .hostname }}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}"
+  uri: "postgresql://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}/{{ .database }}"

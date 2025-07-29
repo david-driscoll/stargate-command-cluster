@@ -1,9 +1,9 @@
 ---
 username: "{{ .username }}"
 password: "{{ .password }}"
-host: "{{ .hostname }}"
+host: "{{ .host }}"
 port: "{{ .port }}"
 database: "{{ .database }}"
-pgpass: "{{ .hostname }}:{{ .port }}:{{ .database }}:{{ .username }}:{{ .password }}"
-jdbc-uri: "jdbc:postgresql://{{ .hostname }}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}"
-uri: "postgresql://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}/{{ .database }}"
+pgpass: "{{ .host }}:{{ .port }}:{{ .database }}:{{ .username }}:{{ .password }}"
+jdbc-uri: "jdbc:postgresql://{{ .host }}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}"
+uri: "postgresql://{{ .username }}:{{ .password }}@{{ .host }}:{{ .port }}/{{ .database }}"

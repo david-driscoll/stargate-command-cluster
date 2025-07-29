@@ -5,6 +5,10 @@ metadata:
     name: postgres-user-password
 stringData:
     password: ENC[AES256_GCM,data:e6JPQxq8FffiH31Qpkzu4RtTGaF3svUok8E0F2IUJM+dlbsOOQR8Ta8EfnTvRSj7Z9jW4bJyJQ3gZ7GIzveoug==,iv:BSvi5NMxrDhTC5LcVOVIiF5yjPki9ZTtPmDvKdx7GHQ=,tag:0s0OFDuLeH+U7A02milhgw==,type:str]
+    username: ENC[AES256_GCM,data:pFNcyDxt/w3UQ1fkFyOJ8Q==,iv:p8ZS9rbH/7I9U1xlAAx42HZbyt5ZYqhYnO3lMPIDJqU=,tag:HjchmB71r6iser18JxegvA==,type:str]
+    database: ENC[AES256_GCM,data:tIrG2pPBi58=,iv:1NiYYfIymNK937yWWns7QXztuIN4LQcHPNDAvGTqLxA=,tag:8Ge+xSznbdn9D43OhCmoQw==,type:str]
+    port: ENC[AES256_GCM,data:QYeNKA==,iv:UpXGgEXnz75cS2glGqGzSfFFEjl9wm4OLtlVq3VIMEY=,tag:dAhjTE1AT51pJ01HbtgSBQ==,type:str]
+    hostname: ENC[AES256_GCM,data:A17r7Kgt7JKoUgg0FEbIX1geCRwCmJrPEMcZgBfj2l0qtyArw0U=,iv:l9sYcQy7vM265eq5o9y/GmkIt5V4d25IzL2BL2qqStM=,tag:G7+baQcw7I1sn6zwnKUBeQ==,type:str]
 sops:
     age:
         - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
@@ -34,8 +38,8 @@ sops:
             QzJ6b2hPa0ZWay9icFVxSTlRSHNUSzgK1nERKEFysd7J/DqZ5gUXb0M5W9HouzIP
             AdU8dGFh+IgYZhCiYjYSPdVWivWmGU/9BARF/WpQ7AKlE7xIeUaYCA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-16T02:33:52Z"
-    mac: ENC[AES256_GCM,data:G89kLtFi0hmGYawK7sdIERVwelwPY2OvY6JYPrrOwNNkSfPuJ2K0yZ0anEbWwcPBhyI917m3FE6t/2ksC+hYg7RqMj6H435VClWkf8DxPb65qHF/4/nUTVWZYnSg4MO1CvFNgMInjXcL1n040gxUTzPZatjTD0jQxwqOmM7NHiU=,iv:eJSC8ukcCZdFcytZAqvJr72nmxIChNkVDhsL3bwTEt4=,tag:Nw7g0M06XcyR6fWUpLVfyA==,type:str]
+    lastmodified: "2025-07-29T00:18:15Z"
+    mac: ENC[AES256_GCM,data:P9hoBKslG4JMhTq0zezRcoaZ/NRg+91Hswhx0CXden2Djq42ugIKwhD8uDyXHiH01dIBpnLwnejHt0ORNibitkN+NfjhceaqMskKGVkZ1eM9/iCFrW6wMEGJCi+KrSHh2liCR3aYgckiLvkkgmhL42EfXzjKdhcgexmYUBMmImU=,iv:qfMugPQykc5B9MNpiOGSvR02pTSqMhRUuB8JWnvIxKs=,tag:cTQvdRyCOiJcdLpKUjk8ag==,type:str]
     encrypted_regex: ^(data|stringData)$
     mac_only_encrypted: true
     version: 3.10.2

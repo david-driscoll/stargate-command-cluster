@@ -21,7 +21,7 @@ spec:
 kind: AuthentikApplication
 apiVersion: authentik.driscoll.dev/v1
 metadata:
-  name: JustATest
+  name: justatest
 spec:
   provider: "forward-auth"
   url: https://justatest.${ROOT_DOMAIN}

@@ -9,3 +9,5 @@ resources:
   - authentik.sops.yaml
   - authentik-apps.yaml
   - authentik-apps.sops.yaml
+  - pulumi.yaml
+  - pulumi.sops.yaml

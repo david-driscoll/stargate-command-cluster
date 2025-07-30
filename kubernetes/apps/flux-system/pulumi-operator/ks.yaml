@@ -18,6 +18,8 @@ spec:
   interval: 1h
   retryInterval: 2m
   timeout: 5m
+  components:
+    - ../../../../components/postgres
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -26,3 +28,4 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+      POSTGRES_NAME: pulumi

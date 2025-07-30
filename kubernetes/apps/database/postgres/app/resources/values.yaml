@@ -82,6 +82,12 @@ cluster:
     superuser: true
     passwordSecret:
       name: postgres-user
+  - name: pulumi
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: pulumi-postgres
   - name: authentik
     ensure: present
     login: true

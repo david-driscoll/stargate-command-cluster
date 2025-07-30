@@ -7,6 +7,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./user-template.yaml
+  - ./ingress.yaml
 configMapGenerator:
 - name: ${APP}-values
   files:

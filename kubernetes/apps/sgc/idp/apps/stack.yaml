@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://schemas.budimanjojo.com/pulumi.com/stack_v1.json
+apiVersion: pulumi.com/v1
+kind: Stack
+metadata:
+  name: ${APP}
+spec:
+  serviceAccountName: ${APP}
+  fluxSource:
+    sourceRef:
+      apiVersion: source.toolkit.fluxcd.io/v1
+      kind: GitRepository
+      name: flux-system
+    dir: kubernetes/apps/sgc/idp/apps
+  stack: ${APP}
+  refresh: true
+  destroyOnFinalize: true
+  secretsRef:
+    # app:cluster_sgc:
+    #   type: Secret
+    #   secret:
+    #     name: ${APP}-${CLUSTER_CNAME}-kubeconfig
+    #     key: kubeconfig.json
+    app:cluster_equestria:
+      type: Secret
+      secret:
+        name: ${APP}-equestria-kubeconfig
+        key: kubeconfig.json
+    authentik:token:
+      type: Secret
+      secret:
+        name: authentik-secret
+        key: token
+    authentik:url:
+      type: Secret
+      secret:
+        name: authentik-secret
+        key: url
+  workspaceTemplate:
+    spec:
+      image: pulumi/pulumi:3.147.0-nonroot

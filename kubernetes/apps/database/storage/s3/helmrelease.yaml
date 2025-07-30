@@ -79,6 +79,16 @@ spec:
                   secretKeyRef:
                     name: authentik-s3-access-key
                     key: password
+              R3_USER_AUTHENTIK_APPS:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-apps-s3-access-key
+                    key: id
+              R3_PASSWORD_AUTHENTIK_APPS:
+                valueFrom:
+                  secretKeyRef:
+                    name: authentik-apps-s3-access-key
+                    key: password
               R3_USER_BACKREST:
                 valueFrom:
                   secretKeyRef:

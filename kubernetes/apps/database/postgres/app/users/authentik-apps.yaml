@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name authentik-apps-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 10m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: ${APP}-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "authentik-apps-postgres-password"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app authentik-apps
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: authentik-apps
+  owner: authentik-apps
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: authentik-apps
+    - ensure: present
+      name: authentik-apps
+      owner: authentik-apps

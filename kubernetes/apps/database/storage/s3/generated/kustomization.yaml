@@ -5,6 +5,8 @@ resources:
   - cluster-user.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
+  - authentik-apps.yaml
+  - authentik-apps.sops.yaml
   - backrest.yaml
   - backrest.sops.yaml
   - mysql.yaml

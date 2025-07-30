@@ -13,8 +13,35 @@ spec:
       name: flux-system
     dir: kubernetes/apps/sgc/idp/pulumi
   stack: ${APP}
+  backend: postgres://
   refresh: true
   destroyOnFinalize: true
+  envRefs:
+    PGUSER:
+      type: Secret
+      secret:
+        name: pulumi-postgres
+        key: username
+    PGPASSWORD:
+      type: Secret
+      secret:
+        name: pulumi-postgres
+        key: password
+    PGHOST:
+      type: Secret
+      secret:
+        name: pulumi-postgres
+        key: hostname
+    PGPORT:
+      type: Secret
+      secret:
+        name: pulumi-postgres
+        key: port
+    PGDATABASE:
+      type: Secret
+      secret:
+        name: pulumi-postgres
+        key: database
   secretsRef:
     # app:cluster_sgc:
     #   type: Secret

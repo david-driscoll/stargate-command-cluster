@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/ingressroutetcp_v1alpha1.json
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: ${APP}-internal
+  annotations:
+    reloader.stakater.com/auto: "true"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    kubernetes.io/ingress.class: internal
+spec:
+  entryPoints:
+  - postgres
+  routes:
+  - match: Host(`postgres.${CLUSTER_DOMAIN}`)
+    services:
+    - name: ${APP}-rw
+      port: postgres
+    middlewares:
+    - name: internal-network
+      namespace: network

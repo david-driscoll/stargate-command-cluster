@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=../../../observability/crds/kuma/kuma.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/kuma/kuma.schema.json
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:

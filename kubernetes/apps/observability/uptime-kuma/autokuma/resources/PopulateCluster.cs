@@ -53,11 +53,11 @@ static string MapName(KumaResource resource) => $"{resource.Metadata.Namespace()
 
 static async Task UpdateCluster(string cluster, EqualityComparer<KumaResource> comparer, Kubernetes sgcCluster, Kubernetes remoteCluster)
 {
-  var existingEntities = (await sgcCluster.CustomObjects.ListClusterCustomObjectAsync<KumaResourceList<KumaResource>>("autokuma.bigboot.dev", "v1", "kumaentities", labelSelector: $"{rootDomain}.cluster={cluster}")).Items
+  var existingEntities = (await sgcCluster.CustomObjects.ListClusterCustomObjectAsync<KumaResourceList>("autokuma.bigboot.dev", "v1", "kumaentities", labelSelector: $"{rootDomain}.cluster={cluster}")).Items
     .ToImmutableArray();
   DumpNames("existingEntities", existingEntities);
 
-  var remoteEntities = (await remoteCluster.CustomObjects.ListClusterCustomObjectAsync<KumaResourceList<KumaResource>>("autokuma.bigboot.dev", "v1", "kumaentities")).Items
+  var remoteEntities = (await remoteCluster.CustomObjects.ListClusterCustomObjectAsync<KumaResourceList>("autokuma.bigboot.dev", "v1", "kumaentities")).Items
       .Select(MapRemoteEntity(cluster))
   .ToImmutableArray();
   DumpNames("remoteEntities", remoteEntities);
@@ -101,10 +101,9 @@ public class KumaResource : KubernetesObject, IMetadata<V1ObjectMeta>
   public object Status { get; set; }
 }
 
-public class KumaResourceList<T> : KubernetesObject
-where T : KumaResource
+public class KumaResourceList : KubernetesObject
 {
   public V1ListMeta Metadata { get; set; }
-  public List<T> Items { get; set; }
+  public List<KumaResource> Items { get; set; }
 }
 

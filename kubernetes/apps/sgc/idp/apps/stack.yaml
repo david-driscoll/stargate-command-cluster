@@ -11,7 +11,7 @@ spec:
       apiVersion: source.toolkit.fluxcd.io/v1
       kind: GitRepository
       name: flux-system
-    dir: kubernetes/apps/sgc/idp/apps
+    dir: kubernetes/apps/sgc/idp/pulumi
   stack: ${APP}
   refresh: true
   destroyOnFinalize: true

@@ -25,10 +25,11 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/volsync
+    - ../../../../components/volsync/backblaze
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: ${S3_VOLUME_CAPACITY}Gi
+      # VOLSYNC_STORAGECLASS: openebs-hostpath
       VOLSYNC_ACCESSMODES: ReadWriteMany

@@ -60,10 +60,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components:
-    - ../../../../components/tailscale
-    - ../../../../components/volsync
-    - ../../../../components/postgres
   postBuild:
     substitute:
       APP: *app

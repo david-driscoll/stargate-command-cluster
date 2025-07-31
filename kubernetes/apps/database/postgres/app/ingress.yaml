@@ -12,7 +12,7 @@ spec:
   entryPoints:
   - postgres
   routes:
-  - match: Host(`postgres.${CLUSTER_DOMAIN}`)
+  - match: HostSNI(`postgres.${CLUSTER_DOMAIN}`)
     services:
     - name: ${APP}-rw
       port: postgres

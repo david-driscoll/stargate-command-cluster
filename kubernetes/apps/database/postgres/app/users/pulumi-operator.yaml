@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name pulumi-postgres
+  name: &name pulumi-operator-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -45,7 +45,7 @@ spec:
               templateAs: Values
   dataFrom:
     - extract:
-        key: "pulumi-postgres-password"
+        key: "pulumi-operator-postgres-password"
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json

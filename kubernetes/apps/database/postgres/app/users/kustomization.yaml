@@ -7,7 +7,5 @@ resources:
   - postgres-superuser.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
-  - authentik-apps.yaml
-  - authentik-apps.sops.yaml
-  - pulumi.yaml
-  - pulumi.sops.yaml
+  - pulumi-operator.yaml
+  - pulumi-operator.sops.yaml

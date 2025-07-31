@@ -6,12 +6,16 @@ metadata:
   name: ${APP}
 spec:
   serviceAccountName: ${APP}
-  fluxSource:
-    sourceRef:
-      apiVersion: source.toolkit.fluxcd.io/v1
-      kind: GitRepository
-      name: flux-system
-    dir: kubernetes/apps/sgc/idp/pulumi
+  projectRepo: https://github.com/david-driscoll/stargate-command-cluster.git
+  branch: master
+  shallow: true
+  repoDir: kubernetes/apps/sgc/idp/pulumi/
+  # fluxSource:
+  #   sourceRef:
+  #     apiVersion: source.toolkit.fluxcd.io/v1
+  #     kind: GitRepository
+  #     name: flux-system
+  #   dir: kubernetes/apps/sgc/idp/pulumi
   stack: ${APP}
   backend: postgres://
   refresh: true
@@ -63,6 +67,6 @@ spec:
       secret:
         name: authentik-secret
         key: url
-  workspaceTemplate:
-    spec:
-      image: pulumi/pulumi:3.147.0-nonroot
+  # workspaceTemplate:
+  #   spec:
+  #     image: pulumi/pulumi:3.147.0-nonroot

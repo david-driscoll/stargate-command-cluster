@@ -12,4 +12,4 @@ resources:
   - ./postgres/ks.yaml
   # - ./mysql/ks.yaml
   - ./dragonfly/ks.yaml
-  # - ./storage/ks.yaml
+  - ./storage/ks.yaml

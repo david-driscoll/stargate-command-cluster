@@ -133,14 +133,14 @@ static async Task CreateApplications(string clusterName, string clusterTitle, Se
     });
   }
   if (!providers.Any()) return;
-  var outpost = new Outpost($"authentik-{clusterName}-outpost", new()
+  var outpost = new Outpost($"ak-outpost-{clusterName}", new()
   {
     ServiceConnection = serviceConnection.Id,
     Type = "proxy",
     Name = Output.Format($"Outpost for {clusterTitle}"),
     Config = Output.JsonSerialize(Output.Create(new
     {
-      object_naming_template = $"authentik-outpost-{clusterName}",
+      object_naming_template = $"ak-outpost-{clusterName}",
       kubernetes_replicas = 2,
       kubernetes_namespace = clusterName,
       kubernetes_ingress_class_name = "internal"

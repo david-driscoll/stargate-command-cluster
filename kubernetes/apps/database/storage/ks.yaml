@@ -31,4 +31,5 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: ${S3_VOLUME_CAPACITY}Gi
+      VOLSYNC_STORAGECLASS: longhorn-local
       VOLSYNC_ACCESSMODES: ReadWriteMany

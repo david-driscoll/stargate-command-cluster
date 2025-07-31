@@ -52,21 +52,21 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: &app authentik
+  name: &app ${POSTGRES_NAME:=authentik}
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   cluster:
     name: postgres
-  name: authentik
-  owner: authentik
+  name: ${POSTGRES_NAME:=authentik}
+  owner: ${POSTGRES_NAME:=authentik}
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
   schemas:
     - ensure: present
       name: public
-      owner: authentik
+      owner: ${POSTGRES_NAME:=authentik}
     - ensure: present
-      name: authentik
-      owner: authentik
+      name: ${POSTGRES_NAME:=authentik}
+      owner: ${POSTGRES_NAME:=authentik}

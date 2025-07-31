@@ -23,7 +23,6 @@ david-driscoll/equestria-cluster:
     deleteOrphaned: true
   - source: kubernetes/apps/database/
     dest: kubernetes/apps/database/
-    deleteOrphaned: true
     exclude: |
       storage/config.yaml
       storage/s3/generated/

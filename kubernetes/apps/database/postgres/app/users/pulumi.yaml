@@ -52,21 +52,21 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: &app pulumi-operator
+  name: &app ${POSTGRES_NAME:=pulumi-operator}
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   cluster:
     name: postgres
-  name: pulumi-operator
-  owner: pulumi-operator
+  name: ${POSTGRES_NAME:=pulumi-operator}
+  owner: ${POSTGRES_NAME:=pulumi-operator}
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
   schemas:
     - ensure: present
       name: public
-      owner: pulumi-operator
+      owner: ${POSTGRES_NAME:=pulumi-operator}
     - ensure: present
-      name: pulumi-operator
-      owner: pulumi-operator
+      name: ${POSTGRES_NAME:=pulumi-operator}
+      owner: ${POSTGRES_NAME:=pulumi-operator}

@@ -123,23 +123,6 @@ spec:
               requests:
                 cpu: 100m
                 memory: 1Gi
-          ro:
-            image:
-              repository: rclone/rclone
-              tag: master@sha256:25dddfcb66c96a6e27ac9e2f43c557f7a8db69e0ec32cae9126294d6871a4791
-              pullPolicy: Always
-            securityContext:
-              readOnlyRootFilesystem: false
-            command: ["rclone", "serve", "s3", "--addr", ":8081", "--read-only", "/data"]
-            env:
-              PUID: 568
-              PGID: 568
-              UMASK: 002
-              TZ: "${TIMEZONE}"
-            resources:
-              requests:
-                cpu: 50m
-                memory: 512Mi
     persistence:
       data:
         existingClaim: *app
@@ -158,8 +141,6 @@ spec:
         ports:
           http:
             port: 8080
-          ro:
-            port: 8081
     serviceAccount:
       *app : {}
     rbac:

@@ -34,12 +34,13 @@ var factory = LoggerFactory.Create(configure =>
 const string rootDomain = "${ROOT_DOMAIN}";
 var comparer = EqualityComparer<KumaResource>.Create((x, y) => x!.Metadata.Name == y!.Metadata.Name && x!.Metadata.Namespace == y!.Metadata.Namespace, x => HashCode.Combine(x.Metadata.Name, x.Metadata.Namespace));
 
+var localCluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
 var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-${CLUSTER_CNAME}-kubeconfig");
 var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-equestria-kubeconfig");
 
 var sgcClient = new Kubernetes(sgcConfig);
 var equestriaClient = new Kubernetes(equestriaConfig);
-await UpdateCluster("equestria", comparer, sgcClient, equestriaClient);
+await UpdateCluster("equestria", comparer, localCluster, equestriaClient);
 
 static void DumpNames(string title, IEnumerable<KumaResource> resources)
 {

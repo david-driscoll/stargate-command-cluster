@@ -82,13 +82,13 @@ spec:
         name: ${APP}-${CLUSTER_CNAME}-kubeconfig
         globalMounts:
           - path: /config/${APP}-${CLUSTER_CNAME}-kubeconfig
-            subPath: ${APP}-${CLUSTER_CNAME}-kubeconfig
+            subPath: kubeconfig.yaml
       equestria-kubeconfig:
         type: secret
         name: ${APP}-equestria-kubeconfig
         globalMounts:
           - path: /config/${APP}-equestria-kubeconfig
-            subPath: ${APP}-equestria-kubeconfig
+            subPath: kubeconfig.yaml
 
     defaultPodOptions:
       securityContext:

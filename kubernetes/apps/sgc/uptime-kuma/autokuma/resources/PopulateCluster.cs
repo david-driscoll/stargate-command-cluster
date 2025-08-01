@@ -7,12 +7,14 @@
 #:package Microsoft.Extensions.Logging@9.*
 #:package Dumpify@0.6.6
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
+#:property JsonSerializerIsReflectionEnabledByDefault true
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.IO.Compression;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using Dumpify;
 using k8s;
 using k8s.Models;
@@ -28,6 +30,11 @@ var factory = LoggerFactory.Create(configure =>
              });
            }
        );
+
+       KubernetesJson.AddJsonOptions(options => options.TypeInfoResolver = new DefaultJsonTypeInfoResolver()
+       {
+        Modifiers = {  z => z.refle }
+       });
 
 const string rootDomain = "${ROOT_DOMAIN}";
 var comparer = EqualityComparer<KumaResource>.Create((x, y) => x!.Metadata.Name == y!.Metadata.Name && x!.Metadata.Namespace == y!.Metadata.Namespace, x => HashCode.Combine(x.Metadata.Name, x.Metadata.Namespace));

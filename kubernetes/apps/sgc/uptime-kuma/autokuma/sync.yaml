@@ -59,11 +59,11 @@ spec:
               TZ: "${TIMEZONE}"
             resources:
               requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
                 cpu: 100m
                 memory: 512Mi
+              limits:
+                cpu: 2
+                memory: 2Gi
             command:
               - dotnet
               - run

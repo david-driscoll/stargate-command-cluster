@@ -1,0 +1,12 @@
+name: app
+description: Authentik
+runtime: dotnet
+backend:
+  url: file://./obj/pulumi
+config: {}
+packages:
+  authentik:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - goauthentik/authentik

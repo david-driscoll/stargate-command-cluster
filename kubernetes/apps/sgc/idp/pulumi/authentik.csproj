@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);CS0436</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dumpify" Version="0.6.6" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+    <PackageReference Include="Pulumi" Version="3.*" />
+    <PackageReference Include="Pulumi.Kubernetes" Version="4.23.0" />
+    <PackageReference Include="KubernetesClient" Version="17.0.4" />
+    <Compile Remove="sdks/**/*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
+  </ItemGroup>
+
+</Project>

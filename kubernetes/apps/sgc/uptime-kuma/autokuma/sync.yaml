@@ -109,7 +109,7 @@ spec:
           rules:
             - apiGroups: ["autokuma.bigboot.dev"]
               resources: ["*"]
-              verbs: ["list", "patch", "watch"]
+              verbs: ["list", "patch", "watch", "create", "delete"]
       bindings:
         *app :
           type: ClusterRoleBinding

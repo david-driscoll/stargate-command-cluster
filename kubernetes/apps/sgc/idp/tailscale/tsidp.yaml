@@ -52,7 +52,7 @@ spec:
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
-                    name: tailscale-authkey
+                    name: ${APP}-tailscale-authkey
                     key: authkey
             workingDir: /data/tsidp
             resources:
@@ -76,7 +76,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: tailscale-apps
+        existingClaim: *app
         globalMounts:
           - path: /data/tsidp/
             subPath: tsidp

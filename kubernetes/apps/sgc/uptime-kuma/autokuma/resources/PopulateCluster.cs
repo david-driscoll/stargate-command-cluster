@@ -82,7 +82,12 @@ static async Task UpdateCluster(string cluster, EqualityComparer<KumaResource> c
 
 static Func<KumaResource, KumaResource> MapRemoteEntity(string cluster) => resource =>
 {
-  resource.Metadata.Name = $"{cluster}-{resource.Metadata.Namespace()}-{resource.Metadata.Name}";
+  var prefix = cluster;
+  if (resource.Metadata.Namespace() is { } ns && !ns.Equals(cluster, StringComparison.OrdinalIgnoreCase))
+  {
+    prefix = $"{cluster}-{ns}";
+  }
+  resource.Metadata.Name = $"{prefix}-{resource.Metadata.Name}";
   resource.Metadata.SetNamespace("observability");
   resource.Metadata.Labels ??= new Dictionary<string, string>();
   resource.Metadata.Labels[$"{rootDomain}.cluster"] = cluster;

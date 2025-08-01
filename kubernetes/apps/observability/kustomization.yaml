@@ -9,4 +9,3 @@ components:
 resources:
   - ./secret-store.yaml
   - ./crds/ks.yaml
-  - ./uptime-kuma/ks.yaml

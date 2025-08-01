@@ -31,5 +31,5 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_CAPACITY: ${S3_VOLUME_CAPACITY}Gi
-      # VOLSYNC_STORAGECLASS: openebs-hostpath
+      VOLSYNC_STORAGECLASS: openebs-hostpath
       VOLSYNC_ACCESSMODES: ReadWriteMany

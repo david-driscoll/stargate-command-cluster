@@ -34,15 +34,10 @@ var comparer = EqualityComparer<KumaResource>.Create((x, y) => x!.Metadata.Name 
 
 var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-${CLUSTER_CNAME}-kubeconfig");
 var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-equestria-kubeconfig");
-// var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@sgc");
-// var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@equestria");
-
 
 var sgcClient = new Kubernetes(sgcConfig);
 var equestriaClient = new Kubernetes(equestriaConfig);
-// var allStargateCommandEntities = (await sgcClient.CustomObjects.ListClusterCustomObjectAsync<KumaResourceList<KumaResource>>("autokuma.bigboot.dev", "v1", "kumaentities")).Items.ToImmutableHashSet(comparer);
 await UpdateCluster("equestria", comparer, sgcClient, equestriaClient);
-
 
 static void DumpNames(string title, IEnumerable<KumaResource> resources)
 {

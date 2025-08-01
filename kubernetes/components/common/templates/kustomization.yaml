@@ -2,15 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ./helmrelease.yaml
-  - ./externalsecret.yaml
-  - ./cluster-kubeconfig.yaml
-  - ./equestria-kubeconfig.yaml
-  - ./sync.yaml
 configMapGenerator:
-- name: ${APP}-config
+- name: kubeconfig-templates
   files:
-  - PopulateCluster.cs=./resources/PopulateCluster.cs
+  - kubeconfig.yaml=./resources/kubeconfig-template.yaml
+  - kubeconfig.json=./resources/kubeconfig-template.json
 generatorOptions:
   disableNameSuffixHash: true

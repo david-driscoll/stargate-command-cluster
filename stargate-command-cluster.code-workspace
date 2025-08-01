@@ -1,20 +1,20 @@
 {
   "folders": [
-    {
-      "path": "./kubernetes/apps/sgc/",
-      "name": "sgc"
-    },
-    {
-      "path": "../equestria-cluster/kubernetes/apps/equestria/",
-      "name": "equestria"
-    },
+    // {
+    //   "path": "./kubernetes/apps/sgc/",
+    //   "name": "sgc"
+    // },
+    // {
+    //   "path": "../equestria-cluster/kubernetes/apps/equestria/",
+    //   "name": "equestria"
+    // },
     {
       "path": ".",
       "name": "Stargate Command Cluster"
     },
     {
       "path": "../equestria-cluster",
-      "name": "Equestria Cluster",
+      "name": "Equestria Cluster"
     }
   ],
   "settings": {

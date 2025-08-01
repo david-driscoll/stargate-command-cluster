@@ -21,9 +21,11 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/network/
     dest: kubernetes/apps/network/
     deleteOrphaned: true
+  - source: kubernetes/apps/cloudnative-pg/
+    dest: kubernetes/apps/cloudnative-pg/
+    deleteOrphaned: true
   - source: kubernetes/apps/database/
     dest: kubernetes/apps/database/
-    deleteOrphaned: true
     exclude: |
       storage/config.yaml
       storage/s3/generated/
@@ -31,6 +33,7 @@ david-driscoll/equestria-cluster:
       storage/s3/resources/
       postgres/app/cluster.yaml
       postgres/app/users/
+      postgres/app/resources/
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

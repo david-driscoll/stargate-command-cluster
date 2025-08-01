@@ -9,7 +9,7 @@ spec:
     active: true
     name: Authentik
     type: http
-    url: https://authentik.${ROOT_DOMAIN}/ping
+    url: https://authentik.${ROOT_DOMAIN}
     method: GET
     accepted_statuscodes: ["200"]
     interval: 300

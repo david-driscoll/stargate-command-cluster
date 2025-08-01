@@ -41,7 +41,7 @@ try
   {
     if (!documentNamesMapping.TryGetValue(keyName, out var user))
     {
-      return keyName;
+      return keyName.Dump(nameof(keyName));
     }
     return user ?? keyName;
   }
@@ -71,10 +71,10 @@ try
 
     ;
     var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
-    documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/APP")
+    documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/POSTGRES_NAME")
     .OfType<YamlScalarNode>()
       .SingleOrDefault()
-      ?.Value ?? documentName;
+      ?.Value.Dump("POSTGRES_NAME") ?? documentName;
     var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
     var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
     if (components.Count == 0)
@@ -155,7 +155,7 @@ try
   {
     var roleName = GetName(database);
     var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres");
-    clusterRoles.Children.Add(roleNode);
+    clusterRoles.Children.Add(item: roleNode);
 
   }
 
@@ -180,35 +180,51 @@ try
     var databaseYaml = File.ReadAllText(databaseTemplate)
     .Replace("${APP}", database)
     ;
-    var fileName = Path.Combine(usersDirectory, $"{database}.yaml");
-    var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
+    var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
+    var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");
     File.WriteAllText(fileName, $"""
   {userYaml}
   {databaseYaml}
   """);
-    AnsiConsole.WriteLine($"Updated {fileName} with user {database}.");
+    AnsiConsole.WriteLine($"Updated {fileName} with user {roleName}.");
+  }
 
-    if (!File.Exists(sopsFileName))
+  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userTemplate), "*.yaml")
+  .Where(z => !z.EndsWith("sops.yaml", StringComparison.OrdinalIgnoreCase))
+  .Where(z => !z.EndsWith("kustomization.yaml", StringComparison.OrdinalIgnoreCase))
+  )
+  {
+    var database = GetName(Path.GetFileNameWithoutExtension(item));
+    var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
+    YamlMappingNode? sopsDoc = null;
+    if (File.Exists(sopsFileName))
     {
-      File.WriteAllText(sopsFileName, $"""
+      continue;
+      sopsDoc = ReadStream(sopsFileName).Single();
+    }
+    File.WriteAllText(sopsFileName, $"""
     # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {roleName}-postgres-password
+      name: {database}-postgres-password
     stringData:
-      password: "{Guid.NewGuid():N}"
+      username: "{database}"
+      database: "{database}"
+      port: "5432"
+      hostname: "postgres-rw.database.svc.cluster.local"
+      password: "{sopsDoc?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
     """);
-      Process.Start(new ProcessStartInfo
-      {
-        FileName = "sops",
-        Arguments = $"--encrypt --in-place {sopsFileName}",
-        RedirectStandardOutput = true,
-        RedirectStandardError = true,
-        UseShellExecute = false,
-        CreateNoWindow = true
-      }).WaitForExit();
-    }
+    Process.Start(new ProcessStartInfo
+    {
+      FileName = "sops",
+      Arguments = $"--encrypt --in-place {sopsFileName}",
+      RedirectStandardOutput = true,
+      RedirectStandardError = true,
+      UseShellExecute = false,
+      CreateNoWindow = true
+    }).WaitForExit();
+
   }
 
   var customizationTemplate = $"""
@@ -219,7 +235,7 @@ resources:
   - postgres-user.sops.yaml
   - postgres-superuser.yaml
   - postgres-superuser.sops.yaml
-{string.Join(Environment.NewLine, databases.Order().SelectMany(database => new[] { $"  - {database}.yaml", $"  - {database}.sops.yaml" }))}
+{string.Join(Environment.NewLine, databases.Order().Select(GetName).SelectMany(database => new[] { $"  - {database}.yaml", $"  - {database}.sops.yaml" }))}
 """;
 
   File.WriteAllText(kustomizationPath, customizationTemplate);

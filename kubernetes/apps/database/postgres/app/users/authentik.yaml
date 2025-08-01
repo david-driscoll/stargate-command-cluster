@@ -22,15 +22,27 @@ spec:
           cnpg.io/reload: "true"
         annotations:
           reloader.stakater.com/auto: "true"
-      data:
-        username: "authentik"
-        password: "{{ .password }}"
-        host: "postgres-rw.${NAMESPACE}.svc.cluster.local"
-        port: "5432"
-        database: "authentik"
-        pgpass: "postgres-rw.${NAMESPACE}.svc.cluster.local:5432:authentik:authentik:{{ .password }}"
-        jdbc-uri: "jdbc:postgresql://postgres-rw.${NAMESPACE}.svc.cluster.local:5432/authentik?password={{ .password }}&user=authentik"
-        uri: "postgresql://authentik:{{ .password }}@postgres-rw.${NAMESPACE}.svc.cluster.local:5432/authentik"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: ${APP}-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
   dataFrom:
     - extract:
         key: "authentik-postgres-password"
@@ -52,6 +64,9 @@ spec:
   allowConnections: true
   databaseReclaimPolicy: retain
   schemas:
+    - ensure: present
+      name: public
+      owner: authentik
     - ensure: present
       name: authentik
       owner: authentik

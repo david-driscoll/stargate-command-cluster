@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name postgres-superuser
+  name: &name authentik-apps-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -45,4 +45,28 @@ spec:
               templateAs: Values
   dataFrom:
     - extract:
-        key: "postgres-superuser-password"
+        key: "authentik-apps-postgres-password"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app authentik-apps
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: authentik-apps
+  owner: authentik-apps
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: authentik-apps
+    - ensure: present
+      name: authentik-apps
+      owner: authentik-apps

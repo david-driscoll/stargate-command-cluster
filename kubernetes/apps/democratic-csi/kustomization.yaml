@@ -8,7 +8,7 @@ metadata:
     pod-security.kubernetes.io/enforce: privileged
 components:
   - ../../components/common
-  - ../../components/repos/app-template4
+  - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
   - ./truenas/ks.yaml

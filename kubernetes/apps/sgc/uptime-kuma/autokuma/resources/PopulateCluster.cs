@@ -7,7 +7,7 @@
 #:package Microsoft.Extensions.Logging@9.*
 #:package Dumpify@0.6.6
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
-#:property JsonSerializerIsReflectionEnabledByDefault true
+#:property JsonSerializerIsReflectionEnabledByDefault=true
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.IO.Compression;

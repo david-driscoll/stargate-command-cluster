@@ -72,7 +72,10 @@ spec:
     persistence:
       script:
         type: configMap
-        name: PopulateCluster.cs
+        name: ${APP}-config
+        globalMounts:
+          - path: /script/PopulateCluster.cs
+            subPath: PopulateCluster.cs
         defaultMode: 493
       cluster-kubeconfig:
         type: secret

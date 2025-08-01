@@ -31,11 +31,6 @@ var factory = LoggerFactory.Create(configure =>
            }
        );
 
-       KubernetesJson.AddJsonOptions(options => options.TypeInfoResolver = new DefaultJsonTypeInfoResolver()
-       {
-        Modifiers = {  z => z.refle }
-       });
-
 const string rootDomain = "${ROOT_DOMAIN}";
 var comparer = EqualityComparer<KumaResource>.Create((x, y) => x!.Metadata.Name == y!.Metadata.Name && x!.Metadata.Namespace == y!.Metadata.Namespace, x => HashCode.Combine(x.Metadata.Name, x.Metadata.Namespace));
 

@@ -56,7 +56,7 @@ spec:
         - "tag:${CLUSTER_CNAME}-operator"
       image:
         repository: ghcr.io/tailscale/k8s-operator
-        tag: v1.84.3@sha256:3d6911fbccf5c21cc850fc7eaa8b8f9d3bea686470b8912e0bfb1760379c737d
+        tag: v1.86.2@sha256:cea460b5f3b6bb0a119c63e7a77dda65f0bbbd513cd8e21154851a3ba37d146f
         pullPolicy: Always
       hostname: "${CLUSTER_CNAME}-operator"
       podAnnotations:
@@ -72,7 +72,7 @@ spec:
     proxyConfig:
       image:
         repository: tailscale/tailscale
-        tag: v1.84.3@sha256:f97ea471667bd94023f76e228c5be0b95564cdba2f9501cb084eeef139d8b65e
+        tag: v1.86.2@sha256:241d9518b7e0b6e533dbd0117fcea15acb4174249210837f52b71615949ce9d2
       defaultTags: "tag:${CLUSTER_CNAME}"
       podAnnotations:
         reloader.stakater.com/auto: "true"

@@ -4,13 +4,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app uptime-kuma
-  namespace: &namespace observability
+  namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/uptime-kuma/app
+  path: ./kubernetes/apps/sgc/uptime-kuma/app
   prune: true
   wait: true
   force: true
@@ -38,13 +38,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app autokuma
-  namespace: &namespace observability
+  namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/uptime-kuma/autokuma
+  path: ./kubernetes/apps/sgc/uptime-kuma/autokuma
   prune: true
   wait: true
   force: true
@@ -71,13 +71,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app autokuma-groups
-  namespace: &namespace observability
+  namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/uptime-kuma/groups
+  path: ./kubernetes/apps/sgc/uptime-kuma/groups
   prune: true
   wait: true
   force: true

@@ -63,10 +63,8 @@ david-driscoll/equestria-cluster:
     deleteOrphaned: true
   - source: kubernetes/apps/observability/
     dest: kubernetes/apps/observability/
-    exclude: |
-      autokuma/
-      uptime-kuma/
-      kustomization.yaml
+    # exclude: |
+    #   kustomization.yaml
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: talos/patches/global/machine-kubelet.yaml

@@ -1,31 +1,29 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tailscale-apps
-  namespace: &namespace sgc
+  name: &app pulumi-operator
+  namespace: &namespace flux-system
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/sgc/tailscale/apps
+  dependsOn: []
+  path: ./kubernetes/apps/flux-system/pulumi-operator/app
   prune: true
   wait: true
   force: true
   interval: 1h
   retryInterval: 2m
   timeout: 5m
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
+  components:
+    - ../../../../components/postgres
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components:
-    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app

@@ -129,15 +129,15 @@ await foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("ku
   kustomizeComponents[documentName] = allComponents;
 }
 
-foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres") || z.Value.Contains("postgres-init")))
-{
-  AddBucket(item.Key, $"{GetName(item.Key)}/postgres", false);
-}
-foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
-{
-  AddBucket(item.Key, $"{GetName(item.Key)}/mysql/dump", false);
-  AddBucket(item.Key, $"{GetName(item.Key)}/mysql/snapshot", false);
-}
+// foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres") || z.Value.Contains("postgres-init")))
+// {
+//   AddBucket(item.Key, $"{GetName(item.Key)}/postgres", false);
+// }
+// foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("mysql")))
+// {
+//   AddBucket(item.Key, $"{GetName(item.Key)}/mysql/dump", false);
+//   AddBucket(item.Key, $"{GetName(item.Key)}/mysql/snapshot", false);
+// }
 
 var clusterConfig = ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml");
 var clusterCname = (await clusterConfig.OfType<YamlMappingNode>().SingleAsync()).Query("/stringData/CLUSTER_CNAME").OfType<YamlScalarNode>().Single().Value!;
@@ -296,7 +296,7 @@ kind: Kustomization
 resources:
   - cluster-user.yaml
   - cluster-user.sops.yaml
-{string.Join(Environment.NewLine, minioConfig.Users.Order().SelectMany(user => new[] { $"  - {user.Username}.yaml", $"  - {user.Username}.sops.yaml" }))}
+{string.Join(Environment.NewLine, values: minioConfig.Users.Order().SelectMany(user => new[] { $"  - {user.Username}.yaml", $"  - {user.Username}.sops.yaml" }))}
 """;
 
 File.WriteAllText(kustomizationPath, customizationTemplate);

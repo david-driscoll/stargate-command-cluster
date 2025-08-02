@@ -45,7 +45,7 @@
                 },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_redirects": { "type": "integer" },
                 "max_retries": { "type": "integer" },
@@ -90,7 +90,7 @@
                 "packet_size": { "type": "integer" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -105,7 +105,7 @@
                 "docker_host": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -135,7 +135,7 @@
                 "port": { "type": "integer" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -165,7 +165,7 @@
               "properties": {
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -211,7 +211,7 @@
                 "basic_auth_user": { "type": "string" },
                 "basic_auth_pass": { "type": "string" },
                 "body": { "type": "string" },
-                "description": { "type": "string" },
+
                 "expiry_notification": { "type": "boolean" },
                 "http_body_encoding": { "type": "string" },
                 "ignore_tls": { "type": "boolean" },
@@ -248,7 +248,7 @@
                 "kafka_producer_message": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -271,7 +271,7 @@
                 "basic_auth_user": { "type": "string" },
                 "basic_auth_pass": { "type": "string" },
                 "body": { "type": "string" },
-                "description": { "type": "string" },
+
                 "expiry_notification": { "type": "boolean" },
                 "http_body_encoding": { "type": "string" },
                 "ignore_tls": { "type": "boolean" },
@@ -301,7 +301,7 @@
                 "database_connection_string": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -324,7 +324,7 @@
                 "port": { "type": "integer" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -338,7 +338,7 @@
                 "database_connection_string": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -354,7 +354,7 @@
                 "port": { "type": "integer" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -368,7 +368,7 @@
                 "database_connection_string": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -382,7 +382,7 @@
                 "push_token": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -402,7 +402,7 @@
                 "radius_username": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -418,7 +418,7 @@
                 "url": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -432,7 +432,7 @@
                 "database_connection_string": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -447,7 +447,7 @@
                 "port": { "type": "integer" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -461,7 +461,7 @@
                 "database_connection_string": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 
@@ -475,7 +475,7 @@
                 "hostname": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
-                "description": { "type": "string" },
+
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
 

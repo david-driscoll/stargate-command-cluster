@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/application/application.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  uptimeFrom:
+    type: secret
+    name: ${APP}-uptime
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/application/secret-uptime.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: ${APP}-uptime
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 10m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  dataFrom:
+    - extract:
+        key: "Media Management Secrets"
+  target:
+    name: ${APP}-uptime
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        type: http
+        active: true
+        name: Plex (Cheyenne)
+        url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token={{ .plex_alt_token }}
+        method: GET
+        accepted_statuscodes: ["200"]
+        interval: 300
+        retry_interval: 60
+        max_retries: 3
+        parent_name: "apps"

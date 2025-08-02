@@ -16,6 +16,10 @@
     },
     "spec": {
       "properties": {
+        "name": { "type": "string" },
+        "description": {
+          "type": "string"
+        },
         "uptime": {
           "type": "object",
           "properties": {
@@ -40,8 +44,7 @@
                 "interval": { "type": "integer" },
                 "max_redirects": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "proxy_id": { "type": "string" },
                 "resend_interval": { "type": "integer" },
@@ -85,8 +88,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -101,8 +103,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -132,8 +133,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -146,8 +146,7 @@
                 "hostname": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "port": { "type": "integer" },
                 "retry_interval": { "type": "integer" },
@@ -164,8 +163,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -185,8 +183,7 @@
                 "keyword": { "type": "string" },
                 "max_retries": { "type": "integer" },
                 "max_redirects": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" },
@@ -216,13 +213,13 @@
                 "interval": { "type": "integer" },
                 "max_redirects": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
+
                 "oauth_auth_method": { "type": "string" },
                 "oauth_client_id": { "type": "string" },
                 "oauth_client_secret": { "type": "string" },
                 "oauth_scopes": { "type": "string" },
                 "oauth_token_url": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "proxy_id": { "type": "string" },
                 "resend_interval": { "type": "integer" },
@@ -236,7 +233,6 @@
             },
             "kafka-producer": {
               "properties": {
-                "type": { "const": "kafka-producer" },
                 "kafka_producer_sasl_options_mechanism": {
                   "type": "string",
                   "enum": ["plain", "scram-sha-256", "scram-sha-512"]
@@ -250,8 +246,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -278,13 +273,13 @@
                 "interval": { "type": "integer" },
                 "max_redirects": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
+
                 "oauth_auth_method": { "type": "string" },
                 "oauth_client_id": { "type": "string" },
                 "oauth_client_secret": { "type": "string" },
                 "oauth_scopes": { "type": "string" },
                 "oauth_token_url": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "proxy_id": { "type": "string" },
                 "resend_interval": { "type": "integer" },
@@ -304,8 +299,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -328,8 +322,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -343,8 +336,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "radius_password": { "type": "string" },
                 "retry_interval": { "type": "integer" },
@@ -353,7 +345,6 @@
             },
             "port": {
               "properties": {
-                "type": { "const": "port" },
                 "hostname": { "type": "string" },
                 "port": { "type": "integer" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
@@ -361,8 +352,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -376,8 +366,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -385,15 +374,13 @@
             },
             "push": {
               "properties": {
-                "type": { "const": "push" },
                 "push_token": { "type": "string" },
                 "accepted_statuscodes": { "items": { "type": "string" } },
                 "active": { "type": "boolean" },
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -401,7 +388,6 @@
             },
             "radius": {
               "properties": {
-                "type": { "const": "radius" },
                 "hostname": { "type": "string" },
                 "port": { "type": "integer" },
                 "radius_called_station_id": { "type": "string" },
@@ -414,8 +400,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -431,8 +416,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -446,8 +430,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -462,8 +445,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -477,8 +459,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -492,8 +473,7 @@
                 "description": { "type": "string" },
                 "interval": { "type": "integer" },
                 "max_retries": { "type": "integer" },
-                "name": { "type": "string" },
-                "parent": { "type": "integer" },
+
                 "parent_name": { "type": "string" },
                 "retry_interval": { "type": "integer" },
                 "upside_down": { "type": "boolean" }
@@ -522,9 +502,6 @@
             "icon": {
               "type": "string"
             },
-            "description": {
-              "type": "string"
-            },
             "category": {
               "type": "string"
             },
@@ -545,7 +522,7 @@
           }
         }
       },
-      "required": ["authentik"],
+      "required": ["name"],
       "type": "object"
     }
   }

@@ -15,9 +15,14 @@
       "type": "object"
     },
     "spec": {
+      "required": ["name", "category"],
+      "type": "object",
       "properties": {
         "name": { "type": "string" },
         "description": {
+          "type": "string"
+        },
+        "category": {
           "type": "string"
         },
         "uptime": {
@@ -502,9 +507,6 @@
             "icon": {
               "type": "string"
             },
-            "category": {
-              "type": "string"
-            },
             "config": {
               "type": "object",
               "additionalProperties": {
@@ -512,7 +514,7 @@
               }
             }
           },
-          "required": ["provider", "url", "icon", "category", "config"],
+          "required": ["provider", "url", "icon", "config"],
           "type": "object"
         },
         "authentikFrom": {
@@ -521,9 +523,7 @@
             "name": { "type": "string" }
           }
         }
-      },
-      "required": ["name"],
-      "type": "object"
+      }
     }
   }
 }

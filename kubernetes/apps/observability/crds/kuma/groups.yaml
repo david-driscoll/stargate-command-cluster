@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/kuma/kuma.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: cluster-apps
+spec:
+  config:
+    name: ${CLUSTER_TITLE}
+    type: group
+    parent_name: apps
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/kuma/kuma.schema.json
+apiVersion: autokuma.bigboot.dev/v1
+kind: KumaEntity
+metadata:
+  name: cluster-system
+spec:
+  config:
+    name: ${CLUSTER_TITLE}
+    type: group
+    parent_name: system
+    interval: 300
+    retry_interval: 60
+    max_retries: 3

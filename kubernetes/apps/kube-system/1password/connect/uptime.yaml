@@ -7,7 +7,7 @@ metadata:
 spec:
   config:
     active: true
-    name: 1Password Connect (${CLUSTER_TITLE})
+    name: 1Password Connect
     type: http
     url: https://op-connect.${CLUSTER_DOMAIN}/health
     method: GET
@@ -15,4 +15,4 @@ spec:
     interval: 300
     retry_interval: 60
     max_retries: 3
-    parent_name: "system"
+    parent_name: "cluster-system"

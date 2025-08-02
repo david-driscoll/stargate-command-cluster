@@ -1,10 +1,12 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/application/application.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/equestria-cluster/refs/heads/main/kubernetes/apps/observability/crds/application/application.schema.json
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
+  name: Plex (Cheyenne)
+  category: Media
   uptimeFrom:
     type: secret
     name: ${APP}-uptime
@@ -37,7 +39,6 @@ spec:
       data:
         type: http
         active: true
-        name: Plex (Cheyenne)
         url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token={{ .plex_alt_token }}
         method: GET
         accepted_statuscodes: ["200"]

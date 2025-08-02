@@ -338,12 +338,9 @@ spec:
                     kafka-producer:
                       type: object
                       properties:
-                        type: { const: kafka-producer }
                         kafka_producer_sasl_options_mechanism:
-                          {
-                            type: string,
-                            enum: [plain, scram-sha-256, scram-sha-512],
-                          }
+                          type: string
+                          enum: [plain, scram-sha-256, scram-sha-512]
                         kafka_producer_ssl:
                           type: boolean
                         kafka_producer_brokers:

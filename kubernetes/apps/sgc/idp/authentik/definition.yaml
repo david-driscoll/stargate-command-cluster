@@ -5,11 +5,16 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Tautulli (Cheyenne)
-  category: Media Management
+  name: Authentik
+  category: Identity
+  authentik:
+    provider: "forward-auth"
+    url: https://justatest.${ROOT_DOMAIN}
+    icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/radarr-4k.svg
+    config: {}
   uptime:
     http:
-      url: https://${APP}.${CLUSTER_DOMAIN}/status
+      url: https://authentik.${ROOT_DOMAIN}
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "apps"
+      parent_name: "system"

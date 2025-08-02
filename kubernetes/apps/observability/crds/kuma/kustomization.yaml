@@ -6,3 +6,4 @@ resources:
   - ./crds.yaml
   - ./service-account.yaml
   - ./push-secret.yaml
+  - ./groups.yaml

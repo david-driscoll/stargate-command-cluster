@@ -5,10 +5,10 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Dragonfly (${CLUSTER_TITLE})
+  name: Dragonfly
   category: ${CLUSTER_TITLE}
   uptime:
     redis:
       database_connection_string: redis://redis.database.svc.cluster.local
       accepted_statuscodes: ["200"]
-      parent_name: "system"
+      parent_name: "cluster-system"

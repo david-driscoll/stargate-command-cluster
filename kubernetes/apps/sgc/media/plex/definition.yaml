@@ -42,7 +42,4 @@ spec:
         url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token={{ .plex_alt_token }}
         method: GET
         accepted_statuscodes: "200"
-        interval: 300
-        retry_interval: 60
-        max_retries: 3
         parent_name: "apps"

@@ -41,7 +41,7 @@ return await Deployment.RunAsync(async () =>
     ProviderType = "openidconnect",
     Enabled = true,
     AuthenticationFlow = null,
-    EnrollmentFlow = null,
+    EnrollmentFlow = null,  
 
     OidcWellKnownUrl = "https://idp.opossum-yo.ts.net/.well-known/openid-configuration",
     ConsumerKey = "unused",

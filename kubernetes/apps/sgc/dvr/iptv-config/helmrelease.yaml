@@ -38,7 +38,7 @@ spec:
           *app :
             image:
               repository: josh5/tvh-iptv-config
-              tag: latest@sha256:b990fe7a18d9195bec2e76a0f20d8e584e833821b24f8f09412a42f1985924ec
+              tag: latest@sha256:f04de26a163db06d1dd4721877d89c34679e9219de1cb578d3f3f5e31b7e2217
               pullPolicy: Always
             env:
               TZ: ${TIMEZONE}

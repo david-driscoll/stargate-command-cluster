@@ -23,8 +23,6 @@ spec:
                 http:
                   type: object
                   properties:
-                    type:
-                      const: http
                     url:
                       type: string
                     method:
@@ -92,8 +90,6 @@ spec:
                 ping:
                   type: object
                   properties:
-                    type:
-                      const: ping
                     hostname:
                       type: string
                     packet_size:
@@ -115,8 +111,6 @@ spec:
                 docker:
                   type: object
                   properties:
-                    type:
-                      const: docker
                     docker_container:
                       type: string
                     docker_host:
@@ -138,8 +132,6 @@ spec:
                 dns:
                   type: object
                   properties:
-                    type:
-                      const: dns
                     hostname:
                       type: string
                     dns_resolve_server:
@@ -166,8 +158,6 @@ spec:
                 gamedig:
                   type: object
                   properties:
-                    type:
-                      const: gamedig
                     game:
                       type: string
                     gamedig_given_port_only:
@@ -195,8 +185,6 @@ spec:
                 group:
                   type: object
                   properties:
-                    type:
-                      const: group
                     accepted_statuscodes:
                       type: string
                     active:
@@ -214,8 +202,6 @@ spec:
                 grpc-keyword:
                   type: object
                   properties:
-                    type:
-                      const: grpc-keyword
                     grpc_body:
                       type: string
                     grpc_enable_tls:
@@ -255,8 +241,6 @@ spec:
                 json-query:
                   type: object
                   properties:
-                    type:
-                      const: json-query
                     url:
                       type: string
                     json_path:
@@ -324,8 +308,6 @@ spec:
                 kafka-producer:
                   type: object
                   properties:
-                    type:
-                      const: kafka-producer
                     kafka_producer_sasl_options_mechanism:
                       type: string
                       enum: [plain, scram-sha-256, scram-sha-512]
@@ -354,8 +336,6 @@ spec:
                 keyword:
                   type: object
                   properties:
-                    type:
-                      const: keyword
                     url:
                       type: string
                     keyword:
@@ -423,8 +403,6 @@ spec:
                 mongodb:
                   type: object
                   properties:
-                    type:
-                      const: mongodb
                     database_connection_string:
                       type: string
                     accepted_statuscodes:
@@ -444,8 +422,6 @@ spec:
                 mqtt:
                   type: object
                   properties:
-                    type:
-                      const: mqtt
                     mqtt_check_type:
                       type: string
                       enum: [connect, publish, subscribe]
@@ -478,8 +454,6 @@ spec:
                 mysql:
                   type: object
                   properties:
-                    type:
-                      const: mysql
                     database_connection_string:
                       type: string
                     accepted_statuscodes:
@@ -501,8 +475,6 @@ spec:
                 port:
                   type: object
                   properties:
-                    type:
-                      const: port
                     hostname:
                       type: string
                     port:
@@ -524,8 +496,6 @@ spec:
                 postgres:
                   type: object
                   properties:
-                    type:
-                      const: postgres
                     database_connection_string:
                       type: string
                     accepted_statuscodes:
@@ -545,8 +515,6 @@ spec:
                 push:
                   type: object
                   properties:
-                    type:
-                      const: push
                     push_token:
                       type: string
                     accepted_statuscodes:
@@ -566,8 +534,6 @@ spec:
                 radius:
                   type: object
                   properties:
-                    type:
-                      const: radius
                     hostname:
                       type: string
                     port:
@@ -599,8 +565,6 @@ spec:
                 real-browser:
                   type: object
                   properties:
-                    type:
-                      const: real-browser
                     remote_browser:
                       type: string
                     remote_browsers_toggle:
@@ -624,8 +588,6 @@ spec:
                 redis:
                   type: object
                   properties:
-                    type:
-                      const: redis
                     database_connection_string:
                       type: string
                     accepted_statuscodes:
@@ -645,8 +607,6 @@ spec:
                 steam:
                   type: object
                   properties:
-                    type:
-                      const: steam
                     hostname:
                       type: string
                     port:
@@ -668,8 +628,6 @@ spec:
                 sqlserver:
                   type: object
                   properties:
-                    type:
-                      const: sqlserver
                     database_connection_string:
                       type: string
                     accepted_statuscodes:
@@ -689,8 +647,6 @@ spec:
                 tailscale-ping:
                   type: object
                   properties:
-                    type:
-                      const: tailscale-ping
                     hostname:
                       type: string
                     accepted_statuscodes:

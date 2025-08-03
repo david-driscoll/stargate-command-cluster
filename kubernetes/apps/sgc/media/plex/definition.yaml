@@ -38,7 +38,6 @@ spec:
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
         type: http
-        active: true
         url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token={{ .plex_alt_token }}
         method: GET
         accepted_statuscodes: "200"

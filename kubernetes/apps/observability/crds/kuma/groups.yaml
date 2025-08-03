@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://github.com/david-driscoll/stargate-command-cluster/blob/main/schemas/kuma.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
@@ -14,7 +14,7 @@ spec:
     max_retries: 3
 
 ---
-# yaml-language-server: $schema=https://github.com/david-driscoll/stargate-command-cluster/blob/main/schemas/kuma.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:

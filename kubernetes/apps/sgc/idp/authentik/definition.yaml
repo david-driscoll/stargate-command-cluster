@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://github.com/david-driscoll/stargate-command-cluster/blob/main/schemas/definition.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:

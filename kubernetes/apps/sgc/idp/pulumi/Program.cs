@@ -33,21 +33,22 @@ return await Deployment.RunAsync(async () =>
   var sgcClient = new Kubernetes(sgcConfig);
   var equestriaClient = new Kubernetes(equestriaConfig);
 
-  var tailscaleSource = new SourceOauth("tailscale", new()
-  {
-    Name = "Tailscale",
-    Slug = "tailscale",
-    ProviderType = "openidconnect",
-    Enabled = true,
-    AuthenticationFlow = null,
-    EnrollmentFlow = null,
-
-    OidcWellKnownUrl = "https://idp.opossum-yo.ts.net/.well-known/openid-configuration",
-    ConsumerKey = "unused",
-    ConsumerSecret = "unused",
-    UserMatchingMode = "email_link",
-    GroupMatchingMode = "name_link",
-  });
+  // tailscale dns needs to be fixed
+  // var tailscaleSource = new SourceOauth("tailscale", new()
+  // {
+  //   Name = "Tailscale",
+  //   Slug = "tailscale",
+  //   ProviderType = "openidconnect",
+  //   Enabled = true,
+  //   AuthenticationFlow = null,
+  //   EnrollmentFlow = null,
+  //
+  //   OidcWellKnownUrl = "https://idp.opossum-yo.ts.net/.well-known/openid-configuration",
+  //   ConsumerKey = "unused",
+  //   ConsumerSecret = "unused",
+  //   UserMatchingMode = "email_link",
+  //   GroupMatchingMode = "name_link",
+  // });
 
   var sgcResources = new ClusterApplicationResources("sgc", new()
   {

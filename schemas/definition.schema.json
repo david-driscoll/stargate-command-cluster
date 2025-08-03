@@ -15,6 +15,7 @@
       "type": "object"
     },
     "spec": {
+      "additionalProperties": false,
       "required": ["name", "category"],
       "type": "object",
       "properties": {

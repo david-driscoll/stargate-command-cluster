@@ -10,24 +10,24 @@
           "type": "string",
           "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
         },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
+        "interval": { "type": "integer" },
         "max_redirects": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
         "proxy_id": { "type": "string" },
         "resend_interval": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "timeout": { "type": "string" },
-        "upside_down": { "type": "string" },
+        "retry_interval": { "type": "integer" },
+        "timeout": { "type": "integer" },
+        "upside_down": { "type": "boolean" },
         "tls_ca": { "type": "string" },
         "tls_cert": { "type": "string" },
         "tls_key": { "type": "string" },
-        "ignore_tls": { "type": "string" },
-        "expiry_notification": { "type": "string" },
+        "ignore_tls": { "type": "boolean" },
+        "expiry_notification": { "type": "boolean" },
         "http_body_encoding": {
           "type": "string",
           "enum": ["none", "base64", "utf8"]
@@ -57,15 +57,15 @@
         "type": { "const": "ping" },
         "hostname": { "type": "string" },
         "packet_size": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "docker": {
@@ -74,15 +74,15 @@
         "type": { "const": "docker" },
         "docker_container": { "type": "string" },
         "docker_host": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "dns": {
@@ -95,16 +95,16 @@
           "type": "string",
           "enum": ["A", "AAAA", "CNAME", "MX", "TXT", "SRV", "PTR", "SOA", "NS"]
         },
-        "port": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "port": { "type": "integer" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "gamedig": {
@@ -114,15 +114,15 @@
         "game": { "type": "string" },
         "gamedig_given_port_only": { "type": "string" },
         "hostname": { "type": "string" },
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "port": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "port": { "type": "integer" },
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
         "description": { "type": "string" }
       }
     },
@@ -130,15 +130,15 @@
       "type": "object",
       "properties": {
         "type": { "const": "group" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "grpc-keyword": {
@@ -152,17 +152,17 @@
         "grpc_protobuf": { "type": "string" },
         "grpc_service_name": { "type": "string" },
         "grpc_url": { "type": "string" },
-        "interval": { "type": "string" },
+        "interval": { "type": "integer" },
         "invert_keyword": { "type": "string" },
         "keyword": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "max_retries": { "type": "integer" },
         "max_redirects": { "type": "string" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
         "description": { "type": "string" }
       }
     },
@@ -174,8 +174,8 @@
         "json_path": { "type": "string" },
         "expected_value": { "type": "string" },
         "method": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
         "auth_domain": { "type": "string" },
         "authMethod": { "type": "string" },
         "auth_workstation": { "type": "string" },
@@ -183,12 +183,12 @@
         "basic_auth_pass": { "type": "string" },
         "body": { "type": "string" },
 
-        "expiry_notification": { "type": "string" },
+        "expiry_notification": { "type": "boolean" },
         "http_body_encoding": { "type": "string" },
-        "ignore_tls": { "type": "string" },
-        "interval": { "type": "string" },
+        "ignore_tls": { "type": "boolean" },
+        "interval": { "type": "integer" },
         "max_redirects": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "max_retries": { "type": "integer" },
 
         "oauth_auth_method": { "type": "string" },
         "oauth_client_id": { "type": "string" },
@@ -199,12 +199,12 @@
         "parent_name": { "type": "string" },
         "proxy_id": { "type": "string" },
         "resend_interval": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "timeout": { "type": "string" },
+        "retry_interval": { "type": "integer" },
+        "timeout": { "type": "integer" },
         "tls_ca": { "type": "string" },
         "tls_cert": { "type": "string" },
         "tls_key": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "upside_down": { "type": "boolean" }
       }
     },
     "kafka-producer": {
@@ -219,15 +219,15 @@
         "kafka_producer_brokers": { "type": "string" },
         "kafka_producer_topic": { "type": "string" },
         "kafka_producer_message": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "keyword": {
@@ -238,8 +238,8 @@
         "keyword": { "type": "string" },
         "invert_keyword": { "type": "string" },
         "method": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
         "auth_domain": { "type": "string" },
         "authMethod": { "type": "string" },
         "auth_workstation": { "type": "string" },
@@ -247,12 +247,12 @@
         "basic_auth_pass": { "type": "string" },
         "body": { "type": "string" },
 
-        "expiry_notification": { "type": "string" },
+        "expiry_notification": { "type": "boolean" },
         "http_body_encoding": { "type": "string" },
-        "ignore_tls": { "type": "string" },
-        "interval": { "type": "string" },
+        "ignore_tls": { "type": "boolean" },
+        "interval": { "type": "integer" },
         "max_redirects": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "max_retries": { "type": "integer" },
 
         "oauth_auth_method": { "type": "string" },
         "oauth_client_id": { "type": "string" },
@@ -263,12 +263,12 @@
         "parent_name": { "type": "string" },
         "proxy_id": { "type": "string" },
         "resend_interval": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "timeout": { "type": "string" },
+        "retry_interval": { "type": "integer" },
+        "timeout": { "type": "integer" },
         "tls_ca": { "type": "string" },
         "tls_cert": { "type": "string" },
         "tls_key": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "upside_down": { "type": "boolean" }
       }
     },
     "mongodb": {
@@ -276,15 +276,15 @@
       "properties": {
         "type": { "const": "mongodb" },
         "database_connection_string": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "mqtt": {
@@ -300,16 +300,16 @@
         "mqtt_topic": { "type": "string" },
         "mqtt_success_message": { "type": "string" },
         "hostname": { "type": "string" },
-        "port": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "port": { "type": "integer" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "mysql": {
@@ -317,16 +317,16 @@
       "properties": {
         "type": { "const": "mysql" },
         "database_connection_string": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
         "radius_password": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "port": {
@@ -334,16 +334,16 @@
       "properties": {
         "type": { "const": "port" },
         "hostname": { "type": "string" },
-        "port": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "port": { "type": "integer" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "postgres": {
@@ -351,15 +351,15 @@
       "properties": {
         "type": { "const": "postgres" },
         "database_connection_string": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "push": {
@@ -367,15 +367,15 @@
       "properties": {
         "type": { "const": "push" },
         "push_token": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "radius": {
@@ -383,21 +383,21 @@
       "properties": {
         "type": { "const": "radius" },
         "hostname": { "type": "string" },
-        "port": { "type": "string" },
+        "port": { "type": "integer" },
         "radius_called_station_id": { "type": "string" },
         "radius_calling_station_id": { "type": "string" },
         "radius_password": { "type": "string" },
         "radius_secret": { "type": "string" },
         "radius_username": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "real-browser": {
@@ -407,15 +407,15 @@
         "remote_browser": { "type": "string" },
         "remote_browsers_toggle": { "type": "string" },
         "url": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "redis": {
@@ -423,15 +423,15 @@
       "properties": {
         "type": { "const": "redis" },
         "database_connection_string": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "steam": {
@@ -439,16 +439,16 @@
       "properties": {
         "type": { "const": "steam" },
         "hostname": { "type": "string" },
-        "port": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "port": { "type": "integer" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "sqlserver": {
@@ -456,15 +456,15 @@
       "properties": {
         "type": { "const": "sqlserver" },
         "database_connection_string": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     },
     "tailscale-ping": {
@@ -472,15 +472,15 @@
       "properties": {
         "type": { "const": "tailscale-ping" },
         "hostname": { "type": "string" },
-        "accepted_statuscodes": { "type": "string" },
-        "active": { "type": "string" },
+        "accepted_statuscodes": { "items": { "type": "string" } },
+        "active": { "type": "boolean" },
 
-        "interval": { "type": "string" },
-        "max_retries": { "type": "string" },
+        "interval": { "type": "integer" },
+        "max_retries": { "type": "integer" },
 
         "parent_name": { "type": "string" },
-        "retry_interval": { "type": "string" },
-        "upside_down": { "type": "string" }
+        "retry_interval": { "type": "integer" },
+        "upside_down": { "type": "boolean" }
       }
     }
   }

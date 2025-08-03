@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for Application Definition Custom Resource",
+  "required": ["metadata", "spec"],
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": "string"
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "spec": {
+      "required": ["name", "category"],
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uptime": {
+          "type": "object",
+          "properties": {
+            "http": { "$ref": "./kuma/properties.json#/definitions/http" },
+            "ping": { "$ref": "./kuma/properties.json#/definitions/ping" },
+            "docker": { "$ref": "./kuma/properties.json#/definitions/docker" },
+            "dns": { "$ref": "./kuma/properties.json#/definitions/dns" },
+            "gamedig": {
+              "$ref": "./kuma/properties.json#/definitions/gamedig"
+            },
+            "group": { "$ref": "./kuma/properties.json#/definitions/group" },
+            "grpc-keyword": {
+              "$ref": "./kuma/properties.json#/definitions/grpc-keyword"
+            },
+            "json-query": {
+              "$ref": "./kuma/properties.json#/definitions/json-query"
+            },
+            "kafka-producer": {
+              "$ref": "./kuma/properties.json#/definitions/kafka-producer"
+            },
+            "keyword": {
+              "$ref": "./kuma/properties.json#/definitions/keyword"
+            },
+            "mongodb": {
+              "$ref": "./kuma/properties.json#/definitions/mongodb"
+            },
+            "mqtt": { "$ref": "./kuma/properties.json#/definitions/mqtt" },
+            "mysql": { "$ref": "./kuma/properties.json#/definitions/mysql" },
+            "port": { "$ref": "./kuma/properties.json#/definitions/port" },
+            "postgres": {
+              "$ref": "./kuma/properties.json#/definitions/postgres"
+            },
+            "push": { "$ref": "./kuma/properties.json#/definitions/push" },
+            "radius": { "$ref": "./kuma/properties.json#/definitions/radius" },
+            "real-browser": {
+              "$ref": "./kuma/properties.json#/definitions/real-browser"
+            },
+            "redis": { "$ref": "./kuma/properties.json#/definitions/redis" },
+            "steam": { "$ref": "./kuma/properties.json#/definitions/steam" },
+            "sqlserver": {
+              "$ref": "./kuma/properties.json#/definitions/sqlserver"
+            },
+            "tailscale-ping": {
+              "$ref": "./kuma/properties.json#/definitions/tailscale-ping"
+            }
+          }
+        },
+        "uptimeFrom": {
+          "properties": {
+            "type": { "type": "string", "enum": ["configMap", "secret"] },
+            "name": { "type": "string" }
+          }
+        },
+        "authentik": {
+          "properties": {
+            "ssf": { "$ref": "./authentik/properties.json#/definitions/ssf" },
+            "scim": { "$ref": "./authentik/properties.json#/definitions/scim" },
+            "saml": { "$ref": "./authentik/properties.json#/definitions/saml" },
+            "radius": {
+              "$ref": "./authentik/properties.json#/definitions/radius"
+            },
+            "rac": { "$ref": "./authentik/properties.json#/definitions/rac" },
+            "oauth2": {
+              "$ref": "./authentik/properties.json#/definitions/oauth2"
+            },
+            "microsoftEntra": {
+              "$ref": "./authentik/properties.json#/definitions/microsoftEntra"
+            },
+            "ldap": {
+              "$ref": "./authentik/properties.json#/definitions/ldap"
+            },
+            "googleWorkspace": {
+              "$ref": "./authentik/properties.json#/definitions/googleWorkspace"
+            }
+          },
+          "type": "object"
+        },
+        "authentikFrom": {
+          "properties": {
+            "type": { "type": "string", "enum": ["configMap", "secret"] },
+            "name": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

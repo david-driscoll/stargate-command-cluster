@@ -12,24 +12,707 @@ spec:
     singular: kumaentity
   scope: Namespaced
   versions:
-  - additionalPrinterColumns: []
-    name: v1
-    schema:
-      openAPIV3Schema:
-        description: Auto-generated derived type for KumaEntitySpec via `CustomResource`
-        properties:
-          spec:
-            properties:
-              config:
-                additionalProperties: true
-                type: object
-            required:
-            - config
-            type: object
-        required:
-        - spec
-        title: KumaEntity
-        type: object
-    served: true
-    storage: true
-    subresources: {}
+    - additionalPrinterColumns: []
+      name: v1
+      schema:
+        openAPIV3Schema:
+          description: Auto-generated derived type for KumaEntitySpec via `CustomResource`
+          properties:
+            spec:
+              properties:
+                http:
+                  type: object
+                  properties:
+                    type:
+                      const: http
+                    url:
+                      type: string
+                    method:
+                      type: string
+                      enum: [GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS]
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_redirects:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    proxy_id:
+                      type: string
+                    resend_interval:
+                      type: string
+                    retry_interval:
+                      type: string
+                    timeout:
+                      type: string
+                    upside_down:
+                      type: string
+                    tls_ca:
+                      type: string
+                    tls_cert:
+                      type: string
+                    tls_key:
+                      type: string
+                    ignore_tls:
+                      type: string
+                    expiry_notification:
+                      type: string
+                    http_body_encoding:
+                      type: string
+                      enum: [none, base64, utf8]
+                    body:
+                      type: string
+                    auth_domain:
+                      type: string
+                    authMethod:
+                      type: string
+                      enum: [basic, oauth, none]
+                    auth_workstation:
+                      type: string
+                    basic_auth_user:
+                      type: string
+                    basic_auth_pass:
+                      type: string
+                    oauth_auth_method:
+                      type: string
+                      enum: [client_credentials, password, none]
+                    oauth_client_id:
+                      type: string
+                    oauth_client_secret:
+                      type: string
+                    oauth_scopes:
+                      type: string
+                    oauth_token_url:
+                      type: string
+                ping:
+                  type: object
+                  properties:
+                    type:
+                      const: ping
+                    hostname:
+                      type: string
+                    packet_size:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                docker:
+                  type: object
+                  properties:
+                    type:
+                      const: docker
+                    docker_container:
+                      type: string
+                    docker_host:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                dns:
+                  type: object
+                  properties:
+                    type:
+                      const: dns
+                    hostname:
+                      type: string
+                    dns_resolve_server:
+                      type: string
+                    dns_resolve_type:
+                      type: string
+                      enum: [A, AAAA, CNAME, MX, TXT, SRV, PTR, SOA, NS]
+                    port:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                gamedig:
+                  type: object
+                  properties:
+                    type:
+                      const: gamedig
+                    game:
+                      type: string
+                    gamedig_given_port_only:
+                      type: string
+                    hostname:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    port:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    description:
+                      type: string
+                group:
+                  type: object
+                  properties:
+                    type:
+                      const: group
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                grpc-keyword:
+                  type: object
+                  properties:
+                    type:
+                      const: grpc-keyword
+                    grpc_body:
+                      type: string
+                    grpc_enable_tls:
+                      type: string
+                    grpc_metadata:
+                      type: string
+                    grpc_method:
+                      type: string
+                    grpc_protobuf:
+                      type: string
+                    grpc_service_name:
+                      type: string
+                    grpc_url:
+                      type: string
+                    interval:
+                      type: string
+                    invert_keyword:
+                      type: string
+                    keyword:
+                      type: string
+                    max_retries:
+                      type: string
+                    max_redirects:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    description:
+                      type: string
+                json-query:
+                  type: object
+                  properties:
+                    type:
+                      const: json-query
+                    url:
+                      type: string
+                    json_path:
+                      type: string
+                    expected_value:
+                      type: string
+                    method:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    auth_domain:
+                      type: string
+                    authMethod:
+                      type: string
+                    auth_workstation:
+                      type: string
+                    basic_auth_user:
+                      type: string
+                    basic_auth_pass:
+                      type: string
+                    body:
+                      type: string
+                    expiry_notification:
+                      type: string
+                    http_body_encoding:
+                      type: string
+                    ignore_tls:
+                      type: string
+                    interval:
+                      type: string
+                    max_redirects:
+                      type: string
+                    max_retries:
+                      type: string
+                    oauth_auth_method:
+                      type: string
+                    oauth_client_id:
+                      type: string
+                    oauth_client_secret:
+                      type: string
+                    oauth_scopes:
+                      type: string
+                    oauth_token_url:
+                      type: string
+                    parent_name:
+                      type: string
+                    proxy_id:
+                      type: string
+                    resend_interval:
+                      type: string
+                    retry_interval:
+                      type: string
+                    timeout:
+                      type: string
+                    tls_ca:
+                      type: string
+                    tls_cert:
+                      type: string
+                    tls_key:
+                      type: string
+                    upside_down:
+                      type: string
+                kafka-producer:
+                  type: object
+                  properties:
+                    type:
+                      const: kafka-producer
+                    kafka_producer_sasl_options_mechanism:
+                      type: string
+                      enum: [plain, scram-sha-256, scram-sha-512]
+                    kafka_producer_ssl:
+                      type: string
+                    kafka_producer_brokers:
+                      type: string
+                    kafka_producer_topic:
+                      type: string
+                    kafka_producer_message:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                keyword:
+                  type: object
+                  properties:
+                    type:
+                      const: keyword
+                    url:
+                      type: string
+                    keyword:
+                      type: string
+                    invert_keyword:
+                      type: string
+                    method:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    auth_domain:
+                      type: string
+                    authMethod:
+                      type: string
+                    auth_workstation:
+                      type: string
+                    basic_auth_user:
+                      type: string
+                    basic_auth_pass:
+                      type: string
+                    body:
+                      type: string
+                    expiry_notification:
+                      type: string
+                    http_body_encoding:
+                      type: string
+                    ignore_tls:
+                      type: string
+                    interval:
+                      type: string
+                    max_redirects:
+                      type: string
+                    max_retries:
+                      type: string
+                    oauth_auth_method:
+                      type: string
+                    oauth_client_id:
+                      type: string
+                    oauth_client_secret:
+                      type: string
+                    oauth_scopes:
+                      type: string
+                    oauth_token_url:
+                      type: string
+                    parent_name:
+                      type: string
+                    proxy_id:
+                      type: string
+                    resend_interval:
+                      type: string
+                    retry_interval:
+                      type: string
+                    timeout:
+                      type: string
+                    tls_ca:
+                      type: string
+                    tls_cert:
+                      type: string
+                    tls_key:
+                      type: string
+                    upside_down:
+                      type: string
+                mongodb:
+                  type: object
+                  properties:
+                    type:
+                      const: mongodb
+                    database_connection_string:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                mqtt:
+                  type: object
+                  properties:
+                    type:
+                      const: mqtt
+                    mqtt_check_type:
+                      type: string
+                      enum: [connect, publish, subscribe]
+                    mqtt_username:
+                      type: string
+                    mqtt_password:
+                      type: string
+                    mqtt_topic:
+                      type: string
+                    mqtt_success_message:
+                      type: string
+                    hostname:
+                      type: string
+                    port:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                mysql:
+                  type: object
+                  properties:
+                    type:
+                      const: mysql
+                    database_connection_string:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    radius_password:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                port:
+                  type: object
+                  properties:
+                    type:
+                      const: port
+                    hostname:
+                      type: string
+                    port:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                postgres:
+                  type: object
+                  properties:
+                    type:
+                      const: postgres
+                    database_connection_string:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                push:
+                  type: object
+                  properties:
+                    type:
+                      const: push
+                    push_token:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                radius:
+                  type: object
+                  properties:
+                    type:
+                      const: radius
+                    hostname:
+                      type: string
+                    port:
+                      type: string
+                    radius_called_station_id:
+                      type: string
+                    radius_calling_station_id:
+                      type: string
+                    radius_password:
+                      type: string
+                    radius_secret:
+                      type: string
+                    radius_username:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                real-browser:
+                  type: object
+                  properties:
+                    type:
+                      const: real-browser
+                    remote_browser:
+                      type: string
+                    remote_browsers_toggle:
+                      type: string
+                    url:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                redis:
+                  type: object
+                  properties:
+                    type:
+                      const: redis
+                    database_connection_string:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                steam:
+                  type: object
+                  properties:
+                    type:
+                      const: steam
+                    hostname:
+                      type: string
+                    port:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                sqlserver:
+                  type: object
+                  properties:
+                    type:
+                      const: sqlserver
+                    database_connection_string:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                tailscale-ping:
+                  type: object
+                  properties:
+                    type:
+                      const: tailscale-ping
+                    hostname:
+                      type: string
+                    accepted_statuscodes:
+                      type: string
+                    active:
+                      type: string
+                    interval:
+                      type: string
+                    max_retries:
+                      type: string
+                    parent_name:
+                      type: string
+                    retry_interval:
+                      type: string
+                    upside_down:
+                      type: string
+                type:
+                  type: object
+          required:
+            - spec
+          title: KumaEntity
+          type: object
+      served: true
+      storage: true
+      subresources: {}

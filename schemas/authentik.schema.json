@@ -15,35 +15,24 @@
       "type": "object"
     },
     "spec": {
+      "type": "object",
       "properties": {
-        "provider": {
-          "type": "string",
-          "enum": ["oauth2", "ldap", "forward-auth", "proxy"]
+        "ssf": { "$ref": "./authentik/properties.json#/definitions/ssf" },
+        "scim": { "$ref": "./authentik/properties.json#/definitions/scim" },
+        "saml": { "$ref": "./authentik/properties.json#/definitions/saml" },
+        "radius": { "$ref": "./authentik/properties.json#/definitions/radius" },
+        "rac": { "$ref": "./authentik/properties.json#/definitions/rac" },
+        "oauth2": { "$ref": "./authentik/properties.json#/definitions/oauth2" },
+        "microsoftEntra": {
+          "$ref": "./authentik/properties.json#/definitions/microsoftEntra"
         },
-        "slug": {
-          "type": "string"
+        "ldap": {
+          "$ref": "./authentik/properties.json#/definitions/ldap"
         },
-        "url": {
-          "type": "string"
-        },
-        "icon": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "category": {
-          "type": "string"
-        },
-        "config": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
+        "googleWorkspace": {
+          "$ref": "./authentik/properties.json#/definitions/googleWorkspace"
         }
-      },
-      "required": ["provider", "url", "icon", "category", "config"],
-      "type": "object"
+      }
     }
   }
 }

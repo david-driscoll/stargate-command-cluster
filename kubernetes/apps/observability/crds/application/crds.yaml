@@ -36,36 +36,35 @@ spec:
                     http:
                       type: object
                       properties:
+                        type:
+                          const: http
                         url:
                           type: string
                         method:
                           type: string
                           enum: [GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS]
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_redirects:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         proxy_id:
                           type: string
                         resend_interval:
-                          type: integer
+                          type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         timeout:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                         tls_ca:
                           type: string
                         tls_cert:
@@ -73,9 +72,9 @@ spec:
                         tls_key:
                           type: string
                         ignore_tls:
-                          type: boolean
+                          type: string
                         expiry_notification:
-                          type: boolean
+                          type: string
                         http_body_encoding:
                           type: string
                           enum: [none, base64, utf8]
@@ -106,53 +105,54 @@ spec:
                     ping:
                       type: object
                       properties:
+                        type:
+                          const: ping
                         hostname:
                           type: string
                         packet_size:
-                          type: integer
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     docker:
                       type: object
                       properties:
+                        type:
+                          const: docker
                         docker_container:
                           type: string
                         docker_host:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     dns:
                       type: object
                       properties:
+                        type:
+                          const: dns
                         hostname:
                           type: string
                         dns_resolve_server:
@@ -161,78 +161,78 @@ spec:
                           type: string
                           enum: [A, AAAA, CNAME, MX, TXT, SRV, PTR, SOA, NS]
                         port:
-                          type: integer
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     gamedig:
                       type: object
                       properties:
+                        type:
+                          const: gamedig
                         game:
                           type: string
                         gamedig_given_port_only:
-                          type: boolean
+                          type: string
                         hostname:
                           type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         port:
-                          type: integer
+                          type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
+                        description:
+                          type: string
                     group:
                       type: object
                       properties:
+                        type:
+                          const: group
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     grpc-keyword:
                       type: object
                       properties:
+                        type:
+                          const: grpc-keyword
                         grpc_body:
                           type: string
                         grpc_enable_tls:
-                          type: boolean
+                          type: string
                         grpc_metadata:
                           type: string
                         grpc_method:
@@ -244,31 +244,32 @@ spec:
                         grpc_url:
                           type: string
                         interval:
-                          type: integer
+                          type: string
                         invert_keyword:
-                          type: boolean
+                          type: string
                         keyword:
                           type: string
                         max_retries:
-                          type: integer
+                          type: string
                         max_redirects:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
+                        description:
+                          type: string
                     json-query:
                       type: object
                       properties:
+                        type:
+                          const: json-query
                         url:
                           type: string
                         json_path:
@@ -278,11 +279,9 @@ spec:
                         method:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         auth_domain:
                           type: string
                         authMethod:
@@ -296,17 +295,17 @@ spec:
                         body:
                           type: string
                         expiry_notification:
-                          type: boolean
+                          type: string
                         http_body_encoding:
                           type: string
                         ignore_tls:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_redirects:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         oauth_auth_method:
                           type: string
                         oauth_client_id:
@@ -322,11 +321,11 @@ spec:
                         proxy_id:
                           type: string
                         resend_interval:
-                          type: integer
+                          type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         timeout:
-                          type: integer
+                          type: string
                         tls_ca:
                           type: string
                         tls_cert:
@@ -334,15 +333,17 @@ spec:
                         tls_key:
                           type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     kafka-producer:
                       type: object
                       properties:
+                        type:
+                          const: kafka-producer
                         kafka_producer_sasl_options_mechanism:
                           type: string
                           enum: [plain, scram-sha-256, scram-sha-512]
                         kafka_producer_ssl:
-                          type: boolean
+                          type: string
                         kafka_producer_brokers:
                           type: string
                         kafka_producer_topic:
@@ -350,38 +351,36 @@ spec:
                         kafka_producer_message:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     keyword:
                       type: object
                       properties:
+                        type:
+                          const: keyword
                         url:
                           type: string
                         keyword:
                           type: string
                         invert_keyword:
-                          type: boolean
+                          type: string
                         method:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         auth_domain:
                           type: string
                         authMethod:
@@ -395,17 +394,17 @@ spec:
                         body:
                           type: string
                         expiry_notification:
-                          type: boolean
+                          type: string
                         http_body_encoding:
                           type: string
                         ignore_tls:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_redirects:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         oauth_auth_method:
                           type: string
                         oauth_client_id:
@@ -421,11 +420,11 @@ spec:
                         proxy_id:
                           type: string
                         resend_interval:
-                          type: integer
+                          type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         timeout:
-                          type: integer
+                          type: string
                         tls_ca:
                           type: string
                         tls_cert:
@@ -433,31 +432,33 @@ spec:
                         tls_key:
                           type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     mongodb:
                       type: object
                       properties:
+                        type:
+                          const: mongodb
                         database_connection_string:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     mqtt:
                       type: object
                       properties:
+                        type:
+                          const: mqtt
                         mqtt_check_type:
                           type: string
                           enum: [connect, publish, subscribe]
@@ -472,121 +473,118 @@ spec:
                         hostname:
                           type: string
                         port:
-                          type: integer
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     mysql:
                       type: object
                       properties:
+                        type:
+                          const: mysql
                         database_connection_string:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
+                          type: string
                         parent_name:
                           type: string
                         radius_password:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     port:
                       type: object
                       properties:
+                        type:
+                          const: port
                         hostname:
                           type: string
                         port:
-                          type: integer
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     postgres:
                       type: object
                       properties:
+                        type:
+                          const: postgres
                         database_connection_string:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     push:
                       type: object
                       properties:
+                        type:
+                          const: push
                         push_token:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     radius:
                       type: object
                       properties:
+                        type:
+                          const: radius
                         hostname:
                           type: string
                         port:
-                          type: integer
+                          type: string
                         radius_called_station_id:
                           type: string
                         radius_calling_station_id:
@@ -598,138 +596,132 @@ spec:
                         radius_username:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     real-browser:
                       type: object
                       properties:
+                        type:
+                          const: real-browser
                         remote_browser:
                           type: string
                         remote_browsers_toggle:
-                          type: boolean
+                          type: string
                         url:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     redis:
                       type: object
                       properties:
+                        type:
+                          const: redis
                         database_connection_string:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     steam:
                       type: object
                       properties:
+                        type:
+                          const: steam
                         hostname:
                           type: string
                         port:
-                          type: integer
+                          type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     sqlserver:
                       type: object
                       properties:
+                        type:
+                          const: sqlserver
                         database_connection_string:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
                     tailscale-ping:
                       type: object
                       properties:
+                        type:
+                          const: tailscale-ping
                         hostname:
                           type: string
                         accepted_statuscodes:
-                          type: array
-                          items:
-                            type: string
+                          type: string
                         active:
-                          type: boolean
+                          type: string
                         interval:
-                          type: integer
+                          type: string
                         max_retries:
-                          type: integer
-
+                          type: string
                         parent_name:
                           type: string
                         retry_interval:
-                          type: integer
+                          type: string
                         upside_down:
-                          type: boolean
+                          type: string
+                type:
+                  type: object
                 uptimeFrom:
                   type: object
                   properties:
@@ -741,19 +733,321 @@ spec:
                 authentik:
                   type: object
                   properties:
-                    provider:
-                      type: string
-                      enum: [oauth2, ldap, forward-auth, proxy]
-                    slug:
-                      type: string
-                    url:
-                      type: string
-                    icon:
-                      type: string
-                    config:
+                    ssf:
                       type: object
-                      additionalProperties:
-                        type: string
+                      properties:
+                        type:
+                          const: ssf
+                        eventRetention:
+                          type: string
+                        jwtFederationProviders:
+                          type: array
+                          items:
+                            type: number
+                        providerSsfId:
+                          type: string
+                        signingKey:
+                          type: string
+                    scim:
+                      type: object
+                      properties:
+                        type:
+                          const: scim
+                        compatibilityMode:
+                          type: string
+                        dryRun:
+                          type: boolean
+                        excludeUsersServiceAccount:
+                          type: boolean
+                        filterGroup:
+                          type: string
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        propertyMappingsGroups:
+                          type: array
+                          items:
+                            type: string
+                        providerScimId:
+                          type: string
+                        token:
+                          type: string
+                        url:
+                          type: string
+                      required:
+                        - token
+                        - url
+                    saml:
+                      type: object
+                      properties:
+                        type:
+                          const: saml
+                        acsUrl:
+                          type: string
+                        assertionValidNotBefore:
+                          type: string
+                        assertionValidNotOnOrAfter:
+                          type: string
+                        audience:
+                          type: string
+                        authenticationFlow:
+                          type: string
+                        authnContextClassRefMapping:
+                          type: string
+                        authorizationFlow:
+                          type: string
+                        defaultRelayState:
+                          type: string
+                        digestAlgorithm:
+                          type: string
+                        encryptionKp:
+                          type: string
+                        invalidationFlow:
+                          type: string
+                        issuer:
+                          type: string
+                        nameIdMapping:
+                          type: string
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        providerSamlId:
+                          type: string
+                        sessionValidNotOnOrAfter:
+                          type: string
+                        signAssertion:
+                          type: boolean
+                        signResponse:
+                          type: boolean
+                        signatureAlgorithm:
+                          type: string
+                        signingKp:
+                          type: string
+                        spBinding:
+                          type: string
+                        urlSloPost:
+                          type: string
+                        urlSloRedirect:
+                          type: string
+                        urlSsoInit:
+                          type: string
+                        urlSsoPost:
+                          type: string
+                        urlSsoRedirect:
+                          type: string
+                        verificationKp:
+                          type: string
+                      required:
+                        - acsUrl
+                        - authorizationFlow
+                        - invalidationFlow
+                    radius:
+                      type: object
+                      properties:
+                        type:
+                          const: radius
+                        authorizationFlow:
+                          type: string
+                        clientNetworks:
+                          type: string
+                        invalidationFlow:
+                          type: string
+                        mfaSupport:
+                          type: boolean
+
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        providerRadiusId:
+                          type: string
+                        sharedSecret:
+                          type: string
+                      required:
+                        - authorizationFlow
+                        - invalidationFlow
+                        - sharedSecret
+                    rac:
+                      type: object
+                      properties:
+                        type:
+                          const: rac
+                        authenticationFlow:
+                          type: string
+                        authorizationFlow:
+                          type: string
+                        connectionExpiry:
+                          type: string
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        providerRacId:
+                          type: string
+                        settings:
+                          type: string
+                      required:
+                        - authorizationFlow
+                    oauth2:
+                      type: object
+                      properties:
+                        type:
+                          const: oauth2
+                        accessCodeValidity:
+                          type: string
+                        accessTokenValidity:
+                          type: string
+                        allowedRedirectUris:
+                          type: array
+                          items:
+                            type: object
+                        authenticationFlow:
+                          type: string
+                        authorizationFlow:
+                          type: string
+                        clientId:
+                          type: string
+                        clientSecret:
+                          type: string
+                        clientType:
+                          type: string
+                        encryptionKey:
+                          type: string
+                        includeClaimsInIdToken:
+                          type: boolean
+                        invalidationFlow:
+                          type: string
+                        issuerMode:
+                          type: string
+                        jwksSources:
+                          type: array
+                          items:
+                            type: string
+                        jwtFederationProviders:
+                          type: array
+                          items:
+                            type: number
+                        jwtFederationSources:
+                          type: array
+                          items:
+                            type: string
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        providerOauth2Id:
+                          type: string
+                        refreshTokenValidity:
+                          type: string
+                        signingKey:
+                          type: string
+                        subMode:
+                          type: string
+                      required:
+                        - authorizationFlow
+                        - clientId
+                        - invalidationFlow
+                    microsoftEntra:
+                      type: object
+                      properties:
+                        type:
+                          const: microsoftEntra
+                        clientId:
+                          type: string
+                        clientSecret:
+                          type: string
+                        dryRun:
+                          type: boolean
+                        excludeUsersServiceAccount:
+                          type: boolean
+                        filterGroup:
+                          type: string
+                        groupDeleteAction:
+                          type: string
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        propertyMappingsGroups:
+                          type: array
+                          items:
+                            type: string
+                        providerMicrosoftEntraId:
+                          type: string
+                        tenantId:
+                          type: string
+                        userDeleteAction:
+                          type: string
+                      required:
+                        - clientId
+                        - clientSecret
+                        - tenantId
+                    ldap:
+                      type: object
+                      properties:
+                        type:
+                          const: ldap
+                        baseDn:
+                          type: string
+                        bindFlow:
+                          type: string
+                        bindMode:
+                          type: string
+                        certificate:
+                          type: string
+                        gidStartNumber:
+                          type: number
+                        mfaSupport:
+                          type: boolean
+                        providerLdapId:
+                          type: string
+                        searchMode:
+                          type: string
+                        tlsServerName:
+                          type: string
+                        uidStartNumber:
+                          type: number
+                        unbindFlow:
+                          type: string
+                      required:
+                        - baseDn
+                        - bindFlow
+                        - unbindFlow
+                    googleWorkspace:
+                      type: object
+                      properties:
+                        type:
+                          const: googleWorkspace
+                        credentials:
+                          type: string
+                        defaultGroupEmailDomain:
+                          type: string
+                        delegatedSubject:
+                          type: string
+                        dryRun:
+                          type: boolean
+                        excludeUsersServiceAccount:
+                          type: boolean
+                        filterGroup:
+                          type: string
+                        groupDeleteAction:
+                          type: string
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        propertyMappingsGroups:
+                          type: array
+                          items:
+                            type: string
+                        providerGoogleWorkspaceId:
+                          type: string
+                        userDeleteAction:
+                          type: string
+                      required:
+                        - defaultGroupEmailDomain
                   required:
                     - provider
                     - url

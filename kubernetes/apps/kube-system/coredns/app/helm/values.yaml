@@ -46,10 +46,10 @@ servers:
     port: 53
     plugins:
       - name: errors
-      - name: health
-        configBlock: |-
-          lameduck 5s
-      - name: ready
+      # - name: health
+      #   configBlock: |-
+      #     lameduck 5s
+      # - name: ready
       - name: log
         configBlock: |-
           class all
@@ -59,6 +59,7 @@ servers:
       #   parameters: 30
       - name: forward
         parameters: . "${TAILSCALE_NAMESERVER_IP}"
+      # - name: loop
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

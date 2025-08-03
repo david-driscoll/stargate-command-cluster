@@ -216,30 +216,32 @@ public class ClusterApplicationResources : ComponentResource
     var resourceName = Mappings.ResourceName(args.ClusterName, definition);
     CustomResource provider = authentik.Provider.ToLowerInvariant() switch
     {
-      "oauth2" => new ProviderOauth2(resourceName, new()
+      "oauth2" => new ProviderOauth2(resourceName, Mappings.MapFromResourceArgs(new ProviderOauth2Args()
       {
         Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         ClientId = authentik.Config["clientId"],
         ClientSecret = authentik.Config["clientSecret"],
         ClientType = "confidential",
+        AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(f => f.Id),
+        InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(f => f.Id),
         // todo
-      }, new CustomResourceOptions() { Parent = this }),
-      "forward-auth" => new ProviderProxy(resourceName, new()
+      }, authentik.Config), new CustomResourceOptions() { Parent = this }),
+      "forward-auth" => new ProviderProxy(resourceName, Mappings.MapFromResourceArgs(new ProviderProxyArgs()
       {
         Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         Mode = "forward_single",
         ExternalHost = authentik.Url,
-        AuthorizationFlow = Defaults.Flows.AuthenticationFlow.Apply(f => f.Id),
+        AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(f => f.Id),
         InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(f => f.Id),
-      }, new CustomResourceOptions() { Parent = this }),
-      "proxy" => new ProviderProxy(resourceName, new()
+      }, authentik.Config), new CustomResourceOptions() { Parent = this }),
+      "proxy" => new ProviderProxy(resourceName, Mappings.MapFromResourceArgs(new ProviderProxyArgs()
       {
         Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         Mode = "proxy",
         ExternalHost = authentik.Url,
-        AuthorizationFlow = Defaults.Flows.AuthenticationFlow.Apply(f => f.Id),
+        AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(f => f.Id),
         InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(f => f.Id),
-      }, new CustomResourceOptions() { Parent = this }),
+      }, authentik.Config), new CustomResourceOptions() { Parent = this }),
       _ => throw new ArgumentException($"Unknown provider: {authentik.Provider}")
     };
     providers.Add(provider);

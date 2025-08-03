@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using k8s.Models;
+using Pulumi;
 using Pulumi.Uptimekuma;
 using Riok.Mapperly.Abstractions;
 using StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
@@ -15,86 +16,6 @@ static partial class Mappings
   public static ApplicationDefinitionUptime MapFromConfigMap(V1ConfigMap configMap)
   {
     return MapFromDataInternal(configMap.Data);
-  }
-
-  public static MonitorArgs MapMonitorArgs(ApplicationDefinition definition)
-  {
-    var args = new MonitorArgs();
-    ApplyMonitorArgs(args, definition.Spec);
-
-    switch (definition.Spec.Uptime)
-    {
-      case { Dns: { } dns }:
-        ApplyMonitorArgs(args, dns);
-        break;
-      case { Http: { } http }:
-        ApplyMonitorArgs(args, http);
-        break;
-      case { Ping: { } ping }:
-        ApplyMonitorArgs(args, ping);
-        break;
-      case { Docker: { } docker }:
-        ApplyMonitorArgs(args, docker);
-        break;
-      case { Gamedig: { } gamedig }:
-        ApplyMonitorArgs(args, gamedig);
-        break;
-      case { Group: { } group }:
-        ApplyMonitorArgs(args, group);
-        break;
-      case { GrpcKeyword: { } grpcKeyword }:
-        ApplyMonitorArgs(args, grpcKeyword);
-        break;
-      case { JsonQuery: { } jsonQuery }:
-        ApplyMonitorArgs(args, jsonQuery);
-        break;
-      case { KafkaProducer: { } kafkaProducer }:
-        ApplyMonitorArgs(args, kafkaProducer);
-        break;
-      case { Keyword: { } keyword }:
-        ApplyMonitorArgs(args, keyword);
-        break;
-      case { MongoDb: { } mongoDb }:
-        ApplyMonitorArgs(args, mongoDb);
-        break;
-      case { Mqtt: { } mqtt }:
-        ApplyMonitorArgs(args, mqtt);
-        break;
-      case { Mysql: { } mysql }:
-        ApplyMonitorArgs(args, mysql);
-        break;
-      case { Port: { } port }:
-        ApplyMonitorArgs(args, port);
-        break;
-      case { Postgres: { } postgres }:
-        ApplyMonitorArgs(args, postgres);
-        break;
-      case { Push: { } push }:
-        ApplyMonitorArgs(args, push);
-        break;
-      case { Radius: { } radius }:
-        ApplyMonitorArgs(args, radius);
-        break;
-      case { RealBrowser: { } realBrowser }:
-        ApplyMonitorArgs(args, realBrowser);
-        break;
-      case { Redis: { } redis }:
-        ApplyMonitorArgs(args, redis);
-        break;
-      case { Steam: { } steam }:
-        ApplyMonitorArgs(args, steam);
-        break;
-      case { SqlServer: { } sqlServer }:
-        ApplyMonitorArgs(args, sqlServer);
-        break;
-      case { TailscalePing: { } tailscalePing }:
-        ApplyMonitorArgs(args, tailscalePing);
-        break;
-      default:
-        throw new ArgumentOutOfRangeException(nameof(definition.Spec.Uptime));
-    }
-
-    return args;
   }
 
   public static KumaResource MapMonitor(string clusterName, ApplicationDefinition definition)
@@ -142,35 +63,27 @@ static partial class Mappings
     };
   }
 
-
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, ApplicationDefinitionSpec uptime);
-
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, HttpUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, PingUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, DockerUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, DnsUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, GamedigUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, GroupUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, GrpcKeywordUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, JsonQueryUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, KafkaProducerUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, KeywordUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, MongoDbUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, MqttUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, MysqlUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, PortUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, PostgresUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, PushUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, RadiusUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, RealBrowserUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, RedisUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, SteamUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, SqlServerUptime uptime);
-  public static partial void ApplyMonitorArgs([MappingTarget] MonitorArgs target, TailscalePingUptime uptime);
-
   public static ApplicationDefinitionUptime MapFromSecret(V1Secret secret)
   {
     return MapFromDataInternal(secret.Data.ToDictionary(z => z.Key, z => Encoding.UTF8.GetString(z.Value)));
+  }
+  public static T MapFromResourceArgs<T>(T args, IDictionary<string, string> data) where T : ResourceArgs
+  {
+    var properties = args.GetType().GetProperties().ToDictionary(z => z.Name, z => z, StringComparer.OrdinalIgnoreCase);
+    foreach (var kvp in data)
+    {
+      if (properties.TryGetValue(kvp.Key, out var property))
+      {
+        var value = JsonSerializer.Deserialize(kvp.Value, property.PropertyType);
+        property.SetValue(args, value);
+      }
+      else
+      {
+        throw new ArgumentException($"Property '{kvp.Key}' not found in type '{typeof(T).Name}'.");
+      }
+    }
+
+    return args;
   }
   private static ApplicationDefinitionUptime MapFromDataInternal(IDictionary<string, string> data)
   {

@@ -843,6 +843,59 @@ spec:
                         - acsUrl
                         - authorizationFlow
                         - invalidationFlow
+                    proxy:
+                      type: object
+                      properties:
+                        accessTokenValidity:
+                          type: string
+                        authenticationFlow:
+                          type: string
+                        authorizationFlow:
+                          type: string
+                        basicAuthEnabled:
+                          type: boolean
+                        basicAuthPasswordAttribute:
+                          type: string
+                        basicAuthUsernameAttribute:
+                          type: string
+                        cookieDomain:
+                          type: string
+                        externalHost:
+                          type: string
+                        interceptHeaderAuth:
+                          type: boolean
+                        internalHost:
+                          type: string
+                        internalHostSslValidation:
+                          type: boolean
+                        invalidationFlow:
+                          type: string
+                      jwksSources:
+                        type: array
+                        items:
+                          type: string
+                      jwtFederationProviders:
+                        type: array
+                        items:
+                          type: number
+                      jwtFederationSources:
+                        type: array
+                        items:
+                          type: string
+                      mode:
+                        type: string
+                      name:
+                        type: string
+                      propertyMappings:
+                        type: array
+                        items:
+                          type: string
+                      providerProxyId:
+                        type: string
+                      refreshTokenValidity:
+                        type: string
+                      skipPathRegex:
+                        type: string
                     radius:
                       type: object
                       properties:

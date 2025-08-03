@@ -15,11 +15,13 @@
       "type": "object"
     },
     "spec": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "ssf": { "$ref": "./authentik/properties.json#/definitions/ssf" },
         "scim": { "$ref": "./authentik/properties.json#/definitions/scim" },
         "saml": { "$ref": "./authentik/properties.json#/definitions/saml" },
+        "proxy": { "$ref": "./authentik/properties.json#/definitions/proxy" },
         "radius": { "$ref": "./authentik/properties.json#/definitions/radius" },
         "rac": { "$ref": "./authentik/properties.json#/definitions/rac" },
         "oauth2": { "$ref": "./authentik/properties.json#/definitions/oauth2" },

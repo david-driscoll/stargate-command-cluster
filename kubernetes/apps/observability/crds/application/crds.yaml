@@ -854,39 +854,39 @@ spec:
                     proxy:
                       type: object
                       properties:
-                        access_token_validity:
+                        accessTokenValidity:
                           type: string
-                        authentication_flow:
+                        authenticationFlow:
                           type: string
-                        authorization_flow:
+                        authorizationFlow:
                           type: string
-                        basic_auth_enabled:
+                        basicAuthEnabled:
                           type: boolean
-                        basic_auth_password_attribute:
+                        basicAuthPasswordAttribute:
                           type: string
-                        basic_auth_username_attribute:
+                        basicAuthUsernameAttribute:
                           type: string
-                        cookie_domain:
+                        cookieDomain:
                           type: string
-                        external_host:
+                        externalHost:
                           type: string
-                        intercept_header_auth:
+                        interceptHeaderAuth:
                           type: boolean
-                        internal_host:
+                        internalHost:
                           type: string
-                        internal_host_ssl_validation:
+                        internalHostSslValidation:
                           type: boolean
-                        invalidation_flow:
+                        invalidationFlow:
                           type: string
-                        jwks_sources:
+                        jwksSources:
                           type: array
                           items:
                             type: string
-                        jwt_federation_providers:
+                        jwtFederationProviders:
                           type: array
                           items:
                             type: string
-                        jwt_federation_sources:
+                        jwtFederationSources:
                           type: array
                           items:
                             type: string
@@ -894,209 +894,209 @@ spec:
                           type: string
                         name:
                           type: string
-                        property_mappings:
+                        propertyMappings:
                           type: array
                           items:
                             type: string
-                        provider_proxy_id:
+                        providerProxyId:
                           type: string
-                        refresh_token_validity:
+                        refreshTokenValidity:
                           type: string
-                        skip_path_regex:
+                        skipPathRegex:
                           type: string
                     radius:
                       type: object
                       properties:
-                        authorization_flow:
+                        authorizationFlow:
                           type: string
-                        client_networks:
+                        clientNetworks:
                           type: string
-                        invalidation_flow:
+                        invalidationFlow:
                           type: string
-                        mfa_support:
+                        mfaSupport:
                           type: boolean
 
-                        property_mappings:
+                        propertyMappings:
                           type: array
                           items:
                             type: string
-                        provider_radius_id:
+                        providerRadiusId:
                           type: string
-                        shared_secret:
+                        sharedSecret:
                           type: string
                       required:
-                        - authorization_flow
-                        - invalidation_flow
-                        - shared_secret
+                        - authorizationFlow
+                        - invalidationFlow
+                        - sharedSecret
                     rac:
                       type: object
                       properties:
-                        authentication_flow:
+                        authenticationFlow:
                           type: string
-                        authorization_flow:
+                        authorizationFlow:
                           type: string
-                        connection_expiry:
+                        connectionExpiry:
                           type: string
-                        property_mappings:
+                        propertyMappings:
                           type: array
                           items:
                             type: string
-                        provider_rac_id:
+                        providerRacId:
                           type: string
                         settings:
                           type: string
                       required:
-                        - authorization_flow
+                        - authorizationFlow
                     oauth2:
                       type: object
                       properties:
-                        access_code_validity:
+                        accessCodeValidity:
                           type: string
-                        access_token_validity:
+                        accessTokenValidity:
                           type: string
-                        allowed_redirect_uris:
+                        allowedRedirectUris:
                           type: array
                           items:
                             type: object
-                        authentication_flow:
+                        authenticationFlow:
                           type: string
-                        authorization_flow:
+                        authorizationFlow:
                           type: string
-                        client_id:
+                        clientId:
                           type: string
-                        client_secret:
+                        clientSecret:
                           type: string
-                        client_type:
+                        clientType  :
                           type: string
-                        encryption_key:
+                        encryptionKey:
                           type: string
-                        include_claims_in_id_token:
+                        includeClaimsInIdToken:
                           type: boolean
-                        invalidation_flow:
+                        invalidationFlow:
                           type: string
-                        issuer_mode:
+                        issuerMode:
                           type: string
-                        jwks_sources:
+                        jwksSources:
                           type: array
                           items:
                             type: string
-                        jwt_federation_providers:
+                        jwtFederationProviders:
                           type: array
                           items:
                             type: number
-                        jwt_federation_sources:
+                        jwtFederationSources:
                           type: array
                           items:
                             type: string
-                        property_mappings:
+                        propertyMappings:
                           type: array
                           items:
                             type: string
-                        provider_oauth2_id:
+                        providerOAuth2Id:
                           type: string
-                        refresh_token_validity:
+                        refreshTokenValidity:
                           type: string
-                        signing_key:
+                        signingKey:
                           type: string
-                        sub_mode:
+                        subMode:
                           type: string
                       required:
-                        - authorization_flow
-                        - client_id
-                        - invalidation_flow
+                        - authorizationFlow
+                        - clientId
+                        - invalidationFlow
                     microsoftEntra:
                       type: object
                       properties:
-                        client_id:
+                        clientId:
                           type: string
-                        client_secret:
+                        clientSecret:
                           type: string
-                        dry_run:
+                        dryRun  :
                           type: boolean
-                        exclude_users_service_account:
+                        excludeUsersServiceAccount:
                           type: boolean
-                        filter_group:
+                        filterGroup:
                           type: string
-                        group_delete_action:
+                        groupDeleteAction:
                           type: string
-                        property_mappings:
+                        propertyMappings:
                           type: array
                           items:
                             type: string
-                        property_mappings_groups:
+                        propertyMappingsGroups:
                           type: array
                           items:
                             type: string
-                        provider_microsoft_entra_id:
+                        providerMicrosoftEntraId:
                           type: string
-                        tenant_id:
+                        tenantId:
                           type: string
-                        user_delete_action:
+                        userDeleteAction:
                           type: string
                       required:
-                        - client_id
-                        - client_secret
-                        - tenant_id
+                        - clientId
+                        - clientSecret
+                        - tenantId
                     ldap:
                       type: object
                       properties:
-                        base_dn:
+                        baseDn:
                           type: string
-                        bind_flow:
+                        bindFlow:
                           type: string
-                        bind_mode:
+                        bindMode:
                           type: string
                         certificate:
                           type: string
-                        gid_start_number:
+                        gidStartNumber:
                           type: number
-                        mfa_support:
+                        mfaSupport:
                           type: boolean
-                        provider_ldap_id:
+                        providerLdapId:
                           type: string
-                        search_mode:
+                        searchMode:
                           type: string
-                        tls_server_name:
+                        tlsServerName:
                           type: string
-                        uid_start_number:
+                        uidStartNumber:
                           type: number
-                        unbind_flow:
+                        unbindFlow:
                           type: string
                       required:
-                        - base_dn
-                        - bind_flow
-                        - unbind_flow
+                        - baseDn
+                        - bindFlow
+                        - unbindFlow
                     googleWorkspace:
                       type: object
                       properties:
                         credentials:
                           type: string
-                        default_group_email_domain:
+                        defaultGroupEmailDomain:
                           type: string
-                        delegated_subject:
+                        delegatedSubject:
                           type: string
-                        dry_run:
+                        dryRun:
                           type: boolean
-                        exclude_users_service_account:
+                        excludeUsersServiceAccount:
                           type: boolean
-                        filter_group:
+                        filterGroup:
                           type: string
-                        group_delete_action:
+                        groupDeleteAction:
                           type: string
-                        property_mappings:
+                        propertyMappings:
                           type: array
                           items:
                             type: string
-                        property_mappings_groups:
+                        propertyMappingsGroups:
                           type: array
                           items:
                             type: string
-                        provider_google_workspace_id:
+                        providerGoogleWorkspaceId :
                           type: string
-                        user_delete_action:
+                        userDeleteAction:
                           type: string
                       required:
-                        - default_group_email_domain
+                        - defaultGroupEmailDomain
                   required:
                     - provider
                     - url

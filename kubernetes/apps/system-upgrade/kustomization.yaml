@@ -7,5 +7,14 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./secret-store.yaml
   - ./system-upgrade-controller/ks.yaml
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /spec/provider/kubernetes/remoteNamespace
+        value: system-upgrade
+      - op: replace
+        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
+        value: system-upgrade

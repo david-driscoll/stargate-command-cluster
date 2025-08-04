@@ -20,12 +20,11 @@
       "type": "object",
       "properties": {
         "name": { "type": "string" },
-        "description": {
-          "type": "string"
-        },
-        "category": {
-          "type": "string"
-        },
+        "slug": { "type": "string" },
+        "icon": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
         "uptime": {
           "type": "object",
           "properties": {

@@ -30,6 +30,12 @@ spec:
                   type: string
                 category:
                   type: string
+                slug:
+                  type: string
+                icon:
+                  type: string
+                url:
+                  type: string
                 uptime:
                   type: object
                   properties:

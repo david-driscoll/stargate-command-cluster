@@ -1,6 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Pulumi Up" type="CompoundRunConfigurationType">
-    <toRun name="Pulumi Up with Debugger" type="ShConfigurationType" />
     <method v="2" />
   </configuration>
 </component>

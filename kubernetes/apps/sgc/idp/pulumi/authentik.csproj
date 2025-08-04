@@ -17,6 +17,7 @@
     <PackageReference Include="Riok.Mapperly" Version="4.2.1" />
     <Compile Remove="sdks/**/*.*" />
     <Compile Remove="crds/**/*.*" />
+    <None Include="../../../../../schemas/**/*.json" LinkBase="schemas" />
     <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33" />
   </ItemGroup>
 

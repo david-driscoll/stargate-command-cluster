@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Dumpify;
 using Humanizer;
@@ -104,29 +106,42 @@ public class ClusterApplicationResources : ComponentResource
         var spec = definition.Spec;
         if (spec is { AuthentikFrom: { } authentikFrom })
         {
+          IDictionary<string, string> data;
           if (definition.Spec.AuthentikFrom is { Type: "configMap", Name: var configMapName })
           {
             var configMap =
               await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-            spec = spec with
-            {
-              Authentik = JsonSerializer.Deserialize<Authentik>(JsonSerializer.Serialize(configMap.Data))
-            };
+            data = configMap.Data;
           }
           else if (definition.Spec.AuthentikFrom is { Type: "secret", Name: var secretName })
           {
             var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
-            var data = secret.Data.ToDictionary(kvp => kvp.Key,
+            data = secret.Data.ToDictionary(kvp => kvp.Key,
               kvp => System.Text.Encoding.UTF8.GetString(kvp.Value));
-            spec = spec with
-            {
-              Authentik = JsonSerializer.Deserialize<Authentik>(JsonSerializer.Serialize(data))
-            };
           }
           else
           {
             throw new ArgumentException($"Unknown AuthentikFrom type: {authentikFrom.Type}");
           }
+          var authentikSpec = JsonSerializer.Deserialize<AuthentikSpec>(JsonSerializer.Serialize(data));
+
+          ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
+          {
+            "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = Mappings.MapToSaml(authentikSpec) },
+            "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = Mappings.MapToOauth2(authentikSpec) },
+            "scim" => new ApplicationDefinitionAuthentik { ProviderScim = Mappings.MapToScim(authentikSpec) },
+            "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = Mappings.MapToSsf(authentikSpec) },
+            "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = Mappings.MapToProxy(authentikSpec) },
+            "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = Mappings.MapToRadius(authentikSpec) },
+            "rac" => new ApplicationDefinitionAuthentik { ProviderRac = Mappings.MapToRac(authentikSpec) },
+            "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = Mappings.MapToLdap(authentikSpec) },
+            "microsoftEntra" => new ApplicationDefinitionAuthentik { ProviderMicrosoftEntra = Mappings.MapToMicrosoftEntra(authentikSpec) },
+            "googleWorkspace" => new ApplicationDefinitionAuthentik { ProviderGoogleWorkspace = Mappings.MapToGoogleWorkspace(authentikSpec)
+            },
+            _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
+              nameof(authentikSpec))
+          };
+          spec = spec with { Authentik = authentik };
         }
 
         if (spec is { UptimeFrom: { } uptimeFrom })
@@ -135,10 +150,7 @@ public class ClusterApplicationResources : ComponentResource
           {
             var configMap =
               await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-            spec = spec with
-            {
-              Uptime = Mappings.MapFromConfigMap(configMap)
-            };
+            spec = spec with { Uptime = Mappings.MapFromConfigMap(configMap) };
           }
           else if (uptimeFrom is { Type: "secret", Name: var secretName })
           {
@@ -209,54 +221,46 @@ public class ClusterApplicationResources : ComponentResource
   }
 
   Application CreateAuthentikApplication(Args args,
-    ApplicationDefinition definition, Authentik authentik)
+    ApplicationDefinition definition, ApplicationDefinitionAuthentik authentik)
   {
-    var providers = new List<CustomResource>();
-    var slug = authentik.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}";
+    var slug = definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}";
     var resourceName = Mappings.ResourceName(args.ClusterName, definition);
-    CustomResource provider = authentik.Provider.ToLowerInvariant() switch
+    CustomResource provider = authentik switch
     {
-      "oauth2" => new ProviderOauth2(resourceName, Mappings.MapFromResourceArgs(new ProviderOauth2Args()
-      {
-        Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
-        ClientId = authentik.Config["clientId"],
-        ClientSecret = authentik.Config["clientSecret"],
-        ClientType = "confidential",
-        AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(f => f.Id),
-        InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(f => f.Id),
-        // todo
-      }, authentik.Config), new CustomResourceOptions() { Parent = this }),
-      "forward-auth" => new ProviderProxy(resourceName, Mappings.MapFromResourceArgs(new ProviderProxyArgs()
-      {
-        Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
-        Mode = "forward_single",
-        ExternalHost = authentik.Url,
-        AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(f => f.Id),
-        InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(f => f.Id),
-      }, authentik.Config), new CustomResourceOptions() { Parent = this }),
-      "proxy" => new ProviderProxy(resourceName, Mappings.MapFromResourceArgs(new ProviderProxyArgs()
-      {
-        Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
-        Mode = "proxy",
-        ExternalHost = authentik.Url,
-        AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(f => f.Id),
-        InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(f => f.Id),
-      }, authentik.Config), new CustomResourceOptions() { Parent = this }),
-      _ => throw new ArgumentException($"Unknown provider: {authentik.Provider}")
+      { ProviderProxy: { } proxy } => new ProviderProxy(resourceName, Mappings.CreateProvider(proxy),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderOauth2: { } oauth2 } => new ProviderOauth2(resourceName, Mappings.CreateProvider(oauth2),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderLdap: { } ldap } => new ProviderLdap(resourceName, Mappings.CreateProvider(ldap),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderSaml: { } saml } => new ProviderSaml(resourceName, Mappings.CreateProvider(saml),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderRac: { } oidc } => new ProviderRac(resourceName, Mappings.CreateProvider(oidc),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderRadius: { } oidc } => new ProviderRadius(resourceName, Mappings.CreateProvider(oidc),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderSsf: { } oidc } => new ProviderSsf(resourceName, Mappings.CreateProvider(oidc),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderScim: { } scim } => new ProviderScim(resourceName, Mappings.CreateProvider(scim),
+        new CustomResourceOptions() { Parent = this }),
+      { ProviderMicrosoftEntra: { } microsoftEntra } => new ProviderMicrosoftEntra(resourceName,
+        Mappings.CreateProvider(microsoftEntra), new CustomResourceOptions() { Parent = this }),
+      { ProviderGoogleWorkspace: { } googleWorkspace } => new ProviderGoogleWorkspace(resourceName,
+        Mappings.CreateProvider(googleWorkspace), new CustomResourceOptions() { Parent = this }),
+      _ => throw new ArgumentException("Unknown authentik provider type", nameof(authentik))
     };
-    providers.Add(provider);
 
     return new Application(resourceName, new()
     {
       // ApplicationId = ,
-      ProtocolProvider = provider.Id.Apply(id => double.Parse(id)),
+      ProtocolProvider = provider.Id.Apply(double.Parse),
       Name = definition.Spec.Name,
       Slug = slug,
       Group = definition.Spec.Category,
-      MetaIcon = authentik.Icon,
+      MetaIcon = definition.Spec.Icon,
       MetaPublisher = args.ClusterTitle,
       MetaDescription = definition.Spec.Description ?? "",
-      MetaLaunchUrl = authentik.Url,
+      MetaLaunchUrl = definition.Spec.Url,
       // PolicyEngineMode = "any",
       // OpenInNewTab = true,
     }, new CustomResourceOptions() { Parent = this });

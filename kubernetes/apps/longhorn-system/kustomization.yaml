@@ -6,6 +6,14 @@ namespace: longhorn-system
 components:
   - ../../components/common
 resources:
-  - ./secret-store.yaml
   - ./longhorn/ks.yaml
-
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /spec/provider/kubernetes/remoteNamespace
+        value: longhorn-system
+      - op: replace
+        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
+        value: longhorn-system

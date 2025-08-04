@@ -105,7 +105,10 @@
           "type": "array",
           "items": { "type": "string" }
         },
-        "mode": { "type": "string" },
+        "mode": {
+          "type": "string",
+          "enum": ["proxy", "forward_single", "forward_domain"]
+        },
         "name": { "type": "string" },
         "propertyMappings": {
           "type": "array",

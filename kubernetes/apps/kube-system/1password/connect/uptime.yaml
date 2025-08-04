@@ -1,13 +1,14 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  config:
+  name: 1Password Connect
+  category: System
+  uptime:
     type: http
-    name: 1Password Connect
     url: https://op-connect.${CLUSTER_DOMAIN}/health
     method: GET
     accepted_statuscodes: ["200"]

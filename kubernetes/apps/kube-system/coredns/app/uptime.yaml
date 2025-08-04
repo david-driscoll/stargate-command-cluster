@@ -1,7 +1,7 @@
 # ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-# apiVersion: autokuma.bigboot.dev/v1
-# kind: KumaEntity
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+# apiVersion: driscoll.dev/v1
+# kind: ApplicationDefinition
 # metadata:
 #   name: ${APP}
 # spec:

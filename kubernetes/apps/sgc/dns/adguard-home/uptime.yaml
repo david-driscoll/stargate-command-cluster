@@ -5,9 +5,9 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-group
 spec:
+  name: Adguard Home
+  category: DNS
   uptime:
-    active: true
-    name: Adguard Home
     type: group
     parent_name: "apps"
 ---
@@ -17,9 +17,9 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-primary
 spec:
+  name: Primary
+  category: DNS
   uptime:
-    active: true
-    name: Primary
     type: http
     url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
     method: GET
@@ -32,8 +32,9 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
+  name: Secondary
+  category: DNS
   uptime:
-    name: Secondary
     type: http
     url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
     method: GET
@@ -46,7 +47,8 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-tertiary
 spec:
-    name: Tertiary
+  name: Tertiary
+  category: DNS
   uptime:
     type: http
     url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html

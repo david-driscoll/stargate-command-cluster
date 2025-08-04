@@ -20,11 +20,11 @@ spec:
   name: Primary
   category: DNS
   uptime:
-    type: http
-    url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
-    method: GET
-    accepted_statuscodes: ["200"]
-    parent_name: "${APP}-group"
+    http:
+      url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "${APP}-group"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -35,11 +35,11 @@ spec:
   name: Secondary
   category: DNS
   uptime:
-    type: http
-    url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
-    method: GET
-    accepted_statuscodes: ["200"]
-    parent_name: "${APP}-group"
+    http:
+      url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "${APP}-group"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -50,8 +50,8 @@ spec:
   name: Tertiary
   category: DNS
   uptime:
-    type: http
-    url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
-    method: GET
-    accepted_statuscodes: ["200"]
-    parent_name: "${APP}-group"
+    http:
+      url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "${APP}-group"

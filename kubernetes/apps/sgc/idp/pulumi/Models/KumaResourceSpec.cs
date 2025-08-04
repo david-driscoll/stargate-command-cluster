@@ -13,106 +13,106 @@ public class KumaResourceConfigSpec
 
   [JsonPropertyName("method")] public string? Method { get; set; }
 
-  [JsonPropertyName("acceptedStatusCodes")]
+  [JsonPropertyName("accepted_statuscodes")]
   public ImmutableArray<string>? AcceptedStatusCodes { get; set; }
 
   [JsonPropertyName("active")] public bool? Active { get; set; }
   [JsonPropertyName("interval")] public int? Interval { get; set; }
-  [JsonPropertyName("maxRedirects")] public int? MaxRedirects { get; set; }
-  [JsonPropertyName("maxRetries")] public int? MaxRetries { get; set; }
-  [JsonPropertyName("parentName")] public string? ParentName { get; set; }
-  [JsonPropertyName("proxyId")] public string? ProxyId { get; set; }
-  [JsonPropertyName("resendInterval")] public int? ResendInterval { get; set; }
-  [JsonPropertyName("retryInterval")] public int? RetryInterval { get; set; }
+  [JsonPropertyName("max_redirects")] public int? MaxRedirects { get; set; }
+  [JsonPropertyName("max_retries")] public int? MaxRetries { get; set; }
+  [JsonPropertyName("parent_name")] public string? ParentName { get; set; }
+  [JsonPropertyName("proxy_id")] public string? ProxyId { get; set; }
+  [JsonPropertyName("resend_interval")] public int? ResendInterval { get; set; }
+  [JsonPropertyName("retry_interval")] public int? RetryInterval { get; set; }
   [JsonPropertyName("timeout")] public int? Timeout { get; set; }
-  [JsonPropertyName("upsideDown")] public bool? UpsideDown { get; set; }
-  [JsonPropertyName("tlsCa")] public string? TlsCa { get; set; }
-  [JsonPropertyName("tlsCert")] public string? TlsCert { get; set; }
-  [JsonPropertyName("tlsKey")] public string? TlsKey { get; set; }
-  [JsonPropertyName("ignoreTls")] public bool? IgnoreTls { get; set; }
+  [JsonPropertyName("upside_down")] public bool? UpsideDown { get; set; }
+  [JsonPropertyName("tls_ca")] public string? TlsCa { get; set; }
+  [JsonPropertyName("tls_cert")] public string? TlsCert { get; set; }
+  [JsonPropertyName("tls_key")] public string? TlsKey { get; set; }
+  [JsonPropertyName("ignore_tls")] public bool? IgnoreTls { get; set; }
 
-  [JsonPropertyName("expiryNotification")]
+  [JsonPropertyName("expiry_notification")]
   public string? ExpiryNotification { get; set; }
 
-  [JsonPropertyName("httpBodyEncoding")] public string? HttpBodyEncoding { get; set; }
+  [JsonPropertyName("http_body_encoding")] public string? HttpBodyEncoding { get; set; }
   [JsonPropertyName("body")] public string? Body { get; set; }
-  [JsonPropertyName("authDomain")] public string? AuthDomain { get; set; }
-  [JsonPropertyName("authMethod")] public string? AuthMethod { get; set; }
-  [JsonPropertyName("authWorkstation")] public string? AuthWorkstation { get; set; }
-  [JsonPropertyName("basicAuthUser")] public string? BasicAuthUser { get; set; }
-  [JsonPropertyName("basicAuthPass")] public string? BasicAuthPass { get; set; }
-  [JsonPropertyName("oauthAuthMethod")] public string? OauthAuthMethod { get; set; }
-  [JsonPropertyName("oauthClientId")] public string? OauthClientId { get; set; }
+  [JsonPropertyName("auth_domain")] public string? AuthDomain { get; set; }
+  [JsonPropertyName("auth_method")] public string? AuthMethod { get; set; }
+  [JsonPropertyName("auth_workstation")] public string? AuthWorkstation { get; set; }
+  [JsonPropertyName("basic_auth_user")] public string? BasicAuthUser { get; set; }
+  [JsonPropertyName("basic_auth_pass")] public string? BasicAuthPass { get; set; }
+  [JsonPropertyName("oauth_auth_method")] public string? OauthAuthMethod { get; set; }
+  [JsonPropertyName("oauth_client_id")] public string? OauthClientId { get; set; }
 
-  [JsonPropertyName("oauthClientSecret")]
+  [JsonPropertyName("oauth_client_secret")]
   public string? OauthClientSecret { get; set; }
 
-  [JsonPropertyName("oauthScopes")] public string? OauthScopes { get; set; }
-  [JsonPropertyName("oauthTokenUrl")] public string? OauthTokenUrl { get; set; }
+  [JsonPropertyName("oauth_scopes")] public string? OauthScopes { get; set; }
+  [JsonPropertyName("oauth_token_url")] public string? OauthTokenUrl { get; set; }
   [JsonPropertyName("hostname")] public string? Hostname { get; set; }
-  [JsonPropertyName("packetSize")] public string? PacketSize { get; set; }
-  [JsonPropertyName("dockerContainer")] public string? DockerContainer { get; set; }
-  [JsonPropertyName("dockerHost")] public string? DockerHost { get; set; }
-  [JsonPropertyName("dnsResolveServer")] public string? DnsResolveServer { get; set; }
-  [JsonPropertyName("dnsResolveType")] public string? DnsResolveType { get; set; }
+  [JsonPropertyName("packet_size")] public string? PacketSize { get; set; }
+  [JsonPropertyName("docker_container")] public string? DockerContainer { get; set; }
+  [JsonPropertyName("docker_host")] public string? DockerHost { get; set; }
+  [JsonPropertyName("dns_resolve_server")] public string? DnsResolveServer { get; set; }
+  [JsonPropertyName("dns_resolve_type")] public string? DnsResolveType { get; set; }
   [JsonPropertyName("port")] public int? Port { get; set; }
   [JsonPropertyName("game")] public string? Game { get; set; }
 
-  [JsonPropertyName("gamedigGivenPortOnly")]
+  [JsonPropertyName("gamedig_given_port_only")]
   public string? GamedigGivenPortOnly { get; set; }
 
   [JsonPropertyName("description")] public string? Description { get; set; }
-  [JsonPropertyName("grpcBody")] public string? GrpcBody { get; set; }
-  [JsonPropertyName("grpcEnableTls")] public string? GrpcEnableTls { get; set; }
-  [JsonPropertyName("grpcMetadata")] public string? GrpcMetadata { get; set; }
-  [JsonPropertyName("grpcMethod")] public string? GrpcMethod { get; set; }
-  [JsonPropertyName("grpcProtobuf")] public string? GrpcProtobuf { get; set; }
-  [JsonPropertyName("grpcServiceName")] public string? GrpcServiceName { get; set; }
-  [JsonPropertyName("grpcUrl")] public string? GrpcUrl { get; set; }
-  [JsonPropertyName("invertKeyword")] public string? InvertKeyword { get; set; }
+  [JsonPropertyName("grpc_body")] public string? GrpcBody { get; set; }
+  [JsonPropertyName("grpc_enable_tls")] public string? GrpcEnableTls { get; set; }
+  [JsonPropertyName("grpc_metadata")] public string? GrpcMetadata { get; set; }
+  [JsonPropertyName("grpc_method")] public string? GrpcMethod { get; set; }
+  [JsonPropertyName("grpc_protobuf")] public string? GrpcProtobuf { get; set; }
+  [JsonPropertyName("grpc_service_name")] public string? GrpcServiceName { get; set; }
+  [JsonPropertyName("grpc_url")] public string? GrpcUrl { get; set; }
+  [JsonPropertyName("invert_keyword")] public string? InvertKeyword { get; set; }
   [JsonPropertyName("keyword")] public string? Keyword { get; set; }
-  [JsonPropertyName("jsonPath")] public string? JsonPath { get; set; }
-  [JsonPropertyName("expectedValue")] public string? ExpectedValue { get; set; }
+  [JsonPropertyName("json_path")] public string? JsonPath { get; set; }
+  [JsonPropertyName("expected_value")] public string? ExpectedValue { get; set; }
 
-  [JsonPropertyName("kafkaProducerSaslOptionsMechanism")]
+  [JsonPropertyName("kafka_producer_sasl_options_mechanism")]
   public string? KafkaProducerSaslOptionsMechanism { get; set; }
 
-  [JsonPropertyName("kafkaProducerSsl")] public string? KafkaProducerSsl { get; set; }
+  [JsonPropertyName("kafka_producer_ssl")] public string? KafkaProducerSsl { get; set; }
 
-  [JsonPropertyName("kafkaProducerBrokers")]
+  [JsonPropertyName("kafka_producer_brokers")]
   public string? KafkaProducerBrokers { get; set; }
 
-  [JsonPropertyName("kafkaProducerTopic")]
+  [JsonPropertyName("kafka_producer_topic")]
   public string? KafkaProducerTopic { get; set; }
 
-  [JsonPropertyName("kafkaProducerMessage")]
+  [JsonPropertyName("kafka_producer_message")]
   public string? KafkaProducerMessage { get; set; }
 
-  [JsonPropertyName("databaseConnectionString")]
+  [JsonPropertyName("database_connection_string")]
   public string? DatabaseConnectionString { get; set; }
 
-  [JsonPropertyName("mqttCheckType")] public string? MqttCheckType { get; set; }
-  [JsonPropertyName("mqttUsername")] public string? MqttUsername { get; set; }
-  [JsonPropertyName("mqttPassword")] public string? MqttPassword { get; set; }
-  [JsonPropertyName("mqttTopic")] public string? MqttTopic { get; set; }
+  [JsonPropertyName("mqtt_check_type")] public string? MqttCheckType { get; set; }
+  [JsonPropertyName("mqtt_username")] public string? MqttUsername { get; set; }
+  [JsonPropertyName("mqtt_password")] public string? MqttPassword { get; set; }
+  [JsonPropertyName("mqtt_topic")] public string? MqttTopic { get; set; }
 
-  [JsonPropertyName("mqttSuccessMessage")]
+  [JsonPropertyName("mqtt_success_message")]
   public string? MqttSuccessMessage { get; set; }
 
-  [JsonPropertyName("radiusPassword")] public string? RadiusPassword { get; set; }
+  [JsonPropertyName("radius_password")] public string? RadiusPassword { get; set; }
 
-  [JsonPropertyName("radiusCalledStationId")]
+  [JsonPropertyName("radius_called_station_id")]
   public string? RadiusCalledStationId { get; set; }
 
-  [JsonPropertyName("radiusCallingStationId")]
+  [JsonPropertyName("radius_calling_station_id")]
   public string? RadiusCallingStationId { get; set; }
 
-  [JsonPropertyName("radiusSecret")] public string? RadiusSecret { get; set; }
-  [JsonPropertyName("radiusUsername")] public string? RadiusUsername { get; set; }
-  [JsonPropertyName("remoteBrowser")] public string? RemoteBrowser { get; set; }
+  [JsonPropertyName("radius_secret")] public string? RadiusSecret { get; set; }
+  [JsonPropertyName("radius_username")] public string? RadiusUsername { get; set; }
+  [JsonPropertyName("remote_browser")] public string? RemoteBrowser { get; set; }
 
-  [JsonPropertyName("remoteBrowsersToggle")]
+  [JsonPropertyName("remote_browsers_toggle")]
   public string? RemoteBrowsersToggle { get; set; }
 
-  [JsonPropertyName("pushToken")] public string? PushToken { get; set; }
+  [JsonPropertyName("push_token")] public string? PushToken { get; set; }
 }

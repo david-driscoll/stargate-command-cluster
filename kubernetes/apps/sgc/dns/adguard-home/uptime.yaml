@@ -8,8 +8,8 @@ spec:
   name: Adguard Home
   category: DNS
   uptime:
-    type: group
-    parent_name: "apps"
+    group:
+      parent_name: "apps"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1

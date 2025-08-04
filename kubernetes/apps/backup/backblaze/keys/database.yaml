@@ -13,7 +13,7 @@ spec:
   target:
     name: backblaze-db-access-key
     creationPolicy: Owner
-    deletionPolicy: Delete
+    deletionPolicy: Retain
     template:
       metadata:
         labels:

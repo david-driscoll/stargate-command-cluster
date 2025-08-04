@@ -13,7 +13,7 @@ spec:
   target:
     name: mysql-s3-access-key
     creationPolicy: Owner
-    deletionPolicy: Delete
+    deletionPolicy: Retain
     template:
       metadata:
         labels:

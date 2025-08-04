@@ -13,7 +13,7 @@ spec:
   target:
     name: s3-cluster-user
     creationPolicy: Owner
-    deletionPolicy: Delete
+    deletionPolicy: Retain
     template:
       metadata:
         labels:

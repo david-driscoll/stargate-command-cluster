@@ -83,25 +83,3 @@ spec:
     # https://tailscale.com/kb/1236/kubernetes-operator/#accessing-the-kubernetes-control-plane-using-an-api-server-proxy
     apiServerProxyConfig:
       mode: "true" # "true", "false", "noauth"
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: operator-patch
-rules:
-- apiGroups: [""]
-  resources: ["nodes"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: operator-patch
-subjects:
-- kind: ServiceAccount
-  name: operator
-roleRef:
-  kind: Role
-  name: operator-patch
-  apiGroup: rbac.authorization.k8s.io

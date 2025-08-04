@@ -7,18 +7,9 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./secret-store.yaml
   - ./backblaze.yaml
   - ./postgres/ks.yaml
   # - ./mysql/ks.yaml
   - ./dragonfly/ks.yaml
   - ./storage/ks.yaml
-patches:
-  - target:
-      kind: HelmRelease
-    patch: |-
-      - op: replace
-        path: /spec/provider/kubernetes/remoteNamespace
-        value: database
-      - op: replace
-        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
-        value: database

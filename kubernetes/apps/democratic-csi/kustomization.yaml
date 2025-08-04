@@ -10,14 +10,5 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./secret-store.yaml
   - ./truenas/ks.yaml
-patches:
-  - target:
-      kind: HelmRelease
-    patch: |-
-      - op: replace
-        path: /spec/provider/kubernetes/remoteNamespace
-        value: democratic-csi
-      - op: replace
-        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
-        value: democratic-csi

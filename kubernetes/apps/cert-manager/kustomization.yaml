@@ -6,15 +6,6 @@ namespace: cert-manager
 components:
   - ../../components/common
 resources:
+  - ./secret-store.yaml
   - ./cert-manager/ks.yaml
   - ./trust-manager/ks.yaml
-patches:
-  - target:
-      kind: HelmRelease
-    patch: |-
-      - op: replace
-        path: /spec/provider/kubernetes/remoteNamespace
-        value: cert-manager
-      - op: replace
-        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
-        value: cert-manager

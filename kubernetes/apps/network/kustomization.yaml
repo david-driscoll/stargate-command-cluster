@@ -7,6 +7,7 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./secret-store.yaml
   - ./certificates/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
   - ./dns/ks.yaml
@@ -14,13 +15,3 @@ resources:
   - ./shared/ks.yaml
   - ./tailscale/ks.yaml
   - ./traefik/ks.yaml
-patches:
-  - target:
-      kind: HelmRelease
-    patch: |-
-      - op: replace
-        path: /spec/provider/kubernetes/remoteNamespace
-        value: network
-      - op: replace
-        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
-        value: network

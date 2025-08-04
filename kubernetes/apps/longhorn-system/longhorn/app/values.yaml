@@ -14,7 +14,7 @@ defaultSettings:
   guaranteedEngineManagerCPU: 12
   guaranteedReplicaManagerCPU: 12
   guaranteedInstanceManagerCpu: 12
-  nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+  nodeDownPoddeletionPolicy: Retain-both-statefulset-and-deployment-pod
   volumeAttachmentRecoveryPolicy: never
   orphanAutoDeletion: true
   replicaAutoBalance: true

@@ -28,7 +28,7 @@ spec:
   target:
     name: ${APP}-uptime
     creationPolicy: Owner
-    deletionPolicy: Delete
+    deletionPolicy: Retain
     template:
       metadata:
         labels:

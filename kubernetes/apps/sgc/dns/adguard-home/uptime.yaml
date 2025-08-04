@@ -1,23 +1,23 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
 metadata:
   name: ${APP}-group
 spec:
-  config:
+  uptime:
     active: true
     name: Adguard Home
     type: group
     parent_name: "apps"
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
 metadata:
   name: ${APP}-primary
 spec:
-  config:
+  uptime:
     active: true
     name: Primary
     type: http
@@ -26,14 +26,13 @@ spec:
     accepted_statuscodes: ["200"]
     parent_name: "${APP}-group"
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  config:
-    active: true
+  uptime:
     name: Secondary
     type: http
     url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
@@ -41,15 +40,14 @@ spec:
     accepted_statuscodes: ["200"]
     parent_name: "${APP}-group"
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
 metadata:
   name: ${APP}-tertiary
 spec:
-  config:
-    active: true
     name: Tertiary
+  uptime:
     type: http
     url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
     method: GET

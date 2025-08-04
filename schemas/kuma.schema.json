@@ -18,39 +18,31 @@
     "spec": {
       "additionalProperties": false,
       "properties": {
-        "http": { "$ref": "./kuma/properties.json#/definitions/http" },
-        "ping": { "$ref": "./kuma/properties.json#/definitions/ping" },
-        "docker": { "$ref": "./kuma/properties.json#/definitions/docker" },
-        "dns": { "$ref": "./kuma/properties.json#/definitions/dns" },
-        "gamedig": { "$ref": "./kuma/properties.json#/definitions/gamedig" },
-        "group": { "$ref": "./kuma/properties.json#/definitions/group" },
-        "grpc-keyword": {
-          "$ref": "./kuma/properties.json#/definitions/grpc-keyword"
-        },
-        "json-query": {
-          "$ref": "./kuma/properties.json#/definitions/json-query"
-        },
-        "kafka-producer": {
-          "$ref": "./kuma/properties.json#/definitions/kafka-producer"
-        },
-        "keyword": { "$ref": "./kuma/properties.json#/definitions/keyword" },
-        "mongodb": { "$ref": "./kuma/properties.json#/definitions/mongodb" },
-        "mqtt": { "$ref": "./kuma/properties.json#/definitions/mqtt" },
-        "mysql": { "$ref": "./kuma/properties.json#/definitions/mysql" },
-        "port": { "$ref": "./kuma/properties.json#/definitions/port" },
-        "postgres": { "$ref": "./kuma/properties.json#/definitions/postgres" },
-        "push": { "$ref": "./kuma/properties.json#/definitions/push" },
-        "radius": { "$ref": "./kuma/properties.json#/definitions/radius" },
-        "real-browser": {
-          "$ref": "./kuma/properties.json#/definitions/real-browser"
-        },
-        "redis": { "$ref": "./kuma/properties.json#/definitions/redis" },
-        "steam": { "$ref": "./kuma/properties.json#/definitions/steam" },
-        "sqlserver": {
-          "$ref": "./kuma/properties.json#/definitions/sqlserver"
-        },
-        "tailscale-ping": {
-          "$ref": "./kuma/properties.json#/definitions/tailscale-ping"
+        "config": {
+          "oneOf": [
+            { "$ref": "./kuma/properties.json#/definitions/http" },
+            { "$ref": "./kuma/properties.json#/definitions/ping" },
+            { "$ref": "./kuma/properties.json#/definitions/docker" },
+            { "$ref": "./kuma/properties.json#/definitions/dns" },
+            { "$ref": "./kuma/properties.json#/definitions/gamedig" },
+            { "$ref": "./kuma/properties.json#/definitions/group" },
+            { "$ref": "./kuma/properties.json#/definitions/grpc-keyword" },
+            { "$ref": "./kuma/properties.json#/definitions/json-query" },
+            { "$ref": "./kuma/properties.json#/definitions/kafka-producer" },
+            { "$ref": "./kuma/properties.json#/definitions/keyword" },
+            { "$ref": "./kuma/properties.json#/definitions/mongodb" },
+            { "$ref": "./kuma/properties.json#/definitions/mqtt" },
+            { "$ref": "./kuma/properties.json#/definitions/mysql" },
+            { "$ref": "./kuma/properties.json#/definitions/port" },
+            { "$ref": "./kuma/properties.json#/definitions/postgres" },
+            { "$ref": "./kuma/properties.json#/definitions/push" },
+            { "$ref": "./kuma/properties.json#/definitions/radius" },
+            { "$ref": "./kuma/properties.json#/definitions/real-browser" },
+            { "$ref": "./kuma/properties.json#/definitions/redis" },
+            { "$ref": "./kuma/properties.json#/definitions/steam" },
+            { "$ref": "./kuma/properties.json#/definitions/sqlserver" },
+            { "$ref": "./kuma/properties.json#/definitions/tailscale-ping" }
+          ]
         }
       },
       "type": "object"

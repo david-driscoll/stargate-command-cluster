@@ -114,151 +114,151 @@
         "providerProxyId": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
         "skipPathRegex": { "type": "string" }
-
-    },
-    "radius": {
-      "type": "object",
-      "properties": {
-        "type": { "const": "radius" },
-        "authorizationFlow": { "type": "string" },
-        "clientNetworks": { "type": "string" },
-        "invalidationFlow": { "type": "string" },
-        "mfaSupport": { "type": "boolean" },
-
-        "propertyMappings": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "providerRadiusId": { "type": "string" },
-        "sharedSecret": { "type": "string" }
       },
-      "required": ["authorizationFlow", "invalidationFlow", "sharedSecret"]
-    },
-    "rac": {
-      "type": "object",
-      "properties": {
-        "type": { "const": "rac" },
-        "authenticationFlow": { "type": "string" },
-        "authorizationFlow": { "type": "string" },
-        "connectionExpiry": { "type": "string" },
+      "radius": {
+        "type": "object",
+        "properties": {
+          "type": { "const": "radius" },
+          "authorizationFlow": { "type": "string" },
+          "clientNetworks": { "type": "string" },
+          "invalidationFlow": { "type": "string" },
+          "mfaSupport": { "type": "boolean" },
 
-        "propertyMappings": {
-          "type": "array",
-          "items": { "type": "string" }
+          "propertyMappings": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "providerRadiusId": { "type": "string" },
+          "sharedSecret": { "type": "string" }
         },
-        "providerRacId": { "type": "string" },
-        "settings": { "type": "string" }
+        "required": ["authorizationFlow", "invalidationFlow", "sharedSecret"]
       },
-      "required": ["authorizationFlow"]
-    },
-    "oauth2": {
-      "type": "object",
-      "properties": {
-        "type": { "const": "oauth2" },
-        "accessCodeValidity": { "type": "string" },
-        "accessTokenValidity": { "type": "string" },
-        "allowedRedirectUris": {
-          "type": "array",
-          "items": { "type": "object" }
-        },
-        "authenticationFlow": { "type": "string" },
-        "authorizationFlow": { "type": "string" },
-        "clientId": { "type": "string" },
-        "clientSecret": { "type": "string" },
-        "clientType": { "type": "string" },
-        "encryptionKey": { "type": "string" },
-        "includeClaimsInIdToken": { "type": "boolean" },
-        "invalidationFlow": { "type": "string" },
-        "issuerMode": { "type": "string" },
-        "jwksSources": { "type": "array", "items": { "type": "string" } },
-        "jwtFederationProviders": {
-          "type": "array",
-          "items": { "type": "number" }
-        },
-        "jwtFederationSources": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
+      "rac": {
+        "type": "object",
+        "properties": {
+          "type": { "const": "rac" },
+          "authenticationFlow": { "type": "string" },
+          "authorizationFlow": { "type": "string" },
+          "connectionExpiry": { "type": "string" },
 
-        "propertyMappings": {
-          "type": "array",
-          "items": { "type": "string" }
+          "propertyMappings": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "providerRacId": { "type": "string" },
+          "settings": { "type": "string" }
         },
-        "providerOauth2Id": { "type": "string" },
-        "refreshTokenValidity": { "type": "string" },
-        "signingKey": { "type": "string" },
-        "subMode": { "type": "string" }
+        "required": ["authorizationFlow"]
       },
-      "required": ["authorizationFlow", "clientId", "invalidationFlow"]
-    },
-    "microsoftEntra": {
-      "type": "object",
-      "properties": {
-        "type": { "const": "microsoftEntra" },
-        "clientId": { "type": "string" },
-        "clientSecret": { "type": "string" },
-        "dryRun": { "type": "boolean" },
-        "excludeUsersServiceAccount": { "type": "boolean" },
-        "filterGroup": { "type": "string" },
-        "groupDeleteAction": { "type": "string" },
+      "oauth2": {
+        "type": "object",
+        "properties": {
+          "type": { "const": "oauth2" },
+          "accessCodeValidity": { "type": "string" },
+          "accessTokenValidity": { "type": "string" },
+          "allowedRedirectUris": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "authenticationFlow": { "type": "string" },
+          "authorizationFlow": { "type": "string" },
+          "clientId": { "type": "string" },
+          "clientSecret": { "type": "string" },
+          "clientType": { "type": "string" },
+          "encryptionKey": { "type": "string" },
+          "includeClaimsInIdToken": { "type": "boolean" },
+          "invalidationFlow": { "type": "string" },
+          "issuerMode": { "type": "string" },
+          "jwksSources": { "type": "array", "items": { "type": "string" } },
+          "jwtFederationProviders": {
+            "type": "array",
+            "items": { "type": "number" }
+          },
+          "jwtFederationSources": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
 
-        "propertyMappings": {
-          "type": "array",
-          "items": { "type": "string" }
+          "propertyMappings": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "providerOauth2Id": { "type": "string" },
+          "refreshTokenValidity": { "type": "string" },
+          "signingKey": { "type": "string" },
+          "subMode": { "type": "string" }
         },
-        "propertyMappingsGroups": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "providerMicrosoftEntraId": { "type": "string" },
-        "tenantId": { "type": "string" },
-        "userDeleteAction": { "type": "string" }
+        "required": ["authorizationFlow", "clientId", "invalidationFlow"]
       },
-      "required": ["clientId", "clientSecret", "tenantId"]
-    },
-    "ldap": {
-      "type": "object",
-      "properties": {
-        "type": { "const": "ldap" },
-        "baseDn": { "type": "string" },
-        "bindFlow": { "type": "string" },
-        "bindMode": { "type": "string" },
-        "certificate": { "type": "string" },
-        "gidStartNumber": { "type": "number" },
-        "mfaSupport": { "type": "boolean" },
+      "microsoftEntra": {
+        "type": "object",
+        "properties": {
+          "type": { "const": "microsoftEntra" },
+          "clientId": { "type": "string" },
+          "clientSecret": { "type": "string" },
+          "dryRun": { "type": "boolean" },
+          "excludeUsersServiceAccount": { "type": "boolean" },
+          "filterGroup": { "type": "string" },
+          "groupDeleteAction": { "type": "string" },
 
-        "providerLdapId": { "type": "string" },
-        "searchMode": { "type": "string" },
-        "tlsServerName": { "type": "string" },
-        "uidStartNumber": { "type": "number" },
-        "unbindFlow": { "type": "string" }
+          "propertyMappings": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "propertyMappingsGroups": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "providerMicrosoftEntraId": { "type": "string" },
+          "tenantId": { "type": "string" },
+          "userDeleteAction": { "type": "string" }
+        },
+        "required": ["clientId", "clientSecret", "tenantId"]
       },
-      "required": ["baseDn", "bindFlow", "unbindFlow"]
-    },
-    "googleWorkspace": {
-      "type": "object",
-      "properties": {
-        "type": { "const": "googleWorkspace" },
-        "credentials": { "type": "string" },
-        "defaultGroupEmailDomain": { "type": "string" },
-        "delegatedSubject": { "type": "string" },
-        "dryRun": { "type": "boolean" },
-        "excludeUsersServiceAccount": { "type": "boolean" },
-        "filterGroup": { "type": "string" },
-        "groupDeleteAction": { "type": "string" },
+      "ldap": {
+        "type": "object",
+        "properties": {
+          "type": { "const": "ldap" },
+          "baseDn": { "type": "string" },
+          "bindFlow": { "type": "string" },
+          "bindMode": { "type": "string" },
+          "certificate": { "type": "string" },
+          "gidStartNumber": { "type": "number" },
+          "mfaSupport": { "type": "boolean" },
 
-        "propertyMappings": {
-          "type": "array",
-          "items": { "type": "string" }
+          "providerLdapId": { "type": "string" },
+          "searchMode": { "type": "string" },
+          "tlsServerName": { "type": "string" },
+          "uidStartNumber": { "type": "number" },
+          "unbindFlow": { "type": "string" }
         },
-        "propertyMappingsGroups": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "providerGoogleWorkspaceId": { "type": "string" },
-        "userDeleteAction": { "type": "string" }
+        "required": ["baseDn", "bindFlow", "unbindFlow"]
       },
-      "required": ["defaultGroupEmailDomain"]
+      "googleWorkspace": {
+        "type": "object",
+        "properties": {
+          "type": { "const": "googleWorkspace" },
+          "credentials": { "type": "string" },
+          "defaultGroupEmailDomain": { "type": "string" },
+          "delegatedSubject": { "type": "string" },
+          "dryRun": { "type": "boolean" },
+          "excludeUsersServiceAccount": { "type": "boolean" },
+          "filterGroup": { "type": "string" },
+          "groupDeleteAction": { "type": "string" },
+
+          "propertyMappings": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "propertyMappingsGroups": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "providerGoogleWorkspaceId": { "type": "string" },
+          "userDeleteAction": { "type": "string" }
+        },
+        "required": ["defaultGroupEmailDomain"]
+      }
     }
   }
 }

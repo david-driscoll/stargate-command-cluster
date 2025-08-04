@@ -5,7 +5,8 @@ kind: KumaEntity
 metadata:
   name: ${APP}
 spec:
-  http:
+  config:
+    type: http
     name: 1Password Connect
     url: https://op-connect.${CLUSTER_DOMAIN}/health
     method: GET

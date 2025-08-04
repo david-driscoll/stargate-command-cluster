@@ -6,8 +6,8 @@ metadata:
   name: cluster-apps
 spec:
   config:
-    name: ${CLUSTER_TITLE}
     type: group
+    name: ${CLUSTER_TITLE}
     parent_name: apps
 
 ---
@@ -18,6 +18,6 @@ metadata:
   name: cluster-system
 spec:
   config:
-    name: ${CLUSTER_TITLE}
     type: group
+    name: ${CLUSTER_TITLE}
     parent_name: system

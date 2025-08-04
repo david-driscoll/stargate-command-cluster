@@ -8,8 +8,8 @@ spec:
   name: 1Password Connect
   category: System
   uptime:
-    type: http
-    url: https://op-connect.${CLUSTER_DOMAIN}/health
-    method: GET
-    accepted_statuscodes: ["200"]
-    parent_name: "${CLUSTER_CNAME}-system"
+    http:
+      url: https://op-connect.${CLUSTER_DOMAIN}/health
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "${CLUSTER_CNAME}-system"

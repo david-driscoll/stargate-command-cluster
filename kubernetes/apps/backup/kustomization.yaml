@@ -7,7 +7,16 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./secret-store.yaml
   - ./backrest/ks.yaml
   - ./backblaze/ks.yaml
   # - ./restic-server/ks.yaml
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /spec/provider/kubernetes/remoteNamespace
+        value: backup
+      - op: replace
+        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
+        value: backup

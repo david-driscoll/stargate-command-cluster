@@ -7,3 +7,13 @@ components:
   - ../../components/common
 resources:
   - ./operator/ks.yaml
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /spec/provider/kubernetes/remoteNamespace
+        value: cloudnative-pg
+      - op: replace
+        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
+        value: cloudnative-pg

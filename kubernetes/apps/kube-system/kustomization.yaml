@@ -9,7 +9,6 @@ metadata:
 components:
   - ../../components/common
 resources:
-  - ./secret-store.yaml
   - ./1password/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
@@ -21,3 +20,13 @@ resources:
   - ./reflector/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./external-secrets/ks.yaml
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /spec/provider/kubernetes/remoteNamespace
+        value: kube-system
+      - op: replace
+        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
+        value: kube-system

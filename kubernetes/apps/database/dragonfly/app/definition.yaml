@@ -11,4 +11,4 @@ spec:
     redis:
       database_connection_string: redis://redis.database.svc.cluster.local
       accepted_statuscodes: ["200"]
-      parent_name: "cluster-system"
+      parent_name: "${CLUSTER_CNAME}-system"

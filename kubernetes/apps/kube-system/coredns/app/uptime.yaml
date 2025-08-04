@@ -5,14 +5,10 @@
 # metadata:
 #   name: ${APP}
 # spec:
-#   config:
-#     active: true
+#   dns:
 #     name: CoreDNS (${CLUSTER_TITLE})
 #     type: dns
 #     url: https://op-connect.${CLUSTER_DOMAIN}/health
 #     method: GET
 #     accepted_statuscodes: ["200"]
-#     interval: 300
-#     retry_interval: 60
-#     max_retries: 3
 #     parent_name: "system"

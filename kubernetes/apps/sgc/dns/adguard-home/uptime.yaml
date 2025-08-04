@@ -9,9 +9,6 @@ spec:
     active: true
     name: Adguard Home
     type: group
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
     parent_name: "apps"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -27,9 +24,6 @@ spec:
     url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
     parent_name: "${APP}-group"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -45,9 +39,6 @@ spec:
     url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
     parent_name: "${APP}-group"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -63,7 +54,4 @@ spec:
     url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
     method: GET
     accepted_statuscodes: ["200"]
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
     parent_name: "${APP}-group"

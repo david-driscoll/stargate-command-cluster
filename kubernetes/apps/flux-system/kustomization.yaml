@@ -6,10 +6,19 @@ namespace: flux-system
 components:
   - ../../components/common
 resources:
-  - ./secret-store.yaml
   - ./capacitor/ks.yaml
   - ./flux-instance/ks.yaml
   - ./flux-operator/ks.yaml
   - ./pulumi-operator/ks.yaml
   - ./weave/ks.yaml
   # - ./tofu/ks.yaml
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: replace
+        path: /spec/provider/kubernetes/remoteNamespace
+        value: flux-system
+      - op: replace
+        path: /spec/provider/kubernetes/auth/serviceAccount/namespace
+        value: flux-system

@@ -744,8 +744,6 @@ spec:
                     ssf:
                       type: object
                       properties:
-                        type:
-                          const: ssf
                         eventRetention:
                           type: string
                         jwtFederationProviders:
@@ -759,8 +757,6 @@ spec:
                     scim:
                       type: object
                       properties:
-                        type:
-                          const: scim
                         compatibilityMode:
                           type: string
                         dryRun:
@@ -789,8 +785,6 @@ spec:
                     saml:
                       type: object
                       properties:
-                        type:
-                          const: saml
                         acsUrl:
                           type: string
                         assertionValidNotBefore:
@@ -907,8 +901,6 @@ spec:
                     radius:
                       type: object
                       properties:
-                        type:
-                          const: radius
                         authorizationFlow:
                           type: string
                         clientNetworks:
@@ -933,8 +925,6 @@ spec:
                     rac:
                       type: object
                       properties:
-                        type:
-                          const: rac
                         authenticationFlow:
                           type: string
                         authorizationFlow:
@@ -954,8 +944,6 @@ spec:
                     oauth2:
                       type: object
                       properties:
-                        type:
-                          const: oauth2
                         accessCodeValidity:
                           type: string
                         accessTokenValidity:
@@ -1013,8 +1001,6 @@ spec:
                     microsoftEntra:
                       type: object
                       properties:
-                        type:
-                          const: microsoftEntra
                         clientId:
                           type: string
                         clientSecret:
@@ -1048,8 +1034,6 @@ spec:
                     ldap:
                       type: object
                       properties:
-                        type:
-                          const: ldap
                         baseDn:
                           type: string
                         bindFlow:
@@ -1079,8 +1063,6 @@ spec:
                     googleWorkspace:
                       type: object
                       properties:
-                        type:
-                          const: googleWorkspace
                         credentials:
                           type: string
                         defaultGroupEmailDomain:

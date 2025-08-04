@@ -11,5 +11,5 @@ spec:
     http:
       url: https://${APP}.${CLUSTER_DOMAIN}/status
       method: GET
-      accepted_statuscodes: "200"
+      accepted_statuscodes: ["200"]
       parent_name: "${CLUSTER_CNAME}-apps"

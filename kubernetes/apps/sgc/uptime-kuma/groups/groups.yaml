@@ -8,9 +8,6 @@ spec:
   config:
     name: Applications
     type: group
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -22,9 +19,6 @@ spec:
   config:
     name: System
     type: group
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
 
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -36,9 +30,6 @@ spec:
 #   config:
 #     name: Networking
 #     type: group
-#     interval: 300
-#     retry_interval: 60
-#     max_retries: 3
 
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -50,7 +41,4 @@ spec:
 #   config:
 #     name: Observability
 #     type: group
-#     interval: 300
-#     retry_interval: 60
-#     max_retries: 3
 

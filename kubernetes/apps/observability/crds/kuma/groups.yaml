@@ -9,9 +9,6 @@ spec:
     name: ${CLUSTER_TITLE}
     type: group
     parent_name: apps
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -24,6 +21,3 @@ spec:
     name: ${CLUSTER_TITLE}
     type: group
     parent_name: system
-    interval: 300
-    retry_interval: 60
-    max_retries: 3

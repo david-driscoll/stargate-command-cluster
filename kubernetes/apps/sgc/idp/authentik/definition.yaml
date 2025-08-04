@@ -8,10 +8,12 @@ spec:
   name: Authentik
   category: Identity
   authentik:
+    proxy:
+      
     provider: "forward-auth"
     url: https://justatest.${ROOT_DOMAIN}
     icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/radarr-4k.svg
-    config: {}
+
   uptime:
     http:
       url: https://authentik.${ROOT_DOMAIN}

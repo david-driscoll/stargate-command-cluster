@@ -88,6 +88,9 @@
               "$ref": "./authentik/properties.json#/definitions/radius"
             },
             "rac": { "$ref": "./authentik/properties.json#/definitions/rac" },
+            "proxy": {
+              "$ref": "./authentik/properties.json#/definitions/proxy"
+            },
             "oauth2": {
               "$ref": "./authentik/properties.json#/definitions/oauth2"
             },

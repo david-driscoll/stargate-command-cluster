@@ -872,32 +872,32 @@ spec:
                           type: boolean
                         invalidationFlow:
                           type: string
-                      jwksSources:
-                        type: array
-                        items:
+                        jwksSources:
+                          type: array
+                          items:
+                            type: string
+                        jwtFederationProviders:
+                          type: array
+                          items:
+                            type: number
+                        jwtFederationSources:
+                          type: array
+                          items:
+                            type: string
+                        mode:
                           type: string
-                      jwtFederationProviders:
-                        type: array
-                        items:
-                          type: number
-                      jwtFederationSources:
-                        type: array
-                        items:
+                        name:
                           type: string
-                      mode:
-                        type: string
-                      name:
-                        type: string
-                      propertyMappings:
-                        type: array
-                        items:
+                        propertyMappings:
+                          type: array
+                          items:
+                            type: string
+                        providerProxyId:
                           type: string
-                      providerProxyId:
-                        type: string
-                      refreshTokenValidity:
-                        type: string
-                      skipPathRegex:
-                        type: string
+                        refreshTokenValidity:
+                          type: string
+                        skipPathRegex:
+                          type: string
                     radius:
                       type: object
                       properties:

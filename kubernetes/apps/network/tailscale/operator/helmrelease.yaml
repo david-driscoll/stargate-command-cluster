@@ -54,10 +54,10 @@ spec:
     operatorConfig:
       defaultTags:
         - "tag:${CLUSTER_CNAME}-operator"
-      # image:
-      #   repository: ghcr.io/tailscale/k8s-operator
-      #   tag: v1.86.2@sha256:cea460b5f3b6bb0a119c63e7a77dda65f0bbbd513cd8e21154851a3ba37d146f
-      #   pullPolicy: Always
+      image:
+        repository: ghcr.io/tailscale/k8s-operator
+        tag: v1.84.3@sha256:f97ea471667bd94023f76e228c5be0b95564cdba2f9501cb084eeef139d8b65e
+        pullPolicy: Always
       hostname: "${CLUSTER_CNAME}-operator"
       podAnnotations:
         reloader.stakater.com/auto: "true"
@@ -70,9 +70,9 @@ spec:
     # If you need more configuration options, take a look at ProxyClass:
     # https://tailscale.com/kb/1236/kubernetes-operator#cluster-resource-customization-using-proxyclass-custom-resource
     proxyConfig:
-      # image:
-      #   repository: tailscale/tailscale
-      #   tag: v1.86.2@sha256:241d9518b7e0b6e533dbd0117fcea15acb4174249210837f52b71615949ce9d2
+      image:
+        repository: tailscale/tailscale
+        tag: v1.84.3@sha256:f97ea471667bd94023f76e228c5be0b95564cdba2f9501cb084eeef139d8b65e
       defaultTags: "tag:${CLUSTER_CNAME}"
       podAnnotations:
         reloader.stakater.com/auto: "true"

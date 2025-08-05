@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
+namespace authentik.Models;
 
 public record DnsUptime : UptimeBase
 {

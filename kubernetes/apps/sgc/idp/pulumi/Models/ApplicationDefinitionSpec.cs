@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
+namespace authentik.Models;
 
 public record ApplicationDefinitionSpec
 {

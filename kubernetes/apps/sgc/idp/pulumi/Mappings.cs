@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using authentik.Models;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
 using Pulumi.Uptimekuma;
 using Riok.Mapperly.Abstractions;
-using StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
 
 [Mapper(AllowNullPropertyAssignment = false)]
 static partial class Mappings
@@ -19,73 +19,108 @@ static partial class Mappings
     return MapFromDataInternal(configMap.Data);
   }
 
-  public static KumaResource MapMonitor(string clusterName, ApplicationDefinition definition)
+  public static KumaUptimeResourceConfigArgs MapMonitor(string clusterName, ApplicationDefinition definition)
   {
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
-    var config = definition.Spec.Uptime switch
+    var args = new KumaUptimeResourceConfigArgs();
+    switch (definition.Spec.Uptime)
     {
-      { Dns: { } dns } => MapToUptime(dns),
-      { Http: { } http } => MapToUptime(http),
-      { Ping: { } ping } => MapToUptime(ping),
-      { Docker: { } docker } => MapToUptime(docker),
-      { Gamedig: { } gamedig } => MapToUptime(gamedig),
-      { Group: { } group } => MapToUptime(group),
-      { GrpcKeyword: { } grpcKeyword } => MapToUptime(grpcKeyword),
-      { JsonQuery: { } jsonQuery } => MapToUptime(jsonQuery),
-      { KafkaProducer: { } kafkaProducer } => MapToUptime(kafkaProducer),
-      { Keyword: { } keyword } => MapToUptime(keyword),
-      { MongoDb: { } mongoDb } => MapToUptime(mongoDb),
-      { Mqtt: { } mqtt } => MapToUptime(mqtt),
-      { Mysql: { } mysql } => MapToUptime(mysql),
-      { Port: { } port } => MapToUptime(port),
-      { Postgres: { } postgres } => MapToUptime(postgres),
-      { Push: { } push } => MapToUptime(push),
-      { Radius: { } radius } => MapToUptime(radius),
-      { RealBrowser: { } realBrowser } => MapToUptime(realBrowser),
-      { Redis: { } redis } => MapToUptime(redis),
-      { Steam: { } steam } => MapToUptime(steam),
-      { SqlServer: { } sqlServer } => MapToUptime(sqlServer),
-      { TailscalePing: { } tailscalePing } => MapToUptime(tailscalePing),
-      _ => throw new ArgumentOutOfRangeException(nameof(definition.Spec.Uptime)),
-    };
-    return new KumaResource()
-    {
-      ApiVersion = "autokuma.bigboot.dev/v1",
-      Kind = "KumaEntity",
-      Metadata = new V1ObjectMeta()
-      {
-        Name = ResourceName(clusterName, definition),
-        Labels = new Dictionary<string, string>
-        {
-          ["driscoll.dev/cluster"] = clusterName,
-        }
-      },
-      Spec = new () { Config = config, },
-    };
+      case { Dns: { } dns }:
+        MapToUptime(args, dns);
+        break;
+      case { Http: { } http }:
+        MapToUptime(args, http);
+        break;
+      case { Ping: { } ping }:
+        MapToUptime(args, ping);
+        break;
+      case { Docker: { } docker }:
+        MapToUptime(args, docker);
+        break;
+      case { Gamedig: { } gamedig }:
+        MapToUptime(args, gamedig);
+        break;
+      case { Group: { } group }:
+        MapToUptime(args, group);
+        break;
+      case { GrpcKeyword: { } grpcKeyword }:
+        MapToUptime(args, grpcKeyword);
+        break;
+      case { JsonQuery: { } jsonQuery }:
+        MapToUptime(args, jsonQuery);
+        break;
+      case { KafkaProducer: { } kafkaProducer }:
+        MapToUptime(args, kafkaProducer);
+        break;
+      case { Keyword: { } keyword }:
+        MapToUptime(args, keyword);
+        break;
+      case { MongoDb: { } mongoDb }:
+        MapToUptime(args, mongoDb);
+        break;
+      case { Mqtt: { } mqtt }:
+        MapToUptime(args, mqtt);
+        break;
+      case { Mysql: { } mysql }:
+        MapToUptime(args, mysql);
+        break;
+      case { Port: { } port }:
+        MapToUptime(args, port);
+        break;
+      case { Postgres: { } postgres }:
+        MapToUptime(args, postgres);
+        break;
+      case { Push: { } push }:
+        MapToUptime(args, push);
+        break;
+      case { Radius: { } radius }:
+        MapToUptime(args, radius);
+        break;
+      case { RealBrowser: { } realBrowser }:
+        MapToUptime(args, realBrowser);
+        break;
+      case { Redis: { } redis }:
+        MapToUptime(args, redis);
+        break;
+      case { Steam: { } steam }:
+        MapToUptime(args, steam);
+        break;
+      case { SqlServer: { } sqlServer }:
+        MapToUptime(args, sqlServer);
+        break;
+      case { TailscalePing: { } tailscalePing }:
+        MapToUptime(args, tailscalePing);
+        break;
+      default:
+        throw new ArgumentOutOfRangeException(nameof(definition.Spec.Uptime));
+    }
+
+    return args;
   }
 
-  public static partial KumaResourceConfigSpec MapToUptime(DnsUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(HttpUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(PingUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(DockerUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(GamedigUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(GroupUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(GrpcKeywordUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(JsonQueryUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(KafkaProducerUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(KeywordUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(MongoDbUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(MqttUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(MysqlUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(PortUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(PostgresUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(PushUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(RadiusUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(RealBrowserUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(RedisUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(SteamUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(SqlServerUptime uptime);
-  public static partial KumaResourceConfigSpec MapToUptime(TailscalePingUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DnsUptime uptime);
+
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, HttpUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PingUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DockerUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GamedigUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GroupUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GrpcKeywordUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, JsonQueryUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, KafkaProducerUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, KeywordUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MongoDbUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MqttUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MysqlUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PortUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PostgresUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PushUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RadiusUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RealBrowserUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RedisUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, SteamUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, SqlServerUptime uptime);
+  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, TailscalePingUptime uptime);
 
   public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
   public static partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);
@@ -97,22 +132,42 @@ static partial class Mappings
   public static partial AuthentikProviderLdap MapToLdap(AuthentikSpec spec);
   public static partial AuthentikProviderMicrosoftEntra MapToMicrosoftEntra(AuthentikSpec spec);
   public static partial AuthentikProviderGoogleWorkspace MapToGoogleWorkspace(AuthentikSpec spec);
-  public static partial ProviderProxyArgs CreateProvider(AuthentikProviderProxy instance);
-  public static partial ProviderOauth2Args CreateProvider(AuthentikProviderOauth2 instance);
 
-  public static partial ProviderLdapArgs CreateProvider(AuthentikProviderLdap instance);
-  public static partial ProviderSamlArgs CreateProvider(AuthentikProviderSaml instance);
-  public static partial ProviderRacArgs CreateProvider(AuthentikProviderRac instance);
-  public static partial ProviderRadiusArgs CreateProvider(AuthentikProviderRadius instance);
-  public static partial ProviderSsfArgs CreateProvider(AuthentikProviderSsf instance);
-  public static partial ProviderScimArgs CreateProvider(AuthentikProviderScim instance);
-  public static partial ProviderMicrosoftEntraArgs CreateProvider(AuthentikProviderMicrosoftEntra instance);
-  public static partial ProviderGoogleWorkspaceArgs CreateProvider(AuthentikProviderGoogleWorkspace instance);
+  public static partial ProviderProxyArgs CreateProvider(AuthentikProviderProxy instance,
+    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderOauth2Args CreateProvider(AuthentikProviderOauth2 instance,
+    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderLdapArgs CreateProvider(AuthentikProviderLdap instance, Input<string> authorizationFlow,
+    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderSamlArgs CreateProvider(AuthentikProviderSaml instance, Input<string> authorizationFlow,
+    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderRacArgs CreateProvider(AuthentikProviderRac instance, Input<string> authorizationFlow,
+    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderRadiusArgs CreateProvider(AuthentikProviderRadius instance,
+    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderSsfArgs CreateProvider(AuthentikProviderSsf instance, Input<string> authorizationFlow,
+    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderScimArgs CreateProvider(AuthentikProviderScim instance, Input<string> authorizationFlow,
+    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderMicrosoftEntraArgs CreateProvider(AuthentikProviderMicrosoftEntra instance,
+    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+
+  public static partial ProviderGoogleWorkspaceArgs CreateProvider(AuthentikProviderGoogleWorkspace instance,
+    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
   public static ApplicationDefinitionUptime MapFromSecret(V1Secret secret)
   {
     return MapFromDataInternal(secret.Data.ToDictionary(z => z.Key, z => Encoding.UTF8.GetString(z.Value)));
   }
+
   private static ApplicationDefinitionUptime MapFromDataInternal(IDictionary<string, string> data)
   {
     var jsonData = JsonSerializer.Serialize(data);
@@ -157,10 +212,13 @@ static partial class Mappings
   }
 
 
-  public static string ResourceName(string clusterName, ApplicationDefinition resource) =>
-    $"{Prefix(clusterName, resource)}-{resource.Metadata.Name}";
+  public static string ResourceName(ClusterApplicationResources.Args args, ApplicationDefinition resource) =>
+    $"{Prefix(args, resource)}-{resource.Metadata.Name}";
 
-  private static string Prefix(string clusterName, ApplicationDefinition resource) =>
-    resource.Namespace() is { } ns && ns == clusterName ? clusterName : $"{clusterName}-{resource.Namespace()}";
+  private static string Prefix(ClusterApplicationResources.Args args, ApplicationDefinition resource) =>
+    resource.Namespace() is { } ns && ns == args.ClusterName ? args.ClusterName : $"{args.ClusterName}-{resource.Namespace()}";
 
+  private static Input<string> MapToStringInput(string value) => value;
+  private static Input<bool>? MapToBoolInput(bool? value) => value.HasValue ? (Input<bool>?)value : null;
+  private static Input<int>? MapToIntInput(int? value) => value.HasValue ? (Input<int>?)value : null;
 }

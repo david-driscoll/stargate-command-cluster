@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
 
-namespace StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi
+namespace authentik.Models
 {
   public class ApplicationDefinition : KubernetesObject, IMetadata<V1ObjectMeta>
   {

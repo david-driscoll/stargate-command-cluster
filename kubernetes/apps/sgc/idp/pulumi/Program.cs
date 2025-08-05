@@ -11,7 +11,6 @@ using k8s.Autorest;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
-using StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
 using Rocket.Surgery.OnePasswordNativeUnofficial;
 using KubernetesProvider = Pulumi.Kubernetes.Provider;
 using Pulumi.Uptimekuma;
@@ -56,6 +55,9 @@ return await Deployment.RunAsync(async () =>
     ClusterTitle = "Stargate Command",
     UptimeCluster = sgcClient,
     RemoteCluster = sgcClient,
+    InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
+    AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
+    // AuthenticationFlow = ,
     ServiceConnection = new ServiceConnectionKubernetes("sgc", new()
     {
       Name = "Stargate Command",
@@ -65,10 +67,13 @@ return await Deployment.RunAsync(async () =>
   });
   var equestriaResources = new ClusterApplicationResources("equestria", new()
   {
-    ClusterName = "sgc",
-    ClusterTitle = "Stargate Command",
+    ClusterName = "equestria",
+    ClusterTitle = "Equestria",
     UptimeCluster = sgcClient,
     RemoteCluster = equestriaClient,
+    InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
+    AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
+    // AuthenticationFlow = ,
     ServiceConnection = new ServiceConnectionKubernetes("equestria", new()
     {
       Name = "Equestria",

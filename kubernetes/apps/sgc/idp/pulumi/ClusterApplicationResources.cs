@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using authentik.Models;
 using Dumpify;
 using Humanizer;
 using k8s;
@@ -13,7 +15,9 @@ using k8s.Autorest;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
-using StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
+using Pulumi.Kubernetes;
+using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
+using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
 
 public class ClusterApplicationResources : ComponentResource
 {
@@ -24,7 +28,11 @@ public class ClusterApplicationResources : ComponentResource
     public required Kubernetes RemoteCluster { get; init; }
     public required Kubernetes UptimeCluster { get; init; }
     public required ServiceConnectionKubernetes ServiceConnection { get; init; }
+    public required Input<string> AuthorizationFlow { get; set; }
+    public Input<string>? AuthenticationFlow { get; set; }
+    public required Input<string> InvalidationFlow { get; set; }
   }
+
   public ClusterApplicationResources(string name, Args args,
     ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources", name, args, options)
   {
@@ -32,9 +40,6 @@ public class ClusterApplicationResources : ComponentResource
     var applications = Output.Create(GetApplications(args.RemoteCluster))
       .Apply(async applications =>
       {
-        var monitors = new List<KumaResource>();
-        var missingMonitors = (await args.UptimeCluster.CustomObjects.ListNamespacedCustomObjectAsync<KumaResourceList>(
-          "autokuma.bigboot.dev", "v1", "observability", "kumaentities", labelSelector: $"driscoll.dev/cluster={args.ClusterName}")).Items.Select(z => z.Metadata.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
         await foreach (var app in applications)
         {
           var spec = app.Spec;
@@ -45,23 +50,26 @@ public class ClusterApplicationResources : ComponentResource
               .Apply(a => a.Item2.HasValue ? a.Item1.Add(a.Item2.Value) : a.Item1);
           }
 
-          if (app.Spec.Uptime is { })
+          if (app.Spec.Uptime is { } uptime)
           {
+            var resourceName = Mappings.ResourceName(args, app);
             // var monitor = new Monitor(Mappings.ResourceName(clusterName, app), Mappings.MapMonitorArgs(app));
-            var monitor = Mappings.MapMonitor(args.ClusterName, app);
-            missingMonitors.Remove(monitor.Metadata.Name);
-            monitors.Add(monitor);
-          }
-        }
-        foreach (var monitorName in missingMonitors)
-        {
-          // If the monitor is not found, we delete it from the uptime cluster.
-          await args.UptimeCluster.CustomObjects.DeleteNamespacedCustomObjectAsync("autokuma.bigboot.dev", "v1", "observability", "kumaentities", monitorName);
-        }
+            var resource = new KumaUptimeResourceArgs()
+            {
+              Metadata = new ObjectMetaArgs()
+              {
+                Name = resourceName,
+                Namespace = "observability",
+                Labels = new Dictionary<string, string>
+                {
+                  ["driscoll.dev/cluster"] = args.ClusterName
+                }
+              },
+              Spec = new KumaUptimeResourceSpecArgs { Config = Mappings.MapMonitor(args.ClusterName, app) }
+            };
 
-        foreach (var monitor in monitors)
-        {
-          await UpdateMonitor(args, monitor);
+            _ = new CustomResource(resourceName, resource, new CustomResourceOptions() { Parent = this });
+          }
         }
 
         return applications;
@@ -123,6 +131,7 @@ public class ClusterApplicationResources : ComponentResource
           {
             throw new ArgumentException($"Unknown AuthentikFrom type: {authentikFrom.Type}");
           }
+
           var authentikSpec = JsonSerializer.Deserialize<AuthentikSpec>(JsonSerializer.Serialize(data));
 
           ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
@@ -135,8 +144,11 @@ public class ClusterApplicationResources : ComponentResource
             "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = Mappings.MapToRadius(authentikSpec) },
             "rac" => new ApplicationDefinitionAuthentik { ProviderRac = Mappings.MapToRac(authentikSpec) },
             "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = Mappings.MapToLdap(authentikSpec) },
-            "microsoftEntra" => new ApplicationDefinitionAuthentik { ProviderMicrosoftEntra = Mappings.MapToMicrosoftEntra(authentikSpec) },
-            "googleWorkspace" => new ApplicationDefinitionAuthentik { ProviderGoogleWorkspace = Mappings.MapToGoogleWorkspace(authentikSpec)
+            "microsoftEntra" => new ApplicationDefinitionAuthentik
+              { ProviderMicrosoftEntra = Mappings.MapToMicrosoftEntra(authentikSpec) },
+            "googleWorkspace" => new ApplicationDefinitionAuthentik
+            {
+              ProviderGoogleWorkspace = Mappings.MapToGoogleWorkspace(authentikSpec)
             },
             _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
               nameof(authentikSpec))
@@ -172,81 +184,43 @@ public class ClusterApplicationResources : ComponentResource
     }
   }
 
-  static async Task UpdateMonitor(Args args, KumaResource applicationMonitor)
-  {
-    try
-    {
-      var existingEntity = await args.UptimeCluster.CustomObjects.GetNamespacedCustomObjectAsync<KumaResource>(
-        "autokuma.bigboot.dev",
-        "v1",
-        "observability",
-        "kumaentities",
-        applicationMonitor.Metadata.Name);
-      // existingEntity.Spec.Dump("existingEntity");
-    }
-    catch (HttpOperationException ex) when (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
-    {
-      if (Deployment.Instance.IsDryRun) return;
-      await args.UptimeCluster.CustomObjects.CreateNamespacedCustomObjectAsync(applicationMonitor,
-        "autokuma.bigboot.dev",
-        "v1",
-        "observability", "kumaentities");
-      return;
-    }
-
-    try
-    {
-      var remoteEntity = await args.RemoteCluster.CustomObjects.GetNamespacedCustomObjectAsync<KumaResource>(
-        "autokuma.bigboot.dev",
-        "v1",
-        applicationMonitor.Namespace(),
-        "kumaentities",
-        applicationMonitor.Metadata.Name);
-      // remoteEntity.Dump("remoteEntity");
-    }
-    catch (HttpOperationException ex) when (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
-    {
-      if (Deployment.Instance.IsDryRun) return;
-      // If the remote entity does not exist, we delete it from the uptime cluster.
-      await args.UptimeCluster.CustomObjects.DeleteNamespacedCustomObjectAsync("autokuma.bigboot.dev", "v1",
-        "observability",
-        "kumaentities", applicationMonitor.Metadata.Name);
-      return;
-    }
-
-    if (Deployment.Instance.IsDryRun) return;
-    await args.UptimeCluster.CustomObjects.PatchNamespacedCustomObjectAsync(applicationMonitor, "autokuma.bigboot.dev",
-      "v1",
-      applicationMonitor.Namespace(), "observability", "kumaentities");
-  }
-
   Application CreateAuthentikApplication(Args args,
     ApplicationDefinition definition, ApplicationDefinitionAuthentik authentik)
   {
     var slug = definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}";
-    var resourceName = Mappings.ResourceName(args.ClusterName, definition);
-    CustomResource provider = authentik switch
+    var resourceName = Mappings.ResourceName(args, definition);
+    Pulumi.CustomResource provider = authentik switch
     {
-      { ProviderProxy: { } proxy } => new ProviderProxy(resourceName, Mappings.CreateProvider(proxy),
+      { ProviderProxy: { } proxy } => new ProviderProxy(resourceName,
+        Mappings.CreateProvider(proxy, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderOauth2: { } oauth2 } => new ProviderOauth2(resourceName, Mappings.CreateProvider(oauth2),
+      { ProviderOauth2: { } oauth2 } => new ProviderOauth2(resourceName,
+        Mappings.CreateProvider(oauth2, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderLdap: { } ldap } => new ProviderLdap(resourceName, Mappings.CreateProvider(ldap),
+      { ProviderLdap: { } ldap } => new ProviderLdap(resourceName,
+        Mappings.CreateProvider(ldap, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderSaml: { } saml } => new ProviderSaml(resourceName, Mappings.CreateProvider(saml),
+      { ProviderSaml: { } saml } => new ProviderSaml(resourceName,
+        Mappings.CreateProvider(saml, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderRac: { } oidc } => new ProviderRac(resourceName, Mappings.CreateProvider(oidc),
+      { ProviderRac: { } rac } => new ProviderRac(resourceName,
+        Mappings.CreateProvider(rac, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderRadius: { } oidc } => new ProviderRadius(resourceName, Mappings.CreateProvider(oidc),
+      { ProviderRadius: { } radius } => new ProviderRadius(resourceName,
+        Mappings.CreateProvider(radius, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderSsf: { } oidc } => new ProviderSsf(resourceName, Mappings.CreateProvider(oidc),
+      { ProviderSsf: { } ssf } => new ProviderSsf(resourceName,
+        Mappings.CreateProvider(ssf, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
-      { ProviderScim: { } scim } => new ProviderScim(resourceName, Mappings.CreateProvider(scim),
+      { ProviderScim: { } scim } => new ProviderScim(resourceName,
+        Mappings.CreateProvider(scim, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
         new CustomResourceOptions() { Parent = this }),
       { ProviderMicrosoftEntra: { } microsoftEntra } => new ProviderMicrosoftEntra(resourceName,
-        Mappings.CreateProvider(microsoftEntra), new CustomResourceOptions() { Parent = this }),
+        Mappings.CreateProvider(microsoftEntra, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
+        new CustomResourceOptions() { Parent = this }),
       { ProviderGoogleWorkspace: { } googleWorkspace } => new ProviderGoogleWorkspace(resourceName,
-        Mappings.CreateProvider(googleWorkspace), new CustomResourceOptions() { Parent = this }),
+        Mappings.CreateProvider(googleWorkspace, args.AuthorizationFlow, args.InvalidationFlow,
+          args.AuthenticationFlow), new CustomResourceOptions() { Parent = this }),
       _ => throw new ArgumentException("Unknown authentik provider type", nameof(authentik))
     };
 
@@ -265,5 +239,4 @@ public class ClusterApplicationResources : ComponentResource
       // OpenInNewTab = true,
     }, new CustomResourceOptions() { Parent = this });
   }
-
 }

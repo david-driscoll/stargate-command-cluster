@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 
-namespace StargateCommandCluster.Kubernetes.Apps.Sgc.Idp.Pulumi;
+namespace authentik.Models;
 
 public class ApplicationDefinitionList : KubernetesObject, IMetadata<V1ListMeta>
 {

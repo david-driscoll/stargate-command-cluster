@@ -16,6 +16,7 @@ spec:
   backend: postgres://
   refresh: true
   destroyOnFinalize: true
+  workspaceReclaimPolicy: Delete
   envRefs:
     PGUSER:
       type: Secret
@@ -43,11 +44,11 @@ spec:
         name: pulumi-postgres
         key: database
   secretsRef:
-    # app:cluster_sgc:
-    #   type: Secret
-    #   secret:
-    #     name: ${APP}-${CLUSTER_CNAME}-kubeconfig
-    #     key: kubeconfig.json
+    app:cluster_sgc:
+      type: Secret
+      secret:
+        name: ${APP}-${CLUSTER_CNAME}-kubeconfig
+        key: kubeconfig.json
     app:cluster_equestria:
       type: Secret
       secret:

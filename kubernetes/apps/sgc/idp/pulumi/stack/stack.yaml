@@ -64,6 +64,6 @@ spec:
       secret:
         name: authentik-secret
         key: url
-  # workspaceTemplate:
-  #   spec:
-  #     image: pulumi/pulumi:3.147.0-nonroot
+  workspaceTemplate:
+    spec:
+      image: pulumi/pulumi-dotnet:3.187.0-debian

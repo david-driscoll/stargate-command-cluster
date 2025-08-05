@@ -1098,11 +1098,7 @@ spec:
                           type: string
                       required:
                         - defaultGroupEmailDomain
-                  required:
-                    - provider
-                    - url
-                    - icon
-                    - config
+                  required: []
                 authentikFrom:
                   type: object
                   properties:

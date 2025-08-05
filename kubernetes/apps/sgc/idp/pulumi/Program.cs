@@ -21,10 +21,11 @@ return await Deployment.RunAsync(async () =>
 {
   // Add your resources here
   // e.g. var resource = new Resource("name", new ResourceArgs { });
-  // var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-${CLUSTER_CNAME}-kubeconfig");
-  // var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-equestria-kubeconfig");
-  var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@sgc");
-  var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@equestria");
+
+  var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-${CLUSTER_CNAME}-kubeconfig");
+  var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-equestria-kubeconfig");
+  // var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@sgc");
+  // var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@equestria");
   var secrets = new Pulumi.Config();
 
   var groups = new AuthentikGroups();

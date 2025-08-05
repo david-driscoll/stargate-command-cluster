@@ -7,3 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./stack.yaml
   - ./gitrepository.yaml
+  - ./secret.yaml

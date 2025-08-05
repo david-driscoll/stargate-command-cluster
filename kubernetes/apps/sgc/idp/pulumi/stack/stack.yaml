@@ -21,27 +21,27 @@ spec:
     PGUSER:
       type: Secret
       secret:
-        name: pulumi-postgres
+        name: pulumi-operator-postgres
         key: username
     PGPASSWORD:
       type: Secret
       secret:
-        name: pulumi-postgres
+        name: pulumi-operator-postgres
         key: password
     PGHOST:
       type: Secret
       secret:
-        name: pulumi-postgres
+        name: pulumi-operator-postgres
         key: hostname
     PGPORT:
       type: Secret
       secret:
-        name: pulumi-postgres
+        name: pulumi-operator-postgres
         key: port
     PGDATABASE:
       type: Secret
       secret:
-        name: pulumi-postgres
+        name: pulumi-operator-postgres
         key: database
   secretsRef:
     app:cluster_sgc:

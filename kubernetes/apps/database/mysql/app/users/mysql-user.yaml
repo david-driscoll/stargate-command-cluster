@@ -22,6 +22,7 @@ spec:
           cnpg.io/reload: "true"
         annotations:
           reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
         rootHost: '%'
         rootUser: "${APP}"

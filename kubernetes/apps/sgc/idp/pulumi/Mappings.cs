@@ -19,7 +19,7 @@ static partial class Mappings
     return MapFromDataInternal(configMap.Data);
   }
 
-  public static KumaUptimeResourceConfigArgs MapMonitor(ApplicationDefinition definition)
+  public static KumaUptimeResourceConfigArgs MapMonitor(string clusterName, ApplicationDefinition definition)
   {
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
     var args = new KumaUptimeResourceConfigArgs()
@@ -97,6 +97,11 @@ static partial class Mappings
         break;
       default:
         throw new ArgumentOutOfRangeException(nameof(definition.Spec.Uptime));
+    }
+
+    if (args.ParentName != null)
+    {
+      args.ParentName = args.ParentName.Apply(v => v.StartsWith("cluster-") ? $"{clusterName}-{v}" : v);
     }
 
     return args;

@@ -45,7 +45,7 @@ spec:
             nameOverride: *app
             image:
               repository: ghcr.io/david-driscoll/tailscale-idp
-              tag: v1.84.0@sha256:67a27a8f1f5009f9c774bfc43c457c5dde115d6ad667ae5a0e0f27c7bf5662aa
+              tag: v1.84.0
             env:
               TS_HOSTNAME: idp
               TS_STATE_DIR: /data/tsidp

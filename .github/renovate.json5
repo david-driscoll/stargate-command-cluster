@@ -22,6 +22,7 @@
     "kustomize",
     "custom.regex",
     "flux",
+    "kubernetes",
   ],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],

@@ -40,20 +40,18 @@ var factory = LoggerFactory.Create(configure =>
        );
 
 var localCluster = new Kubernetes(KubernetesClientConfiguration.BuildConfigFromConfigFile("./kubeconfig"));
-var pods = await localCluster.ListPodForAllNamespacesAsync(labelSelector: "app=nameserver");
-var pod = pods.Items.First();
+
+var result = await localCluster.CustomObjects.GetClusterCustomObjectAsync<TailscaleDns>("tailscale.com", "v1alpha1", "dnsconfigs", "ts-dns");
 
 var clusterConfig = await ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml").OfType<YamlMappingNode>().SingleAsync();
 var clusterCname = clusterConfig.Query("/stringData/TAILSCALE_NAMESERVER_IP").OfType<YamlScalarNode>().Single();
 
-if (clusterCname.Value != pod.Status.PodIP)
+if (clusterCname.Value != result.Status.Nameserver.Ip)
 {
-  clusterCname.Value = pod.Status.PodIP;
+  clusterCname.Value = result.Status.Nameserver.Ip;
   await WriteFile("kubernetes/components/common/cluster-secrets.sops.yaml", serializer.Serialize(clusterConfig));
-  AnsiConsole.WriteLine("Updated TAILSCALE_NAMESERVER_IP to {0}", pod.Status.PodIP);
+  AnsiConsole.WriteLine("Updated TAILSCALE_NAMESERVER_IP to {0}", result.Status.Nameserver.Ip);
 }
-
-
 
 static async IAsyncEnumerable<YamlMappingNode> ReadStream(string path)
 {
@@ -90,3 +88,24 @@ static async ValueTask WriteFile(string path, string content)
   }
 }
 
+
+public class TailscaleDns : KubernetesObject, IMetadata<V1ObjectMeta>
+{
+  [JsonPropertyName("metadata")]
+  public V1ObjectMeta Metadata { get; set; }
+
+  [JsonPropertyName("status")]
+  public TailscaleDnsStatus Status { get; set; }
+}
+
+public class TailscaleDnsStatus
+{
+  [JsonPropertyName("nameserver")]
+  public TailscaleDnsStatusNameserver Nameserver { get; set; }
+}
+
+public class TailscaleDnsStatusNameserver
+{
+  [JsonPropertyName("ip")]
+  public string Ip { get; set; }
+}

@@ -35,7 +35,7 @@ public class ClusterApplicationResources : ComponentResource
   }
 
   public ClusterApplicationResources(string name, Args args,
-    ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources", name, args, options)
+    ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources", Mappings.PostfixName(name), args, options)
   {
     var outpostProviders = Output.Create<ImmutableArray<double>>([]);
     var applications = GetApplications(args.RemoteCluster)

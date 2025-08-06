@@ -37,9 +37,8 @@ spec:
           *app :
             image:
               repository: docker.io/garethgeorge/backrest
-              tag: v1.9.0@sha256:c3b56907eb72e03a5ac24cce025eb6953918ab57e0f4c45f095fa7b835e23abf
+              tag: v1.9.0
               pullPolicy: IfNotPresent
-
             env:
               TZ: "${TIMEZONE}"
               BACKREST_DATA: /app/data

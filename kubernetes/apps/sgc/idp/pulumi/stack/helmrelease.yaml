@@ -34,7 +34,7 @@ spec:
     rbac:
       bindings:
         auth-delegator:
-          type: RoleBinding
+          type: ClusterRoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole

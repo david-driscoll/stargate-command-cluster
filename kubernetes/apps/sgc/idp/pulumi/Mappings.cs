@@ -213,7 +213,7 @@ static partial class Mappings
 
 
   public static string ResourceName(ClusterApplicationResources.Args args, ApplicationDefinition resource) =>
-    $"{Prefix(args, resource)}-{resource.Metadata.Name}";
+    PostfixName( $"{Prefix(args, resource)}-{resource.Metadata.Name}");
 
   private static string Prefix(ClusterApplicationResources.Args args, ApplicationDefinition resource) =>
     resource.Namespace() is { } ns && ns == args.ClusterName ? args.ClusterName : $"{args.ClusterName}-{resource.Namespace()}";
@@ -221,4 +221,6 @@ static partial class Mappings
   private static Input<string> MapToStringInput(string value) => value;
   private static Input<bool>? MapToBoolInput(bool? value) => value.HasValue ? (Input<bool>?)value : null;
   private static Input<int>? MapToIntInput(int? value) => value.HasValue ? (Input<int>?)value : null;
+
+  public static string PostfixName(string name) => OperatingSystem.IsLinux() ? name : $"{name}-test";
 }

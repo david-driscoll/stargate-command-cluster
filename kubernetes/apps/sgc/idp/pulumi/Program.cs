@@ -1,88 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using authentik;
 using Dumpify;
 using Humanizer;
 using k8s;
 using k8s.Autorest;
+using k8s.KubeConfigModels;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
-using Rocket.Surgery.OnePasswordNativeUnofficial;
-using KubernetesProvider = Pulumi.Kubernetes.Provider;
+using Pulumi.Kubernetes.Yaml;
 using Pulumi.Uptimekuma;
+using Rocket.Surgery.OnePasswordNativeUnofficial;
+using ClientContext = Pulumi.Output<(k8s.Kubernetes Client, Pulumi.Kubernetes.Provider Provider, string KubeConfig)>;
+using KubernetesProvider = Pulumi.Kubernetes.Provider;
+using ProviderArgs = Pulumi.Kubernetes.ProviderArgs;
 
-//const string rootDomain = "${ROOT_DOMAIN}";
-const string rootDomain = "driscoll.dev"; // For local testing, change this to your actual domain or a test domain.
+KubernetesJson.AddJsonOptions(options =>
+{
+  options.Converters.Add(new YamlMemberConverterFactory());
+});
 return await Deployment.RunAsync(async () =>
 {
   // Add your resources here
   // e.g. var resource = new Resource("name", new ResourceArgs { });
+  static ClientContext CreateClientFromConfig(Pulumi.Config config,
+    string key, string? context = null)
+  {
+    var kubeConfig = config.GetSecret(key);
+    return kubeConfig == null ? throw new ArgumentException($"Kubeconfig for {key} not found in Pulumi config.") : CreateClientAndProvider(kubeConfig, key.Replace(":", "_"), context);
+  }
 
-  var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-${CLUSTER_CNAME}-kubeconfig");
-  var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile("/config/${APP}-equestria-kubeconfig");
-  // var sgcConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@sgc");
-  // var equestriaConfig = KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: "admin@equestria");
-  var secrets = new Pulumi.Config();
+  static ClientContext CreateClientAndProvider(Input<string> kubeConfig, string name, string? context = null)
+  {
+    return kubeConfig.Apply(kubeConfig =>
+    {
+      using var stream = new MemoryStream(Encoding.ASCII.GetBytes(kubeConfig));
+      var config = KubernetesClientConfiguration.LoadKubeConfig(stream);
+      var clientConfig = KubernetesClientConfiguration.BuildConfigFromConfigObject(config);
+      var client = new Kubernetes(clientConfig);
+      ProviderArgs args = new()
+      {
+        KubeConfig = kubeConfig,
+        Context = context ?? config.CurrentContext,
+      };
+      var provider = new KubernetesProvider(name, args);
+      if (context != null)
+      {
+        config.CurrentContext = context;
+      }
+
+      var json = KubernetesJson.Serialize(config);
+      return (client, provider, json);
+    });
+  }
+  ClientContext sgc, equestria;
+  string postfix;
+  if (OperatingSystem.IsLinux())
+  {
+    var secrets = new Pulumi.Config();
+    postfix = "";
+    sgc = CreateClientFromConfig(secrets, "app:cluster_sgc");
+    equestria = CreateClientFromConfig(secrets, "app:cluster_equestria");
+  }
+  else
+  {
+    postfix = "-test";
+    var kubeConfig = File.ReadAllText(KubernetesClientConfiguration.KubeConfigDefaultLocation);
+    sgc = CreateClientAndProvider(kubeConfig, "sgc", "admin@sgc");
+    equestria = CreateClientAndProvider(kubeConfig, "equestria", "admin@equestria");
+  }
 
   var groups = new AuthentikGroups();
-
-  var sgcClient = new Kubernetes(sgcConfig);
-  var equestriaClient = new Kubernetes(equestriaConfig);
+  CreateApplicationResources(sgc, sgc, "sgc", "Stargate Command");
+  CreateApplicationResources(sgc, equestria, "equestria", "Equestria");
 
   // tailscale dns needs to be fixed
-  // var tailscaleSource = new SourceOauth("tailscale", new()
-  // {
-  //   Name = "Tailscale",
-  //   Slug = "tailscale",
-  //   ProviderType = "openidconnect",
-  //   Enabled = true,
-  //   AuthenticationFlow = null,
-  //   EnrollmentFlow = null,
-  //
-  //   OidcWellKnownUrl = "https://idp.opossum-yo.ts.net/.well-known/openid-configuration",
-  //   ConsumerKey = "unused",
-  //   ConsumerSecret = "unused",
-  //   UserMatchingMode = "email_link",
-  //   GroupMatchingMode = "name_link",
-  // });
+  var tailscaleSource = new SourceOauth("tailscale", new()
+  {
+    Name = "Tailscale",
+    Slug = "tailscale",
+    ProviderType = "openidconnect",
+    Enabled = true,
+    AuthenticationFlow = null,
+    EnrollmentFlow = null,
 
-  var sgcResources = new ClusterApplicationResources("sgc", new()
-  {
-    ClusterName = "sgc",
-    ClusterTitle = "Stargate Command",
-    UptimeCluster = sgcClient,
-    RemoteCluster = sgcClient,
-    InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
-    AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
-    // AuthenticationFlow = ,
-    ServiceConnection = new ServiceConnectionKubernetes("sgc", new()
-    {
-      Name = "Stargate Command",
-      VerifySsl = true,
-      Local = true,
-    })
+    OidcWellKnownUrl = "https://idp.opossum-yo.ts.net/.well-known/openid-configuration",
+    ConsumerKey = "unused",
+    ConsumerSecret = "unused",
+    UserMatchingMode = "email_link",
+    GroupMatchingMode = "name_link",
   });
-  var equestriaResources = new ClusterApplicationResources("equestria", new()
+
+  static ClusterApplicationResources CreateApplicationResources(ClientContext uptimeCluster, ClientContext remoteCluster, string clusterName, string clusterTitle)
   {
-    ClusterName = "equestria",
-    ClusterTitle = "Equestria",
-    UptimeCluster = sgcClient,
-    RemoteCluster = equestriaClient,
-    InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
-    AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
-    // AuthenticationFlow = ,
-    ServiceConnection = new ServiceConnectionKubernetes("equestria", new()
+    clusterName = Mappings.PostfixName(clusterName);
+    clusterTitle = Mappings.PostfixName(clusterTitle);
+    return new ClusterApplicationResources(clusterName, new()
     {
-      Name = "Equestria",
-      VerifySsl = true,
-      Kubeconfig = LoadKubeConfigFromPulumiConfig(secrets, "cluster_equestria")
-        .Apply(kubeconfig => kubeconfig),
-    })
-  });
+      ClusterName = clusterName,
+      ClusterTitle = clusterTitle,
+      UptimeCluster = uptimeCluster.Apply(z => (z.Client, z.Provider)),
+      RemoteCluster = remoteCluster.Apply(z => (z.Client, z.Provider)),
+      InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
+      AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
+      // AuthenticationFlow = ,
+      ServiceConnection = new ServiceConnectionKubernetes(clusterName, new()
+      {
+        Name = clusterTitle,
+        VerifySsl = true,
+        Local = true,
+      })
+    });
+  }
 
   // TODO: Create users?
 

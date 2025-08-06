@@ -18,6 +18,7 @@ using Pulumi.Authentik;
 using Pulumi.Kubernetes;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
+using Provider = Pulumi.Kubernetes.Provider;
 
 public class ClusterApplicationResources : ComponentResource
 {
@@ -25,8 +26,8 @@ public class ClusterApplicationResources : ComponentResource
   {
     public required string ClusterName { get; init; }
     public required string ClusterTitle { get; init; }
-    public required Kubernetes RemoteCluster { get; init; }
-    public required Kubernetes UptimeCluster { get; init; }
+    public required Input<(Kubernetes Client, Pulumi.Kubernetes.Provider Provider)> RemoteCluster { get; init; }
+    public required Input<(Kubernetes Client, Pulumi.Kubernetes.Provider Provider)> UptimeCluster { get; init; }
     public required ServiceConnectionKubernetes ServiceConnection { get; init; }
     public required Input<string> AuthorizationFlow { get; set; }
     public Input<string>? AuthenticationFlow { get; set; }
@@ -37,10 +38,11 @@ public class ClusterApplicationResources : ComponentResource
     ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources", name, args, options)
   {
     var outpostProviders = Output.Create<ImmutableArray<double>>([]);
-    var applications = Output.Create(GetApplications(args.RemoteCluster))
-      .Apply(async applications =>
+    var applications = GetApplications(args.RemoteCluster)
+      .Apply(data =>
       {
-        await foreach (var app in applications)
+        var (kubernetesProvider, applications) = data;
+        foreach (var app in applications)
         {
           var spec = app.Spec;
           if (spec is { Authentik: { } authentik })
@@ -50,11 +52,10 @@ public class ClusterApplicationResources : ComponentResource
               .Apply(a => a.Item2.HasValue ? a.Item1.Add(a.Item2.Value) : a.Item1);
           }
 
-          if (app.Spec.Uptime is { } uptime)
+          if (app.Spec.Uptime is { } )
           {
             var resourceName = Mappings.ResourceName(args, app);
-            // var monitor = new Monitor(Mappings.ResourceName(clusterName, app), Mappings.MapMonitorArgs(app));
-            var resource = new KumaUptimeResourceArgs()
+            _ = new CustomResource(resourceName, new KumaUptimeResourceArgs()
             {
               Metadata = new ObjectMetaArgs()
               {
@@ -66,9 +67,7 @@ public class ClusterApplicationResources : ComponentResource
                 }
               },
               Spec = new KumaUptimeResourceSpecArgs { Config = Mappings.MapMonitor(args.ClusterName, app) }
-            };
-
-            _ = new CustomResource(resourceName, resource, new CustomResourceOptions() { Parent = this });
+            }, new CustomResourceOptions() { Parent = this, Provider = kubernetesProvider  });
           }
         }
 
@@ -81,11 +80,12 @@ public class ClusterApplicationResources : ComponentResource
       outpostProviders.Dump();
       if (outpostProviders.Any())
       {
-        var outpost = new Outpost($"ak-outpost-{args.ClusterName}", new()
+        var outpostName = Mappings.PostfixName($"ak-outpost-{args.ClusterName}");
+        var outpost = new Outpost(outpostName, new()
         {
           ServiceConnection = args.ServiceConnection.Id,
           Type = "proxy",
-          Name = $"Outpost for {args.ClusterTitle}",
+          Name = $"Outpost for {Mappings.PostfixName(args.ClusterTitle)}",
           Config = Output.JsonSerialize(Output.Create(new
           {
             object_naming_template = $"ak-outpost-{args.ClusterName}",
@@ -101,133 +101,141 @@ public class ClusterApplicationResources : ComponentResource
     });
   }
 
-  static async IAsyncEnumerable<ApplicationDefinition> GetApplications(Kubernetes clusterClient)
+  static Output<(Provider Provider, ImmutableList<ApplicationDefinition> Applications)> GetApplications(Input<(Kubernetes Client, Provider Provider)> input)
   {
-    var namespaces = await clusterClient.ListNamespaceAsync();
-
-    foreach (var ns in namespaces.Items)
+    var client = input.Apply(z => z.Client);
+    return input.Apply(async x =>
     {
-      var result = await clusterClient.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>(
-        "driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions");
-      foreach (var definition in result.Items)
+      var (clusterClient, provider) = x;
+
+      var namespaces = await clusterClient.ListNamespaceAsync();
+      var builder = ImmutableList.CreateBuilder<ApplicationDefinition>();
+
+      foreach (var ns in namespaces.Items)
       {
-        var spec = definition.Spec;
-        if (spec is { AuthentikFrom: { } authentikFrom })
+        var result = await clusterClient.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>(
+          "driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions");
+        foreach (var definition in result.Items)
         {
-          IDictionary<string, string> data;
-          if (definition.Spec.AuthentikFrom is { Type: "configMap", Name: var configMapName })
+          var spec = definition.Spec;
+          if (spec is { AuthentikFrom: { } authentikFrom })
           {
-            var configMap =
-              await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-            data = configMap.Data;
-          }
-          else if (definition.Spec.AuthentikFrom is { Type: "secret", Name: var secretName })
-          {
-            var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
-            data = secret.Data.ToDictionary(kvp => kvp.Key,
-              kvp => System.Text.Encoding.UTF8.GetString(kvp.Value));
-          }
-          else
-          {
-            throw new ArgumentException($"Unknown AuthentikFrom type: {authentikFrom.Type}");
-          }
-
-          var authentikSpec = JsonSerializer.Deserialize<AuthentikSpec>(JsonSerializer.Serialize(data));
-
-          ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
-          {
-            "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = Mappings.MapToSaml(authentikSpec) },
-            "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = Mappings.MapToOauth2(authentikSpec) },
-            "scim" => new ApplicationDefinitionAuthentik { ProviderScim = Mappings.MapToScim(authentikSpec) },
-            "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = Mappings.MapToSsf(authentikSpec) },
-            "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = Mappings.MapToProxy(authentikSpec) },
-            "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = Mappings.MapToRadius(authentikSpec) },
-            "rac" => new ApplicationDefinitionAuthentik { ProviderRac = Mappings.MapToRac(authentikSpec) },
-            "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = Mappings.MapToLdap(authentikSpec) },
-            "microsoftEntra" => new ApplicationDefinitionAuthentik
-              { ProviderMicrosoftEntra = Mappings.MapToMicrosoftEntra(authentikSpec) },
-            "googleWorkspace" => new ApplicationDefinitionAuthentik
+            IDictionary<string, string> data;
+            if (definition.Spec.AuthentikFrom is { Type: "configMap", Name: var configMapName })
             {
-              ProviderGoogleWorkspace = Mappings.MapToGoogleWorkspace(authentikSpec)
-            },
-            _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
-              nameof(authentikSpec))
-          };
-          spec = spec with { Authentik = authentik };
-        }
-
-        if (spec is { UptimeFrom: { } uptimeFrom })
-        {
-          if (uptimeFrom is { Type: "configMap", Name: var configMapName })
-          {
-            var configMap =
-              await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-            spec = spec with { Uptime = Mappings.MapFromConfigMap(configMap) };
-          }
-          else if (uptimeFrom is { Type: "secret", Name: var secretName })
-          {
-            var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
-            spec = spec with
+              var configMap =
+                await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
+              data = configMap.Data;
+            }
+            else if (definition.Spec.AuthentikFrom is { Type: "secret", Name: var secretName })
             {
-              Uptime = Mappings.MapFromSecret(secret)
+              var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
+              data = secret.Data.ToDictionary(kvp => kvp.Key,
+                kvp => System.Text.Encoding.UTF8.GetString(kvp.Value));
+            }
+            else
+            {
+              throw new ArgumentException($"Unknown AuthentikFrom type: {authentikFrom.Type}");
+            }
+
+            var authentikSpec = JsonSerializer.Deserialize<AuthentikSpec>(JsonSerializer.Serialize(data));
+
+            ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
+            {
+              "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = Mappings.MapToSaml(authentikSpec) },
+              "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = Mappings.MapToOauth2(authentikSpec) },
+              "scim" => new ApplicationDefinitionAuthentik { ProviderScim = Mappings.MapToScim(authentikSpec) },
+              "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = Mappings.MapToSsf(authentikSpec) },
+              "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = Mappings.MapToProxy(authentikSpec) },
+              "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = Mappings.MapToRadius(authentikSpec) },
+              "rac" => new ApplicationDefinitionAuthentik { ProviderRac = Mappings.MapToRac(authentikSpec) },
+              "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = Mappings.MapToLdap(authentikSpec) },
+              "microsoftEntra" => new ApplicationDefinitionAuthentik
+                { ProviderMicrosoftEntra = Mappings.MapToMicrosoftEntra(authentikSpec) },
+              "googleWorkspace" => new ApplicationDefinitionAuthentik
+              {
+                ProviderGoogleWorkspace = Mappings.MapToGoogleWorkspace(authentikSpec)
+              },
+              _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
+                nameof(authentikSpec))
             };
+            spec = spec with { Authentik = authentik };
           }
-          else
-          {
-            throw new ArgumentException($"Unknown UptimeFrom type: {uptimeFrom.Type}");
-          }
-        }
 
-        definition.Spec = spec;
-        yield return definition;
+          if (spec is { UptimeFrom: { } uptimeFrom })
+          {
+            if (uptimeFrom is { Type: "configMap", Name: var configMapName })
+            {
+              var configMap =
+                await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
+              spec = spec with { Uptime = Mappings.MapFromConfigMap(configMap) };
+            }
+            else if (uptimeFrom is { Type: "secret", Name: var secretName })
+            {
+              var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
+              spec = spec with
+              {
+                Uptime = Mappings.MapFromSecret(secret)
+              };
+            }
+            else
+            {
+              throw new ArgumentException($"Unknown UptimeFrom type: {uptimeFrom.Type}");
+            }
+          }
+
+          definition.Spec = spec;
+          builder.Add(definition);
+        }
       }
-    }
+      return (provider, builder.ToImmutableList());
+    });
   }
 
-  Application CreateAuthentikApplication(Args args,
-    ApplicationDefinition definition, ApplicationDefinitionAuthentik authentik)
+  Application CreateAuthentikApplication(Args args, ApplicationDefinition definition, ApplicationDefinitionAuthentik authentik)
   {
-    var slug = definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}";
+    var slug = Mappings.PostfixName(definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}");
     var resourceName = Mappings.ResourceName(args, definition);
-    Pulumi.CustomResource provider = authentik switch
+    var options = new CustomResourceOptions() { Parent = this };
+    Pulumi.CustomResource authentikProvider = authentik switch
     {
       { ProviderProxy: { } proxy } => new ProviderProxy(resourceName,
         Mappings.CreateProvider(proxy, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderOauth2: { } oauth2 } => new ProviderOauth2(resourceName,
         Mappings.CreateProvider(oauth2, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderLdap: { } ldap } => new ProviderLdap(resourceName,
         Mappings.CreateProvider(ldap, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderSaml: { } saml } => new ProviderSaml(resourceName,
         Mappings.CreateProvider(saml, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderRac: { } rac } => new ProviderRac(resourceName,
         Mappings.CreateProvider(rac, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderRadius: { } radius } => new ProviderRadius(resourceName,
         Mappings.CreateProvider(radius, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderSsf: { } ssf } => new ProviderSsf(resourceName,
         Mappings.CreateProvider(ssf, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderScim: { } scim } => new ProviderScim(resourceName,
         Mappings.CreateProvider(scim, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderMicrosoftEntra: { } microsoftEntra } => new ProviderMicrosoftEntra(resourceName,
         Mappings.CreateProvider(microsoftEntra, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        new CustomResourceOptions() { Parent = this }),
+        options),
       { ProviderGoogleWorkspace: { } googleWorkspace } => new ProviderGoogleWorkspace(resourceName,
         Mappings.CreateProvider(googleWorkspace, args.AuthorizationFlow, args.InvalidationFlow,
-          args.AuthenticationFlow), new CustomResourceOptions() { Parent = this }),
+          args.AuthenticationFlow), options),
       _ => throw new ArgumentException("Unknown authentik provider type", nameof(authentik))
     };
 
     return new Application(resourceName, new()
     {
       // ApplicationId = ,
-      ProtocolProvider = provider.Id.Apply(double.Parse),
+      ProtocolProvider = authentikProvider.Id.Apply(double.Parse),
       Name = definition.Spec.Name,
       Slug = slug,
       Group = definition.Spec.Category,

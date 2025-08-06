@@ -7,4 +7,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://pkgs.tailscale.com/helmcharts
+  url: https://pkgs.tailscale.com/helmcharts/

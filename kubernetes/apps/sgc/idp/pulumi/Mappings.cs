@@ -19,10 +19,14 @@ static partial class Mappings
     return MapFromDataInternal(configMap.Data);
   }
 
-  public static KumaUptimeResourceConfigArgs MapMonitor(string clusterName, ApplicationDefinition definition)
+  public static KumaUptimeResourceConfigArgs MapMonitor(ApplicationDefinition definition)
   {
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
-    var args = new KumaUptimeResourceConfigArgs();
+    var args = new KumaUptimeResourceConfigArgs()
+    {
+      Name = definition.Spec.Name,
+      Active = true,
+    };
     switch (definition.Spec.Uptime)
     {
       case { Dns: { } dns }:

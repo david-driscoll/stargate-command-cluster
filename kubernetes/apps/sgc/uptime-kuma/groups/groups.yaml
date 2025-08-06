@@ -6,8 +6,11 @@ metadata:
   name: apps
 spec:
   config:
-    name: Applications
     type: group
+    name: Applications
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
@@ -17,8 +20,11 @@ metadata:
   name: system
 spec:
   config:
-    name: System
     type: group
+    name: System
+    interval: 300
+    retry_interval: 60
+    max_retries: 3
 
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json

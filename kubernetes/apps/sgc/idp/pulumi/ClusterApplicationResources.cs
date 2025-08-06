@@ -66,7 +66,7 @@ public class ClusterApplicationResources : ComponentResource
                   ["driscoll.dev/cluster"] = args.ClusterName
                 }
               },
-              Spec = new KumaUptimeResourceSpecArgs { Config = Mappings.MapMonitor(args.ClusterName, app) }
+              Spec = new KumaUptimeResourceSpecArgs { Config = Mappings.MapMonitor(app) }
             }, new CustomResourceOptions() { Parent = this, Provider = kubernetesProvider  });
           }
         }

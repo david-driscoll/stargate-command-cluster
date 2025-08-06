@@ -6,6 +6,7 @@ namespace authentik.Models;
 class KumaUptimeResourceConfigArgs : ResourceArgs
 {
   [Input("type")] public Input<string>? Type { get; set; }
+  [Input("name")] public required Input<string> Name { get; set; }
   [Input("url")] public Input<string>? Url { get; set; }
 
   [Input("method")] public Input<string>? Method { get; set; }
@@ -14,12 +15,12 @@ class KumaUptimeResourceConfigArgs : ResourceArgs
   [Input("active")] public Input<bool>? Active { get; set; }
   [Input("interval")] public Input<int>? Interval { get; set; }
   [Input("max_redirects")] public Input<int>? MaxRedirects { get; set; }
-  [Input("max_retries")] public Input<int>? MaxRetries { get; set; }
+  [Input("max_retries")] public Input<int>? MaxRetries { get; set; } = 3;
   [Input("parent_name")] public Input<string>? ParentName { get; set; }
   [Input("proxy_id")] public Input<string>? ProxyId { get; set; }
-  [Input("resend_interval")] public Input<int>? ResendInterval { get; set; }
-  [Input("retry_interval")] public Input<int>? RetryInterval { get; set; }
-  [Input("timeout")] public Input<int>? Timeout { get; set; }
+  [Input("resend_interval")] public Input<int>? ResendInterval { get; set; } = 60;
+  [Input("retry_interval")] public Input<int>? RetryInterval { get; set; } = 120;
+  [Input("timeout")] public Input<int>? Timeout { get; set; } = 60;
   [Input("upside_down")] public Input<bool>? UpsideDown { get; set; }
   [Input("tls_ca")] public Input<string>? TlsCa { get; set; }
   [Input("tls_cert")] public Input<string>? TlsCert { get; set; }

@@ -66,4 +66,4 @@ spec:
         key: url
   workspaceTemplate:
     spec:
-      image: pulumi/pulumi-dotnet:3.187.0-debian
+      image: pulumi/pulumi-dotnet:3.187.0-debian@sha256:02b45284dbc18eac45f601b90adcd6c72dc0e4dfe7a48f4ebebaaadb3a70553e

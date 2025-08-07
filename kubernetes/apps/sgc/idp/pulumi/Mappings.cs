@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using authentik.Models;
+using k8s;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
@@ -14,11 +15,6 @@ using Riok.Mapperly.Abstractions;
 [Mapper(AllowNullPropertyAssignment = false)]
 static partial class Mappings
 {
-  public static ApplicationDefinitionUptime MapFromConfigMap(V1ConfigMap configMap)
-  {
-    return MapFromDataInternal(configMap.Data);
-  }
-
   public static KumaUptimeResourceConfigArgs MapMonitor(string clusterName, ApplicationDefinition definition)
   {
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
@@ -99,11 +95,6 @@ static partial class Mappings
         throw new ArgumentOutOfRangeException(nameof(definition.Spec.Uptime));
     }
 
-    if (args.ParentName != null)
-    {
-      args.ParentName = args.ParentName.Apply(v => v.StartsWith("cluster-") ? $"{clusterName}-{v}" : v);
-    }
-
     return args;
   }
 
@@ -172,50 +163,45 @@ static partial class Mappings
   public static partial ProviderGoogleWorkspaceArgs CreateProvider(AuthentikProviderGoogleWorkspace instance,
     Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static ApplicationDefinitionUptime MapFromSecret(V1Secret secret)
+  public static ApplicationDefinitionUptime MapFromUptimeData(IDictionary<string, string> data)
   {
-    return MapFromDataInternal(secret.Data.ToDictionary(z => z.Key, z => Encoding.UTF8.GetString(z.Value)));
-  }
-
-  private static ApplicationDefinitionUptime MapFromDataInternal(IDictionary<string, string> data)
-  {
-    var jsonData = JsonSerializer.Serialize(data);
+    var jsonData = KubernetesJson.Serialize(data);
     return data["type"] switch
     {
-      "http" => new ApplicationDefinitionUptime() { Http = JsonSerializer.Deserialize<HttpUptime>(jsonData), },
-      "ping" => new ApplicationDefinitionUptime() { Ping = JsonSerializer.Deserialize<PingUptime>(jsonData), },
+      "http" => new ApplicationDefinitionUptime() { Http = KubernetesJson.Deserialize<HttpUptime>(jsonData), },
+      "ping" => new ApplicationDefinitionUptime() { Ping = KubernetesJson.Deserialize<PingUptime>(jsonData), },
       "docker" => new ApplicationDefinitionUptime()
-        { Docker = JsonSerializer.Deserialize<DockerUptime>(jsonData), },
-      "dns" => new ApplicationDefinitionUptime() { Dns = JsonSerializer.Deserialize<DnsUptime>(jsonData), },
+        { Docker = KubernetesJson.Deserialize<DockerUptime>(jsonData), },
+      "dns" => new ApplicationDefinitionUptime() { Dns = KubernetesJson.Deserialize<DnsUptime>(jsonData), },
       "gamedig" => new ApplicationDefinitionUptime()
-        { Gamedig = JsonSerializer.Deserialize<GamedigUptime>(jsonData), },
-      "group" => new ApplicationDefinitionUptime() { Group = JsonSerializer.Deserialize<GroupUptime>(jsonData), },
+        { Gamedig = KubernetesJson.Deserialize<GamedigUptime>(jsonData), },
+      "group" => new ApplicationDefinitionUptime() { Group = KubernetesJson.Deserialize<GroupUptime>(jsonData), },
       "grpc-keyword" => new ApplicationDefinitionUptime()
-        { GrpcKeyword = JsonSerializer.Deserialize<GrpcKeywordUptime>(jsonData), },
+        { GrpcKeyword = KubernetesJson.Deserialize<GrpcKeywordUptime>(jsonData), },
       "json-query" => new ApplicationDefinitionUptime()
-        { JsonQuery = JsonSerializer.Deserialize<JsonQueryUptime>(jsonData), },
+        { JsonQuery = KubernetesJson.Deserialize<JsonQueryUptime>(jsonData), },
       "kafka-producer" => new ApplicationDefinitionUptime()
-        { KafkaProducer = JsonSerializer.Deserialize<KafkaProducerUptime>(jsonData), },
+        { KafkaProducer = KubernetesJson.Deserialize<KafkaProducerUptime>(jsonData), },
       "keyword" => new ApplicationDefinitionUptime()
-        { Keyword = JsonSerializer.Deserialize<KeywordUptime>(jsonData), },
+        { Keyword = KubernetesJson.Deserialize<KeywordUptime>(jsonData), },
       "mongodb" => new ApplicationDefinitionUptime()
-        { MongoDb = JsonSerializer.Deserialize<MongoDbUptime>(jsonData), },
-      "mqtt" => new ApplicationDefinitionUptime() { Mqtt = JsonSerializer.Deserialize<MqttUptime>(jsonData), },
-      "mysql" => new ApplicationDefinitionUptime() { Mysql = JsonSerializer.Deserialize<MysqlUptime>(jsonData), },
-      "port" => new ApplicationDefinitionUptime() { Port = JsonSerializer.Deserialize<PortUptime>(jsonData), },
+        { MongoDb = KubernetesJson.Deserialize<MongoDbUptime>(jsonData), },
+      "mqtt" => new ApplicationDefinitionUptime() { Mqtt = KubernetesJson.Deserialize<MqttUptime>(jsonData), },
+      "mysql" => new ApplicationDefinitionUptime() { Mysql = KubernetesJson.Deserialize<MysqlUptime>(jsonData), },
+      "port" => new ApplicationDefinitionUptime() { Port = KubernetesJson.Deserialize<PortUptime>(jsonData), },
       "postgres" => new ApplicationDefinitionUptime()
-        { Postgres = JsonSerializer.Deserialize<PostgresUptime>(jsonData), },
-      "push" => new ApplicationDefinitionUptime() { Push = JsonSerializer.Deserialize<PushUptime>(jsonData), },
+        { Postgres = KubernetesJson.Deserialize<PostgresUptime>(jsonData), },
+      "push" => new ApplicationDefinitionUptime() { Push = KubernetesJson.Deserialize<PushUptime>(jsonData), },
       "radius" => new ApplicationDefinitionUptime()
-        { Radius = JsonSerializer.Deserialize<RadiusUptime>(jsonData), },
+        { Radius = KubernetesJson.Deserialize<RadiusUptime>(jsonData), },
       "real-browser" => new ApplicationDefinitionUptime()
-        { RealBrowser = JsonSerializer.Deserialize<RealBrowserUptime>(jsonData), },
-      "redis" => new ApplicationDefinitionUptime() { Redis = JsonSerializer.Deserialize<RedisUptime>(jsonData), },
-      "steam" => new ApplicationDefinitionUptime() { Steam = JsonSerializer.Deserialize<SteamUptime>(jsonData), },
+        { RealBrowser = KubernetesJson.Deserialize<RealBrowserUptime>(jsonData), },
+      "redis" => new ApplicationDefinitionUptime() { Redis = KubernetesJson.Deserialize<RedisUptime>(jsonData), },
+      "steam" => new ApplicationDefinitionUptime() { Steam = KubernetesJson.Deserialize<SteamUptime>(jsonData), },
       "sqlserver" => new ApplicationDefinitionUptime()
-        { SqlServer = JsonSerializer.Deserialize<SqlServerUptime>(jsonData), },
+        { SqlServer = KubernetesJson.Deserialize<SqlServerUptime>(jsonData), },
       "tailscale-ping" => new ApplicationDefinitionUptime()
-        { TailscalePing = JsonSerializer.Deserialize<TailscalePingUptime>(jsonData), },
+        { TailscalePing = KubernetesJson.Deserialize<TailscalePingUptime>(jsonData), },
       _ => throw new ArgumentOutOfRangeException()
     };
   }

@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Dumpify;
 using Humanizer;
 using k8s.KubeConfigModels;
 using YamlDotNet.Serialization;
@@ -34,12 +37,48 @@ public class YamlMemberConverterFactory : JsonConverterFactory
       var config = new T();
       while (reader.Read())
       {
+        if (reader.TokenType == JsonTokenType.EndObject) break;
         if (reader.TokenType != JsonTokenType.PropertyName) continue;
         var propertyName = reader.GetString();
-        if (properties.TryGetValue(propertyName, out var property))
+        if (propertyName is null || !properties.TryGetValue(propertyName, out var property)) continue;
+        if (property.PropertyType == typeof(ImmutableList<string>))
         {
-          property.SetValue(config, JsonSerializer.Deserialize(ref reader, property.PropertyType, options));
+          reader.Read();
+          if (reader.TokenType == JsonTokenType.StartArray && property.CanWrite)
+          {
+            var results = JsonSerializer.Deserialize<ImmutableList<string>>(ref reader, options);
+            property.SetValue(config, results);
+          }
+
+          if (reader.TokenType == JsonTokenType.String && property.CanWrite)
+          {
+            property.SetValue(config,
+              reader.GetString().Split(',', StringSplitOptions.RemoveEmptyEntries).ToImmutableList());
+          }
+
+          continue;
         }
+
+        if (property.PropertyType == typeof(ImmutableArray<string>))
+        {
+          reader.Read();
+          if (reader.TokenType == JsonTokenType.StartArray && property.CanWrite)
+          {
+            var results = JsonSerializer.Deserialize<ImmutableArray<string>>(ref reader, options);
+            property.SetValue(config, results);
+          }
+
+          if (reader.TokenType == JsonTokenType.String && property.CanWrite)
+          {
+            property.SetValue(config,
+              reader.GetString().Split(',', StringSplitOptions.RemoveEmptyEntries).ToImmutableArray());
+          }
+
+          continue;
+        }
+
+        if (property.CanWrite)
+        property.SetValue(config, JsonSerializer.Deserialize(ref reader, property.PropertyType, options));
       }
 
       return config;
@@ -53,7 +92,14 @@ public class YamlMemberConverterFactory : JsonConverterFactory
         if (property.GetValue(value) is not { } propertyValue) continue;
         var propertyName = properties.Single(z => z.Value == property).Key;
         writer.WritePropertyName(propertyName);
-        JsonSerializer.Serialize(writer, propertyValue, property.PropertyType, options);
+        if (value is IEnumerable<string> v)
+        {
+          writer.WriteStringValue(string.Join(",", v));
+        }
+        else
+        {
+          JsonSerializer.Serialize(writer, propertyValue, property.PropertyType, options);
+        }
       }
 
       writer.WriteEndObject();

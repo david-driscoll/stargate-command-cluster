@@ -1,12 +1,20 @@
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
+using YamlDotNet.Serialization;
 
 namespace authentik.Models;
 
-public record SteamUptime : UptimeBase
+public class SteamUptime : UptimeBase
 {
   public override string Type { get; } = "steam";
-  public string Hostname { get; init; }
+  [YamlMember(Alias = "hostname")]
+  [JsonPropertyName("hostname")]
+  public string Hostname { get; set; }
+  [YamlMember(Alias = "port")]
+  [JsonPropertyName("port")]
   public int? Port { get; init; }
-  public ImmutableArray<string> AcceptedStatuscodes { get; init; } = ImmutableArray<string>.Empty;
+  [YamlMember(Alias = "accepted_statuscodes")]
+  [JsonPropertyName("accepted_statuscodes")]
+  public ImmutableList<string>? AcceptedStatusCodes { get; set; }
 
 }

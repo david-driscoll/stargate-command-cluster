@@ -1,12 +1,36 @@
+using System.Text.Json.Serialization;
+using YamlDotNet.Serialization;
+
 namespace authentik.Models;
 
-public abstract record UptimeBase
+public abstract class UptimeBase
 {
+  [YamlMember(Alias = "type")]
+  [JsonPropertyName("type")]
   public abstract string Type { get; }
-  public bool Active { get; init; } = true;
-  public int? Interval { get; init; } = 5 * 60;
-  public int? MaxRetries { get; init; } = 3;
-  public string? ParentName { get; init; }
-  public int? RetryInterval { get; init; } = 60;
-  public bool UpsideDown { get; init; }
+
+  [YamlMember(Alias = "active")]
+  [JsonPropertyName("active")]
+  public bool? Active { get; set; } = true;
+
+  [YamlMember(Alias = "interval")]
+  [JsonPropertyName("interval")]
+  public int? Interval { get; set; } = 300;
+
+  [YamlMember(Alias = "max_retries")]
+  [JsonPropertyName("max_retries")]
+  public int? MaxRetries { get; set; } = 3;
+
+  [YamlMember(Alias = "parent_name")]
+  [JsonPropertyName("parent_name")]
+  public string? ParentName { get; set; }
+
+  [YamlMember(Alias = "retry_interval")]
+  [JsonPropertyName("retry_interval")]
+  public int? RetryInterval { get; set; } = 60;
+
+
+  [YamlMember(Alias = "upside_down")]
+  [JsonPropertyName("upside_down")]
+  public bool UpsideDown { get; set; }
 }

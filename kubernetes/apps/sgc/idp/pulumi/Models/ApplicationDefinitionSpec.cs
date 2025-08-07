@@ -4,21 +4,21 @@ namespace authentik.Models;
 
 public record ApplicationDefinitionSpec
 {
-  [JsonPropertyName("name")] public string Name { get; init; }
+  [JsonPropertyName("name")] public string Name { get; set; }
 
-  [JsonPropertyName("slug")] public string? Slug { get; init; }
-  [JsonPropertyName("icon")] public string? Icon { get; init; }
-  [JsonPropertyName("url")] public string? Url { get; init; }
+  [JsonPropertyName("slug")] public string? Slug { get; set; }
+  [JsonPropertyName("icon")] public string? Icon { get; set; }
+  [JsonPropertyName("url")] public string? Url { get; set; }
 
-  [JsonPropertyName("description")] public string? Description { get; init; }
+  [JsonPropertyName("description")] public string? Description { get; set; }
 
-  [JsonPropertyName("category")] public string Category { get; init; }
+  [JsonPropertyName("category")] public string Category { get; set; }
 
-  [JsonPropertyName("uptime")] public ApplicationDefinitionUptime? Uptime { get; init; }
+  [JsonPropertyName("uptime")] public ApplicationDefinitionUptime? Uptime { get; set; }
 
-  [JsonPropertyName("uptimeFrom")] public UptimeFrom? UptimeFrom { get; init; }
+  [JsonPropertyName("uptimeFrom")] public UptimeFrom? UptimeFrom { get; set; }
 
-  [JsonPropertyName("authentik")] public ApplicationDefinitionAuthentik? Authentik { get; init; }
+  [JsonPropertyName("authentik")] public ApplicationDefinitionAuthentik? Authentik { get; set; }
 
   [JsonPropertyName("authentikFrom")] public AuthentikFrom? AuthentikFrom { get; init; }
 }

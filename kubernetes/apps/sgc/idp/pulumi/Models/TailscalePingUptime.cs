@@ -1,11 +1,17 @@
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
+using YamlDotNet.Serialization;
 
 namespace authentik.Models;
 
-public record TailscalePingUptime : UptimeBase
+public class TailscalePingUptime : UptimeBase
 {
   public override string Type { get; } = "tailscale-ping";
-  public string Hostname { get; init; }
-  public ImmutableArray<string> AcceptedStatuscodes { get; init; } = ImmutableArray<string>.Empty;
+  [YamlMember(Alias = "hostname")]
+  [JsonPropertyName("hostname")]
+  public string Hostname { get; set; }
+  [YamlMember(Alias = "accepted_statuscodes")]
+  [JsonPropertyName("accepted_statuscodes")]
+  public ImmutableList<string>? AcceptedStatusCodes { get; set; }
 
 }

@@ -12,6 +12,8 @@ metadata:
     tailscale.com/expose: "true"
     tailscale.com/hostname: "${TAILSCALE_HOST:=${APP}}"
     tailscale.com/tailnet-ip: "${TAILSCALE_IP}"
+    tailscale.com/proxy-group: ingress-proxies
+    tailscale.com/tags: "tag:internal-apps"
 spec:
   entryPoints:
   - websecure

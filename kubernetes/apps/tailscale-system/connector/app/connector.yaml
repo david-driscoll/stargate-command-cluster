@@ -5,7 +5,7 @@ metadata:
   name: "${CLUSTER_CNAME}"
 spec:
   exitNode: true
-  hostname: "${CLUSTER_CNAME}"
+  hostname: "${CLUSTER_CNAME}-connector"
   subnetRouter:
     advertiseRoutes:
       - "${INTERNAL_NETWORK}"

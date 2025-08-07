@@ -1,0 +1,18 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyGroup
+metadata:
+  name: ingress-proxies
+spec:
+  type: ingress
+  hostnamePrefix: ${CLUSTER_CNAME}
+  replicas: 2
+  tags: ["tag:ingress-proxies"]
+  proxyClass: letsencrypt-staging
+---
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyClass
+metadata:
+  name: letsencrypt-staging
+spec:
+  useLetsEncryptStagingEnvironment: true

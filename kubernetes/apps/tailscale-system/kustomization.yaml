@@ -12,4 +12,5 @@ resources:
   - ./connector/ks.yaml
   - ./nameserver/ks.yaml
   - ./operator/ks.yaml
+  - ./ingress/ks.yaml
   - ./idp/ks.yaml

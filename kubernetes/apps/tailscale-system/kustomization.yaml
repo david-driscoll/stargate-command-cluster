@@ -13,4 +13,3 @@ resources:
   - ./nameserver/ks.yaml
   - ./operator/ks.yaml
   - ./idp/ks.yaml
-  - ./golink/ks.yaml

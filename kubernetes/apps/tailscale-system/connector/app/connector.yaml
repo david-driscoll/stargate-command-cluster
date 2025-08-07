@@ -1,10 +1,10 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/tailscale.com/connector_v1alpha1.json
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
   name: "${CLUSTER_CNAME}"
 spec:
+  proxyClass: userspace
   exitNode: true
   hostname: "${CLUSTER_CNAME}"
   subnetRouter:
@@ -12,6 +12,18 @@ spec:
       - "${INTERNAL_NETWORK}"
       - "${CLUSTER_NETWORK}"
       - "${SERVICE_NETWORK}"
+---
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyClass
+metadata:
+  name: userspace
+spec:
+  statefulSet:
+    pod:
+      tailscaleContainer:
+        env:
+        - name: TS_USERSPACE
+          value: "true"
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 # apiVersion: v1

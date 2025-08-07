@@ -8,9 +8,9 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
-  # - ./authkey/ks.yaml
-  # - ./connector/ks.yaml
-  # - ./nameserver/ks.yaml
-  # - ./operator/ks.yaml
-  # - ./idp/ks.yaml
-  # - ./golink/ks.yaml
+  - ./authkey/ks.yaml
+  - ./connector/ks.yaml
+  - ./nameserver/ks.yaml
+  - ./operator/ks.yaml
+  - ./idp/ks.yaml
+  - ./golink/ks.yaml

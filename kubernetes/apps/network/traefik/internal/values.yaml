@@ -13,9 +13,6 @@ service:
     reloader.stakater.com/auto: "true"
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
     io.cilium/lb-ipam-ips: "${INTERNAL_IP}"
-    tailscale.com/expose: "true"
-    tailscale.com/hostname: "${INTERNAL_CNAME}"
-    tailscale.com/tailnet-ip: "${INTERNAL_TAILSCALE_VIP}"
   externalIPs:
     - "${INTERNAL_IP}"
 additionalArguments:
@@ -89,6 +86,9 @@ ingressRoute:
     annotations:
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
+      tailscale.com/expose: "true"
+      tailscale.com/hostname: "${INTERNAL_CNAME}"
+      tailscale.com/tailnet-ip: "${INTERNAL_TAILSCALE_VIP}"
     matchRule: Host(`internal.${CLUSTER_DOMAIN}`)
     services:
       - name: api@internal

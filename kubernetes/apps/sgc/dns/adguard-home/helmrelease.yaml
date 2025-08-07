@@ -237,8 +237,8 @@ spec:
           tailscale.com/expose: "true"
           tailscale.com/hostname: ${APP}
           tailscale.com/tailnet-ip: "${ADGUARD_TAILSCALE_VIP}"
-          tailscale.com/proxy-group: ingress-proxies
-          tailscale.com/tags: "tag:internal-apps"
+          # tailscale.com/proxy-group: ingress-proxies
+          # tailscale.com/tags: "tag:internal-apps"
         hosts:
           - host: "${APP}.${ROOT_DOMAIN}"
             paths:

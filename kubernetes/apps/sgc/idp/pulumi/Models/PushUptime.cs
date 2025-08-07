@@ -1,10 +1,16 @@
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
+using YamlDotNet.Serialization;
 
 namespace authentik.Models;
 
-public record PushUptime : UptimeBase
+public class PushUptime : UptimeBase
 {
   public override string Type { get; } = "push";
-  public string PushToken { get; init; }
-  public ImmutableArray<string> AcceptedStatuscodes { get; init; } = ImmutableArray<string>.Empty;
+  [YamlMember(Alias = "push_token")]
+  [JsonPropertyName("push_token")]
+  public string PushToken { get; set; }
+  [YamlMember(Alias = "accepted_statuscodes")]
+  [JsonPropertyName("accepted_statuscodes")]
+  public ImmutableList<string>? AcceptedStatusCodes { get; set; }
 }

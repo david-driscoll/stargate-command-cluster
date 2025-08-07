@@ -24,18 +24,19 @@ public class ClusterApplicationResources : ComponentResource
 {
   public class Args : ResourceArgs
   {
-    public required string ClusterName { get; init; }
-    public required string ClusterTitle { get; init; }
-    public required Input<(Kubernetes Client, Pulumi.Kubernetes.Provider Provider)> RemoteCluster { get; init; }
-    public required Input<(Kubernetes Client, Pulumi.Kubernetes.Provider Provider)> UptimeCluster { get; init; }
-    public required ServiceConnectionKubernetes ServiceConnection { get; init; }
+    public required string ClusterName { get; set; }
+    public required string ClusterTitle { get; set; }
+    public required Input<(Kubernetes Client, Pulumi.Kubernetes.Provider Provider)> RemoteCluster { get; set; }
+    public required Input<(Kubernetes Client, Pulumi.Kubernetes.Provider Provider)> UptimeCluster { get; set; }
+    public required ServiceConnectionKubernetes ServiceConnection { get; set; }
     public required Input<string> AuthorizationFlow { get; set; }
     public Input<string>? AuthenticationFlow { get; set; }
     public required Input<string> InvalidationFlow { get; set; }
   }
 
   public ClusterApplicationResources(string name, Args args,
-    ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources", Mappings.PostfixName(name), args, options)
+    ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources",
+    Mappings.PostfixName(name), args, options)
   {
     var outpostProviders = Output.Create<ImmutableArray<double>>([]);
     var applications = GetApplications(args.RemoteCluster)
@@ -52,7 +53,7 @@ public class ClusterApplicationResources : ComponentResource
               .Apply(a => a.Item2.HasValue ? a.Item1.Add(a.Item2.Value) : a.Item1);
           }
 
-          if (app.Spec.Uptime is { } )
+          if (app.Spec.Uptime is { })
           {
             var resourceName = Mappings.ResourceName(args, app);
             _ = new CustomResource(resourceName, new KumaUptimeResourceArgs()
@@ -67,7 +68,7 @@ public class ClusterApplicationResources : ComponentResource
                 }
               },
               Spec = new KumaUptimeResourceSpecArgs { Config = Mappings.MapMonitor(args.ClusterName, app) }
-            }, new CustomResourceOptions() { Parent = this, Provider = kubernetesProvider  });
+            }, new CustomResourceOptions() { Parent = this, Provider = kubernetesProvider });
           }
         }
 
@@ -101,7 +102,8 @@ public class ClusterApplicationResources : ComponentResource
     });
   }
 
-  static Output<(Provider Provider, ImmutableList<ApplicationDefinition> Applications)> GetApplications(Input<(Kubernetes Client, Provider Provider)> input)
+  static Output<(Provider Provider, ImmutableList<ApplicationDefinition> Applications)> GetApplications(
+    Input<(Kubernetes Client, Provider Provider)> input)
   {
     var client = input.Apply(z => z.Client);
     return input.Apply(async x =>
@@ -121,13 +123,13 @@ public class ClusterApplicationResources : ComponentResource
           if (spec is { AuthentikFrom: { } authentikFrom })
           {
             IDictionary<string, string> data;
-            if (definition.Spec.AuthentikFrom is { Type: "configMap", Name: var configMapName })
+            if (authentikFrom is { Type: "configMap", Name: var configMapName })
             {
               var configMap =
                 await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
               data = configMap.Data;
             }
-            else if (definition.Spec.AuthentikFrom is { Type: "secret", Name: var secretName })
+            else if (authentikFrom is { Type: "secret", Name: var secretName })
             {
               var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
               data = secret.Data.ToDictionary(kvp => kvp.Key,
@@ -138,7 +140,7 @@ public class ClusterApplicationResources : ComponentResource
               throw new ArgumentException($"Unknown AuthentikFrom type: {authentikFrom.Type}");
             }
 
-            var authentikSpec = JsonSerializer.Deserialize<AuthentikSpec>(JsonSerializer.Serialize(data));
+            var authentikSpec = KubernetesJson.Deserialize<AuthentikSpec>(KubernetesJson.Serialize(data));
 
             ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
             {
@@ -164,35 +166,38 @@ public class ClusterApplicationResources : ComponentResource
 
           if (spec is { UptimeFrom: { } uptimeFrom })
           {
+            IDictionary<string, string> data;
             if (uptimeFrom is { Type: "configMap", Name: var configMapName })
             {
               var configMap =
                 await clusterClient.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-              spec = spec with { Uptime = Mappings.MapFromConfigMap(configMap) };
+              data = configMap.Data;
             }
             else if (uptimeFrom is { Type: "secret", Name: var secretName })
             {
               var secret = await clusterClient.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
-              spec = spec with
-              {
-                Uptime = Mappings.MapFromSecret(secret)
-              };
+              data = secret.Data.ToDictionary(kvp => kvp.Key,
+                kvp => System.Text.Encoding.UTF8.GetString(kvp.Value));
             }
             else
             {
-              throw new ArgumentException($"Unknown UptimeFrom type: {uptimeFrom.Type}");
+              throw new ArgumentException($"Unknown AuthentikFrom type: {uptimeFrom.Type}");
             }
+
+            spec = spec with { Uptime = Mappings.MapFromUptimeData(data) };
           }
 
           definition.Spec = spec;
           builder.Add(definition);
         }
       }
+
       return (provider, builder.ToImmutableList());
     });
   }
 
-  Application CreateAuthentikApplication(Args args, ApplicationDefinition definition, ApplicationDefinitionAuthentik authentik)
+  Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
+    ApplicationDefinitionAuthentik authentik)
   {
     var slug = Mappings.PostfixName(definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}");
     var resourceName = Mappings.ResourceName(args, definition);

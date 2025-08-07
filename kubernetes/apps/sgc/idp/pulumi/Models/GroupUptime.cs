@@ -2,8 +2,10 @@ using System.Collections.Immutable;
 
 namespace authentik.Models;
 
-public record GroupUptime : UptimeBase
+public class GroupUptime : UptimeBase
 {
   public override string Type { get; } = "group";
-  public ImmutableArray<string> AcceptedStatuscodes { get; init; } = ImmutableArray<string>.Empty;
+  [YamlDotNet.Serialization.YamlMember(Alias = "accepted_statuscodes")]
+  [System.Text.Json.Serialization.JsonPropertyName("accepted_statuscodes")]
+  public ImmutableList<string>? AcceptedStatusCodes { get; set; }
 }

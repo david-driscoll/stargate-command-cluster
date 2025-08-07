@@ -3,26 +3,11 @@
 apiVersion: autokuma.bigboot.dev/v1
 kind: KumaEntity
 metadata:
-  name: cluster-apps
+  name: ${CLUSTER_CNAME}
 spec:
   config:
     type: group
     name: ${CLUSTER_TITLE}
-    parent_name: apps
-    interval: 300
-    retry_interval: 60
-    max_retries: 3
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/kuma.schema.json
-apiVersion: autokuma.bigboot.dev/v1
-kind: KumaEntity
-metadata:
-  name: cluster-system
-spec:
-  config:
-    type: group
-    name: ${CLUSTER_TITLE}
-    parent_name: system
     interval: 300
     retry_interval: 60
     max_retries: 3

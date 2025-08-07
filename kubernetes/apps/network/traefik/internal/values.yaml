@@ -89,6 +89,8 @@ ingressRoute:
       tailscale.com/expose: "true"
       tailscale.com/hostname: "${INTERNAL_CNAME}"
       tailscale.com/tailnet-ip: "${INTERNAL_TAILSCALE_VIP}"
+      tailscale.com/proxy-group: ingress-proxies
+      tailscale.com/tags: "tag:internal-apps"
     matchRule: Host(`internal.${CLUSTER_DOMAIN}`)
     services:
       - name: api@internal

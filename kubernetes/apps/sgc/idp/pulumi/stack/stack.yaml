@@ -13,7 +13,7 @@ spec:
       name: flux-system
     dir: kubernetes/apps/sgc/idp/pulumi
   stack: ${APP}
-  backend: postgres://postgres.database.svc.cluster.local
+  backend: postgres://postgres-rw.database.svc.cluster.local
   refresh: true
   destroyOnFinalize: true
   workspaceReclaimPolicy: Delete

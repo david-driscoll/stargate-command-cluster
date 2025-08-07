@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tailscale-idp
+  name: &app idp
 spec:
   chartRef:
     kind: OCIRepository
@@ -52,7 +52,7 @@ spec:
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
-                    name: ${APP}-tailscale-authkey
+                    name: authkey
                     key: authkey
             workingDir: /data/tsidp
             resources:

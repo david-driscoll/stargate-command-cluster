@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tailscale-golink
+  name: &app golink
 spec:
   chartRef:
     kind: OCIRepository
@@ -51,7 +51,7 @@ spec:
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
-                    name: tailscale-authkey
+                    name: authkey
                     key: authkey
             resources:
               requests:

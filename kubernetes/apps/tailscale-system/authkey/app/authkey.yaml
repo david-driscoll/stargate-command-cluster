@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tailscale-authkey
+  name: &app authkey
 spec:
   chartRef:
     kind: OCIRepository

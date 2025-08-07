@@ -65,6 +65,11 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/observability/
     # exclude: |
     #   kustomization.yaml
+  - source: kubernetes/apps/tailscale-system/
+    dest: kubernetes/apps/tailscale-system/
+    exclude: |
+      kustomization.yaml
+      idp/
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: talos/patches/global/machine-kubelet.yaml

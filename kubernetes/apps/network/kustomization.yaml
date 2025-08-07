@@ -13,5 +13,4 @@ resources:
   - ./dns/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./shared/ks.yaml
-  - ./tailscale/ks.yaml
   - ./traefik/ks.yaml

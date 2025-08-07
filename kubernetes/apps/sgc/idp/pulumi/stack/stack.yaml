@@ -18,6 +18,10 @@ spec:
   destroyOnFinalize: true
   workspaceReclaimPolicy: Delete
   envRefs:
+    USER:
+      type: Literal
+      literal:
+        value: pulumi
     PGUSER:
       type: Secret
       secret:

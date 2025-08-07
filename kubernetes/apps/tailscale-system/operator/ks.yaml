@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tailscale-operator
+  name: &app operator
   namespace: &namespace tailscale-system
 spec:
   targetNamespace: *namespace

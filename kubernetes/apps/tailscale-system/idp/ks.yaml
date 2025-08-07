@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: tailscale-operator
+    - name: operator
       namespace: *namespace
     - name: volsync
       namespace: volsync-system

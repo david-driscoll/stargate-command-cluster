@@ -21,6 +21,7 @@ using Cysharp.Diagnostics;
 using Dumpify;
 using gfs.YamlDotNet.YamlPath;
 using k8s;
+using k8s.Autorest;
 using k8s.Models;
 using Lunet.Extensions.Logging.SpectreConsole;
 using Microsoft.Extensions.Logging;
@@ -38,19 +39,24 @@ var factory = LoggerFactory.Create(configure =>
              });
            }
        );
-
-var localCluster = new Kubernetes(KubernetesClientConfiguration.BuildConfigFromConfigFile("./kubeconfig"));
-
-var result = await localCluster.CustomObjects.GetClusterCustomObjectAsync<TailscaleDns>("tailscale.com", "v1alpha1", "dnsconfigs", "ts-dns");
-
-var clusterConfig = await ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml").OfType<YamlMappingNode>().SingleAsync();
-var clusterCname = clusterConfig.Query("/stringData/TAILSCALE_NAMESERVER_IP").OfType<YamlScalarNode>().Single();
-
-if (clusterCname.Value != result.Status.Nameserver.Ip)
+try
 {
-  clusterCname.Value = result.Status.Nameserver.Ip;
-  await WriteFile("kubernetes/components/common/cluster-secrets.sops.yaml", serializer.Serialize(clusterConfig));
-  AnsiConsole.WriteLine("Updated TAILSCALE_NAMESERVER_IP to {0}", result.Status.Nameserver.Ip);
+  var localCluster = new Kubernetes(KubernetesClientConfiguration.BuildConfigFromConfigFile("./kubeconfig"));
+
+  var result = await localCluster.CustomObjects.GetClusterCustomObjectAsync<TailscaleDns>("tailscale.com", "v1alpha1", "dnsconfigs", "ts-dns");
+
+  var clusterConfig = await ReadStream("kubernetes/components/common/cluster-secrets.sops.yaml").OfType<YamlMappingNode>().SingleAsync();
+  var clusterCname = clusterConfig.Query("/stringData/TAILSCALE_NAMESERVER_IP").OfType<YamlScalarNode>().Single();
+
+  if (clusterCname.Value != result.Status.Nameserver.Ip)
+  {
+    clusterCname.Value = result.Status.Nameserver.Ip;
+    await WriteFile("kubernetes/components/common/cluster-secrets.sops.yaml", serializer.Serialize(clusterConfig));
+    AnsiConsole.WriteLine("Updated TAILSCALE_NAMESERVER_IP to {0}", result.Status.Nameserver.Ip);
+  }
+} catch (HttpOperationException ex) when (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+{
+  AnsiConsole.WriteLine("Tailscale DNS configuration not found. Please ensure the Tailscale operator is running and the DNS configuration is created.");
 }
 
 static async IAsyncEnumerable<YamlMappingNode> ReadStream(string path)

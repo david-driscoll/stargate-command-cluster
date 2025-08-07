@@ -79,7 +79,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data/tsidp/
-            subPath: tsidp
       empty:
         type: emptyDir
         globalMounts:

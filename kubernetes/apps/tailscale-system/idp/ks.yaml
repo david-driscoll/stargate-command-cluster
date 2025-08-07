@@ -11,6 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: tailscale-operator
+      namespace: *namespace
     - name: volsync
       namespace: volsync-system
   path: ./kubernetes/apps/tailscale-system/idp/app

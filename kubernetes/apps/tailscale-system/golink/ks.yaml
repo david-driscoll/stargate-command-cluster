@@ -18,6 +18,8 @@ spec:
   retryInterval: 2m
   timeout: 5m
   dependsOn:
+    - name: tailscale-operator
+      namespace: *namespace
     - name: volsync
       namespace: volsync-system
   sourceRef:

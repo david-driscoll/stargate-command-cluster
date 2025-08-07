@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app golink
+  name: &app tailscale-golink
 spec:
   chartRef:
     kind: OCIRepository

@@ -77,7 +77,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /home/nonroot/
-            subPath: golink
 
     service:
       app:

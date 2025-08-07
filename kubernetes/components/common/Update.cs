@@ -51,7 +51,7 @@ try
   if (clusterCname.Value != result.Status.Nameserver.Ip)
   {
     clusterCname.Value = result.Status.Nameserver.Ip;
-    // await WriteFile("kubernetes/components/common/cluster-secrets.sops.yaml", serializer.Serialize(clusterConfig));
+    await WriteFile("kubernetes/components/common/cluster-secrets.sops.yaml", serializer.Serialize(clusterConfig));
     AnsiConsole.WriteLine("Updated TAILSCALE_NAMESERVER_IP to {0}", result.Status.Nameserver.Ip);
   }
 }

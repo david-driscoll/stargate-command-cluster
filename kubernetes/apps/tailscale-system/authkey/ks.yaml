@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: tailscale-operator
+    - name: operator
       namespace: *namespace
   path: ./kubernetes/apps/tailscale-system/authkey/app
   prune: true

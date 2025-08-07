@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/tailscale.com/dnsconfig_v1alpha1.json
 apiVersion: tailscale.com/v1alpha1
 kind: DNSConfig
 metadata:
@@ -8,6 +7,8 @@ metadata:
     reloader.stakater.com/auto: "true"
 spec:
   nameserver:
+    service:
+      clusterIP: 
     image:
       repo: tailscale/k8s-nameserver
       tag: unstable

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Humanizer;
 using Pulumi;
 using Pulumi.Authentik;
+using static Mappings;
 
 class AuthentikGroups : Pulumi.ComponentResource
 {
@@ -16,19 +17,19 @@ class AuthentikGroups : Pulumi.ComponentResource
   {
     foreach (var group in initialGroups)
     {
-      var roleResource = new RbacRole(group.GroupName.ToLowerInvariant().Dasherize(), new()
+      var roleResource = new RbacRole(PostfixName(group.GroupName.ToLowerInvariant().Dasherize()), new()
       {
-        Name = group.GroupName,
+        Name = PostfixTitle(group.GroupName),
       });
-      roles[group.GroupName] = roleResource;
+      roles[PostfixTitle(group.GroupName)] = roleResource;
       var groupResource = new Group(group.GroupName.ToLowerInvariant().Dasherize(), new()
       {
-        Name = group.GroupName,
+        Name = PostfixTitle(group.GroupName),
         Roles = [roleResource.Id],
         IsSuperuser = group.GroupName == "Admin",
-        Parent = groups.TryGetValue(group.ParentName ?? "", out var parentGroup) ? parentGroup.Id : Output.Create((string)null),
+        Parent = groups.TryGetValue(PostfixName(group.ParentName ?? ""), out var parentGroup) ? parentGroup.Id : Output.Create((string)null),
       });
-      groups[group.GroupName] = groupResource;
+      groups[PostfixTitle(group.GroupName)] = groupResource;
     }
   }
 

@@ -3,7 +3,7 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: ${APP}-${CLUSTER_CNAME}
+  name: ${APP}
 spec:
   name: Weave GitOps
   category: ${CLUSTER_TITLE}

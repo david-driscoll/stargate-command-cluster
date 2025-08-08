@@ -10,7 +10,7 @@ metadata:
     kubernetes.io/ingress.class: internal
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/expose: "true"
-    tailscale.com/hostname: "${TAILSCALE_HOST:=${APP}}.${TAILSCALE_DOMAIN}"
+    tailscale.com/hostname: "${TAILSCALE_HOST:=${APP}}"
     tailscale.com/tailnet-ip: "${TAILSCALE_IP}"
 spec:
   entryPoints:

@@ -26,6 +26,10 @@ spec:
   dataFrom:
     - extract:
         key: postgres-superuser
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
   target:
     name: ${APP}-uptime
     creationPolicy: Owner
@@ -40,5 +44,5 @@ spec:
       data:
         type: postgres
         name: "${APP}"
-        database_connection_string: "{{ .public-uri }}"
+        database_connection_string: "{{ .public_uri }}"
         parent_name: ${CLUSTER_CNAME}

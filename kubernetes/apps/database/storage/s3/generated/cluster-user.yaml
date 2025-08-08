@@ -34,3 +34,7 @@ spec:
   dataFrom:
     - extract:
         key: "s3-cluster-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

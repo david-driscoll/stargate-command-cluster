@@ -53,6 +53,10 @@ spec:
   dataFrom:
     - extract:
         key: "pulumi-operator-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json

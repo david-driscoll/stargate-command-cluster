@@ -35,3 +35,7 @@ spec:
   dataFrom:
     - extract:
         key: "mysql-user-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

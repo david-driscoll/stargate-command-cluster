@@ -26,8 +26,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components:
-    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app

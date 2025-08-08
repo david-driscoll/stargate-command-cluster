@@ -33,6 +33,8 @@ spec:
               templateAs: Values
             - key: hostname
               templateAs: Values
+            - key: public-hostname
+              templateAs: Values
             - key: port
               templateAs: Values
             - key: database
@@ -42,6 +44,10 @@ spec:
             - key: jdbc-uri
               templateAs: Values
             - key: uri
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
               templateAs: Values
   dataFrom:
     - extract:

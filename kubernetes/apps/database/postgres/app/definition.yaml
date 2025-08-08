@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}-${CLUSTER_CNAME}
+spec:
+  name: Postgres
+  category: ${CLUSTER_TITLE}
+  description: Postgres monitoring
+  uptimeFrom:
+    type: secret
+    name: ${APP}-uptime
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/application/secret-uptime.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: ${APP}-uptime
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 10m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  dataFrom:
+    - extract:
+        key: postgres-superuser
+  target:
+    name: ${APP}-uptime
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        type: postgres
+        name: "${APP}"
+        database_connection_string: "{{ .public-uri }}"
+        parent_name: ${CLUSTER_CNAME}

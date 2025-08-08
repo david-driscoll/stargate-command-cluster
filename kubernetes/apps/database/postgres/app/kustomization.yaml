@@ -8,6 +8,7 @@ resources:
   - ./helmrelease.yaml
   - ./user-template.yaml
   - ./ingress.yaml
+  - ./definition.yaml
 configMapGenerator:
 - name: ${APP}-values
   files:

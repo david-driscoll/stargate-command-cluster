@@ -35,8 +35,8 @@ metadata:
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     traefik.ingress.kubernetes.io/router.middlewares: network-tailscale-network@kubernetescrd
     tailscale.com/tailnet-ip: "${TAILSCALE_IP}"
-    tailscale.com/proxy-group: ingress-proxies
-    tailscale.com/tags: "tag:internal-apps"
+    # tailscale.com/proxy-group: ingress-proxies
+    # tailscale.com/tags: "tag:internal-apps"
 spec:
   ingressClassName: internal
   tls:

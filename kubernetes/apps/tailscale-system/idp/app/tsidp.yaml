@@ -91,6 +91,8 @@ spec:
       app:
         controller: *app
         type: ClusterIP
+        annotations:
+          tailscale.com/tailnet-ip: "${TAILSCALE_IDP_IP}"
         ports:
           http:
             port: &port 443

@@ -4,7 +4,7 @@ nameOverride: "postgres"
 fullnameOverride: "postgres"
 type: postgresql
 version:
-  postgresql: "17.4"
+  postgresql: "17.5"
 mode: standalone
 recovery:
   method: object_store
@@ -43,7 +43,7 @@ backups:
   retentionPolicy: "30d"
 cluster:
   instances: 2
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}
     storageClass: longhorn-local

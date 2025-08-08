@@ -34,7 +34,7 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      TAILSCALE_HOST: plex-alt
+      TAILSCALE_HOST: plex-sgc
       VOLSYNC_CAPACITY: 60Gi
       # VOLSYNC_STORAGECLASS: openebs-hostpath
 ---
@@ -77,4 +77,4 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      TAILSCALE_HOST: tautulli-alt
+      TAILSCALE_HOST: tautulli-sgc

@@ -14,3 +14,16 @@ configMapGenerator:
   - values.yaml=./resources/values.yaml
   options:
     disableNameSuffixHash: true
+patches:
+  - target:
+      kind: Service
+      version: v1
+      name: ${APP}-rw
+    patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: not-used
+        annotations:
+          tailscale.com/expose: "true"
+          tailscale.com/hostname: ${APP}-${CLUSTER_CNAME}

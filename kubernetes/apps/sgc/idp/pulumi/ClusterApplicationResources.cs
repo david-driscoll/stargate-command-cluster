@@ -56,7 +56,7 @@ public class ClusterApplicationResources : ComponentResource
 
           if (app.Spec.Uptime is { })
           {
-            var resourceName = Mappings.ResourceName(args, app);
+            var resourceName = Mappings.PostfixName(Mappings.ResourceName(args, app));
             _ = new CustomResource(resourceName, new KumaUptimeResourceArgs()
             {
               Metadata = new ObjectMetaArgs()
@@ -79,7 +79,6 @@ public class ClusterApplicationResources : ComponentResource
 
     _ = outpostProviders.Apply(outpostProviders =>
     {
-      outpostProviders.Dump();
       if (outpostProviders.Any())
       {
         var outpostName = Mappings.PostfixName($"ak-outpost-{args.ClusterName}");
@@ -117,7 +116,7 @@ public class ClusterApplicationResources : ComponentResource
       {
         var result = await clusterClient.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>(
           "driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions");
-        new { Namespace = ns.Metadata.Name, result.Items }.Dump();
+        // new { Namespace = ns.Metadata.Name, result.Items }.Dump();
         foreach (var definition in result.Items)
         {
           var spec = definition.Spec;

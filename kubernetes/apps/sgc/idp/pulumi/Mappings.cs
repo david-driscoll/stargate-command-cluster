@@ -20,7 +20,7 @@ static partial class Mappings
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
     var args = new KumaUptimeResourceConfigArgs()
     {
-      Name = definition.Spec.Name,
+      Name = PostfixName(definition.Spec.Name),
       Active = true,
     };
     switch (definition.Spec.Uptime)

@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app chrony
-
 spec:
   chartRef:
     kind: OCIRepository
@@ -71,9 +70,6 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: "${CHRONY_VIP}"
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: ${APP}
-          tailscale.com/tailnet-ip: "${CHRONY_TAILSCALE_VIP}"
         externalIPs:
           - "${CHRONY_VIP}"
         externalTrafficPolicy: Cluster

@@ -114,9 +114,6 @@ spec:
                   identifier: *app
                   port: http
         annotations:
-          # tailscale.com/expose: "true"
-          # tailscale.com/hostname: "${TUNER_CNAME}"
-          # tailscale.com/tailnet-ip: "${TUNER_TAILSCALE_VIP}"
           # tailscale.com/proxy-group: ingress-proxies
           # tailscale.com/tags: "tag:internal-apps"
           # reloader.stakater.com/auto: "true"

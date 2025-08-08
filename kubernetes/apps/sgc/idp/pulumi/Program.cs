@@ -1,23 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using authentik;
-using Dumpify;
-using Humanizer;
 using k8s;
-using k8s.Autorest;
-using k8s.KubeConfigModels;
-using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
-using Pulumi.Kubernetes.Yaml;
-using Pulumi.Uptimekuma;
-using Rocket.Surgery.OnePasswordNativeUnofficial;
 using ClientContext = Pulumi.Output<(k8s.Kubernetes Client, Pulumi.Kubernetes.Provider Provider, string KubeConfig)>;
 using KubernetesProvider = Pulumi.Kubernetes.Provider;
 using ProviderArgs = Pulumi.Kubernetes.ProviderArgs;
@@ -77,7 +65,7 @@ return await Deployment.RunAsync(async () =>
     equestria = CreateClientAndProvider(kubeConfig, "equestria", "admin@equestria");
   }
 
-  var groups = new AuthentikGroups();
+  _ = new AuthentikGroups();
   CreateApplicationResources(sgc, sgc, "sgc", "Stargate Command");
   CreateApplicationResources(sgc, equestria, "equestria", "Equestria");
 
@@ -100,18 +88,16 @@ return await Deployment.RunAsync(async () =>
 
   static ClusterApplicationResources CreateApplicationResources(ClientContext uptimeCluster, ClientContext remoteCluster, string clusterName, string clusterTitle)
   {
-    clusterName = Mappings.PostfixName(clusterName);
-    clusterTitle = Mappings.PostfixName(clusterTitle);
-    return new ClusterApplicationResources(clusterName, new()
+    return new ClusterApplicationResources(Mappings.PostfixName(clusterName), new()
     {
-      ClusterName = clusterName,
-      ClusterTitle = clusterTitle,
+      ClusterName = Mappings.PostfixName(clusterName),
+      ClusterTitle = Mappings.PostfixTitle(clusterTitle),
       UptimeCluster = uptimeCluster.Apply(z => (z.Client, z.Provider)),
       RemoteCluster = remoteCluster.Apply(z => (z.Client, z.Provider)),
       InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
       AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
       // AuthenticationFlow = ,
-      ServiceConnection = new ServiceConnectionKubernetes(clusterName, new()
+      ServiceConnection = new ServiceConnectionKubernetes(Mappings.PostfixName(clusterName), new()
       {
         Name = clusterTitle,
         VerifySsl = true,

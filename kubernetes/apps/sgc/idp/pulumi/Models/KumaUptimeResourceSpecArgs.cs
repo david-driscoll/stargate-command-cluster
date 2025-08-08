@@ -1,4 +1,3 @@
-using System;
 using Pulumi;
 
 namespace authentik.Models;

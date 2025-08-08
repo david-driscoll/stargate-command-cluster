@@ -6,9 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Dumpify;
-using Humanizer;
-using k8s.KubeConfigModels;
 using YamlDotNet.Serialization;
 
 namespace authentik;
@@ -53,7 +50,7 @@ public class YamlMemberConverterFactory : JsonConverterFactory
           if (reader.TokenType == JsonTokenType.String && property.CanWrite)
           {
             property.SetValue(config,
-              reader.GetString().Split(',', StringSplitOptions.RemoveEmptyEntries).ToImmutableList());
+              reader.GetString()?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToImmutableList());
           }
 
           continue;
@@ -71,14 +68,16 @@ public class YamlMemberConverterFactory : JsonConverterFactory
           if (reader.TokenType == JsonTokenType.String && property.CanWrite)
           {
             property.SetValue(config,
-              reader.GetString().Split(',', StringSplitOptions.RemoveEmptyEntries).ToImmutableArray());
+              reader.GetString()?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToImmutableArray());
           }
 
           continue;
         }
 
         if (property.CanWrite)
-        property.SetValue(config, JsonSerializer.Deserialize(ref reader, property.PropertyType, options));
+        {
+          property.SetValue(config, JsonSerializer.Deserialize(ref reader, property.PropertyType, options));
+        }
       }
 
       return config;

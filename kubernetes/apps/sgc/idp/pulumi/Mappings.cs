@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using authentik.Models;
+using Humanizer;
 using k8s;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
-using Pulumi.Uptimekuma;
 using Riok.Mapperly.Abstractions;
 
 [Mapper(AllowNullPropertyAssignment = false)]
@@ -20,7 +19,7 @@ static partial class Mappings
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
     var args = new KumaUptimeResourceConfigArgs()
     {
-      Name = PostfixName(definition.Spec.Name),
+      Name = PostfixTitle(definition.Spec.Name),
       Active = true,
     };
     switch (definition.Spec.Uptime)
@@ -133,35 +132,37 @@ static partial class Mappings
   public static partial AuthentikProviderMicrosoftEntra MapToMicrosoftEntra(AuthentikSpec spec);
   public static partial AuthentikProviderGoogleWorkspace MapToGoogleWorkspace(AuthentikSpec spec);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderProxy instance,
-    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderProxy instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderOauth2 instance,
-    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args, AuthentikProviderOauth2 instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, AuthentikProviderSaml instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderLdap instance, Input<string> authorizationFlow,
-    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, AuthentikProviderLdap instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderSaml instance, Input<string> authorizationFlow,
-    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, AuthentikProviderSaml instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderRac instance, Input<string> authorizationFlow,
-    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, AuthentikProviderRac instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderRadius instance,
-    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args, AuthentikProviderRadius instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderSsf instance, Input<string> authorizationFlow,
-    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, AuthentikProviderSsf instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderScim instance, Input<string> authorizationFlow,
-    Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, AuthentikProviderScim instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderMicrosoftEntra instance,
-    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args, AuthentikProviderMicrosoftEntra instance);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderGoogleWorkspace instance,
-    Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
+  public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args, ClusterApplicationResources.Args instance);
+  public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args, AuthentikProviderGoogleWorkspace instance);
 
   public static ApplicationDefinitionUptime MapFromUptimeData(IDictionary<string, string> data)
   {
@@ -214,9 +215,11 @@ static partial class Mappings
     resource.Namespace() is { } ns && ns == args.ClusterName ? args.ClusterName : $"{args.ClusterName}-{resource.Namespace()}";
 
   private static Input<string> MapToStringInput(string value) => value;
+  private static InputList<string> MapToStringInput(ImmutableList<string> value) => [..value];
+  private static InputList<double> MapToDoubleInput(ImmutableList<double> value) => [..value];
   private static Input<bool>? MapToBoolInput(bool? value) => value.HasValue ? (Input<bool>?)value : null;
   private static Input<int>? MapToIntInput(int? value) => value.HasValue ? (Input<int>?)value : null;
 
-  public static string PostfixName(string name) => OperatingSystem.IsLinux() ? name : $"{name}-test";
+  public static string PostfixName(string name) => (OperatingSystem.IsLinux() ? name : $"{name}-test").ToLowerInvariant().Dehumanize().Underscore().Dasherize();
   public static string PostfixTitle(string name) => OperatingSystem.IsLinux() ? name : $"[Test] {name}";
 }

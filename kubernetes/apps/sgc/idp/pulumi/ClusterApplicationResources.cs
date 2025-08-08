@@ -1,25 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using authentik.Models;
-using Dumpify;
-using Humanizer;
 using k8s;
-using k8s.Autorest;
 using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
-using Pulumi.Kubernetes;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
 using Provider = Pulumi.Kubernetes.Provider;
-using ProviderArgs = Pulumi.Authentik.ProviderArgs;
 
 public class ClusterApplicationResources : ComponentResource
 {
@@ -199,66 +189,125 @@ public class ClusterApplicationResources : ComponentResource
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
-    var slug = Mappings.PostfixName(definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}");
+    var slug = Mappings.PostfixName(definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name}");
     var resourceName = Mappings.PostfixName(Mappings.ResourceName(args, definition));
     var options = new CustomResourceOptions() { Parent = this };
-    var providerArgs = new ProviderProxyArgs()
-    {
-      Name = definition.Spec.Name,
-    };
-    Pulumi.CustomResource authentikProvider;
+    Pulumi.CustomResource provider;
     switch (authentik)
     {
       case { ProviderProxy: { } proxy }:
-
-        Mappings.MapProviderArgs(providerArgs, proxy, args.AuthorizationFlow, args.InvalidationFlow,
-          args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderProxyArgs()
+        {
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, proxy);
+        provider = new ProviderProxy(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderOauth2: { } oauth2 }:
-
-          Mappings.MapProviderArgs(providerArgs, oauth2, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderOauth2Args()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, oauth2);
+        provider = new ProviderOauth2(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderLdap: { } ldap }:
-
-          Mappings.MapProviderArgs(providerArgs, ldap, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderLdapArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, ldap);
+        provider = new ProviderLdap(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderSaml: { } saml }:
-
-          Mappings.MapProviderArgs(providerArgs, saml, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderSamlArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, saml);
+        provider = new ProviderSaml(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderRac: { } rac }:
-
-          Mappings.MapProviderArgs(providerArgs, rac, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderRacArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, rac);
+        provider = new ProviderRac(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderRadius: { } radius }:
-          Mappings.MapProviderArgs(providerArgs, radius, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderRadiusArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, radius);
+        provider = new ProviderRadius(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderSsf: { } ssf }:
-          Mappings.MapProviderArgs(providerArgs, ssf, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderSsfArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, ssf);
+        provider = new ProviderSsf(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderScim: { } scim }:
-          Mappings.MapProviderArgs(providerArgs, scim, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderScimArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, scim);
+        provider = new ProviderScim(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderMicrosoftEntra: { } microsoftEntra }:
-          Mappings.MapProviderArgs(providerArgs, microsoftEntra, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderMicrosoftEntraArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, microsoftEntra);
+        provider = new ProviderMicrosoftEntra(resourceName, providerArgs, options);
         break;
+      }
       case { ProviderGoogleWorkspace: { } googleWorkspace }:
-          Mappings.MapProviderArgs(providerArgs, googleWorkspace, args.AuthorizationFlow, args.InvalidationFlow,
-            args.AuthenticationFlow);
+      {
+        var providerArgs = new ProviderGoogleWorkspaceArgs()
+        {
+           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+        };
+        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, googleWorkspace);
+        provider = new ProviderGoogleWorkspace(resourceName, providerArgs, options);
         break;
+      }
       default:
         throw new ArgumentException("Unknown authentik provider type", nameof(authentik));
     }
-
-    var provider = new ProviderProxy(resourceName, providerArgs, options);
 
     return new Application(resourceName, new()
     {

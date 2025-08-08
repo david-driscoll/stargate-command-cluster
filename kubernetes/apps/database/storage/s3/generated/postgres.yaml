@@ -34,3 +34,7 @@ spec:
   dataFrom:
     - extract:
         key: "postgres-s3-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

@@ -34,3 +34,7 @@ spec:
   dataFrom:
     - extract:
         key: "backrest-s3-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

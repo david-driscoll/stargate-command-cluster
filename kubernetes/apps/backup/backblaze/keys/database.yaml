@@ -35,3 +35,7 @@ spec:
   dataFrom:
     - extract:
         key: "${BACKBLAZE_DATABASE}"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

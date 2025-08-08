@@ -46,3 +46,7 @@ spec:
   dataFrom:
     - extract:
         key: "postgres-superuser-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

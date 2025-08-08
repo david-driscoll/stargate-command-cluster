@@ -19,6 +19,7 @@ using Pulumi.Kubernetes;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
 using Provider = Pulumi.Kubernetes.Provider;
+using ProviderArgs = Pulumi.Authentik.ProviderArgs;
 
 public class ClusterApplicationResources : ComponentResource
 {
@@ -200,47 +201,70 @@ public class ClusterApplicationResources : ComponentResource
     ApplicationDefinitionAuthentik authentik)
   {
     var slug = Mappings.PostfixName(definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name.Dasherize()}");
-    var resourceName = Mappings.ResourceName(args, definition);
+    var resourceName = Mappings.PostfixName(Mappings.ResourceName(args, definition));
     var options = new CustomResourceOptions() { Parent = this };
-    Pulumi.CustomResource authentikProvider = authentik switch
+    var providerArgs = new ProviderProxyArgs()
     {
-      { ProviderProxy: { } proxy } => new ProviderProxy(resourceName,
-        Mappings.CreateProvider(proxy, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderOauth2: { } oauth2 } => new ProviderOauth2(resourceName,
-        Mappings.CreateProvider(oauth2, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderLdap: { } ldap } => new ProviderLdap(resourceName,
-        Mappings.CreateProvider(ldap, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderSaml: { } saml } => new ProviderSaml(resourceName,
-        Mappings.CreateProvider(saml, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderRac: { } rac } => new ProviderRac(resourceName,
-        Mappings.CreateProvider(rac, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderRadius: { } radius } => new ProviderRadius(resourceName,
-        Mappings.CreateProvider(radius, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderSsf: { } ssf } => new ProviderSsf(resourceName,
-        Mappings.CreateProvider(ssf, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderScim: { } scim } => new ProviderScim(resourceName,
-        Mappings.CreateProvider(scim, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderMicrosoftEntra: { } microsoftEntra } => new ProviderMicrosoftEntra(resourceName,
-        Mappings.CreateProvider(microsoftEntra, args.AuthorizationFlow, args.InvalidationFlow, args.AuthenticationFlow),
-        options),
-      { ProviderGoogleWorkspace: { } googleWorkspace } => new ProviderGoogleWorkspace(resourceName,
-        Mappings.CreateProvider(googleWorkspace, args.AuthorizationFlow, args.InvalidationFlow,
-          args.AuthenticationFlow), options),
-      _ => throw new ArgumentException("Unknown authentik provider type", nameof(authentik))
+      Name = definition.Spec.Name,
     };
+    Pulumi.CustomResource authentikProvider;
+    switch (authentik)
+    {
+      case { ProviderProxy: { } proxy }:
+
+        Mappings.MapProviderArgs(providerArgs, proxy, args.AuthorizationFlow, args.InvalidationFlow,
+          args.AuthenticationFlow);
+        break;
+      case { ProviderOauth2: { } oauth2 }:
+
+          Mappings.MapProviderArgs(providerArgs, oauth2, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderLdap: { } ldap }:
+
+          Mappings.MapProviderArgs(providerArgs, ldap, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderSaml: { } saml }:
+
+          Mappings.MapProviderArgs(providerArgs, saml, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderRac: { } rac }:
+
+          Mappings.MapProviderArgs(providerArgs, rac, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderRadius: { } radius }:
+          Mappings.MapProviderArgs(providerArgs, radius, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderSsf: { } ssf }:
+          Mappings.MapProviderArgs(providerArgs, ssf, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderScim: { } scim }:
+          Mappings.MapProviderArgs(providerArgs, scim, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderMicrosoftEntra: { } microsoftEntra }:
+          Mappings.MapProviderArgs(providerArgs, microsoftEntra, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      case { ProviderGoogleWorkspace: { } googleWorkspace }:
+          Mappings.MapProviderArgs(providerArgs, googleWorkspace, args.AuthorizationFlow, args.InvalidationFlow,
+            args.AuthenticationFlow);
+        break;
+      default:
+        throw new ArgumentException("Unknown authentik provider type", nameof(authentik));
+    }
+
+    var provider = new ProviderProxy(resourceName, providerArgs, options);
 
     return new Application(resourceName, new()
     {
       // ApplicationId = ,
-      ProtocolProvider = authentikProvider.Id.Apply(double.Parse),
+      ProtocolProvider = provider.Id.Apply(double.Parse),
       Name = definition.Spec.Name,
       Slug = slug,
       Group = definition.Spec.Category,

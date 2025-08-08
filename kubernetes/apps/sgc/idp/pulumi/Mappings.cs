@@ -133,34 +133,34 @@ static partial class Mappings
   public static partial AuthentikProviderMicrosoftEntra MapToMicrosoftEntra(AuthentikSpec spec);
   public static partial AuthentikProviderGoogleWorkspace MapToGoogleWorkspace(AuthentikSpec spec);
 
-  public static partial ProviderProxyArgs CreateProvider(AuthentikProviderProxy instance,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderProxy instance,
     Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderOauth2Args CreateProvider(AuthentikProviderOauth2 instance,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderOauth2 instance,
     Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderLdapArgs CreateProvider(AuthentikProviderLdap instance, Input<string> authorizationFlow,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderLdap instance, Input<string> authorizationFlow,
     Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderSamlArgs CreateProvider(AuthentikProviderSaml instance, Input<string> authorizationFlow,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderSaml instance, Input<string> authorizationFlow,
     Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderRacArgs CreateProvider(AuthentikProviderRac instance, Input<string> authorizationFlow,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderRac instance, Input<string> authorizationFlow,
     Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderRadiusArgs CreateProvider(AuthentikProviderRadius instance,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderRadius instance,
     Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderSsfArgs CreateProvider(AuthentikProviderSsf instance, Input<string> authorizationFlow,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderSsf instance, Input<string> authorizationFlow,
     Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderScimArgs CreateProvider(AuthentikProviderScim instance, Input<string> authorizationFlow,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderScim instance, Input<string> authorizationFlow,
     Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderMicrosoftEntraArgs CreateProvider(AuthentikProviderMicrosoftEntra instance,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderMicrosoftEntra instance,
     Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
-  public static partial ProviderGoogleWorkspaceArgs CreateProvider(AuthentikProviderGoogleWorkspace instance,
+  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderGoogleWorkspace instance,
     Input<string> authorizationFlow, Input<string> invalidationFlow, Input<string>? authenticationFlow);
 
   public static ApplicationDefinitionUptime MapFromUptimeData(IDictionary<string, string> data)
@@ -218,4 +218,5 @@ static partial class Mappings
   private static Input<int>? MapToIntInput(int? value) => value.HasValue ? (Input<int>?)value : null;
 
   public static string PostfixName(string name) => OperatingSystem.IsLinux() ? name : $"{name}-test";
+  public static string PostfixTitle(string name) => OperatingSystem.IsLinux() ? name : $"[Test] {name}";
 }

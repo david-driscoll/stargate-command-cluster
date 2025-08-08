@@ -66,15 +66,6 @@
             </PendingDiffInfo>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/Models/TailscalePingUptime.cs">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/Models/TailscalePingUptime.cs" />
-              <option name="originalContent" value="using System.Collections.Immutable;&#10;using System.Text.Json.Serialization;&#10;using YamlDotNet.Serialization;&#10;&#10;namespace authentik.Models;&#10;&#10;public class TailscalePingUptime : UptimeBase&#10;{&#10;  public override string Type { get; } = &quot;tailscale-ping&quot;;&#10;  public string Hostname { get; set; }&#10;  [YamlMember(Alias = &quot;accepted_statuscodes&quot;)]&#10;  [JsonPropertyName(&quot;accepted_statuscodes&quot;)]&#10;  public ImmutableList&lt;string&gt;? AcceptedStatusCodes { get; set; }&#10;&#10;}&#10;" />
-              <option name="updatedContent" value="using System.Collections.Immutable;&#10;using System.Text.Json.Serialization;&#10;using YamlDotNet.Serialization;&#10;&#10;namespace authentik.Models;&#10;&#10;public class TailscalePingUptime : UptimeBase&#10;{&#10;  public override string Type { get; } = &quot;tailscale-ping&quot;;&#10;  [YamlMember(Alias = &quot;hostname&quot;)]&#10;  [JsonPropertyName(&quot;hostname&quot;)]&#10;  public string Hostname { get; set; }&#10;  [YamlMember(Alias = &quot;accepted_statuscodes&quot;)]&#10;  [JsonPropertyName(&quot;accepted_statuscodes&quot;)]&#10;  public ImmutableList&lt;string&gt;? AcceptedStatusCodes { get; set; }&#10;&#10;}" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
       </map>
     </option>
   </component>

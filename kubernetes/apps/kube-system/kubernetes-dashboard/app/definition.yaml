@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}-${CLUSTER_CNAME}
+spec:
+  name: Weave GitOps
+  category: ${CLUSTER_TITLE}
+  description: Access to the Weave dashboard
+  url: https://gitops.${CLUSTER_DOMAIN}
+  # TODO: Change me someday
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: https://gitops.${CLUSTER_DOMAIN}
+  uptime:
+    http:
+      url: https://gitops.${CLUSTER_DOMAIN}
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "${CLUSTER_CNAME}"

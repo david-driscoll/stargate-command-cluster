@@ -16,7 +16,6 @@ class AuthentikGroups : Pulumi.ComponentResource
   {
     foreach (var group in initialGroups)
     {
-
       var roleResource = new RbacRole(group.GroupName.ToLowerInvariant().Dasherize(), new()
       {
         Name = group.GroupName,

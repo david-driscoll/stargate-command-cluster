@@ -105,7 +105,6 @@ public class ClusterApplicationResources : ComponentResource
   static Output<(Provider Provider, ImmutableList<ApplicationDefinition> Applications)> GetApplications(
     Input<(Kubernetes Client, Provider Provider)> input)
   {
-    var client = input.Apply(z => z.Client);
     return input.Apply(async x =>
     {
       var (clusterClient, provider) = x;
@@ -117,6 +116,7 @@ public class ClusterApplicationResources : ComponentResource
       {
         var result = await clusterClient.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>(
           "driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions");
+        new { Namespace = ns.Metadata.Name, result.Items }.Dump();
         foreach (var definition in result.Items)
         {
           var spec = definition.Spec;

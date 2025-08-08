@@ -12,3 +12,6 @@ data:
   pgpass: "{{ .hostname }}:{{ .port }}:{{ .database }}:{{ .username }}:{{ .password }}"
   jdbc-uri: "jdbc:postgresql://{{ .hostname }}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}"
   uri: "postgresql://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}/{{ .database }}"
+  public-hostname: "${APP}.${CLUSTER_DOMAIN}"
+  public-jdbc-uri: "jdbc:postgresql://${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}"
+  public-uri: "postgresql://{{ .username }}:{{ .password }}@${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}"

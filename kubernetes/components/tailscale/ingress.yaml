@@ -6,16 +6,15 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
     external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-    kubernetes.io/ingress.class: internal
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/tailnet-ip: "${TAILSCALE_IP}"
 spec:
+  ingressClassName: tailscale
   defaultBackend:
     service:
       name: ${APP}
       port:
         name: "${TAILSCALE_PORT:=http}"
-  ingressClassName: tailscale
   tls:
     - hosts:
         - ${TAILSCALE_HOST:=${APP}}

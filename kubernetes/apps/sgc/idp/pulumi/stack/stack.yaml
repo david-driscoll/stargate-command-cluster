@@ -13,12 +13,12 @@ spec:
       name: flux-system
     dir: kubernetes/apps/sgc/idp/pulumi
   stack: ${APP}
-  # resyncFrequencySeconds: 300
+  resyncFrequencySeconds: 30
   backend: postgres://postgres-rw.database.svc.cluster.local
-  # refresh: true
-  # continueResyncOnCommitMatch: true
-  # destroyOnFinalize: true
-  # workspaceReclaimPolicy: Delete
+  refresh: true
+  continueResyncOnCommitMatch: true
+  destroyOnFinalize: true
+  workspaceReclaimPolicy: Delete
   envRefs:
     HOME:
       type: Literal

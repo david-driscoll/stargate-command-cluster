@@ -5,7 +5,7 @@ kind: OCIRepository
 metadata:
   name: tofu-controller
 spec:
-  interval: 5m
+  interval: 1h
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
@@ -22,7 +22,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: tofu-controller
-  maxHistory: 3
   maxHistory: 3
   interval: 1h
   timeout: 5m

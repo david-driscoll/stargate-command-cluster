@@ -15,7 +15,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   sourceRef:
     kind: GitRepository
@@ -38,7 +37,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   sourceRef:
     kind: GitRepository
@@ -71,7 +69,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   sourceRef:
     kind: GitRepository

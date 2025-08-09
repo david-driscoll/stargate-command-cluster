@@ -20,7 +20,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   # the config can take a while to restore
   timeout: 1h
   sourceRef:
@@ -59,7 +58,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   sourceRef:
     kind: GitRepository

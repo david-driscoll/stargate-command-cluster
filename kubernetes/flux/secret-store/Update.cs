@@ -6,20 +6,20 @@
 #:package Spectre.Console.Json@0.50.0
 #:package Dumpify@0.6.6
 
-using Spectre.Console;
-using Spectre.Console.Json;
 using System.Reflection;
-using Spectre.Console.Advanced;
+using System.Text;
+using System.Text.RegularExpressions;
 using Dumpify;
+using gfs.YamlDotNet.YamlPath;
+using Spectre.Console;
+using Spectre.Console.Advanced;
+using Spectre.Console.Json;
 using YamlDotNet;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.RepresentationModel;
-using System.Text;
-using System.Text.RegularExpressions;
-using gfs.YamlDotNet.YamlPath;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 var template = """
 ---
@@ -41,7 +41,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   sourceRef:
     kind: GitRepository

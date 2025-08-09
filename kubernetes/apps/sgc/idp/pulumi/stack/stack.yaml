@@ -95,6 +95,6 @@ spec:
         key: url
   workspaceTemplate:
     spec:
-      image: daviddriscoll/pulumi:latest
+      image: daviddriscoll/pulumi:latest@sha256:86298e4a49b93d13738aa736fcc622e711214afad01346eb60c2f701fbd30a27
       # pulumiLogLevel: 11
 

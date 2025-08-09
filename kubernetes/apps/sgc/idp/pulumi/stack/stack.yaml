@@ -13,11 +13,12 @@ spec:
       name: flux-system
     dir: kubernetes/apps/sgc/idp/pulumi
   stack: ${APP}
-  resyncFrequencySeconds: 300
+  # resyncFrequencySeconds: 300
   backend: postgres://postgres-rw.database.svc.cluster.local
-  refresh: true
-  destroyOnFinalize: true
-  workspaceReclaimPolicy: Delete
+  # refresh: true
+  # continueResyncOnCommitMatch: true
+  # destroyOnFinalize: true
+  # workspaceReclaimPolicy: Delete
   envRefs:
     USER:
       type: Literal
@@ -54,6 +55,11 @@ spec:
         name: pulumi-operator-postgres
         key: database
   secretsRef:
+    github:token:
+      type: Secret
+      secret:
+        name: pulumi-operator-github
+        key: credential
     app:cluster_sgc:
       type: Secret
       secret:

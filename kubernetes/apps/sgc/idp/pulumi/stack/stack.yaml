@@ -22,6 +22,11 @@ spec:
       type: Literal
       literal:
         value: pulumi
+    GITHUB_TOKEN:
+      type: Secret
+      secret:
+        name: pulumi-operator-github
+        key: credential
     PGUSER:
       type: Secret
       secret:

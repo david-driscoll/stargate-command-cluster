@@ -12,16 +12,26 @@ using Pulumi.Authentik;
 using Riok.Mapperly.Abstractions;
 
 [Mapper(AllowNullPropertyAssignment = false)]
-static partial class Mappings
+partial class Mappings
 {
-  public static KumaUptimeResourceConfigArgs MapMonitor(string clusterName, ApplicationDefinition definition)
+  private readonly ClusterApplicationResources.Args _args;
+  private readonly IDictionary<string, string> _resourceNames;
+
+  public Mappings(ClusterApplicationResources.Args args, IDictionary<string, string> resourceNames)
+  {
+    _args = args;
+    _resourceNames = resourceNames;
+  }
+
+  public KumaUptimeResourceConfigArgs MapMonitor(ApplicationDefinition definition)
   {
     Debug.Assert(definition.Spec.Uptime != null, "definition.Uptime != null");
-    var args = new KumaUptimeResourceConfigArgs()
+    var args = new KumaUptimeResourceConfigArgs
     {
       Name = PostfixTitle(definition.Spec.Name),
       Active = true,
     };
+
     switch (definition.Spec.Uptime)
     {
       case { Dns: { } dns }:
@@ -97,72 +107,126 @@ static partial class Mappings
     return args;
   }
 
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DnsUptime uptime);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DnsUptime uptime);
 
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, HttpUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PingUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DockerUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GamedigUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GroupUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GrpcKeywordUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, JsonQueryUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, KafkaProducerUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, KeywordUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MongoDbUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MqttUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MysqlUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PortUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PostgresUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PushUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RadiusUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RealBrowserUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RedisUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, SteamUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, SqlServerUptime uptime);
-  public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, TailscalePingUptime uptime);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, HttpUptime uptime);
 
-  public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
-  public static partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);
-  public static partial AuthentikProviderScim MapToScim(AuthentikSpec spec);
-  public static partial AuthentikProviderSsf MapToSsf(AuthentikSpec spec);
-  public static partial AuthentikProviderProxy MapToProxy(AuthentikSpec spec);
-  public static partial AuthentikProviderRadius MapToRadius(AuthentikSpec spec);
-  public static partial AuthentikProviderRac MapToRac(AuthentikSpec spec);
-  public static partial AuthentikProviderLdap MapToLdap(AuthentikSpec spec);
-  public static partial AuthentikProviderMicrosoftEntra MapToMicrosoftEntra(AuthentikSpec spec);
-  public static partial AuthentikProviderGoogleWorkspace MapToGoogleWorkspace(AuthentikSpec spec);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PingUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderProxy instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DockerUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args, AuthentikProviderOauth2 instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, AuthentikProviderSaml instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GamedigUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, AuthentikProviderLdap instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GroupUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, AuthentikProviderSaml instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, GrpcKeywordUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, AuthentikProviderRac instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, JsonQueryUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args, AuthentikProviderRadius instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, KafkaProducerUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, AuthentikProviderSsf instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, KeywordUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, AuthentikProviderScim instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MongoDbUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args, AuthentikProviderMicrosoftEntra instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MqttUptime uptime);
 
-  public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args, ClusterApplicationResources.Args instance);
-  public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args, AuthentikProviderGoogleWorkspace instance);
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, MysqlUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PortUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PostgresUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, PushUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RadiusUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RealBrowserUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, RedisUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, SteamUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, SqlServerUptime uptime);
+
+  [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
+  public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, TailscalePingUptime uptime);
+
+  public partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
+  public partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);
+  public partial AuthentikProviderScim MapToScim(AuthentikSpec spec);
+  public partial AuthentikProviderSsf MapToSsf(AuthentikSpec spec);
+  public partial AuthentikProviderProxy MapToProxy(AuthentikSpec spec);
+  public partial AuthentikProviderRadius MapToRadius(AuthentikSpec spec);
+  public partial AuthentikProviderRac MapToRac(AuthentikSpec spec);
+  public partial AuthentikProviderLdap MapToLdap(AuthentikSpec spec);
+  public partial AuthentikProviderMicrosoftEntra MapToMicrosoftEntra(AuthentikSpec spec);
+  public partial AuthentikProviderGoogleWorkspace MapToGoogleWorkspace(AuthentikSpec spec);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args,
+    ClusterApplicationResources.Args instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderProxy instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args,
+    ClusterApplicationResources.Args instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args, AuthentikProviderOauth2 instance);
+  public partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, ClusterApplicationResources.Args instance);
+  public partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, AuthentikProviderSaml instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, ClusterApplicationResources.Args instance);
+  public partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, AuthentikProviderLdap instance);
+
+  public partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, ClusterApplicationResources.Args instance);
+  public partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, AuthentikProviderSaml instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, ClusterApplicationResources.Args instance);
+  public partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, AuthentikProviderRac instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args,
+    ClusterApplicationResources.Args instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args, AuthentikProviderRadius instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, ClusterApplicationResources.Args instance);
+  public partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, AuthentikProviderSsf instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, ClusterApplicationResources.Args instance);
+  public partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, AuthentikProviderScim instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args,
+    ClusterApplicationResources.Args instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args,
+    AuthentikProviderMicrosoftEntra instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args,
+    ClusterApplicationResources.Args instance);
+
+  public partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args,
+    AuthentikProviderGoogleWorkspace instance);
 
   public static ApplicationDefinitionUptime MapFromUptimeData(IDictionary<string, string> data)
   {
@@ -208,11 +272,15 @@ static partial class Mappings
   }
 
 
-  public static string ResourceName(ClusterApplicationResources.Args args, ApplicationDefinition resource) =>
-    PostfixName( $"{Prefix(args, resource)}-{resource.Metadata.Name}");
+  public string ResourceName(ApplicationDefinition resource)
+  {
+    return _resourceNames[resource.Metadata.Name] = $"{Prefix(resource.Namespace())}-{resource.Metadata.Name}";
+  }
 
-  private static string Prefix(ClusterApplicationResources.Args args, ApplicationDefinition resource) =>
-    resource.Namespace() is { } ns && ns == args.ClusterName ? args.ClusterName : $"{args.ClusterName}-{resource.Namespace()}";
+  private string Prefix(string @namespace) =>
+    @namespace is { } ns && ns == _args.ClusterName
+      ? _args.ClusterName
+      : $"{_args.ClusterName}-{@namespace}";
 
   private static Input<string> MapToStringInput(string value) => value;
   private static InputList<string> MapToStringInput(ImmutableList<string> value) => [..value];
@@ -220,6 +288,20 @@ static partial class Mappings
   private static Input<bool>? MapToBoolInput(bool? value) => value.HasValue ? (Input<bool>?)value : null;
   private static Input<int>? MapToIntInput(int? value) => value.HasValue ? (Input<int>?)value : null;
 
-  public static string PostfixName(string name) => (OperatingSystem.IsLinux() ? name : $"{name}-test").ToLowerInvariant().Dehumanize().Underscore().Dasherize();
+  [UserMapping(Default = false)]
+  private Input<string>? MapToParentName(string? value)
+  {
+    if (value is null)
+      return null;
+
+    return Output.Create(value)
+      .Apply(parentName => !_resourceNames.TryGetValue(parentName, out var resourceName) ? parentName : resourceName);
+  }
+
+  [UserMapping(Ignore = true)]
+  public static string PostfixName(string name) => (OperatingSystem.IsLinux() ? name : $"{name}-test")
+    .ToLowerInvariant().Dehumanize().Underscore().Dasherize();
+
+  [UserMapping(Ignore = true)]
   public static string PostfixTitle(string name) => OperatingSystem.IsLinux() ? name : $"[Test] {name}";
 }

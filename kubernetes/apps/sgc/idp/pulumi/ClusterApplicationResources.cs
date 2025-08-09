@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using authentik.Models;
+using Humanizer;
 using k8s;
 using k8s.Models;
 using Pulumi;
@@ -13,6 +14,9 @@ using Provider = Pulumi.Kubernetes.Provider;
 
 public class ClusterApplicationResources : ComponentResource
 {
+  private readonly Mappings _mapper;
+  private readonly IDictionary<string, string> _resourceNames = new Dictionary<string, string>();
+
   public class Args : ResourceArgs
   {
     public required string ClusterName { get; set; }
@@ -27,8 +31,10 @@ public class ClusterApplicationResources : ComponentResource
 
   public ClusterApplicationResources(string name, Args args,
     ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources",
-    Mappings.PostfixName(name), args, options)
+    name, args, options)
   {
+    _mapper = new Mappings(args, _resourceNames);
+    var kumaResources = new List<(ApplicationDefinition app, KumaUptimeResourceConfigArgs config)>();
     var outpostProviders = Output.Create<ImmutableArray<double>>([]);
     var applications = GetApplications(args.RemoteCluster)
       .Apply(data =>
@@ -46,24 +52,13 @@ public class ClusterApplicationResources : ComponentResource
 
           if (app.Spec.Uptime is { })
           {
-            var resourceName = Mappings.PostfixName(Mappings.ResourceName(args, app));
-            _ = new CustomResource(resourceName, new KumaUptimeResourceArgs()
-            {
-              Metadata = new ObjectMetaArgs()
-              {
-                Name = resourceName,
-                Namespace = "observability",
-                Labels = new Dictionary<string, string>
-                {
-                  ["driscoll.dev/cluster"] = args.ClusterName
-                }
-              },
-              Spec = new KumaUptimeResourceSpecArgs { Config = Mappings.MapMonitor(args.ClusterName, app) }
-            }, new CustomResourceOptions() { Parent = this, Provider = kubernetesProvider });
+            // ya ya state...
+            _mapper.ResourceName(app);
+            kumaResources.Add((app, _mapper.MapMonitor(app)));
           }
         }
 
-        return applications;
+        return (kubernetesProvider, applications);
       });
 
 
@@ -71,12 +66,12 @@ public class ClusterApplicationResources : ComponentResource
     {
       if (outpostProviders.Any())
       {
-        var outpostName = Mappings.PostfixName($"ak-outpost-{args.ClusterName}");
+        var outpostName = $"ak-outpost-{args.ClusterName}";
         var outpost = new Outpost(outpostName, new()
         {
           ServiceConnection = args.ServiceConnection.Id,
           Type = "proxy",
-          Name = $"Outpost for {Mappings.PostfixName(args.ClusterTitle)}",
+          Name = $"Outpost for {args.ClusterTitle}",
           Config = Output.JsonSerialize(Output.Create(new
           {
             object_naming_template = $"ak-outpost-{args.ClusterName}",
@@ -90,9 +85,42 @@ public class ClusterApplicationResources : ComponentResource
 
       return outpostProviders;
     });
+
+    _ = applications.Apply(a =>
+    {
+      var kubernetesProvider = a.kubernetesProvider;
+      foreach (var (app, config) in kumaResources)
+      {
+        var resourceName = _mapper.ResourceName(app);
+        if (config.ParentName is { })
+        {
+          config.ParentName = config.ParentName.Apply(parentName =>
+          {
+            if (!_resourceNames.TryGetValue(parentName, out var resourceName))
+              return parentName;
+            return resourceName;
+          });
+        }
+        _ = new CustomResource(resourceName, new KumaUptimeResourceArgs()
+        {
+          Metadata = new ObjectMetaArgs()
+          {
+            Name = resourceName,
+            Namespace = "observability",
+            Labels = new Dictionary<string, string>
+            {
+              ["driscoll.dev/cluster"] = args.ClusterName
+            }
+          },
+          Spec = new KumaUptimeResourceSpecArgs { Config = config }
+        }, new CustomResourceOptions() { Parent = this, Provider = kubernetesProvider });
+      }
+
+      return a.kubernetesProvider;
+    });
   }
 
-  static Output<(Provider Provider, ImmutableList<ApplicationDefinition> Applications)> GetApplications(
+  Output<(Provider Provider, ImmutableList<ApplicationDefinition> Applications)> GetApplications(
     Input<(Kubernetes Client, Provider Provider)> input)
   {
     return input.Apply(async x =>
@@ -134,19 +162,19 @@ public class ClusterApplicationResources : ComponentResource
 
             ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
             {
-              "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = Mappings.MapToSaml(authentikSpec) },
-              "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = Mappings.MapToOauth2(authentikSpec) },
-              "scim" => new ApplicationDefinitionAuthentik { ProviderScim = Mappings.MapToScim(authentikSpec) },
-              "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = Mappings.MapToSsf(authentikSpec) },
-              "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = Mappings.MapToProxy(authentikSpec) },
-              "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = Mappings.MapToRadius(authentikSpec) },
-              "rac" => new ApplicationDefinitionAuthentik { ProviderRac = Mappings.MapToRac(authentikSpec) },
-              "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = Mappings.MapToLdap(authentikSpec) },
+              "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = _mapper.MapToSaml(authentikSpec) },
+              "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = _mapper.MapToOauth2(authentikSpec) },
+              "scim" => new ApplicationDefinitionAuthentik { ProviderScim = _mapper.MapToScim(authentikSpec) },
+              "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = _mapper.MapToSsf(authentikSpec) },
+              "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = _mapper.MapToProxy(authentikSpec) },
+              "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = _mapper.MapToRadius(authentikSpec) },
+              "rac" => new ApplicationDefinitionAuthentik { ProviderRac = _mapper.MapToRac(authentikSpec) },
+              "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = _mapper.MapToLdap(authentikSpec) },
               "microsoftEntra" => new ApplicationDefinitionAuthentik
-                { ProviderMicrosoftEntra = Mappings.MapToMicrosoftEntra(authentikSpec) },
+                { ProviderMicrosoftEntra = _mapper.MapToMicrosoftEntra(authentikSpec) },
               "googleWorkspace" => new ApplicationDefinitionAuthentik
               {
-                ProviderGoogleWorkspace = Mappings.MapToGoogleWorkspace(authentikSpec)
+                ProviderGoogleWorkspace = _mapper.MapToGoogleWorkspace(authentikSpec)
               },
               _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
                 nameof(authentikSpec))
@@ -189,8 +217,8 @@ public class ClusterApplicationResources : ComponentResource
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
-    var slug = Mappings.PostfixName(definition.Spec.Slug ?? $"{args.ClusterName}-{definition.Spec.Name}");
-    var resourceName = Mappings.PostfixName(Mappings.ResourceName(args, definition));
+    var slug = definition.Spec.Slug ?? ($"{args.ClusterName}-{definition.Spec.Name}").Dehumanize().Underscore().Dasherize();
+    var resourceName = _mapper.ResourceName(definition);
     var options = new CustomResourceOptions() { Parent = this };
     Pulumi.CustomResource provider;
     switch (authentik)
@@ -201,8 +229,8 @@ public class ClusterApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, proxy);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, proxy);
         provider = new ProviderProxy(resourceName, providerArgs, options);
         break;
       }
@@ -210,10 +238,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderOauth2Args()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, oauth2);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, oauth2);
         provider = new ProviderOauth2(resourceName, providerArgs, options);
         break;
       }
@@ -221,10 +249,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderLdapArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, ldap);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, ldap);
         provider = new ProviderLdap(resourceName, providerArgs, options);
         break;
       }
@@ -232,10 +260,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderSamlArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, saml);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, saml);
         provider = new ProviderSaml(resourceName, providerArgs, options);
         break;
       }
@@ -243,10 +271,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderRacArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, rac);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, rac);
         provider = new ProviderRac(resourceName, providerArgs, options);
         break;
       }
@@ -254,10 +282,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderRadiusArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, radius);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, radius);
         provider = new ProviderRadius(resourceName, providerArgs, options);
         break;
       }
@@ -265,10 +293,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderSsfArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, ssf);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, ssf);
         provider = new ProviderSsf(resourceName, providerArgs, options);
         break;
       }
@@ -276,10 +304,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderScimArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, scim);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, scim);
         provider = new ProviderScim(resourceName, providerArgs, options);
         break;
       }
@@ -287,10 +315,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderMicrosoftEntraArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, microsoftEntra);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, microsoftEntra);
         provider = new ProviderMicrosoftEntra(resourceName, providerArgs, options);
         break;
       }
@@ -298,10 +326,10 @@ public class ClusterApplicationResources : ComponentResource
       {
         var providerArgs = new ProviderGoogleWorkspaceArgs()
         {
-           Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({args.ClusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
-        Mappings.MapProviderArgs(providerArgs, googleWorkspace);
+        _mapper.MapProviderArgs(providerArgs, args);
+        _mapper.MapProviderArgs(providerArgs, googleWorkspace);
         provider = new ProviderGoogleWorkspace(resourceName, providerArgs, options);
         break;
       }

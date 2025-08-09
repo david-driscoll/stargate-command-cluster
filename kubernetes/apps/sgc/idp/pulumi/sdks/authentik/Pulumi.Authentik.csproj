@@ -8,7 +8,6 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/goauthentik/terraform-provider-authentik</RepositoryUrl>
-    <PackageIcon>logo.png</PackageIcon>
     <Version>2025.6.0</Version>
 
     <TargetFramework>net6.0</TargetFramework>
@@ -46,16 +45,6 @@
 
   <ItemGroup>
     <PackageReference Include="Pulumi" Version="[3.76.1.0,4)" />
-  </ItemGroup>
-
-  <ItemGroup>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>

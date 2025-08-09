@@ -8,7 +8,6 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://pulumi.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pulumi/pulumi-kubernetes</RepositoryUrl>
-    <PackageIcon>logo.png</PackageIcon>
     <Version>0.0.0-dev</Version>
 
     <TargetFramework>net6.0</TargetFramework>
@@ -48,16 +47,6 @@
     <PackageReference Include="Glob" Version="1.1.5" />
     <PackageReference Include="Pulumi" Version="3.*" />
     <PackageReference Include="Pulumi.Kubernetes" Version="4.18.0" ExcludeAssets="contentFiles" />
-  </ItemGroup>
-
-  <ItemGroup>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>

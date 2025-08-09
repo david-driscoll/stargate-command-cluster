@@ -20,6 +20,14 @@ spec:
   # destroyOnFinalize: true
   # workspaceReclaimPolicy: Delete
   envRefs:
+    HOME:
+      type: Literal
+      literal:
+        value: /tmp/.pulumi
+    PULUMI_HOME:
+      type: Literal
+      literal:
+        value: /tmp/.pulumi
     USER:
       type: Literal
       literal:

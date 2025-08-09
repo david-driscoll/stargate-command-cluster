@@ -54,8 +54,8 @@ return await Deployment.RunAsync(async () =>
   {
     var secrets = new Pulumi.Config();
     postfix = "";
-    sgc = CreateClientFromConfig(secrets, "app:cluster_sgc");
-    equestria = CreateClientFromConfig(secrets, "app:cluster_equestria");
+    sgc = CreateClientFromConfig(secrets, "cluster_sgc");
+    equestria = CreateClientFromConfig(secrets, "cluster_equestria");
   }
   else
   {

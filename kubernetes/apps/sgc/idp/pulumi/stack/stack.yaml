@@ -90,6 +90,6 @@ spec:
         key: url
   workspaceTemplate:
     spec:
-      image: pulumi/pulumi:3.188.0-nonroot
+      image: daviddriscoll/pulumi:latest
       pulumiLogLevel: 11
 

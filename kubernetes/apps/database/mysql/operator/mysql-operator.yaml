@@ -5,7 +5,7 @@ kind: HelmRepository
 metadata:
   name: mysql-charts
 spec:
-  interval: 45m
+  interval: 1h
   url: https://mysql.github.io/mysql-operator/
   timeout: 3m
 ---

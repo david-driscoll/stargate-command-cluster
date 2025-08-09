@@ -5,7 +5,7 @@ kind: HelmRepository
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 2h
+  interval: 1h
   url: https://cloudnative-pg.github.io/charts
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
@@ -14,7 +14,7 @@ kind: HelmRelease
 metadata:
   name: &app postgres
 spec:
-  interval: 15m
+  interval: 1h
   chart:
     spec:
       chart: cluster

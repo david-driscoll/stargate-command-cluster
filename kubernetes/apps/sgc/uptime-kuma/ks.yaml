@@ -15,7 +15,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   dependsOn:
     - name: volsync
@@ -49,7 +48,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   dependsOn:
     - name: uptime-kuma
@@ -82,7 +80,6 @@ spec:
   wait: true
   force: true
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   dependsOn:
     - name: uptime-kuma

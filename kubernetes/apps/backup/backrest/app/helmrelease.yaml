@@ -9,7 +9,7 @@ spec:
     kind: OCIRepository
     name: app-template
   maxHistory: 3
-  interval: 15m
+  interval: 1h
   timeout: 5m
   install:
     createNamespace: true

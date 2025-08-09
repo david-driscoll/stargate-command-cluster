@@ -72,8 +72,8 @@ return await Deployment.RunAsync(async () =>
   // tailscale dns needs to be fixed
   var tailscaleSource = new SourceOauth("tailscale", new()
   {
-    Name = "Tailscale",
-    Slug = "tailscale",
+    Name = Mappings.PostfixTitle("Tailscale"),
+    Slug = Mappings.PostfixName("tailscale"),
     ProviderType = "openidconnect",
     Enabled = true,
     AuthenticationFlow = null,
@@ -88,7 +88,7 @@ return await Deployment.RunAsync(async () =>
 
   static ClusterApplicationResources CreateApplicationResources(ClientContext uptimeCluster, ClientContext remoteCluster, string clusterName, string clusterTitle)
   {
-    return new ClusterApplicationResources(Mappings.PostfixName(clusterName), new()
+    return new ClusterApplicationResources(clusterName, new()
     {
       ClusterName = Mappings.PostfixName(clusterName),
       ClusterTitle = Mappings.PostfixTitle(clusterTitle),
@@ -99,7 +99,7 @@ return await Deployment.RunAsync(async () =>
       // AuthenticationFlow = ,
       ServiceConnection = new ServiceConnectionKubernetes(Mappings.PostfixName(clusterName), new()
       {
-        Name = clusterTitle,
+        Name = Mappings.PostfixTitle(clusterTitle),
         VerifySsl = true,
         Local = true,
       })

@@ -15,5 +15,5 @@ spec:
   routes:
   - match: HostSNI("*")
     services:
-    - name: postgres
+    - name: postgres-rw
       port: 5432

@@ -21,7 +21,7 @@ return await Deployment.RunAsync(async () =>
   static ClientContext CreateClientFromConfig(Pulumi.Config config,
     string key, string? context = null)
   {
-    var kubeConfig = config.GetSecret(key);
+    var kubeConfig = config.RequireSecret(key);
     return kubeConfig == null ? throw new ArgumentException($"Kubeconfig for {key} not found in Pulumi config.") : CreateClientAndProvider(kubeConfig, key.Replace(":", "_"), context);
   }
 

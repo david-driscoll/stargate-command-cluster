@@ -33,32 +33,32 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app authentik-pulumi
-#   namespace: &namespace sgc
-# spec:
-#   targetNamespace: *namespace
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   dependsOn:
-#     - name: authentik
-#       namespace: *namespace
-#   path: ./kubernetes/apps/sgc/idp/pulumi/stack
-#   prune: true
-#   wait: true
-#   force: true
-#   interval: 1h
-#   timeout: 5m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       NAMESPACE: *namespace
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app authentik-pulumi
+  namespace: &namespace sgc
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: authentik
+      namespace: *namespace
+  path: ./kubernetes/apps/sgc/idp/pulumi/stack
+  prune: true
+  wait: true
+  force: true
+  interval: 1h
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace

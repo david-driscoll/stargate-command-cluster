@@ -87,7 +87,7 @@ spec:
       type: Secret
       secret:
         name: authentik-secret
-        key: token
+        key: credential
     authentik:url:
       type: Secret
       secret:

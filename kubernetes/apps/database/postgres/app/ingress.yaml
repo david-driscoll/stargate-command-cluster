@@ -11,12 +11,8 @@ metadata:
 spec:
   entryPoints:
   - postgres
-  tls: {}
   routes:
-  - match: HostSNI(`*`)
+  - match: HostSNI("*")
     services:
-    - name: ${APP}-rw
-      port: postgres
-    middlewares:
-    - name: internal-network
-      namespace: network
+    - name: postgres
+      port: 5432

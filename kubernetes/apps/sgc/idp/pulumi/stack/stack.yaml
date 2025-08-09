@@ -73,12 +73,12 @@ spec:
       secret:
         name: pulumi-operator-github
         key: credential
-    app:cluster_sgc:
+    ${APP}:cluster_sgc:
       type: Secret
       secret:
         name: ${APP}-${CLUSTER_CNAME}-kubeconfig
         key: kubeconfig.json
-    app:cluster_equestria:
+    ${APP}:cluster_equestria:
       type: Secret
       secret:
         name: ${APP}-equestria-kubeconfig
@@ -96,5 +96,5 @@ spec:
   workspaceTemplate:
     spec:
       image: daviddriscoll/pulumi:latest
-      pulumiLogLevel: 11
+      # pulumiLogLevel: 11
 

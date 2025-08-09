@@ -1,4 +1,4 @@
-name: app
+name: authentik-pulumi
 description: Authentik
 runtime: dotnet
 backend:

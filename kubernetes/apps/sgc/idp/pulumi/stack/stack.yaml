@@ -91,3 +91,4 @@ spec:
   workspaceTemplate:
     spec:
       image: pulumi/pulumi-dotnet:3.188.0-debian@sha256:dd79c89417e82036a07a59217c8b2e7c32d682bb463d807b787de30df9c11f48
+      pulumiLogLevel: 11

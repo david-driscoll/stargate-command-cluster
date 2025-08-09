@@ -11,9 +11,7 @@ metadata:
 spec:
   entryPoints:
   - postgres
-  tls:
-    store:
-      name: default
+  tls: {}
   routes:
   - match: HostSNI(`*`)
     services:

@@ -1,4 +1,5 @@
 using k8s;
+using k8s.Models;
 using Models.ApplicationDefinition;
 using Models.Authentik;
 using Models.UptimeKuma;
@@ -9,6 +10,16 @@ namespace Models;
 [Mapper(AllowNullPropertyAssignment = false)]
 public static partial class ModelMappings
 {
+  public static (string ClusterName, string ClusterTitle) GetClusterNameAndTitle<T>(this IMetadata<T> definition)
+    where T : V1ObjectMeta
+  {
+    var clusterName = definition.Metadata.Labels?["driscoll.dev/cluster"] ??
+                      throw new ArgumentException("Cluster name not found in labels.");
+    var clusterTitle = definition.Metadata.Labels?["driscoll.dev/clusterTitle"] ??
+                       throw new ArgumentException("Cluster title not found in labels.");
+
+    return (clusterName, clusterTitle);
+  }
 
   public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
   public static partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);
@@ -63,5 +74,4 @@ public static partial class ModelMappings
       _ => throw new ArgumentOutOfRangeException()
     };
   }
-
 }

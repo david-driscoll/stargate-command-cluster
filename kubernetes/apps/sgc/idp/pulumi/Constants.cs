@@ -4,6 +4,11 @@ namespace applications;
 
 static class Constants
 {
+  public class Groups
+  {
+    public const string System = "System";
+    public const string Applications = "Applications";
+  }
   public class Roles
   {
     public const string Admin = "Admin";

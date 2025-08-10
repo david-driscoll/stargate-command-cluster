@@ -5,7 +5,7 @@ using YamlDotNet.Serialization;
 
 namespace Models.UptimeKuma.Resources;
 
-public class KumaResourceList : KubernetesObject, IMetadata<V1ListMeta>
+public class KumaResourceList : KubernetesObject, IMetadata<V1ListMeta>, IKubernetesList<KumaResource>
 {
   public V1ListMeta Metadata { get; set; }
 

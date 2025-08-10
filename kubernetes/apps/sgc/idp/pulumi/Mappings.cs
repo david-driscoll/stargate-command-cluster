@@ -177,17 +177,6 @@ partial class Mappings
   [MapProperty("ParentName", nameof(KumaUptimeResourceConfigArgs.ParentName), Use = nameof(MapToParentName))]
   public partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, TailscalePingUptime uptime);
 
-  public partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
-  public partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);
-  public partial AuthentikProviderScim MapToScim(AuthentikSpec spec);
-  public partial AuthentikProviderSsf MapToSsf(AuthentikSpec spec);
-  public partial AuthentikProviderProxy MapToProxy(AuthentikSpec spec);
-  public partial AuthentikProviderRadius MapToRadius(AuthentikSpec spec);
-  public partial AuthentikProviderRac MapToRac(AuthentikSpec spec);
-  public partial AuthentikProviderLdap MapToLdap(AuthentikSpec spec);
-  public partial AuthentikProviderMicrosoftEntra MapToMicrosoftEntra(AuthentikSpec spec);
-  public partial AuthentikProviderGoogleWorkspace MapToGoogleWorkspace(AuthentikSpec spec);
-
   public partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args,
     ClusterApplicationResources.Args instance);
 

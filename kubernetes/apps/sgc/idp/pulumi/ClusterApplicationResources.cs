@@ -166,19 +166,19 @@ public class ClusterApplicationResources : ComponentResource
 
             ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
             {
-              "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = _mapper.MapToSaml(authentikSpec) },
-              "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = _mapper.MapToOauth2(authentikSpec) },
-              "scim" => new ApplicationDefinitionAuthentik { ProviderScim = _mapper.MapToScim(authentikSpec) },
-              "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = _mapper.MapToSsf(authentikSpec) },
-              "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = _mapper.MapToProxy(authentikSpec) },
-              "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = _mapper.MapToRadius(authentikSpec) },
-              "rac" => new ApplicationDefinitionAuthentik { ProviderRac = _mapper.MapToRac(authentikSpec) },
-              "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = _mapper.MapToLdap(authentikSpec) },
+              "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = ModelMappings.MapToSaml(authentikSpec) },
+              "oauth2" => new ApplicationDefinitionAuthentik { ProviderOauth2 = ModelMappings.MapToOauth2(authentikSpec) },
+              "scim" => new ApplicationDefinitionAuthentik { ProviderScim = ModelMappings.MapToScim(authentikSpec) },
+              "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = ModelMappings.MapToSsf(authentikSpec) },
+              "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = ModelMappings.MapToProxy(authentikSpec) },
+              "radius" => new ApplicationDefinitionAuthentik { ProviderRadius = ModelMappings.MapToRadius(authentikSpec) },
+              "rac" => new ApplicationDefinitionAuthentik { ProviderRac = ModelMappings.MapToRac(authentikSpec) },
+              "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = ModelMappings.MapToLdap(authentikSpec) },
               "microsoftEntra" => new ApplicationDefinitionAuthentik
-                { ProviderMicrosoftEntra = _mapper.MapToMicrosoftEntra(authentikSpec) },
+                { ProviderMicrosoftEntra = ModelMappings.MapToMicrosoftEntra(authentikSpec) },
               "googleWorkspace" => new ApplicationDefinitionAuthentik
               {
-                ProviderGoogleWorkspace = _mapper.MapToGoogleWorkspace(authentikSpec)
+                ProviderGoogleWorkspace = ModelMappings.MapToGoogleWorkspace(authentikSpec)
               },
               _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
                 nameof(authentikSpec))

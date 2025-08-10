@@ -16,9 +16,6 @@ spec:
   force: true
   interval: 1h
   timeout: 5m
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -46,8 +43,8 @@ spec:
   interval: 1h
   timeout: 5m
   dependsOn:
-    - name: volsync
-      namespace: volsync-system
+    - name: external-secrets
+      namespace: kube-system
   sourceRef:
     kind: GitRepository
     name: flux-system

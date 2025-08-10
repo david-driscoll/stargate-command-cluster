@@ -5,7 +5,7 @@ using YamlDotNet.Serialization;
 
 namespace Models.ApplicationDefinition;
 
-public class ClusterDefinitionList : KubernetesObject, IMetadata<V1ListMeta>
+public class ClusterDefinitionList : KubernetesObject, IMetadata<V1ListMeta>, IKubernetesList<ClusterDefinition>
 {
   public V1ListMeta Metadata { get; set; }
 

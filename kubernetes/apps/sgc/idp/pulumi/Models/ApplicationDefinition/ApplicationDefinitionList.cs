@@ -5,7 +5,7 @@ using YamlDotNet.Serialization;
 
 namespace Models.ApplicationDefinition;
 
-public class ApplicationDefinitionList : KubernetesObject, IMetadata<V1ListMeta>
+public class ApplicationDefinitionList : KubernetesObject, IMetadata<V1ListMeta>, IKubernetesList<ApplicationDefinition>
 {
   public V1ListMeta Metadata { get; set; }
 

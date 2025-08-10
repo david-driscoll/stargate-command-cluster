@@ -21,13 +21,13 @@ public static class PopulateCluster
     var applicationComparer = EqualityComparer<ApplicationDefinition>.Create((x, y) => x!.Metadata.Name == y!.Metadata.Name && x!.Metadata.Namespace == y!.Metadata.Namespace, x => HashCode.Combine(x.Metadata.Name, x.Metadata.Namespace));
 
     var localCluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
-    var clusters = (await localCluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1", "clusters")).Items.ToImmutableArray();
+    var clusters = (await localCluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1", "clusterdefinitions")).Items.ToImmutableArray();
     foreach (var cluster in clusters)
     {
       var secretName = cluster.Spec.Secret;
       try
       {
-        await SyncEntityWithCluster<ApplicationDefinitionList, ApplicationDefinition>(localCluster, cluster, "driscoll.dev", "v1", "applicationdefinitions", z => z.Metadata.Name, (remoteCluster, z) => MapApplicationDefinition(remoteCluster, cluster.Metadata.Name, z));
+        await SyncEntityWithCluster<ApplicationDefinitionList, ApplicationDefinition>(localCluster, cluster, "driscoll.dev", "v1", "applicationdefinitions", z => z.Metadata.Name, MapApplicationDefinition);
       }
       catch (Exception ex)
       {
@@ -37,12 +37,22 @@ public static class PopulateCluster
     }
   }
 
+  internal static async Task<ImmutableList<ApplicationDefinition>> GetApplications(Kubernetes client)
+  {
+    var builder = ImmutableList.CreateBuilder<ApplicationDefinition>();
+    foreach (var entity in (await client.CustomObjects.ListClusterCustomObjectAsync<ApplicationDefinitionList>("driscoll.dev", "v1", "applicationdefinitions")).Items)
+    {
+      builder.Add(await MapApplicationDefinition(client, entity));
+    }
+
+    return builder.ToImmutable();
+  }
   static async Task SyncEntityWithCluster<TList, TResult>(Kubernetes localCluster, ClusterDefinition cluster, string group, string version, string plural, Func<TResult, string> getName, Func<Kubernetes, TResult, ValueTask<TResult>> mapEntity)
   where TList : IKubernetesList<TResult>
   where TResult : KubernetesObject, IMetadata<V1ObjectMeta>
   {
     var externalSecret = await localCluster.ReadNamespacedSecretAsync(cluster.Spec.Secret, destinationNamespace);
-    var config = KubernetesClientConfiguration.LoadKubeConfig(new MemoryStream(externalSecret.Data["kubeconfig.json"]));
+    var config = await KubernetesClientConfiguration.LoadKubeConfigAsync(new MemoryStream(externalSecret.Data["kubeconfig.json"]));
     var remoteCluster = new Kubernetes(KubernetesClientConfiguration.BuildConfigFromConfigObject(config));
 
     var existingEntities = (await localCluster.CustomObjects.ListNamespacedCustomObjectAsync<TList>(group, version, destinationNamespace, plural, labelSelector: $"{rootDomain}.cluster={cluster}")).Items
@@ -52,6 +62,12 @@ public static class PopulateCluster
     var remoteEntitiesBuilder = ImmutableList.CreateBuilder<TResult>();
     foreach (var entity in (await remoteCluster.CustomObjects.ListClusterCustomObjectAsync<TList>(group, version, plural)).Items)
     {
+      entity.Metadata.Name = $"{cluster}-{entity.Metadata.Name}";
+      entity.Metadata.SetNamespace(destinationNamespace);
+      entity.Metadata.Labels ??= new Dictionary<string, string>();
+      entity.Metadata.Labels[$"{rootDomain}.cluster"] = cluster.Metadata.Name;
+      entity.Metadata.Labels[$"{rootDomain}.clusterTitle"] = cluster.Spec.Name;
+      entity.Metadata.ResourceVersion = null;
       remoteEntitiesBuilder.Add(await mapEntity(remoteCluster, entity));
     }
     var remoteEntities = remoteEntitiesBuilder.ToImmutable();
@@ -81,14 +97,9 @@ public static class PopulateCluster
   }
 
 
-  static async ValueTask<ApplicationDefinition> MapApplicationDefinition(Kubernetes remoteCluster, string cluster, ApplicationDefinition resource)
+  internal static async ValueTask<ApplicationDefinition> MapApplicationDefinition(Kubernetes remoteCluster, ApplicationDefinition resource)
   {
 
-    resource.Metadata.Name = $"{cluster}-{resource.Metadata.Name}";
-    resource.Metadata.SetNamespace(destinationNamespace);
-    resource.Metadata.Labels ??= new Dictionary<string, string>();
-    resource.Metadata.Labels[$"{rootDomain}.cluster"] = cluster;
-    resource.Metadata.ResourceVersion = null;
 
     var spec = resource.Spec;
     if (spec is { AuthentikFrom: { } authentikFrom })
@@ -133,7 +144,7 @@ public static class PopulateCluster
         _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
           nameof(authentikSpec))
       };
-      spec = spec with { Authentik = authentik };
+      spec = spec with { Authentik = authentik, AuthentikFrom = null};
     }
 
     if (spec is { UptimeFrom: { } uptimeFrom })
@@ -156,7 +167,7 @@ public static class PopulateCluster
         throw new ArgumentException($"Unknown AuthentikFrom type: {uptimeFrom.Type}");
       }
 
-      spec = spec with { Uptime = ModelMappings.MapFromUptimeData(data) };
+      spec = spec with { Uptime = ModelMappings.MapFromUptimeData(data), UptimeFrom = null };
     }
 
     resource.Spec = spec;

@@ -73,16 +73,6 @@ spec:
       secret:
         name: pulumi-operator-github
         key: credential
-    ${APP}:cluster_sgc:
-      type: Secret
-      secret:
-        name: ${APP}-${CLUSTER_CNAME}-kubeconfig
-        key: kubeconfig.json
-    ${APP}:cluster_equestria:
-      type: Secret
-      secret:
-        name: ${APP}-equestria-kubeconfig
-        key: kubeconfig.json
     authentik:token:
       type: Secret
       secret:

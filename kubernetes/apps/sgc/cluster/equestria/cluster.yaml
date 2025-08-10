@@ -6,4 +6,4 @@ metadata:
   name: equestria
 spec:
   name: Equestria
-  secret: equestria-definition-crds
+  secret: equestria-kubeconfig

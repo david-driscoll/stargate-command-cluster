@@ -48,6 +48,8 @@ spec:
   dependsOn:
     - name: authentik
       namespace: *namespace
+    - name: cluster-equestria
+      namespace: *namespace
   path: ./kubernetes/apps/sgc/idp/pulumi/stack
   prune: true
   wait: true

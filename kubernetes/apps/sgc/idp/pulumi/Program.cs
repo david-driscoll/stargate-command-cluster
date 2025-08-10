@@ -14,6 +14,10 @@ KubernetesJson.AddJsonOptions(options =>
 {
   options.Converters.Add(new YamlMemberConverterFactory());
 });
+if (OperatingSystem.IsLinux())
+{
+  await PopulateCluster.PopulateClusters();
+}
 return await Deployment.RunAsync(async () =>
 {
   // Add your resources here

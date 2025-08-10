@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using Pulumi;
 using Pulumi.Authentik;
-using static Mappings;
+using static applications.Mappings;
+
+namespace applications;
 
 class AuthentikGroups : Pulumi.ComponentResource
 {

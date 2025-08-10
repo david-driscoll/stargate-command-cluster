@@ -2,9 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 using System;
-using System.Collections.Immutable;
 
-namespace Pulumi.Uptimekuma
+namespace Pulumi.Uptimekuma.Config
 {
     public static class Config
     {

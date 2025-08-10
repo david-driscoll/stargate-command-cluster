@@ -1,6 +1,7 @@
 using Pulumi;
 using Pulumi.Authentik;
 
+namespace applications;
 
 static partial class Defaults
 {

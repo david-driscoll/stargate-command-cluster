@@ -1,5 +1,7 @@
 // TODO: Pull from tailscale???
 
+namespace applications;
+
 static class Constants
 {
   public class Roles

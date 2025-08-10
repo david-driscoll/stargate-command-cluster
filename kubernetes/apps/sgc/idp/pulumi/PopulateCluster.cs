@@ -10,6 +10,7 @@ using k8s;
 using k8s.Models;
 using Models;
 using Models.ApplicationDefinition;
+using Models.Authentik;
 
 public static class PopulateCluster
 {

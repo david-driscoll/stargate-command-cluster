@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdks", "sdks", "{665A7CC4-0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "authentik", "authentik", "{671B6C4E-F0E7-BB54-7EB4-274613C7ABC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi.Authentik", "sdks\authentik\Pulumi.Authentik.csproj", "{E34F1027-E711-464C-8793-CA866A39B36D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi.Authentik", "pulumi\sdks\authentik\Pulumi.Authentik.csproj", "{E34F1027-E711-464C-8793-CA866A39B36D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "uptimekuma", "uptimekuma", "{361827D4-094F-A999-347F-57924A17C1AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi.Uptimekuma", "sdks\uptimekuma\Pulumi.Uptimekuma.csproj", "{50138388-3E95-4D9A-9CEB-6043C9F59457}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi.Uptimekuma", "pulumi\sdks\uptimekuma\Pulumi.Uptimekuma.csproj", "{50138388-3E95-4D9A-9CEB-6043C9F59457}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "models", "models\models.csproj", "{3C8D308A-3789-450D-A2CD-E2F089C6A065}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "models", "pulumi\models\models.csproj", "{3C8D308A-3789-450D-A2CD-E2F089C6A065}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crds", "crds", "{5C975827-E6D0-BEA8-FBBC-81E7E43D8C36}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{C3E4FA8F-E7EA-A7D6-E22A-4277FA287FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi.Crds", "crds\dotnet\Pulumi.Crds.csproj", "{FE0B6B86-5B7F-48B1-82DC-0B3F68C4B42D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi.Crds", "pulumi\crds\dotnet\Pulumi.Crds.csproj", "{FE0B6B86-5B7F-48B1-82DC-0B3F68C4B42D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "applications", "applications.csproj", "{CA503AC2-587E-47A9-8218-9C169C4FFA4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "applications", "pulumi\applications.csproj", "{CA503AC2-587E-47A9-8218-9C169C4FFA4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,127 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.1.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kuma-sync
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 15m
+  timeout: 5m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        serviceAccount:
+          name: *app
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "*/10 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        pod:
+          securityContext:
+            runAsNonRoot: false
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          *app :
+            image:
+              repository: mcr.microsoft.com/dotnet/sdk
+              tag: 10.0-preview@sha256:3deb1cdd2ca8a1d63ee473d868c626e37f3f6629fef65263a60a714916d3da2d
+              pullPolicy: Always
+            securityContext:
+              readOnlyRootFilesystem: false
+            env:
+              TZ: "${TIMEZONE}"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                cpu: 2
+                memory: 2Gi
+            command:
+              - dotnet
+              - run
+              - /script/PopulateCluster.cs
+
+    persistence:
+      script:
+        type: configMap
+        name: ${APP}-config
+        globalMounts:
+          - path: /script/PopulateCluster.cs
+            subPath: PopulateCluster.cs
+        defaultMode: 493
+
+    defaultPodOptions:
+      securityContext:
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsNonRoot: false
+        seccompProfile:
+          type: RuntimeDefault
+      shareProcessNamespace: true
+
+    serviceAccount:
+      *app : {}
+    rbac:
+      roles:
+        *app :
+          type: ClusterRole
+          rules:
+            - apiGroups: ["autokuma.bigboot.dev"]
+              resources: ["*"]
+              verbs: ["list", "patch", "watch", "create", "delete"]
+            - apiGroups: ["driscoll.dev"]
+              resources: ["*"]
+              verbs: ["list", "watch"]
+            - apiGroups: ["driscoll.dev"]
+              resources: ["applicationdefinitions"]
+              verbs: ["patch", "create", "delete"]
+            - apiGroups: [""]
+              resources: ["namespaces", "configmaps", "secrets"]
+              verbs: ["get", "list"]
+      bindings:
+        *app :
+          type: ClusterRoleBinding
+          subjects:
+            - kind: ServiceAccount
+              name: *app
+              namespace: ${NAMESPACE}
+          roleRef:
+            kind: ClusterRole
+            name: *app
+            apiGroup: rbac.authorization.k8s.io
+    secrets:
+      *app :
+        type: kubernetes.io/service-account-token
+        annotations:
+          kubernetes.io/service-account.name: *app
+        stringData:
+          token: ""

@@ -34,8 +34,8 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       TAILSCALE_HOST: plex-sgc
-      VOLSYNC_CAPACITY: 60Gi
-      # VOLSYNC_STORAGECLASS: openebs-hostpath
+      VOLSYNC_CAPACITY: 100Gi
+      VOLSYNC_STORAGECLASS: longhorn-local
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

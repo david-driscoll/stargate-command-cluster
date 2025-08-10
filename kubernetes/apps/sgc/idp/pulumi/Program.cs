@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using authentik;
+using applications;
 using k8s;
 using Pulumi;
 using Pulumi.Authentik;
@@ -72,8 +72,8 @@ return await Deployment.RunAsync(async () =>
   // tailscale dns needs to be fixed
   var tailscaleSource = new SourceOauth("tailscale", new()
   {
-    Name = Mappings.PostfixTitle("Tailscale"),
-    Slug = Mappings.PostfixName("tailscale"),
+    Name = applications.Mappings.PostfixTitle("Tailscale"),
+    Slug = applications.Mappings.PostfixName("tailscale"),
     ProviderType = "openidconnect",
     Enabled = true,
     AuthenticationFlow = null,
@@ -90,16 +90,16 @@ return await Deployment.RunAsync(async () =>
   {
     return new ClusterApplicationResources(clusterName, new()
     {
-      ClusterName = Mappings.PostfixName(clusterName),
-      ClusterTitle = Mappings.PostfixTitle(clusterTitle),
+      ClusterName = applications.Mappings.PostfixName(clusterName),
+      ClusterTitle = applications.Mappings.PostfixTitle(clusterTitle),
       UptimeCluster = uptimeCluster.Apply(z => (z.Client, z.Provider)),
       RemoteCluster = remoteCluster.Apply(z => (z.Client, z.Provider)),
       InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
       AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
       // AuthenticationFlow = ,
-      ServiceConnection = new ServiceConnectionKubernetes(Mappings.PostfixName(clusterName), new()
+      ServiceConnection = new ServiceConnectionKubernetes(applications.Mappings.PostfixName(clusterName), new()
       {
-        Name = Mappings.PostfixTitle(clusterTitle),
+        Name = applications.Mappings.PostfixTitle(clusterTitle),
         VerifySsl = true,
         Local = true,
       })

@@ -2,15 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using authentik.Models;
 using Humanizer;
 using k8s;
 using k8s.Models;
+using Models;
+using Models.ApplicationDefinition;
+using Models.Authentik;
 using Pulumi;
 using Pulumi.Authentik;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
 using Provider = Pulumi.Kubernetes.Provider;
+
+namespace applications;
 
 public class ClusterApplicationResources : ComponentResource
 {

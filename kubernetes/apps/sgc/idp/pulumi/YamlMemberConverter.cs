@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using YamlDotNet.Serialization;
 
-namespace authentik;
+namespace applications;
 
 public class YamlMemberConverterFactory : JsonConverterFactory
 {
@@ -19,10 +19,10 @@ public class YamlMemberConverterFactory : JsonConverterFactory
 
   public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
   {
-    return (JsonConverter?)Activator.CreateInstance(typeof(YamlMemberConverter<>).MakeGenericType(typeToConvert));
+    return (JsonConverter?)Activator.CreateInstance(typeof(Converter<>).MakeGenericType(typeToConvert));
   }
 
-  class YamlMemberConverter<T> : JsonConverter<T> where T : new()
+  class Converter<T> : JsonConverter<T> where T : new()
   {
     private static readonly FrozenDictionary<string, PropertyInfo> properties = typeof(T)
       .GetProperties(BindingFlags.Public | BindingFlags.Instance)

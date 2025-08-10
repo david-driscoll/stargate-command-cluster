@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Immutable;
 
-namespace Pulumi.Authentik
+namespace Pulumi.Authentik.Config
 {
     public static class Config
     {

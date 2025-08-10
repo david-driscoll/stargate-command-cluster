@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
-using authentik.Models;
 using Humanizer;
 using k8s;
 using k8s.Models;
+using Models;
+using Models.ApplicationDefinition;
+using Models.Authentik;
+using Models.UptimeKuma;
 using Pulumi;
 using Pulumi.Authentik;
 using Riok.Mapperly.Abstractions;
+
+namespace applications;
 
 [Mapper(AllowNullPropertyAssignment = false)]
 partial class Mappings

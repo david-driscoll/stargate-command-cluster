@@ -1,6 +1,9 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: 
-kind: Kustomization
-resources:
-  - ./helmrelease.yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/cluster.schema.json
+apiVersion: driscoll.dev/v1
+kind: ClusterDefinition
+metadata:
+  name: equestria
+spec:
+  name: Equestria
+  secret: equestria-definition-crds

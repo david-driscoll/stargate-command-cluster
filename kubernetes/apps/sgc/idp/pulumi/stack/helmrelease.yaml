@@ -34,6 +34,7 @@ spec:
     rbac:
       roles:
         *app :
+          forceRename: *app
           type: ClusterRole
           rules:
             - apiGroups: ["driscoll.dev"]

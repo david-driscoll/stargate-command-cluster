@@ -19,4 +19,4 @@ spec:
       url: https://internal.${CLUSTER_DOMAIN}
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "${CLUSTER_CNAME}"
+      parent_name: "cluster"

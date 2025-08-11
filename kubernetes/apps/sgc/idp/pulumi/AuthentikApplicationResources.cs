@@ -29,7 +29,7 @@ public class AuthentikApplicationResources : ComponentResource
   }
 
   public AuthentikApplicationResources(Args args,
-    ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources",
+    ComponentResourceOptions? options = null) : base("custom:resource:AuthentikApplicationResources",
     "authentik-applications", args, options)
   {
     var outposts = Output.Create(ImmutableDictionary<string, OutpostArgs>.Empty);
@@ -48,7 +48,7 @@ public class AuthentikApplicationResources : ComponentResource
   {
     Debug.Assert(application.Spec.Authentik != null);
 
-    var (clusterName, clusterTitle) = application.GetClusterNameAndTitle();
+    var (clusterName, clusterTitle, ns) = application.GetClusterNameAndTitle();
     var authentikApp = CreateAuthentikApplication(args, application, application.Spec.Authentik);
     outposts = Output.Tuple(outposts, authentikApp.ProtocolProvider).Apply(async x =>
     {
@@ -114,7 +114,7 @@ public class AuthentikApplicationResources : ComponentResource
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
-    var (clusterName, clusterTitle) = definition.GetClusterNameAndTitle();
+    var (clusterName, clusterTitle, ns) = definition.GetClusterNameAndTitle();
     var slug = definition.Spec.Slug ??
                ($"{clusterName}-{definition.Spec.Name}").Dehumanize().Underscore().Dasherize();
     var resourceName = Mappings.ResourceName(definition);

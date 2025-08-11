@@ -10,15 +10,15 @@ namespace Models;
 [Mapper(AllowNullPropertyAssignment = false)]
 public static partial class ModelMappings
 {
-  public static (string ClusterName, string ClusterTitle) GetClusterNameAndTitle<T>(this IMetadata<T> definition)
+  public static (string ClusterName, string ClusterTitle, string Namespace) GetClusterNameAndTitle<T>(
+    this IMetadata<T> definition)
     where T : V1ObjectMeta
   {
-    var clusterName = definition.Metadata.Labels?["driscoll.dev/cluster"] ??
-                      throw new ArgumentException("Cluster name not found in labels.");
-    var clusterTitle = definition.Metadata.Labels?["driscoll.dev/clusterTitle"] ??
-                       throw new ArgumentException("Cluster title not found in labels.");
+    var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
+    var @namespace = definition.Metadata.Labels["driscoll.dev/namespace"];
+    var clusterTitle = definition.Metadata.Labels["driscoll.dev/clusterTitle"];
 
-    return (clusterName, clusterTitle);
+    return (clusterName, clusterTitle, @namespace);
   }
 
   public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);

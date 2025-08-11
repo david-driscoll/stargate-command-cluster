@@ -36,7 +36,6 @@ return await Deployment.RunAsync(async () =>
     }
     if (OperatingSystem.IsLinux())
     {
-      var secrets = new Config();
       cluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
     }
     else
@@ -57,6 +56,12 @@ return await Deployment.RunAsync(async () =>
     AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
     InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
     AuthenticationFlow = Defaults.Flows.AuthenticationFlow.Apply(z => z.Id),
+  });
+
+  _ = new KumaUptimeResources(new()
+  {
+    Cluster = cluster,
+    Groups = kumaGroups,
   });
 
   // tailscale dns needs to be fixed

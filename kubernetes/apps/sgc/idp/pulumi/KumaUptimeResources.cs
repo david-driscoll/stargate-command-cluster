@@ -54,15 +54,8 @@ public class KumaUptimeResources : ComponentResource
     KumaUptimeModelMapper.MapUptime(config, application.Spec.Uptime);
     if (uptime.ParentName is "cluster")
     {
-      config.ParentName = args.Groups.AddGroup(clusterName, clusterTitle);
-    } else if (args.Groups.GetGroup(uptime.ParentName) is {} g)
-    {
-      config.ParentName = g.Id;
-    }
-    else
-    {
-      throw new KeyNotFoundException(
-        $"Parent group '{uptime.ParentName}' not found for uptime resource '{application.Spec.Name}'");
+      args.Groups.AddGroup(clusterName, clusterTitle);
+      config.ParentName = clusterName;
     }
 
     return new CustomResource(application.Metadata.Name, new KumaUptimeResourceArgs()
@@ -74,8 +67,11 @@ public class KumaUptimeResources : ComponentResource
         Labels = new Dictionary<string, string>
         {
           ["driscoll.dev/cluster"] = clusterName,
-          ["driscoll.dev/clusterTitle"] = clusterTitle,
           ["driscoll.dev/namespace"] = ns,
+        },Annotations = new Dictionary<string, string>
+        {
+
+          ["driscoll.dev/clusterTitle"] = clusterTitle,
         }
       },
       Spec = new KumaUptimeResourceSpecArgs { Config = config }

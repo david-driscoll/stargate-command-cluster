@@ -16,7 +16,7 @@ public static partial class ModelMappings
   {
     var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
     var @namespace = definition.Metadata.Labels["driscoll.dev/namespace"];
-    var clusterTitle = definition.Metadata.Labels["driscoll.dev/clusterTitle"];
+    var clusterTitle = definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
 
     return (clusterName, clusterTitle, @namespace);
   }

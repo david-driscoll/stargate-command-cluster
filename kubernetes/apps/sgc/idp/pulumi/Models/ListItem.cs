@@ -9,3 +9,8 @@ public interface IKubernetesList<T>
   [JsonPropertyName("items")]
   public List<T> Items { get; set; }
 }
+
+public interface IKubernetesSpec
+{
+  object Spec { get; }
+}

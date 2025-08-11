@@ -37,11 +37,11 @@ spec:
       secret:
         name: pulumi-operator-github
         key: credential
-    PULUMI_CONFIG_PASSPHRASE:
-      type: Secret
-      secret:
-        name: pulumi-operator-passphrase
-        key: password
+#    PULUMI_CONFIG_PASSPHRASE:
+#      type: Secret
+#      secret:
+#        name: pulumi-operator-passphrase
+#        key: password
     PGUSER:
       type: Secret
       secret:

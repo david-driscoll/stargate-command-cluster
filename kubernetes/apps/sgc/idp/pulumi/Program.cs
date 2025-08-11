@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using applications;
+using Dumpify;
 using k8s;
 using Pulumi;
 using Pulumi.Authentik;
 
-KubernetesJson.AddJsonOptions(options =>
-{
-  options.Converters.Add(new YamlMemberConverterFactory());
-});
+KubernetesJson.AddJsonOptions(options => { options.Converters.Add(new YamlMemberConverterFactory()); });
 
 return await Deployment.RunAsync(async () =>
 {
@@ -29,6 +27,7 @@ return await Deployment.RunAsync(async () =>
 
       return client;
     }
+
     if (OperatingSystem.IsLinux())
     {
       cluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
@@ -39,7 +38,15 @@ return await Deployment.RunAsync(async () =>
       cluster = CreateClientAndProvider(kubeConfig, "sgc", "admin@sgc");
     }
 
-    await PopulateCluster.PopulateClusters(cluster);
+    try
+    {
+      await PopulateCluster.PopulateClusters(cluster);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Error populating cluster: {ex.Message}");
+      ex.Dump();
+    }
   }
 
   _ = new AuthentikGroups();

@@ -73,6 +73,11 @@ spec:
       secret:
         name: pulumi-operator-github
         key: credential
+    kubernetes:kubeconfig:
+      type: Secret
+      secret:
+        name: ${APP}-kubeconfig
+        key: kubeconfig.json
     authentik:token:
       type: Secret
       secret:

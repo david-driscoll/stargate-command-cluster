@@ -161,9 +161,6 @@ spec:
           - apiGroups: [""]
             resources: ["pods/exec"]
             verbs: ["create", "get"]
-          - apiGroups: [""]
-            resources: ["pods"]
-            verbs: ["get", "list"]
       bindings:
         s3-secret-creator:
           type: RoleBinding

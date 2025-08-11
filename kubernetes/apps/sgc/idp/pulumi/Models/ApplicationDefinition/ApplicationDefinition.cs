@@ -7,15 +7,12 @@ namespace Models.ApplicationDefinition;
 
 public class ApplicationDefinition : KubernetesObject, IMetadata<V1ObjectMeta>
 {
-  [YamlMember(Alias = "metadata")]
   [JsonPropertyName("metadata")]
   public V1ObjectMeta Metadata { get; set; }
 
-  [YamlMember(Alias = "spec")]
   [JsonPropertyName("spec")]
   public ApplicationDefinitionSpec Spec { get; set; }
 
-  [YamlMember(Alias = "status")]
   [JsonPropertyName("status")]
   public ApplicationDefinitionStatus Status { get; set; }
 }

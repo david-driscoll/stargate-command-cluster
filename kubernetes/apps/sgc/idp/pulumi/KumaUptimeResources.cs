@@ -25,7 +25,7 @@ public class KumaUptimeResources : ComponentResource
     ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources",
     name, args, options)
   {
-    var applications = Output.Create(PopulateCluster.GetApplications(args.Cluster))
+    var applications = Output.Create(Mappings.GetApplications(args.Cluster))
       .Apply(applications =>
       {
         foreach (var application in applications
@@ -55,7 +55,7 @@ public class KumaUptimeResources : ComponentResource
     if (uptime.ParentName is "cluster")
     {
       config.ParentName = args.Groups.AddGroup(clusterName, clusterTitle);
-    } else if (args.Groups.Groups.TryGetValue(uptime.ParentName ?? "", out var g))
+    } else if (args.Groups.GetGroup(uptime.ParentName) is {} g)
     {
       config.ParentName = g.Id;
     }

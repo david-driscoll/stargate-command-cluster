@@ -15,14 +15,14 @@ KubernetesJson.AddJsonOptions(options =>
 {
   options.Converters.Add(new YamlMemberConverterFactory());
 });
-if (OperatingSystem.IsLinux())
-{
-  await PopulateCluster.PopulateClusters();
-}
+
+
 return await Deployment.RunAsync(async () =>
 {
-  static Kubernetes CreateClientAndProvider(string kubeConfig, string name, string? context = null)
+  Kubernetes cluster;
   {
+    static Kubernetes CreateClientAndProvider(string kubeConfig, string name, string? context = null)
+    {
       using var stream = new MemoryStream(Encoding.ASCII.GetBytes(kubeConfig));
       var config = KubernetesClientConfiguration.LoadKubeConfig(stream);
       var clientConfig = KubernetesClientConfiguration.BuildConfigFromConfigObject(config);
@@ -33,18 +33,21 @@ return await Deployment.RunAsync(async () =>
       }
 
       return client;
+    }
+    if (OperatingSystem.IsLinux())
+    {
+      var secrets = new Config();
+      cluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
+    }
+    else
+    {
+      var kubeConfig = File.ReadAllText(KubernetesClientConfiguration.KubeConfigDefaultLocation);
+      cluster = CreateClientAndProvider(kubeConfig, "sgc", "admin@sgc");
+    }
+
+    await PopulateCluster.PopulateClusters(cluster);
   }
-  Kubernetes cluster;
-  if (OperatingSystem.IsLinux())
-  {
-    var secrets = new Config();
-    cluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
-  }
-  else
-  {
-    var kubeConfig = File.ReadAllText(KubernetesClientConfiguration.KubeConfigDefaultLocation);
-    cluster = CreateClientAndProvider(kubeConfig, "sgc", "admin@sgc");
-  }
+
 
   _ = new AuthentikGroups();
   var kumaGroups = new KumaGroups();

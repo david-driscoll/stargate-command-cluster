@@ -9,7 +9,6 @@ public class ClusterDefinitionList : KubernetesObject, IMetadata<V1ListMeta>, IK
 {
   public V1ListMeta Metadata { get; set; }
 
-  [YamlMember(Alias = "items")]
   [JsonPropertyName("items")]
   public List<ClusterDefinition> Items { get; set; }
 }

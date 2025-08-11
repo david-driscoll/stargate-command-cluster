@@ -15,16 +15,11 @@ using Models.Authentik;
 public static class PopulateCluster
 {
   const string destinationNamespace = "observability";
-  const string rootDomain = "${ROOT_DOMAIN}";
-  public static async Task PopulateClusters()
+  public static async Task PopulateClusters(Kubernetes localCluster)
   {
-    var applicationComparer = EqualityComparer<ApplicationDefinition>.Create((x, y) => x!.Metadata.Name == y!.Metadata.Name && x!.Metadata.Namespace == y!.Metadata.Namespace, x => HashCode.Combine(x.Metadata.Name, x.Metadata.Namespace));
-
-    var localCluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
     var clusters = (await localCluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1", "clusterdefinitions")).Items.ToImmutableArray();
     foreach (var cluster in clusters)
     {
-      var secretName = cluster.Spec.Secret;
       try
       {
         await SyncEntityWithCluster<ApplicationDefinitionList, ApplicationDefinition>(localCluster, cluster, "driscoll.dev", "v1", "applicationdefinitions", z => z.Metadata.Name, MapApplicationDefinition);
@@ -37,25 +32,15 @@ public static class PopulateCluster
     }
   }
 
-  internal static async Task<ImmutableList<ApplicationDefinition>> GetApplications(Kubernetes client)
-  {
-    var builder = ImmutableList.CreateBuilder<ApplicationDefinition>();
-    foreach (var entity in (await client.CustomObjects.ListClusterCustomObjectAsync<ApplicationDefinitionList>("driscoll.dev", "v1", "applicationdefinitions")).Items)
-    {
-      builder.Add(await MapApplicationDefinition(client, entity));
-    }
-
-    return builder.ToImmutable();
-  }
   static async Task SyncEntityWithCluster<TList, TResult>(Kubernetes localCluster, ClusterDefinition cluster, string group, string version, string plural, Func<TResult, string> getName, Func<Kubernetes, TResult, ValueTask<TResult>> mapEntity)
   where TList : IKubernetesList<TResult>
   where TResult : KubernetesObject, IMetadata<V1ObjectMeta>
   {
-    var externalSecret = await localCluster.ReadNamespacedSecretAsync(cluster.Spec.Secret, destinationNamespace);
+    var externalSecret = await localCluster.ReadNamespacedSecretAsync(cluster.Spec.Secret, "sgc");
     var config = await KubernetesClientConfiguration.LoadKubeConfigAsync(new MemoryStream(externalSecret.Data["kubeconfig.json"]));
     var remoteCluster = new Kubernetes(KubernetesClientConfiguration.BuildConfigFromConfigObject(config));
 
-    var existingEntities = (await localCluster.CustomObjects.ListNamespacedCustomObjectAsync<TList>(group, version, destinationNamespace, plural, labelSelector: $"{rootDomain}.cluster={cluster}")).Items
+    var existingEntities = (await localCluster.CustomObjects.ListNamespacedCustomObjectAsync<TList>(group, version, destinationNamespace, plural, labelSelector: $"driscoll.dev/cluster={cluster}")).Items
       .ToImmutableArray();
     DumpNames("existingEntities", existingEntities.Select(getName));
 
@@ -65,8 +50,8 @@ public static class PopulateCluster
       entity.Metadata.Name = $"{cluster}-{entity.Metadata.Name}";
       entity.Metadata.SetNamespace(destinationNamespace);
       entity.Metadata.Labels ??= new Dictionary<string, string>();
-      entity.Metadata.Labels[$"{rootDomain}.cluster"] = cluster.Metadata.Name;
-      entity.Metadata.Labels[$"{rootDomain}.clusterTitle"] = cluster.Spec.Name;
+      entity.Metadata.Labels[$"driscoll.dev/cluster"] = cluster.Metadata.Name;
+      entity.Metadata.Labels[$"driscoll.dev/clusterTitle"] = cluster.Spec.Name;
       entity.Metadata.ResourceVersion = null;
       remoteEntitiesBuilder.Add(await mapEntity(remoteCluster, entity));
     }
@@ -144,7 +129,7 @@ public static class PopulateCluster
         _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
           nameof(authentikSpec))
       };
-      spec = spec with { Authentik = authentik, AuthentikFrom = null};
+      spec = spec with { Authentik = authentik, AuthentikFrom = null };
     }
 
     if (spec is { UptimeFrom: { } uptimeFrom })

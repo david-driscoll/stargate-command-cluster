@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using Humanizer;
 using k8s;
 using k8s.Models;
@@ -17,6 +18,19 @@ namespace applications;
 [Mapper(AllowNullPropertyAssignment = false)]
 static partial class Mappings
 {
+
+  internal static async Task<ImmutableList<ApplicationDefinition>> GetApplications(Kubernetes client)
+  {
+    var builder = ImmutableList.CreateBuilder<ApplicationDefinition>();
+    foreach (var ns in (await client.ListNamespaceAsync()).Items)
+    foreach (var entity in (await client.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>("driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions")).Items)
+    {
+      builder.Add(entity);
+    }
+
+    return builder.ToImmutable();
+  }
+
   public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args,
     AuthentikApplicationResources.Args instance);
 

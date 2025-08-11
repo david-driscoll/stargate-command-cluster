@@ -4,18 +4,13 @@ using System.IO;
 using System.Text;
 using applications;
 using k8s;
-using Models.ApplicationDefinition;
 using Pulumi;
 using Pulumi.Authentik;
-using ClientContext = Pulumi.Output<(k8s.Kubernetes Client, Pulumi.Kubernetes.Provider Provider, string KubeConfig)>;
-using KubernetesProvider = Pulumi.Kubernetes.Provider;
-using ProviderArgs = Pulumi.Kubernetes.ProviderArgs;
 
 KubernetesJson.AddJsonOptions(options =>
 {
   options.Converters.Add(new YamlMemberConverterFactory());
 });
-
 
 return await Deployment.RunAsync(async () =>
 {
@@ -46,7 +41,6 @@ return await Deployment.RunAsync(async () =>
 
     await PopulateCluster.PopulateClusters(cluster);
   }
-
 
   _ = new AuthentikGroups();
   var kumaGroups = new KumaGroups();
@@ -89,8 +83,3 @@ return await Deployment.RunAsync(async () =>
     ["outputKey"] = "outputValue"
   };
 });
-
-static Output<string> LoadKubeConfigFromPulumiConfig(Config config, string key)
-{
-  return config.GetSecret(key)!;
-}

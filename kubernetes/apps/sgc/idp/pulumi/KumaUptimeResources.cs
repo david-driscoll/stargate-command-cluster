@@ -21,9 +21,9 @@ public class KumaUptimeResources : ComponentResource
     public required Kubernetes Cluster { get; init; }
   }
 
-  public KumaUptimeResources(string name, Args args,
-    ComponentResourceOptions? options = null) : base("custom:resource:ClusterApplicationResources",
-    name, args, options)
+  public KumaUptimeResources(Args args,
+    ComponentResourceOptions? options = null) : base("custom:resource:KumaUptimeResources",
+    "kuma-uptime-resources", args, options)
   {
     var applications = Output.Create(Mappings.GetApplications(args.Cluster))
       .Apply(applications =>
@@ -43,7 +43,7 @@ public class KumaUptimeResources : ComponentResource
   private CustomResource CreateResource(Args args, ApplicationDefinition application)
   {
     Debug.Assert(application.Spec.Uptime != null);
-    var (clusterName, clusterTitle) = application.GetClusterNameAndTitle();
+    var (clusterName, clusterTitle, ns) = application.GetClusterNameAndTitle();
     var uptime = KumaUptimeModelMapper.GetUptime(application.Spec.Uptime);
     var config = new KumaUptimeResourceConfigArgs()
     {
@@ -74,7 +74,8 @@ public class KumaUptimeResources : ComponentResource
         Labels = new Dictionary<string, string>
         {
           ["driscoll.dev/cluster"] = clusterName,
-          ["driscoll.dev/clusterTitle"] = clusterTitle
+          ["driscoll.dev/clusterTitle"] = clusterTitle,
+          ["driscoll.dev/namespace"] = ns,
         }
       },
       Spec = new KumaUptimeResourceSpecArgs { Config = config }

@@ -45,4 +45,4 @@ spec:
         type: postgres
         name: "${APP}"
         database_connection_string: "{{ .public_uri }}"
-        parent_name: ${CLUSTER_CNAME}
+        parent_name: "cluster"

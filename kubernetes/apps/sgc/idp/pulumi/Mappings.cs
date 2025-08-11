@@ -25,10 +25,11 @@ static partial class Mappings
     foreach (var entity in (await client.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>(
                "driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions")).Items)
     {
+      entity.Metadata.Annotations ??= new Dictionary<string, string>();
       entity.Metadata.Labels ??= new Dictionary<string, string>();
       entity.Metadata.Labels.TryAdd("driscoll.dev/namespace", entity.Metadata.Namespace());
       entity.Metadata.Labels.TryAdd("driscoll.dev/cluster", "sgc");
-      entity.Metadata.Labels.TryAdd("driscoll.dev/clusterTitle", "Stargate Command");
+      entity.Metadata.Annotations.TryAdd("driscoll.dev/clusterTitle", "Stargate Command");
       builder.Add(entity);
     }
 

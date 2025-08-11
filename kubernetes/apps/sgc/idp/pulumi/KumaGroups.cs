@@ -33,13 +33,15 @@ public class KumaGroups : Pulumi.ComponentResource
       },
       Spec = new KumaUptimeResourceSpecArgs()
       {
-        Config = parentName is {} ? new KumaUptimeResourceConfigArgs()
+        Config = parentName is { } ? new KumaUptimeResourceConfigArgs()
         {
           Name = groupTitle,
+          Type = "group",
           ParentName = parentName
         } : new KumaUptimeResourceConfigArgs()
         {
-          Name = groupTitle
+          Name = groupTitle,
+          Type = "group",
         }
       },
     };

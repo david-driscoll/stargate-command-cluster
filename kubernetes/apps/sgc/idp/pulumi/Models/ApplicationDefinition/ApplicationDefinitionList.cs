@@ -9,7 +9,6 @@ public class ApplicationDefinitionList : KubernetesObject, IMetadata<V1ListMeta>
 {
   public V1ListMeta Metadata { get; set; }
 
-  [YamlMember(Alias = "items")]
   [JsonPropertyName("items")]
   public List<ApplicationDefinition> Items { get; set; }
 }

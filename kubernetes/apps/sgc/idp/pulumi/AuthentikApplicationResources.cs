@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
@@ -7,10 +6,8 @@ using System.Linq;
 using System.Text;
 using Humanizer;
 using k8s;
-using k8s.Models;
 using Models;
 using Models.ApplicationDefinition;
-using Models.Authentik;
 using Pulumi;
 using Pulumi.Authentik;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
@@ -36,7 +33,7 @@ public class AuthentikApplicationResources : ComponentResource
     "authentik-applications", args, options)
   {
     var outposts = Output.Create(ImmutableDictionary<string, OutpostArgs>.Empty);
-    var applications = Output.Create(PopulateCluster.GetApplications(args.Cluster))
+    var applications = Output.Create(Mappings.GetApplications(args.Cluster))
       .Apply(applications => applications
         .Where(z => z.Spec.Authentik is not null)
         .Select(x => CreateResource(args, x, ref outposts)));
@@ -80,10 +77,7 @@ public class AuthentikApplicationResources : ComponentResource
       }
       else
       {
-        var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-kubeconfig", clusterName);
-        var config =
-          await KubernetesClientConfiguration.LoadKubeConfigAsync(new MemoryStream(kubeConfig.Data["kubeconfig.json"]));
-
+        var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-kubeconfig", "sgc");
         serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
         {
           ServiceConnectionKubernetesId = clusterName,
@@ -116,94 +110,6 @@ public class AuthentikApplicationResources : ComponentResource
     return authentikApp;
   }
 
-
-  async IAsyncEnumerable<ApplicationDefinition> GetApplications(Kubernetes client)
-  {
-    var namespaces = await client.ListNamespaceAsync();
-    var builder = ImmutableList.CreateBuilder<ApplicationDefinition>();
-
-    foreach (var ns in namespaces.Items)
-    {
-      var result = await client.CustomObjects.ListNamespacedCustomObjectAsync<ApplicationDefinitionList>(
-        "driscoll.dev", "v1", ns.Metadata.Name, "applicationdefinitions");
-      // new { Namespace = ns.Metadata.Name, result.Items }.Dump();
-      foreach (var definition in result.Items)
-      {
-        var spec = definition.Spec;
-        if (spec is { AuthentikFrom: { } authentikFrom })
-        {
-          IDictionary<string, string> data;
-          if (authentikFrom is { Type: "configMap", Name: var configMapName })
-          {
-            var configMap =
-              await client.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-            data = configMap.Data;
-          }
-          else if (authentikFrom is { Type: "secret", Name: var secretName })
-          {
-            var secret = await client.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
-            data = secret.Data.ToDictionary(kvp => kvp.Key,
-              kvp => System.Text.Encoding.UTF8.GetString(kvp.Value));
-          }
-          else
-          {
-            throw new ArgumentException($"Unknown AuthentikFrom type: {authentikFrom.Type}");
-          }
-
-          var authentikSpec = KubernetesJson.Deserialize<AuthentikSpec>(KubernetesJson.Serialize(data));
-
-          ApplicationDefinitionAuthentik authentik = authentikSpec.Type switch
-          {
-            "saml" => new ApplicationDefinitionAuthentik { ProviderSaml = ModelMappings.MapToSaml(authentikSpec) },
-            "oauth2" => new ApplicationDefinitionAuthentik
-              { ProviderOauth2 = ModelMappings.MapToOauth2(authentikSpec) },
-            "scim" => new ApplicationDefinitionAuthentik { ProviderScim = ModelMappings.MapToScim(authentikSpec) },
-            "ssf" => new ApplicationDefinitionAuthentik { ProviderSsf = ModelMappings.MapToSsf(authentikSpec) },
-            "proxy" => new ApplicationDefinitionAuthentik { ProviderProxy = ModelMappings.MapToProxy(authentikSpec) },
-            "radius" => new ApplicationDefinitionAuthentik
-              { ProviderRadius = ModelMappings.MapToRadius(authentikSpec) },
-            "rac" => new ApplicationDefinitionAuthentik { ProviderRac = ModelMappings.MapToRac(authentikSpec) },
-            "ldap" => new ApplicationDefinitionAuthentik { ProviderLdap = ModelMappings.MapToLdap(authentikSpec) },
-            "microsoftEntra" => new ApplicationDefinitionAuthentik
-              { ProviderMicrosoftEntra = ModelMappings.MapToMicrosoftEntra(authentikSpec) },
-            "googleWorkspace" => new ApplicationDefinitionAuthentik
-            {
-              ProviderGoogleWorkspace = ModelMappings.MapToGoogleWorkspace(authentikSpec)
-            },
-            _ => throw new ArgumentException($"Unknown Authentik provider type: {authentikSpec.Type}",
-              nameof(authentikSpec))
-          };
-          spec = spec with { Authentik = authentik };
-        }
-
-        if (spec is { UptimeFrom: { } uptimeFrom })
-        {
-          IDictionary<string, string> data;
-          if (uptimeFrom is { Type: "configMap", Name: var configMapName })
-          {
-            var configMap =
-              await client.CoreV1.ReadNamespacedConfigMapAsync(configMapName, definition.Namespace());
-            data = configMap.Data;
-          }
-          else if (uptimeFrom is { Type: "secret", Name: var secretName })
-          {
-            var secret = await client.CoreV1.ReadNamespacedSecretAsync(secretName, definition.Namespace());
-            data = secret.Data.ToDictionary(kvp => kvp.Key,
-              kvp => System.Text.Encoding.UTF8.GetString(kvp.Value));
-          }
-          else
-          {
-            throw new ArgumentException($"Unknown AuthentikFrom type: {uptimeFrom.Type}");
-          }
-
-          spec = spec with { Uptime = Mappings.MapFromUptimeData(data) };
-        }
-
-        definition.Spec = spec;
-        yield return definition;
-      }
-    }
-  }
 
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)

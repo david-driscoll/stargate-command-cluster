@@ -9,7 +9,6 @@ public class KumaResourceList : KubernetesObject, IMetadata<V1ListMeta>, IKubern
 {
   public V1ListMeta Metadata { get; set; }
 
-  [YamlMember(Alias = "items")]
   [JsonPropertyName("items")]
   public List<KumaResource> Items { get; set; }
 }

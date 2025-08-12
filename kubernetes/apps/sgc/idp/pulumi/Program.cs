@@ -82,6 +82,8 @@ return await Deployment.RunAsync(async () =>
     GroupMatchingMode = "name_link",
   });
 
+  //discord
+  // scope guilds guilds.members.read
   // TODO: Create users?
 
   // Export outputs here

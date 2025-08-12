@@ -9,7 +9,7 @@ spec:
   url: https://charts.goauthentik.io/
   timeout: 3m
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -68,17 +68,15 @@ spec:
         - secretRef:
             name: authentik
         - secretRef:
-            name: authentik-s3
-        - secretRef:
             name: authentik-postgres
 
-      # volumeMounts:
-      #   - name: custom
-      #     mountPath: /custom
-
-      # volumes:
-      #   - name: custom
-      #     emptyDir: {}
+      volumeMounts:
+        - mountPath: /media
+          name: media
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: *app
 
     authentik:
       enabled: true

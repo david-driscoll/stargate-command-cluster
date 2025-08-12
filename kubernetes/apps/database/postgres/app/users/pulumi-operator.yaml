@@ -26,7 +26,7 @@ spec:
       templateFrom:
         - target: Data
           configMap:
-            name: ${APP}-user-template
+            name: pgsql-user-template
             items:
             - key: username
               templateAs: Values
@@ -87,7 +87,7 @@ spec:
 apiVersion: external-secrets.io/v1alpha1
 kind: PushSecret
 metadata:
-  name: pulumi-operator-user-push-secret
+  name: pulumi-operator-postgres-user-push-secret
 spec:
   deletionPolicy: None
   refreshInterval: 10m
@@ -96,12 +96,12 @@ spec:
       name: onepassword-connect
   selector:
     secret:
-      name: pulumi-operator-user
+      name: pulumi-operator-postgres-user
   data:
     - match:
         secretKey: username
         remoteRef:
-          remoteKey: &key ${CLUSTER_CNAME}-pulumi-operator-pulumi-operator-postgres
+          remoteKey: &key ${CLUSTER_CNAME}-pulumi-operator-postgres-user
           property: username
       metadata:
         apiVersion: kubernetes.external-secrets.io/v1alpha1

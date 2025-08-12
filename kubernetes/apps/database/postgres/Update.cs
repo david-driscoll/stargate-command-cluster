@@ -174,18 +174,16 @@ try
   {
     var roleName = GetName(database);
     var userYaml = File.ReadAllText(userTemplate)
+    .Replace("${APP}-user", database)
     .Replace("postgres-user-password", $"{roleName}-postgres-password")
     .Replace("postgres-user", $"{roleName}-postgres")
     ;
     var databaseYaml = File.ReadAllText(databaseTemplate)
     .Replace("${APP}", database)
-    .Replace("postgres-user-password", $"{roleName}-postgres-password")
-    .Replace("postgres-user", $"{roleName}-postgres")
     ;
     var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
-    .Replace("${APP}", database)
-    .Replace("postgres-user-password", $"{roleName}-postgres-password")
     .Replace("postgres-user", $"{roleName}-postgres")
+    .Replace("${APP}", $"{roleName}-postgres")
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
     var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");

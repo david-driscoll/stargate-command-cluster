@@ -16,13 +16,16 @@
     },
     "spec": {
       "additionalProperties": false,
-      "required": ["name", "secret"],
+      "required": ["name", "domain"],
       "type": "object",
       "properties": {
         "name": { "type": "string" },
         "icon": { "type": "string" },
         "description": { "type": "string" },
-        "secret": { "type": "string" }
+        "secret": { "type": "string" },
+        "domain": { "type": "string" },
+        "background": { "type": "string" },
+        "favicon": { "type": "string" }
       }
     }
   }

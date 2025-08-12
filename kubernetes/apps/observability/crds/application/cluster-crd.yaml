@@ -21,7 +21,6 @@ spec:
             spec:
               required:
                 - name
-                - secret
                 - domain
               type: object
               properties:

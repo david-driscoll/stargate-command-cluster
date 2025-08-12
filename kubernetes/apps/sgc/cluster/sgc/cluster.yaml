@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/cluster.schema.json
+apiVersion: driscoll.dev/v1
+kind: ClusterDefinition
+metadata:
+  name: sgc
+spec:
+  name: Stargate Command
+  domain: ${OIDC_ISSUER}
+  icon: https://i.pinimg.com/originals/d6/1b/0f/d61b0fa0a759fd8baceedc9427246f7d.jpg
+  background: https://wallpapercave.com/wp/wp10853006.jpg
+  favicon: https://i.pinimg.com/originals/d6/1b/0f/d61b0fa0a759fd8baceedc9427246f7d.jpg

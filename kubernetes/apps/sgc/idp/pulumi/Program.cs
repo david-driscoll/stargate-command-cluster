@@ -68,8 +68,8 @@ return await Deployment.RunAsync(async () =>
   // tailscale dns needs to be fixed
   var tailscaleSource = new SourceOauth("tailscale", new()
   {
-    Name = Mappings.PostfixTitle("Tailscale"),
-    Slug = Mappings.PostfixName("tailscale"),
+    Name = "Tailscale",
+    Slug = "tailscale",
     ProviderType = "openidconnect",
     Enabled = true,
     AuthenticationFlow = null,

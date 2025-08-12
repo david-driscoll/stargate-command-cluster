@@ -116,7 +116,7 @@ public class AuthentikApplicationResources : ComponentResource
   {
     var (clusterName, clusterTitle, ns) = definition.GetClusterNameAndTitle();
     var slug = definition.Spec.Slug ??
-               ($"{clusterName}-{definition.Spec.Name}").Dehumanize().Underscore().Dasherize();
+               $"{clusterName}-{definition.Spec.Name}".Dehumanize().Underscore().Dasherize();
     var resourceName = Mappings.ResourceName(definition);
     var options = new CustomResourceOptions() { Parent = this };
     Pulumi.CustomResource provider;

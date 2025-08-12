@@ -1,8 +1,8 @@
 name: authentik-pulumi
 description: Authentik
 runtime: dotnet
-#backend:
-#  url: postgres://
+backend:
+ url: postgres://
 packages:
   authentik:
     source: terraform-provider

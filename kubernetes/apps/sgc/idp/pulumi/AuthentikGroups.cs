@@ -23,12 +23,12 @@ class AuthentikGroups : Pulumi.ComponentResource
   {
     foreach (var group in _initialGroups)
     {
-      var roleResource = new RbacRole(PostfixName(group.GroupName), new()
+      var roleResource = new RbacRole(group.GroupName, new()
       {
         Name = PostfixTitle(group.GroupName),
       }, new CustomResourceOptions() { Parent = this });
       _roles[group.GroupName] = roleResource;
-      var groupResource = new Group(PostfixName(group.GroupName), _groups.TryGetValue(group.ParentName ?? "", out var parentGroup) ? new()
+      var groupResource = new Group(group.GroupName, _groups.TryGetValue(group.ParentName ?? "", out var parentGroup) ? new()
       {
         Name = PostfixTitle(group.GroupName),
         Roles = [roleResource.Id],

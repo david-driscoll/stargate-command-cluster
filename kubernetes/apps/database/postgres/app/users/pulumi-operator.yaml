@@ -87,7 +87,7 @@ spec:
 apiVersion: external-secrets.io/v1alpha1
 kind: PushSecret
 metadata:
-  name: pulumi-operator-postgres-user-push-secret
+  name: pulumi-operator-postgres-push-secret
 spec:
   deletionPolicy: None
   refreshInterval: 10m
@@ -96,12 +96,12 @@ spec:
       name: onepassword-connect
   selector:
     secret:
-      name: pulumi-operator-postgres-user
+      name: pulumi-operator-postgres
   data:
     - match:
         secretKey: username
         remoteRef:
-          remoteKey: &key ${CLUSTER_CNAME}-pulumi-operator-postgres-user
+          remoteKey: &key ${CLUSTER_CNAME}-pulumi-operator-postgres
           property: username
       metadata:
         apiVersion: kubernetes.external-secrets.io/v1alpha1

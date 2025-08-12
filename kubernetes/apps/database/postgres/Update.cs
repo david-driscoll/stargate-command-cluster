@@ -182,8 +182,8 @@ try
     .Replace("${APP}", database)
     ;
     var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
+    .Replace("${APP}-user", $"{roleName}-postgres")
     .Replace("postgres-user", $"{roleName}-postgres")
-    .Replace("${APP}", $"{roleName}-postgres")
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
     var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");

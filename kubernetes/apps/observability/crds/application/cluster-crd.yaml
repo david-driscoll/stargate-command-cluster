@@ -22,6 +22,7 @@ spec:
               required:
                 - name
                 - secret
+                - domain
               type: object
               properties:
                 name:
@@ -32,6 +33,13 @@ spec:
                   type: string
                 icon:
                   type: string
+                background:
+                  type: string
+                favicon:
+                  type: string
+                domain:
+                  type: string
+
           required:
             - spec
           title: Cluster Definition

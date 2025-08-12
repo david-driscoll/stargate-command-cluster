@@ -29,18 +29,18 @@ public class KumaGroups : Pulumi.ComponentResource
     {
       Metadata = new ObjectMetaArgs()
       {
-        Name = groupName.ToLowerInvariant(),
+        Name = Mappings.PostfixName(groupName),
       },
       Spec = new KumaUptimeResourceSpecArgs()
       {
         Config = parentName is { } ? new KumaUptimeResourceConfigArgs()
         {
-          Name = groupTitle,
+          Name = Mappings.PostfixTitle(groupTitle),
           Type = "group",
           ParentName = parentName
         } : new KumaUptimeResourceConfigArgs()
         {
-          Name = groupTitle,
+          Name = Mappings.PostfixTitle(groupTitle),
           Type = "group",
         }
       },

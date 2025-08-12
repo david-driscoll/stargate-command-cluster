@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using applications;
 using k8s;
 using k8s.Models;
 using Models.ApplicationDefinition;
@@ -16,9 +17,9 @@ public static partial class ModelMappings
     this IMetadata<T> definition)
     where T : V1ObjectMeta
   {
-    var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
+    var clusterName = Mappings.PostfixName(definition.Metadata.Labels["driscoll.dev/cluster"]);
     var @namespace = definition.Metadata.Labels["driscoll.dev/namespace"];
-    var clusterTitle = definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
+    var clusterTitle = Mappings.PostfixTitle(definition.Metadata.Annotations["driscoll.dev/clusterTitle"]);
 
     return (clusterName, clusterTitle, @namespace);
   }

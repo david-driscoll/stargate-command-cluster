@@ -1,0 +1,5 @@
+encryptionsalt: v1:VB+FBhXTYWw=:v1:4zlRrzVuUYUT1qbN:br2FQqWUp0IFrSRKom8G1/HBuCAPvA==
+config:
+  authentik:token:
+    secure: v1:UOtZuI8Wai/TMsxV:lezAFg0Dg25l+LPhphW+qgjp3gWbjQDiYVBsCxI0OvOTfJF1YtiUCY42sLsmANp45yYniqhUKMu6DnUN1aUUKG79459Rr4i0hsamMrAbEHXV4hR2u4RBwkfCTaONCh8wFJodkfgeMwmksQqt+lSgIKA+cqvbq+CS+IAV6MkSethMkGkXD3kU+XkujK1LjsKX
+  authentik:url: https://authentik.driscoll.tech/

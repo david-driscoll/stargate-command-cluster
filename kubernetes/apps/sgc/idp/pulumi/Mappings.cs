@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using Humanizer;
 using k8s;
 using k8s.Models;
 using Models;
@@ -152,11 +151,4 @@ static partial class Mappings
   private static InputList<double> MapToDoubleInput(ImmutableList<double> value) => [..value];
   private static Input<bool>? MapToBoolInput(bool? value) => value.HasValue ? (Input<bool>?)value : null;
   private static Input<int>? MapToIntInput(int? value) => value.HasValue ? (Input<int>?)value : null;
-
-  [UserMapping(Ignore = true)]
-  public static string PostfixName(string name) => (OperatingSystem.IsLinux() ? name : $"{name}-test")
-    .ToLowerInvariant().Dehumanize().Underscore().Dasherize();
-
-  [UserMapping(Ignore = true)]
-  public static string PostfixTitle(string name) => OperatingSystem.IsLinux() ? name : $"[Test] {name}";
 }

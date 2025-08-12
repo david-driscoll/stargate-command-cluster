@@ -8,11 +8,15 @@ namespace applications;
 public class KumaGroups : Pulumi.ComponentResource
 {
   private readonly Dictionary<string, CustomResource> _groups = new();
-  private readonly IReadOnlyCollection<(string GroupName, string GroupTitle, string? ParentName)> _initialGroups = [
+
+  private readonly IReadOnlyCollection<(string GroupName, string GroupTitle, string? ParentName)> _initialGroups =
+  [
     ("system", Constants.Groups.System, null),
     ("apps", Constants.Groups.Applications, null),
   ];
-  public KumaGroups(ComponentResourceOptions? options = null) : base("custom:resource:KumaGrouops", "kuma-groups", options)
+
+  public KumaGroups(ComponentResourceOptions? options = null) : base("custom:resource:KumaGrouops", "kuma-groups",
+    options)
   {
     foreach (var group in _initialGroups)
     {
@@ -20,7 +24,9 @@ public class KumaGroups : Pulumi.ComponentResource
     }
   }
 
-  public CustomResource GetGroup(string? groupName) => _groups.TryGetValue(groupName, out var group) ? group : throw new KeyNotFoundException($"Group '{groupName}' not found.");
+  public CustomResource GetGroup(string? groupName) => _groups.TryGetValue(groupName, out var group)
+    ? group
+    : throw new KeyNotFoundException($"Group '{groupName}' not found.");
 
   public CustomResource AddGroup(string groupName, string groupTitle, string? parentName = null)
   {
@@ -29,26 +35,29 @@ public class KumaGroups : Pulumi.ComponentResource
     {
       Metadata = new ObjectMetaArgs()
       {
-        Name = Mappings.PostfixName(groupName),
+        Name = groupName,
       },
       Spec = new KumaUptimeResourceSpecArgs()
       {
-        Config = parentName is { } ? new KumaUptimeResourceConfigArgs()
-        {
-          Name = Mappings.PostfixTitle(groupTitle),
-          Type = "group",
-          ParentName = parentName
-        } : new KumaUptimeResourceConfigArgs()
-        {
-          Name = Mappings.PostfixTitle(groupTitle),
-          Type = "group",
-        }
+        Config = parentName is { }
+          ? new KumaUptimeResourceConfigArgs()
+          {
+            Name = groupTitle,
+            Type = "group",
+            ParentName = parentName
+          }
+          : new KumaUptimeResourceConfigArgs()
+          {
+            Name = groupTitle,
+            Type = "group",
+          }
       },
     };
-    var customResource = new Pulumi.Kubernetes.ApiExtensions.CustomResource(Mappings.PostfixName(groupName), groupResource, new CustomResourceOptions()
-    {
-      Parent = this,
-    });
+    var customResource = new Pulumi.Kubernetes.ApiExtensions.CustomResource(groupName, groupResource,
+      new CustomResourceOptions()
+      {
+        Parent = this,
+      });
     _groups[groupName] = customResource;
     return customResource;
   }

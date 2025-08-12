@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Models.UptimeKuma.Resources;
 using Pulumi;
 using Pulumi.Authentik;
-using static applications.Mappings;
 
 namespace applications;
 
@@ -25,18 +24,18 @@ class AuthentikGroups : Pulumi.ComponentResource
     {
       var roleResource = new RbacRole(group.GroupName, new()
       {
-        Name = PostfixTitle(group.GroupName),
+        Name = group.GroupName,
       }, new CustomResourceOptions() { Parent = this });
       _roles[group.GroupName] = roleResource;
       var groupResource = new Group(group.GroupName, _groups.TryGetValue(group.ParentName ?? "", out var parentGroup) ? new()
       {
-        Name = PostfixTitle(group.GroupName),
+        Name = group.GroupName,
         Roles = [roleResource.Id],
         IsSuperuser = group.GroupName == Constants.Roles.Admin,
         Parent = parentGroup.Id,
       } : new()
       {
-        Name = PostfixTitle(group.GroupName),
+        Name = group.GroupName,
         Roles = [roleResource.Id],
         IsSuperuser = group.GroupName == Constants.Roles.Admin,
       }, new CustomResourceOptions() { Parent = this });

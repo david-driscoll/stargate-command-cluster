@@ -147,6 +147,7 @@ try
 
   var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
   var databaseTemplate = "kubernetes/components/postgres/database.yaml";
+  var pushSecretTemplate = "kubernetes/apps/database/postgres/app/push-secret.yaml";
   // We also want to update the kustomization.yaml file to include this user.
   var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
   var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
@@ -173,18 +174,25 @@ try
   {
     var roleName = GetName(database);
     var userYaml = File.ReadAllText(userTemplate)
-    .Replace("${CLUSTER_CNAME}", database)
     .Replace("postgres-user-password", $"{roleName}-postgres-password")
     .Replace("postgres-user", $"{roleName}-postgres")
     ;
     var databaseYaml = File.ReadAllText(databaseTemplate)
     .Replace("${APP}", database)
+    .Replace("postgres-user-password", $"{roleName}-postgres-password")
+    .Replace("postgres-user", $"{roleName}-postgres")
+    ;
+    var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
+    .Replace("${APP}", database)
+    .Replace("postgres-user-password", $"{roleName}-postgres-password")
+    .Replace("postgres-user", $"{roleName}-postgres")
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
     var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");
     File.WriteAllText(fileName, $"""
   {userYaml}
   {databaseYaml}
+  {pushSecretYaml}
   """);
     AnsiConsole.WriteLine($"Updated {fileName} with user {roleName}.");
   }

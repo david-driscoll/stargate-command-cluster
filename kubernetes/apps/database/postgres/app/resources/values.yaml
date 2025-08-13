@@ -35,11 +35,11 @@ backups:
     compression: gzip
     encryption: ''
     jobs: 2
-  scheduledBackups:
-  - name: daily-backup
-    schedule: "${POSTGRES_BACKUP_SCHEDULE:=0 0 16 * * *}"
-    backupOwnerReference: self
-    method: barmanObjectStore
+  # scheduledBackups:
+  # - name: daily-backup
+  #   schedule: "${POSTGRES_BACKUP_SCHEDULE:=0 0 16 * * *}"
+  #   backupOwnerReference: self
+  #   method: barmanObjectStore
   retentionPolicy: "30d"
 cluster:
   instances: 2

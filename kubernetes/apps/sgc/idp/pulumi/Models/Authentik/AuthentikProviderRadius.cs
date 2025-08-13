@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Models.Authentik;
+namespace applications.Models.Authentik;
 
 public sealed class AuthentikProviderRadius
 {

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using YamlDotNet.Serialization;
 
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public record ClusterDefinitionSpec
 {

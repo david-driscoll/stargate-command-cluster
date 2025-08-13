@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
-using YamlDotNet.Serialization;
 
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public class ClusterDefinitionList : KubernetesObject, IMetadata<V1ListMeta>, IKubernetesList<ClusterDefinition>
 {

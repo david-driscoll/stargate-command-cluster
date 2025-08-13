@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Models.UptimeKuma.Resources;
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications;
+namespace applications.AuthentikResources;
 
 class AuthentikGroups : Pulumi.ComponentResource
 {
@@ -30,13 +29,13 @@ class AuthentikGroups : Pulumi.ComponentResource
       var groupResource = new Group(group.GroupName, _groups.TryGetValue(group.ParentName ?? "", out var parentGroup) ? new()
       {
         Name = group.GroupName,
-        Roles = [roleResource.Id],
+        Roles = [roleResource.RbacRoleId],
         IsSuperuser = group.GroupName == Constants.Roles.Admin,
-        Parent = parentGroup.Id,
+        Parent = parentGroup.GroupId,
       } : new()
       {
         Name = group.GroupName,
-        Roles = [roleResource.Id],
+        Roles = [roleResource.RbacRoleId],
         IsSuperuser = group.GroupName == Constants.Roles.Admin,
       }, new CustomResourceOptions() { Parent = this });
       _groups[group.GroupName] = groupResource;

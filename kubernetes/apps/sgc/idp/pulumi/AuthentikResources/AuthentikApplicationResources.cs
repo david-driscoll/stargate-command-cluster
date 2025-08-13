@@ -1,20 +1,16 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
+using applications.Models;
+using applications.Models.ApplicationDefinition;
 using Humanizer;
 using k8s;
-using Models;
-using Models.ApplicationDefinition;
 using Pulumi;
 using Pulumi.Authentik;
-using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
-using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
-using Provider = Pulumi.Kubernetes.Provider;
 
-namespace applications;
+namespace applications.AuthentikResources;
 
 public class AuthentikApplicationResources : ComponentResource
 {
@@ -23,9 +19,6 @@ public class AuthentikApplicationResources : ComponentResource
     public required Kubernetes Cluster { get; init; }
 
     // public required ServiceConnectionKubernetes ServiceConnection { get; init; }
-    public required Input<string> AuthorizationFlow { get; init; }
-    public Input<string>? AuthenticationFlow { get; init; }
-    public required Input<string> InvalidationFlow { get; init; }
   }
 
   public AuthentikApplicationResources(Args args,
@@ -89,7 +82,7 @@ public class AuthentikApplicationResources : ComponentResource
 
       outpost = new()
       {
-        ServiceConnection = serviceConnection.Id,
+        ServiceConnection = serviceConnection.ServiceConnectionKubernetesId,
         Type = "proxy",
         Name = $"Outpost for {clusterTitle}",
         Config = Output.JsonSerialize(Output.Create(new

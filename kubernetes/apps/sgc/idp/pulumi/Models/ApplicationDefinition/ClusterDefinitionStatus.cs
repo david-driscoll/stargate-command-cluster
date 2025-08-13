@@ -1,4 +1,4 @@
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public record ClusterDefinitionStatus
 {

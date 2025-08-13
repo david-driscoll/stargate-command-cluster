@@ -1,8 +1,7 @@
-using System;
 using Pulumi;
 using Pulumi.Kubernetes.ApiExtensions;
 
-namespace Models;
+namespace applications.PulumiModels;
 
 class KumaUptimeResourceArgs() : CustomResourceArgs("autokuma.bigboot.dev/v1", "KumaEntity")
 {

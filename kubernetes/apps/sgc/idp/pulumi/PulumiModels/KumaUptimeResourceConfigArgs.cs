@@ -1,7 +1,7 @@
 using System;
 using Pulumi;
 
-namespace Models;
+namespace applications.PulumiModels;
 
 class KumaUptimeResourceConfigArgs : ResourceArgs
 {

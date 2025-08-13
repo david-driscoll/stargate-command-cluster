@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Models.UptimeKuma;
+namespace applications.Models.UptimeKuma;
 
 public class RedisUptime : UptimeBase
 {

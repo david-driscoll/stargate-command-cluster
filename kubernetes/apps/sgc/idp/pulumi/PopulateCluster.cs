@@ -23,6 +23,10 @@ public static class PopulateCluster
         "clusterdefinitions")).Items.ToImmutableArray();
     foreach (var cluster in clusters)
     {
+      if (string.IsNullOrWhiteSpace(cluster.Spec.Secret))
+      {
+        continue;
+      }
       try
       {
         await SyncEntityWithCluster<ApplicationDefinitionList, ApplicationDefinition>(localCluster, cluster,

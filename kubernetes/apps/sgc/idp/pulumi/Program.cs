@@ -4,10 +4,12 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using applications;
+using applications.AuthentikResources;
+using applications.KumaResources;
+using applications.Models.ApplicationDefinition;
 using Dumpify;
 using k8s;
 using Microsoft.Extensions.DependencyInjection;
-using Models.ApplicationDefinition;
 using Pulumi;
 using Pulumi.Authentik;
 using Spectre.Console;
@@ -53,15 +55,10 @@ return await Deployment.RunAsync(async () =>
     }
   }
 
+  var policies = new Policies();
+  var stages = new Stages();
   _ = new AuthentikGroups();
   var kumaGroups = new KumaGroups();
-  _ = new AuthentikApplicationResources(new()
-  {
-    Cluster = cluster,
-    AuthorizationFlow = Defaults.Flows.ProviderAuthorizationImplicitConsent.Apply(z => z.Id),
-    InvalidationFlow = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
-    AuthenticationFlow = Defaults.Flows.AuthenticationFlow.Apply(z => z.Id),
-  });
 
   _ = new KumaUptimeResources(new()
   {
@@ -110,36 +107,32 @@ return await Deployment.RunAsync(async () =>
     AdditionalScopes = "guilds guilds.members.read",
   });
 
-    var defaultAuthenticationFlow = Defaults.Flows.AuthenticationFlow;
-    var defaultInvalidationFlow = Defaults.Flows.InvalidationFlow;
-    var defaultUserSettingsFlow = Defaults.Flows.UserSettingsFlow;
   var clusters =
     (await cluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1",
       "clusterdefinitions")).Items.ToImmutableArray();
-  foreach (var branding in clusters)
+  foreach (var definition in clusters)
   {
-    var clusterBrand = new Brand(branding.Metadata.Name, new()
+    var flows = new Flows(policies, stages, definition);
+    var clusterBrand = new Brand(definition.Metadata.Name, new()
     {
-      Domain = branding.Spec.Domain,
-      BrandingLogo = branding.Spec.Icon ?? "",
-      BrandingTitle = branding.Spec.Name,
-      BrandingFavicon = branding.Spec.Favicon ?? "",
-      BrandingDefaultFlowBackground = "",
-      FlowAuthentication = Defaults.Flows.AuthenticationFlow.Apply(z => z.Id),
-      FlowInvalidation = Defaults.Flows.InvalidationFlow.Apply(z => z.Id),
-      FlowUserSettings = Defaults.Flows.UserSettingsFlow.Apply(z => z.Id),
+      Domain = definition.Spec.Domain,
+      BrandingLogo = definition.Spec.Icon ?? "",
+      BrandingTitle = definition.Spec.Name,
+      BrandingFavicon = definition.Spec.Favicon ?? "",
+      // BrandingDefaultFlowBackground = "",
+      FlowAuthentication = flows.AuthenticationFlow.Uuid,
+      FlowInvalidation = flows.InvalidationFlow.Uuid,
+      FlowUserSettings = flows.UserSettingsFlow.Uuid,
       // FlowDeviceCode = ,
       // FlowRecovery = ,
       // FlowUnenrollment = ,
     });
-
-
-    var authenticationFlow = new Flow($"{branding.Metadata.Name}-authentication",new()
-    {
-      Authentication = ,
-      
-    })
   }
+
+  _ = new AuthentikApplicationResources(new()
+  {
+    Cluster = cluster,
+  });
 
   // var plexSource = new SourcePlex("plex", new()
   // {

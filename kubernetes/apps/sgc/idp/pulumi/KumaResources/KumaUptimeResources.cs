@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Humanizer;
+using applications.Models;
+using applications.Models.ApplicationDefinition;
+using applications.PulumiModels;
 using k8s;
-using Models;
-using Models.ApplicationDefinition;
 using Pulumi;
-using Pulumi.Authentik;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using CustomResource = Pulumi.Kubernetes.ApiExtensions.CustomResource;
 
-namespace applications;
+namespace applications.KumaResources;
 
 public class KumaUptimeResources : ComponentResource
 {

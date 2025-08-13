@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
-using Models.Authentik;
-using Models.UptimeKuma;
+using applications.Models.Authentik;
+using applications.Models.UptimeKuma;
 using YamlDotNet.Serialization;
 
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public record ApplicationDefinitionSpec
 {

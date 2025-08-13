@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Models.Authentik;
+using applications.Models.Authentik;
 using YamlDotNet.Serialization;
 
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public record ApplicationDefinitionAuthentik
 {

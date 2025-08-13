@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using YamlDotNet.Serialization;
 
-namespace Models.Authentik;
+namespace applications.Models.Authentik;
 
 public record AuthentikSpec
 {

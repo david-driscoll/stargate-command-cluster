@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using applications;
+using applications.Models.ApplicationDefinition;
+using applications.Models.Authentik;
+using applications.Models.UptimeKuma;
 using k8s;
 using k8s.Models;
-using Models.ApplicationDefinition;
-using Models.Authentik;
-using Models.UptimeKuma;
 using Riok.Mapperly.Abstractions;
 
-namespace Models;
+namespace applications.Models;
 
 [Mapper(AllowNullPropertyAssignment = false)]
 public static partial class ModelMappings

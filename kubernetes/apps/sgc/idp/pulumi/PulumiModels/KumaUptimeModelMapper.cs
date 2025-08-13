@@ -1,9 +1,9 @@
 using System;
-using Models.ApplicationDefinition;
-using Models.UptimeKuma;
+using applications.Models.ApplicationDefinition;
+using applications.Models.UptimeKuma;
 using Riok.Mapperly.Abstractions;
 
-namespace Models;
+namespace applications.PulumiModels;
 
 [Mapper(AllowNullPropertyAssignment = false)]
 static partial class KumaUptimeModelMapper

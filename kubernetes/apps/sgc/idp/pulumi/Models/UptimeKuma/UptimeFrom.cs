@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Models.UptimeKuma;
+namespace applications.Models.UptimeKuma;
 
 public record UptimeFrom
 {

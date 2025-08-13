@@ -1,9 +1,8 @@
 using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
-using YamlDotNet.Serialization;
 
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public class ApplicationDefinition : KubernetesObject, IMetadata<V1ObjectMeta>, IKubernetesSpec
 {

@@ -4,13 +4,14 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using applications;
+using applications.Models;
+using applications.Models.ApplicationDefinition;
+using applications.Models.Authentik;
 using Dumpify;
 using k8s;
 using k8s.Models;
-using Models;
-using Models.ApplicationDefinition;
-using Models.Authentik;
+
+namespace applications;
 
 public static class PopulateCluster
 {
@@ -104,14 +105,14 @@ public static class PopulateCluster
     {
       await localCluster.CustomObjects.PatchNamespacedCustomObjectAsync<TResult>(
         new V1Patch($$"""
-                    {"spec": {{KubernetesJson.Serialize(remoteEntity.Spec)}} }
-                    """, V1Patch.PatchType.MergePatch), group, version, destinationNamespace, plural, remoteEntity.Metadata.Name);
+                      {"spec": {{KubernetesJson.Serialize(remoteEntity.Spec)}} }
+                      """, V1Patch.PatchType.MergePatch), group, version, destinationNamespace, plural, remoteEntity.Metadata.Name);
     }
   }
 
   static void DumpNames(string title, IEnumerable<string> resources)
   {
-    resources.Dump(title);
+    // resources.Dump(title);
   }
 
   internal static async ValueTask<ApplicationDefinition> MapApplicationDefinition(Kubernetes remoteCluster,

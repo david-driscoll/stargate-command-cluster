@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Models;
+using applications.PulumiModels;
 using Pulumi;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 
-namespace applications;
+namespace applications.KumaResources;
 
 public class KumaGroups : Pulumi.ComponentResource
 {

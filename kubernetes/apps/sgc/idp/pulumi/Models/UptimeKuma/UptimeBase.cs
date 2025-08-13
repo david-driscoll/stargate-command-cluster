@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using YamlDotNet.Serialization;
 
-namespace Models.UptimeKuma;
+namespace applications.Models.UptimeKuma;
 
 public abstract class UptimeBase
 {

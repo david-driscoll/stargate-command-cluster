@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Models.UptimeKuma;
+using applications.Models.UptimeKuma;
 using YamlDotNet.Serialization;
 
-namespace Models.ApplicationDefinition;
+namespace applications.Models.ApplicationDefinition;
 
 public record ApplicationDefinitionUptime
 {

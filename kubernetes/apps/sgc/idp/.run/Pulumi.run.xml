@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Pulumi" type="ShConfigurationType" activateToolWindowBeforeRun="false">
-    <option name="SCRIPT_TEXT" value="pulumi up --yes --attach-debugger" />
+    <option name="SCRIPT_TEXT" value="op run --no-masking -- pulumi up --yes --attach-debugger" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="pulumi up --stack app --yes --skip-preview --attach-debugger" />
     <option name="SCRIPT_OPTIONS" value="" />
@@ -11,9 +11,7 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="EXECUTE_IN_TERMINAL" value="true" />
     <option name="EXECUTE_SCRIPT_FILE" value="false" />
-    <envs>
-      <env name="PULUMI_CONFIG_PASSPHRASE" value="f" />
-    </envs>
+    <envs />
     <method v="2" />
   </configuration>
 </component>

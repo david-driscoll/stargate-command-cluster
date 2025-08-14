@@ -21,9 +21,9 @@ public class Flows : SharedComponentResource
     _policies = policies;
     _stages = stages;
     _clusterDefinition = clusterDefinition;
-    CreateImplicitConsent();
-    CreateExplicitConsent();
-    CreateSourceAuthenticationFlow();
+    AuthorizationImplicitConsent = CreateImplicitConsent();
+    AuthorizationExplicitConsent = CreateExplicitConsent();
+    SourceAuthenticationFlow = CreateSourceAuthenticationFlow();
     // tailscale enrollment flow
     CreateProviderLogoutFlow();
     CreateChangePasswordFlow();
@@ -33,6 +33,12 @@ public class Flows : SharedComponentResource
 // recovery
 // unenrollmemnt
   }
+
+  public Flow AuthorizationImplicitConsent { get; set; }
+
+  public Flow AuthorizationExplicitConsent { get; set; }
+
+  public Flow SourceAuthenticationFlow { get; set; }
 
   public Flow InvalidationFlow => field ??= CreateLogoutFlow();
 

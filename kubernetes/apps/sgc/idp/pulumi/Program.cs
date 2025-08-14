@@ -139,6 +139,7 @@ return await Deployment.RunAsync(async () =>
   _ = new AuthentikApplicationResources(new()
   {
     Cluster = cluster,
+    ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),
     ClusterFlows = clusterFlows.ToImmutable()
   });
 

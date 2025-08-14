@@ -68,6 +68,8 @@ spec:
         - secretRef:
             name: authentik
         - secretRef:
+            name: authentik-bootstrap
+        - secretRef:
             name: authentik-postgres
 
       volumeMounts:
@@ -91,7 +93,9 @@ spec:
         enabled: false
         environment: "${CLUSTER_CNAME}"
         send_pii: false
-
+    blueprints:
+      configMaps: []
+      secrets: []
     server:
       enabled: true
       name: server

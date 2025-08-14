@@ -65,7 +65,7 @@ public class AuthentikApplicationResources : ComponentResource
           }
           else
           {
-            var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-kubeconfig", "sgc");
+            var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-authentik-outpost-kubeconfig", "sgc");
             serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
             {
               Name = clusterTitle,

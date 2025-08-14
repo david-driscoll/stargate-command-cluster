@@ -16,5 +16,5 @@ resources:
   # - ./scrypted/ks.yaml
   - ./dvr/ks.yaml
   - ./media/ks.yaml
-  - ./idp/ks.yaml
+  # - ./idp/ks.yaml
   - ./uptime-kuma/ks.yaml

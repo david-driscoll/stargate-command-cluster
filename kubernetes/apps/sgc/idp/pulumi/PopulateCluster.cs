@@ -58,8 +58,8 @@ public static class PopulateCluster
     DumpNames("existingEntities", existingEntities.Select(getName));
 
     var remoteEntitiesBuilder = ImmutableList.CreateBuilder<TResult>();
-    foreach (var entity in (await remoteCluster.CustomObjects.ListClusterCustomObjectAsync<TList>(group, version,
-               plural)).Items)
+    foreach (var ns in (await remoteCluster.ListNamespaceAsync()).Items)
+    foreach (var entity in (await remoteCluster.CustomObjects.ListNamespacedCustomObjectAsync<TList>(group, version, ns.Namespace(), plural)).Items)
     {
       entity.Metadata.Annotations ??= new Dictionary<string, string>();
       entity.Metadata.Labels ??= new Dictionary<string, string>();
@@ -78,8 +78,7 @@ public static class PopulateCluster
       return ns == clusterName ? clusterName : $"{clusterName}-{resource.Namespace()}";
     }
 
-
-    var remoteEntities = remoteEntitiesBuilder.ToImmutable();
+    var remoteEntities = remoteEntitiesBuilder.DistinctBy(getName).ToImmutableList();
     DumpNames("remoteEntities", remoteEntities.Select(getName));
 
     // Both remoteEntities and existingEntities are ImmutableHashSet<KumaResource> and using Except with a custom comparer is correct and efficient.
@@ -112,7 +111,7 @@ public static class PopulateCluster
 
   static void DumpNames(string title, IEnumerable<string> resources)
   {
-    // resources.Dump(title);
+    resources.Distinct().Dump(title);
   }
 
   internal static async ValueTask<ApplicationDefinition> MapApplicationDefinition(Kubernetes remoteCluster,

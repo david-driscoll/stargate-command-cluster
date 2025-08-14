@@ -110,9 +110,16 @@ return await Deployment.RunAsync(async () =>
   var clusters =
     (await cluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1",
       "clusterdefinitions")).Items.ToImmutableArray();
+  var clusterFlows = ImmutableDictionary.CreateBuilder<string, AuthentikApplicationResources.ClusterFlows>();
   foreach (var definition in clusters)
   {
     var flows = new Flows(policies, stages, definition);
+    clusterFlows[definition.Metadata.Name] = new AuthentikApplicationResources.ClusterFlows()
+    {
+      AuthorizationFlow = flows.AuthorizationImplicitConsent.Uuid,
+      AuthenticationFlow = flows.AuthenticationFlow.Uuid,
+      InvalidationFlow = flows.InvalidationFlow.Uuid,
+    };
     var clusterBrand = new Brand(definition.Metadata.Name, new()
     {
       Domain = definition.Spec.Domain,
@@ -132,6 +139,7 @@ return await Deployment.RunAsync(async () =>
   _ = new AuthentikApplicationResources(new()
   {
     Cluster = cluster,
+    ClusterFlows = clusterFlows.ToImmutable()
   });
 
   // var plexSource = new SourcePlex("plex", new()

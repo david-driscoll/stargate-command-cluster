@@ -11,11 +11,7 @@ static class ExtensionMethods
 
   public static FlowStageBinding AddFlowStageBinding(this Flow flow, FlowStageBindingArgs args)
   {
-    if (!BindingOrder.TryGetValue(flow.GetResourceName(), out var currentOrder))
-    {
-      currentOrder = BindingOrder[flow.GetResourceName()] = 0;
-    }
-
+    var currentOrder = BindingOrder.GetValueOrDefault(flow.GetResourceName(), 0);
     BindingOrder[flow.GetResourceName()] = currentOrder += 10;
     args.Order = currentOrder;
     args.Target = flow.Uuid;
@@ -33,11 +29,7 @@ static class ExtensionMethods
 
   public static Flow AddPolicyBinding(this Flow flow, PolicyBindingArgs args)
   {
-    if (!BindingOrder.TryGetValue(flow.GetResourceName(), out var currentOrder))
-    {
-      currentOrder = BindingOrder[flow.GetResourceName()] = 0;
-    }
-
+    var currentOrder = BindingOrder.GetValueOrDefault(flow.GetResourceName(), 0);
     BindingOrder[flow.GetResourceName()] = currentOrder += 10;
     args.Order = currentOrder;
     args.Target = flow.Uuid;
@@ -55,11 +47,7 @@ static class ExtensionMethods
 
   public static FlowStageBinding AddPolicyBinding(this FlowStageBinding binding, PolicyBindingArgs args)
   {
-    if (!BindingOrder.TryGetValue(binding.GetResourceName(), out var currentOrder))
-    {
-      currentOrder = BindingOrder[binding.GetResourceName()] = 0;
-    }
-
+    var currentOrder = BindingOrder.GetValueOrDefault(binding.GetResourceName(), 0);
     BindingOrder[binding.GetResourceName()] = currentOrder += 10;
     args.Order = currentOrder;
     args.Target = binding.FlowStageBindingId;

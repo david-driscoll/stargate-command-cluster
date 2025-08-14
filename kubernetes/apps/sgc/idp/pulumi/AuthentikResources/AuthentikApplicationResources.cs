@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +8,7 @@ using applications.Models;
 using applications.Models.ApplicationDefinition;
 using Humanizer;
 using k8s;
+using k8s.Models;
 using Pulumi;
 using Pulumi.Authentik;
 
@@ -14,8 +16,15 @@ namespace applications.AuthentikResources;
 
 public class AuthentikApplicationResources : ComponentResource
 {
+  public class ClusterFlows()
+  {
+    public required Input<string> AuthorizationFlow { get; init; }
+    public Input<string>? AuthenticationFlow { get; init; }
+    public required Input<string> InvalidationFlow { get; init; }
+  }
   public class Args : ResourceArgs
   {
+    public required ImmutableDictionary<string, ClusterFlows> ClusterFlows { get; init; }
     public required Kubernetes Cluster { get; init; }
 
     // public required ServiceConnectionKubernetes ServiceConnection { get; init; }
@@ -27,79 +36,74 @@ public class AuthentikApplicationResources : ComponentResource
   {
     var outposts = Output.Create(ImmutableDictionary<string, OutpostArgs>.Empty);
     var applications = Output.Create(Mappings.GetApplications(args.Cluster))
-      .Apply(applications => applications
-        .Where(z => z.Spec.Authentik is not null)
-        .Select(x => CreateResource(args, x, ref outposts)));
+      .Apply(applications =>
+      {
+        return applications
+          .Where(z => z.Spec.Authentik is not null)
+          .GroupBy(z => z.GetClusterNameAndTitle().ClusterName);
+      })
+      .Apply(async groups =>
+      {
+        foreach (var applications in groups)
+        {
+          var apps = applications.Select(app => CreateResource(args, app)).ToImmutableArray();
+          if (apps.Length == 0)
+          {
+            continue;
+          }
 
-    var createdOutposts = outposts.Apply(x => x
-      .Select(z => new Outpost(z.Key, z.Value, new CustomResourceOptions() { Parent = this }))
-      .ToImmutableArray());
+          var (clusterName, clusterTitle, ns) = applications.First().GetClusterNameAndTitle();
+          ServiceConnectionKubernetes serviceConnection;
+          if (applications.Key == "sgc")
+          {
+            serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
+            {
+              Name = clusterTitle,
+              Local = true,
+              VerifySsl = true,
+            }, new CustomResourceOptions() { Parent = this });
+          }
+          else
+          {
+            var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-kubeconfig", "sgc");
+            serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
+            {
+              Name = clusterTitle,
+              Kubeconfig = Encoding.UTF8.GetString(kubeConfig.Data["kubeconfig.json"]),
+              VerifySsl = true,
+            }, new CustomResourceOptions() { Parent = this });
+          }
+
+          var outpost = new Outpost(clusterName, new OutpostArgs()
+          {
+            ServiceConnection = serviceConnection.ServiceConnectionKubernetesId,
+            Type = "proxy",
+            Name = $"Outpost for {clusterTitle}",
+            Config = Output.JsonSerialize(Output.Create(new
+            {
+              authentik_host= "https://authentik.driscoll.tech/",
+              authentik_host_insecure= false,
+              authentik_host_browser = "",
+              log_level = "info",
+              object_naming_template = $"ak-outpost-{clusterName}",
+              kubernetes_replicas = 2,
+              kubernetes_namespace = clusterName,
+              kubernetes_ingress_class_name = "internal",
+            })),
+            ProtocolProviders = [..apps.Select(app => app.ProtocolProvider.Apply(z => z.Value))],
+          }, new CustomResourceOptions() { Parent = this });
+        }
+
+      });
   }
 
-  private Application CreateResource(Args args, ApplicationDefinition application,
-    ref Output<ImmutableDictionary<string, OutpostArgs>> outposts)
+  private Application CreateResource(Args args, ApplicationDefinition application)
   {
+    Log.Info($"Creating authentik application for {application.Metadata.Name} in {application.Metadata.Namespace()}");
     Debug.Assert(application.Spec.Authentik != null);
 
     var (clusterName, clusterTitle, ns) = application.GetClusterNameAndTitle();
     var authentikApp = CreateAuthentikApplication(args, application, application.Spec.Authentik);
-    outposts = Output.Tuple(outposts, authentikApp.ProtocolProvider).Apply(async x =>
-    {
-      var (outposts, protocolProvider) = x;
-      if (protocolProvider is null or <= 0)
-      {
-        return outposts;
-      }
-
-      if (outposts.TryGetValue(clusterName, out var outpost))
-      {
-        outpost.ProtocolProviders.Add(protocolProvider);
-        return outposts;
-      }
-
-      ServiceConnectionKubernetes serviceConnection;
-      if (clusterName == "sgc")
-      {
-        serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
-        {
-          ServiceConnectionKubernetesId = clusterName,
-          Name = clusterTitle,
-          Local = true,
-          VerifySsl = true,
-        });
-      }
-      else
-      {
-        var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-kubeconfig", "sgc");
-        serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
-        {
-          ServiceConnectionKubernetesId = clusterName,
-          Name = clusterTitle,
-          Kubeconfig = Encoding.UTF8.GetString(kubeConfig.Data["kubeconfig.json"]),
-          VerifySsl = true,
-        });
-      }
-
-      outpost = new()
-      {
-        ServiceConnection = serviceConnection.ServiceConnectionKubernetesId,
-        Type = "proxy",
-        Name = $"Outpost for {clusterTitle}",
-        Config = Output.JsonSerialize(Output.Create(new
-        {
-          object_naming_template = $"ak-outpost-{clusterName}",
-          kubernetes_replicas = 2,
-          kubernetes_namespace = clusterName,
-          kubernetes_ingress_class_name = "internal"
-        })),
-        ProtocolProviders = []
-      };
-      outposts = outposts.Add(clusterName, outpost);
-
-      outpost.ProtocolProviders.Add(protocolProvider);
-      return outposts;
-    });
-
     return authentikApp;
   }
 
@@ -108,6 +112,7 @@ public class AuthentikApplicationResources : ComponentResource
     ApplicationDefinitionAuthentik authentik)
   {
     var (clusterName, clusterTitle, ns) = definition.GetClusterNameAndTitle();
+    var clusterFlows = args.ClusterFlows[clusterName];
     var slug = definition.Spec.Slug ??
                $"{clusterName}-{definition.Spec.Name}".Dehumanize().Underscore().Dasherize();
     var resourceName = Mappings.ResourceName(definition);
@@ -121,7 +126,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, proxy);
         provider = new ProviderProxy(resourceName, providerArgs, options);
         break;
@@ -132,7 +137,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, oauth2);
         provider = new ProviderOauth2(resourceName, providerArgs, options);
         break;
@@ -143,7 +148,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, ldap);
         provider = new ProviderLdap(resourceName, providerArgs, options);
         break;
@@ -154,7 +159,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, saml);
         provider = new ProviderSaml(resourceName, providerArgs, options);
         break;
@@ -165,7 +170,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, rac);
         provider = new ProviderRac(resourceName, providerArgs, options);
         break;
@@ -176,7 +181,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, radius);
         provider = new ProviderRadius(resourceName, providerArgs, options);
         break;
@@ -187,7 +192,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, ssf);
         provider = new ProviderSsf(resourceName, providerArgs, options);
         break;
@@ -198,7 +203,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, scim);
         provider = new ProviderScim(resourceName, providerArgs, options);
         break;
@@ -209,7 +214,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, microsoftEntra);
         provider = new ProviderMicrosoftEntra(resourceName, providerArgs, options);
         break;
@@ -220,7 +225,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
-        Mappings.MapProviderArgs(providerArgs, args);
+        Mappings.MapProviderArgs(providerArgs, clusterFlows);
         Mappings.MapProviderArgs(providerArgs, googleWorkspace);
         provider = new ProviderGoogleWorkspace(resourceName, providerArgs, options);
         break;

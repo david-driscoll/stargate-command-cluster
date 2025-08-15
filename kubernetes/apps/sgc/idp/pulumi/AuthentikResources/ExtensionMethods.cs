@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Pulumi;
 using Pulumi.Authentik;
@@ -15,9 +17,41 @@ static class ExtensionMethods
     BindingOrder[flow.GetResourceName()] = currentOrder += 10;
     args.Order = currentOrder;
     args.Target = flow.Uuid;
-    return new FlowStageBinding($"{flow.GetResourceName()}-binding-{currentOrder:00}", args, new () { Parent = flow });
+    return new FlowStageBinding($"{flow.GetResourceName()}-binding-{currentOrder:00}", args, new() { Parent = flow });
   }
 
+  public static StagePromptArgs AddFields(this StagePromptArgs args, params IEnumerable<StagePromptField> fields)
+  {
+    args.Fields.AddRange(fields, field => field.StagePromptFieldId);
+    return args;
+  }
+
+  public static InputList<TResult> AddRange<T, TResult>(this InputList<TResult> list, IEnumerable<T> fields, Func<T, Output<TResult>> selector)
+  {
+    list.AddRange(fields.ToOutputList(selector));
+    return list;
+  }
+
+  public static Output<IEnumerable<TResult>> ToOutputList<T, TResult>(this IEnumerable<T> fields, Func<T, Output<TResult>> selector)
+  {
+    return Output.Create(fields)
+      .Apply(z => z.Aggregate(Output.Create(Enumerable.Empty<TResult>()),
+        (list, field) =>
+        {
+          return Output.Tuple(selector(field), list).Apply(x => (x.Item2.Append(x.Item1)));
+        }));
+  }
+
+  public static StagePromptArgs AddValidationPolicy(this StagePromptArgs args, params IEnumerable<StageAuthenticatorValidate> validators)
+  {
+    args.ValidationPolicies.AddRange(validators, field => field.StageAuthenticatorValidateId);
+    return args;
+  }
+
+  public static FlowStageBinding AddFlowStageBinding(this Flow flow, StagePrompt prompt)
+  {
+    return AddFlowStageBinding(flow, prompt.StagePromptId);
+  }
 
   public static FlowStageBinding AddFlowStageBinding(this Flow flow, Output<string> stageUuid)
   {
@@ -33,8 +67,13 @@ static class ExtensionMethods
     BindingOrder[flow.GetResourceName()] = currentOrder += 10;
     args.Order = currentOrder;
     args.Target = flow.Uuid;
-    _ = new PolicyBinding($"{flow.GetResourceName()}-policy-{currentOrder}", args, new () { Parent = flow });
+    _ = new PolicyBinding($"{flow.GetResourceName()}-policy-{currentOrder}", args, new() { Parent = flow });
     return flow;
+  }
+
+  public static Flow AddPolicyBinding(this Flow flow, PolicyExpression policy)
+  {
+    return AddPolicyBinding(flow, policy.PolicyExpressionId);
   }
 
   public static Flow AddPolicyBinding(this Flow flow, Output<string> policyUuid)
@@ -51,7 +90,7 @@ static class ExtensionMethods
     BindingOrder[binding.GetResourceName()] = currentOrder += 10;
     args.Order = currentOrder;
     args.Target = binding.FlowStageBindingId;
-    _ = new PolicyBinding($"{binding.GetResourceName()}-policy-{currentOrder}", args, new () { Parent = binding });
+    _ = new PolicyBinding($"{binding.GetResourceName()}-policy-{currentOrder}", args, new() { Parent = binding });
     return binding;
   }
 

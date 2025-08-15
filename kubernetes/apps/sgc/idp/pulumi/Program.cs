@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Text;
 using applications;
 using applications.AuthentikResources;
@@ -12,6 +13,7 @@ using k8s;
 using Microsoft.Extensions.DependencyInjection;
 using Pulumi;
 using Pulumi.Authentik;
+using Rocket.Surgery.OnePasswordNativeUnofficial;
 using Spectre.Console;
 
 KubernetesJson.AddJsonOptions(options => { options.Converters.Add(new YamlMemberConverterFactory()); });
@@ -55,9 +57,13 @@ return await Deployment.RunAsync(async () =>
     }
   }
 
-  var policies = new Policies();
-  var stages = new Stages();
   _ = new AuthentikGroups();
+  var onePasswordProvider = new Rocket.Surgery.OnePasswordNativeUnofficial.Provider("onepassword", new()
+  {
+    Vault = Environment.GetEnvironmentVariable("CONNECT_VAULT") ?? throw new InvalidOperationException("CONNECT_VAULT is not set"),
+    ConnectHost = Environment.GetEnvironmentVariable("CONNECT_HOST") ?? throw new InvalidOperationException("CONNECT_HOST is not set"),
+    ConnectToken = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ?? throw new InvalidOperationException("CONNECT_TOKEN is not set"),
+  });
   var kumaGroups = new KumaGroups();
 
   _ = new KumaUptimeResources(new()
@@ -66,69 +72,30 @@ return await Deployment.RunAsync(async () =>
     Groups = kumaGroups,
   });
 
-  var tailscaleSource = new SourceOauth("tailscale", new()
-  {
-    Name = "Tailscale",
-    Slug = "tailscale",
-    ProviderType = "openidconnect",
-
-    Enabled = true,
-    AuthenticationFlow = null,
-    EnrollmentFlow = null,
-
-    PolicyEngineMode = "any",
-    UserPathTemplate = "driscoll.dev/tailscale/%(slug)s",
-
-    OidcWellKnownUrl = "https://idp.opossum-yo.ts.net/.well-known/openid-configuration",
-    ConsumerKey = "unused",
-    ConsumerSecret = "unused",
-    UserMatchingMode = "email_link",
-    GroupMatchingMode = "name_link",
-  });
-
-  var discordSource = new SourceOauth("discord", new()
-  {
-    Name = "Discord",
-    Slug = "discord",
-    ProviderType = "discord",
-
-    Enabled = true,
-    AuthenticationFlow = null,
-    EnrollmentFlow = null,
-
-    PolicyEngineMode = "any",
-    UserPathTemplate = "driscoll.dev/discord/%(slug)s",
-
-    ConsumerKey = "unused",
-    ConsumerSecret = "unused",
-    UserMatchingMode = "email_link",
-    GroupMatchingMode = "name_link",
-
-    AdditionalScopes = "guilds guilds.members.read",
-  });
-
   var clusters =
-    (await cluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1",
-      "clusterdefinitions")).Items.ToImmutableArray();
+    (await cluster.ListClusterCustomObjectAsync<ClusterDefinitionList>("driscoll.dev", "v1", "clusterdefinitions")).Items.ToImmutableArray();
   var clusterFlows = ImmutableDictionary.CreateBuilder<string, AuthentikApplicationResources.ClusterFlows>();
+
+
+  var flows = Flows2.CreateFlows();
   foreach (var definition in clusters)
   {
-    var flows = new Flows(policies, stages, definition);
+    var definitionFlows = Flows2.CreateClusterFlows(definition, onePasswordProvider);
     clusterFlows[definition.Metadata.Name] = new AuthentikApplicationResources.ClusterFlows()
     {
-      AuthorizationFlow = flows.AuthorizationImplicitConsent.Uuid,
-      AuthenticationFlow = flows.AuthenticationFlow.Uuid,
-      InvalidationFlow = flows.InvalidationFlow.Uuid,
+      AuthorizationFlow = flows.ImplicitConsentFlow.Uuid,
+      AuthenticationFlow = definitionFlows.AuthenticationFlow.Uuid,
+      InvalidationFlow = flows.LogoutFlow.Uuid,
     };
     var clusterBrand = new Brand(definition.Metadata.Name, new()
     {
-      Domain = definition.Spec.Domain,
+      Domain = new Uri(definition.Spec.Domain).Host,
       BrandingLogo = definition.Spec.Icon ?? "",
       BrandingTitle = definition.Spec.Name,
       BrandingFavicon = definition.Spec.Favicon ?? "",
       // BrandingDefaultFlowBackground = "",
-      FlowAuthentication = flows.AuthenticationFlow.Uuid,
-      FlowInvalidation = flows.InvalidationFlow.Uuid,
+      FlowAuthentication = definitionFlows.AuthenticationFlow.Uuid,
+      FlowInvalidation = flows.LogoutFlow.Uuid,
       FlowUserSettings = flows.UserSettingsFlow.Uuid,
       // FlowDeviceCode = ,
       // FlowRecovery = ,

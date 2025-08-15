@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using applications.Models.ApplicationDefinition;
 using applications.Models.UptimeKuma;
+using Pulumi;
 using Riok.Mapperly.Abstractions;
 
 namespace applications.PulumiModels;
@@ -112,6 +116,11 @@ static partial class KumaUptimeModelMapper
       default:
         throw new ArgumentOutOfRangeException(nameof(definition), $"Unknown Uptime type in definition");
     }
+  }
+
+  private static InputList<string> MapInputList(ImmutableList<string> values)
+  {
+    return Output.Create(values.AsEnumerable());
   }
 
   public static partial void MapToUptime([MappingTarget] KumaUptimeResourceConfigArgs args, DnsUptime uptime);

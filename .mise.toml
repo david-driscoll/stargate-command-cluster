@@ -20,6 +20,9 @@ PGDATABASE = "op://Eris/sgc-pulumi-operator-postgres/database"
 AUTHENTIK_TOKEN = "op://Eris/Authentik Token/credential"
 PGSSLMODE = "disable"
 AUTHENTIK_URL = "op://Eris/Authentik Token/url"
+CONNECT_HOST = "https://op-connect.sgc.driscoll.tech"
+CONNECT_VAULT = "Eris"
+CONNECT_TOKEN = "op://Eris/OnePassword Connect Token/credential"
 
 [tools]
 python = "3.13.3"

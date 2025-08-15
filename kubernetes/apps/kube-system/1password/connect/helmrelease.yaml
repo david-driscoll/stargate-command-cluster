@@ -61,7 +61,7 @@ spec:
           uptime-kuma.autodiscovery.probe.enabled: "false"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: "op-connect.${CLUSTER_DOMAIN}"
+          - host: "op-connect.${CLUSTER_DOMAIN}"  
     operator:
       create: true
       autoRestart: true

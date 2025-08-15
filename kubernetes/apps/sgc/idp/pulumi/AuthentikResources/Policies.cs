@@ -17,20 +17,6 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
     ErrorMessage = "Password needs to be 8 characters or longer.",
   }, _parent);
 
-  
-
-  public PolicyExpression CheckIfUserHasPassword => field ??= new ("authentication-flow-password-stage", new()
-  {
-    Expression = """
-                 flow_plan = request.context.get("flow_plan")
-                 if not flow_plan:
-                     return True
-                 # If the user does not have a backend attached to it, they haven't
-                 # been authenticated yet and we need the password stage
-                 return not hasattr(flow_plan.context.get("pending_user"), "backend")
-                 """
-  }, _parent);
-
   public PolicyExpression SourceAuthenticationIfSingleSignOn => field ??= new ("source-authentication-if-single-sign-on", new()
   {
     Expression = "return ak_is_sso_flow"
@@ -40,7 +26,7 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
     Expression = "return ak_is_sso_flow"
   }, _parent);
 
-  public PolicyExpression UserSe2ttingsAuthorization => field ??= new ("user-settings-authorization", new()
+  public PolicyExpression UserSettingsAuthorization => field ??= new ("user-settings-authorization", new()
   {
     Expression = """
                  from authentik.core.models import (

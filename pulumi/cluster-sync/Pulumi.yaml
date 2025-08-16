@@ -1,4 +1,4 @@
-name: cluster-sync-pulumi
+name: pulumi-cluster-sync
 description: Cluster Sync
 runtime: dotnet
 backend:

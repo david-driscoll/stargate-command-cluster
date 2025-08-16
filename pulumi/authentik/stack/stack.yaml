@@ -67,6 +67,19 @@ spec:
       secret:
         name: pulumi-operator-postgres
         key: database
+    CONNECT_HOST:
+      type: Secret
+      literal:
+        value: "https://op-connect.${CLUSTER_DOMAIN}"
+    CONNECT_VAULT:
+      type: Secret
+      literal:
+        value: "Eris"
+    CONNECT_TOKEN:
+      type: Secret
+      secret:
+        name: pulumi-operator-connect-token
+        key: credential
   secretsRef:
     github:token:
       type: Secret

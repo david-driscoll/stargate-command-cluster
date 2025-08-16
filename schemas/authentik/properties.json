@@ -74,7 +74,7 @@
         "urlSsoRedirect": { "type": "string" },
         "verificationKp": { "type": "string" }
       },
-      "required": ["acsUrl", "authorizationFlow", "invalidationFlow"]
+      "required": ["acsUrl"]
     },
     "proxy": {
       "type": "object",
@@ -135,7 +135,7 @@
         "providerRadiusId": { "type": "string" },
         "sharedSecret": { "type": "string" }
       },
-      "required": ["authorizationFlow", "invalidationFlow", "sharedSecret"]
+      "required": ["sharedSecret"]
     },
     "rac": {
       "type": "object",
@@ -151,8 +151,7 @@
         },
         "providerRacId": { "type": "string" },
         "settings": { "type": "string" }
-      },
-      "required": ["authorizationFlow"]
+      }
     },
     "oauth2": {
       "type": "object",
@@ -192,7 +191,7 @@
         "signingKey": { "type": "string" },
         "subMode": { "type": "string" }
       },
-      "required": ["authorizationFlow", "clientId", "invalidationFlow"]
+      "required": ["clientId"]
     },
     "microsoftEntra": {
       "type": "object",
@@ -236,7 +235,7 @@
         "uidStartNumber": { "type": "number" },
         "unbindFlow": { "type": "string" }
       },
-      "required": ["baseDn", "bindFlow", "unbindFlow"]
+      "required": ["baseDn"]
     },
     "googleWorkspace": {
       "type": "object",

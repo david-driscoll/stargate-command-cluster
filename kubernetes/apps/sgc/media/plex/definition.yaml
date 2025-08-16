@@ -11,7 +11,7 @@ spec:
     type: secret
     name: ${APP}-uptime
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/kubernetes/apps/observability/crds/application/secret-uptime.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/secret-uptime.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:

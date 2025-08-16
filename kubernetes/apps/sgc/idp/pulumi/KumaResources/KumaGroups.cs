@@ -44,12 +44,14 @@ public class KumaGroups : Pulumi.ComponentResource
           {
             Name = groupTitle,
             Type = "group",
+            Interval = 30,
             ParentName = parentName
           }
           : new KumaUptimeResourceConfigArgs()
           {
             Name = groupTitle,
             Type = "group",
+            Interval = 30,
           }
       },
     };

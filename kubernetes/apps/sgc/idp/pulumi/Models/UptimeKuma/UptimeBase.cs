@@ -15,7 +15,7 @@ public abstract class UptimeBase
 
   [YamlMember(Alias = "interval")]
   [JsonPropertyName("interval")]
-  public int? Interval { get; set; } = 300;
+  public int? Interval { get; set; } = 120;
 
   [YamlMember(Alias = "max_retries")]
   [JsonPropertyName("max_retries")]

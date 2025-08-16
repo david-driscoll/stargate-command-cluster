@@ -13,12 +13,12 @@ class KumaUptimeResourceConfigArgs : ResourceArgs
 
   [Input("accepted_statuscodes")] public InputList<string>? AcceptedStatusCodes { get; set; }
   [Input("active")] public Input<bool>? Active { get; set; } = true;
-  [Input("interval")] public Input<int>? Interval { get; set; } = 300;
+  [Input("interval")] public Input<int>? Interval { get; set; } = 120;
   [Input("max_redirects")] public Input<int>? MaxRedirects { get; set; }
   [Input("max_retries")] public Input<int>? MaxRetries { get; set; } = 3;
   [Input("parent_name")] public Input<string>? ParentName { get; set; }
   [Input("proxy_id")] public Input<string>? ProxyId { get; set; }
-  [Input("resend_interval")] public Input<int>? ResendInterval { get; set; } = 300;
+  [Input("resend_interval")] public Input<int>? ResendInterval { get; set; } = 30;
   [Input("retry_interval")] public Input<int>? RetryInterval { get; set; } = 60;
   [Input("timeout")] public Input<int>? Timeout { get; set; } = 60;
   [Input("upside_down")] public Input<bool>? UpsideDown { get; set; }

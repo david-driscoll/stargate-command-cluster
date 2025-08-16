@@ -68,11 +68,11 @@ spec:
         name: pulumi-operator-postgres
         key: database
     CONNECT_HOST:
-      type: Secret
+      type: Literal
       literal:
         value: "https://op-connect.${CLUSTER_DOMAIN}"
     CONNECT_VAULT:
-      type: Secret
+      type: Literal
       literal:
         value: "Eris"
     CONNECT_TOKEN:

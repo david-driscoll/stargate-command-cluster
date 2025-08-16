@@ -10,6 +10,7 @@ using models;
 using models.Applications;
 using Pulumi;
 using Pulumi.Authentik;
+using Config = Pulumi.Config;
 
 KubernetesJson.AddJsonOptions(options => { options.Converters.Add(new YamlMemberConverterFactory()); });
 
@@ -33,7 +34,7 @@ return await Deployment.RunAsync(async () =>
 
     if (OperatingSystem.IsLinux())
     {
-      cluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
+      cluster = new Kubernetes(await KubernetesClientConfiguration.BuildConfigFromConfigFileAsync(new MemoryStream(Encoding.UTF8.GetBytes(new Config("kubernetes").Require("kubeconfig")))));
     }
     else
     {

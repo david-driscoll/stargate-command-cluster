@@ -6,6 +6,7 @@ using applications;
 using applications.KumaResources;
 using Dumpify;
 using k8s;
+using k8s.KubeConfigModels;
 using models;
 using Pulumi;
 
@@ -31,7 +32,7 @@ return await Deployment.RunAsync(async () =>
 
     if (OperatingSystem.IsLinux())
     {
-      cluster = new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
+      cluster = new Kubernetes(await KubernetesClientConfiguration.BuildConfigFromConfigFileAsync(new MemoryStream(Encoding.UTF8.GetBytes(new Config("kubernetes").Require("kubeconfig")))));
     }
     else
     {

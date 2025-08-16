@@ -1,0 +1,11 @@
+name: cluster-sync-pulumi
+description: Cluster Sync
+runtime: dotnet
+backend:
+  url: postgres://
+packages:
+  uptimekuma:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - kill3r-queen/uptimekuma

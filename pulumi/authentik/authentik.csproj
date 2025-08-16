@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);CS0436;RMG012;RMG020</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33" />
+    <Compile Remove="crds/**/*.*" />
+    <Compile Remove="sdks/**/*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
+    <ProjectReference Include="..\models\models.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: pgadmin
+spec:
+  name: Postgres Admin
+  category: ${CLUSTER_TITLE}
+  description: TODO some more work here
+  url: &url https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/peanut.svg
+  # authentik:
+  #   proxy:
+  #     mode: "forward_single"
+  #     externalHost: *url
+  uptime:
+    http:
+      url: *url
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster"

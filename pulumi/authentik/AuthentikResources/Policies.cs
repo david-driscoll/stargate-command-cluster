@@ -60,4 +60,15 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
                  return True
                  """
   }, _parent);
+
+  public PolicyExpression DefaultGroups => field ??= new ("default-groups", new()
+  {
+    Expression = """
+                 from authentik.core.models import Group
+                 group, _ = Group.objects.get_or_create(name="Users")
+                 # ["groups"] *must* be set to an array of Group objects, names alone are not enough.
+                 request.context["flow_plan"].context["groups"] = [group]
+                 return True
+                 """
+  }, _parent);
 }

@@ -8,16 +8,16 @@ spec:
   name: Capacitor
   category: ${CLUSTER_TITLE}
   description: Access to the Capacitor dashboard
-  url: &url https://capacitor.${CLUSTER_DOMAIN}
+  url: https://capacitor.${CLUSTER_DOMAIN}
   # TODO: Change me someday
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg
   authentik:
     proxy:
       mode: "forward_single"
-      externalHost: *url
+      externalHost: https://capacitor.${CLUSTER_DOMAIN}
   uptime:
     http:
-      url: *url
+      url: https://capacitor.${CLUSTER_DOMAIN}
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "cluster"

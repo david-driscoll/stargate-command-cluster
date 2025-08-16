@@ -11,7 +11,7 @@ spec:
       apiVersion: source.toolkit.fluxcd.io/v1
       kind: GitRepository
       name: flux-system
-    dir: pulumi/authentik
+    dir: pulumi/cluster-sync
   stack: ${APP}
   resyncFrequencySeconds: 60
   backend: postgres://postgres-rw.database.svc.cluster.local

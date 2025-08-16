@@ -5,6 +5,7 @@ kind: Kustomization
 components:
   - ../../../../components/ingress/internal
 resources:
+  - ./definition.yaml
   - ./helmrelease.yaml
   - ./secret.yaml
   - ./cloudflare-default-domain.yaml

@@ -9,8 +9,3 @@ packages:
     version: 0.12.0
     parameters:
       - goauthentik/authentik
-  uptimekuma:
-    source: terraform-provider
-    version: 0.12.0
-    parameters:
-      - kill3r-queen/uptimekuma

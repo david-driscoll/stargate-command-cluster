@@ -8,15 +8,15 @@ spec:
   name: Traefik Dashboard
   category: ${CLUSTER_TITLE}
   description: Access to the Traefik dashboard
-  url: https://internal.${CLUSTER_DOMAIN}
+  url: &url https://internal.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/traefik.svg
   authentik:
     proxy:
       mode: "forward_single"
-      externalHost: "https://internal.${ROOT_DOMAIN}"
+      externalHost: *url
   uptime:
     http:
-      url: https://internal.${CLUSTER_DOMAIN}
+      url: *url
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "cluster"

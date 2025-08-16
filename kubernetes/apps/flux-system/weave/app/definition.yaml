@@ -8,16 +8,16 @@ spec:
   name: Weave GitOps
   category: ${CLUSTER_TITLE}
   description: Access to the Weave dashboard
-  url: https://gitops.${CLUSTER_DOMAIN}
+  url: &url https://gitops.${CLUSTER_DOMAIN}
   # TODO: Change me someday
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg
   # authentik:
   #   proxy:
   #     mode: "forward_single"
-  #     externalHost: https://gitops.${CLUSTER_DOMAIN}
+  #     externalHost: *url
   uptime:
     http:
-      url: https://gitops.${CLUSTER_DOMAIN}
+      url: *url
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "cluster"

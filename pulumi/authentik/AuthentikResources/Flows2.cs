@@ -1,75 +1,11 @@
 using System.Linq;
-using applications.Models.Authentik;
 using models.Applications;
 using Pulumi;
 using Pulumi.Authentik;
-using Riok.Mapperly.Abstractions;
 using Rocket.Surgery.OnePasswordNativeUnofficial;
 using Provider = Rocket.Surgery.OnePasswordNativeUnofficial.Provider;
 
-namespace applications.AuthentikResources;
-
-[Mapper]
-public static partial class FlowMappings
-{
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args, AuthentikProviderProxy instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderOauth2Args args, AuthentikProviderOauth2 instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderSamlArgs args, AuthentikProviderSaml instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderLdapArgs args, AuthentikProviderLdap instance);
-
-  public static partial void MapProviderArgs([MappingTarget] SourceSamlArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] SourceSamlArgs args, AuthentikProviderSaml instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderRacArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderRacArgs args, AuthentikProviderRac instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderRadiusArgs args, AuthentikProviderRadius instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderSsfArgs args, AuthentikProviderSsf instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderScimArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderScimArgs args, AuthentikProviderScim instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderMicrosoftEntraArgs args,
-    AuthentikProviderMicrosoftEntra instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args,
-    AuthentikApplicationResources.ClusterFlows instance);
-
-  public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args,
-    AuthentikProviderGoogleWorkspace instance);
-}
+namespace authentik.AuthentikResources;
 
 public static class Flows2
 {
@@ -143,8 +79,9 @@ public static class Flows2
       Authentication = "none",
       // Background = "https://placeholder.jpeg",
     }, FlowsParent);
-    var tailscaleSource = CreateTailscaleSource(cluster, enrollmentFlow, authenticationFlow);
-    var plexSource = CreatePlexSource(cluster, enrollmentFlow, authenticationFlow, provider);
+    var sourceAuthenticationFlow = CreateSourceAuthenticationFlow(cluster);
+    var tailscaleSource = CreateTailscaleSource(cluster, enrollmentFlow, sourceAuthenticationFlow);
+    var plexSource = CreatePlexSource(cluster, enrollmentFlow, sourceAuthenticationFlow, provider);
 
     var identificationStage = new StageIdentification($"{cluster.Metadata.Name}-authentication-identification", new()
     {
@@ -163,7 +100,6 @@ public static class Flows2
     authenticationFlow.AddFlowStageBinding(identificationStage.StageIdentificationId);
     authenticationFlow.AddFlowStageBinding(AuthenticationStages.Mfa.StageAuthenticatorValidateId);
     authenticationFlow.AddFlowStageBinding(AuthenticationStages.Login.StageUserLoginId);
-    var sourceAuthenticationFlow = CreateSourceAuthenticationFlow(cluster);
 
     return (
       sourceAuthenticationFlow,
@@ -241,7 +177,7 @@ public static class Flows2
       Designation = "authentication",
       CompatibilityMode = true,
       PolicyEngineMode = "any",
-      DeniedAction = "message_continue",
+      DeniedAction = "continue",
       Authentication = "none",
       // Background = "https://placeholder.jpeg",
     }, FlowsParent);
@@ -266,7 +202,7 @@ public static class Flows2
       CompatibilityMode = true,
       PolicyEngineMode = "any",
       DeniedAction = "message_continue",
-      Authentication = "require_redirect",
+      Authentication = "none",
     }, FlowsParent);
 
     flow.AddPolicyBinding(Policies.SourceEnrollmentIfSingleSignOn);
@@ -290,7 +226,7 @@ public static class Flows2
       Designation = "authorization",
       CompatibilityMode = true,
       PolicyEngineMode = "any",
-      DeniedAction = "message_continue",
+      DeniedAction = "continue",
       Authentication = "require_authenticated",
       // Background = "https://placeholder.jpeg",
     }, FlowsParent);

@@ -3,7 +3,7 @@ using System.Threading;
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 public class StagePrompts(Fields Fields, ComponentResourceOptions? options = null) : SharedComponentResource(
   "custom:resource:AuthentikPrompts",

@@ -1,7 +1,7 @@
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 public class AuthenticatorStages(
   ComponentResourceOptions options) : SharedComponentResource(

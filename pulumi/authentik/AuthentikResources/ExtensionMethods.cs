@@ -4,7 +4,7 @@ using System.Linq;
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 static class ExtensionMethods
 {

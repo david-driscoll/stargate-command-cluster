@@ -1,6 +1,6 @@
 using Pulumi;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 public static class PulumiGroups
 {

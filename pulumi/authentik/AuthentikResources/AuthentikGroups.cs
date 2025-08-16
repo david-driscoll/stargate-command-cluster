@@ -4,7 +4,7 @@ using models;
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 class AuthentikGroups : Pulumi.ComponentResource
 {

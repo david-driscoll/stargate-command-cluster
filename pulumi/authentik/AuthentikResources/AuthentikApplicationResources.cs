@@ -12,7 +12,7 @@ using Pulumi;
 using Pulumi.Authentik;
 using ModelMappings = models.ModelMappings;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 public class AuthentikApplicationResources : ComponentResource
 {

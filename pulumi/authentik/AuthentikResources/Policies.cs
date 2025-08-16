@@ -1,7 +1,7 @@
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 public class Policies(ComponentResourceOptions? options = null) : SharedComponentResource("custom:resource:AuthentikPolicies",
   "authentik-policies", options)

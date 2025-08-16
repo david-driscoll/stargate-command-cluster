@@ -1,7 +1,7 @@
 using Pulumi;
 using Pulumi.Authentik;
 
-namespace applications.AuthentikResources;
+namespace authentik.AuthentikResources;
 
 public class InvalidationStages(ComponentResourceOptions options) : SharedComponentResource("custom:resource:InvalidationStages", "stages-invalidation", options)
 {

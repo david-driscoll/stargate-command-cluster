@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
-using applications.AuthentikResources;
+using authentik.AuthentikResources;
 using k8s;
 using models;
 using models.Applications;

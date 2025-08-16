@@ -18,3 +18,4 @@ resources:
   - ./media/ks.yaml
   - ./idp/ks.yaml
   - ./uptime-kuma/ks.yaml
+  - ./stacks/ks.yaml

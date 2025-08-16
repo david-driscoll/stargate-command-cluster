@@ -40,7 +40,7 @@ spec:
   dependsOn:
     - name: pulumi-secrets
       namespace: *namespace
-  path: ./pulumi/authentik
+  path: ./pulumi/authentik/stack
   prune: true
   wait: true
   force: true
@@ -69,7 +69,7 @@ spec:
   dependsOn:
     - name: pulumi-secrets
       namespace: *namespace
-  path: ./pulumi/cluster-sync
+  path: ./pulumi/cluster-sync/stack
   prune: true
   wait: true
   force: true

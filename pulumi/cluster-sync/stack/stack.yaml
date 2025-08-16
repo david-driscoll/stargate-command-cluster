@@ -94,5 +94,12 @@ spec:
   workspaceTemplate:
     spec:
       image: daviddriscoll/pulumi:latest
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 800m
+          memory: 1024Mi
       # pulumiLogLevel: 11
 

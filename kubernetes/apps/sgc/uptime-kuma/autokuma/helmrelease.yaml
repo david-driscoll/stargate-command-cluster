@@ -31,6 +31,46 @@ spec:
   dependsOn: []
   values:
     controllers:
+      restart:
+        type: cronjob
+        serviceAccount:
+          name: *app
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: false
+            fsGroupChangePolicy: "OnRootMismatch"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 2
+          schedule: "0 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        containers:
+          *app :
+            image:
+              repository: bitnami/kubectl
+              tag: latest
+            securityContext:
+              readOnlyRootFilesystem: false
+            command:
+              - 'kubectl'
+              - 'rollout'
+              - 'restart'
+              - 'deployment/autokuma'
+            env:
+              TZ: "${TIMEZONE}"
+            envFrom:
+              - secretRef:
+                  name: ${APP}-secret
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+
       *app :
         serviceAccount:
           name: *app
@@ -83,6 +123,14 @@ spec:
             - apiGroups: ["autokuma.bigboot.dev"]
               resources: ["*"]
               verbs: ["list", "patch", "watch"]
+        restart:
+          forceRename: autokuma-restart
+          type: Role
+          rules:
+            - apiGroups: ["apps", "extensions"]
+              resources: ["deployments"]
+              resourceNames: [ *app ]
+              verbs: ["get", "patch", "list", "watch"]
       bindings:
         *app :
           type: ClusterRoleBinding
@@ -93,6 +141,16 @@ spec:
           roleRef:
             kind: ClusterRole
             name: *app
+            apiGroup: rbac.authorization.k8s.io
+        restart:
+          type: RoleBinding
+          subjects:
+            - kind: ServiceAccount
+              name: *app
+              namespace: ${NAMESPACE}
+          roleRef:
+            kind: Role
+            name: autokuma-restart
             apiGroup: rbac.authorization.k8s.io
     secrets:
       *app :

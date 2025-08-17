@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using applications.Models.Authentik;
 using applications.Models.UptimeKuma;
 using k8s;
@@ -18,10 +20,20 @@ public static partial class ModelMappings
   {
     var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
     var @namespace = definition.Metadata.Labels["driscoll.dev/namespace"];
-    var clusterTitle =definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
+    var clusterTitle = definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
 
     return (clusterName, clusterTitle, @namespace);
   }
+
+  private static ImmutableList<string> MapListFromString(string value) => value
+    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+    .Select(z => z.Trim())
+    .ToImmutableList();
+
+  private static ImmutableList<double> MapListFromDouble(string value) => value
+    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+    .Select(z => double.Parse(z.Trim()))
+    .ToImmutableList();
 
   public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
   public static partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);

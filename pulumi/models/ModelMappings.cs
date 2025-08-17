@@ -36,6 +36,7 @@ public static partial class ModelMappings
     .ToImmutableList();
 
   public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
+
   public static partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);
   public static partial AuthentikProviderScim MapToScim(AuthentikSpec spec);
   public static partial AuthentikProviderSsf MapToSsf(AuthentikSpec spec);

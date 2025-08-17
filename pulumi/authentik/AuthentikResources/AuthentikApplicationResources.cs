@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +11,7 @@ using models;
 using models.Applications;
 using Pulumi;
 using Pulumi.Authentik;
+using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using ModelMappings = models.ModelMappings;
 
 namespace authentik.AuthentikResources;
@@ -141,6 +143,36 @@ public class AuthentikApplicationResources : ComponentResource
           };
           FlowMappings.MapProviderArgs(providerArgs, oauth2);
           FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+          if (oauth2.ClientId is null && oauth2.ClientSecret is null)
+          {
+            // Generate client ID and secret if not provided
+            providerArgs.ClientId = new Pulumi.Random.RandomString(resourceName + "-client-id", new()
+            {
+              Length = 16,
+              Special = false,
+            }, new CustomResourceOptions() {Parent = this}).Result;
+            providerArgs.ClientSecret = new Pulumi.Random.RandomPassword(resourceName + "-client-secret", new()
+            {
+              Length = 32,
+              Special = true,
+            }, new CustomResourceOptions() {Parent = this}).Result;
+            _ = new Pulumi.Kubernetes.Core.V1.Secret(resourceName, new()
+              {
+                Metadata = new ObjectMetaArgs()
+                {
+                  Name = resourceName,
+                  Namespace = ns
+                },
+                Data = Output.Tuple(providerArgs.ClientId, providerArgs.ClientSecret)
+                  .Apply(tuple => new Dictionary<string, string>
+                  {
+                    ["client_id"] = tuple.Item1,
+                    ["client_secret"] = tuple.Item2,
+                  }),
+              },
+              new CustomResourceOptions() { Parent = this });
+          }
+
           provider = new ProviderOauth2(resourceName, providerArgs, options);
           break;
         }

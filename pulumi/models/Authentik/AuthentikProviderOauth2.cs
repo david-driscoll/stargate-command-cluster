@@ -6,7 +6,7 @@ public sealed class AuthentikProviderOauth2
 {
   public string? AccessCodeValidity { get; set; }
   public string? AccessTokenValidity { get; set; }
-  public ImmutableList<object>? AllowedRedirectUris { get; set; }
+  public ImmutableList<string>? AllowedRedirectUris { get; set; }
   public string? AuthenticationFlow { get; set; }
   public string AuthorizationFlow { get; set; } = null!;
   public string ClientId { get; set; } = null!;

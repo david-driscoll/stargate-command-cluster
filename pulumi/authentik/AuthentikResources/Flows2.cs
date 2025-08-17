@@ -9,6 +9,7 @@ namespace authentik.AuthentikResources;
 
 public static class Flows2
 {
+  private static PropertyMappings PropertyMappings => field ??= new();
   private static Policies Policies => field ??= new();
   private static ComponentResource Stages => field ??= new("custom:resource:AuthentikStages", "authentik-stages");
   private static CustomResourceOptions StagesParent => field ??= new() { Parent = Stages };

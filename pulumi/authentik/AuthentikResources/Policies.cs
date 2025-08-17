@@ -3,7 +3,8 @@ using Pulumi.Authentik;
 
 namespace authentik.AuthentikResources;
 
-public class Policies(ComponentResourceOptions? options = null) : SharedComponentResource("custom:resource:AuthentikPolicies",
+public class Policies(ComponentResourceOptions? options = null) : SharedComponentResource(
+  "custom:resource:AuthentikPolicies",
   "authentik-policies", options)
 {
   public PolicyPassword PasswordComplexity => field ??= new("password-complexity", new()
@@ -17,16 +18,18 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
     ErrorMessage = "Password needs to be 8 characters or longer.",
   }, _parent);
 
-  public PolicyExpression SourceAuthenticationIfSingleSignOn => field ??= new ("source-authentication-if-single-sign-on", new()
-  {
-    Expression = "return ak_is_sso_flow"
-  }, _parent);
-  public PolicyExpression SourceEnrollmentIfSingleSignOn => field ??= new ("source-enrollment-if-single-sign-on", new()
+  public PolicyExpression SourceAuthenticationIfSingleSignOn => field ??= new("source-authentication-if-single-sign-on",
+    new()
+    {
+      Expression = "return ak_is_sso_flow"
+    }, _parent);
+
+  public PolicyExpression SourceEnrollmentIfSingleSignOn => field ??= new("source-enrollment-if-single-sign-on", new()
   {
     Expression = "return ak_is_sso_flow"
   }, _parent);
 
-  public PolicyExpression UserSettingsAuthorization => field ??= new ("user-settings-authorization", new()
+  public PolicyExpression UserSettingsAuthorization => field ??= new("user-settings-authorization", new()
   {
     Expression = """
                  from authentik.core.models import (
@@ -61,7 +64,7 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
                  """
   }, _parent);
 
-  public PolicyExpression DefaultGroups => field ??= new ("default-groups", new()
+  public PolicyExpression DefaultGroups => field ??= new("default-groups", new()
   {
     Expression = """
                  from authentik.core.models import Group

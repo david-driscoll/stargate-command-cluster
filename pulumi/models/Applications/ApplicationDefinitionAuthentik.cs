@@ -10,12 +10,12 @@ public record ApplicationDefinitionAuthentik
   [JsonPropertyName("saml")]
   public AuthentikProviderSaml? ProviderSaml { get; init; }
 
-  [YamlMember(Alias = "oidc")]
-  [JsonPropertyName("oidc")]
-  public AuthentikProviderOauth2? ProviderOauth2 { get; init; }
-
   [YamlMember(Alias = "oauth2")]
   [JsonPropertyName("oauth2")]
+  public AuthentikProviderOauth2? ProviderOauth2 { get; init; }
+
+  [YamlMember(Alias = "scim")]
+  [JsonPropertyName("scim")]
   public AuthentikProviderScim? ProviderScim { get; init; }
 
   [YamlMember(Alias = "sso")]

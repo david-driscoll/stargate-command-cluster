@@ -1,0 +1,56 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: emby-restart
+  namespace: eris
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: emby-restart
+  namespace: eris
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["emby"]
+    verbs: ["get", "patch", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: emby-restart
+  namespace: eris
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: emby-restart
+subjects:
+  - kind: ServiceAccount
+    name: emby-restart
+    namespace: eris
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: emby-restart
+  namespace: eris
+spec:
+  concurrencyPolicy: Forbid
+  schedule: '0 8 * * *'
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: emby-restart
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl@sha256:046830545ea21599c27342b7c55bcd0509cdea10d29bd19c098ef618fc14646d
+              command:
+                - 'kubectl'
+                - 'rollout'
+                - 'restart'
+                - 'deployment/emby'

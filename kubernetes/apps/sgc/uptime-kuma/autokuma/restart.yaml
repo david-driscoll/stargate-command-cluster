@@ -79,10 +79,6 @@ spec:
           type: RuntimeDefault
       shareProcessNamespace: true
 
-    persistence:
-      data:
-        existingClaim: ${APP}
-
     serviceAccount:
       *app : {}
     rbac:

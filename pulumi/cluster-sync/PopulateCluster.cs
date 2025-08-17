@@ -101,10 +101,10 @@ public static class PopulateCluster
 
     foreach (var remoteEntity in remoteEntities)
     {
-      await localCluster.CustomObjects.PatchNamespacedCustomObjectAsync<TResult>(
-        new V1Patch($$"""
-                      {"spec": {{KubernetesJson.Serialize(remoteEntity.Spec)}} }
-                      """, V1Patch.PatchType.MergePatch), group, version, destinationNamespace, plural, remoteEntity.Metadata.Name);
+       await localCluster.CustomObjects.PatchNamespacedCustomObjectAsync<TResult>(
+         new V1Patch($$"""
+                       {"spec": {{KubernetesJson.Serialize(remoteEntity.Spec)}} }
+                       """, V1Patch.PatchType.MergePatch), group, version, destinationNamespace, plural, remoteEntity.Metadata.Name);
     }
   }
 

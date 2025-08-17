@@ -19,11 +19,11 @@ public static partial class ModelMappings
     where T : V1ObjectMeta
   {
     var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
-    var originalName = definition.Metadata.Labels["driscoll.dev/originalName"];
+    var originalName = definition.Metadata.Labels.TryGetValue("driscoll.dev/originalName", out var a) ? a : null;
     var @namespace = definition.Metadata.Labels["driscoll.dev/namespace"];
     var clusterTitle = definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
 
-    return (clusterName, clusterTitle, @namespace, originalName);
+    return (clusterName, clusterTitle, @namespace, originalName ?? definition.Metadata.Name);
   }
 
   private static ImmutableList<string> MapListFromString(string value) => value

@@ -67,7 +67,7 @@ spec:
   category: DNS
   uptime:
     http:
-      url: https://${APP}.${CLUSTER_DOMAIN}/index.html
+      url: https://${APP}.${ROOT_DOMAIN}/index.html
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "${APP}-group"

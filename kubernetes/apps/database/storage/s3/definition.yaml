@@ -18,5 +18,5 @@ spec:
     http:
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
+      accepted_statuscodes: ["400"]
       parent_name: "cluster"

@@ -43,6 +43,7 @@ public static partial class Mappings
     {
       entity.Metadata.Annotations ??= new Dictionary<string, string>();
       entity.Metadata.Labels ??= new Dictionary<string, string>();
+      entity.Metadata.Labels.TryAdd("driscoll.dev/originalName", entity.Metadata.Name);
       entity.Metadata.Labels.TryAdd("driscoll.dev/namespace", entity.Metadata.Namespace());
       entity.Metadata.Labels.TryAdd("driscoll.dev/cluster", "sgc");
       entity.Metadata.Annotations.TryAdd("driscoll.dev/clusterTitle", "Stargate Command");
@@ -54,7 +55,7 @@ public static partial class Mappings
     ApplicationDefinition resource)
   {
     var spec = resource.Spec;
-    var (_, _, ns) = resource.GetClusterNameAndTitle();
+    var (_, _, ns, originalName) = resource.GetClusterNameAndTitle();
     if (spec is { AuthentikFrom: { } authentikFrom })
     {
       IDictionary<string, string> data;
@@ -178,7 +179,7 @@ public static partial class Mappings
 
   private static string Prefix(ApplicationDefinition resource)
   {
-    var (clusterName, _, ns) = resource.GetClusterNameAndTitle();
+    var (clusterName, _, ns, _) = resource.GetClusterNameAndTitle();
     return ns == clusterName ? clusterName : $"{clusterName}-{resource.Namespace()}";
   }
 

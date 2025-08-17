@@ -12,6 +12,7 @@ using models.Applications;
 using Pulumi;
 using Pulumi.Authentik;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
+using Rocket.Surgery.OnePasswordNativeUnofficial;
 using ModelMappings = models.ModelMappings;
 
 namespace authentik.AuthentikResources;
@@ -24,8 +25,10 @@ public class AuthentikApplicationResources : ComponentResource
     public Input<string>? AuthenticationFlow { get; init; }
     public required Input<string> InvalidationFlow { get; init; }
   }
+
   public class Args : ResourceArgs
   {
+    public required Rocket.Surgery.OnePasswordNativeUnofficial.Provider OnePasswordProvider { get; init; }
     public required ImmutableDictionary<string, ClusterFlows> ClusterFlows { get; init; }
     public required Kubernetes Cluster { get; init; }
     public required ImmutableDictionary<string, ClusterDefinition> ClusterInfo { get; set; }
@@ -54,7 +57,7 @@ public class AuthentikApplicationResources : ComponentResource
           var proxyProviders = apps.Where(z => z.First.Spec?.Authentik?.ProviderProxy is not null)
             .Select(z => z.Second.ProtocolProvider);
 
-          var (clusterName, clusterTitle, ns) = applications.First().GetClusterNameAndTitle();
+          var (clusterName, clusterTitle, ns, originalName) = applications.First().GetClusterNameAndTitle();
           ServiceConnectionKubernetes serviceConnection;
           if (applications.Key == "sgc")
           {
@@ -67,7 +70,8 @@ public class AuthentikApplicationResources : ComponentResource
           }
           else
           {
-            var kubeConfig = await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-authentik-outpost-kubeconfig", "sgc");
+            var kubeConfig =
+              await args.Cluster.ReadNamespacedSecretAsync($"{clusterName}-authentik-outpost-kubeconfig", "sgc");
             serviceConnection = new ServiceConnectionKubernetes(clusterName, new ServiceConnectionKubernetesArgs()
             {
               Name = clusterTitle,
@@ -97,7 +101,6 @@ public class AuthentikApplicationResources : ComponentResource
             ProtocolProviders = [.. proxyProviders.Select(provider => provider.Apply(z => z.Value))],
           }, new CustomResourceOptions() { Parent = this });
         }
-
       });
   }
 
@@ -106,7 +109,6 @@ public class AuthentikApplicationResources : ComponentResource
     Log.Info($"Creating authentik application for {application.Metadata.Name} in {application.Metadata.Namespace()}");
     Debug.Assert(application.Spec.Authentik != null);
 
-    var (clusterName, clusterTitle, ns) = ModelMappings.GetClusterNameAndTitle(application);
     var authentikApp = CreateAuthentikApplication(args, application, application.Spec.Authentik);
     return authentikApp;
   }
@@ -115,7 +117,7 @@ public class AuthentikApplicationResources : ComponentResource
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
-    var (clusterName, clusterTitle, ns) = definition.GetClusterNameAndTitle();
+    var (clusterName, clusterTitle, ns, originalName) = ModelMappings.GetClusterNameAndTitle(definition);
     var clusterFlows = args.ClusterFlows[clusterName];
     var slug = definition.Spec.Slug ??
                $"{clusterName}-{definition.Spec.Name}".Dehumanize().Underscore().Dasherize();
@@ -125,145 +127,137 @@ public class AuthentikApplicationResources : ComponentResource
     switch (authentik)
     {
       case { ProviderProxy: { } proxy }:
+      {
+        var providerArgs = new ProviderProxyArgs()
         {
-          var providerArgs = new ProviderProxyArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, proxy);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderProxy(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, proxy);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderProxy(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderOauth2: { } oauth2 }:
+      {
+        var providerArgs = new ProviderOauth2Args()
         {
-          var providerArgs = new ProviderOauth2Args()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, oauth2);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          if (oauth2.ClientId is null && oauth2.ClientSecret is null)
-          {
-            // Generate client ID and secret if not provided
-            providerArgs.ClientId = new Pulumi.Random.RandomString(resourceName + "-client-id", new()
-            {
-              Length = 16,
-              Special = false,
-            }, new CustomResourceOptions() {Parent = this}).Result;
-            providerArgs.ClientSecret = new Pulumi.Random.RandomPassword(resourceName + "-client-secret", new()
-            {
-              Length = 32,
-              Special = true,
-            }, new CustomResourceOptions() {Parent = this}).Result;
-            _ = new Pulumi.Kubernetes.Core.V1.Secret(resourceName, new()
-              {
-                Metadata = new ObjectMetaArgs()
-                {
-                  Name = resourceName,
-                  Namespace = ns
-                },
-                Data = Output.Tuple(providerArgs.ClientId, providerArgs.ClientSecret)
-                  .Apply(tuple => new Dictionary<string, string>
-                  {
-                    ["client_id"] = tuple.Item1,
-                    ["client_secret"] = tuple.Item2,
-                  }),
-              },
-              new CustomResourceOptions() { Parent = this });
-          }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, oauth2);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        // Generate client ID and secret if not provided
+        var clientId = new Pulumi.Random.RandomString(resourceName + "-client-id", new()
+        {
+          Length = 16,
+          Special = false,
+        }, options);
+        var clientSecret = new Pulumi.Random.RandomPassword(resourceName + "-client-secret", new()
+        {
+          Length = 32,
+          Special = true,
+        }, options);
+        providerArgs.ClientId = clientId.Result;
+        providerArgs.ClientSecret = clientSecret.Result;
 
-          provider = new ProviderOauth2(resourceName, providerArgs, options);
-          break;
-        }
+        _ = new APICredentialItem($"{definition.Metadata.Name}-oidc-credential", new()
+        {
+          Title = $"{originalName}-oidc-credential",
+          Username = clientId.Result,
+          Credential = clientSecret.Result,
+          Vault = "Eris",
+        }, new CustomResourceOptions() { Parent = this, Provider = args.OnePasswordProvider });
+
+        provider = new ProviderOauth2(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderLdap: { } ldap }:
+      {
+        var providerArgs = new ProviderLdapArgs()
         {
-          var providerArgs = new ProviderLdapArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, ldap);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderLdap(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, ldap);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderLdap(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderSaml: { } saml }:
+      {
+        var providerArgs = new ProviderSamlArgs()
         {
-          var providerArgs = new ProviderSamlArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, saml);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderSaml(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, saml);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderSaml(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderRac: { } rac }:
+      {
+        var providerArgs = new ProviderRacArgs()
         {
-          var providerArgs = new ProviderRacArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, rac);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderRac(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, rac);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderRac(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderRadius: { } radius }:
+      {
+        var providerArgs = new ProviderRadiusArgs()
         {
-          var providerArgs = new ProviderRadiusArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          FlowMappings.MapProviderArgs(providerArgs, radius);
-          provider = new ProviderRadius(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        FlowMappings.MapProviderArgs(providerArgs, radius);
+        provider = new ProviderRadius(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderSsf: { } ssf }:
+      {
+        var providerArgs = new ProviderSsfArgs()
         {
-          var providerArgs = new ProviderSsfArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, ssf);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderSsf(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, ssf);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderSsf(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderScim: { } scim }:
+      {
+        var providerArgs = new ProviderScimArgs()
         {
-          var providerArgs = new ProviderScimArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, scim);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderScim(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, scim);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderScim(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderMicrosoftEntra: { } microsoftEntra }:
+      {
+        var providerArgs = new ProviderMicrosoftEntraArgs()
         {
-          var providerArgs = new ProviderMicrosoftEntraArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, microsoftEntra);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderMicrosoftEntra(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, microsoftEntra);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderMicrosoftEntra(resourceName, providerArgs, options);
+        break;
+      }
       case { ProviderGoogleWorkspace: { } googleWorkspace }:
+      {
+        var providerArgs = new ProviderGoogleWorkspaceArgs()
         {
-          var providerArgs = new ProviderGoogleWorkspaceArgs()
-          {
-            Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
-          };
-          FlowMappings.MapProviderArgs(providerArgs, googleWorkspace);
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
-          provider = new ProviderGoogleWorkspace(resourceName, providerArgs, options);
-          break;
-        }
+          Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
+        };
+        FlowMappings.MapProviderArgs(providerArgs, googleWorkspace);
+        FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        provider = new ProviderGoogleWorkspace(resourceName, providerArgs, options);
+        break;
+      }
       default:
         throw new ArgumentException("Unknown authentik provider type", nameof(authentik));
     }

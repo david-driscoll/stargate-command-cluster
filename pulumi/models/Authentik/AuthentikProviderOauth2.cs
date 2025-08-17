@@ -9,7 +9,7 @@ public sealed class AuthentikProviderOauth2
   public ImmutableList<string>? AllowedRedirectUris { get; set; }
   public string? AuthenticationFlow { get; set; }
   public string AuthorizationFlow { get; set; } = null!;
-  public string ClientId { get; set; } = null!;
+  public string? ClientId { get; set; } = null!;
   public string? ClientSecret { get; set; }
   public string? ClientType { get; set; }
   public string? EncryptionKey { get; set; }

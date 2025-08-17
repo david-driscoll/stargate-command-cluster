@@ -996,8 +996,7 @@ spec:
                           type: string
                         subMode:
                           type: string
-                      required:
-                        - clientId
+                      required: []
                     microsoftEntra:
                       type: object
                       properties:

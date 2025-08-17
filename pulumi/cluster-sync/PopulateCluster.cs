@@ -73,7 +73,7 @@ public static class PopulateCluster
 
     static string Prefix(TResult resource)
     {
-      var (clusterName, _, ns) = resource.GetClusterNameAndTitle();
+      var (clusterName, _, ns, originalName) = resource.GetClusterNameAndTitle();
       return ns == clusterName ? clusterName : $"{clusterName}-{resource.Namespace()}";
     }
 

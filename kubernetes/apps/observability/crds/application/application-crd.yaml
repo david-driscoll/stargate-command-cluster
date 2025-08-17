@@ -958,7 +958,7 @@ spec:
                         allowedRedirectUris:
                           type: array
                           items:
-                            type: object
+                            type: string
                         authenticationFlow:
                           type: string
                         authorizationFlow:

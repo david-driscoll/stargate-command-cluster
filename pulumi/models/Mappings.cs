@@ -43,9 +43,9 @@ public static partial class Mappings
     {
       entity.Metadata.Annotations ??= new Dictionary<string, string>();
       entity.Metadata.Labels ??= new Dictionary<string, string>();
-      entity.Metadata.Labels.TryAdd("driscoll.dev/originalName", entity.Metadata.Name);
       entity.Metadata.Labels.TryAdd("driscoll.dev/namespace", entity.Metadata.Namespace());
       entity.Metadata.Labels.TryAdd("driscoll.dev/cluster", "sgc");
+      entity.Metadata.Annotations.TryAdd("driscoll.dev/originalName", entity.Metadata.Name);
       entity.Metadata.Annotations.TryAdd("driscoll.dev/clusterTitle", "Stargate Command");
       yield return await MapApplicationDefinition(client, entity);
     }

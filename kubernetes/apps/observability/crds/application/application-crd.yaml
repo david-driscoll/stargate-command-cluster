@@ -849,8 +849,6 @@ spec:
                           type: string
                       required:
                         - acsUrl
-                        - authorizationFlow
-                        - invalidationFlow
                     proxy:
                       type: object
                       properties:
@@ -926,8 +924,6 @@ spec:
                         sharedSecret:
                           type: string
                       required:
-                        - authorizationFlow
-                        - invalidationFlow
                         - sharedSecret
                     rac:
                       type: object
@@ -946,8 +942,7 @@ spec:
                           type: string
                         settings:
                           type: string
-                      required:
-                        - authorizationFlow
+                      required: []
                     oauth2:
                       type: object
                       properties:
@@ -1002,9 +997,7 @@ spec:
                         subMode:
                           type: string
                       required:
-                        - authorizationFlow
                         - clientId
-                        - invalidationFlow
                     microsoftEntra:
                       type: object
                       properties:
@@ -1065,8 +1058,6 @@ spec:
                           type: string
                       required:
                         - baseDn
-                        - bindFlow
-                        - unbindFlow
                     googleWorkspace:
                       type: object
                       properties:

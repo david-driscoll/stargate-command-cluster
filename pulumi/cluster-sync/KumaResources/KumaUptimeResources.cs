@@ -37,7 +37,7 @@ public class KumaUptimeResources : ComponentResource
   private CustomResource CreateResource(Args args, ApplicationDefinition application)
   {
     Debug.Assert(application.Spec.Uptime != null);
-    var (clusterName, clusterTitle, ns) = ModelMappings.GetClusterNameAndTitle(application);
+    var (clusterName, clusterTitle, ns, originalName) = ModelMappings.GetClusterNameAndTitle(application);
     var uptime = KumaUptimeModelMapper.GetUptime(application.Spec.Uptime);
     var config = new KumaUptimeResourceConfigArgs()
     {
@@ -70,6 +70,7 @@ public class KumaUptimeResources : ComponentResource
         Namespace = "observability",
         Labels = new Dictionary<string, string>
         {
+          ["driscoll.dev/originalName"] = originalName,
           ["driscoll.dev/cluster"] = clusterName,
           ["driscoll.dev/namespace"] = ns,
         },

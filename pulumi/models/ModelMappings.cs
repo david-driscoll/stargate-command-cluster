@@ -14,15 +14,16 @@ namespace models;
 [Mapper(AllowNullPropertyAssignment = false)]
 public static partial class ModelMappings
 {
-  public static (string ClusterName, string ClusterTitle, string Namespace) GetClusterNameAndTitle<T>(
+  public static (string ClusterName, string ClusterTitle, string Namespace, string OriginalName) GetClusterNameAndTitle<T>(
     this IMetadata<T> definition)
     where T : V1ObjectMeta
   {
     var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
+    var originalName = definition.Metadata.Labels["driscoll.dev/originalName"];
     var @namespace = definition.Metadata.Labels["driscoll.dev/namespace"];
     var clusterTitle = definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
 
-    return (clusterName, clusterTitle, @namespace);
+    return (clusterName, clusterTitle, @namespace, originalName);
   }
 
   private static ImmutableList<string> MapListFromString(string value) => value

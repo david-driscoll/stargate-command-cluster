@@ -82,6 +82,7 @@ return await Deployment.RunAsync(async () =>
   var clusters = await Mappings.GetClusters(cluster).ToArrayAsync();
   _ = new AuthentikApplicationResources(new()
   {
+    OnePasswordProvider = onePasswordProvider,
     Cluster = cluster,
     ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),
     ClusterFlows = clusterFlows.ToImmutable()

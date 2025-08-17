@@ -10,7 +10,7 @@ spec:
   description: Access to the Weave dashboard
   url: &url https://gitops.${CLUSTER_DOMAIN}
   # TODO: Change me someday
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg
+  icon: https://raw.githubusercontent.com/weaveworks/weave-gitops/refs/heads/main/ui/images/logoDark.svg
   # authentik:
   #   proxy:
   #     mode: "forward_single"

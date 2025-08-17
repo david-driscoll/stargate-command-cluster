@@ -131,7 +131,7 @@ public static class Flows2
       ClientId = plexDetails.Apply(z => z.Username),
       PlexToken = plexDetails.Apply(z => z.Credential),
       AllowedServers = plexDetails.Apply(z =>
-        z.Sections.Values.Single(z => z.Label == "servers").Fields.Values.Select(z => z.Value)),
+        z.Sections.Values.Single(z => z.Label == "servers").Fields.Values.OrderBy(z => z.Value).Select(z => z.Value)),
       AllowFriends = true,
 
       AuthenticationFlow = authenticationFlow.Uuid,

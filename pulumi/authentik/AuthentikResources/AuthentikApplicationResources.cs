@@ -89,7 +89,7 @@ public class AuthentikApplicationResources : ComponentResource
               kubernetes_namespace = clusterName,
               kubernetes_ingress_class_name = "internal",
             })),
-            ProtocolProviders = [.. apps.OrderBy(z => z.Name).Select(app => app.ProtocolProvider.Apply(z => z.Value))],
+            ProtocolProviders = [.. apps.Select(app => app.ProtocolProvider.Apply(z => z.Value))],
           }, new CustomResourceOptions() { Parent = this });
         }
 

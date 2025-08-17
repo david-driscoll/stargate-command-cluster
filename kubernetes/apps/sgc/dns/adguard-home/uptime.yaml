@@ -9,7 +9,7 @@ spec:
   category: DNS
   uptime:
     group:
-      parent_name: "apps"
+      parent_name: "system"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -52,6 +52,22 @@ spec:
   uptime:
     http:
       url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "${APP}-group"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}-backup
+spec:
+  name: Backup
+  category: DNS
+  uptime:
+    http:
+      url: https://${APP}.${CLUSTER_DOMAIN}/index.html
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "${APP}-group"

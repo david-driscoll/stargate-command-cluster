@@ -3,18 +3,18 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: ${APP}-${CLUSTER_CNAME}
+  name: ${APP}
 spec:
-  name: Weave GitOps
+  name: Kubernetes Dashboard
   category: ${CLUSTER_TITLE}
-  description: Access to the Weave dashboard
-  url: &url https://gitops.${CLUSTER_DOMAIN}
+  description: Access to the Kubernetes Dashboard
+  url: &url https://kubeui.${CLUSTER_DOMAIN}
   # TODO: Change me someday
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg
-  authentik:
-    proxy:
-      mode: "forward_single"
-      externalHost: *url
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kubernetes-dashboard.svg
+  # authentik:
+  #   proxy:
+  #     mode: "forward_single"
+  #     externalHost: *url
   uptime:
     http:
       url: *url

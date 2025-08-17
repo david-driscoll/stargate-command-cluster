@@ -13,9 +13,9 @@ spec:
       name: flux-system
     dir: pulumi/authentik
   stack: ${APP}
-  # resyncFrequencySeconds: 600
+  resyncFrequencySeconds: 600
   backend: postgres://postgres-rw.database.svc.cluster.local
-  # continueResyncOnCommitMatch: true
+  continueResyncOnCommitMatch: true
   #  destroyOnFinalize: true
   workspaceReclaimPolicy: Delete
   envRefs:

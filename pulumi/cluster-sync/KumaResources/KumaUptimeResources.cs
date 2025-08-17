@@ -46,10 +46,20 @@ public class KumaUptimeResources : ComponentResource
       Active = true,
     };
     KumaUptimeModelMapper.MapUptime(config, application.Spec.Uptime);
-    if (uptime.ParentName is "cluster")
+    switch (uptime.ParentName)
     {
-      args.Groups.AddGroup(clusterName, clusterTitle);
-      config.ParentName = clusterName;
+      case "cluster":
+        args.Groups.AddGroup(clusterName, clusterTitle);
+        config.ParentName = clusterName;
+        break;
+      case "cluster-system":
+        args.Groups.AddGroup(clusterName + "-system", clusterTitle, "system");
+        config.ParentName = clusterName + "-system";
+        break;
+      case "cluster-apps":
+        args.Groups.AddGroup(clusterName + "-apps", clusterTitle, "apps");
+        config.ParentName = clusterName + "-apps";
+        break;
     }
 
     return new CustomResource(application.Metadata.Name, new KumaUptimeResourceArgs()

@@ -43,11 +43,14 @@ public class AuthentikApplicationResources : ComponentResource
       {
         await foreach (var applications in groups)
         {
-          var apps = applications.Select(app => CreateResource(args, app)).ToImmutableArray();
+          var apps = applications.Zip(applications.Select(app => CreateResource(args, app))).ToImmutableArray();
           if (apps.Length == 0)
           {
             continue;
           }
+
+          var proxyProviders = apps.Where(z => z.First.Spec?.Authentik?.ProviderProxy is not null)
+            .Select(z => z.Second.ProtocolProvider);
 
           var (clusterName, clusterTitle, ns) = applications.First().GetClusterNameAndTitle();
           ServiceConnectionKubernetes serviceConnection;
@@ -89,7 +92,7 @@ public class AuthentikApplicationResources : ComponentResource
               kubernetes_namespace = clusterName,
               kubernetes_ingress_class_name = "internal",
             })),
-            ProtocolProviders = [.. apps.Select(app => app.ProtocolProvider.Apply(z => z.Value))],
+            ProtocolProviders = [.. proxyProviders.Select(provider => provider.Apply(z => z.Value))],
           }, new CustomResourceOptions() { Parent = this });
         }
 
@@ -110,7 +113,7 @@ public class AuthentikApplicationResources : ComponentResource
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
-    var (clusterName, clusterTitle, ns) = ModelMappings.GetClusterNameAndTitle(definition);
+    var (clusterName, clusterTitle, ns) = definition.GetClusterNameAndTitle();
     var clusterFlows = args.ClusterFlows[clusterName];
     var slug = definition.Spec.Slug ??
                $"{clusterName}-{definition.Spec.Name}".Dehumanize().Underscore().Dasherize();
@@ -125,8 +128,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, proxy);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderProxy(resourceName, providerArgs, options);
           break;
         }
@@ -136,8 +139,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, oauth2);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderOauth2(resourceName, providerArgs, options);
           break;
         }
@@ -147,8 +150,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, ldap);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderLdap(resourceName, providerArgs, options);
           break;
         }
@@ -158,8 +161,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, saml);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderSaml(resourceName, providerArgs, options);
           break;
         }
@@ -169,8 +172,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, rac);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderRac(resourceName, providerArgs, options);
           break;
         }
@@ -191,8 +194,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, ssf);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderSsf(resourceName, providerArgs, options);
           break;
         }
@@ -202,8 +205,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, scim);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderScim(resourceName, providerArgs, options);
           break;
         }
@@ -213,8 +216,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, microsoftEntra);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderMicrosoftEntra(resourceName, providerArgs, options);
           break;
         }
@@ -224,8 +227,8 @@ public class AuthentikApplicationResources : ComponentResource
           {
             Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
           };
-          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           FlowMappings.MapProviderArgs(providerArgs, googleWorkspace);
+          FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
           provider = new ProviderGoogleWorkspace(resourceName, providerArgs, options);
           break;
         }

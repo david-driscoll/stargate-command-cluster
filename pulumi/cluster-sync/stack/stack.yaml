@@ -13,12 +13,11 @@ spec:
       name: flux-system
     dir: pulumi/cluster-sync
   stack: ${APP}
-  resyncFrequencySeconds: 600
+  resyncFrequencySeconds: 60
   backend: postgres://postgres-rw.database.svc.cluster.local
-  refresh: true
   continueResyncOnCommitMatch: true
-  destroyOnFinalize: true
-  workspaceReclaimPolicy: Delete
+#  destroyOnFinalize: true
+  workspaceReclaimPolicy: Retain
   envRefs:
     HOME:
       type: Literal

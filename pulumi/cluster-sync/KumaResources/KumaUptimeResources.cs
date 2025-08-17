@@ -70,12 +70,12 @@ public class KumaUptimeResources : ComponentResource
         Namespace = "observability",
         Labels = new Dictionary<string, string>
         {
-          ["driscoll.dev/originalName"] = originalName,
           ["driscoll.dev/cluster"] = clusterName,
           ["driscoll.dev/namespace"] = ns,
         },
         Annotations = new Dictionary<string, string>
         {
+          ["driscoll.dev/originalName"] = originalName,
           ["driscoll.dev/clusterTitle"] = clusterTitle,
         }
       },

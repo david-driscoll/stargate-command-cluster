@@ -62,6 +62,7 @@ public static class PopulateCluster
     {
       entity.Metadata.Annotations ??= new Dictionary<string, string>();
       entity.Metadata.Labels ??= new Dictionary<string, string>();
+      entity.Metadata.Annotations["driscoll.dev/originalName"] = entity.Metadata.Name;
       entity.Metadata.Labels["driscoll.dev/cluster"] = cluster.Metadata.Name;
       entity.Metadata.Annotations["driscoll.dev/clusterTitle"] = cluster.Spec.Name;
       entity.Metadata.Labels["driscoll.dev/namespace"] = entity.Metadata.Namespace();
@@ -101,10 +102,14 @@ public static class PopulateCluster
 
     foreach (var remoteEntity in remoteEntities)
     {
-       await localCluster.CustomObjects.PatchNamespacedCustomObjectAsync<TResult>(
-         new V1Patch($$"""
-                       {"spec": {{KubernetesJson.Serialize(remoteEntity.Spec)}} }
-                       """, V1Patch.PatchType.MergePatch), group, version, destinationNamespace, plural, remoteEntity.Metadata.Name);
+      await localCluster.CustomObjects.DeleteNamespacedCustomObjectAsync(group, version, destinationNamespace, plural,
+        remoteEntity.Metadata.Name);
+      await localCluster.CustomObjects.CreateNamespacedCustomObjectAsync(remoteEntity, group, version,
+        destinationNamespace, plural);
+//        await localCluster.CustomObjects.PatchNamespacedCustomObjectAsync<TResult>(
+//          new V1Patch($$"""
+//                        {"spec": {{KubernetesJson.Serialize(remoteEntity.Spec)}} }
+//                        """, V1Patch.PatchType.MergePatch), group, version, destinationNamespace, plural, remoteEntity.Metadata.Name);
     }
   }
 

@@ -159,7 +159,7 @@ public class AuthentikApplicationResources : ComponentResource
         providerArgs.ClientId = clientId.Result;
         providerArgs.ClientSecret = clientSecret.Result;
 
-        _ = new APICredentialItem($"{definition.Metadata.Name}-oidc-credential", new()
+        _ = new APICredentialItem($"{originalName}-oidc-credential", new()
         {
           Title = $"{originalName}-oidc-credential",
           Username = clientId.Result,

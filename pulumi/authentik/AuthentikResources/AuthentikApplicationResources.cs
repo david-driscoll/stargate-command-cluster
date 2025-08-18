@@ -159,9 +159,9 @@ public class AuthentikApplicationResources : ComponentResource
         providerArgs.ClientId = clientId.Result;
         providerArgs.ClientSecret = clientSecret.Result;
 
-        _ = new APICredentialItem($"{originalName}-oidc-credential", new()
+        _ = new APICredentialItem($"{originalName}-oidc-credentials", new()
         {
-          Title = $"{originalName}-oidc-credential",
+          Title = $"{originalName}-oidc-credentials",
           Username = clientId.Result,
           Credential = clientSecret.Result,
           Vault = "Eris",

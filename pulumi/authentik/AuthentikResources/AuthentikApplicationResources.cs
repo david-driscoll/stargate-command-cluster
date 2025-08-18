@@ -149,12 +149,14 @@ public class AuthentikApplicationResources : ComponentResource
         var clientId = new Pulumi.Random.RandomString(resourceName + "-client-id", new()
         {
           Length = 16,
+          Upper = false,
           Special = false,
         }, options);
         var clientSecret = new Pulumi.Random.RandomPassword(resourceName + "-client-secret", new()
         {
           Length = 32,
-          Special = true,
+          Upper = false,
+          Special = false,
         }, options);
         providerArgs.ClientId = clientId.Result;
         providerArgs.ClientSecret = clientSecret.Result;

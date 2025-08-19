@@ -8,7 +8,7 @@ metadata:
     reloader.stakater.com/auto: "true"
 spec:
   refreshPolicy: Periodic
-  refreshInterval: 10m
+  refreshInterval: 4m
   secretStoreRef:
     kind: ClusterSecretStore
     name: database
@@ -90,7 +90,7 @@ metadata:
   name: pulumi-operator-postgres-push-secret
 spec:
   deletionPolicy: None
-  refreshInterval: 10m
+  refreshInterval: 4m
   secretStoreRefs:
     - kind: ClusterSecretStore
       name: onepassword-connect

@@ -24,7 +24,7 @@ kind: ExternalSecret
 metadata:
   name: "data-adguard-home-0-volsync"
 spec:
-  refreshInterval: 10m
+  refreshInterval: 4m
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect

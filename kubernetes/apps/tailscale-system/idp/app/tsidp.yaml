@@ -47,6 +47,7 @@ spec:
               repository: tailscale/tsidp
               tag: unstable-v1.85
             env:
+              TAILSCALE_USE_WIP_CODE: "1"
               TS_HOSTNAME: idp
               TS_STATE_DIR: /data/tsidp
               TS_AUTHKEY:

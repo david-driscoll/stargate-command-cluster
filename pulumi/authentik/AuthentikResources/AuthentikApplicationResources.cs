@@ -29,6 +29,7 @@ public class AuthentikApplicationResources : ComponentResource
   public class Args : ResourceArgs
   {
     public required Rocket.Surgery.OnePasswordNativeUnofficial.Provider OnePasswordProvider { get; init; }
+    public required PropertyMappings PropertyMappings { get; init; }
     public required ImmutableDictionary<string, ClusterFlows> ClusterFlows { get; init; }
     public required Kubernetes Cluster { get; init; }
     public required ImmutableDictionary<string, ClusterDefinition> ClusterInfo { get; set; }
@@ -145,6 +146,10 @@ public class AuthentikApplicationResources : ComponentResource
         };
         FlowMappings.MapProviderArgs(providerArgs, oauth2);
         FlowMappings.MapProviderArgs(providerArgs, clusterFlows);
+        providerArgs.PropertyMappings = providerArgs.PropertyMappings.Apply(z =>
+          z.Aggregate(Output.Create<IEnumerable<string>>([]),
+            (list, s) => Output.Tuple(list, args.PropertyMappings.GetScopeMapping(s).ScopeMappingId)
+              .Apply(z => z.Item1.Append(z.Item2))));
         // Generate client ID and secret if not provided
         var clientId = new Pulumi.Random.RandomString(resourceName + "-client-id", new()
         {

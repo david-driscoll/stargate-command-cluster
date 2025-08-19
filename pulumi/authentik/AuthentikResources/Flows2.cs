@@ -57,19 +57,7 @@ public static class Flows2
 
     var enrollmentFlow = CreateEnrollmentFlow();
 
-    var authenticationFlow = new Flow("authentication-flow", new()
-    {
-      Name = "Driscoll Home",
-      Title = "Welcome to Driscoll Tech Net!",
-      Slug = "authentication-flow",
-      Layout = "sidebar_left",
-      Designation = "authentication",
-      CompatibilityMode = true,
-      PolicyEngineMode = "any",
-      DeniedAction = "message_continue",
-      Authentication = "none",
-      // Background = "https://placeholder.jpeg",
-    }, FlowsParent);
+    var authenticationFlow = CreateAuthenticationFlow();
     var sourceAuthenticationFlow = CreateSourceAuthenticationFlow();
     var tailscaleSource = CreateTailscaleSource(enrollmentFlow, sourceAuthenticationFlow);
     var plexSource = CreatePlexSource(enrollmentFlow, sourceAuthenticationFlow, provider);
@@ -113,6 +101,24 @@ public static class Flows2
       sourceAuthenticationFlow,
       enrollmentFlow
     );
+  }
+
+  private static Flow CreateAuthenticationFlow()
+  {
+    var authenticationFlow = new Flow("authentication-flow", new()
+    {
+      Name = "Driscoll Home",
+      Title = "Welcome to Driscoll Tech Net!",
+      Slug = "authentication-flow",
+      Layout = "sidebar_left",
+      Designation = "authentication",
+      CompatibilityMode = true,
+      PolicyEngineMode = "any",
+      DeniedAction = "message_continue",
+      Authentication = "none",
+      // Background = "https://placeholder.jpeg",
+    }, FlowsParent);
+    return authenticationFlow;
   }
 
   private static SourcePlex CreatePlexSource(Flow enrollmentFlow, Flow authenticationFlow,
@@ -191,7 +197,10 @@ public static class Flows2
 
     flow.AddPolicyBinding(Policies.SourceAuthenticationIfSingleSignOn);
 
-    flow.AddFlowStageBinding(AuthenticationStages.SourceLogin.StageUserLoginId);
+    flow.AddFlowStageBinding(AuthenticationStages.SourceLogin.StageUserLoginId)
+      .AddPolicyBinding(Policies.DefaultSourceGroups);
+    flow.AddFlowStageBinding(StagePrompts.SourceAuthenticationUpdate.StageUserWriteId);
+    flow.AddFlowStageBinding(StagePrompts.SourceAuthenticationUpdate.StageUserWriteId);
 
     return flow;
   }
@@ -213,7 +222,8 @@ public static class Flows2
     }, FlowsParent);
 
     flow.AddPolicyBinding(Policies.SourceEnrollmentIfSingleSignOn);
-    flow.AddFlowStageBinding(StagePrompts.Enrollment);
+    flow.AddFlowStageBinding(StagePrompts.Enrollment)
+      .AddPolicyBinding(Policies.DefaultGroups);
     flow.AddFlowStageBinding(StagePrompts.InternalEnrollmentWrite.StageUserWriteId);
     flow.AddFlowStageBinding(AuthenticationStages.SourceLogin.StageUserLoginId);
 
@@ -313,7 +323,8 @@ public static class Flows2
       DeniedAction = "message_continue",
       Authentication = "require_authenticated",
     }, FlowsParent);
-    flow.AddFlowStageBinding(StagePrompts.UserSettings.StagePromptId);
+    flow.AddFlowStageBinding(StagePrompts.UserSettings.StagePromptId)
+      .AddPolicyBinding(Policies.UserSettingsAuthorization);
     flow.AddFlowStageBinding(StagePrompts.InternalEnrollmentWrite.StageUserWriteId);
 
     return flow;

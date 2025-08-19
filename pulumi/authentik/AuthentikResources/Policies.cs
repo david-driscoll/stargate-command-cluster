@@ -1,3 +1,4 @@
+using models;
 using Pulumi;
 using Pulumi.Authentik;
 
@@ -66,11 +67,30 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
 
   public PolicyExpression DefaultGroups => field ??= new("default-groups", new()
   {
-    Expression = """
+    Expression = $"""
                  from authentik.core.models import Group
-                 group, _ = Group.objects.get_or_create(name="Users")
+                 group, _ = Group.objects.get_or_create(name="{Constants.Roles.User}")
                  # ["groups"] *must* be set to an array of Group objects, names alone are not enough.
                  request.context["flow_plan"].context["groups"] = [group]
+                 return True
+                 """
+  }, _parent);
+
+  public PolicyExpression DefaultSourceGroups => field ??= new("default-source-groups", new()
+  {
+    Expression = $"""
+                 from authentik.core.models import Group
+
+                 sourceGroups = request.context['source']['groups']
+                 groups = []
+                 if not sourceGroups:
+                   sourceGroups = ["{Constants.Roles.User}"]
+
+                 for group_name in sourceGroups:
+                   group, _ = Group.objects.get_or_create(name=group_name)
+                   groups.append(group)
+
+                 request.context["flow_plan"].context["groups"] = groups
                  return True
                  """
   }, _parent);

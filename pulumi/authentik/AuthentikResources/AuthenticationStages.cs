@@ -43,12 +43,4 @@ public class AuthenticationStages(
     AllowShowPassword = true,
     ConfigureFlow = DefaultFlows.PasswordChange.Apply(z => z.Id),
   }, _parent);
-
-  public StageAuthenticatorValidate Passkey => field ??= new("authentication-passkey", new()
-  {
-    DeviceClasses = { "webauthn" },
-    NotConfiguredAction = "skip",
-    LastAuthThreshold = "days=7",
-    WebauthnUserVerification = "preferred",
-  }, _parent);
 }

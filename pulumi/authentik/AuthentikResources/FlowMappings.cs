@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Immutable;
+using System.Linq;
 using applications.Models.Authentik;
+using Pulumi;
 using Pulumi.Authentik;
 using Riok.Mapperly.Abstractions;
 
@@ -7,7 +11,6 @@ namespace authentik.AuthentikResources;
 [Mapper]
 public static partial class FlowMappings
 {
-
   public static partial void MapProviderArgs([MappingTarget] ProviderProxyArgs args,
     AuthentikApplicationResources.ClusterFlows instance);
 
@@ -64,4 +67,8 @@ public static partial class FlowMappings
 
   public static partial void MapProviderArgs([MappingTarget] ProviderGoogleWorkspaceArgs args,
     AuthentikProviderGoogleWorkspace instance);
+
+  private static InputList<string> MapListFromString(ImmutableList<string> value) => value.ToArray();
+  private static InputList<double> MapListFromDouble(ImmutableList<double> value) => value.ToArray();
+
 }

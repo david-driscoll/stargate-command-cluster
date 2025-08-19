@@ -85,7 +85,8 @@ return await Deployment.RunAsync(async () =>
     OnePasswordProvider = onePasswordProvider,
     Cluster = cluster,
     ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),
-    ClusterFlows = clusterFlows.ToImmutable()
+    ClusterFlows = clusterFlows.ToImmutable(),
+    PropertyMappings = Flows2.PropertyMappings,
   });
 
   // Export outputs here

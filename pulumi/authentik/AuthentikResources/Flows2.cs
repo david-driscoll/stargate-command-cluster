@@ -9,21 +9,21 @@ namespace authentik.AuthentikResources;
 
 public static class Flows2
 {
-  private static PropertyMappings PropertyMappings => field ??= new();
-  private static Policies Policies => field ??= new();
+  public static PropertyMappings PropertyMappings => field ??= new();
+  public static Policies Policies => field ??= new();
   private static ComponentResource Stages => field ??= new("custom:resource:AuthentikStages", "authentik-stages");
   private static CustomResourceOptions StagesParent => field ??= new() { Parent = Stages };
-  private static ConsentStages ConstentStages => field ??= new(new ComponentResourceOptions() { Parent = Stages });
-  private static Fields Fields => field ??= new(new ComponentResourceOptions() { Parent = Stages });
-  private static StagePrompts StagePrompts => field ??= new(Fields, new ComponentResourceOptions() { Parent = Stages });
+  public static ConsentStages ConstentStages => field ??= new(new ComponentResourceOptions() { Parent = Stages });
+  public static Fields Fields => field ??= new(new ComponentResourceOptions() { Parent = Stages });
+  public static StagePrompts StagePrompts => field ??= new(Fields, new ComponentResourceOptions() { Parent = Stages });
 
-  private static InvalidationStages InvalidationStages =>
+  public static InvalidationStages InvalidationStages =>
     field ??= new(new ComponentResourceOptions() { Parent = Stages });
 
-  private static AuthenticatorStages AuthenticatorStages =>
+  public static AuthenticatorStages AuthenticatorStages =>
     field ??= new(new ComponentResourceOptions() { Parent = Stages });
 
-  private static AuthenticationStages AuthenticationStages =>
+  public static AuthenticationStages AuthenticationStages =>
     field ??= new(AuthenticatorStages, new ComponentResourceOptions() { Parent = Stages });
 
   private static CustomResourceOptions SourcesParent => field ??= new()

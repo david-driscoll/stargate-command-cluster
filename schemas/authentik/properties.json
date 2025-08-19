@@ -26,14 +26,7 @@
 
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "propertyMappingsGroups": {
           "type": "array",
@@ -65,14 +58,7 @@
         "nameIdMapping": { "type": "string" },
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "providerSamlId": { "type": "string" },
         "sessionValidNotOnOrAfter": { "type": "string" },
@@ -126,14 +112,7 @@
         "name": { "type": "string" },
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "providerProxyId": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
@@ -151,14 +130,7 @@
 
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "providerRadiusId": { "type": "string" },
         "sharedSecret": { "type": "string" }
@@ -175,14 +147,7 @@
 
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "providerRacId": { "type": "string" },
         "settings": { "type": "string" }
@@ -196,7 +161,14 @@
         "accessTokenValidity": { "type": "string" },
         "allowedRedirectUris": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "object",
+            "properties": {
+              "matching_node": { "type": "string" },
+              "url": { "type": "string" }
+            },
+            "required": ["url"]
+          }
         },
         "authenticationFlow": { "type": "string" },
         "authorizationFlow": { "type": "string" },
@@ -219,14 +191,7 @@
 
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "providerOauth2Id": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
@@ -248,14 +213,7 @@
 
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "propertyMappingsGroups": {
           "type": "array",
@@ -300,14 +258,7 @@
 
         "propertyMappings": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "matching_node": { "type": "string" },
-              "url": { "type": "string" }
-            },
-            "required": ["url"]
-          }
+          "items": { "type": "string" }
         },
         "propertyMappingsGroups": {
           "type": "array",

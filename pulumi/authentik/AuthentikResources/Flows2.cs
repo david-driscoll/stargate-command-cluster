@@ -7,24 +7,36 @@ using Provider = Rocket.Surgery.OnePasswordNativeUnofficial.Provider;
 
 namespace authentik.AuthentikResources;
 
+public record CustomFlows(
+  Flow LogoutFlow,
+  Flow ProviderLogoutFlow,
+  Flow AuthenticatorBackupCodesFlow,
+  Flow AuthenticatorTotpFlow,
+  Flow AuthenticatorWebauthnFlow,
+  Flow UserSettingsFlow,
+  Flow ImplicitConsentFlow,
+  Flow ExplicitConsentFlow,
+  Flow AuthenticationFlow,
+  Flow SourceAuthenticationFlow,
+  Flow EnrollmentFlow);
 public static class Flows2
 {
   public static PropertyMappings PropertyMappings => field ??= new();
   public static Policies Policies => field ??= new();
   private static ComponentResource Stages => field ??= new("custom:resource:AuthentikStages", "authentik-stages");
   private static CustomResourceOptions StagesParent => field ??= new() { Parent = Stages };
-  public static ConsentStages ConstentStages => field ??= new(new ComponentResourceOptions() { Parent = Stages });
-  public static Fields Fields => field ??= new(new ComponentResourceOptions() { Parent = Stages });
-  public static StagePrompts StagePrompts => field ??= new(Fields, new ComponentResourceOptions() { Parent = Stages });
+  public static ConsentStages ConstentStages => field ??= new(new ComponentResourceOptions { Parent = Stages });
+  public static Fields Fields => field ??= new(new ComponentResourceOptions { Parent = Stages });
+  public static StagePrompts StagePrompts => field ??= new(Fields, new ComponentResourceOptions { Parent = Stages });
 
   public static InvalidationStages InvalidationStages =>
-    field ??= new(new ComponentResourceOptions() { Parent = Stages });
+    field ??= new(new ComponentResourceOptions { Parent = Stages });
 
   public static AuthenticatorStages AuthenticatorStages =>
-    field ??= new(new ComponentResourceOptions() { Parent = Stages });
+    field ??= new(new ComponentResourceOptions { Parent = Stages });
 
   public static AuthenticationStages AuthenticationStages =>
-    field ??= new(AuthenticatorStages, new ComponentResourceOptions() { Parent = Stages });
+    field ??= new(AuthenticatorStages, new ComponentResourceOptions { Parent = Stages });
 
   private static CustomResourceOptions SourcesParent => field ??= new()
     { Parent = new ComponentResource("custom:resource:sources", "authentik-sources") };
@@ -32,14 +44,7 @@ public static class Flows2
   private static CustomResourceOptions FlowsParent => field ??= new()
     { Parent = new ComponentResource("custom:resource:flows", "authentik-flows") };
 
-  public static (Flow LogoutFlow,
-    Flow ProviderLogoutFlow,
-    Flow AuthenticatorBackupCodesFlow,
-    Flow AuthenticatorTotpFlow,
-    Flow AuthenticatorWebauthnFlow,
-    Flow UserSettingsFlow,
-    Flow ImplicitConsentFlow,
-    Flow ExplicitConsentFlow) CreateFlows()
+  public static CustomFlows CreateFlows(Provider provider)
   {
     var logoutFlow = CreateLogoutFlow();
     var providerLogoutFlow = CreateProviderLogoutFlow();
@@ -50,28 +55,13 @@ public static class Flows2
     var implicitConsentFlow = CreateImplicitConsent();
     var explicitConsentFlow = CreateExplicitConsent();
 
-    return (
-      logoutFlow,
-      providerLogoutFlow,
-      authenticatorBackupCodesFlow,
-      authenticatorTotpFlow,
-      authenticatorWebauthnFlow,
-      userSettingsFlow,
-      implicitConsentFlow,
-      explicitConsentFlow
-    );
-  }
+    var enrollmentFlow = CreateEnrollmentFlow();
 
-  public static (Flow SourceAuthenticationFlow, Flow AuthenticationFlow, Flow EnrollmentFlow) CreateClusterFlows(
-    ClusterDefinition cluster, Provider provider)
-  {
-    var enrollmentFlow = CreateEnrollmentFlow(cluster);
-
-    var authenticationFlow = new Flow($"{cluster.Metadata.Name}-authentication-flow", new()
+    var authenticationFlow = new Flow("authentication-flow", new()
     {
-      Name = cluster.Spec.Name,
-      Title = $"Welcome to {cluster.Spec.Name}!",
-      Slug = $"{cluster.Metadata.Name}-authentication-flow",
+      Name = "Driscoll Home",
+      Title = "Welcome to Driscoll Tech Net!",
+      Slug = "authentication-flow",
       Layout = "sidebar_left",
       Designation = "authentication",
       CompatibilityMode = true,
@@ -80,11 +70,11 @@ public static class Flows2
       Authentication = "none",
       // Background = "https://placeholder.jpeg",
     }, FlowsParent);
-    var sourceAuthenticationFlow = CreateSourceAuthenticationFlow(cluster);
-    var tailscaleSource = CreateTailscaleSource(cluster, enrollmentFlow, sourceAuthenticationFlow);
-    var plexSource = CreatePlexSource(cluster, enrollmentFlow, sourceAuthenticationFlow, provider);
+    var sourceAuthenticationFlow = CreateSourceAuthenticationFlow();
+    var tailscaleSource = CreateTailscaleSource(enrollmentFlow, sourceAuthenticationFlow);
+    var plexSource = CreatePlexSource(enrollmentFlow, sourceAuthenticationFlow, provider);
 
-    var identificationStage = new StageIdentification($"{cluster.Metadata.Name}-authentication-identification", new()
+    var identificationStage = new StageIdentification("authentication-identification", new()
     {
       Sources = [tailscaleSource.Uuid, plexSource.Uuid],
       ShowSourceLabels = true,
@@ -102,24 +92,33 @@ public static class Flows2
     authenticationFlow.AddFlowStageBinding(AuthenticationStages.Mfa.StageAuthenticatorValidateId);
     authenticationFlow.AddFlowStageBinding(AuthenticationStages.Login.StageUserLoginId);
 
-    return (
-      sourceAuthenticationFlow,
+    return new (
+      logoutFlow,
+      providerLogoutFlow,
+      authenticatorBackupCodesFlow,
+      authenticatorTotpFlow,
+      authenticatorWebauthnFlow,
+      userSettingsFlow,
+      implicitConsentFlow,
+      explicitConsentFlow,
+
       authenticationFlow,
+      sourceAuthenticationFlow,
       enrollmentFlow
     );
   }
 
-  private static SourcePlex CreatePlexSource(ClusterDefinition cluster, Flow enrollmentFlow, Flow authenticationFlow,
+  private static SourcePlex CreatePlexSource(Flow enrollmentFlow, Flow authenticationFlow,
     Provider provider)
   {
     var plexDetails = GetAPICredential.Invoke(
       new() { Vault = "Eris", Title = "Authentik Plex Source", Id = "noivqwzursabsqwb3ujongo2ia" },
       new() { Provider = provider });
 
-    var plexSource = new SourcePlex($"{cluster.Metadata.Name}-plex", new()
+    var plexSource = new SourcePlex("plex", new()
     {
       Name = "Plex",
-      Slug = $"{cluster.Metadata.Name}-plex",
+      Slug = "plex",
 
       Enabled = true,
 
@@ -141,12 +140,12 @@ public static class Flows2
     return plexSource;
   }
 
-  private static SourceOauth CreateTailscaleSource(ClusterDefinition cluster, Flow enrollmentFlow, Flow authenticationFlow)
+  private static SourceOauth CreateTailscaleSource(Flow enrollmentFlow, Flow authenticationFlow)
   {
-    var tailscaleSource = new SourceOauth($"{cluster.Metadata.Name}-tailscale", new()
+    var tailscaleSource = new SourceOauth("tailscale", new()
     {
       Name = "Tailscale",
-      Slug = $"{cluster.Metadata.Name}-tailscale",
+      Slug = "tailscale",
       ProviderType = "openidconnect",
 
       Enabled = true,
@@ -166,13 +165,13 @@ public static class Flows2
     return tailscaleSource;
   }
 
-  private static Flow CreateSourceAuthenticationFlow(ClusterDefinition definition)
+  private static Flow CreateSourceAuthenticationFlow()
   {
-    var name = $"{definition.Metadata.Name}-source-authentication-flow";
+    var name = "source-authentication-flow";
     var flow = new Flow(name, new()
     {
-      Name = definition.Spec.Name,
-      Title = $"Welcome to {definition.Spec.Name}!",
+      Name = "Welcome back!",
+      Title = "Welcome back to Driscoll Tech Net!",
       Slug = name,
       Layout = "sidebar_left",
       Designation = "authentication",
@@ -190,13 +189,13 @@ public static class Flows2
     return flow;
   }
 
-  private static Flow CreateEnrollmentFlow(ClusterDefinition definition)
+  private static Flow CreateEnrollmentFlow()
   {
-    var name = $"{definition.Metadata.Name}-enrollment-flow";
+    var name = "enrollment-flow";
     var flow = new Flow(name, new()
     {
-      Name = definition.Spec.Name,
-      Title = $"Welcome to {definition.Spec.Name}! Please enter your user details.",
+      Name = "Driscoll Home",
+      Title = "Welcome to Driscoll Tech Net! Please enter your user details.",
       Slug = name,
       Layout = "sidebar_left",
       Designation = "enrollment",
@@ -217,11 +216,11 @@ public static class Flows2
 
   private static Flow CreateImplicitConsent()
   {
-    var name = $"implicit-consent-flow";
+    var name = "implicit-consent-flow";
     return new Flow(name, new()
     {
       Name = "Redirect",
-      Title = $"Redirecting to %(app)s!",
+      Title = "Redirecting to %(app)s!",
       Slug = name,
       Layout = "content_right",
       Designation = "authorization",
@@ -235,11 +234,11 @@ public static class Flows2
 
   private static Flow CreateExplicitConsent()
   {
-    var name = $"explicit-consent-flow";
+    var name = "explicit-consent-flow";
     var flow = new Flow(name, new()
     {
       Name = "Redirect",
-      Title = $"Redirecting to %(app)s!",
+      Title = "Redirecting to %(app)s!",
       Slug = name,
       Layout = "content_right",
       Designation = "authorization",
@@ -256,7 +255,7 @@ public static class Flows2
 
   private static Flow CreateLogoutFlow()
   {
-    var name = $"logout-flow";
+    var name = "logout-flow";
     var flow = new Flow(name, new()
     {
       Name = "Logout",
@@ -276,7 +275,7 @@ public static class Flows2
 
   private static Flow CreateProviderLogoutFlow()
   {
-    var name = $"provider-logout-flow";
+    var name = "provider-logout-flow";
     var flow = new Flow(name, new()
     {
       Name = "Logout",
@@ -294,7 +293,7 @@ public static class Flows2
 
   private static Flow CreateUserSettingsFlow()
   {
-    var name = $"user-settings-flow";
+    var name = "user-settings-flow";
     var flow = new Flow(name, new()
     {
       Name = "User Settings",
@@ -315,7 +314,7 @@ public static class Flows2
 
   private static Flow CreateAuthenticatorBackupCodesFlow()
   {
-    var name = $"authenticator-backup-codes-flow";
+    var name = "authenticator-backup-codes-flow";
     var flow = new Flow(name, new()
     {
       Name = "Backup Codes",
@@ -335,7 +334,7 @@ public static class Flows2
 
   private static Flow CreateAuthenticatorWebauthnFlow()
   {
-    var name = $"authenticator-webauthn-flow";
+    var name = "authenticator-webauthn-flow";
     var flow = new Flow(name, new()
     {
       Name = "Passkey",
@@ -355,7 +354,7 @@ public static class Flows2
 
   private static Flow CreateAuthenticatorTotpFlow()
   {
-    var name = $"authenticator-totp-flow";
+    var name = "authenticator-totp-flow";
     var flow = new Flow(name, new()
     {
       Name = "TOTP",

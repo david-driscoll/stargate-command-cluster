@@ -51,18 +51,15 @@ return await Deployment.RunAsync(async () =>
     ConnectToken = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ?? throw new InvalidOperationException("CONNECT_TOKEN is not set"),
   });
 
-  var clusterFlows = ImmutableDictionary.CreateBuilder<string, AuthentikApplicationResources.ClusterFlows>();
-
-  var flows = Flows2.CreateFlows();
+  var flows = Flows2.CreateFlows(onePasswordProvider);
+  var clusterFlows = new AuthentikApplicationResources.ClusterFlows()
+  {
+    AuthorizationFlow = flows.ImplicitConsentFlow.Uuid,
+    AuthenticationFlow = flows.AuthenticationFlow.Uuid,
+    InvalidationFlow = flows.LogoutFlow.Uuid,
+  };
   await foreach (var definition in Mappings.GetClusters(cluster))
   {
-    var definitionFlows = Flows2.CreateClusterFlows(definition, onePasswordProvider);
-    clusterFlows[definition.Metadata.Name] = new AuthentikApplicationResources.ClusterFlows()
-    {
-      AuthorizationFlow = flows.ImplicitConsentFlow.Uuid,
-      AuthenticationFlow = definitionFlows.AuthenticationFlow.Uuid,
-      InvalidationFlow = flows.LogoutFlow.Uuid,
-    };
     var clusterBrand = new Brand(definition.Metadata.Name, new()
     {
       Domain = new Uri(definition.Spec.Domain).Host,
@@ -70,7 +67,7 @@ return await Deployment.RunAsync(async () =>
       BrandingTitle = definition.Spec.Name,
       BrandingFavicon = definition.Spec.Favicon ?? "",
       // BrandingDefaultFlowBackground = "",
-      FlowAuthentication = definitionFlows.AuthenticationFlow.Uuid,
+      FlowAuthentication = flows.AuthenticationFlow.Uuid,
       FlowInvalidation = flows.LogoutFlow.Uuid,
       FlowUserSettings = flows.UserSettingsFlow.Uuid,
       // FlowDeviceCode = ,
@@ -85,7 +82,7 @@ return await Deployment.RunAsync(async () =>
     OnePasswordProvider = onePasswordProvider,
     Cluster = cluster,
     ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),
-    ClusterFlows = clusterFlows.ToImmutable(),
+    ClusterFlows = clusterFlows,
     PropertyMappings = Flows2.PropertyMappings,
   });
 

@@ -74,10 +74,17 @@ public static class Flows2
     var tailscaleSource = CreateTailscaleSource(enrollmentFlow, sourceAuthenticationFlow);
     var plexSource = CreatePlexSource(enrollmentFlow, sourceAuthenticationFlow, provider);
 
-    var identificationStage = new StageIdentification("authentication-identification", new()
+    var sourceIdentificationStage = new StageIdentification("source-identification", new()
     {
       Sources = [tailscaleSource.Uuid, plexSource.Uuid],
       ShowSourceLabels = true,
+      EnableRememberMe = true,
+      ShowMatchedUser = true,
+      PasswordlessFlow = authenticationFlow.Uuid,
+    }, StagesParent);
+
+    var identificationStage = new StageIdentification("authentication-identification", new()
+    {
       CaseInsensitiveMatching = true,
       PasswordStage = AuthenticationStages.Password.StagePasswordId,
       EnableRememberMe = true,
@@ -86,8 +93,8 @@ public static class Flows2
       PretendUserExists = false,
       EnrollmentFlow = null,
       RecoveryFlow = null,
-      PasswordlessFlow = authenticationFlow.Uuid,
     }, StagesParent);
+    authenticationFlow.AddFlowStageBinding(sourceIdentificationStage.StageIdentificationId);
     authenticationFlow.AddFlowStageBinding(identificationStage.StageIdentificationId);
     authenticationFlow.AddFlowStageBinding(AuthenticationStages.Mfa.StageAuthenticatorValidateId);
     authenticationFlow.AddFlowStageBinding(AuthenticationStages.Login.StageUserLoginId);

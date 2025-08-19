@@ -6,15 +6,15 @@ public static class Constants
 {
   public class Groups
   {
-    public const string System = "System";
-    public const string Applications = "Applications";
+    public const string System = "system";
+    public const string Applications = "applications";
   }
   public class Roles
   {
-    public const string Admin = "Admins";
-    public const string User = "Users";
-    public const string Family = "Families";
-    public const string Friend = "Friends";
-    public const string MediaManager = "Media Managers";
+    public const string Admin = "admins";
+    public const string User = "users";
+    public const string Family = "family";
+    public const string Friend = "friends";
+    public const string MediaManager = "media-managers";
   }
 }

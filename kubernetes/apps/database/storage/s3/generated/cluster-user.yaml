@@ -6,7 +6,7 @@ metadata:
   name: s3-cluster-user
 spec:
   refreshPolicy: Periodic
-  refreshInterval: 10m
+  refreshInterval: 4m
   secretStoreRef:
     kind: ClusterSecretStore
     name: database

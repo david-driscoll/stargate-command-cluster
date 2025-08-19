@@ -18,7 +18,7 @@ metadata:
   name: ${APP}-uptime
 spec:
   refreshPolicy: Periodic
-  refreshInterval: 10m
+  refreshInterval: 4m
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect

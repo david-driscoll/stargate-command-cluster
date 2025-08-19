@@ -172,10 +172,10 @@ namespace Pulumi.Authentik
         public Input<string>? AccessTokenValidity { get; set; }
 
         [Input("allowedRedirectUris")]
-        private InputList<string>? _allowedRedirectUris;
-        public InputList<string> AllowedRedirectUris
+        private InputList<ImmutableDictionary<string, string>>? _allowedRedirectUris;
+        public InputList<ImmutableDictionary<string, string>> AllowedRedirectUris
         {
-            get => _allowedRedirectUris ?? (_allowedRedirectUris = new InputList<string>());
+            get => _allowedRedirectUris ?? (_allowedRedirectUris = new InputList<ImmutableDictionary<string, string>>());
             set => _allowedRedirectUris = value;
         }
 
@@ -315,10 +315,10 @@ namespace Pulumi.Authentik
         public Input<string>? AccessTokenValidity { get; set; }
 
         [Input("allowedRedirectUris")]
-        private InputList<string>? _allowedRedirectUris;
-        public InputList<string> AllowedRedirectUris
+        private InputList<ImmutableDictionary<string, string>>? _allowedRedirectUris;
+        public InputList<ImmutableDictionary<string, string>> AllowedRedirectUris
         {
-            get => _allowedRedirectUris ?? (_allowedRedirectUris = new InputList<string>());
+            get => _allowedRedirectUris ?? (_allowedRedirectUris = new InputList<ImmutableDictionary<string, string>>());
             set => _allowedRedirectUris = value;
         }
 

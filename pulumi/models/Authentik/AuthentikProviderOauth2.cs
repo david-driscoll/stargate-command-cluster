@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
+using YamlDotNet.Serialization;
 
 namespace applications.Models.Authentik;
 
@@ -6,7 +8,7 @@ public sealed class AuthentikProviderOauth2
 {
   public string? AccessCodeValidity { get; set; }
   public string? AccessTokenValidity { get; set; }
-  public ImmutableList<string>? AllowedRedirectUris { get; set; }
+  public ImmutableList<AllowedRedirectUri>? AllowedRedirectUris { get; set; }
   public string? AuthenticationFlow { get; set; }
   public string AuthorizationFlow { get; set; } = null!;
   public string? ClientId { get; set; } = null!;
@@ -24,4 +26,15 @@ public sealed class AuthentikProviderOauth2
   public string? RefreshTokenValidity { get; set; }
   public string? SigningKey { get; set; }
   public string? SubMode { get; set; }
+}
+
+public sealed class AllowedRedirectUri
+{
+  [JsonPropertyName("matching_mode")]
+  [YamlMember(Alias = "matching_mode")]
+  public string? MatchingMode { get; set; }
+
+  [JsonPropertyName("url")]
+  [YamlMember(Alias = "url")]
+  public string Url { get; set; }
 }

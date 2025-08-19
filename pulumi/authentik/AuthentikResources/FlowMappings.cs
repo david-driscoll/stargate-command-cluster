@@ -69,6 +69,10 @@ public static partial class FlowMappings
     AuthentikProviderGoogleWorkspace instance);
 
   private static InputList<string> MapListFromString(ImmutableList<string> value) => value.ToArray();
+
+  private static InputList<ImmutableDictionary<string, string>> MapFromString(ImmutableList<AllowedRedirectUri> urls) => urls
+    .Select(z => ImmutableDictionary.CreateRange<string, string>([new ("matching_mode", z.MatchingMode ?? "strict"), new ("url", z.Url)]))
+    .ToArray();
   private static InputList<double> MapListFromDouble(ImmutableList<double> value) => value.ToArray();
 
 }

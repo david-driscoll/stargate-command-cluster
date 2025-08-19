@@ -14,8 +14,9 @@ namespace models;
 [Mapper(AllowNullPropertyAssignment = false)]
 public static partial class ModelMappings
 {
-  public static (string ClusterName, string ClusterTitle, string Namespace, string OriginalName) GetClusterNameAndTitle<T>(
-    this IMetadata<T> definition)
+  public static (string ClusterName, string ClusterTitle, string Namespace, string OriginalName)
+    GetClusterNameAndTitle<T>(
+      this IMetadata<T> definition)
     where T : V1ObjectMeta
   {
     var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
@@ -35,6 +36,12 @@ public static partial class ModelMappings
     .Split(',', StringSplitOptions.RemoveEmptyEntries)
     .Select(z => double.Parse(z.Trim()))
     .ToImmutableList();
+
+  private static ImmutableList<AllowedRedirectUri> MapAllowedRedirectUris(string value) =>
+    value
+      .Split(',', StringSplitOptions.RemoveEmptyEntries)
+      .Select(z => new AllowedRedirectUri() { Url = z, MatchingMode = "strict" })
+      .ToImmutableList();
 
   public static partial AuthentikProviderSaml MapToSaml(AuthentikSpec spec);
   public static partial AuthentikProviderOauth2 MapToOauth2(AuthentikSpec spec);

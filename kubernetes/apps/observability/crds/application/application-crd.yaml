@@ -953,7 +953,13 @@ spec:
                         allowedRedirectUris:
                           type: array
                           items:
-                            type: string
+                            type: object
+                            properties:
+                              matching_node:
+                                type: string
+                              url:
+                                type: string
+                            required: [url]
                         authenticationFlow:
                           type: string
                         authorizationFlow:

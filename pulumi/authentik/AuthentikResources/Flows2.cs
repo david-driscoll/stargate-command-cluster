@@ -200,7 +200,6 @@ public static class Flows2
     flow.AddFlowStageBinding(AuthenticationStages.SourceLogin.StageUserLoginId)
       .AddPolicyBinding(Policies.DefaultSourceGroups);
     flow.AddFlowStageBinding(StagePrompts.SourceAuthenticationUpdate.StageUserWriteId);
-    flow.AddFlowStageBinding(StagePrompts.SourceAuthenticationUpdate.StageUserWriteId);
 
     return flow;
   }

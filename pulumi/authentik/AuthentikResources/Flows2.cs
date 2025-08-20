@@ -196,10 +196,8 @@ public static class Flows2
     }, FlowsParent);
 
     flow.AddPolicyBinding(Policies.SourceAuthenticationIfSingleSignOn);
-
-    flow.AddFlowStageBinding(AuthenticationStages.SourceLogin.StageUserLoginId)
-      .AddPolicyBinding(Policies.DefaultSourceGroups);
-    flow.AddFlowStageBinding(StagePrompts.SourceAuthenticationUpdate.StageUserWriteId);
+    flow.AddFlowStageBinding(AuthenticationStages.SourceLogin.StageUserLoginId);
+    // flow.AddFlowStageBinding(StagePrompts.SourceAuthenticationUpdate.StageUserWriteId);
 
     return flow;
   }

@@ -6,8 +6,8 @@ public static class Constants
 {
   public class Groups
   {
-    public const string System = "system";
-    public const string Applications = "applications";
+    public const string System = "System";
+    public const string Applications = "Applications";
   }
   public class Roles
   {

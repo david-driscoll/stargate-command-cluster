@@ -36,6 +36,17 @@ spec:
                   type: string
                 url:
                   type: string
+                access_policy:
+                  type: object
+                  properties:
+                    groups:
+                      type: array
+                      items:
+                        type: string
+                    entitlements:
+                      type: array
+                      items:
+                        type: string
                 uptime:
                   type: object
                   properties:

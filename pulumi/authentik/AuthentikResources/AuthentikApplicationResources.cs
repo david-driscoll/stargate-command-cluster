@@ -180,6 +180,7 @@ public class AuthentikApplicationResources : ComponentResource
             ["token_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/token/" }}" },
             ["userinfo_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/userinfo/" }}" },
             ["revoke_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/revoke/" }}" },
+            ["issuer"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/" }}" },
             ["end_session_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/end-session/" }}" },
             ["jwks_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/jwks/" }}" },
             ["openid_configuration_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/.well-known/openid-configuration" }}" },

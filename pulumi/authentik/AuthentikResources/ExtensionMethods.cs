@@ -56,7 +56,9 @@ static class ExtensionMethods
   {
     return AddFlowStageBinding(flow, new FlowStageBindingArgs()
     {
-      Stage = stageUuid
+      Stage = stageUuid,
+      EvaluateOnPlan = false,
+      ReEvaluatePolicies = true,
     });
   }
 

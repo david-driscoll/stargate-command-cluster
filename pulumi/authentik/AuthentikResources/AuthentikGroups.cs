@@ -6,7 +6,7 @@ using Pulumi.Authentik;
 
 namespace authentik.AuthentikResources;
 
-class AuthentikGroups : Pulumi.ComponentResource
+public class AuthentikGroups : Pulumi.ComponentResource
 {
   private readonly IReadOnlyCollection<(string GroupName, string? ParentName)> _initialGroups =
   [
@@ -44,7 +44,7 @@ class AuthentikGroups : Pulumi.ComponentResource
   }
 
   private readonly Dictionary<string, Group> _groups = new(StringComparer.OrdinalIgnoreCase);
-  public IReadOnlyDictionary<string, Group> Groups => _groups;
+  public Group GetGroup(string groupName) => _groups.TryGetValue(groupName, out var group) ? group : throw new KeyNotFoundException($"Group '{groupName}' not found.");
   private readonly Dictionary<string, RbacRole> _roles = new(StringComparer.OrdinalIgnoreCase);
-  public IReadOnlyDictionary<string, RbacRole> Roles => _roles;
+  public RbacRole GetRole(string roleName) => _roles.TryGetValue(roleName, out var role) ? role : throw new KeyNotFoundException($"Role '{roleName}' not found.");
 }

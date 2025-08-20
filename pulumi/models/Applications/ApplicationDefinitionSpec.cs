@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 using applications.Models.Authentik;
 using applications.Models.UptimeKuma;
@@ -31,6 +32,10 @@ public record ApplicationDefinitionSpec
   [JsonPropertyName("category")]
   public string Category { get; set; }
 
+  [YamlMember(Alias = "access_policy")]
+  [JsonPropertyName("access_policy")]
+  public ApplicationDefinitionAccessPolicy? AccessPolicy { get; set; }
+
   [YamlMember(Alias = "uptime")]
   [JsonPropertyName("uptime")]
   public ApplicationDefinitionUptime? Uptime { get; set; }
@@ -46,4 +51,10 @@ public record ApplicationDefinitionSpec
   [YamlMember(Alias = "authentikFrom")]
   [JsonPropertyName("authentikFrom")]
   public AuthentikFrom? AuthentikFrom { get; init; }
+}
+
+public class ApplicationDefinitionAccessPolicy
+{
+  public ImmutableList<string> Entitlements { get; set; } = ImmutableList<string>.Empty;
+  public ImmutableList<string> Groups { get; set; } = ImmutableList<string>.Empty;
 }

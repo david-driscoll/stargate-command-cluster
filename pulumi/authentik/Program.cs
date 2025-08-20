@@ -43,7 +43,7 @@ return await Deployment.RunAsync(async () =>
     }
   }
 
-  _ = new AuthentikGroups();
+  var groups = new AuthentikGroups();
   var onePasswordProvider = new Rocket.Surgery.OnePasswordNativeUnofficial.Provider("onepassword", new()
   {
     Vault = Environment.GetEnvironmentVariable("CONNECT_VAULT") ?? throw new InvalidOperationException("CONNECT_VAULT is not set"),
@@ -80,6 +80,7 @@ return await Deployment.RunAsync(async () =>
   _ = new AuthentikApplicationResources(new()
   {
     OnePasswordProvider = onePasswordProvider,
+    Groups = groups,
     Cluster = cluster,
     ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),
     ClusterFlows = clusterFlows,

@@ -9,7 +9,7 @@ public class PropertyMappings : SharedComponentResource
 {
   private readonly FrozenDictionary<string, ScopeMappingArgs> _oauthScopes = new Dictionary<string, ScopeMappingArgs>()
   {
-    ["vikunja_scope"] = new()
+    ["vikunja"] = new()
     {
       Description = "Enable better vikunja support in authentik (https://vikunja.io/docs/openid/#setup-in-authentik)",
       Expression = """

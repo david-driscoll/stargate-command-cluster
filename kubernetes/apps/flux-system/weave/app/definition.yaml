@@ -11,6 +11,9 @@ spec:
   url: &url https://gitops.${CLUSTER_DOMAIN}
   # TODO: Change me someday
   icon: https://raw.githubusercontent.com/weaveworks/weave-gitops/refs/heads/main/ui/images/logoDark.svg
+  access_policy:
+    groups:
+      - admins
   # authentik:
   #   proxy:
   #     mode: "forward_single"

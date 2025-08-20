@@ -10,6 +10,9 @@ spec:
   description: Access to the Backrest tool
   url: &url https://${APP}.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/backrest.svg
+  access_policy:
+    groups:
+      - admins
   authentik:
     proxy:
       mode: "forward_single"

@@ -11,6 +11,9 @@ spec:
   url: &url https://capacitor.${CLUSTER_DOMAIN}
   # TODO: Change me someday
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/maptiler.svg
+  access_policy:
+    groups:
+      - admins
   authentik:
     proxy:
       mode: "forward_single"

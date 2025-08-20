@@ -10,6 +10,9 @@ spec:
   description: Access to the Traefik dashboard
   url: &url https://internal.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/traefik.svg
+  access_policy:
+    groups:
+      - admins
   authentik:
     proxy:
       mode: "forward_single"

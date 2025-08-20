@@ -85,6 +85,36 @@ static class ExtensionMethods
     });
   }
 
+  public static Application AddPolicyBinding(this Application application, PolicyBindingArgs args)
+  {
+    var currentOrder = BindingOrder.GetValueOrDefault(application.GetResourceName(), 0);
+    BindingOrder[application.GetResourceName()] = currentOrder += 10;
+    args.Order = currentOrder;
+    args.Target = application.Uuid;
+    _ = new PolicyBinding($"{application.GetResourceName()}-policy-{currentOrder}", args, new() { Parent = application });
+    return application;
+  }
+  public static Application AddGroupBinding(this Application application, Group group)
+  {
+    return AddPolicyBinding(application, new PolicyBindingArgs()
+    {
+      Group = group.GroupId,
+    });
+  }
+
+  public static Application AddPolicyBinding(this Application application, PolicyExpression policy)
+  {
+    return AddPolicyBinding(application, policy.PolicyExpressionId);
+  }
+
+  public static Application AddPolicyBinding(this Application application, Output<string> policyUuid)
+  {
+    return AddPolicyBinding(application, new PolicyBindingArgs()
+    {
+      Policy = policyUuid
+    });
+  }
+
   public static FlowStageBinding AddPolicyBinding(this FlowStageBinding binding, PolicyBindingArgs args)
   {
     var currentOrder = BindingOrder.GetValueOrDefault(binding.GetResourceName(), 0);

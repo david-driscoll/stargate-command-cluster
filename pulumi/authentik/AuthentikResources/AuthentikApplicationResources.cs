@@ -29,6 +29,7 @@ public class AuthentikApplicationResources : ComponentResource
   public class Args : ResourceArgs
   {
     public required Rocket.Surgery.OnePasswordNativeUnofficial.Provider OnePasswordProvider { get; init; }
+    public required AuthentikGroups Groups { get; init; }
     public required PropertyMappings PropertyMappings { get; init; }
     public required ClusterFlows ClusterFlows { get; init; }
     public required Kubernetes Cluster { get; init; }
@@ -268,7 +269,7 @@ public class AuthentikApplicationResources : ComponentResource
         throw new ArgumentException("Unknown authentik provider type", nameof(authentik));
     }
 
-    return new Application(resourceName, new()
+    var app = new Application(resourceName, new()
     {
       // ApplicationId = ,
       ProtocolProvider = provider.Id.Apply(double.Parse),
@@ -282,5 +283,14 @@ public class AuthentikApplicationResources : ComponentResource
       // PolicyEngineMode = "any",
       // OpenInNewTab = true,
     }, new CustomResourceOptions() { Parent = this });
+
+    if (definition.Spec.AccessPolicy is not { Groups: { Count: > 0 } groups }) return app;
+    // todo entitlements
+    foreach (var group in groups)
+    {
+      app.AddGroupBinding(args.Groups.GetGroup(group));
+    }
+
+    return app;
   }
 }

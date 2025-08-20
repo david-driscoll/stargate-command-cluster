@@ -13,6 +13,7 @@ using Pulumi;
 using Pulumi.Authentik;
 using Pulumi.Kubernetes.Types.Inputs.Meta.V1;
 using Rocket.Surgery.OnePasswordNativeUnofficial;
+using Rocket.Surgery.OnePasswordNativeUnofficial.Inputs;
 using ModelMappings = models.ModelMappings;
 
 namespace authentik.AuthentikResources;
@@ -119,7 +120,7 @@ public class AuthentikApplicationResources : ComponentResource
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
-    var (clusterName, clusterTitle, ns, originalName) = ModelMappings.GetClusterNameAndTitle(definition);
+    var (clusterName, clusterTitle, ns, originalName) = definition.GetClusterNameAndTitle();
     var slug = definition.Spec.Slug ??
                $"{clusterName}-{definition.Spec.Name}".Dehumanize().Underscore().Dasherize();
     var resourceName = Mappings.ResourceName(definition);
@@ -166,15 +167,26 @@ public class AuthentikApplicationResources : ComponentResource
             (list, s) => Output.Tuple(list, args.PropertyMappings.GetScopeMapping(s).Id)
               .Apply(z => z.Item1.Append(z.Item2))));
 
+        provider = new ProviderOauth2(resourceName, providerArgs, options);
+        var clusterInfo = args.ClusterInfo[clusterName];
         _ = new APICredentialItem($"{originalName}-oidc-credentials", new()
         {
           Title = $"{originalName}-oidc-credentials",
           Username = clientId.Result,
           Credential = clientSecret.Result,
+          Fields = new Dictionary<string, FieldArgs>()
+          {
+            ["authorization_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/authorize/" }}" },
+            ["token_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/token/" }}" },
+            ["userinfo_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/userinfo/" }}" },
+            ["revoke_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/revoke/" }}" },
+            ["end_session_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/end-session/" }}" },
+            ["jwks_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/jwks/" }}" },
+            ["openid_configuration_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/.well-known/openid-configuration" }}" },
+          },
           Vault = "Eris",
         }, new CustomResourceOptions() { Parent = this, Provider = args.OnePasswordProvider });
 
-        provider = new ProviderOauth2(resourceName, providerArgs, options);
         break;
       }
       case { ProviderLdap: { } ldap }:
@@ -283,6 +295,8 @@ public class AuthentikApplicationResources : ComponentResource
       // PolicyEngineMode = "any",
       // OpenInNewTab = true,
     }, new CustomResourceOptions() { Parent = this });
+
+
 
     if (definition.Spec.AccessPolicy is not { Groups: { Count: > 0 } groups }) return app;
     // todo entitlements

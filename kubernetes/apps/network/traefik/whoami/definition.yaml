@@ -5,12 +5,12 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Capacitor
+  name: Who am I?
   category: ${CLUSTER_TITLE}
-  description: Access to the Capacitor dashboard
-  url: &url https://capacitor.${CLUSTER_DOMAIN}
+  description: Debug information about the user
+  url: &url https://whoami.${CLUSTER_DOMAIN}
   # TODO: Change me someday
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/maptiler.svg
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homebox.svg
   authentik:
     proxy:
       mode: "forward_single"

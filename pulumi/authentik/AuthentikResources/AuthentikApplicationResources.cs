@@ -22,7 +22,7 @@ public class AuthentikApplicationResources : ComponentResource
 {
   public class ClusterFlows()
   {
-    public required Input<string> SigningKey { get; init; }
+    public Input<string>? SigningKey { get; init; }
     public Input<string>? EncryptionKey { get; init; }
     public required Input<string> AuthorizationFlow { get; init; }
     public Input<string>? AuthenticationFlow { get; init; }
@@ -147,6 +147,7 @@ public class AuthentikApplicationResources : ComponentResource
         {
           Name = Output.Format($"Provider for {definition.Spec.Name} ({clusterTitle})"),
         };
+
         FlowMappings.MapProviderArgs(providerArgs, oauth2);
         FlowMappings.MapProviderArgs(providerArgs, args.ClusterFlows);
         // Generate client ID and secret if not provided
@@ -162,6 +163,8 @@ public class AuthentikApplicationResources : ComponentResource
           Upper = false,
           Special = false,
         }, options);
+        var signingKey = new ApplicationCertificate(resourceName);
+        providerArgs.SigningKey = signingKey.SigningKeyPair.CertificateKeyPairId;
         providerArgs.ClientId = clientId.Result;
         providerArgs.ClientSecret = clientSecret.Result;
         providerArgs.PropertyMappings = providerArgs.PropertyMappings.Apply(z =>
@@ -189,6 +192,7 @@ public class AuthentikApplicationResources : ComponentResource
           },
           Vault = "Eris",
         }, new CustomResourceOptions() { Parent = this, Provider = args.OnePasswordProvider });
+
 
         break;
       }

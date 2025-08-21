@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Dumpify;
 using Humanizer;
 using k8s;
 using k8s.Models;
@@ -118,14 +119,12 @@ public class AuthentikApplicationResources : ComponentResource
     return authentikApp;
   }
 
-
   Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
     var (clusterName, clusterTitle, ns, originalName) = definition.GetClusterNameAndTitle();
-    var slug = definition.Spec.Slug ??
-               $"{clusterName}-{definition.Spec.Name}".Dehumanize().Underscore().Dasherize();
-    var resourceName = Mappings.ResourceName(definition);
+    var resourceName = $"{(ns.Equals(clusterName, StringComparison.OrdinalIgnoreCase) ? clusterName : $"{clusterName}-{ns}")}-{originalName}";
+    var slug = definition.Spec.Slug ??resourceName;
     var options = new CustomResourceOptions() { Parent = this };
     Pulumi.CustomResource provider;
     switch (authentik)
@@ -301,7 +300,7 @@ public class AuthentikApplicationResources : ComponentResource
       MetaLaunchUrl = definition.Spec.Url,
       // PolicyEngineMode = "any",
       // OpenInNewTab = true,
-    }, new CustomResourceOptions() { Parent = this });
+    }, new CustomResourceOptions() { Parent = this, DeleteBeforeReplace = true });
 
 
 

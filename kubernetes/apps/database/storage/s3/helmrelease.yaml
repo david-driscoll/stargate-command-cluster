@@ -89,16 +89,6 @@ spec:
                   secretKeyRef:
                     name: backrest-s3-access-key
                     key: password
-              R3_USER_MYSQL:
-                valueFrom:
-                  secretKeyRef:
-                    name: mysql-s3-access-key
-                    key: id
-              R3_PASSWORD_MYSQL:
-                valueFrom:
-                  secretKeyRef:
-                    name: mysql-s3-access-key
-                    key: password
               R3_USER_POSTGRES:
                 valueFrom:
                   secretKeyRef:

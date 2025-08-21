@@ -172,17 +172,6 @@ public static partial class Mappings
     };
   }
 
-  public static string ResourceName(ApplicationDefinition resource)
-  {
-    return $"{Prefix(resource)}-{resource.Metadata.Name}";
-  }
-
-  private static string Prefix(ApplicationDefinition resource)
-  {
-    var (clusterName, _, ns, _) = resource.GetClusterNameAndTitle();
-    return ns == clusterName ? clusterName : $"{clusterName}-{resource.Namespace()}";
-  }
-
 
   private static Input<string> MapToStringInput(string value) => value;
   private static InputList<string> MapToStringInput(ImmutableList<string> value) => [..value];

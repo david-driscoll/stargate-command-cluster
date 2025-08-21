@@ -9,6 +9,13 @@ public class PropertyMappings : SharedComponentResource
 {
   private readonly FrozenDictionary<string, ScopeMappingArgs> _oauthScopes = new Dictionary<string, ScopeMappingArgs>()
   {
+    ["immich_role"] = new ()
+    {
+      Description = "Enable better Immich support in authentik (https://docs.immich.app/advanced/authentication/authentik/)",
+      Expression = """
+                   return {"immich_role": "admin" if request.user.is_superuser else "user"}
+                   """
+    },
     ["vikunja"] = new()
     {
       Description = "Enable better vikunja support in authentik (https://vikunja.io/docs/openid/#setup-in-authentik)",

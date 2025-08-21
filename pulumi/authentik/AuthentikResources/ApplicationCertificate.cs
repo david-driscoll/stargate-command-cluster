@@ -13,13 +13,13 @@ public class ApplicationCertificate : SharedComponentResource
   {
   }
 
-  public PrivateKey SigningPrivateKey => field ??= new("signing-private-key", new()
+  public PrivateKey SigningPrivateKey => field ??= new($"{GetResourceName()}-private-key", new()
   {
     Algorithm = "RSA",
     RsaBits = 4096,
   }, _parent);
 
-  public SelfSignedCert SigningCertificate => field ??= new("signing-certificate", new()
+  public SelfSignedCert SigningCertificate => field ??= new($"{GetResourceName()}-certificate", new()
   {
     PrivateKeyPem = SigningPrivateKey.PrivateKeyPem,
     AllowedUses = ["cert_signing"],
@@ -34,7 +34,7 @@ public class ApplicationCertificate : SharedComponentResource
     },
   }, _parent);
 
-  public CertificateKeyPair SigningKeyPair => field ??= new("signing-key-pair", new()
+  public CertificateKeyPair SigningKeyPair => field ??= new($"{GetResourceName()}-key-pair", new()
   {
     CertificateData = SigningCertificate.CertPem,
     KeyData = SigningPrivateKey.PrivateKeyPem,

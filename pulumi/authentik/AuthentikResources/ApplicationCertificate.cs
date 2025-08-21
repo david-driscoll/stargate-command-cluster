@@ -27,7 +27,7 @@ public class ApplicationCertificate : SharedComponentResource
     EarlyRenewalHours = Convert.ToInt32(TimeSpan.FromDays(1).TotalHours),
     Subject = new SelfSignedCertSubjectArgs()
     {
-      CommonName = "Signing Key",
+      CommonName = $"{GetResourceName()} Signing Key",
       OrganizationalUnit = "Authentik",
       Country = "Anywhere",
       Locality = "Everywhere",

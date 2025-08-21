@@ -6,10 +6,10 @@ using Pulumi.Tls.Inputs;
 
 namespace authentik.AuthentikResources;
 
-public class AuthentikCertificates : SharedComponentResource
+public class ApplicationCertificate : SharedComponentResource
 {
-  public AuthentikCertificates(ComponentResourceOptions? options = null) : base( "custom:resource:AuthentikCertificates",
-    "authentik-signing-keys", options)
+  public ApplicationCertificate(string name, ComponentResourceOptions? options = null) : base( "custom:resource:ApplicationCertificate",
+    name, options)
   {
   }
 

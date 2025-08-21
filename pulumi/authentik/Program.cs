@@ -44,7 +44,7 @@ return await Deployment.RunAsync(async () =>
   }
 
   var groups = new AuthentikGroups();
-  var certificates = new AuthentikCertificates();
+  var defaultSigningKey = new ApplicationCertificate("default");
   var onePasswordProvider = new Rocket.Surgery.OnePasswordNativeUnofficial.Provider("onepassword", new()
   {
     Vault = Environment.GetEnvironmentVariable("CONNECT_VAULT") ?? throw new InvalidOperationException("CONNECT_VAULT is not set"),
@@ -55,7 +55,7 @@ return await Deployment.RunAsync(async () =>
   var flows = Flows2.CreateFlows(onePasswordProvider);
   var clusterFlows = new AuthentikApplicationResources.ClusterFlows()
   {
-    SigningKey = certificates.SigningKeyPair.CertificateKeyPairId,
+    SigningKey = defaultSigningKey.SigningKeyPair.CertificateKeyPairId,
     AuthorizationFlow = flows.ImplicitConsentFlow.Uuid,
     AuthenticationFlow = flows.AuthenticationFlow.Uuid,
     InvalidationFlow = flows.LogoutFlow.Uuid,

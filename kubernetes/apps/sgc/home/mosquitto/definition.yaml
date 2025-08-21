@@ -14,41 +14,10 @@ spec:
   #   proxy:
   #     mode: "forward_single"
   #     externalHost: *url
-  uptimeFrom:
-    type: secret
-    name: ${APP}-uptime
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/secret-uptime.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: ${APP}-uptime
-spec:
-  refreshPolicy: Periodic
-  refreshInterval: 4m
-  secretStoreRef:
-    kind: SecretStore
-    name: this
-  dataFrom:
-    - extract:
-        key: "mosquitto-secret"
-  target:
-    name: ${APP}-uptime
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    template:
-      metadata:
-        labels:
-          cnpg.io/reload: "true"
-        annotations:
-          reloader.stakater.com/auto: "true"
-          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      data:
-        type: mqtt
-        hostname: ${AUTOMATION_VIP}
-        mqtt_username: "{{ .mosquitto_username }}"
-        mqtt_password: "{{ .mosquitto_password }}"
-        mqtt_check_type: connect
-        mqtt_success_message: "Connected"
-        mqtt_topic: "home-assistant"
-        parent_name: "system"
+  uptime:
+    mqtt:
+      hostname: ${AUTOMATION_VIP}
+      port: 1883
+      mqtt_success_message: "Connected"
+      mqtt_topic: "home-assistant"
+      mqtt_check_type: connect

@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./users.sops.yaml
-  - ./definition.yaml
+  # - ./definition.yaml

@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Mosquitto
+  category: ${CLUSTER_TITLE}
+  description: Mosquitto MQTT broker
+  url: &url https://${AUTOMATION_VIP}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mosquitto.svg
+  # authentik:
+  #   proxy:
+  #     mode: "forward_single"
+  #     externalHost: *url
+  uptimeFrom:
+    type: secret
+    name: ${APP}-uptime
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/secret-uptime.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: ${APP}-uptime
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: SecretStore
+    name: this
+  dataFrom:
+    - extract:
+        key: "mosquitto-secret"
+  target:
+    name: ${APP}-uptime
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      data:
+        type: mqtt
+        hostname: ${AUTOMATION_VIP}
+        mqtt_username: "{{ .mosquitto_username }}"
+        mqtt_password: "{{ .mosquitto_password }}"
+        mqtt_check_type: connect
+        mqtt_success_message: "Connected"
+        mqtt_topic: "home-assistant"
+        parent_name: "system"

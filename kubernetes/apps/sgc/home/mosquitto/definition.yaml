@@ -21,3 +21,4 @@ spec:
       mqtt_success_message: "Connected"
       mqtt_topic: "home-assistant"
       mqtt_check_type: connect
+      parent_name: "system"

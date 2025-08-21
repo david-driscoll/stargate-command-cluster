@@ -22,6 +22,8 @@ public class AuthentikApplicationResources : ComponentResource
 {
   public class ClusterFlows()
   {
+    public required Input<string> SigningKey { get; init; }
+    public Input<string>? EncryptionKey { get; init; }
     public required Input<string> AuthorizationFlow { get; init; }
     public Input<string>? AuthenticationFlow { get; init; }
     public required Input<string> InvalidationFlow { get; init; }

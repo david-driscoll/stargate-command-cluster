@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Pulumi.Tls" Version="5.2.1" />
     <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33" />
     <Compile Remove="crds/**/*.*" />
     <Compile Remove="sdks/**/*.*" />

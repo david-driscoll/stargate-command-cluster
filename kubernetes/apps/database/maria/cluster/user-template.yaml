@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/configmap-v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maria-user-template
+data:
+  username: "{{ .username }}"
+  password: "{{ .password }}"
+  hostname: "{{ .hostname }}"
+  port: "{{ .port }}"
+  database: "{{ .database }}"
+  uri: "mysql://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}/{{ .database }}"
+  public-hostname: "${APP}.${CLUSTER_DOMAIN}"
+  public-uri: "maria://{{ .username }}:{{ .password }}@${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}?sslmode=disable"

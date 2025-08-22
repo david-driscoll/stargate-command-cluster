@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: databases
+resources:
+  - ./users
+  - ./cluster.yaml
+  - ./grant.yaml
+  - ./user.yaml
+  - ./backup.yaml
+  - ./externalsecret.yaml
+  - ./user-template.yaml
+  - ./ingress.yaml
+  - ./definition.yaml
+  - ./push-secret.yaml
+  - ./superuser-push-secret.yaml

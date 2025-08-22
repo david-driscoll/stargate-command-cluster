@@ -20,4 +20,4 @@ spec:
       url: *url
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "cluster-apps"
+      parent_name: "cluster"

@@ -20,6 +20,7 @@ additionalArguments:
   - '--serversTransport.insecureSkipVerify=true'
   - --certificatesresolvers.tailscale.tailscale=true
   - --entryPoints.postgres.address=:5432/tcp
+  - --entryPoints.mariadb.address=:3306/tcp
 volumes:
   # - name: le-staging-tls
   - name: le-production-tls

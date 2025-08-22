@@ -10,5 +10,6 @@ resources:
   - ./secret-store.yaml
   - ./backblaze.yaml
   - ./postgres/ks.yaml
+  # - ./maria/ks.yaml
   - ./dragonfly/ks.yaml
   - ./storage/ks.yaml

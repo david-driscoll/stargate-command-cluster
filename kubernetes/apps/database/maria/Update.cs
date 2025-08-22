@@ -30,7 +30,7 @@ using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-#region Find all applications using postgres
+#region Find all applications using maria
 try
 {
 
@@ -71,10 +71,10 @@ try
 
     ;
     var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
-    documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/POSTGRES_NAME")
+    documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/MARIA_NAME")
     .OfType<YamlScalarNode>()
       .SingleOrDefault()
-      ?.Value.Dump("POSTGRES_NAME") ?? documentName;
+      ?.Value.Dump("MARIA_NAME") ?? documentName;
     var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
     var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
     if (components.Count == 0)
@@ -123,7 +123,7 @@ try
 
   var databases = new List<string>();
 
-  foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("postgres")))
+  foreach (var item in kustomizeComponents.Where(z => z.Value.Contains("maria")))
   {
     databases.Add(item.Key);
   }
@@ -132,39 +132,22 @@ try
 
   #endregion
 
-  #region Update postgres cluster yaml with roles
-  var postgresClusterPath = "kubernetes/apps/database/postgres/app/resources/values.yaml";
-  var postgresClusterDoc = ReadStream(postgresClusterPath).SingleOrDefault();
-  if (postgresClusterDoc == null)
-  {
-    AnsiConsole.MarkupLine($"[red]Failed to read Postgres cluster file: {postgresClusterPath}.[/]");
-    return;
-  }
-  var clusterRoles = postgresClusterDoc.Query("/cluster/roles").OfType<YamlSequenceNode>().Single();
-  var defaultRole = clusterRoles.First();
-  clusterRoles.Children.Clear();
-  clusterRoles.Children.Add(defaultRole);
+  #region Update maria cluster yaml with roles
 
-  var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
-  var databaseTemplate = "kubernetes/components/postgres/database.yaml";
-  var pushSecretTemplate = "kubernetes/apps/database/postgres/app/push-secret.yaml";
+  var userSecretTemplate = "kubernetes/apps/database/maria/cluster/users/maria-user.yaml";
+  // var databaseTemplate = "kubernetes/components/maria/database.yaml";
+  // var grantTemplate = "kubernetes/apps/database/maria/cluster/grant.yaml";
+  // var userTemplate = "kubernetes/apps/database/maria/cluster/user.yaml";
+  var pushSecretTemplate = "kubernetes/apps/database/maria/cluster/push-secret.yaml";
   // We also want to update the kustomization.yaml file to include this user.
-  var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
+  var kustomizationPath = "kubernetes/apps/database/maria/cluster/users/kustomization.yaml";
   var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
 
   foreach (var database in databases)
   {
     var roleName = GetName(database);
-    var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres");
-    clusterRoles.Children.Add(item: roleNode);
 
   }
-
-  File.WriteAllText(postgresClusterPath, $"""
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/charts/refs/heads/main/charts/cluster/values.schema.json
-{serializer.Serialize(postgresClusterDoc)}
-""");
 
   #endregion
 
@@ -173,29 +156,28 @@ try
   foreach (var database in databases)
   {
     var roleName = GetName(database);
-    var userYaml = File.ReadAllText(userTemplate)
+    var userYaml = File.ReadAllText(userSecretTemplate)
     .Replace("${APP}-user", database)
-    .Replace("postgres-user-password", $"{roleName}-postgres-password")
-    .Replace("postgres-user", $"{roleName}-postgres")
+    .Replace("maria-user-password", $"{roleName}-maria-password")
+    .Replace("maria-user", $"{roleName}-maria")
     ;
-    var databaseYaml = File.ReadAllText(databaseTemplate)
-    .Replace("${APP}", database)
-    ;
+    // var databaseYaml = File.ReadAllText(databaseTemplate)
+    // .Replace("${APP}", database)
+    // ;
     var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
-    .Replace("${APP}-user", $"{roleName}-postgres")
-    .Replace("postgres-user", $"{roleName}-postgres")
+    .Replace("${APP}-user", $"{roleName}-maria")
+    .Replace("maria-user", $"{roleName}-maria")
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
     var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");
     File.WriteAllText(fileName, $"""
   {userYaml}
-  {databaseYaml}
   {pushSecretYaml}
   """);
     AnsiConsole.WriteLine($"Updated {fileName} with user {roleName}.");
   }
 
-  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userTemplate), "*.yaml")
+  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userSecretTemplate), "*.yaml")
   .Where(z => !z.EndsWith("sops.yaml", StringComparison.OrdinalIgnoreCase))
   .Where(z => !z.EndsWith("kustomization.yaml", StringComparison.OrdinalIgnoreCase))
   )
@@ -213,12 +195,12 @@ try
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {database}-postgres-password
+      name: {database}-maria-password
     stringData:
       username: "{database}"
       database: "{database}"
       port: "5432"
-      hostname: "postgres-rw.database.svc.cluster.local"
+      hostname: "maria.database.svc.cluster.local"
       password: "{sopsDoc?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
     """);
     Process.Start(new ProcessStartInfo
@@ -237,10 +219,10 @@ try
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - postgres-user.yaml
-  - postgres-user.sops.yaml
-  - postgres-superuser.yaml
-  - postgres-superuser.sops.yaml
+  - maria-user.yaml
+  - maria-user.sops.yaml
+  - maria-superuser.yaml
+  - maria-superuser.sops.yaml
 {string.Join(Environment.NewLine, databases.Order().Select(GetName).SelectMany(database => new[] { $"  - {database}.yaml", $"  - {database}.sops.yaml" }))}
 """;
 
@@ -279,7 +261,7 @@ static YamlMappingNode UpdateRoleNode(ISerializer serializer, YamlNode copy, str
   var superuserRef = userNode.Query("/superuser").OfType<YamlScalarNode>().Single();
   var secretRef = userNode.Query("/passwordSecret").OfType<YamlMappingNode>().Single();
   nameRef.Value = name;
-  superuserRef.Value = name == "immich" ? "true" : "false";
+  superuserRef.Value = "false";
   secretRef.Children["name"] = new YamlScalarNode(key);
   return userNode;
 }

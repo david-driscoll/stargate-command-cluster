@@ -19,14 +19,14 @@ recovery:
     secretKey: "{{ .backblaze_credential }}"
 backups:
   enabled: true
-  endpointURL: https://{{ .backblaze_hostname }}/
+  endpointURL: "{{ .r3_endpoint }}"
   provider: s3
   s3:
-    region: "${CLUSTER_CNAME}"
-    bucket: "{{ .backblaze_bucket }}"
+    region: "{{ .r3_region }}"
+    bucket: "{{ .r3_bucket }}"
     path: "/"
-    accessKey: "{{ .backblaze_username }}"
-    secretKey: "{{ .backblaze_credential }}"
+    accessKey: "{{ .r3_username }}"
+    secretKey: "{{ .r3_credential }}"
   wal:
     compression: gzip
     encryption: ''

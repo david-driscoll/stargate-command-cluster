@@ -45,7 +45,7 @@ spec:
             nameOverride: *app
             image:
               repository: tailscale/tsidp
-              tag: unstable-v1.85
+              tag: unstable-v1.85@sha256:fb6330a5f04624790b9ae69d46fa9ebaa7217fb0a643d4914f0b4184a31b940f
             env:
               TAILSCALE_USE_WIP_CODE: "1"
               TS_HOSTNAME: idp

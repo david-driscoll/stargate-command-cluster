@@ -168,7 +168,7 @@ public class AuthentikApplicationResources : ComponentResource
         providerArgs.ClientSecret = clientSecret.Result;
         providerArgs.PropertyMappings = providerArgs.PropertyMappings.Apply(z =>
           z.Aggregate(Output.Create<IEnumerable<string>>([]),
-            (list, s) => Output.Tuple(list, args.PropertyMappings.GetScopeMapping(s).Id)
+            (list, s) => Output.Tuple(list, args.PropertyMappings.GetScopeMappingId(s))
               .Apply(z => z.Item1.Append(z.Item2))));
 
         provider = new ProviderOauth2(resourceName, providerArgs, options);

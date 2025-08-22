@@ -23,7 +23,7 @@ backups:
   provider: s3
   s3:
     region: "{{ .r3_region }}"
-    bucket: "{{ .r3_bucket }}"
+    bucket: "{{ .backblaze_bucket }}"
     path: "/"
     accessKey: "{{ .r3_username }}"
     secretKey: "{{ .r3_credential }}"

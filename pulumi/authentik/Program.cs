@@ -58,7 +58,8 @@ return await Deployment.RunAsync(async () =>
     AuthenticationFlow = flows.AuthenticationFlow.Uuid,
     InvalidationFlow = flows.LogoutFlow.Uuid,
   };
-  await foreach (var definition in Mappings.GetClusters(cluster))
+  var clusters = await Mappings.GetClusters(cluster).ToArrayAsync();
+  foreach (var definition in clusters)
   {
     var clusterBrand = new Brand(definition.Metadata.Name, new()
     {
@@ -76,7 +77,6 @@ return await Deployment.RunAsync(async () =>
     });
   }
 
-  var clusters = await Mappings.GetClusters(cluster).ToArrayAsync();
   _ = new AuthentikApplicationResources(new()
   {
     OnePasswordProvider = onePasswordProvider,

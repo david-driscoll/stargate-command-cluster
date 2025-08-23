@@ -9,6 +9,7 @@ resources:
   - ./user-template.yaml
   - ./ingress.yaml
   - ./definition.yaml
+  - ./backup.yaml
 configMapGenerator:
 - name: ${APP}-values
   files:

@@ -18,7 +18,7 @@ recovery:
     accessKey: "{{ .backblaze_username }}"
     secretKey: "{{ .backblaze_credential }}"
 backups:
-  enabled: true
+  enabled: false
   endpointURL: "{{ .minio_endpoint }}"
   provider: s3
   s3:

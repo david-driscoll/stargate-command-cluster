@@ -147,10 +147,12 @@ try
 
   var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
   var databaseTemplate = "kubernetes/components/postgres/database.yaml";
-  var pushSecretTemplate = "kubernetes/apps/database/postgres/app/push-secret.yaml";
+  var pushSecretTemplate = "kubernetes/apps/database/postgres/postgres-push-secrets/postgres-user-push-secret.yaml";
   // We also want to update the kustomization.yaml file to include this user.
   var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
+  var pushSecretKustomizationPath = "kubernetes/apps/database/postgres/postgres-push-secrets/kustomization.yaml";
   var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
+  var pushSecretsDirectory = Path.GetDirectoryName(pushSecretKustomizationPath)!;
 
   foreach (var database in databases)
   {
@@ -182,14 +184,17 @@ try
     .Replace("${APP}", database)
     ;
     var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
-    .Replace("${APP}-user", $"{roleName}-postgres")
+    .Replace("postgres-user", $"{roleName}-postgres")
     .Replace("postgres-user", $"{roleName}-postgres")
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
+    var pushSecretsFileName = Path.Combine(pushSecretsDirectory, $"{roleName}-postgres-push-secret.yaml");
     var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");
     File.WriteAllText(fileName, $"""
   {userYaml}
   {databaseYaml}
+  """);
+    File.WriteAllText(pushSecretsFileName, $"""
   {pushSecretYaml}
   """);
     AnsiConsole.WriteLine($"Updated {fileName} with user {roleName}.");
@@ -245,6 +250,18 @@ resources:
 """;
 
   File.WriteAllText(kustomizationPath, customizationTemplate);
+
+
+  var pushSecretKustomizationTemplate = $"""
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - postgres-user-push-secret.yaml
+  - postgres-superuser-push-secret.yaml
+{string.Join(Environment.NewLine, databases.Order().Select(GetName).Select(database => $"  - {database}-postgres-push-secret.yaml"))}
+""";
+
+  File.WriteAllText(pushSecretKustomizationPath, pushSecretKustomizationTemplate);
 }
 catch (Exception ex)
 {

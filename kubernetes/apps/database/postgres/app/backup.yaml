@@ -48,8 +48,7 @@ spec:
         type: cronjob
         containers:
           main: &job
-            securityContext:
-              allowPrivilegeEscalation: true
+              allowPrivilegeEscalation: false
             image:
               repository: rclone/rclone
               tag: master@sha256:1bf8068f1f4da34e9528bcfce790ac41e617388ae9322dc009f696ef0a0d6837

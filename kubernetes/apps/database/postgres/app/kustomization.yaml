@@ -9,8 +9,6 @@ resources:
   - ./user-template.yaml
   - ./ingress.yaml
   - ./definition.yaml
-  - ./push-secret.yaml
-  - ./superuser-push-secret.yaml
 configMapGenerator:
 - name: ${APP}-values
   files:

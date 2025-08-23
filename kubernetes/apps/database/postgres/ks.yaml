@@ -24,8 +24,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components:
-    - ../../../../components/s3-access-key
   postBuild:
     substitute:
       APP: *app

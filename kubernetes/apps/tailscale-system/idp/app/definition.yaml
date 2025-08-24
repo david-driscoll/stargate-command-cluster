@@ -19,4 +19,4 @@ spec:
       url: *url
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "syystem"
+      parent_name: "system"

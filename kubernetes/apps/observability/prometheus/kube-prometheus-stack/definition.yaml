@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: alertmanager
+spec:
+  name: Alert Manager
+  category: ${CLUSTER_TITLE}
+  description: Alert management for monitoring and observability.
+  url: &url https://alertmanager.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/alertmanager.svg
+  # authentik:
+  #   proxy:
+  #     mode: "forward_single"
+  #     externalHost: *url
+  uptime:
+    http:
+      url: *url
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster-system"
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: prometheus
+spec:
+  name: Prometheus
+  category: ${CLUSTER_TITLE}
+  description: Monitoring and observability platform.
+  url: &url https://prometheus.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
+  # authentik:
+  #   proxy:
+  #     mode: "forward_single"
+  #     externalHost: *url
+  uptime:
+    http:
+      url: *url
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster-system"

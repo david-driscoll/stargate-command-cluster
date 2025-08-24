@@ -5,10 +5,7 @@
       "args": [
         "-y",
         "kubernetes-mcp-server@latest"
-      ],
-      "env": {
-        "KUBECONFIG_PATH": "./kubeconfig"
-      }
+      ]
     },
     "flux-operator-mcp": {
       "command": "flux-operator-mcp",
@@ -37,7 +34,7 @@
     },
     "memory": {
       "type": "stdio",
-      "command": "npx",
+      "command": "/opt/homebrew/bin/npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory@latest"

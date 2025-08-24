@@ -7,7 +7,5 @@ resources:
   - authentik.sops.yaml
   - backrest.yaml
   - backrest.sops.yaml
-  - postgres.yaml
-  - postgres.sops.yaml
   - tivi-sync.yaml
   - tivi-sync.sops.yaml

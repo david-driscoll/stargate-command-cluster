@@ -40,23 +40,6 @@ prometheusRule:
   namespace: ""
   rules: []
 
-podMonitoring:
-  ## If true, a PodMonitoring CR is created for google managed prometheus
-  ## https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed#gmp-pod-monitoring for blackbox-exporter itself
-  ##
-  selfMonitor:
-    enabled: true
-    additionalMetricsRelabels: {}
-    labels: {}
-    path: /metrics
-    interval: 30s
-    scrapeTimeout: 30s
-
-  ## If true, a PodMonitoring CR is created for a google managed prometheus
-  ## https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed#gmp-pod-monitoring for each target
-  ##
-  enabled: true
-
 configReloader:
   enabled: true
   containerPort: 8080

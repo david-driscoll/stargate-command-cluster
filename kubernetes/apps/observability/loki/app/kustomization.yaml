@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: observability
 resources:
   - ./helmrelease.yaml
+  - ./definition.yaml
 configMapGenerator:
   - name: loki-stack-values
     files:

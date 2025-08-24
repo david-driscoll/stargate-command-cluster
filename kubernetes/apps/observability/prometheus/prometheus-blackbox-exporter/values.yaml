@@ -50,7 +50,7 @@ configReloader:
   image:
     registry: quay.io
     repository: prometheus-operator/prometheus-config-reloader
-    tag: "v0.85.0"
+    tag: "v0.85.0@sha256:ebb560bcb6bd3ab728a7ab61d77d22a001cc0c7a67f0531e7f92e20ce004de38"
     pullPolicy: IfNotPresent
     digest: ""
   securityContext:

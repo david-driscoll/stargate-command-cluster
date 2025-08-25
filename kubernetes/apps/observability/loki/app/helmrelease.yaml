@@ -81,6 +81,13 @@ spec:
         size: 60Gi
     gateway:
       enabled: false
+      replicas: 0
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
     ingress:
       enabled: true
       ingressClassName: internal

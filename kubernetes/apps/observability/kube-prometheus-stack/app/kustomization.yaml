@@ -6,10 +6,13 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./scrapeconfig.yaml
-
+  - ./definition.yaml
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:
       - alertmanager.yaml=./resources/alertmanager.yaml
+  - name: ${APP}-values
+    files:
+      - values.yaml=./resources/values.yaml
 generatorOptions:
   disableNameSuffixHash: true

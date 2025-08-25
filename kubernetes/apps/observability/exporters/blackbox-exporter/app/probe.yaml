@@ -10,14 +10,14 @@ spec:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
     staticConfig:
-      static:
-        # - downstairs-hallway-slzb06.cloudjur.com
-        # - garage-tablet.cloudjur.com
-        # - gladius.cloudjur.com
-        # - hallway-tablet.cloudjur.com
-        # - livingroom-vacuum.cloudjur.com
-        - smb.cloudjur.com
-        # - pikvm.cloudjur.com
+      static: []
+        # - downstairs-hallway-slzb06.${CLUSTER_DOMAIN}
+        # - garage-tablet.${CLUSTER_DOMAIN}
+        # - gladius.${CLUSTER_DOMAIN}
+        # - hallway-tablet.${CLUSTER_DOMAIN}
+        # - livingroom-vacuum.${CLUSTER_DOMAIN}
+        # - smb.${CLUSTER_DOMAIN}
+        # - pikvm.${CLUSTER_DOMAIN}
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
@@ -31,4 +31,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - "smb.cloudjur.com:2049"
+        - "smb.${CLUSTER_DOMAIN}:2049"

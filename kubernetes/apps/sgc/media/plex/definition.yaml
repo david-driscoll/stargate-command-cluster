@@ -7,6 +7,11 @@ metadata:
 spec:
   name: Plex (Cheyenne)
   category: Media
+  url: https://${APP}.${CLUSTER_DOMAIN}
+  access_policy:
+    groups:
+      - friends
+      - family
   uptimeFrom:
     type: secret
     name: ${APP}-uptime

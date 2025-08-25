@@ -10,6 +10,9 @@ spec:
   description: Mosquitto MQTT broker
   url: &url https://${AUTOMATION_VIP}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mosquitto.svg
+  access_policy:
+    groups:
+      - admins
   # authentik:
   #   proxy:
   #     mode: "forward_single"

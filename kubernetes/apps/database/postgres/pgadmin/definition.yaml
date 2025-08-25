@@ -10,6 +10,9 @@ spec:
   description: TODO some more work here
   url: &url https://${APP}.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/peanut.svg
+  access_policy:
+    groups:
+      - admins
   # authentik:
   #   proxy:
   #     mode: "forward_single"

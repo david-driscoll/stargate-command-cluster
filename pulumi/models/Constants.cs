@@ -11,10 +11,11 @@ public static class Constants
   }
   public class Roles
   {
-    public const string Admin = "admins";
-    public const string User = "users";
+    public const string Admins = "admins";
+    public const string Editors = "editors";
+    public const string Users = "users";
     public const string Family = "family";
-    public const string Friend = "friends";
-    public const string MediaManager = "media-managers";
+    public const string Friends = "friends";
+    public const string MediaManagers = "media-managers";
   }
 }

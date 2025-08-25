@@ -10,11 +10,12 @@ public class AuthentikGroups : Pulumi.ComponentResource
 {
   private readonly IReadOnlyCollection<(string GroupName, string? ParentName)> _initialGroups =
   [
-    (Constants.Roles.User, null),
-    (Constants.Roles.Admin, Constants.Roles.User),
-    (Constants.Roles.Family, Constants.Roles.User),
-    (Constants.Roles.Friend, Constants.Roles.User),
-    (Constants.Roles.MediaManager, Constants.Roles.User)
+    (Constants.Roles.Users, null),
+    (Constants.Roles.Admins, Constants.Roles.Users),
+    (Constants.Roles.Editors, Constants.Roles.Users),
+    (Constants.Roles.Family, Constants.Roles.Users),
+    (Constants.Roles.Friends, Constants.Roles.Users),
+    (Constants.Roles.MediaManagers, Constants.Roles.Users)
   ];
 
   public AuthentikGroups(ComponentResourceOptions? options = null) : base("custom:resource:AuthentikGroups",
@@ -31,13 +32,13 @@ public class AuthentikGroups : Pulumi.ComponentResource
       {
         Name = group.GroupName,
         Roles = [roleResource.RbacRoleId],
-        IsSuperuser = group.GroupName == Constants.Roles.Admin,
+        IsSuperuser = group.GroupName == Constants.Roles.Admins,
         Parent = parentGroup.GroupId,
       } : new()
       {
         Name = group.GroupName,
         Roles = [roleResource.RbacRoleId],
-        IsSuperuser = group.GroupName == Constants.Roles.Admin,
+        IsSuperuser = group.GroupName == Constants.Roles.Admins,
       }, new CustomResourceOptions() { Parent = this });
       _groups[group.GroupName] = groupResource;
     }

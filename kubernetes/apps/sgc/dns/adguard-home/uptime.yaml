@@ -7,6 +7,11 @@ metadata:
 spec:
   name: Adguard Home
   category: DNS
+  url: https://${APP}.${CLUSTER_DOMAIN}
+  access_policy:
+    groups:
+      - friends
+      - family
   uptime:
     group:
       parent_name: "system"

@@ -12,8 +12,7 @@ spec:
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
   access_policy:
     groups:
-      - friends
-      - family
+      - admins
   authentik:
     proxy:
       mode: "forward_single"
@@ -38,8 +37,7 @@ spec:
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/alertmanager.svg
   access_policy:
     groups:
-      - friends
-      - family
+      - admins
   authentik:
     proxy:
       mode: "forward_single"

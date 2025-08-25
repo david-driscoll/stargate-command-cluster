@@ -6,7 +6,7 @@ metadata:
   name: home-assistant
 spec:
   name: Home Assistant
-  category: ${CLUSTER_TITLE}
+  category: Applications
   description: Home automation and things that make the house angry.
   url: &url https://home.${ROOT_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/home-assistant.svg

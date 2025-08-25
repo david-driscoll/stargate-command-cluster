@@ -80,13 +80,19 @@ spec:
         storageClass: longhorn
         size: 60Gi
     gateway:
-      replicas: 0
-    backend:
-      replicas: 0
-    read:
-      replicas: 0
-    write:
-      replicas: 0
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: internal
+      annotations:
+        reloader.stakater.com/auto: "true"
+        external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # -- Hosts configuration for the gateway ingress, passed through the `tpl` function to allow templating
+      hosts:
+        - host: ${APP}.${CLUSTER_DOMAIN}
+          paths:
+            - path: /
     chunksCache:
       enabled: false
     resultsCache:

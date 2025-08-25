@@ -448,7 +448,7 @@ persistence:
 route:
   main:
     enabled: true
-    hostnames: ["{{ .Release.Name }}.cloudjur.com"]
+    hostnames: ["{{ .Release.Name }}.${CLUSTER_DOMAIN}"]
     parentRefs:
       - name: external
         namespace: kube-system

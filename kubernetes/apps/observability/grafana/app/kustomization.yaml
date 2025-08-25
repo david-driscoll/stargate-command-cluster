@@ -6,6 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./externalsecret-values.yaml
   - ./helmrelease.yaml
+  - ./definition.yaml
 configMapGenerator:
   - name: ${APP}-values
     files:

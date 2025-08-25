@@ -41,8 +41,8 @@ receivers:
   - name: pushover
     pushover_configs:
       - html: true
-        user_key: "{{ .pushover_api_userkey }}"
-        token: "{{ .pushover_api_token }}"
+        user_key: "{{ .pushover_username }}"
+        token: "{{ .pushover_credential }}"
         url_title: View in AlertManager # Compooters are hard
         message: |-
           {{ "{{-" }} range .Alerts {{ "}}" }}

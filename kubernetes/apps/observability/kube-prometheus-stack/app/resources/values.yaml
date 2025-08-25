@@ -5,6 +5,10 @@ cleanPrometheusOperatorObjectNames: true
 alertmanager:
   ingress:
     enabled: true
+    annotations:
+      reloader.stakater.com/auto: "true"
+      external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
     ingressClassName: internal
     hosts:
       - alertmanager.${CLUSTER_DOMAIN}
@@ -31,16 +35,19 @@ kubeEtcd:
     selector:
       component: kube-apiserver # etcd runs on control plane nodes
 kubeProxy:
-  enabled: false
+  enabled: true
 prometheus:
-  route:
-    main:
-      enabled: true
-      hostnames: ["prometheus.${CLUSTER_DOMAIN}"]
-      parentRefs:
-        - name: internal
-          namespace: kube-system
-          sectionName: https
+  ingress:
+    enabled: true
+    ingressClassName: internal
+    annotations:
+      reloader.stakater.com/auto: "true"
+      external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hosts:
+      - prometheus.${ROOT_DOMAIN}
+    paths:
+    - /
   prometheusSpec:
     image:
       registry: docker.io

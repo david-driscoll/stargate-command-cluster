@@ -6,7 +6,7 @@ metadata:
   name: ${APP}
 spec:
   name: Grafana
-  category: ${CLUSTER_TITLE}
+  category: Monitoring
   description: Grafana is an open-source platform for monitoring and observability.
   url: &url https://${APP}.${ROOT_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/grafana.svg

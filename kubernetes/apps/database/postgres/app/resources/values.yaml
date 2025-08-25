@@ -42,7 +42,7 @@ backups:
     method: barmanObjectStore
   retentionPolicy: "30d"
 cluster:
-  instances: 2
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}

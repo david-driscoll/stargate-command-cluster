@@ -48,7 +48,7 @@ public class AuthentikApplicationResources : ComponentResource
   {
     var applications = Output.Create(Mappings.GetApplications(args.Cluster))
       .Apply(applications => applications
-        .Where(z => z.Spec.Authentik is not null)
+        .Where(z => !string.IsNullOrWhiteSpace(z.Spec.Url))
         .GroupBy(z => z.GetClusterNameAndTitle().ClusterName))
       .Apply(async groups =>
       {
@@ -113,19 +113,21 @@ public class AuthentikApplicationResources : ComponentResource
   private Application CreateResource(Args args, ApplicationDefinition application)
   {
     Log.Info($"Creating authentik application for {application.Metadata.Name} in {application.Metadata.Namespace()}");
-    Debug.Assert(application.Spec.Authentik != null);
 
-    var authentikApp = CreateAuthentikApplication(args, application, application.Spec.Authentik);
+    var authentikApp = CreateApplication(args, application, application.Spec.Authentik != null
+      ? CreateAuthentikProvider(args, application, application.Spec.Authentik)
+      : null);
     return authentikApp;
   }
 
-  Application CreateAuthentikApplication(Args args, ApplicationDefinition definition,
+  CustomResource CreateAuthentikProvider(Args args, ApplicationDefinition definition,
     ApplicationDefinitionAuthentik authentik)
   {
     var (clusterName, clusterTitle, ns, originalName) = definition.GetClusterNameAndTitle();
     var resourceName = $"{(ns.Equals(clusterName, StringComparison.OrdinalIgnoreCase) ? clusterName : $"{clusterName}-{ns}")}-{originalName}";
     var slug = definition.Spec.Slug ??resourceName;
     var options = new CustomResourceOptions() { Parent = this };
+
     Pulumi.CustomResource provider;
     switch (authentik)
     {
@@ -284,13 +286,24 @@ public class AuthentikApplicationResources : ComponentResource
         break;
       }
       default:
-        throw new ArgumentException("Unknown authentik provider type", nameof(authentik));
+        throw new InvalidOperationException("Unknown authentik provider type");
     }
 
-    var app = new Application(resourceName, new()
+    return provider;
+  }
+
+  Application CreateApplication(
+    Args args,
+    ApplicationDefinition definition,
+    CustomResource? provider)
+  {
+    var (clusterName, clusterTitle, ns, originalName) = definition.GetClusterNameAndTitle();
+    var resourceName = $"{(ns.Equals(clusterName, StringComparison.OrdinalIgnoreCase) ? clusterName : $"{clusterName}-{ns}")}-{originalName}";
+    var slug = definition.Spec.Slug ??resourceName;
+
+    var applicationArgs = new ApplicationArgs()
     {
       // ApplicationId = ,
-      ProtocolProvider = provider.Id.Apply(double.Parse),
       Name = definition.Spec.Name,
       Slug = slug,
       Group = definition.Spec.Category,
@@ -299,10 +312,14 @@ public class AuthentikApplicationResources : ComponentResource
       MetaDescription = definition.Spec.Description ?? "",
       MetaLaunchUrl = definition.Spec.Url,
       // PolicyEngineMode = "any",
-      // OpenInNewTab = true,
-    }, new CustomResourceOptions() { Parent = this, DeleteBeforeReplace = true });
+      OpenInNewTab = true,
+    };
+    if (provider != null)
+    {
+      applicationArgs.ProtocolProvider = provider.Id.Apply(double.Parse);
+    }
 
-
+    var app = new Application(resourceName, applicationArgs, new CustomResourceOptions() { Parent = this, DeleteBeforeReplace = true });
 
     if (definition.Spec.AccessPolicy is not { Groups: { Count: > 0 } groups }) return app;
     // todo entitlements

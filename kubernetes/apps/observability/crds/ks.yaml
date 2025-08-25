@@ -12,7 +12,8 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/crds/kuma
   prune: true
-  wait: false
+  retryInterval: 2m
+  wait: true
   force: true
   interval: 1h
   timeout: 5m
@@ -23,7 +24,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      NAMESPACE: *namespace
+      namespace: *namespace
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -38,7 +39,8 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/crds/application
   prune: true
-  wait: false
+  retryInterval: 2m
+  wait: true
   force: true
   interval: 1h
   timeout: 5m

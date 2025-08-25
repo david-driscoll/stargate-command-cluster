@@ -57,16 +57,18 @@ try
       AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {kustomizePath}.[/]");
       continue;
     }
-    static IReadOnlyList<(string name, string path)> GetComponents(string path, IEnumerable<YamlNode> nodes)
+    static IReadOnlyList<(string name, string path)> GetComponents(string? path, IEnumerable<YamlNode>? nodes)
     {
-      return nodes.OfType<YamlSequenceNode>()
+      if (path is null) return [];
+      return nodes?.OfType<YamlSequenceNode>()
     .SelectMany(z => z.AllNodes.OfType<YamlScalarNode>())
+    .Where(z => !string.IsNullOrWhiteSpace(z.Value))
     .Select(z => Path.Combine(path, z.Value))
     .Select(Path.GetFullPath)
     .Select(z => Path.GetRelativePath(Directory.GetCurrentDirectory(), z))
     .Distinct()
     .Select(z => (name: Path.GetFileName(z), path: z))
-    .ToList();
+    .ToList() ?? [];
     }
 
     ;
@@ -75,8 +77,8 @@ try
     .OfType<YamlScalarNode>()
       .SingleOrDefault()
       ?.Value.Dump("POSTGRES_NAME") ?? documentName;
-    var path = kustomizeDoc?.Query("/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
-    var components = GetComponents(path, kustomizeDoc.Query("/spec/components"));
+    var path = kustomizeDoc?.Query(yamlPath: "/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
+    var components = GetComponents(path, kustomizeDoc?.Query("/spec/components"));
     if (components.Count == 0)
     {
       // AnsiConsole.MarkupLine($"[green]No components found in {kustomize}.[/]");

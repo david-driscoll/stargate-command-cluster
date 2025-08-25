@@ -86,6 +86,18 @@ cluster:
     superuser: false
     passwordSecret:
       name: pulumi-operator-postgres
+  - name: loki
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: loki-postgres
+  - name: grafana
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: grafana-postgres
   - name: authentik
     ensure: present
     login: true

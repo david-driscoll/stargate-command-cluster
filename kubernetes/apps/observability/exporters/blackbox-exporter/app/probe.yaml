@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: devices
+spec:
+  module: icmp
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        # - downstairs-hallway-slzb06.cloudjur.com
+        # - garage-tablet.cloudjur.com
+        # - gladius.cloudjur.com
+        # - hallway-tablet.cloudjur.com
+        # - livingroom-vacuum.cloudjur.com
+        - smb.cloudjur.com
+        # - pikvm.cloudjur.com
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: nfs
+spec:
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - "smb.cloudjur.com:2049"

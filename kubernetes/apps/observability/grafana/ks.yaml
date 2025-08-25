@@ -10,9 +10,21 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
   path: ./kubernetes/apps/observability/grafana/app
+  components:
+    # - ../../../../components/tailscale
+    - ../../../../components/volsync
+    - ../../../../components/postgres
+    - ../../../../components/ingress/internal
   prune: true
-  wait: false
+  wait: true
   force: true
   interval: 1h
   timeout: 5m
@@ -20,8 +32,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components:
-    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: *app

@@ -68,6 +68,7 @@ david-driscoll/equestria-cluster:
       kustomization.yaml
       grafana/
       exporters/
+      uptime-kuma/
   - source: kubernetes/apps/tailscale-system/
     dest: kubernetes/apps/tailscale-system/
     exclude: |

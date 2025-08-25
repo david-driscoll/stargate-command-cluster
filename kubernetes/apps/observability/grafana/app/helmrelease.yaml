@@ -1,44 +1,37 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: grafana
 spec:
-  interval: 2h
-  url: https://grafana.github.io/helm-charts
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  url: oci://ghcr.io/grafana/helm-charts/grafana
+  ref:
+    tag: 9.3.4
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grafana
+  name: &app grafana
 spec:
-  chart:
-    spec:
-      chart: grafana
-      version: "9.3.4"
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
-  interval: 30m
-  maxHistory: 3
+  chartRef:
+    kind: OCIRepository
+    name: grafana
+  interval: 24h
+  maxHistory: 2
   install:
-    createNamespace: true
-    replace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
-      retries: 3
       strategy: rollback
-  rollback:
-    cleanupOnFail: true
-    force: true
-    recreate: true
-  uninstall:
-    keepHistory: false
+      retries: 3
   valuesFrom:
-    - kind: ConfigMap
+    - kind: Secret
       name: grafana-values

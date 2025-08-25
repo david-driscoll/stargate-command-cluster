@@ -7,5 +7,9 @@ resources:
   - postgres-superuser.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
+  - grafana.yaml
+  - grafana.sops.yaml
+  - loki.yaml
+  - loki.sops.yaml
   - pulumi-operator.yaml
   - pulumi-operator.sops.yaml

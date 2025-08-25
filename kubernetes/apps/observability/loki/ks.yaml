@@ -10,9 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/loki/app
   prune: true
-  wait: false
+  wait: true
   force: true
   interval: 1h
   timeout: 5m
@@ -20,10 +19,20 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  path: ./kubernetes/apps/observability/loki/app
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
   components:
+    - ../../../../components/tailscale
     - ../../../../components/volsync
+    - ../../../../components/postgres
+    - ../../../../components/ingress/internal
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      VOLSYNC_CAPACITY: 60Gi

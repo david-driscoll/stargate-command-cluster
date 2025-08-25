@@ -7,6 +7,11 @@ metadata:
 spec:
   name: Tautulli (Cheyenne)
   category: Media Management
+  url: https://${APP}.${CLUSTER_DOMAIN}
+  access_policy:
+    groups:
+      - friends
+      - family
   uptime:
     http:
       url: https://${APP}.${CLUSTER_DOMAIN}/status

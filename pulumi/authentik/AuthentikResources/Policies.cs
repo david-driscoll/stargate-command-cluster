@@ -69,7 +69,7 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
   {
     Expression = $"""
                  from authentik.core.models import Group
-                 group, _ = Group.objects.get_or_create(name="{Constants.Roles.User}")
+                 group, _ = Group.objects.get_or_create(name="{Constants.Roles.Users}")
                  # ["groups"] *must* be set to an array of Group objects, names alone are not enough.
                  request.context["flow_plan"].context["groups"] = [group]
                  return True
@@ -84,7 +84,7 @@ public class Policies(ComponentResourceOptions? options = null) : SharedComponen
                  sourceGroups = request.context['source']['groups']
                  groups = []
                  if not sourceGroups:
-                   sourceGroups = ["{Constants.Roles.User}"]
+                   sourceGroups = ["{Constants.Roles.Users}"]
 
                  for group_name in sourceGroups:
                    group, _ = Group.objects.get_or_create(name=group_name)

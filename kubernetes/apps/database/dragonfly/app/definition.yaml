@@ -12,3 +12,6 @@ spec:
       database_connection_string: redis://redis.database.svc.cluster.local
       accepted_statuscodes: ["200"]
       parent_name: "cluster"
+  access_policy:
+    groups:
+      - admins

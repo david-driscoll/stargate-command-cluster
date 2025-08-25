@@ -7,6 +7,10 @@ metadata:
 spec:
   name: 1Password Connect
   category: System
+  url: https://op-connect.${CLUSTER_DOMAIN}
+  access_policy:
+    groups:
+      - admins
   uptime:
     http:
       url: https://op-connect.${CLUSTER_DOMAIN}/health

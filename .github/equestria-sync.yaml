@@ -34,6 +34,7 @@ david-driscoll/equestria-cluster:
       postgres/app/cluster.yaml
       postgres/app/users/
       postgres/app/resources/
+      postgres/postgres-push-secrets/
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     deleteOrphaned: true

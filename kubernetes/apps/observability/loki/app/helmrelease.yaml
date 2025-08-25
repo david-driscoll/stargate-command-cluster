@@ -97,9 +97,7 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       # -- Hosts configuration for the gateway ingress, passed through the `tpl` function to allow templating
       hosts:
-        - host: ${APP}.${CLUSTER_DOMAIN}
-          paths:
-            - path: /
+        - ${APP}.${CLUSTER_DOMAIN}
     chunksCache:
       enabled: false
     resultsCache:

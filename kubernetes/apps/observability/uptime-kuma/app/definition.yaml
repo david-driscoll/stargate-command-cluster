@@ -8,8 +8,8 @@ spec:
   name: Kuma Uptime
   category: Applications
   description: Kuma Uptime is a self-hosted, open-source uptime monitoring solution.
-  url: &url https://${APP}.${ROOT_DOMAIN}
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/uptime-kuma.png
+  url: &url https://uptime.${ROOT_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/uptime-kuma.svg
   uptime:
     http:
       url: *url

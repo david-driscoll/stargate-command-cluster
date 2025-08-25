@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: loki
+spec:
+  name: Loki
+  category: ${CLUSTER_TITLE}
+  description: Loki is a log aggregation system designed to work with Prometheus.
+  url: &url https://loki.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/loki.svg
+  access_policy:
+    groups:
+      - friends
+      - family
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+  uptime:
+    http:
+      url: *url
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster-system"

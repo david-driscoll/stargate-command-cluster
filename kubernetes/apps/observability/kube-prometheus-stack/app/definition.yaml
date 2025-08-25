@@ -23,7 +23,7 @@ spec:
       url: *url
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "system"
+      parent_name: "cluster-system"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -49,4 +49,4 @@ spec:
       url: *url
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "system"
+      parent_name: "cluster-system"

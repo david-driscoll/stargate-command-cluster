@@ -27,11 +27,6 @@ spec:
       namespace: kube-system
     - name: external-secrets
       namespace: kube-system
-  components:
-    - ../../../../components/tailscale
-    - ../../../../components/volsync
-    - ../../../../components/postgres
-    - ../../../../components/ingress/internal
   postBuild:
     substitute:
       APP: *app

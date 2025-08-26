@@ -69,9 +69,9 @@ spec:
         name: authentik
         enabled: true
         scopes: openid email profile
-        auth_url: https://${oidc_issuer}/application/o/authorize/
-        token_url: https://${oidc_issuer}/application/o/token/
-        api_url: https://${oidc_issuer}/application/o/userinfo/
+        auth_url: https://${OIDC_ISSUER}/application/o/authorize/
+        token_url: https://${OIDC_ISSUER}/application/o/token/
+        api_url: https://${OIDC_ISSUER}/application/o/userinfo/
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'media-managers') && 'Editor' || 'Viewer'
     deploymentStrategy:
@@ -325,11 +325,11 @@ spec:
           url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
           datasource: Prometheus
       network:
-        apc-ups:
-          # renovate: depName="APC UPS (SNMP)"
-          gnetId: 12340
-          revision: 1
-          datasource: Prometheus
+        # apc-ups:
+        #   # renovate: depName="APC UPS (SNMP)"
+        #   gnetId: 12340
+        #   revision: 1
+        #   datasource: Prometheus
         blackbox-exporter:
           # renovate: depName="Prometheus Blackbox Exporter"
           gnetId: 7587
@@ -340,35 +340,35 @@ spec:
           gnetId: 20842
           revision: 3
           datasource: Prometheus
-        frigate:
-          # renovate: depName="Frigate"
-          gnetId: 18226
-          revision: 9
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
+        # frigate:
+        #   # renovate: depName="Frigate"
+        #   gnetId: 18226
+        #   revision: 9
+        #   datasource:
+        #     - {name: DS_PROMETHEUS, value: Prometheus}
         envoy:
           # renovate: depName="Envoy Proxy Monitoring gRPC"
           gnetId: 23239
           revision: 1
           datasource:
             - {name: DS_AFRANET_PROMETHEUS, value: Prometheus}
-        cloudflared:
-          # renovate: depName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457
-          revision: 6
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
+        # cloudflared:
+        #   # renovate: depName="Cloudflare Tunnels (cloudflared)"
+        #   gnetId: 17457
+        #   revision: 6
+        #   datasource:
+        #     - {name: DS_PROMETHEUS, value: Prometheus}
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
           revision: 3
           datasource: Prometheus
-        opnsense:
-          # renovate: depName="OPNsense"
-          gnetId: 21113
-          revision: 1
-          datasource:
-            - {name: DS_PROMETHEUS-K0, value: Prometheus}
+        # opnsense:
+        #   # renovate: depName="OPNsense"
+        #   gnetId: 21113
+        #   revision: 1
+        #   datasource:
+        #     - {name: DS_PROMETHEUS-K0, value: Prometheus}
         speedtest-exporter-hub:
           # renovate: depName="Speedtest Exporter"
           gnetId: 13665
@@ -390,13 +390,13 @@ spec:
         #   gnetId: 11312
         #   revision: 9
         #   datasource: Prometheus
-      nginx:
-        nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-          datasource: Prometheus
+      # nginx:
+      #   nginx:
+      #     url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+      #     datasource: Prometheus
+      #   nginx-request-handling-performance:
+      #     url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+      #     datasource: Prometheus
       system:
         volsync:
           # renovate: depName="VolSync Dashboard"
@@ -411,12 +411,12 @@ spec:
         #   revision: 3
         #   datasource:
         #     - { name: DS_PROMETHEUS, value: Prometheus }
-        minio:
-          # renovate: depName="MinIO Dashboard"
-          gnetId: 13502
-          revision: 26
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
+        # minio:
+        #   # renovate: depName="MinIO Dashboard"
+        #   gnetId: 13502
+        #   revision: 26
+        #   datasource:
+        #     - {name: DS_PROMETHEUS, value: Prometheus}
         spegel:
           # renovate: depName="Spegel"
           gnetId: 18089

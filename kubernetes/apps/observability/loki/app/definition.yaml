@@ -13,13 +13,9 @@ spec:
   access_policy:
     groups:
       - admins
-  authentik:
-    proxy:
-      mode: "forward_single"
-      externalHost: *url
   uptime:
     http:
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
+      accepted_statuscodes: ["404"]
       parent_name: "cluster-system"

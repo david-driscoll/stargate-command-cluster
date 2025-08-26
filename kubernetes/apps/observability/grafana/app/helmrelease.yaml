@@ -185,14 +185,11 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - {name: "Alertmanager ${CLUSTER_TITLE}", orgId: 1}
-          - {name: "Loki ${CLUSTER_TITLE}", orgId: 1}
-          - {name: "Prometheus ${CLUSTER_TITLE}", orgId: 1}
-          - {name: "Alertmanager Equestria", orgId: 1}
-          - {name: "Loki Equestria", orgId: 1}
-          - {name: "Prometheus Equestria", orgId: 1}
+          - {name: "Alertmanager", orgId: 1}
+          - {name: "Loki", orgId: 1}
+          - {name: "Prometheus", orgId: 1}
         datasources:
-          - name: "Prometheus ${CLUSTER_TITLE}"
+          - name: "Prometheus"
             type: prometheus
             uid: prometheus
             isDefault: true
@@ -200,38 +197,17 @@ spec:
             url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
             jsonData:
               timeInterval: 1m
-          - name: "Loki ${CLUSTER_TITLE}"
+          - name: "Loki"
             type: loki
             uid: loki
             access: proxy
             url: http://loki-headless.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
-          - name: "Alertmanager ${CLUSTER_TITLE}"
+          - name: "Alertmanager"
             type: alertmanager
             access: proxy
             url: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
-            jsonData:
-              implementation: prometheus
-          - name: "Prometheus Equestria"
-            type: prometheus
-            uid: prometheus
-            isDefault: true
-            access: proxy
-            url: https://prometheus.equestria.${CLUSTER_DOMAIN}
-            jsonData:
-              timeInterval: 1m
-          - name: "Loki Equestria"
-            type: loki
-            uid: loki
-            access: proxy
-            url: https://loki.equestria.${CLUSTER_DOMAIN}
-            jsonData:
-              maxLines: 250
-          - name: "Alertmanager Equestria"
-            type: alertmanager
-            access: proxy
-            url: https://alertmanager.equestria.${CLUSTER_DOMAIN}
             jsonData:
               implementation: prometheus
     dashboards:

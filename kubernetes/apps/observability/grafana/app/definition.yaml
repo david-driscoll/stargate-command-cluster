@@ -6,9 +6,9 @@ metadata:
   name: ${APP}
 spec:
   name: Grafana
-  category: Monitoring
+  category: ${CLUSTER_TITLE}
   description: Grafana is an open-source platform for monitoring and observability.
-  url: &url https://${APP}.${ROOT_DOMAIN}
+  url: &url https://${APP}.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/grafana.svg
   access_policy:
     groups:
@@ -18,7 +18,7 @@ spec:
     oauth2:
       clientType: confidential
       allowedRedirectUris:
-      - url: "https://${APP}.${ROOT_DOMAIN}/login/generic_oauth"
+      - url: "https://${APP}.${CLUSTER_DOMAIN}/login/generic_oauth"
       propertyMappings:
         - email
         - openid
@@ -30,4 +30,4 @@ spec:
       url: *url
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "system"
+      parent_name: "cluster-system"

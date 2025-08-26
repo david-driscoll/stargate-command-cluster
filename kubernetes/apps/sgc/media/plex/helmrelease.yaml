@@ -93,7 +93,7 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 4Gi
-                cpu: 1.5
+                cpu: 1
 
     # tolerations:
     #   - key: amd.com/gpu

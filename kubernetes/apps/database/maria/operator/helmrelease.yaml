@@ -57,6 +57,7 @@ spec:
           cpu: 50m
           memory: 128M
         limits:
+          cpu: 200m
           memory: 512M
     certController:
       enabled: false

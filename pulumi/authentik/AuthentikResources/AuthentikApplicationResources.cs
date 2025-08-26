@@ -182,6 +182,8 @@ public class AuthentikApplicationResources : ComponentResource
           Credential = clientSecret.Result,
           Fields = new Dictionary<string, FieldArgs>()
           {
+            ["client_id"] = new () { Value = clientId.Result, },
+            ["client_secret"] = new () { Value = clientSecret.Result, },
             ["authorization_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/authorize/" }}" },
             ["token_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/token/" }}" },
             ["userinfo_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = "/application/o/userinfo/" }}" },

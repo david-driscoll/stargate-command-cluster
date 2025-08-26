@@ -58,7 +58,7 @@ spec:
         reporting_enabled: false
       auth:
         signout_redirect_url: https://${OIDC_ISSUER}/application/o/${CLUSTER_CNAME}-grafana/end-session/
-        oauth_auto_login: false
+        oauth_auto_login: true
         oauth_allow_insecure_email_lookup: true
       # # auth.anonymous:
       # #   enabled: true
@@ -66,7 +66,7 @@ spec:
       # #   org_role: Viewer
       # #   hide_version: true
       auth.generic_oauth:
-        name: authentik
+        name: ${CLUSTER_TITLE}
         enabled: true
         scopes: openid email profile
         auth_url: https://${OIDC_ISSUER}/application/o/authorize/

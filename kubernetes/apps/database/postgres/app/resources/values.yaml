@@ -52,7 +52,7 @@ cluster:
       cpu: 100m
       memory: 1Gi
     limits:
-      cpu: 1200m
+      cpu: 800m
       memory: 4Gi
   logLevel: "info"
   affinity:
@@ -61,6 +61,7 @@ cluster:
       - topologyKey: kubernetes.io/hostname
         labelSelector:
           matchLabels:
+            app.kubernetes.io/name: ${APP}
             app.kubernetes.io/component: ${APP}
   tolerations:
   - key: CriticalAddonsOnly

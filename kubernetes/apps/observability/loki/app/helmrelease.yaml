@@ -103,7 +103,7 @@ spec:
     resultsCache:
       enabled: false
     lokiCanary:
-      enabled: true
+      enabled: false
     test:
       enabled: false
     sidecar:

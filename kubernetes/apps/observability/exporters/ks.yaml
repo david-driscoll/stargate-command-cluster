@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/exporters/blackbox-exporter/app
+  path: ./kubernetes/apps/observability/exporters/blackbox-exporter
   prune: true
   retryInterval: 2m
   wait: true
@@ -37,7 +37,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/exporters/nut-exporter/app
+  path: ./kubernetes/apps/observability/exporters/nut-exporter
   prune: true
   retryInterval: 2m
   wait: true
@@ -65,7 +65,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/exporters/smartctl-exporter/app
+  path: ./kubernetes/apps/observability/exporters/smartctl-exporter
   prune: true
   retryInterval: 2m
   wait: true
@@ -92,7 +92,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/exporters/speedtest-exporter/app
+  path: ./kubernetes/apps/observability/exporters/speedtest-exporter
   prune: true
   retryInterval: 2m
   wait: true
@@ -119,7 +119,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/exporters/unpoller/app
+  path: ./kubernetes/apps/observability/exporters/unpoller
   prune: true
   retryInterval: 2m
   wait: true

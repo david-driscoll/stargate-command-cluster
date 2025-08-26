@@ -185,11 +185,14 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - {name: Alertmanager, orgId: 1}
-          - {name: Loki, orgId: 1}
-          - {name: Prometheus, orgId: 1}
+          - {name: "Alertmanager ${CLUSTER_TITLE}", orgId: 1}
+          - {name: "Loki ${CLUSTER_TITLE}", orgId: 1}
+          - {name: "Prometheus ${CLUSTER_TITLE}", orgId: 1}
+          - {name: "Alertmanager Equestria", orgId: 1}
+          - {name: "Loki Equestria", orgId: 1}
+          - {name: "Prometheus Equestria", orgId: 1}
         datasources:
-          - name: Prometheus
+          - name: "Prometheus ${CLUSTER_TITLE}"
             type: prometheus
             uid: prometheus
             isDefault: true
@@ -197,39 +200,41 @@ spec:
             url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
             jsonData:
               timeInterval: 1m
-          - name: Loki
+          - name: "Loki ${CLUSTER_TITLE}"
             type: loki
             uid: loki
             access: proxy
             url: http://loki-headless.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
-          - name: Alertmanager
+          - name: "Alertmanager ${CLUSTER_TITLE}"
             type: alertmanager
             access: proxy
             url: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+          - name: "Prometheus Equestria"
+            type: prometheus
+            uid: prometheus
+            isDefault: true
+            access: proxy
+            url: https://prometheus.equestria.${CLUSTER_DOMAIN}
+            jsonData:
+              timeInterval: 1m
+          - name: "Loki Equestria"
+            type: loki
+            uid: loki
+            access: proxy
+            url: https://loki.equestria.${CLUSTER_DOMAIN}
+            jsonData:
+              maxLines: 250
+          - name: "Alertmanager Equestria"
+            type: alertmanager
+            access: proxy
+            url: https://alertmanager.equestria.${CLUSTER_DOMAIN}
+            jsonData:
+              implementation: prometheus
     dashboards:
-      # ceph:
-      #   ceph-cluster:
-      #     # renovate: depName="Ceph Cluster"
-      #     gnetId: 2842
-      #     revision: 17
-      #     datasource: Prometheus
-      #   ceph-osd:
-      #     # renovate: depName="Ceph - OSD (Single)"
-      #     gnetId: 5336
-      #     revision: 9
-      #     datasource: Prometheus
-      #   ceph-pools:
-      #     # renovate: depName="Ceph - Pools"
-      #     gnetId: 5342
-      #     revision: 9
-      #     datasource: Prometheus
-      #   host-overview:
-      #     url: https://raw.githubusercontent.com/ceph/ceph/main/monitoring/ceph-mixin/dashboards_out/hosts-overview.json
-      #     datasource: Prometheus
       node-monitoring:
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
@@ -256,23 +261,16 @@ spec:
         #   gnetId: 7845
         #   revision: 4
         #   datasource: Prometheus
-      # default:
-      #   palworld:
-      #     # renovate: depName="Palworld"
-      #     gnetId: 20421
-      #     revision: 3
-      #     datasource:
-      #       - { name: DS_PROMETHEUS, value: Prometheus }
-      # flux:
-      #   flux-cluster:
-      #     url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
-      #     datasource: Prometheus
-      #   flux-control-plane:
-      #     url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
-      #     datasource: Prometheus
-      #   flux-logs:
-      #     url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
-      #     datasource: Prometheus
+      flux:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+          datasource: Prometheus
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+          datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
@@ -375,21 +373,21 @@ spec:
           revision: 4
           datasource:
             - {name: DS_PROMETHEUS, value: Prometheus}
-        # unifi-network-sites:
-        #   # renovate: depName="UniFi-Poller: Network Sites - Prometheus"
-        #   gnetId: 11311
-        #   revision: 5
-        #   datasource: Prometheus
-        # unifi-uap:
-        #   # renovate: depName="UniFi-Poller: UAP Insights - Prometheus"
-        #   gnetId: 11314
-        #   revision: 10
-        #   datasource: Prometheus
-        # unifi-usw:
-        #   # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
-        #   gnetId: 11312
-        #   revision: 9
-        #   datasource: Prometheus
+        unifi-network-sites:
+          # renovate: depName="UniFi-Poller: Network Sites - Prometheus"
+          gnetId: 11311
+          revision: 5
+          datasource: Prometheus
+        unifi-uap:
+          # renovate: depName="UniFi-Poller: UAP Insights - Prometheus"
+          gnetId: 11314
+          revision: 10
+          datasource: Prometheus
+        unifi-usw:
+          # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
+          gnetId: 11312
+          revision: 9
+          datasource: Prometheus
       # nginx:
       #   nginx:
       #     url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json

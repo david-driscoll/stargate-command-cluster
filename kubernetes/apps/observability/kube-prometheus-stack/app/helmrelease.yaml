@@ -78,7 +78,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - prometheus.${ROOT_DOMAIN}
+          - prometheus.${CLUSTER_DOMAIN}
         paths:
         - /
       prometheusSpec:

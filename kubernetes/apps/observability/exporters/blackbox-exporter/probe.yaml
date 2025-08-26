@@ -1,34 +1,34 @@
----
-# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/probe_v1.json
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
-  name: devices
-spec:
-  module: icmp
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static: []
-        # - downstairs-hallway-slzb06.${CLUSTER_DOMAIN}
-        # - garage-tablet.${CLUSTER_DOMAIN}
-        # - gladius.${CLUSTER_DOMAIN}
-        # - hallway-tablet.${CLUSTER_DOMAIN}
-        # - livingroom-vacuum.${CLUSTER_DOMAIN}
-        # - smb.${CLUSTER_DOMAIN}
-        # - pikvm.${CLUSTER_DOMAIN}
----
-# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/probe_v1.json
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
-  name: nfs
-spec:
-  module: tcp_connect
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - "smb.${CLUSTER_DOMAIN}:2049"
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+# apiVersion: monitoring.coreos.com/v1
+# kind: Probe
+# metadata:
+#   name: devices
+# spec:
+#   module: icmp
+#   prober:
+#     url: blackbox-exporter.observability.svc.cluster.local:9115
+#   targets:
+#     staticConfig:
+#       static: []
+#         # - downstairs-hallway-slzb06.${CLUSTER_DOMAIN}
+#         # - garage-tablet.${CLUSTER_DOMAIN}
+#         # - gladius.${CLUSTER_DOMAIN}
+#         # - hallway-tablet.${CLUSTER_DOMAIN}
+#         # - livingroom-vacuum.${CLUSTER_DOMAIN}
+#         # - smb.${CLUSTER_DOMAIN}
+#         # - pikvm.${CLUSTER_DOMAIN}
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+# apiVersion: monitoring.coreos.com/v1
+# kind: Probe
+# metadata:
+#   name: nfs
+# spec:
+#   module: tcp_connect
+#   prober:
+#     url: blackbox-exporter.observability.svc.cluster.local:9115
+#   targets:
+#     staticConfig:
+#       static:
+#         - "smb.${CLUSTER_DOMAIN}:2049"

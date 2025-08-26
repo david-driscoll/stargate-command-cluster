@@ -28,7 +28,7 @@ spec:
               repository: ghcr.io/miguelndecarvalho/speedtest-exporter
               tag: v3.5.4
             env:
-              TZ: Asia/Kuala_Lumpur
+              TZ: ${TIMEZONE}
             resources:
               requests:
                 cpu: 10m

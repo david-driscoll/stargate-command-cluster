@@ -40,6 +40,7 @@ spec:
               tag: v2.15.4@sha256:788a890f2dc5aef3e99ce430917221c43b4e084464d38bc6537a8c7294ef8770
             env:
               TZ: ${TIMEZONE}
+              UP_POLLER_DEBUG: true
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_URL: https://${SPIKE_DOMAIN}/
               UP_LOKI_DISABLE: false
@@ -50,10 +51,11 @@ spec:
               UP_UNIFI_DEFAULT_SAVE_EVENTS: true
               UP_UNIFI_DEFAULT_SAVE_IDS: true
               UP_UNIFI_DEFAULT_SAVE_SITES: true
+              UP_UNIFI_DEFAULT_VERIFY_SSL: true
               UP_INFLUXDB_DISABLE: true
               UP_UNIFI_DYNAMIC: true
               UP_PROMETHEUS_DISABLE: false
-              UP_PROMETHEUS_NAMESPACE: "observability"
+              # UP_PROMETHEUS_NAMESPACE: "observability"
             envFrom:
               - secretRef:
                   name: *app

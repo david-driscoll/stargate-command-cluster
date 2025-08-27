@@ -14,7 +14,7 @@ resources:
   - ./dns/ks.yaml
   - ./home/ks.yaml
   # - ./scrypted/ks.yaml
-  - ./dvr/ks.yaml
+  # - ./dvr/ks.yaml
   - ./media/ks.yaml
   - ./idp/ks.yaml
   - ../../../pulumi/ks.yaml

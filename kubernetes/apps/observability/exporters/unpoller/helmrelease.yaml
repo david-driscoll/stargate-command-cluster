@@ -42,7 +42,7 @@ spec:
               TZ: ${TIMEZONE}
               UP_POLLER_DEBUG: true
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://${SPIKE_DOMAIN}/
+              UP_UNIFI_DEFAULT_URL: https://${SPIKE_DOMAIN}:443
               UP_LOKI_DISABLE: false
               UP_LOKI_URL: http://loki-headless.observability.svc.cluster.local:3100
               UP_UNIFI_DEFAULT_SAVE_ALARMS: true

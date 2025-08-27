@@ -48,7 +48,7 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_SECURITY_COOKIE_SAMESITE: *app
-      GF_SERVER_ROOT_URL: https://${APP}.${ROOT_DOMAIN}
+      GF_SERVER_ROOT_URL: https://${APP}.${CLUSTER_DOMAIN}
     envFromSecrets:
       - name: grafana-secret
     grafana.ini:
@@ -467,4 +467,4 @@ spec:
         external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
-        - ${APP}.${ROOT_DOMAIN}
+        - ${APP}.${CLUSTER_DOMAIN}

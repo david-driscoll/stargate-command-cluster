@@ -8,6 +8,7 @@ spec:
   name: Plex (Cheyenne)
   category: Media
   url: https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/plex.svg
   access_policy:
     groups:
       - friends

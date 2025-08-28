@@ -9,3 +9,8 @@ packages:
     version: 0.12.0
     parameters:
       - goauthentik/authentik
+  n8n:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - registry.terraform.io/devops247-online/n8n

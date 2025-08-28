@@ -12,12 +12,15 @@
     <PackageReference Include="Pulumi.Tls" Version="5.2.1" />
     <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33" />
     <Compile Remove="crds/**/*.*" />
+    <None Include="crds/**/*.cs" />
     <Compile Remove="sdks/**/*.*" />
+    <None Include="sdks/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
     <ProjectReference Include="..\models\models.csproj" />
+    <ProjectReference Include="sdks\n8n\Pulumi.N8n.csproj" />
   </ItemGroup>
 
 </Project>

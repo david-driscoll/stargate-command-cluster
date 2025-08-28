@@ -15,7 +15,7 @@ spec:
   #     externalHost: *url
   uptime:
     http:
-      url: https://${APP}.${CLUSTER_DOMAIN}
+      url: https://s3.${CLUSTER_DOMAIN}
       method: GET
       accepted_statuscodes: ["400"]
       parent_name: "cluster"

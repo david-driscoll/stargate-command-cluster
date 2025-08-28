@@ -7,7 +7,6 @@ metadata:
 spec:
   name: 1Password Connect
   category: System
-  url: https://op-connect.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/1password.svg
   access_policy:
     groups:

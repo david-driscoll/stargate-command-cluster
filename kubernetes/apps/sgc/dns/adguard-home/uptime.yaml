@@ -8,6 +8,7 @@ spec:
   name: Adguard Home
   category: DNS
   url: https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:
     groups:
       - friends

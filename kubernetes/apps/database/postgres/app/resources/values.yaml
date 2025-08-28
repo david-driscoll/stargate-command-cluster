@@ -49,11 +49,11 @@ cluster:
     storageClass: longhorn-local
   resources:
     requests:
-      cpu: 100m
-      memory: 1Gi
+      cpu: ${POSTGRES_REQUESTS_CPU}
+      memory: ${POSTGRES_REQUESTS_MEMORY}
     limits:
-      cpu: 800m
-      memory: 4Gi
+      cpu: ${POSTGRES_LIMITS_CPU}
+      memory: ${POSTGRES_LIMITS_MEMORY}
   logLevel: "info"
   affinity:
     podAntiAffinity:
@@ -107,7 +107,7 @@ cluster:
   postgresql:
     parameters:
       max_connections: "300"
-      shared_buffers: "256MB"
+      shared_buffers: "${POSTGRES_SHARED_BUFFERS}"
       pg_stat_statements.max: "10000"
       pg_stat_statements.track: all
     pg_hba: []

@@ -112,6 +112,7 @@ spec:
       config:
         type: secret
         name: mosquitto-secret
+        defaultMode: 493
       external-config:
         type: emptyDir
         globalMounts:

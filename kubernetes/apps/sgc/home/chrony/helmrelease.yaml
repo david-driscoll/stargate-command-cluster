@@ -83,6 +83,7 @@ spec:
       config:
         type: configMap
         name: chrony-configmap
+        defaultMode: 493
         globalMounts:
           - path: /etc/chrony.conf
             subPath: chrony.conf

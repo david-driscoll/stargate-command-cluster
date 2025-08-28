@@ -127,7 +127,7 @@ spec:
           regex: (pod)
       params:
         server:
-          - ${PI_IP}
+          - ${DOCKGE_IP}
       path: /ups_metrics
       port: metrics
       scheme: http

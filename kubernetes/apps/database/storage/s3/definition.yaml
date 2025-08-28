@@ -9,7 +9,7 @@ spec:
   category: ${CLUSTER_TITLE}
   description: S3 server using rclone
   url: &url https://s3.${CLUSTER_DOMAIN}
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/peanut.svg
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/minio.svg
   access_policy:
     groups:
       - admins

@@ -10,7 +10,7 @@ spec:
   description: Access to the Capacitor dashboard
   url: &url https://capacitor.${CLUSTER_DOMAIN}
   # TODO: Change me someday
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/maptiler.svg
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/lighttpd.svg
   access_policy:
     groups:
       - admins

@@ -8,6 +8,7 @@ spec:
   name: MariaDB
   category: ${CLUSTER_TITLE}
   description: MariaDB monitoring
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mariadb.svg
   uptimeFrom:
     type: secret
     name: ${APP}-uptime

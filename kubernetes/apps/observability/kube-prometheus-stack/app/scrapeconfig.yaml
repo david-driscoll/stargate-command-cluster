@@ -3,13 +3,28 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: &app node-exporter
+  name: &app apc-ups-1
 spec:
   staticConfigs:
     - targets:
-        - gateway.${CLUSTER_DOMAIN}:9100
-  metricsPath: /metrics
-  relabelings:
-    - action: replace
-      targetLabel: job
-      replacement: *app
+        - "${DOCKGE_IP}:3493"
+      labels:
+        ups:  *app
+  metricsPath: /ups_metrics
+  params:
+    ups: [ *app ]
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &app apc-ups-2
+spec:
+  staticConfigs:
+    - targets:
+        - "${DOCKGE_IP}:3493"
+      labels:
+        ups:  *app
+  metricsPath: /ups_metrics
+  params:
+    ups: [ *app ]

@@ -30,9 +30,6 @@ spec:
               tag: "3.2.1@sha256:3b452a9f29c50cad2909a9815ff8cf13b1f1079a641492bf7d06063725846e28"
             env:
               TZ: ${TIMEZONE}
-            args:
-              # the first time I set this, the first and last entries were ignored, so I have doubled them.
-              - --nut.vars_enable="battery.charge,battery.charge,battery.runtime,battery.voltage,battery.voltage.nominal,input.voltage,input.voltage.nominal,output.voltage,output.voltage.nominal,ups.realpower,ups.load,ups.status,ups.status"
             probes:
               liveness:
                 enabled: true
@@ -54,5 +51,3 @@ spec:
             enabled: true
             protocol: TCP
             port: 9199
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: "exporters.${CLUSTER_DOMAIN}"

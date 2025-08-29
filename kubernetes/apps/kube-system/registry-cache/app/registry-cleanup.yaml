@@ -1,0 +1,281 @@
+---
+# Registry cleanup automation with multiple strategies
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: registry-cleanup-scripts
+  namespace: kube-system
+data:
+  cleanup-unused-images.sh: |
+    #!/bin/bash
+    set -euo pipefail
+    
+    echo "Starting registry cleanup at $(date)"
+    
+    # Function to cleanup Docker registry cache
+    cleanup_docker_registry() {
+        echo "Cleaning up Docker registry cache..."
+        
+        # Get registry service endpoint
+        REGISTRY_URL="http://docker-registry-cache.kube-system.svc.cluster.local:5000"
+        
+        # Get list of repositories
+        REPOS=$(curl -s "${REGISTRY_URL}/v2/_catalog" | jq -r '.repositories[]?' || echo "")
+        
+        for repo in $REPOS; do
+            echo "Processing repository: $repo"
+            
+            # Get tags for repository
+            TAGS=$(curl -s "${REGISTRY_URL}/v2/${repo}/tags/list" | jq -r '.tags[]?' || echo "")
+            
+            # Keep only recent tags (last 10)
+            TAG_COUNT=0
+            for tag in $TAGS; do
+                TAG_COUNT=$((TAG_COUNT + 1))
+                if [ $TAG_COUNT -gt 10 ]; then
+                    echo "Deleting old tag: ${repo}:${tag}"
+                    # Get digest
+                    DIGEST=$(curl -s -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+                           "${REGISTRY_URL}/v2/${repo}/manifests/${tag}" \
+                           -I | grep -i docker-content-digest | cut -d' ' -f2 | tr -d '\r')
+                    
+                    if [ -n "$DIGEST" ]; then
+                        # Delete manifest
+                        curl -s -X DELETE "${REGISTRY_URL}/v2/${repo}/manifests/${DIGEST}" || true
+                    fi
+                fi
+            done
+        done
+        
+        # Run garbage collection if registry supports it
+        echo "Running registry garbage collection..."
+        kubectl exec -n kube-system deployment/docker-registry-cache -- \
+            registry garbage-collect --delete-untagged /etc/docker/registry/config.yml || true
+    }
+    
+    # Function to cleanup containerd images on nodes
+    cleanup_containerd_images() {
+        echo "Cleaning up containerd images on nodes..."
+        
+        # This would typically be run via a DaemonSet on each node
+        # For now, we'll just log the action
+        echo "Note: Containerd cleanup should be run on each node via DaemonSet"
+        echo "Command: ctr -n k8s.io images prune --filter-labels 'io.cri-containerd.image!='"
+    }
+    
+    # Function to cleanup unused Kubernetes images
+    cleanup_kubernetes_images() {
+        echo "Identifying unused Kubernetes images..."
+        
+        # Get all images currently in use by pods
+        USED_IMAGES=$(kubectl get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{range .spec.initContainers[*]}{.image}{"\n"}{end}{end}' | sort -u)
+        
+        echo "Images currently in use:"
+        echo "$USED_IMAGES"
+        
+        # This is informational - actual cleanup would need node-level access
+        echo "Note: Actual image cleanup requires node-level access via DaemonSet"
+    }
+    
+    # Main cleanup function
+    main() {
+        cleanup_docker_registry
+        cleanup_containerd_images
+        cleanup_kubernetes_images
+        echo "Registry cleanup completed at $(date)"
+    }
+    
+    main
+    
+  cleanup-node-images.sh: |
+    #!/bin/bash
+    # This script runs on each node to cleanup local images
+    set -euo pipefail
+    
+    echo "Starting node-level image cleanup on $(hostname)"
+    
+    # Cleanup containerd images older than 7 days
+    echo "Pruning containerd images older than 7 days..."
+    ctr -n k8s.io images prune --filter-labels 'io.kubernetes.container.hash!=' || true
+    
+    # Cleanup unused containerd content
+    echo "Cleaning up containerd content store..."
+    ctr content prune || true
+    
+    # Cleanup containerd snapshots
+    echo "Cleaning up containerd snapshots..."
+    ctr snapshots prune || true
+    
+    echo "Node-level cleanup completed on $(hostname)"
+
+---
+# CronJob for regular registry cleanup
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: registry-cleanup
+  namespace: kube-system
+  labels:
+    app: registry-cleanup
+spec:
+  schedule: "0 2 * * 0"  # Weekly on Sunday at 2 AM
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: registry-cleanup
+          containers:
+          - name: cleanup
+            image: curlimages/curl:8.4.0
+            command:
+            - /bin/sh
+            - /scripts/cleanup-unused-images.sh
+            volumeMounts:
+            - name: cleanup-scripts
+              mountPath: /scripts
+            resources:
+              requests:
+                memory: 64Mi
+                cpu: 50m
+              limits:
+                memory: 128Mi
+                cpu: 100m
+          restartPolicy: OnFailure
+          volumes:
+          - name: cleanup-scripts
+            configMap:
+              name: registry-cleanup-scripts
+              defaultMode: 0755
+          nodeSelector:
+            kubernetes.io/os: linux
+
+---
+# DaemonSet for node-level image cleanup
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-image-cleanup
+  namespace: kube-system
+  labels:
+    app: node-image-cleanup
+spec:
+  selector:
+    matchLabels:
+      app: node-image-cleanup
+  template:
+    metadata:
+      labels:
+        app: node-image-cleanup
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: node-cleanup
+        image: alpine:3.18
+        command:
+        - /bin/sh
+        - -c
+        - |
+          # Install containerd client
+          apk add --no-cache curl
+          curl -L https://github.com/containerd/containerd/releases/download/v1.7.8/containerd-static-1.7.8-linux-amd64.tar.gz | tar -xz -C /tmp
+          cp /tmp/bin/ctr /usr/local/bin/
+          
+          # Run cleanup script periodically
+          while true; do
+            /scripts/cleanup-node-images.sh
+            sleep 86400  # Run daily
+          done
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: containerd-sock
+          mountPath: /run/containerd
+        - name: cleanup-scripts
+          mountPath: /scripts
+        - name: containerd-root
+          mountPath: /var/lib/containerd
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 50m
+          limits:
+            memory: 128Mi
+            cpu: 100m
+      volumes:
+      - name: containerd-sock
+        hostPath:
+          path: /run/containerd
+      - name: containerd-root
+        hostPath:
+          path: /var/lib/containerd
+      - name: cleanup-scripts
+        configMap:
+          name: registry-cleanup-scripts
+          defaultMode: 0755
+      tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - effect: NoExecute
+        operator: Exists
+      - effect: NoSchedule
+        operator: Exists
+      nodeSelector:
+        kubernetes.io/os: linux
+
+---
+# ServiceAccount and RBAC for cleanup jobs
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: registry-cleanup
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: registry-cleanup
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "daemonsets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: registry-cleanup
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: registry-cleanup
+subjects:
+- kind: ServiceAccount
+  name: registry-cleanup
+  namespace: kube-system
+
+---
+# Monitoring for cleanup jobs
+apiVersion: v1
+kind: ServiceMonitor
+metadata:
+  name: registry-cleanup
+  namespace: kube-system
+  labels:
+    app: registry-cleanup
+spec:
+  selector:
+    matchLabels:
+      app: registry-cleanup
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

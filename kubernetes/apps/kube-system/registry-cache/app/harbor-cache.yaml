@@ -1,0 +1,372 @@
+---
+# Harbor registry as comprehensive pullthrough cache solution
+# This provides a more enterprise-grade option with built-in cleanup policies
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: harbor-system
+  
+---
+# Harbor configuration with pullthrough caching
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: harbor-core-config
+  namespace: harbor-system
+data:
+  harbor.yml: |
+    # Configuration file of Harbor
+    hostname: harbor-cache.local
+    
+    # http related config
+    http:
+      port: 80
+    
+    # Harbor DB configuration
+    database:
+      type: postgresql
+      postgresql:
+        host: harbor-db
+        port: 5432
+        db_name: harbor
+        username: harbor
+        password: harbor123
+        ssl_mode: disable
+    
+    # Data root directory
+    data_root: /data
+    
+    # Redis configuration
+    redis:
+      host: harbor-redis
+      port: 6379
+      db_index: 0
+    
+    # Storage backend configuration
+    storage_service:
+      filesystem:
+        rootdirectory: /storage
+    
+    # Proxy cache configuration for pullthrough
+    proxy_cache:
+      enabled: true
+      default_endpoint: https://registry-1.docker.io
+      endpoints:
+        - name: dockerhub
+          url: https://registry-1.docker.io
+        - name: ghcr
+          url: https://ghcr.io
+        - name: quay
+          url: https://quay.io
+        - name: gcr
+          url: https://gcr.io
+    
+    # Garbage collection configuration
+    gc:
+      schedule:
+        # Run GC every day at 2:00 AM
+        minute: 0
+        hour: 2
+        day: "*"
+        month: "*"
+        weekday: "*"
+      delete_untagged: true
+      workers: 1
+    
+    # Retention policy configuration
+    retention:
+      policy:
+        # Keep images for 30 days
+        rules:
+          - template: "always"
+            params:
+              days_since_pull: 30
+            tag_matching: "**"
+            repo_matching: "**"
+
+---
+# PostgreSQL for Harbor
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harbor-db
+  namespace: harbor-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: harbor-db
+  template:
+    metadata:
+      labels:
+        app: harbor-db
+    spec:
+      containers:
+      - name: postgresql
+        image: postgres:13
+        env:
+        - name: POSTGRES_DB
+          value: harbor
+        - name: POSTGRES_USER
+          value: harbor
+        - name: POSTGRES_PASSWORD
+          value: harbor123
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 100m
+          limits:
+            memory: 512Mi
+            cpu: 200m
+      volumes:
+      - name: db-storage
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor-db
+  namespace: harbor-system
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app: harbor-db
+
+---
+# Redis for Harbor
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harbor-redis
+  namespace: harbor-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: harbor-redis
+  template:
+    metadata:
+      labels:
+        app: harbor-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor-redis
+  namespace: harbor-system
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: harbor-redis
+
+---
+# Harbor Core deployment with pullthrough cache
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harbor-core
+  namespace: harbor-system
+  labels:
+    app: harbor-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: harbor-core
+  template:
+    metadata:
+      labels:
+        app: harbor-core
+    spec:
+      initContainers:
+      - name: harbor-core-init
+        image: goharbor/harbor-core:v2.9.0
+        command:
+        - /bin/sh
+        - -c
+        - |
+          # Wait for database to be ready
+          until pg_isready -h harbor-db -p 5432; do
+            echo "Waiting for database..."
+            sleep 2
+          done
+          echo "Database is ready"
+      containers:
+      - name: core
+        image: goharbor/harbor-core:v2.9.0
+        env:
+        - name: CORE_SECRET
+          value: "not-a-secure-key"
+        - name: JOBSERVICE_SECRET
+          value: "not-a-secure-key"
+        - name: EXT_ENDPOINT
+          value: "http://harbor-cache.local"
+        - name: DATABASE_TYPE
+          value: "postgresql"
+        - name: POSTGRESQL_HOST
+          value: "harbor-db"
+        - name: POSTGRESQL_PORT
+          value: "5432"
+        - name: POSTGRESQL_DATABASE
+          value: "harbor"
+        - name: POSTGRESQL_USERNAME
+          value: "harbor"
+        - name: POSTGRESQL_PASSWORD
+          value: "harbor123"
+        - name: REDIS_HOST
+          value: "harbor-redis"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REGISTRY_URL
+          value: "http://harbor-registry:5000"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: harbor-config
+          mountPath: /etc/harbor
+        - name: harbor-storage
+          mountPath: /storage
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+        livenessProbe:
+          httpGet:
+            path: /api/v2.0/ping
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /api/v2.0/ping
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: harbor-config
+        configMap:
+          name: harbor-core-config
+      - name: harbor-storage
+        emptyDir: {}
+
+---
+# Harbor Registry deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harbor-registry
+  namespace: harbor-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: harbor-registry
+  template:
+    metadata:
+      labels:
+        app: harbor-registry
+    spec:
+      containers:
+      - name: registry
+        image: goharbor/registry-photon:v2.9.0
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: registry-storage
+          mountPath: /storage
+        - name: registry-config
+          mountPath: /etc/registry
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 100m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+      volumes:
+      - name: registry-storage
+        emptyDir: {}
+      - name: registry-config
+        configMap:
+          name: harbor-registry-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: harbor-registry-config
+  namespace: harbor-system
+data:
+  config.yml: |
+    version: 0.1
+    log:
+      level: info
+    storage:
+      filesystem:
+        rootdirectory: /storage
+      maintenance:
+        readonly:
+          enabled: false
+    http:
+      addr: :5000
+    health:
+      storagedriver:
+        enabled: true
+
+---
+# Services for Harbor
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor-core
+  namespace: harbor-system
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30880
+    name: core
+  selector:
+    app: harbor-core
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor-registry
+  namespace: harbor-system
+spec:
+  type: NodePort
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30500
+    name: registry
+  selector:
+    app: harbor-registry

@@ -14,3 +14,36 @@ tasks:
               - Failed
               - Succeeded
         cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true
+
+  registry-status:
+    desc: Check status of registry cache components
+    preconditions:
+      - which kubectl
+    cmds:
+      - echo "=== Spegel Status ==="
+      - kubectl get pods -n kube-system -l app.kubernetes.io/name=spegel
+      - echo "=== Docker Registry Cache Status ==="
+      - kubectl get pods -n kube-system -l app=docker-registry-cache || echo "Docker registry cache not deployed"
+      - echo "=== Harbor Status ==="
+      - kubectl get pods -n harbor-system || echo "Harbor not deployed"
+      - echo "=== Cleanup Jobs Status ==="
+      - kubectl get cronjobs -n kube-system -l app=registry-cleanup || echo "Cleanup jobs not deployed"
+      - kubectl get daemonsets -n kube-system -l app=node-image-cleanup || echo "Node cleanup not deployed"
+
+  registry-cleanup-now:
+    desc: Trigger registry cleanup manually
+    preconditions:
+      - which kubectl
+    cmds:
+      - kubectl create job --from=cronjob/registry-cleanup registry-cleanup-manual-$(date +%s) -n kube-system || echo "Cleanup job not found"
+      - echo "Manual cleanup job started - check 'kubectl get jobs -n kube-system' for status"
+
+  registry-storage:
+    desc: Check registry storage usage
+    preconditions:
+      - which kubectl
+    cmds:
+      - echo "=== Docker Registry Cache Storage ==="
+      - kubectl exec -n kube-system deployment/docker-registry-cache -- df -h /var/lib/registry || echo "Docker registry cache not available"
+      - echo "=== Node Storage Usage ==="
+      - kubectl get nodes -o custom-columns="NODE:.metadata.name,STORAGE:.status.allocatable.storage"

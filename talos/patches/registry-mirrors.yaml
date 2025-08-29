@@ -1,0 +1,45 @@
+---
+# Talos patch to configure containerd registry mirrors for pullthrough caches
+# This should be added to your talos configuration patches
+apiVersion: v1alpha1
+kind: Patch
+metadata:
+  name: registry-mirrors
+spec:
+  # Configure containerd to use local registry caches
+  - op: add
+    path: /machine/registries/mirrors
+    value:
+      docker.io:
+        endpoints:
+          - http://docker-registry-cache.kube-system.svc.cluster.local:5000
+          - https://registry-1.docker.io
+      ghcr.io:
+        endpoints:
+          - http://harbor-registry.harbor-system.svc.cluster.local:5000
+          - https://ghcr.io
+      gcr.io:
+        endpoints:
+          - http://harbor-registry.harbor-system.svc.cluster.local:5000
+          - https://gcr.io
+      quay.io:
+        endpoints:
+          - http://harbor-registry.harbor-system.svc.cluster.local:5000
+          - https://quay.io
+  
+  # Configure registry configuration for better caching
+  - op: add
+    path: /machine/registries/config
+    value:
+      docker.io:
+        tls:
+          insecure_skip_verify: false
+        auth:
+          username: ""
+          password: ""
+      docker-registry-cache.kube-system.svc.cluster.local:5000:
+        tls:
+          insecure_skip_verify: true  # Internal registry, no TLS
+      harbor-registry.harbor-system.svc.cluster.local:5000:
+        tls:
+          insecure_skip_verify: true  # Internal registry, no TLS

@@ -19,10 +19,10 @@ spec:
     enable: true
     serviceMonitor:
       enable: true
-  staticEndpoints:
-    nodePort:
-      ports:
-        - port: 31667
-          endPort: 31680
-      selector:
-        kubernetes.io/os: linux
+  # staticEndpoints:
+  #   nodePort:
+  #     ports:
+  #       - port: 31667
+  #         endPort: 31680
+  #     selector:
+  #       kubernetes.io/os: linux

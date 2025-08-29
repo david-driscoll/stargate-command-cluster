@@ -19,7 +19,6 @@ spec:
       namespace: kube-system
   path: ./kubernetes/apps/observability/grafana/app
   components:
-    # - ../../../../components/tailscale
     - ../../../../components/volsync
     - ../../../../components/postgres
     - ../../../../components/ingress/internal

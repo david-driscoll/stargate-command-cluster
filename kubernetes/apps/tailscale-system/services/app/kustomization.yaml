@@ -8,4 +8,4 @@ resources:
   - ./externalsecret.yaml
   - ./ingress.yaml
   - ./proxy.yaml
-  - ./recorder.yaml
+  # - ./recorder.yaml

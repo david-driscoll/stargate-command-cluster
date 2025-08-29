@@ -54,7 +54,7 @@ spec:
 
   bootstrapFrom:
     s3:
-      bucket: ${BACKBLAZE_BUCKET}
+      bucket: ${BACKBLAZE_DB_BUCKET}
       prefix: mariadb
       endpoint: s3.us-east-005.backblazeb2.com
       accessKeyIdSecretKeyRef:

@@ -1,19 +1,8 @@
 ---
 apiVersion: tailscale.com/v1alpha1
-kind: ProxyGroup
-metadata:
-  name: ingress
-spec:
-  type: ingress
-  hostnamePrefix: ${CLUSTER_CNAME}
-  replicas: 2
-  tags: ["tag:ingress"]
-  proxyClass: ingress
----
-apiVersion: tailscale.com/v1alpha1
 kind: ProxyClass
 metadata:
-  name: ingress
+  name: proxy
 spec:
   metrics:
     enable: true

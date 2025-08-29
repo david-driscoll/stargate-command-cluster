@@ -13,7 +13,7 @@ spec:
   maxRetention: 720h # 30 days
   storage:
     s3:
-      bucket: ${BACKBLAZE_BUCKET}
+      bucket: ${BACKBLAZE_DB_BUCKET}
       prefix: mariadb
       endpoint: s3.us-east-005.backblazeb2.com
       accessKeyIdSecretKeyRef:

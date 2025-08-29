@@ -1,16 +1,14 @@
 ---
 apiVersion: tailscale.com/v1alpha1
-kind: Connector
+kind: ProxyGroup
 metadata:
-  name: "${CLUSTER_CNAME}"
+  name: egress
 spec:
-  exitNode: true
-  hostname: "${CLUSTER_CNAME}-connector"
-  subnetRouter:
-    advertiseRoutes:
-      - "${INTERNAL_NETWORK}"
-      - "${CLUSTER_NETWORK}"
-      - "${SERVICE_NETWORK}"
+  type: egress
+  hostnamePrefix: ${CLUSTER_CNAME}
+  replicas: 2
+  tags: ["tag:egress"]
+  proxyClass: proxy
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
@@ -18,7 +16,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
-    tailscale.com/hostname: "${CLUSTER_CNAME}-idp"
+    tailscale.com/proxy-group: egress
   name: tailscale-idp
 spec:
   externalName: idp

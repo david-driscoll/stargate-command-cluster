@@ -60,8 +60,8 @@ spec:
             command:
               - rclone
               - copy
-              - local:${BACKBLAZE_BUCKET}
-              - backblaze:${BACKBLAZE_BUCKET}
+              - local:${BACKBLAZE_DB_BUCKET}
+              - backblaze:${BACKBLAZE_DB_BUCKET}
               - --progress
 
     defaultPodOptions:

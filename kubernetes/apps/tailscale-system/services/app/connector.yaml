@@ -1,0 +1,17 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: "${CLUSTER_CNAME}"
+spec:
+  exitNode: true
+  hostname: "${CLUSTER_CNAME}"
+  proxyClass: proxy
+  subnetRouter:
+    advertiseRoutes:
+      - "${INTERNAL_NETWORK}"
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
+  tags:
+    - "tag:${CLUSTER_CNAME}"
+    - "tag:exit-node"

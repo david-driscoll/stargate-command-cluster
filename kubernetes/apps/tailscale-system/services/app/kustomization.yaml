@@ -4,3 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./connector.yaml
+  - ./dns-config.yaml
+  - ./externalsecret.yaml
+  - ./ingress.yaml
+  - ./proxy.yaml
+  - ./recorder.yaml

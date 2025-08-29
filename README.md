@@ -314,6 +314,20 @@ Below is a general guide on trying to debug an issue with an resource or applica
     kubectl -n <namespace> get events --sort-by='.metadata.creationTimestamp'
     ```
 
+### Image Pull Issues
+
+If you're experiencing image pull problems (like `ErrImagePull` or `ImagePullBackOff`), use the dedicated troubleshooting tools:
+
+```sh
+# Run comprehensive image pull diagnostics
+task kubernetes:troubleshoot-image-pull NAMESPACE=<namespace> DEPLOYMENT=<deployment-name>
+
+# For the storage-s3 deployment specifically:
+task kubernetes:troubleshoot-image-pull NAMESPACE=database DEPLOYMENT=storage-s3
+```
+
+For detailed troubleshooting steps, see [docs/TROUBLESHOOTING-IMAGE-PULL.md](./docs/TROUBLESHOOTING-IMAGE-PULL.md).
+
 Resolving problems that you have could take some tweaking of your YAML manifests in order to get things working, other times it could be a external factor like permissions on a NFS server. If you are unable to figure out your problem see the support sections below.
 
 ## 🧹 Tidy up

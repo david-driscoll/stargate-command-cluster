@@ -14,3 +14,25 @@ tasks:
               - Failed
               - Succeeded
         cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true
+
+  troubleshoot-image-pull:
+    desc: Troubleshoot image pull issues for a specific deployment
+    summary: |
+      Diagnose image pull problems for Kubernetes deployments.
+      
+      Usage: task kubernetes:troubleshoot-image-pull NAMESPACE=database DEPLOYMENT=storage-s3
+      
+      This task will check:
+      - Deployment and pod status
+      - Image pull errors and events
+      - Node resources and connectivity
+      - Registry access and DNS resolution
+    vars:
+      NAMESPACE: '{{.NAMESPACE | default "default"}}'
+      DEPLOYMENT: '{{.DEPLOYMENT | default ""}}'
+    preconditions:
+      - which kubectl
+      - test -f {{.ROOT_DIR}}/scripts/troubleshoot-image-pull.sh
+      - test -n "{{.DEPLOYMENT}}" || (echo "DEPLOYMENT variable is required" && exit 1)
+    cmds:
+      - "{{.ROOT_DIR}}/scripts/troubleshoot-image-pull.sh {{.NAMESPACE}} {{.DEPLOYMENT}}"

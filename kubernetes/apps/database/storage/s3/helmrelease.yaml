@@ -47,7 +47,7 @@ spec:
         containers: &job
           *app :
             image:
-              repository: ghcr.io/rclone/rclone
+              repository: rclone/rclone
               tag: latest
               pullPolicy: Always
             securityContext:

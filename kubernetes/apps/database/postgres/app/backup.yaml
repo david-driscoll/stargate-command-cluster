@@ -49,7 +49,7 @@ spec:
         containers:
           main: &job
             image:
-              repository: ghcr.io/rclone/rclone
+              repository: rclone/rclone
               tag: latest
               pullPolicy: Always
             env:

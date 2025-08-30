@@ -31,7 +31,6 @@ spec:
         password: "{{ .password }}"
         endpoint: "{{ .endpoint }}"
         region: "homelab"
-        bucket: "{{ .bucket }}"
   dataFrom:
     - extract:
         key: "Spike Minio Access Token"

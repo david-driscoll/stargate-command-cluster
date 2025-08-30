@@ -8,7 +8,23 @@ serviceMonitor:
   enabled: true
 spegel:
   appendMirrors: true
-  logLevel: "DEBUG"
+  logLevel: "INFO"  # Reduced from DEBUG for production
   debugWebEnabled: true
   containerdSock: /run/containerd/containerd.sock
   containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+  # Enhanced caching configuration
+  resolveTags: true
+  resolveLatestTag: true
+  # Mirror configuration for better reliability
+  mirrorResolveRetries: 5
+  mirrorResolveTimeout: "30ms"
+  # Keep existing mirrors and prepend Spegel
+  prependExisting: true
+# Resource limits for better resource management
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 500m

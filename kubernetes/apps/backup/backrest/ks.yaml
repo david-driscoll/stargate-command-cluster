@@ -13,8 +13,6 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
-    - name: storage-s3
-      namespace: database
     - name: traefik-internal
       namespace: network
   path: ./kubernetes/apps/backup/backrest/app
@@ -30,7 +28,6 @@ spec:
     namespace: flux-system
   components:
     - ../../../../components/volsync
-    - ../../../../components/s3-access-key
     - ../../../../components/ingress/authenticated
   postBuild:
     substitute:

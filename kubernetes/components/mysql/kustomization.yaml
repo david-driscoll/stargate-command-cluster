@@ -5,5 +5,4 @@ kind: Component
 resources:
   - ./cluster.yaml
   - ./externalsecret.yaml
-components:
-  - ../s3-access-key
+components: []

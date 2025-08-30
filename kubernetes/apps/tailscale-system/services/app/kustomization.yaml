@@ -7,5 +7,6 @@ resources:
   - ./dns-config.yaml
   - ./externalsecret.yaml
   - ./ingress.yaml
+  - ./egress.yaml
   - ./proxy.yaml
   # - ./recorder.yaml

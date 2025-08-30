@@ -5,7 +5,7 @@ metadata:
   name: ingress
 spec:
   type: ingress
-  hostnamePrefix: ${CLUSTER_CNAME}
+  hostnamePrefix: ${CLUSTER_CNAME}-ingress
   replicas: 2
   tags: ["tag:ingress"]
   proxyClass: proxy

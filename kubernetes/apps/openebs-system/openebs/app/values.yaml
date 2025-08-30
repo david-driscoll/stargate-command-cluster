@@ -40,3 +40,11 @@ alloy:
   enabled: false
 minio:
   enabled: false
+
+# Fix for pre-upgrade hook image pull issues
+preUpgradeHook:
+  image:
+    registry: docker.io
+    repo: bitnami/kubectl
+    tag: "1.25.15"
+    pullPolicy: IfNotPresent

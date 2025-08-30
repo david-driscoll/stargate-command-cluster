@@ -23,13 +23,13 @@ spec:
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       data:
         AWS_ACCESS_KEY_ID: "{{ .username }}"
-        AWS_SECRET_ACCESS_KEY: "{{ .credential }}"
-        url: https://{{ .username }}:{{ .credential }}@{{ .hostname }}
+        AWS_SECRET_ACCESS_KEY: "{{ .password }}"
+        url: http://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}
         id: "{{ .username }}"
         username: "{{ .username }}"
-        credential: "{{ .credential }}"
-        password: "{{ .credential }}"
-        endpoint: "https://{{ .hostname }}"
+        credential: "{{ .password }}"
+        password: "{{ .password }}"
+        endpoint: "{{ .endpoint }}"
         region: "homelab"
         bucket: "{{ .bucket }}"
   dataFrom:

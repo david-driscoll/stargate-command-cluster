@@ -53,7 +53,7 @@ spec:
           *app :
             image:
               repository: bitnami/kubectl
-              tag: latest
+              tag: latest@sha256:ed0b31a0508da84ee655c5c6e01bd3897fc56ad6cf69debb27fa1893a06d2246
             securityContext:
               readOnlyRootFilesystem: false
             command:

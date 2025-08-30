@@ -20,7 +20,7 @@ mayastor:
   enabled: false
   csi:
     node:
-      kubeletDir: /var/mnt/longhorn ??
+      kubeletDir: /var/mnt/longhorn
   localpv-provisioner:
     enabled: false
   crds:

@@ -9,6 +9,8 @@ using k8s;
 using k8s.KubeConfigModels;
 using models;
 using Pulumi;
+using Rocket.Surgery.OnePasswordNativeUnofficial;
+using Config = Pulumi.Config;
 
 KubernetesJson.AddJsonOptions(options => { options.Converters.Add(new YamlMemberConverterFactory()); });
 
@@ -16,6 +18,16 @@ return await Deployment.RunAsync(async () =>
 {
   Kubernetes cluster;
   {
+    var onePasswordProvider = new Rocket.Surgery.OnePasswordNativeUnofficial.Provider("onepassword", new()
+    {
+      Vault = Environment.GetEnvironmentVariable("CONNECT_VAULT") ??
+              throw new InvalidOperationException("CONNECT_VAULT is not set"),
+      ConnectHost = Environment.GetEnvironmentVariable("CONNECT_HOST") ??
+                    throw new InvalidOperationException("CONNECT_HOST is not set"),
+      ConnectToken = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ??
+                     throw new InvalidOperationException("CONNECT_TOKEN is not set"),
+    });
+
     static Kubernetes CreateClientAndProvider(string kubeConfig, string name, string? context = null)
     {
       using var stream = new MemoryStream(Encoding.ASCII.GetBytes(kubeConfig));
@@ -32,7 +44,8 @@ return await Deployment.RunAsync(async () =>
 
     if (OperatingSystem.IsLinux())
     {
-      cluster = new Kubernetes(await KubernetesClientConfiguration.BuildConfigFromConfigFileAsync(new MemoryStream(Encoding.UTF8.GetBytes(new Config("kubernetes").Require("kubeconfig")))));
+      cluster = new Kubernetes(await KubernetesClientConfiguration.BuildConfigFromConfigFileAsync(
+        new MemoryStream(Encoding.UTF8.GetBytes(new Config("kubernetes").Require("kubeconfig")))));
     }
     else
     {
@@ -47,6 +60,19 @@ return await Deployment.RunAsync(async () =>
     catch (Exception ex)
     {
       Console.WriteLine($"Error populating cluster: {ex.Message}");
+      ex.Dump();
+    }
+
+    try
+    {
+      await PopulateHomarr.Populate(cluster, await GetAPICredential.InvokeAsync(
+        new() { Vault = "Eris", Title = "Homarr Api Key", Id = "dfssrapsyraazvn574sab6ozsq" },
+        new() { Provider = onePasswordProvider }
+      ));
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Error populating homarr: {ex.Message}");
       ex.Dump();
     }
   }

@@ -9,14 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33" />
-    <Compile Remove="crds/**/*.*" />
-    <Compile Remove="sdks/**/*.*" />
+    <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33"/>
+    <Compile Remove="crds/**/*.*"/>
+    <Compile Remove="sdks/**/*.*"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="sdks\uptimekuma\Pulumi.Uptimekuma.csproj" />
-    <ProjectReference Include="..\models\models.csproj" />
+    <ProjectReference Include="sdks\uptimekuma\Pulumi.Uptimekuma.csproj"/>
+    <ProjectReference Include="..\models\models.csproj"/>
   </ItemGroup>
-
 </Project>

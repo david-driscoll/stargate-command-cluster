@@ -20,6 +20,6 @@ spec:
           - notification-controller
           - image-automation-controller
           - image-reflector-controller
-          - pulumi-operator
+          - pulumi-operator-controller-manager
   podMetricsEndpoints:
     - port: http-prom

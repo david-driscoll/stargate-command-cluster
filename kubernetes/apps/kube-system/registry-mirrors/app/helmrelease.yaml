@@ -118,3 +118,5 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /var/lib/registry
+      tmp:
+        type: emptyDir

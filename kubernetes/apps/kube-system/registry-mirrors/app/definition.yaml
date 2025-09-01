@@ -7,7 +7,7 @@ metadata:
 spec:
   name: Container Registry Mirror
   category: ${CLUSTER_TITLE}
-  description: 
+  description: A container registry mirror for faster image pulls
   url: &url https://registry.${CLUSTER_DOMAIN}
   # TODO: Change me someday
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/zot-registry.svg

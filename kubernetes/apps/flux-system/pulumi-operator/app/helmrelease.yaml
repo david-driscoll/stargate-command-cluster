@@ -39,3 +39,5 @@ spec:
         memory: 256Mi
     serviceMonitor:
       enabled: true
+    nameOverride: "pulumi-operator"
+    fullnameOverride: "pulumi-operator"

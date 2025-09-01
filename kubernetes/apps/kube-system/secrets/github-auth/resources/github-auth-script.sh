@@ -9,15 +9,6 @@
 apt-get update
 apt-get install -y curl jq
 
-# Fix DNS resolution issues
-echo "Testing and fixing DNS resolution..."
-if ! nslookup dl.k8s.io > /dev/null 2>&1; then
-    echo "DNS resolution issue detected, trying to use Google DNS..."
-    echo "nameserver 8.8.8.8" > /etc/resolv.conf
-    echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-    echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-fi
-
 # Download kubectl with better error handling
 echo "Downloading kubectl..."
 KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt 2>/dev/null || echo "v1.34.0")
@@ -41,19 +32,12 @@ echo "Installing go-github-apps..."
 # renovate: datasource=github-releases depName=nabeken/go-github-apps
 VERSION="v0.2.4"
 
-# Try direct download first
-if curl -4 -sSL "https://github.com/nabeken/go-github-apps/releases/download/${VERSION}/go-github-apps_${VERSION#v}_linux_amd64.tar.gz" -o go-github-apps.tar.gz 2>/dev/null; then
-    tar -xzf go-github-apps.tar.gz go-github-apps 2>/dev/null && chmod +x go-github-apps
-    echo "Direct download successful"
+if curl -4 -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v ${VERSION} 2>/dev/null; then
+    chmod +x go-github-apps
+    echo "Installation script successful"
 else
-    echo "Direct download failed, trying installation script..."
-    if curl -4 -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v ${VERSION} 2>/dev/null; then
-        chmod +x go-github-apps
-        echo "Installation script successful"
-    else
-        echo "Error: Could not install go-github-apps"
-        exit 1
-    fi
+    echo "Error: Could not install go-github-apps"
+    exit 1
 fi
 
 if [ ! -f "./go-github-apps" ]; then

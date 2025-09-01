@@ -1,0 +1,119 @@
+{
+  "distSpecVersion": "1.1.0",
+  "storage": {
+    "rootDirectory": "/var/lib/registry",
+    "commit": true,
+    "gc": true,
+    "gcDelay": "1h",
+    "gcInterval": "12h"
+  },
+  "http": {
+    "address": "0.0.0.0",
+    "port": "8080"
+  },
+  "log": { "level": "info" },
+  "extensions": {
+    "metrics": {
+      "enable": true,
+      "prometheus": {
+        "path": "/metrics"
+      }
+    },
+    "sync": {
+      "enable": true,
+      "credentialsFile": "/etc/credentials/credentials.json",
+      "registries": [
+        {
+          "urls": ["https://index.docker.io"],
+          "tlsVerify": true,
+          "onDemand": true,
+          "maxRetries": 3,
+          "retryDelay": "15m",
+          "onlySigned": false,
+          "auth": {
+            "username": "{{ .docker_username }}",
+            "password": "{{ .docker_password }}"
+          },
+          "content": [
+            {
+              "prefix": "library/**",
+              "destination": "/docker.io"
+            },
+            {
+              "prefix": "**",
+              "destination": "/docker.io"
+            },
+            {
+              "prefix": "library/**"
+            },
+            {
+              "prefix": "moby/**"
+            },
+            {
+              "prefix": "docker/**"
+            },
+            {
+              "prefix": "multiarch/**"
+            }
+          ]
+        },
+        {
+          "urls": ["https://quay.io"],
+          "tlsVerify": true,
+          "onDemand": true,
+          "maxRetries": 3,
+          "retryDelay": "15m",
+          "onlySigned": false,
+          "content": [
+            {
+              "prefix": "**",
+              "destination": "/quay.io"
+            }
+          ]
+        },
+        {
+          "urls": ["https://gcr.io"],
+          "tlsVerify": true,
+          "onDemand": true,
+          "maxRetries": 3,
+          "retryDelay": "15m",
+          "onlySigned": false,
+          "content": [
+            {
+              "prefix": "**",
+              "destination": "/gcr.io"
+            }
+          ]
+        },
+        {
+          "urls": ["https://ghcr.io"],
+          "tlsVerify": true,
+          "onDemand": true,
+          "maxRetries": 3,
+          "retryDelay": "15m",
+          "onlySigned": false,
+          "content": [
+            {
+              "prefix": "**",
+              "destination": "/ghcr.io"
+            }
+          ]
+        },
+        {
+          "urls": ["https://registry.k8s.io"],
+          "tlsVerify": true,
+          "onDemand": true,
+          "maxRetries": 3,
+          "retryDelay": "15m",
+          "onlySigned": false,
+          "content": [
+            {
+              "prefix": "**",
+              "destination": "/registry.k8s.io"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

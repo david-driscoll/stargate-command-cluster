@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Container Registry Mirror
+  category: ${CLUSTER_TITLE}
+  description: 
+  url: &url https://registry.${CLUSTER_DOMAIN}
+  # TODO: Change me someday
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/zot-registry.svg
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+  uptime:
+    http:
+      url: https://registry.${CLUSTER_DOMAIN}/v2/
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster"

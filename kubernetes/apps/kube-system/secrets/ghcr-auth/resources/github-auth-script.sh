@@ -47,9 +47,9 @@ $kubectl_cmd --dry-run=client -o yaml | ./kubectl apply -f -
 
 # Add annotations for reflection and reloading
 echo "Adding annotations to secret..."
-./kubectl annotate secret $SECRET_NAME reloader.stakater.com/auto='true' kube-system --overwrite
-./kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-allowed='true' kube-system --overwrite
-./kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-auto-enabled='true' kube-system --overwrite
+./kubectl annotate secret $SECRET_NAME reloader.stakater.com/auto='true' --namespace=kube-system --overwrite
+./kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-allowed='true' --namespace=kube-system --overwrite
+./kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-auto-enabled='true' --namespace=kube-system --overwrite
 
 echo "Docker registry secret '$SECRET_NAME' created successfully!"
 echo "To use this secret in a pod, add the following to your pod spec:"

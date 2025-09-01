@@ -24,16 +24,12 @@
       "credentialsFile": "/etc/credentials/credentials.json",
       "registries": [
         {
-          "urls": ["https://index.docker.io"],
+          "urls": ["https://index.docker.io", "https://registry-1.docker.io"],
           "tlsVerify": true,
           "onDemand": true,
           "maxRetries": 3,
           "retryDelay": "15m",
           "onlySigned": false,
-          "auth": {
-            "username": "{{ .docker_username }}",
-            "password": "{{ .docker_password }}"
-          },
           "content": [
             {
               "prefix": "library/**",

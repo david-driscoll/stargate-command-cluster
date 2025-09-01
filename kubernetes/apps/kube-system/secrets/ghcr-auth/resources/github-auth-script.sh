@@ -17,14 +17,17 @@ SECRET_NAME="ghcr-auth"
 DOCKER_SERVER="ghcr.io"
 DOCKER_USERNAME=${GITHUB_USERNAME:-github}
 
-# Install go-github-apps tool using Go runtime
-echo "Installing go-github-apps using go install..."
-# renovate: datasource=github-tags depName=nabeken/go-github-apps
-go install github.com/nabeken/go-github-apps@v0.2.4
+# Install go-github-apps tool using installation script
+echo "Installing go-github-apps..."
+# Force IPv4 to avoid network connectivity issues
+export GOPROXY=https://proxy.golang.org,direct
+# renovate: datasource=github-releases depName=nabeken/go-github-apps
+curl -4 -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v v0.2.4
+chmod +x go-github-apps
 
 echo "Getting installation access token using go-github-apps..."
 # Use go-github-apps to get the token (it reads GITHUB_PRIV_KEY automatically)
-access_token=$(go-github-apps -app-id "$GITHUB_APP_ID" -inst-id "$GITHUB_INSTALLATION_ID")
+access_token=$(./go-github-apps -app-id "$GITHUB_APP_ID" -inst-id "$GITHUB_INSTALLATION_ID")
 
 if [ -z "$access_token" ] || [ "$access_token" = "null" ]; then
     echo "Error: Failed to get installation access token"

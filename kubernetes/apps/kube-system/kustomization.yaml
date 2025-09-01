@@ -17,6 +17,7 @@ resources:
   - ./reloader/ks.yaml
   - ./kubernetes-dashboard/ks.yaml
   - ./features/ks.yaml
+  - ./secrets/ks.yaml
   - ./spegel/ks.yaml
   - ./reflector/ks.yaml
   - ./snapshot-controller/ks.yaml

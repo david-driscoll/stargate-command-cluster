@@ -16,6 +16,16 @@
     "ui": {
       "enable": true
     },
+    "search": {
+      "enable": true,
+      "cve": {
+        "updateInterval": "2h"
+      }
+    },
+    "scrub": {
+      "enable": true,
+      "interval": "24h"
+    },
     "metrics": {
       "enable": true,
       "prometheus": {

@@ -13,6 +13,9 @@
   },
   "log": { "level": "info" },
   "extensions": {
+    "ui": {
+      "enable": true
+    },
     "metrics": {
       "enable": true,
       "prometheus": {

@@ -13,7 +13,7 @@ chmod +x ./kubectl
 ./kubectl version
 
 # Set defaults for optional variables
-SECRET_NAME="ghcr-auth"
+SECRET_NAME="ghcr-auth-token"
 DOCKER_SERVER="ghcr.io"
 DOCKER_USERNAME=${GITHUB_USERNAME:-github}
 

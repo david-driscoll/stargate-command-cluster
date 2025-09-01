@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
+    # tailscale.com/proxy-group: egress
+  name: tailscale-idp
+spec:
+  externalName: idp
+  type: ExternalName
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "go.${TAILSCALE_DOMAIN}"
+    # tailscale.com/proxy-group: egress
+  name: tailscale-go
+spec:
+  externalName: go
+  type: ExternalName

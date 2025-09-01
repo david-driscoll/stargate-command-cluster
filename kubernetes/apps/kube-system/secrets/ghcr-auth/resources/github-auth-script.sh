@@ -19,7 +19,8 @@ DOCKER_USERNAME=${GITHUB_USERNAME:-github}
 
 # Install go-github-apps tool
 echo "Installing go-github-apps..."
-curl -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v latest
+# renovate: datasource=github-releases depName=nabeken/go-github-apps
+curl -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v 0.2.4
 
 echo "Getting installation access token using go-github-apps..."
 # Use go-github-apps to get the token (it reads GITHUB_PRIV_KEY automatically)

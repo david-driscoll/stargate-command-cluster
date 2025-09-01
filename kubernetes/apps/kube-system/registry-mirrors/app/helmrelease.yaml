@@ -34,7 +34,7 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 2
+        replicas: 1
         pod:
           securityContext:
             runAsNonRoot: false

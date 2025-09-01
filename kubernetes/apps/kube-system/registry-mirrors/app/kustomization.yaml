@@ -10,5 +10,6 @@ configMapGenerator:
   - name: registry-mirrors-values
     files:
       - config.json=./resources/config.json
+      - credentials.json=./resources/credentials.json
     options:
       disableNameSuffixHash: true

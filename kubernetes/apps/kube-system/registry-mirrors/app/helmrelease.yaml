@@ -110,6 +110,9 @@ spec:
           - path: /etc/zot/config.json
             subPath: config.json
             readOnly: true
+          - path: /etc/credentials/credentials.json
+            subPath: credentials.json
+            readOnly: true
       registry:
         existingClaim: ${APP}
         globalMounts:

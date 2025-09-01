@@ -32,7 +32,7 @@ spec:
       tag: 25.8.3
     ha:
       enabled: true
-      replicas: 2
+      replicas: 1
     resources:
       requests:
         cpu: 50m
@@ -43,7 +43,7 @@ spec:
     webhook:
       ha:
         enabled: true
-        replicas: 2
+        replicas: 1
       cert:
         certManager:
           enabled: true

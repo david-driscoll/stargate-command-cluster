@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/kube-system/features/node-feature-discovery
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/kube-system/features/nvidia
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -62,7 +62,7 @@ spec:
   path: ./kubernetes/apps/kube-system/features/amd
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -84,7 +84,7 @@ spec:
   path: ./kubernetes/apps/kube-system/features/intel
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -113,7 +113,7 @@ spec:
   path: ./kubernetes/apps/kube-system/features/intel-gpu
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

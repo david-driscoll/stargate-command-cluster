@@ -14,7 +14,7 @@ spec:
   prune: true
   retryInterval: 2m
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -42,7 +42,7 @@ spec:
   prune: true
   retryInterval: 2m
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -69,7 +69,7 @@ spec:
   prune: true
   retryInterval: 2m
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -96,7 +96,7 @@ spec:
   prune: true
   retryInterval: 2m
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

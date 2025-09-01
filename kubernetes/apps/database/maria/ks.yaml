@@ -44,7 +44,7 @@ spec:
       namespace: *namespace
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 10m
   sourceRef:

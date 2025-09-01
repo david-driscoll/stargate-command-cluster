@@ -16,7 +16,7 @@ spec:
       namespace: cloudnative-pg
   prune: true
   wait: true
-  force: true
+  force: false # true
   suspend: false
   interval: 1h
   timeout: 5m
@@ -48,7 +48,7 @@ spec:
       namespace: *namespace
   prune: true
   wait: true
-  force: true
+  force: false # true
   suspend: false
   interval: 1h
   timeout: 5m
@@ -78,7 +78,7 @@ spec:
   path: ./kubernetes/apps/database/postgres/pgadmin
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

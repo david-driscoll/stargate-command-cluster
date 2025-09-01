@@ -16,7 +16,7 @@ spec:
   path: ./kubernetes/apps/network/traefik/shared
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -50,7 +50,7 @@ spec:
   path: ./kubernetes/apps/network/traefik/whoami
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -81,7 +81,7 @@ spec:
   path: ./kubernetes/apps/network/traefik/me
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -112,7 +112,7 @@ spec:
   path: ./kubernetes/apps/network/traefik/internal
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -146,7 +146,7 @@ spec:
   path: ./kubernetes/apps/network/traefik/external
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

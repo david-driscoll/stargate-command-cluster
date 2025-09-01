@@ -18,7 +18,7 @@ spec:
   path: ./kubernetes/apps/backup/backrest/app
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   # retryInterval: 2m
   timeout: 5m

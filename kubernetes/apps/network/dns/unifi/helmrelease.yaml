@@ -42,7 +42,7 @@ spec:
       retries: 7
       strategy: rollback
   rollback:
-    force: true
+    force: false # true
     cleanupOnFail: true
     recreate: true
   uninstall:

@@ -39,7 +39,7 @@ spec:
   path: ./kubernetes/flux/secret-store
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

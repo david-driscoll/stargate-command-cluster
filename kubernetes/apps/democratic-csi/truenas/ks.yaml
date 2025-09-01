@@ -18,7 +18,7 @@ spec:
   path: ./kubernetes/apps/democratic-csi/truenas/secrets
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -48,7 +48,7 @@ spec:
   path: ./kubernetes/apps/democratic-csi/truenas/stash
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -79,7 +79,7 @@ spec:
   path: ./kubernetes/apps/democratic-csi/truenas/iscsi-stash
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

@@ -16,7 +16,7 @@ spec:
   path: ./kubernetes/apps/backup/backblaze/keys
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   # retryInterval: 2m
   timeout: 5m

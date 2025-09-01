@@ -16,7 +16,7 @@ spec:
   path: ./kubernetes/apps/sgc/home/chrony
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -43,7 +43,7 @@ spec:
   path: ./kubernetes/apps/sgc/home/matter
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:
@@ -78,7 +78,7 @@ spec:
   path: ./kubernetes/apps/sgc/home/mosquitto
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:
@@ -108,7 +108,7 @@ spec:
   path: ./kubernetes/apps/sgc/home/home-assistant
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:
@@ -147,7 +147,7 @@ spec:
 #   path: ./kubernetes/apps/sgc/home/nut
 #   prune: true
 #   wait: true
-#   force: true
+#   force: false # true
 #   interval: 1h
 #   timeout: 5m
 #   dependsOn:

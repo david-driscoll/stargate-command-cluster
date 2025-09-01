@@ -63,18 +63,18 @@ return await Deployment.RunAsync(async () =>
       ex.Dump();
     }
 
-    try
-    {
-      await PopulateHomarr.Populate(cluster, await GetAPICredential.InvokeAsync(
-        new() { Vault = "Eris", Title = "Homarr Api Key", Id = "dfssrapsyraazvn574sab6ozsq" },
-        new() { Provider = onePasswordProvider }
-      ));
-    }
-    catch (Exception ex)
-    {
-      Console.WriteLine($"Error populating homarr: {ex.Message}");
-      ex.Dump();
-    }
+    // try
+    // {
+    //   await PopulateHomarr.Populate(cluster, await GetAPICredential.InvokeAsync(
+    //     new() { Vault = "Eris", Title = "Homarr Api Key", Id = "dfssrapsyraazvn574sab6ozsq" },
+    //     new() { Provider = onePasswordProvider }
+    //   ));
+    // }
+    // catch (Exception ex)
+    // {
+    //   Console.WriteLine($"Error populating homarr: {ex.Message}");
+    //   ex.Dump();
+    // }
   }
 
   var kumaGroups = new KumaGroups();

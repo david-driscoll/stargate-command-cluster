@@ -5,8 +5,8 @@ kind: Kustomization
 resources:
   - ./connector.yaml
   - ./dns-config.yaml
+  - ./egress.yaml
   - ./externalsecret.yaml
   - ./ingress.yaml
-  - ./egress.yaml
   - ./proxy.yaml
   # - ./recorder.yaml

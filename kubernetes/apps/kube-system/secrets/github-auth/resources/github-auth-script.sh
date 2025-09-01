@@ -32,13 +32,7 @@ echo "Installing go-github-apps..."
 # renovate: datasource=github-releases depName=nabeken/go-github-apps
 VERSION="v0.2.4"
 
-if curl -4 -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v ${VERSION} 2>/dev/null; then
-    chmod +x go-github-apps
-    echo "Installation script successful"
-else
-    echo "Error: Could not install go-github-apps"
-    exit 1
-fi
+curl -4 -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v ${VERSION}
 
 if [ ! -f "./go-github-apps" ]; then
     echo "Error: go-github-apps binary not found after installation"

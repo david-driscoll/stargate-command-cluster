@@ -62,7 +62,8 @@ spec:
               requests:
                 cpu: 50m
               limits:
-                memory: 1Gi
+                cpu: 500m
+                memory: 500Mi
         pod:
           priorityClassName: system-cluster-critical
           affinity:

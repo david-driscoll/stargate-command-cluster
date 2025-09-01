@@ -342,13 +342,6 @@ spec:
           revision: 4
           datasource:
             - {name: DS_PROMETHEUS, value: Prometheus}
-      # nginx:
-      #   nginx:
-      #     url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-      #     datasource: Prometheus
-      #   nginx-request-handling-performance:
-      #     url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-      #     datasource: Prometheus
       system:
         volsync:
           # renovate: depName="VolSync Dashboard"

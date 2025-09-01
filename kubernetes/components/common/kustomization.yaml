@@ -8,7 +8,7 @@ resources:
   - ./namespace.yaml
   - ./democratic-csi.yaml
   - ./sops-age.sops.yaml
-  - ./service-account-patch.yaml
+  - ./service-account.yaml
   - ./templates
 configMapGenerator:
   - name: cluster-versions

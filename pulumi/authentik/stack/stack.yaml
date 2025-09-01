@@ -108,7 +108,7 @@ spec:
           cpu: 200m
           memory: 256Mi
         limits:
-          cpu: 800m
+          cpu: 2
           memory: 1024Mi
-      # pulumiLogLevel: 11
+      pulumiLogLevel: 11
 

@@ -15,7 +15,7 @@ spec:
     controllers:
       *app :
         strategy: RollingUpdate
-        replicas: 2
+        replicas: 1
         pod:
           affinity:
             podAntiAffinity:

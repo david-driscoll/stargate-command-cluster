@@ -66,7 +66,7 @@ spec:
         clusterName: "${CLUSTER_CNAME}"
     web:
       scaling:
-        replicas: 2
+        replicas: 1
       containers:
         resources:
           requests:
@@ -77,7 +77,7 @@ spec:
             memory: 400Mi
     api:
       scaling:
-        replicas: 2
+        replicas: 1
       containers:
         resources:
           requests:
@@ -88,7 +88,7 @@ spec:
             memory: 400Mi
     auth:
       scaling:
-        replicas: 2
+        replicas: 1
       containers:
         resources:
           requests:

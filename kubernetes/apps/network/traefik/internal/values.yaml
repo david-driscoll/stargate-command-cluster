@@ -7,7 +7,7 @@ fullnameOverride: traefik-internal
 
 deployment:
   kind: Deployment
-  replicas: 3
+  replicas: 2
 service:
   annotations:
     reloader.stakater.com/auto: "true"

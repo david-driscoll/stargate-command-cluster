@@ -1,3 +1,27 @@
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ${APP}-tailscale
+#   annotations:
+#     reloader.stakater.com/auto: "true"
+#     tailscale.com/proxy-group: ingress
+#     # tailscale.com/tags: "tag:apps"
+# spec:
+#   ingressClassName: tailscale
+#   rules:
+#   - http:
+#       paths:
+#       - backend:
+#           service:
+#             name: ${APP}
+#             port:
+#               name: "${TAILSCALE_PORT:=http}"
+#         pathType: Prefix
+#         path: /
+#   tls:
+#     - hosts:
+#         - ${TAILSCALE_HOST:=${APP}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -5,20 +29,15 @@ metadata:
   name: ${APP}-tailscale
   annotations:
     reloader.stakater.com/auto: "true"
-    tailscale.com/proxy-group: ingress
-    # tailscale.com/tags: "tag:apps"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    tailscale.com/tailnet-ip: "${TAILSCALE_IP}"
 spec:
   ingressClassName: tailscale
-  rules:
-  - http:
-      paths:
-      - backend:
-          service:
-            name: ${APP}
-            port:
-              name: "${TAILSCALE_PORT:=http}"
-        pathType: Prefix
-        path: /
+  defaultBackend:
+    service:
+      name: ${APP}
+      port:
+        name: "${TAILSCALE_PORT:=http}"
   tls:
     - hosts:
         - ${TAILSCALE_HOST:=${APP}}

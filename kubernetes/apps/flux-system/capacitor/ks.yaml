@@ -21,7 +21,7 @@ spec:
   targetNamespace: *namespace
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   path: "./"
@@ -46,7 +46,7 @@ spec:
   path: ./kubernetes/apps/flux-system/capacitor/app
   prune: true
   wait: true
-  force: true
+  force: false # true
   retryInterval: 2m
   timeout: 5m
   sourceRef:

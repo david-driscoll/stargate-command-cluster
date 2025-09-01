@@ -17,7 +17,7 @@ spec:
   path: ./kubernetes/apps/tailscale-system/authkey/app
   prune: true
   wait: false
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

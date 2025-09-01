@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/sgc/cluster/sgc
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:
@@ -42,7 +42,7 @@ spec:
   path: ./kubernetes/apps/sgc/cluster/equestria
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:

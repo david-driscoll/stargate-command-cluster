@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/observability/uptime-kuma/app
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:
@@ -46,7 +46,7 @@ spec:
   path: ./kubernetes/apps/observability/uptime-kuma/autokuma
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   dependsOn:

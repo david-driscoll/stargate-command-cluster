@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/kube-system/external-secrets/app
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -35,7 +35,7 @@ spec:
   path: ./kubernetes/apps/kube-system/external-secrets/stores
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:
@@ -67,7 +67,7 @@ spec:
   path: ./kubernetes/apps/kube-system/external-secrets/reloader
   prune: true
   wait: true
-  force: true
+  force: false # true
   interval: 1h
   timeout: 5m
   sourceRef:

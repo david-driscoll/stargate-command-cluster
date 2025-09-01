@@ -51,7 +51,7 @@ spec:
             image:
               repository: rclone/rclone
               tag: master@sha256:26fa42ba59d79eb2a66ffc3ca74a0d0a5c6d7efe9b46ad0d53e05ee8731815ee
-              pullPolicy: Always
+              pullPolicy: IfNotPresent
             env:
               PUID: 1000
               PGID: 1000

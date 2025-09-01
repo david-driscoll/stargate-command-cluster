@@ -57,7 +57,7 @@ spec:
       image:
         repository: ghcr.io/tailscale/k8s-operator
         tag: v1.86.5@sha256:f9cc55d8a95b0d48967e35f46b109b4b20185ba9046b76b767b464c765ce95ee
-        pullPolicy: Always
+        pullPolicy: IfNotPresent
       hostname: "${CLUSTER_CNAME}-operator"
       podAnnotations:
         reloader.stakater.com/auto: "true"

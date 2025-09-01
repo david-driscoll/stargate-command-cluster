@@ -39,7 +39,7 @@ spec:
             image:
               repository: josh5/tvh-iptv-config
               tag: latest@sha256:6bc40c2173a61f882c04c2175912974665f732512c7eaccb002c6c47b10a8703
-              pullPolicy: Always
+              pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
             securityContext:

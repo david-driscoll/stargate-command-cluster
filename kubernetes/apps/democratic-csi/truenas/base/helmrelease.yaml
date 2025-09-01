@@ -95,7 +95,7 @@ spec:
             ephemeral-storage: 5Gi
       driver:
         image:
-          pullPolicy: Always
+          pullPolicy: IfNotPresent
         resources:
           requests:
             cpu: 20m
@@ -106,7 +106,7 @@ spec:
             ephemeral-storage: 2Gi
     csiProxy:
       image:
-        pullPolicy: Always
+        pullPolicy: IfNotPresent
       resources:
         requests:
           cpu: 40m

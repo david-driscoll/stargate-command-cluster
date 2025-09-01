@@ -51,7 +51,7 @@ spec:
 
       credentialsName: onepassword-connect
       credentialsKey: 1password-credentials.json
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent
       ingress:
         enabled: true
         ingressClassName: internal
@@ -65,7 +65,7 @@ spec:
     operator:
       create: true
       autoRestart: true
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent
       pollingInterval: 600
       token:
         name: onepassword-connect

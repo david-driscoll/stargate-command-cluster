@@ -83,9 +83,36 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: alpha-site-dockge-dns
+  name: alpha-site-dns
 spec:
   endpoints:
-    - dnsName: "${DOCKGE_DOMAIN}"
+    - dnsName: "dockge.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "dashboard.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "adguard.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "adguard.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "zigbee.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "zigbee.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "zwave.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "zwave.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "netbootxyz.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "netbootxyz.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]

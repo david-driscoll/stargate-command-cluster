@@ -113,6 +113,12 @@ spec:
     - dnsName: "zwave.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
+    - dnsName: "nut.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
+    - dnsName: "nut.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
     - dnsName: "netbootxyz.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]

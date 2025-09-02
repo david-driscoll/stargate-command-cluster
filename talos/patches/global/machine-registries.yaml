@@ -1,0 +1,19 @@
+machine:
+  registries:
+    mirrors:
+      docker.io:
+        overridePath: true
+        endpoints:
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/docker.io
+      gcr.io:
+        overridePath: true
+        endpoints:
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/gcr.io
+      ghcr.io:
+        overridePath: true
+        endpoints:
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/ghcr.io
+      registry.k8s.io:
+        overridePath: true
+        endpoints:
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/registry.k8s.io

@@ -89,6 +89,9 @@ spec:
     - dnsName: "dockge.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
+    - dnsName: "registry.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
     - dnsName: "dashboard.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]

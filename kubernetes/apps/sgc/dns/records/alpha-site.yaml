@@ -78,6 +78,26 @@ spec:
                 name: alpha-site-dockge
                 port:
                   name: zigbee
+    - host: "nut.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-site-nut
+                port:
+                  name: zigbee
+    - host: "registry-temp.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alpha-site-registry
+                port:
+                  name: zigbee
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1
@@ -89,6 +109,9 @@ spec:
     - dnsName: "dockge.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
+    - dnsName: "adguard.as.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${DOCKGE_IP}"]
     - dnsName: "registry.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
@@ -98,30 +121,31 @@ spec:
     - dnsName: "adguard.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
-    - dnsName: "adguard.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${DOCKGE_IP}"]
     - dnsName: "zigbee.as.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${DOCKGE_IP}"]
-    - dnsName: "zigbee.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
     - dnsName: "zwave.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
-    - dnsName: "zwave.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${DOCKGE_IP}"]
     - dnsName: "nut.as.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${DOCKGE_IP}"]
-    - dnsName: "nut.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
     - dnsName: "netbootxyz.as.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
-    - dnsName: "netbootxyz.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${DOCKGE_IP}"]
+
+    # - dnsName: "nut.${ROOT_DOMAIN}"
+    #   recordType: A
+    #   targets: ["${DOCKGE_IP}"]
+    # - dnsName: "adguard.${ROOT_DOMAIN}"
+    #   recordType: A
+    #   targets: ["${DOCKGE_IP}"]
+    # - dnsName: "zigbee.${ROOT_DOMAIN}"
+    #   recordType: A
+    #   targets: ["${DOCKGE_IP}"]
+    # - dnsName: "zwave.${ROOT_DOMAIN}"
+    #   recordType: A
+    #   targets: ["${DOCKGE_IP}"]
+    # - dnsName: "netbootxyz.${ROOT_DOMAIN}"
+    #   recordType: A
+    #   targets: ["${DOCKGE_IP}"]

@@ -14,3 +14,7 @@ tasks:
               - Failed
               - Succeeded
         cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true
+  restart-flux:
+    cmd: kubectl rollout restart deployment,statefulset,daemonset -n flux-system
+  restart-kube:
+    cmd: kubectl rollout restart deployment,statefulset,daemonset -n kube-system

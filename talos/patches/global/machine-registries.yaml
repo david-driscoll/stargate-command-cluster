@@ -6,7 +6,8 @@ machine:
         endpoints:
           - https://registry.equestria.driscoll.tech/v2/docker.io
           - http://10.10.10.9:5000/v2/docker.io
-          - https://docker.io
+          - https://index.docker.io
+          - https://registry-1.docker.io
       gcr.io:
         overridePath: true
         endpoints:

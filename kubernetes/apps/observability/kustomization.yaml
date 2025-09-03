@@ -12,7 +12,7 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./alloy/ks.yaml
-  - ./grafana/ks.yaml
+  # - ./grafana/ks.yaml
   - ./uptime-kuma/ks.yaml
   - ./silence-operator/ks.yaml
   - ./exporters/ks.yaml

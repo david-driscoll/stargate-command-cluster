@@ -57,7 +57,7 @@ function apply_sops_secrets() {
     log debug "Applying secrets"
 
     local -r secrets=(
-        "${ROOT_DIR}/bootstrap/github-deploy-key.sops.yaml"
+        # "${ROOT_DIR}/bootstrap/github-deploy-key.sops.yaml"
         "${ROOT_DIR}/kubernetes/components/common/cluster-secrets.sops.yaml"
         "${ROOT_DIR}/kubernetes/components/common/shared-secrets.sops.yaml"
         "${ROOT_DIR}/kubernetes/components/common/sops-age.sops.yaml"
@@ -92,7 +92,7 @@ function apply_crds() {
         # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
         https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.85.0/stripped-down-crds.yaml
         # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
-        https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.18.0/docs/sources/crd/crd-manifest.yaml
+        # https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.18.0/docs/sources/crd/crd-manifest.yaml
     )
 
     for crd in "${crds[@]}"; do
@@ -129,11 +129,11 @@ function main() {
     check_cli helmfile kubectl kustomize sops talhelper yq
 
     # Apply resources and Helm releases
-    wait_for_nodes
+    # wait_for_nodes
     apply_namespaces
     apply_sops_secrets
     apply_crds
-    apply_helm_releases
+    # apply_helm_releases
 
     log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"
 }

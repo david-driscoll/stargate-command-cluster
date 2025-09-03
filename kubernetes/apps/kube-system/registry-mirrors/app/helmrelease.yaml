@@ -59,17 +59,29 @@ spec:
                 cpu: 1
                 memory: 500Mi
             probes:
-              liveness: &probe
+              liveness:
                 enabled: true
-                custom: true
                 spec:
-                  httpGet:
-                    path: /
-                    port: &port 8080
                   initialDelaySeconds: 5
-              readiness: *probe
+                  httpGet:
+                    path: /livez
+                    port: &port 8080
+              readiness:
+                enabled: true
+                spec:
+                  initialDelaySeconds: 10
+                  httpGet:
+                    path: /readyz
+                    port: *port
               startup:
-                enabled: false
+                enabled: true
+                spec:
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 3
+                  httpGet:
+                    path: /startupz
+                    port: *port
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

@@ -64,7 +64,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /v2/
+                    path: /
                     port: &port 8080
                   initialDelaySeconds: 5
               readiness: *probe

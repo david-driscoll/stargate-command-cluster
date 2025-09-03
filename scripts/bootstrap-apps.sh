@@ -93,6 +93,9 @@ function apply_crds() {
         https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.85.0/stripped-down-crds.yaml
         # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
         # https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.18.0/docs/sources/crd/crd-manifest.yaml
+        "${ROOT_DIR}/kubernetes/apps/observability/crds/application/application-crd.yaml"
+        "${ROOT_DIR}/kubernetes/apps/observability/crds/application/cluster-crd.yaml"
+        "${ROOT_DIR}/kubernetes/apps/observability/crds/kuma/crds.yaml"
     )
 
     for crd in "${crds[@]}"; do
@@ -133,7 +136,7 @@ function main() {
     apply_namespaces
     apply_sops_secrets
     apply_crds
-    apply_helm_releases
+    # apply_helm_releases
 
     log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"
 }

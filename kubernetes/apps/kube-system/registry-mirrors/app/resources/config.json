@@ -45,8 +45,24 @@
           "onlySigned": false,
           "content": [
             {
+              "prefix": "library/**",
+              "destination": "/docker.io"
+            },
+            {
               "prefix": "**",
               "destination": "/docker.io"
+            },
+            {
+              "prefix": "library/**"
+            },
+            {
+              "prefix": "moby/**"
+            },
+            {
+              "prefix": "docker/**"
+            },
+            {
+              "prefix": "multiarch/**"
             }
           ]
         },

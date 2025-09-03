@@ -36,7 +36,7 @@ spec:
         containers:
           *app :
             image:
-              repository: docker.io/garethgeorge/backrest
+              repository: garethgeorge/backrest
               tag: v1.9.2
               pullPolicy: IfNotPresent
 

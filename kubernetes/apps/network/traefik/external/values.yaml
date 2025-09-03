@@ -1,7 +1,8 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/traefik/traefik-helm-chart/refs/heads/master/traefik/values.schema.json
 image:
-  repository: ghcr.io/traefik/traefik
+  registry: ghcr.io
+  repository: traefik/traefik
   tag: v3.5.1
 fullnameOverride: traefik-external
 deployment:

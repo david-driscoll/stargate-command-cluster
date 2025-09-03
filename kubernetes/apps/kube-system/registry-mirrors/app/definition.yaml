@@ -16,7 +16,7 @@ spec:
       - admins
   uptime:
     http:
-      url: https://registry.${CLUSTER_DOMAIN}/v2/
+      url: https://registry.${CLUSTER_DOMAIN}/livez
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "cluster"

@@ -17,7 +17,7 @@ spec:
       kubernetes.io/os: linux
   upgrade:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    image: "ghcr.io/siderolabs/talosctl:v1.11.0@sha256:570552935773572cdf1743e22f0383f8eb2f136a40f56857c4cbf2b9f004cee3"
+    image: "ghcr.io/siderolabs/talosctl:v1.10.7@sha256:a9472dc688740eed83f65edf7e1069677eef184fbebe4a66d75b209a970e8ecd"
     envs:
       - name: NODE_IP
         valueFrom:

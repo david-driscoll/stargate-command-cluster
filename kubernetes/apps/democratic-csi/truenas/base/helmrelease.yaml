@@ -57,6 +57,16 @@ spec:
         reloader.stakater.com/auto: "true"
       podAnnotations:
         reloader.stakater.com/auto: "true"
+      tolerations:
+        - key: node.cilium.io/agent-not-ready
+          operator: Exists
+          effect: NoSchedule
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoSchedule
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoSchedule
       externalAttacher:
         resources:
           requests:
@@ -183,6 +193,16 @@ spec:
           extentAvailThreshold: 0
     node:
       hostPID: true
+      tolerations:
+        - key: node.cilium.io/agent-not-ready
+          operator: Exists
+          effect: NoSchedule
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoSchedule
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoSchedule
       driver:
         extraEnv:
           - name: ISCSIADM_HOST_STRATEGY

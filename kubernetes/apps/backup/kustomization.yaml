@@ -8,6 +8,6 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
-  - ./backrest/ks.yaml
+  # - ./backrest/ks.yaml
   - ./backblaze/ks.yaml
   # - ./restic-server/ks.yaml

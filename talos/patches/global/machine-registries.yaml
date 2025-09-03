@@ -4,25 +4,25 @@ machine:
       docker.io:
         overridePath: true
         endpoints:
-          - https://registry.sgc.driscoll.tech/v2/docker.io
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/docker.io
           - https://registry.equestria.driscoll.tech/v2/docker.io
           - https://index.docker.io
           - https://registry-1.docker.io
       gcr.io:
         overridePath: true
         endpoints:
-          - https://registry.sgc.driscoll.tech/v2/gcr.io
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/gcr.io
           - https://registry.equestria.driscoll.tech/v2/gcr.io
           - https://gcr.io
       ghcr.io:
         overridePath: true
         endpoints:
-          - https://registry.sgc.driscoll.tech/v2/ghcr.io
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/ghcr.io
           - https://registry.equestria.driscoll.tech/v2/ghcr.io
           - https://ghcr.io
       registry.k8s.io:
         overridePath: true
         endpoints:
-          - https://registry.sgc.driscoll.tech/v2/registry.k8s.io
+          - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/registry.k8s.io
           - https://registry.equestria.driscoll.tech/v2/registry.k8s.io
           - https://registry.k8s.io

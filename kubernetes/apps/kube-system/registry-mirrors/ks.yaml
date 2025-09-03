@@ -21,7 +21,7 @@ spec:
   targetNamespace: *namespace
   components:
     - ../../../../components/volsync
-    - ../../../../components/ingress/authenticated
+    - ../../../../components/ingress/internal
   postBuild:
     substitute:
       APP: *app

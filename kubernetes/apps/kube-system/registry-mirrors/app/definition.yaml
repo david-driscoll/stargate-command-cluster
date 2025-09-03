@@ -14,10 +14,6 @@ spec:
   access_policy:
     groups:
       - admins
-  authentik:
-    proxy:
-      mode: "forward_single"
-      externalHost: *url
   uptime:
     http:
       url: https://registry.${CLUSTER_DOMAIN}/v2/

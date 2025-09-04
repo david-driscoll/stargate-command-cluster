@@ -18,7 +18,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -45,7 +46,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   dependsOn:
     - name: volsync
       namespace: volsync-system
@@ -80,7 +82,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   dependsOn:
     - name: sgc-secrets
       namespace: *namespace
@@ -110,7 +113,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   dependsOn:
     - name: volsync
       namespace: volsync-system
@@ -149,7 +153,7 @@ spec:
 #   wait: true
 #   force: false # true
 #   interval: 1h
-#   timeout: 5m
+#   timeout: 10m
 #   dependsOn:
 #     - name: volsync
 #       namespace: volsync-system
@@ -193,7 +197,7 @@ spec:
 #   wait: true
 #   interval: 30m
 #   retryInterval: 1m
-#   timeout: 5m
+#   timeout: 10m
 #   components:
 #     - ../../../../components/volsync
 #   postBuild:
@@ -224,7 +228,7 @@ spec:
 #   wait: true
 #   interval: 30m
 #   retryInterval: 1m
-#   timeout: 5m
+#   timeout: 10m
 #   components:
 #     - ../../../../components/volsync
 #     - ../../../../components/tailscale

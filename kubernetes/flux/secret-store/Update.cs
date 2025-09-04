@@ -41,7 +41,7 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -20,7 +20,7 @@ metadata:
   name: pulumi-operator
 spec:
   interval: 1h
-  timeout: 5m
+  timeout: 10m
   chartRef:
     kind: OCIRepository
     name: pulumi-operator

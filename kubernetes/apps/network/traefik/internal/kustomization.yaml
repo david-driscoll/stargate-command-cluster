@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./definition.yaml
+  - ./middleware
 configMapGenerator:
   - name: traefik-internal-values
     files:

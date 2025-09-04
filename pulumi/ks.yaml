@@ -38,7 +38,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: pulumi-secrets
+    - name: pulumi-cluster-sync
+      namespace: *namespace
+    - name: authentik
       namespace: *namespace
   path: ./pulumi/authentik/stack
   prune: true

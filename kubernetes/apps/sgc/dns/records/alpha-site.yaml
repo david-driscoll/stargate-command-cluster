@@ -9,13 +9,16 @@ spec:
     - dnsName: "dockge.${ROOT_DOMAIN}"
       recordType: A
       targets: ["${DOCKGE_IP}"]
+    - dnsName: "alpha-site.${ROOT_DOMAIN}"
+      recordType: A
+      targets: ["${ALPHA_SITE_IP}"]
     - dnsName: "adguard.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: &targets ["dockge.${ROOT_DOMAIN}"]
     - dnsName: "registry.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: *targets
-    - dnsName: "dashboard.as.${ROOT_DOMAIN}"
+    - dnsName: "internal.as.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: *targets
     - dnsName: "zigbee.${ROOT_DOMAIN}"

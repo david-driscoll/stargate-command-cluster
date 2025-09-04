@@ -4,31 +4,41 @@ machine:
       docker.io:
         overridePath: true
         endpoints:
-          # - http://registry.kube-system.svc.cluster.local:8080/v2/docker.io
-          # - https://registry.equestria.driscoll.tech/v2/docker.io
+          # TODO: Ensure this mirror is configured during Talos bootstrap by updating the cluster configuration and referencing https://www.talos.dev/v1.6/talos-guides/configuration/registries/ for setup instructions, so it can be leveraged during initial image pulls.
+          # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/docker.io
+          - https://registry.driscoll.tech/v2/docker.io
           - https://index.docker.io
           - https://registry-1.docker.io
       gcr.io:
         overridePath: true
         endpoints:
-          # - http://registry.kube-system.svc.cluster.local:8080/v2/gcr.io
-          # - https://registry.equestria.driscoll.tech/v2/gcr.io
+          # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/gcr.io
+          - https://registry.driscoll.tech/v2/gcr.io
           - https://gcr.io
-      ghcr.io:
-        overridePath: true
-        endpoints:
-          # - http://registry.kube-system.svc.cluster.local:8080/v2/ghcr.io
-          # - https://registry.equestria.driscoll.tech/v2/ghcr.io
-          - https://ghcr.io
       quay.io:
         overridePath: true
         endpoints:
           # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/quay.io
-          # - https://registry.sgc.driscoll.tech/v2/quay.io
+          - https://registry.driscoll.tech/v2/quay.io
           - https://quay.io
-      registry.k8s.io:
+      ghcr.io:
         overridePath: true
         endpoints:
-          # - http://registry.kube-system.svc.cluster.local:8080/v2/registry.k8s.io
-          # - https://registry.equestria.driscoll.tech/v2/registry.k8s.io
+          # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/ghcr.io
+          - https://registry.driscoll.tech/v2/ghcr.io
+          - https://ghcr.io
+      registry.k8s.io:
+        endpoints:
+          # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/registry.k8s.io
+          - https://registry.driscoll.tech/v2/registry.k8s.io
           - https://registry.k8s.io
+      public.ecr.aws:
+        endpoints:
+          # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/public.ecr.aws
+          - https://registry.driscoll.tech/v2/public.ecr.aws
+          - https://public.ecr.aws
+      cgr.dev:
+        endpoints:
+          # - http://registry-mirrors.kube-system.svc.cluster.local:8080/v2/cgr.dev
+          - https://registry.driscoll.tech/v2/cgr.dev
+          - https://cgr.dev

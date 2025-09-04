@@ -1,6 +1,6 @@
 ---
 global:
-  resolve_timeout: 5m
+  resolve_timeout: 10m
 route:
   group_by: ["alertname", "job"]
   group_interval: 10m

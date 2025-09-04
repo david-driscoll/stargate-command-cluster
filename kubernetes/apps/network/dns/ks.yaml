@@ -18,7 +18,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,7 +44,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -68,7 +70,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -92,7 +95,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system

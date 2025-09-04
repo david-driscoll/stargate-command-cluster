@@ -27,4 +27,4 @@
 #     substitute:
 #       APP: *app
 #       NAMESPACE: *namespace
-#   timeout: 5m
+#   timeout: 10m

@@ -12,11 +12,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/exporters/nut-exporter
   prune: true
-  retryInterval: 2m
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -40,11 +40,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/exporters/smartctl-exporter
   prune: true
-  retryInterval: 2m
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -67,11 +67,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/exporters/speedtest-exporter
   prune: true
-  retryInterval: 2m
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -94,11 +94,11 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/exporters/unpoller
   prune: true
-  retryInterval: 2m
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system

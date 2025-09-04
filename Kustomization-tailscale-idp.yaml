@@ -50,7 +50,7 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: tailscale-system
-  timeout: 5m
+  timeout: 10m
   wait: true
 status:
   conditions:

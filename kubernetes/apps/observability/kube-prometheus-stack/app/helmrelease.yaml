@@ -54,7 +54,7 @@ spec:
         # alertmanagerConfiguration:
         #   name: alertmanager
         #   global:
-        #     resolveTimeout: 5m
+        #     resolvetimeout: 10m
         externalUrl: https://alertmanager.${CLUSTER_DOMAIN}
         storage:
           volumeClaimTemplate:

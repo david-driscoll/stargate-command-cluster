@@ -15,7 +15,8 @@ spec:
   wait: false
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   dependsOn:
     - name: onepassword-connect
       namespace: kube-system

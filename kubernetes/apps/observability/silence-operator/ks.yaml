@@ -17,11 +17,11 @@ spec:
       namespace: *namespace
   path: ./kubernetes/apps/observability/silence-operator/app
   prune: true
-  retryInterval: 2m
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -46,11 +46,11 @@ spec:
     - name: silence-operator
   path: ./kubernetes/apps/observability/silence-operator/silences
   prune: true
-  retryInterval: 2m
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system

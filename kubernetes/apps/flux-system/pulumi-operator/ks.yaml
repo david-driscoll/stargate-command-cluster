@@ -16,7 +16,8 @@ spec:
   wait: true
   force: false # true
   interval: 1h
-  timeout: 5m
+  retryInterval: 2m
+  timeout: 10m
   components:
     - ../../../../components/postgres
   sourceRef:

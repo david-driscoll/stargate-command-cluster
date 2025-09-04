@@ -25,7 +25,7 @@ spec:
         namespace: network
   maxHistory: 3
   interval: 1h
-  timeout: 5m
+  timeout: 10m
   install:
     createNamespace: true
     replace: true

@@ -5,7 +5,6 @@ image:
   repository: traefik/traefik
   tag: v3.5.1
 fullnameOverride: traefik-internal
-
 deployment:
   kind: Deployment
   replicas: 2
@@ -42,6 +41,12 @@ ports:
       default: true
     port: 5432
     exposedPort: 5432
+    protocol: TCP
+  mariadb:
+    expose:
+      default: true
+    port: 3306
+    exposedPort: 3306
     protocol: TCP
 ingressClass:
   enabled: true

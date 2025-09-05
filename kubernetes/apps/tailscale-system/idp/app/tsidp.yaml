@@ -90,6 +90,9 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data/tsidp/
+            subPath: tsidp
+          - path: /.config/
+            subPath: config
       empty:
         type: emptyDir
         globalMounts:

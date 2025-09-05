@@ -44,6 +44,23 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
               - 65542 # gladius:external-services
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - /bin/sh
+              - -c
+              - |
+                chown -R 568:568 /var/lib/registry
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities:
+                add:
+                  - CHOWN
+                  - FOWNER
         containers:
           *app :
             image:

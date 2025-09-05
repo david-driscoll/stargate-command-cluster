@@ -26,7 +26,7 @@ spec:
     namespace: flux-system
   components:
     - ../../../../components/ingress/internal
-    - ../../../../components/tailscale
+    - ../../../../components/tailscale-new
     - ../../../../components/volsync
   postBuild:
     substitute:

@@ -22,3 +22,7 @@ metadata:
 spec:
   externalName: go
   type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https

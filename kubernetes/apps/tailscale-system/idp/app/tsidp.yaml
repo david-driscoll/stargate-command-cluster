@@ -33,13 +33,6 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            # fsGroupChangePolicy: "OnRootMismatch"
         initContainers:
           fix-permissions:
             image:
@@ -49,7 +42,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                chown -R 568:568 /var/lib/registry
+                chown -R 568:568 /data/tsidp/
             securityContext:
               runAsUser: 0
               runAsGroup: 0
@@ -72,6 +65,11 @@ spec:
                   secretKeyRef:
                     name: authkey
                     key: authkey
+            securityContext:
+              runAsUser: 568
+              runAsGroup: 568
+              runAsNonRoot: true
+              fsGroup: 568
             resources:
               requests:
                 memory: 128Mi
@@ -82,11 +80,6 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
-        # fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
-        runAsNonRoot: true
-        runAsUser: 568
         seccompProfile:
           type: RuntimeDefault
       shareProcessNamespace: true
@@ -96,7 +89,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data/tsidp/
-            subPath: tsidp
       empty:
         type: emptyDir
         globalMounts:

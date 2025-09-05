@@ -44,8 +44,8 @@ spec:
           *app :
             nameOverride: *app
             image:
-              repository: ghcr.io/david-driscoll/tailscale-idp
-              tag: v1.84.0
+              repository: tailscale/tsidp
+              tag: unstable-v1.87
             env:
               TS_HOSTNAME: idp
               TS_STATE_DIR: /data/tsidp
@@ -62,6 +62,9 @@ spec:
               limits:
                 memory: 512Mi
                 cpu: 800m
+
+    service:
+      
 
     defaultPodOptions:
       securityContext:

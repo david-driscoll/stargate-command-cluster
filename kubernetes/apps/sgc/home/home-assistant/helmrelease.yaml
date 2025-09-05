@@ -57,6 +57,20 @@ spec:
               limits:
                 cpu: 2
                 memory: 2Gi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &app-port 8123
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+
           code:
             image:
               repository: ghcr.io/coder/code-server
@@ -102,7 +116,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &app-port 8123
+            port: *app-port
       code:
         controller: *app
         type: ClusterIP

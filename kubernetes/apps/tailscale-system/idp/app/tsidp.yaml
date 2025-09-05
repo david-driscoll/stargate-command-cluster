@@ -39,7 +39,7 @@ spec:
             runAsGroup: 568
             runAsNonRoot: true
             fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
+            # fsGroupChangePolicy: "OnRootMismatch"
         initContainers:
           fix-permissions:
             image:
@@ -83,7 +83,7 @@ spec:
     defaultPodOptions:
       securityContext:
         fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
+        # fsGroupChangePolicy: "OnRootMismatch"
         runAsGroup: 568
         runAsNonRoot: true
         runAsUser: 568

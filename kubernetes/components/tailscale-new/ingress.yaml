@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${APP}-tailscale
+  annotations:
+    reloader.stakater.com/auto: "true"
+    tailscale.com/proxy-group: ingress
+    tailscale.com/tags: "tag:apps"
+spec:
+  ingressClassName: tailscale
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: ${APP}
+            port:
+              name: "${TAILSCALE_PORT:=http}"
+        pathType: Prefix
+        path: /
+  tls:
+    - hosts:
+        - ${TAILSCALE_HOST:=${APP}}
+

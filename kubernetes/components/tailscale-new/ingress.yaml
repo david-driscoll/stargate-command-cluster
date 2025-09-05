@@ -9,16 +9,11 @@ metadata:
     tailscale.com/tags: "tag:apps"
 spec:
   ingressClassName: tailscale
-  rules:
-  - http:
-      paths:
-      - backend:
-          service:
-            name: ${APP}
-            port:
-              name: "${TAILSCALE_PORT:=http}"
-        pathType: Prefix
-        path: /
+  defaultBackend:
+    service:
+      name: ${APP}
+      port:
+        name: "${TAILSCALE_PORT:=http}"
   tls:
     - hosts:
         - ${TAILSCALE_HOST:=${APP}}

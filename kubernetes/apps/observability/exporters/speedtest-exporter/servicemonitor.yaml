@@ -14,7 +14,7 @@ spec:
   endpoints:
     - port: metrics
       interval: 60m
-      scrapetimeout: 10m
+      scrapeTimeout: 1m
       path: /metrics
       metricRelabelings:
         - action: labeldrop

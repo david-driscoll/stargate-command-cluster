@@ -22,8 +22,8 @@ metadata:
     tailscale.com/proxy-group: egress
   name: tailscale-go
 spec:
-  externalName: go
   type: ExternalName
+  externalName: go
   ports:
     - port: 443
       targetPort: 443

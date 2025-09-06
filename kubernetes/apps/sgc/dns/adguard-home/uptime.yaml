@@ -7,7 +7,7 @@ metadata:
 spec:
   name: Adguard Home
   category: DNS
-  url: https://${APP}.${CLUSTER_DOMAIN}
+  url: https://${APP}.${ROOT_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:
     groups:
@@ -23,11 +23,16 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-primary
 spec:
-  name: Primary
+  name: Primary Replica
   category: DNS
+  url: &url https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
+  access_policy:
+    groups:
+      - admins
   uptime:
     http:
-      url: https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
+      url: *url
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "${APP}-group"
@@ -38,11 +43,16 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Secondary
+  name: Secondary Replica
   category: DNS
+  url: &url https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
+  access_policy:
+    groups:
+      - admins
   uptime:
     http:
-      url: https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
+      url: *url
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "${APP}-group"
@@ -53,11 +63,16 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-tertiary
 spec:
-  name: Tertiary
+  name: Tertiary Replica
   category: DNS
+  url: &url https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
+  access_policy:
+    groups:
+      - admins
   uptime:
     http:
-      url: https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
+      url: *url
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "${APP}-group"
@@ -69,11 +84,16 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-backup
 spec:
-  name: Backup
+  name: Backup Replica
   category: DNS
+  url: &url https://adguard.${ROOT_DOMAIN}/index.html
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
+  access_policy:
+    groups:
+      - admins
   uptime:
     http:
-      url: https://${APP}.${ROOT_DOMAIN}/index.html
+      url: *url
       method: GET
       accepted_statuscodes: ["200"]
       parent_name: "${APP}-group"

@@ -1,0 +1,26 @@
+name: home-sync
+description: Creates home resources for the lab and other things.  Manages machines, config files, etc.
+runtime: dotnet
+backend:
+  url: postgres://
+packages:
+  uptimekuma:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - kill3r-queen/uptimekuma
+  proxmox:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - Telmate/proxmox
+  truenas:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - registry.terraform.io/dariusbakunas/truenas
+  authentik:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - goauthentik/authentik

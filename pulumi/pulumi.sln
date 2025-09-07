@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "models", "models\models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cluster-sync", "cluster-sync\cluster-sync.csproj", "{69FFBAA4-F74A-4F0E-8071-E502298FCE76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "home", "home\home.csproj", "{90F05857-D931-4A64-B2C3-6813BA1B0AEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{69FFBAA4-F74A-4F0E-8071-E502298FCE76}.Release|x64.Build.0 = Release|Any CPU
 		{69FFBAA4-F74A-4F0E-8071-E502298FCE76}.Release|x86.ActiveCfg = Release|Any CPU
 		{69FFBAA4-F74A-4F0E-8071-E502298FCE76}.Release|x86.Build.0 = Release|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Debug|x64.Build.0 = Debug|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Debug|x86.Build.0 = Debug|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Release|x64.Build.0 = Release|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Release|x86.ActiveCfg = Release|Any CPU
+		{90F05857-D931-4A64-B2C3-6813BA1B0AEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

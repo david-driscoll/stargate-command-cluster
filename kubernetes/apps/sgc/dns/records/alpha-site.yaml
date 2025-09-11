@@ -21,6 +21,9 @@ spec:
     - dnsName: "internal.as.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: *targets
+    - dnsName: "peanut.${ROOT_DOMAIN}"
+      recordType: CNAME
+      targets: *targets
     - dnsName: "zigbee.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: *targets

@@ -8,7 +8,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - "${DOCKGE_IP}:3493"
+        - "${ALPHA_SITE_IP}:3493"
       labels:
         ups:  *app
   metricsPath: /ups_metrics
@@ -23,7 +23,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - "${DOCKGE_IP}:3493"
+        - "${ALPHA_SITE_IP}:3493"
       labels:
         ups:  *app
   metricsPath: /ups_metrics

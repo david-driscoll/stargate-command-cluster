@@ -18,17 +18,15 @@ route:
       matchers:
         - severity = "none"
         - alertname =~ "InfoInhibitor|Watchdog"
-    - receiver: discord
-      continue: true
-      matchers:
-        - severity = "critical"
     - receiver: pushover
       continue: true
       matchers:
+        - severity = "error"
         - severity = "critical"
 inhibit_rules:
   - equal: ["alertname", "namespace"]
     source_matchers:
+      - severity = "error"
       - severity = "critical"
     target_matchers:
       - severity = "warning"
@@ -39,7 +37,7 @@ receivers:
       - html: true
         user_key: "{{ .pushover_username }}"
         token: "{{ .pushover_credential }}"
-        url_title: View in AlertManager # Compooters are hard
+        url_title: View in AlertManager
         message: |-
           {{ "{{-" }} range .Alerts {{ "}}" }}
             {{ "{{-" }} if ne .Annotations.description "" {{ "}}" }}

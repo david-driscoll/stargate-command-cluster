@@ -45,5 +45,8 @@ spec:
   values:
     serviceMonitor:
       enabled: true
+      endpoints:
+        - port: metrics
+          path: /metrics
     grafanaDashboard:
       enabled: true

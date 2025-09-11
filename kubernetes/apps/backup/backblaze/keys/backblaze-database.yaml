@@ -3,7 +3,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: backblaze-s3-access-key
+  name: backblaze-db-access-key
 spec:
   refreshPolicy: Periodic
   refreshInterval: 4m
@@ -11,7 +11,7 @@ spec:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: backblaze-s3-access-key
+    name: backblaze-db-access-key
     creationPolicy: Owner
     deletionPolicy: Retain
     template:
@@ -21,6 +21,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+          reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       data:
         AWS_ACCESS_KEY_ID: "{{ .username }}"
         AWS_SECRET_ACCESS_KEY: "{{ .credential }}"
@@ -34,7 +35,7 @@ spec:
         bucket: "{{ .bucket }}"
   dataFrom:
     - extract:
-        key: "${BACKBLAZE_S3}"
+        key: "${BACKBLAZE_DATABASE}"
       rewrite:
         - regexp:
             source: "[\\W]"

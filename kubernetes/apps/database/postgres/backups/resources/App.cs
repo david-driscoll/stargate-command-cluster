@@ -17,10 +17,13 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Text.Json;
 using Bytewizer.Backblaze.Client;
+using Bytewizer.Backblaze.Models;
+using Bytewizer.Backblaze.Progress;
 using Dumpify;
 using Npgsql;
 using OnePassword.Connect.Sdk;
 using OnePassword.Connect.Sdk.Models;
+using File = System.IO.File;
 
 var opClient = new OnePasswordConnectClient(new OnePasswordConnectOptions()
 {
@@ -64,267 +67,112 @@ foreach (var db in databases)
   Console.WriteLine($"Backing up database: {db}");
   var backupFile = Path.Combine(backupDir, $"{db}_{timestamp}.sql.gz");
 
-  // await CreateDatabaseDump(postgresHost, postgresPort, postgresUser, postgresPassword, db, backupFile);
+  await CreateDatabaseDump(postgres, db, backupFile);
 
-  // if (File.Exists(backupFile))
-  // {
-  //   Console.WriteLine($"Successfully created backup: {backupFile}");
+  if (File.Exists(backupFile))
+  {
+    Console.WriteLine($"Successfully created backup: {backupFile}");
 
-  //   // Upload to Backblaze
-  //   Console.WriteLine($"Uploading {backupFile} to Backblaze...");
-  //   var fileName = $"database-dumps/{db}/{Path.GetFileName(backupFile)}";
-  //   await UploadFile(backblazeClient, bucket.BucketId, backupFile, fileName);
+    // Upload to Backblaze
+    Console.WriteLine($"Uploading {backupFile} to Backblaze...");
+    var fileName = $"dumps/{db}/{Path.GetFileName(backupFile)}";
+    await UploadFile(backblazeClient, GetField(backblaze, "bucket"), backupFile, fileName);
 
-  //   Console.WriteLine($"Successfully uploaded {backupFile} to Backblaze");
-  //   File.Delete(backupFile);
-  // }
-  // else
-  // {
-  //   Console.WriteLine($"Failed to create backup for database: {db}");
-  //   Environment.Exit(1);
-  // }
+    Console.WriteLine($"Successfully uploaded {backupFile} to Backblaze");
+    File.Delete(backupFile);
+  }
+  else
+  {
+    Console.WriteLine($"Failed to create backup for database: {db}");
+    Environment.Exit(1);
+  }
 }
 
-// // Create global dump
-// Console.WriteLine("Creating global database dump...");
-// var globalBackupFile = Path.Combine(backupDir, $"postgres_all_{timestamp}.sql.gz");
+// Cleanup old backups (keep last 30 days)
+Console.WriteLine("Cleaning up old backups...");
+await CleanupOldBackups(backblazeClient, GetField(backblaze, "bucket"));
 
-// await CreateGlobalDump(postgresHost, postgresPort, postgresUser, postgresPassword, globalBackupFile);
-
-// if (File.Exists(globalBackupFile))
-// {
-//   Console.WriteLine($"Successfully created global backup: {globalBackupFile}");
-
-//   // Upload global backup to Backblaze
-//   Console.WriteLine($"Uploading {globalBackupFile} to Backblaze...");
-//   var fileName = $"database-dumps/global/{Path.GetFileName(globalBackupFile)}";
-//   await UploadFile(backblazeClient, bucket.BucketId, globalBackupFile, fileName);
-
-//   Console.WriteLine($"Successfully uploaded {globalBackupFile} to Backblaze");
-//   File.Delete(globalBackupFile);
-// }
-// else
-// {
-//   Console.WriteLine("Failed to create global backup");
-//   Environment.Exit(1);
-// }
-
-// // Cleanup old backups (keep last 30 days)
-// Console.WriteLine("Cleaning up old backups...");
-// await CleanupOldBackups(backblazeClient, bucket.BucketId);
-
-// Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow}");
+Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow}");
 
 // Helper methods
 async Task<List<string>> GetDatabases(NpgsqlDataSource dataSource)
 {
   var databases = new List<string>();
-  await using (var connection = await dataSource.OpenConnectionAsync())
+  await using var connection = await dataSource.OpenConnectionAsync();
+  using var command = connection.CreateCommand();
+  command.CommandText = "SELECT datname FROM pg_database WHERE datistemplate = false;";
+  await using var reader = await command.ExecuteReaderAsync();
+  while (await reader.ReadAsync())
   {
-    using var command = connection.CreateCommand();
-    command.CommandText = "SELECT datname FROM pg_database WHERE datistemplate = false;";
-    await using var reader = await command.ExecuteReaderAsync();
-    while (await reader.ReadAsync())
-    {
-      databases.Add(reader.GetString(0));
-    }
+    if (reader.GetString(0) is "postgres" or "app") continue;
+    databases.Add(reader.GetString(0));
   }
 
   return databases;
 }
 
-// async Task CreateDatabaseDump(string host, string port, string user, string password, string database, string outputFile)
-// {
-//   var psi = new ProcessStartInfo
-//   {
-//     FileName = "pg_dump",
-//     Arguments = $"-h {host} -p {port} -U {user} -d {database} --verbose --no-password --format=custom --no-privileges --no-owner",
-//     UseShellExecute = false,
-//     RedirectStandardOutput = true,
-//     RedirectStandardError = true,
-//     CreateNoWindow = true
-//   };
-//   psi.Environment["PGPASSWORD"] = password;
+async Task CreateDatabaseDump(FullItem postgres, string database, string outputFile)
+{
+  var host = GetField(postgres, "public-hostname");
+  var port = GetField(postgres, "port");
+  var user = GetField(postgres, "username");
+  var password = GetField(postgres, "password");
+  var psi = new ProcessStartInfo
+  {
+    FileName = "pg_dump",
+    Arguments = $"-h {host} -p {port} -U {user} -d {database} --verbose --no-password --format=custom --no-privileges --no-owner",
+    UseShellExecute = false,
+    RedirectStandardOutput = true,
+    RedirectStandardError = true,
+    CreateNoWindow = true,
+  };
+  psi.Environment["PGPASSWORD"] = password;
 
-//   using var process = Process.Start(psi);
-//   if (process == null) throw new InvalidOperationException("Failed to start pg_dump process");
+  using var process = Process.Start(psi);
+  if (process == null) throw new InvalidOperationException("Failed to start pg_dump process");
 
-//   // Compress the output
-//   using var fileStream = File.Create(outputFile);
-//   using var gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
+  // Compress the output
+  using var fileStream = File.Create(outputFile);
+  using var gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
 
-//   await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
-//   await process.WaitForExitAsync();
+  await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
+  await process.WaitForExitAsync();
 
-//   if (process.ExitCode != 0)
-//   {
-//     var error = await process.StandardError.ReadToEndAsync();
-//     throw new InvalidOperationException($"pg_dump failed: {error}");
-//   }
-// }
+  if (process.ExitCode != 0)
+  {
+    var error = await process.StandardError.ReadToEndAsync();
+    throw new InvalidOperationException($"pg_dump failed: {error}");
+  }
+}
 
-// async Task CreateGlobalDump(string host, string port, string user, string password, string outputFile)
-// {
-//   var psi = new ProcessStartInfo
-//   {
-//     FileName = "pg_dumpall",
-//     Arguments = $"-h {host} -p {port} -U {user} --verbose --no-password",
-//     UseShellExecute = false,
-//     RedirectStandardOutput = true,
-//     RedirectStandardError = true,
-//     CreateNoWindow = true
-//   };
-//   psi.Environment["PGPASSWORD"] = password;
+async Task UploadFile(BackblazeClient client, string bucketId, string localFilePath, string fileName)
+{
+  using var fileStream = File.OpenRead(localFilePath);
+  var uploadUrlResponse = await client.Files.GetUploadUrlAsync(bucketId);
 
-//   using var process = Process.Start(psi);
-//   if (process == null) throw new InvalidOperationException("Failed to start pg_dumpall process");
+  var progress = new NaiveProgress<ICopyProgress>();
 
-//   // Compress the output
-//   using var fileStream = File.Create(outputFile);
-//   using var gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
+  var uploadResponse = await client.Files.UploadAsync(
+    bucketId,
+    fileName,
+    localFilePath,
+    progress,
+    CancellationToken.None
+  );
 
-//   await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
-//   await process.WaitForExitAsync();
+}
 
-//   if (process.ExitCode != 0)
-//   {
-//     var error = await process.StandardError.ReadToEndAsync();
-//     throw new InvalidOperationException($"pg_dumpall failed: {error}");
-//   }
-// }
+async Task CleanupOldBackups(BackblazeClient client, string bucketId)
+{
+  var cutoffDate = DateTime.UtcNow.AddDays(-30);
+  // List files in the dumps folder
+  var listResponse = await client.Files.GetEnumerableAsync(new ListFileNamesRequest(bucketId) { Prefix = "dumps/" });
+  if (listResponse == null) return;
 
-// async Task UploadFile(BackblazeClient client, string bucketId, string localFilePath, string fileName)
-// {
-//   using var fileStream = File.OpenRead(localFilePath);
-
-//   var uploadUrlResponse = await client.Files.GetUploadUrl(bucketId);
-
-//   var uploadResponse = await client.Files.Upload(
-//       uploadUrlResponse.UploadUrl,
-//       uploadUrlResponse.AuthorizationToken,
-//       fileName,
-//       fileStream,
-//       "application/gzip"
-//   );
-
-//   psi.Environment["PGPASSWORD"] = password;
-
-//   using var process = Process.Start(psi);
-//   if (process == null) throw new InvalidOperationException("Failed to start psql process");
-
-//   var output = await process.StandardOutput.ReadToEndAsync();
-//   await process.WaitForExitAsync();
-
-//   if (process.ExitCode != 0)
-//   {
-//     var error = await process.StandardError.ReadToEndAsync();
-//     throw new InvalidOperationException($"Failed to get database list: {error}");
-//   }
-
-//   var databases = output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-//       .Select(db => db.Trim())
-//       .Where(db => !string.IsNullOrWhiteSpace(db))
-//       .ToList();
-
-//   // Add postgres database
-//   databases.Insert(0, "postgres");
-
-//   return databases;
-// }
-
-// async Task CreateDatabaseDump(string host, string port, string user, string password, string database, string outputFile)
-// {
-//   var psi = new ProcessStartInfo
-//   {
-//     FileName = "pg_dump",
-//     Arguments = $"-h {host} -p {port} -U {user} -d {database} --verbose --no-password --format=custom --no-privileges --no-owner",
-//     UseShellExecute = false,
-//     RedirectStandardOutput = true,
-//     RedirectStandardError = true,
-//     CreateNoWindow = true
-//   };
-//   psi.Environment["PGPASSWORD"] = password;
-
-//   using var process = Process.Start(psi);
-//   if (process == null) throw new InvalidOperationException("Failed to start pg_dump process");
-
-//   // Compress the output
-//   using var fileStream = File.Create(outputFile);
-//   using var gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
-
-//   await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
-//   await process.WaitForExitAsync();
-
-//   if (process.ExitCode != 0)
-//   {
-//     var error = await process.StandardError.ReadToEndAsync();
-//     throw new InvalidOperationException($"pg_dump failed: {error}");
-//   }
-// }
-
-// async Task CreateGlobalDump(string host, string port, string user, string password, string outputFile)
-// {
-//   var psi = new ProcessStartInfo
-//   {
-//     FileName = "pg_dumpall",
-//     Arguments = $"-h {host} -p {port} -U {user} --verbose --no-password",
-//     UseShellExecute = false,
-//     RedirectStandardOutput = true,
-//     RedirectStandardError = true,
-//     CreateNoWindow = true
-//   };
-//   psi.Environment["PGPASSWORD"] = password;
-
-//   using var process = Process.Start(psi);
-//   if (process == null) throw new InvalidOperationException("Failed to start pg_dumpall process");
-
-//   // Compress the output
-//   using var fileStream = File.Create(outputFile);
-//   using var gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
-
-//   await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
-//   await process.WaitForExitAsync();
-
-//   if (process.ExitCode != 0)
-//   {
-//     var error = await process.StandardError.ReadToEndAsync();
-//     throw new InvalidOperationException($"pg_dumpall failed: {error}");
-//   }
-// }
-
-// async Task UploadFile(BackblazeClient client, string bucketId, string localFilePath, string fileName)
-// {
-//   using var fileStream = File.OpenRead(localFilePath);
-
-//   var uploadUrlResponse = await client.Files.GetUploadUrl(bucketId);
-
-//   var uploadResponse = await client.Files.Upload(
-//       uploadUrlResponse.UploadUrl,
-//       uploadUrlResponse.AuthorizationToken,
-//       fileName,
-//       fileStream,
-//       "application/gzip"
-//   );
-
-//   if (uploadResponse == null)
-//   {
-//     throw new InvalidOperationException($"Failed to upload {fileName}");
-//   }
-// }
-
-// async Task CleanupOldBackups(BackblazeClient client, string bucketId)
-// {
-//   var cutoffDate = DateTime.UtcNow.AddDays(-30);
-
-//   // List files in the database-dumps folder
-//   var listResponse = await client.Files.GetList(bucketId, startFileName: "database-dumps/", maxFileCount: 10000);
-
-//   foreach (var file in listResponse.Files)
-//   {
-//     if (file.UploadTimestamp < cutoffDate)
-//     {
-//       Console.WriteLine($"Deleting old backup: {file.FileName}");
-//       await client.Files.Delete(file.FileId, file.FileName);
-//     }
-//   }
-// }
+  foreach (var file in listResponse)
+  {
+    if (file.UploadTimestamp >= cutoffDate) continue;
+    Console.WriteLine($"Deleting old backup: {file.FileName}");
+    await client.Files.DeleteAsync(file.FileId, file.FileName);
+  }
+}

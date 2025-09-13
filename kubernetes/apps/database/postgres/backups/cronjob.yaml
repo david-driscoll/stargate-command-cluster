@@ -49,55 +49,16 @@ spec:
         containers:
           main: &job
             image:
-              repository: mcr.microsoft.com/dotnet/runtime
-              tag: 10.0-alpine
+              repository: daviddriscoll/pulumi
+              tag: latest
               pullPolicy: IfNotPresent
-            env:
-              # PostgreSQL connection settings
-              POSTGRES_HOST: "postgres-rw.database.svc.cluster.local"
-              POSTGRES_PORT: "5432"
-              POSTGRES_USER: "postgres"
-              POSTGRES_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-superuser
-                    key: password
-              # S3/Backblaze settings from the existing secret
-              AWS_ACCESS_KEY_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: backblaze-db-access-key
-                    key: AWS_ACCESS_KEY_ID
-              AWS_SECRET_ACCESS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: backblaze-db-access-key
-                    key: AWS_SECRET_ACCESS_KEY
-              AWS_ENDPOINT_URL:
-                valueFrom:
-                  secretKeyRef:
-                    name: backblaze-db-access-key
-                    key: endpoint
-              AWS_DEFAULT_REGION:
-                valueFrom:
-                  secretKeyRef:
-                    name: backblaze-db-access-key
-                    key: region
-              S3_BUCKET:
-                valueFrom:
-                  secretKeyRef:
-                    name: backblaze-db-access-key
-                    key: bucket
+            envFrom:
+              - secretRef:
+                  name: postgres-backups
             command:
               - /bin/sh
               - -c
-              - |
-                # Install .NET SDK and PostgreSQL client tools
-                apk add --no-cache dotnet10-sdk postgresql-client
-
-                # Run the C# app
-                cd /scripts
-                dotnet run App.cs
+              - dotnet run /scripts/App.cs
             resources:
               requests:
                 memory: 256Mi
@@ -107,7 +68,7 @@ spec:
                 cpu: 500m
 
     defaultPodOptions:
-      securityContext: &podSecurityContext
+      securityContext:
         runAsUser: 999
         runAsGroup: 999
         fsGroup: 999
@@ -128,4 +89,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
-            readOnly: false
+            subPath: tmp
+          - path: /.dotnet
+            subPath: dotnet

@@ -44,6 +44,10 @@ spec:
               templateAs: Values
             - key: public-uri
               templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
   dataFrom:
     - extract:
         key: "${APP}-user-password"

@@ -1,0 +1,131 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.2.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app postgres-backup
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: postgres
+      namespace: database
+    - name: external-secrets
+      namespace: kube-system
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 3
+          schedule: "0 2 * * *"  # Daily at 2 AM
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 3
+          suspend: false
+        type: cronjob
+        containers:
+          main: &job
+            image:
+              repository: mcr.microsoft.com/dotnet/runtime
+              tag: 10.0-alpine
+              pullPolicy: IfNotPresent
+            env:
+              # PostgreSQL connection settings
+              POSTGRES_HOST: "postgres-rw.database.svc.cluster.local"
+              POSTGRES_PORT: "5432"
+              POSTGRES_USER: "postgres"
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-superuser
+                    key: password
+              # S3/Backblaze settings from the existing secret
+              AWS_ACCESS_KEY_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-db-access-key
+                    key: AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-db-access-key
+                    key: AWS_SECRET_ACCESS_KEY
+              AWS_ENDPOINT_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-db-access-key
+                    key: endpoint
+              AWS_DEFAULT_REGION:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-db-access-key
+                    key: region
+              S3_BUCKET:
+                valueFrom:
+                  secretKeyRef:
+                    name: backblaze-db-access-key
+                    key: bucket
+            command:
+              - /bin/sh
+              - -c
+              - |
+                # Install .NET SDK and PostgreSQL client tools
+                apk add --no-cache dotnet10-sdk postgresql-client
+
+                # Run the C# app
+                cd /scripts
+                dotnet run App.cs
+            resources:
+              requests:
+                memory: 256Mi
+                cpu: 100m
+              limits:
+                memory: 512Mi
+                cpu: 500m
+
+    defaultPodOptions:
+      securityContext: &podSecurityContext
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        runAsNonRoot: true
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile:
+          type: RuntimeDefault
+
+    persistence:
+      script:
+        type: configMap
+        name: postgres-backup-script
+        defaultMode: 493
+        globalMounts:
+          - path: /scripts/App.cs
+            subPath: App.cs
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            readOnly: false

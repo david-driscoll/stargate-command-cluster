@@ -24,20 +24,21 @@ using OnePassword.Connect.Sdk.Models;
 
 var opClient = new OnePasswordConnectClient(new OnePasswordConnectOptions()
 {
+  BaseUrl = Environment.GetEnvironmentVariable("CONNECT_HOST") ?? throw new InvalidOperationException("CONNECT_HOST is required"),
   ApiKey = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ?? throw new InvalidOperationException("CONNECT_TOKEN is required"),
 });
-opClient.BaseUrl = Environment.GetEnvironmentVariable("CONNECT_HOST") ?? throw new InvalidOperationException("CONNECT_HOST is required");
 
-async Task<FullItem> GetItemById(string title)
+var vaultId = (await opClient.GetVaultsAsync("")).Single(z => z.Name == "Eris").Id ?? throw new InvalidOperationException("Eris vault not found");
+
+async Task<FullItem> GetItemByTitle(string title)
 {
-  var items = await opClient.GetVaultItemsAsync("Eris", $"title eq \"{title}\"");
-  return await opClient.GetVaultItemByIdAsync("Eris", (items.SingleOrDefault(i => i.Title == title) ?? throw new InvalidOperationException($"{title} item not found")).Id);
+  var items = await opClient.GetVaultItemsAsync(vaultId, $"title eq \"{title}\"");
+  return await opClient.GetVaultItemByIdAsync(vaultId, (items.SingleOrDefault(i => i.Title == title) ?? throw new InvalidOperationException($"{title} item not found")).Id);
 }
 static string GetField(FullItem item, string label) => item.Fields.Single(f => f.Label == label).Value ?? throw new InvalidOperationException($"{label} field not found in {item.Title}");
-var backblaze = await GetItemById("backblaze-b2-credentials");
-var postgres = await GetItemById("equestria-postgres-superuser");
-var connectionString = postgres.Fields.Single(f => f.Label == "public-connection-string").Value;
-var s3Bucket = "equestria-db";
+var backblaze = await GetItemByTitle("Backblaze S3 Equestria Database");
+var postgres = await GetItemByTitle("equestria-postgres-superuser");
+var connectionString = postgres.Fields.Single(f => f.Label == "public-connection-string").Value.Dump();
 
 var backupDir = "/tmp/backups";
 var timestamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
@@ -52,38 +53,37 @@ var backblazeClient = BackblazeClient.Initialize(GetField(backblaze, "username")
 
 await using var dataSource = NpgsqlDataSource.Create(connectionString);
 
-
 // Get list of databases
 Console.WriteLine("Fetching list of databases...");
 var databases = await GetDatabases(dataSource);
 Console.WriteLine($"Found databases: {string.Join(", ", databases)}");
 
-// // Create individual database dumps
-// foreach (var db in databases)
-// {
-//   Console.WriteLine($"Backing up database: {db}");
-//   var backupFile = Path.Combine(backupDir, $"{db}_{timestamp}.sql.gz");
+// Create individual database dumps
+foreach (var db in databases)
+{
+  Console.WriteLine($"Backing up database: {db}");
+  var backupFile = Path.Combine(backupDir, $"{db}_{timestamp}.sql.gz");
 
-//   await CreateDatabaseDump(postgresHost, postgresPort, postgresUser, postgresPassword, db, backupFile);
+  // await CreateDatabaseDump(postgresHost, postgresPort, postgresUser, postgresPassword, db, backupFile);
 
-//   if (File.Exists(backupFile))
-//   {
-//     Console.WriteLine($"Successfully created backup: {backupFile}");
+  // if (File.Exists(backupFile))
+  // {
+  //   Console.WriteLine($"Successfully created backup: {backupFile}");
 
-//     // Upload to Backblaze
-//     Console.WriteLine($"Uploading {backupFile} to Backblaze...");
-//     var fileName = $"database-dumps/{db}/{Path.GetFileName(backupFile)}";
-//     await UploadFile(backblazeClient, bucket.BucketId, backupFile, fileName);
+  //   // Upload to Backblaze
+  //   Console.WriteLine($"Uploading {backupFile} to Backblaze...");
+  //   var fileName = $"database-dumps/{db}/{Path.GetFileName(backupFile)}";
+  //   await UploadFile(backblazeClient, bucket.BucketId, backupFile, fileName);
 
-//     Console.WriteLine($"Successfully uploaded {backupFile} to Backblaze");
-//     File.Delete(backupFile);
-//   }
-//   else
-//   {
-//     Console.WriteLine($"Failed to create backup for database: {db}");
-//     Environment.Exit(1);
-//   }
-// }
+  //   Console.WriteLine($"Successfully uploaded {backupFile} to Backblaze");
+  //   File.Delete(backupFile);
+  // }
+  // else
+  // {
+  //   Console.WriteLine($"Failed to create backup for database: {db}");
+  //   Environment.Exit(1);
+  // }
+}
 
 // // Create global dump
 // Console.WriteLine("Creating global database dump...");
@@ -122,7 +122,7 @@ async Task<List<string>> GetDatabases(NpgsqlDataSource dataSource)
   await using (var connection = await dataSource.OpenConnectionAsync())
   {
     using var command = connection.CreateCommand();
-    command.CommandText = "SELECT datname FROM pg_database WHERE datistemplate = false AND datname NOT IN ('postgres');";
+    command.CommandText = "SELECT datname FROM pg_database WHERE datistemplate = false;";
     await using var reader = await command.ExecuteReaderAsync();
     while (await reader.ReadAsync())
     {

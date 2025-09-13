@@ -48,7 +48,7 @@ spec:
           fix-permissions:
             image:
               repository: busybox
-              tag: latest
+              tag: latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
             command:
               - /bin/sh
               - -c
@@ -65,7 +65,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/project-zot/zot
-              tag: v2.1.8
+              tag: v2.1.8@sha256:cd2aea942f428630bcb4190542be6abd35e14177aab84fc7ccad0dca8ecb363d
             env: []
             envFrom: []
             resources:

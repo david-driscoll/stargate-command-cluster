@@ -16,7 +16,7 @@ public static partial class ModelMappings
 {
   public static (string ClusterName, string ClusterTitle, string Namespace, string OriginalName)
     GetClusterNameAndTitle<T>(
-      this IMetadata<T> definition)
+      this IMetadata<T>? definition)
     where T : V1ObjectMeta
   {
     var clusterName = definition.Metadata.Labels["driscoll.dev/cluster"];
@@ -25,6 +25,14 @@ public static partial class ModelMappings
     var clusterTitle = definition.Metadata.Annotations["driscoll.dev/clusterTitle"];
 
     return (clusterName, clusterTitle, @namespace, originalName ?? definition.Metadata.Name);
+  }
+
+  public static string GetApplicationKey<T>(this IMetadata<T> definition)
+    where T : V1ObjectMeta
+  {
+    var info = definition.GetClusterNameAndTitle();
+    return
+      $"{info.ClusterName}/{info.Namespace}/{definition!.Metadata.Name}";
   }
 
   private static ImmutableList<string> MapListFromString(string value) => value

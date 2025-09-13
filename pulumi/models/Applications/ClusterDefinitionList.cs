@@ -5,7 +5,7 @@ using k8s.Models;
 
 namespace models.Applications;
 
-public class ClusterDefinitionList : KubernetesObject, IMetadata<V1ListMeta>, IKubernetesList<ClusterDefinition>
+public class ClusterDefinitionList : KubernetesObject, IKubernetesObject<V1ListMeta>, IKubernetesList<ClusterDefinition>
 {
   public V1ListMeta Metadata { get; set; }
 

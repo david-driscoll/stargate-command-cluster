@@ -5,7 +5,7 @@ using k8s.Models;
 
 namespace models.Applications;
 
-public class ApplicationDefinitionList : KubernetesObject, IMetadata<V1ListMeta>, IKubernetesList<ApplicationDefinition>
+public class ApplicationDefinitionList : KubernetesObject, IKubernetesObject<V1ListMeta>, IKubernetesList<ApplicationDefinition>
 {
   public V1ListMeta Metadata { get; set; }
 

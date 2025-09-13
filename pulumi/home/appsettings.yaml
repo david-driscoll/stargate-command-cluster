@@ -1,0 +1,11 @@
+connectionstring:
+  pulumi:
+tailscale:
+  url: https://api.tailscale.com/api/v2/
+  clientId:
+  clientSecret:
+1password:
+  url: https://op-connect.sgc.driscoll.tech
+  token:
+kubernetes:
+  kubeconfig: ''

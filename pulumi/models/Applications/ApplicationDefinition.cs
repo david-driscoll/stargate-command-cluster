@@ -4,7 +4,7 @@ using k8s.Models;
 
 namespace models.Applications;
 
-public class ApplicationDefinition : KubernetesObject, IMetadata<V1ObjectMeta>, IKubernetesSpec
+public class ApplicationDefinition : KubernetesObject, IKubernetesObject<V1ObjectMeta>, IKubernetesSpec
 {
   [JsonPropertyName("metadata")]
   public V1ObjectMeta Metadata { get; set; }

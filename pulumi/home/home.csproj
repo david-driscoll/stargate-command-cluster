@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="Duende.IdentityModel" Version="7.1.0" />
+    <PackageReference Include="DynamicData" Version="9.4.1" />
     <PackageReference Include="Microsoft.Kiota.Bundle" Version="1.19.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Pulumi.Automation" Version="3.87.0" />
     <PackageReference Include="Pulumi.Cloudflare" Version="6.8.0" />
     <PackageReference Include="Pulumi.Docker" Version="4.8.2" />
@@ -29,5 +31,9 @@
     <ProjectReference Include="sdks\proxmox\Pulumi.Proxmox.csproj" />
     <ProjectReference Include="sdks\truenas\Pulumi.Truenas.csproj" />
     <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\" />
   </ItemGroup>
 </Project>

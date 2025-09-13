@@ -12,13 +12,6 @@ using models.Applications;
 
 namespace applications;
 
-/*
-curl -X 'GET' \
-   'https://homarr.driscoll.tech/api/info' \
-   -H 'accept: application/json' \
-   -H 'ApiKey: z4xpzakjc7old7rz844d1s5b.b3b3caebd4c7ade0570738d8a9502a33703850740abb452254241a6a3aea9b56f84914866400c4336a7431a5f0658cc2e8b1158e88578e0c6a9a9b00153b58d7'
- */
-
 public static class PopulateCluster
 {
   const string destinationNamespace = "observability";

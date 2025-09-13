@@ -79,7 +79,19 @@ spec:
       secret:
         name: pulumi-operator-connect-token
         key: credential
+  config:
+    pulumi-cluster-sync:tailscaleUrl: "https://api.tailscale.com/api/v2/"
   secretsRef:
+    pulumi-cluster-sync:tailscaleClientId:
+      type: Secret
+      secret:
+        name: pulumi-operator-tailscale
+        key: username
+    pulumi-cluster-sync:tailscaleClientSecret:
+      type: Secret
+      secret:
+        name: pulumi-operator-tailscale
+        key: credential
     github:token:
       type: Secret
       secret:

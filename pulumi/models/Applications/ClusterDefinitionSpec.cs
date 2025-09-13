@@ -11,7 +11,7 @@ public record ClusterDefinitionSpec
 
   [YamlMember(Alias = "secret")]
   [JsonPropertyName("secret")]
-  public string Secret { get; set; }
+  public string? Secret { get; set; }
 
   [YamlMember(Alias = "domain")]
   [JsonPropertyName("domain")]

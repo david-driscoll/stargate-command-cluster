@@ -43,7 +43,10 @@ namespace Pulumi.Authentik
         public Output<bool?> OpenInNewTab { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -142,7 +145,10 @@ namespace Pulumi.Authentik
         public Input<bool>? OpenInNewTab { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -203,7 +209,10 @@ namespace Pulumi.Authentik
         public Input<bool>? OpenInNewTab { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }

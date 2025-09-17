@@ -37,7 +37,11 @@ namespace Pulumi.Authentik
         public Output<string?> EnrollmentFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("groupMatchingMode")]
         public Output<string?> GroupMatchingMode { get; private set; } = null!;
@@ -49,7 +53,10 @@ namespace Pulumi.Authentik
         public Output<string> PlexToken { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -61,8 +68,13 @@ namespace Pulumi.Authentik
         public Output<string> SourcePlexId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("userMatchingMode")]
         public Output<string?> UserMatchingMode { get; private set; } = null!;
@@ -159,7 +171,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -180,7 +196,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -192,8 +211,13 @@ namespace Pulumi.Authentik
         public Input<string>? SourcePlexId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }
@@ -248,7 +272,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -269,7 +297,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -281,8 +312,13 @@ namespace Pulumi.Authentik
         public Input<string>? SourcePlexId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }

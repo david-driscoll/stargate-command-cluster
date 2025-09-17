@@ -13,7 +13,7 @@ namespace Pulumi.Authentik
     public partial class User : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Output("attributes")]
         public Output<string?> Attributes { get; private set; } = null!;
@@ -52,7 +52,12 @@ namespace Pulumi.Authentik
         public Output<string?> Path { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` - `internal_service_account` Defaults to `internal`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///   - `internal_service_account`
+        ///  Defaults to `internal`.
         /// </summary>
         [Output("type")]
         public Output<string?> Type { get; private set; } = null!;
@@ -114,7 +119,7 @@ namespace Pulumi.Authentik
     public sealed class UserArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Input("attributes")]
         public Input<string>? Attributes { get; set; }
@@ -169,7 +174,12 @@ namespace Pulumi.Authentik
         public Input<string>? Path { get; set; }
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` - `internal_service_account` Defaults to `internal`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///   - `internal_service_account`
+        ///  Defaults to `internal`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
@@ -189,7 +199,7 @@ namespace Pulumi.Authentik
     public sealed class UserState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Input("attributes")]
         public Input<string>? Attributes { get; set; }
@@ -244,7 +254,12 @@ namespace Pulumi.Authentik
         public Input<string>? Path { get; set; }
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` - `internal_service_account` Defaults to `internal`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///   - `internal_service_account`
+        ///  Defaults to `internal`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

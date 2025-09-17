@@ -13,7 +13,7 @@ namespace Pulumi.Authentik
     public partial class Outpost : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Generated.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Generated.
         /// </summary>
         [Output("config")]
         public Output<string> Config { get; private set; } = null!;
@@ -31,7 +31,12 @@ namespace Pulumi.Authentik
         public Output<string?> ServiceConnection { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `proxy` - `ldap` - `radius` - `rac` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `ldap`
+        ///   - `radius`
+        ///   - `rac`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Output("type")]
         public Output<string?> Type { get; private set; } = null!;
@@ -83,7 +88,7 @@ namespace Pulumi.Authentik
     public sealed class OutpostArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Generated.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Generated.
         /// </summary>
         [Input("config")]
         public Input<string>? Config { get; set; }
@@ -106,7 +111,12 @@ namespace Pulumi.Authentik
         public Input<string>? ServiceConnection { get; set; }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `ldap` - `radius` - `rac` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `ldap`
+        ///   - `radius`
+        ///   - `rac`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
@@ -120,7 +130,7 @@ namespace Pulumi.Authentik
     public sealed class OutpostState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Generated.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Generated.
         /// </summary>
         [Input("config")]
         public Input<string>? Config { get; set; }
@@ -143,7 +153,12 @@ namespace Pulumi.Authentik
         public Input<string>? ServiceConnection { get; set; }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `ldap` - `radius` - `rac` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `ldap`
+        ///   - `radius`
+        ///   - `rac`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

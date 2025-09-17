@@ -63,6 +63,7 @@ return await Deployment.RunAsync(async () =>
     IsBackupServer = false,
     InternalIpAddress = "10.10.10.100",
     TailscaleIpAddress = "100.111.10.100",
+    MacAddress = "58:47:ca:7b:a9:9d",
     Proxmox = alphaSiteProxmox,
   });
 
@@ -72,6 +73,7 @@ return await Deployment.RunAsync(async () =>
     IsBackupServer = true,
     InternalIpAddress = "10.10.10.103",
     TailscaleIpAddress = "100.111.10.103",
+    MacAddress = "c8:ff:bf:03:cc:4c",
     Proxmox = mainProxmox,
   });
 
@@ -81,6 +83,7 @@ return await Deployment.RunAsync(async () =>
     IsBackupServer = true,
     InternalIpAddress = "10.10.10.104",
     TailscaleIpAddress = "100.111.10.104",
+    MacAddress = "c8:ff:bf:03:c9:1e",
     Proxmox = mainProxmox,
   });
 
@@ -90,6 +93,7 @@ return await Deployment.RunAsync(async () =>
     IsBackupServer = false,
     InternalIpAddress = "10.10.10.200",
     TailscaleIpAddress = "100.111.10.200",
+    MacAddress = "e4:5f:01:90:36:22",
     Proxmox = alphaSiteProxmox,
     InstallTailscale = false
   });

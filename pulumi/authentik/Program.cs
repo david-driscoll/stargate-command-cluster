@@ -44,9 +44,9 @@ return await Deployment.RunAsync(async () =>
   }
 
   var groups = new AuthentikGroups();
-  var globals = new GlobalResources();
+  var globals = new GlobalResources(new ());
 
-  var flows = Flows2.CreateFlows(Globals.OnePasswordProvider);
+  var flows = Flows2.CreateFlows(globals.OnePasswordProvider);
   var clusterFlows = new AuthentikApplicationResources.ClusterFlows()
   {
     AuthorizationFlow = flows.ImplicitConsentFlow.Uuid,
@@ -74,6 +74,7 @@ return await Deployment.RunAsync(async () =>
 
   _ = new AuthentikApplicationResources(new()
   {
+    Globals = globals,
     Groups = groups,
     Cluster = cluster,
     ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),

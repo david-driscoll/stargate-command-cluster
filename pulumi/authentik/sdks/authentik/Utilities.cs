@@ -67,12 +67,12 @@ namespace Pulumi.Authentik
         {
             return new global::Pulumi.RegisterPackageRequest(
                 name: "terraform-provider",
-                version: "0.12.0",
+                version: "0.14.0",
                 downloadUrl: "",
                 parameterization: new global::Pulumi.RegisterPackageRequest.PackageParameterization(
                     name: "authentik",
-                    version: "2025.6.0",
-                    value: global::System.Convert.FromBase64String("eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkub3BlbnRvZnUub3JnL2dvYXV0aGVudGlrL2F1dGhlbnRpayIsInZlcnNpb24iOiIyMDI1LjYuMCJ9fQ==")));
+                    version: "2025.8.1",
+                    value: global::System.Convert.FromBase64String("eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkudGVycmFmb3JtLmlvL2dvYXV0aGVudGlrL2F1dGhlbnRpayIsInZlcnNpb24iOiIyMDI1LjguMSJ9fQ==")));
         }
 
         private readonly static string version;

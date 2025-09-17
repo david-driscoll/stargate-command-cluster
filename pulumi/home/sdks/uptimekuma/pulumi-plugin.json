@@ -1,0 +1,10 @@
+{
+  "resource": true,
+  "name": "terraform-provider",
+  "version": "0.12.0",
+  "parameterization": {
+    "name": "uptimekuma",
+    "version": "0.0.12",
+    "value": "eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkudGVycmFmb3JtLmlvL2tpbGwzci1xdWVlbi91cHRpbWVrdW1hIiwidmVyc2lvbiI6IjAuMC4xMiJ9fQ=="
+  }
+}

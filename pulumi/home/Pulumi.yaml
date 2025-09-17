@@ -8,12 +8,12 @@ packages:
     source: terraform-provider
     version: 0.12.0
     parameters:
-      - kill3r-queen/uptimekuma
+      - registry.terraform.io/kill3r-queen/uptimekuma
   proxmox:
     source: terraform-provider
     version: 0.12.0
     parameters:
-      - Telmate/proxmox
+      - registry.terraform.io/Telmate/proxmox
   truenas:
     source: terraform-provider
     version: 0.12.0
@@ -23,4 +23,9 @@ packages:
     source: terraform-provider
     version: 0.12.0
     parameters:
-      - goauthentik/authentik
+      - registry.terraform.io/goauthentik/authentik
+  unifi:
+    source: terraform-provider
+    version: 0.12.0
+    parameters:
+      - registry.opentofu.org/filipowm/unifi

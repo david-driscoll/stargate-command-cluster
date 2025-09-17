@@ -18,16 +18,6 @@ return await Deployment.RunAsync(async () =>
 {
   Kubernetes cluster;
   {
-    var onePasswordProvider = new Rocket.Surgery.OnePasswordNativeUnofficial.Provider("onepassword", new()
-    {
-      Vault = Environment.GetEnvironmentVariable("CONNECT_VAULT") ??
-              throw new InvalidOperationException("CONNECT_VAULT is not set"),
-      ConnectHost = Environment.GetEnvironmentVariable("CONNECT_HOST") ??
-                    throw new InvalidOperationException("CONNECT_HOST is not set"),
-      ConnectToken = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ??
-                     throw new InvalidOperationException("CONNECT_TOKEN is not set"),
-    });
-
     static Kubernetes CreateClientAndProvider(string kubeConfig, string name, string? context = null)
     {
       using var stream = new MemoryStream(Encoding.ASCII.GetBytes(kubeConfig));

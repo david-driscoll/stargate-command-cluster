@@ -7,12 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Pulumi;
+using Rocket.Surgery.DependencyInjection;
 using Rocket.Surgery.OnePasswordNativeUnofficial;
-using Scrutor;
 
 namespace models.Conventions;
 
-[ServiceDescriptor]
+[ServiceRegistration(ServiceLifetime.Singleton)]
 internal class TailscaleAccessTokenProvider : IAccessTokenProvider
 {
   public async Task<string> GetAuthorizationTokenAsync(Uri uri,

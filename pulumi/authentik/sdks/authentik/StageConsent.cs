@@ -13,13 +13,17 @@ namespace Pulumi.Authentik
     public partial class StageConsent : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Defaults to `weeks=4`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `weeks=4`.
         /// </summary>
         [Output("consentExpireIn")]
         public Output<string?> ConsentExpireIn { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `always_require` - `permanent` - `expiring` Defaults to `always_require`.
+        /// Allowed values:
+        ///   - `always_require`
+        ///   - `permanent`
+        ///   - `expiring`
+        ///  Defaults to `always_require`.
         /// </summary>
         [Output("mode")]
         public Output<string?> Mode { get; private set; } = null!;
@@ -77,13 +81,17 @@ namespace Pulumi.Authentik
     public sealed class StageConsentArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Defaults to `weeks=4`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `weeks=4`.
         /// </summary>
         [Input("consentExpireIn")]
         public Input<string>? ConsentExpireIn { get; set; }
 
         /// <summary>
-        /// Allowed values: - `always_require` - `permanent` - `expiring` Defaults to `always_require`.
+        /// Allowed values:
+        ///   - `always_require`
+        ///   - `permanent`
+        ///   - `expiring`
+        ///  Defaults to `always_require`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -103,13 +111,17 @@ namespace Pulumi.Authentik
     public sealed class StageConsentState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Defaults to `weeks=4`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `weeks=4`.
         /// </summary>
         [Input("consentExpireIn")]
         public Input<string>? ConsentExpireIn { get; set; }
 
         /// <summary>
-        /// Allowed values: - `always_require` - `permanent` - `expiring` Defaults to `always_require`.
+        /// Allowed values:
+        ///   - `always_require`
+        ///   - `permanent`
+        ///   - `expiring`
+        ///  Defaults to `always_require`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

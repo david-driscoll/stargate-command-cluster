@@ -72,7 +72,7 @@ namespace Pulumi.Uptimekuma
                 parameterization: new global::Pulumi.RegisterPackageRequest.PackageParameterization(
                     name: "uptimekuma",
                     version: "0.0.12",
-                    value: global::System.Convert.FromBase64String("eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkub3BlbnRvZnUub3JnL2tpbGwzci1xdWVlbi91cHRpbWVrdW1hIiwidmVyc2lvbiI6IjAuMC4xMiJ9fQ==")));
+                    value: global::System.Convert.FromBase64String("eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkudGVycmFmb3JtLmlvL2tpbGwzci1xdWVlbi91cHRpbWVrdW1hIiwidmVyc2lvbiI6IjAuMC4xMiJ9fQ==")));
         }
 
         private readonly static string version;

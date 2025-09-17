@@ -16,13 +16,13 @@ namespace Pulumi.Authentik
         public Output<string> AcsUrl { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `minutes=-5`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=-5`.
         /// </summary>
         [Output("assertionValidNotBefore")]
         public Output<string?> AssertionValidNotBefore { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `minutes=5`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=5`.
         /// </summary>
         [Output("assertionValidNotOnOrAfter")]
         public Output<string?> AssertionValidNotOnOrAfter { get; private set; } = null!;
@@ -49,9 +49,12 @@ namespace Pulumi.Authentik
         public Output<string?> DefaultRelayState { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#sha1` - `http://www.w3.org/2001/04/xmlenc#sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#sha384` - `http://www.w3.org/2001/04/xmlenc#sha512` Defaults to
-        /// `http://www.w3.org/2001/04/xmlenc#sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#sha1`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#sha384`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha512`
+        ///  Defaults to `http://www.w3.org/2001/04/xmlenc#sha256`.
         /// </summary>
         [Output("digestAlgorithm")]
         public Output<string?> DigestAlgorithm { get; private set; } = null!;
@@ -81,7 +84,7 @@ namespace Pulumi.Authentik
         public Output<string> ProviderSamlId { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `minutes=86400`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=86400`.
         /// </summary>
         [Output("sessionValidNotOnOrAfter")]
         public Output<string?> SessionValidNotOnOrAfter { get; private set; } = null!;
@@ -99,11 +102,17 @@ namespace Pulumi.Authentik
         public Output<bool?> SignResponse { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#rsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512` -
-        /// `http://www.w3.org/2000/09/xmldsig#dsa-sha1` Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#rsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512`
+        ///   - `http://www.w3.org/2000/09/xmldsig#dsa-sha1`
+        ///  Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
         /// </summary>
         [Output("signatureAlgorithm")]
         public Output<string?> SignatureAlgorithm { get; private set; } = null!;
@@ -112,7 +121,10 @@ namespace Pulumi.Authentik
         public Output<string?> SigningKp { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `redirect` - `post` Defaults to `redirect`.
+        /// Allowed values:
+        ///   - `redirect`
+        ///   - `post`
+        ///  Defaults to `redirect`.
         /// </summary>
         [Output("spBinding")]
         public Output<string?> SpBinding { get; private set; } = null!;
@@ -200,13 +212,13 @@ namespace Pulumi.Authentik
         public Input<string> AcsUrl { get; set; } = null!;
 
         /// <summary>
-        /// Defaults to `minutes=-5`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=-5`.
         /// </summary>
         [Input("assertionValidNotBefore")]
         public Input<string>? AssertionValidNotBefore { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=5`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=5`.
         /// </summary>
         [Input("assertionValidNotOnOrAfter")]
         public Input<string>? AssertionValidNotOnOrAfter { get; set; }
@@ -233,9 +245,12 @@ namespace Pulumi.Authentik
         public Input<string>? DefaultRelayState { get; set; }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#sha1` - `http://www.w3.org/2001/04/xmlenc#sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#sha384` - `http://www.w3.org/2001/04/xmlenc#sha512` Defaults to
-        /// `http://www.w3.org/2001/04/xmlenc#sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#sha1`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#sha384`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha512`
+        ///  Defaults to `http://www.w3.org/2001/04/xmlenc#sha256`.
         /// </summary>
         [Input("digestAlgorithm")]
         public Input<string>? DigestAlgorithm { get; set; }
@@ -270,7 +285,7 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderSamlId { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=86400`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=86400`.
         /// </summary>
         [Input("sessionValidNotOnOrAfter")]
         public Input<string>? SessionValidNotOnOrAfter { get; set; }
@@ -288,11 +303,17 @@ namespace Pulumi.Authentik
         public Input<bool>? SignResponse { get; set; }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#rsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512` -
-        /// `http://www.w3.org/2000/09/xmldsig#dsa-sha1` Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#rsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512`
+        ///   - `http://www.w3.org/2000/09/xmldsig#dsa-sha1`
+        ///  Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
         /// </summary>
         [Input("signatureAlgorithm")]
         public Input<string>? SignatureAlgorithm { get; set; }
@@ -301,7 +322,10 @@ namespace Pulumi.Authentik
         public Input<string>? SigningKp { get; set; }
 
         /// <summary>
-        /// Allowed values: - `redirect` - `post` Defaults to `redirect`.
+        /// Allowed values:
+        ///   - `redirect`
+        ///   - `post`
+        ///  Defaults to `redirect`.
         /// </summary>
         [Input("spBinding")]
         public Input<string>? SpBinding { get; set; }
@@ -351,13 +375,13 @@ namespace Pulumi.Authentik
         public Input<string>? AcsUrl { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=-5`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=-5`.
         /// </summary>
         [Input("assertionValidNotBefore")]
         public Input<string>? AssertionValidNotBefore { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=5`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=5`.
         /// </summary>
         [Input("assertionValidNotOnOrAfter")]
         public Input<string>? AssertionValidNotOnOrAfter { get; set; }
@@ -384,9 +408,12 @@ namespace Pulumi.Authentik
         public Input<string>? DefaultRelayState { get; set; }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#sha1` - `http://www.w3.org/2001/04/xmlenc#sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#sha384` - `http://www.w3.org/2001/04/xmlenc#sha512` Defaults to
-        /// `http://www.w3.org/2001/04/xmlenc#sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#sha1`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#sha384`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha512`
+        ///  Defaults to `http://www.w3.org/2001/04/xmlenc#sha256`.
         /// </summary>
         [Input("digestAlgorithm")]
         public Input<string>? DigestAlgorithm { get; set; }
@@ -421,7 +448,7 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderSamlId { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=86400`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=86400`.
         /// </summary>
         [Input("sessionValidNotOnOrAfter")]
         public Input<string>? SessionValidNotOnOrAfter { get; set; }
@@ -439,11 +466,17 @@ namespace Pulumi.Authentik
         public Input<bool>? SignResponse { get; set; }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#rsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512` -
-        /// `http://www.w3.org/2000/09/xmldsig#dsa-sha1` Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#rsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512`
+        ///   - `http://www.w3.org/2000/09/xmldsig#dsa-sha1`
+        ///  Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
         /// </summary>
         [Input("signatureAlgorithm")]
         public Input<string>? SignatureAlgorithm { get; set; }
@@ -452,7 +485,10 @@ namespace Pulumi.Authentik
         public Input<string>? SigningKp { get; set; }
 
         /// <summary>
-        /// Allowed values: - `redirect` - `post` Defaults to `redirect`.
+        /// Allowed values:
+        ///   - `redirect`
+        ///   - `post`
+        ///  Defaults to `redirect`.
         /// </summary>
         [Input("spBinding")]
         public Input<string>? SpBinding { get; set; }

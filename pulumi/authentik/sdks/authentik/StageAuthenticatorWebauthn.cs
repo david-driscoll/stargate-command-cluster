@@ -13,7 +13,9 @@ namespace Pulumi.Authentik
     public partial class StageAuthenticatorWebauthn : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `platform` - `cross-platform`
+        /// Allowed values:
+        ///   - `platform`
+        ///   - `cross-platform`
         /// </summary>
         [Output("authenticatorAttachment")]
         public Output<string?> AuthenticatorAttachment { get; private set; } = null!;
@@ -27,11 +29,18 @@ namespace Pulumi.Authentik
         [Output("friendlyName")]
         public Output<string?> FriendlyName { get; private set; } = null!;
 
+        [Output("maxAttempts")]
+        public Output<double?> MaxAttempts { get; private set; } = null!;
+
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `discouraged` - `preferred` - `required` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `discouraged`
+        ///   - `preferred`
+        ///   - `required`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Output("residentKeyRequirement")]
         public Output<string?> ResidentKeyRequirement { get; private set; } = null!;
@@ -40,7 +49,11 @@ namespace Pulumi.Authentik
         public Output<string> StageAuthenticatorWebauthnId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `required` - `preferred` - `discouraged` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `required`
+        ///   - `preferred`
+        ///   - `discouraged`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Output("userVerification")]
         public Output<string?> UserVerification { get; private set; } = null!;
@@ -92,7 +105,9 @@ namespace Pulumi.Authentik
     public sealed class StageAuthenticatorWebauthnArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `platform` - `cross-platform`
+        /// Allowed values:
+        ///   - `platform`
+        ///   - `cross-platform`
         /// </summary>
         [Input("authenticatorAttachment")]
         public Input<string>? AuthenticatorAttachment { get; set; }
@@ -111,11 +126,18 @@ namespace Pulumi.Authentik
         [Input("friendlyName")]
         public Input<string>? FriendlyName { get; set; }
 
+        [Input("maxAttempts")]
+        public Input<double>? MaxAttempts { get; set; }
+
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `discouraged` - `preferred` - `required` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `discouraged`
+        ///   - `preferred`
+        ///   - `required`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Input("residentKeyRequirement")]
         public Input<string>? ResidentKeyRequirement { get; set; }
@@ -124,7 +146,11 @@ namespace Pulumi.Authentik
         public Input<string>? StageAuthenticatorWebauthnId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `required` - `preferred` - `discouraged` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `required`
+        ///   - `preferred`
+        ///   - `discouraged`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Input("userVerification")]
         public Input<string>? UserVerification { get; set; }
@@ -138,7 +164,9 @@ namespace Pulumi.Authentik
     public sealed class StageAuthenticatorWebauthnState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `platform` - `cross-platform`
+        /// Allowed values:
+        ///   - `platform`
+        ///   - `cross-platform`
         /// </summary>
         [Input("authenticatorAttachment")]
         public Input<string>? AuthenticatorAttachment { get; set; }
@@ -157,11 +185,18 @@ namespace Pulumi.Authentik
         [Input("friendlyName")]
         public Input<string>? FriendlyName { get; set; }
 
+        [Input("maxAttempts")]
+        public Input<double>? MaxAttempts { get; set; }
+
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `discouraged` - `preferred` - `required` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `discouraged`
+        ///   - `preferred`
+        ///   - `required`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Input("residentKeyRequirement")]
         public Input<string>? ResidentKeyRequirement { get; set; }
@@ -170,7 +205,11 @@ namespace Pulumi.Authentik
         public Input<string>? StageAuthenticatorWebauthnId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `required` - `preferred` - `discouraged` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `required`
+        ///   - `preferred`
+        ///   - `discouraged`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Input("userVerification")]
         public Input<string>? UserVerification { get; set; }

@@ -13,7 +13,7 @@ namespace Pulumi.Authentik
     public partial class ProviderGoogleWorkspace : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Output("credentials")]
         public Output<string?> Credentials { get; private set; } = null!;
@@ -21,9 +21,6 @@ namespace Pulumi.Authentik
         [Output("defaultGroupEmailDomain")]
         public Output<string> DefaultGroupEmailDomain { get; private set; } = null!;
 
-        /// <summary>
-        /// Defaults to `seconds=0`.
-        /// </summary>
         [Output("delegatedSubject")]
         public Output<string?> DelegatedSubject { get; private set; } = null!;
 
@@ -40,7 +37,10 @@ namespace Pulumi.Authentik
         public Output<string?> FilterGroup { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Output("groupDeleteAction")]
         public Output<string?> GroupDeleteAction { get; private set; } = null!;
@@ -58,7 +58,11 @@ namespace Pulumi.Authentik
         public Output<string> ProviderGoogleWorkspaceId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `do_nothing` - `delete` - `suspend` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `do_nothing`
+        ///   - `delete`
+        ///   - `suspend`
+        ///  Defaults to `delete`.
         /// </summary>
         [Output("userDeleteAction")]
         public Output<string?> UserDeleteAction { get; private set; } = null!;
@@ -110,7 +114,7 @@ namespace Pulumi.Authentik
     public sealed class ProviderGoogleWorkspaceArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Input("credentials")]
         public Input<string>? Credentials { get; set; }
@@ -118,9 +122,6 @@ namespace Pulumi.Authentik
         [Input("defaultGroupEmailDomain", required: true)]
         public Input<string> DefaultGroupEmailDomain { get; set; } = null!;
 
-        /// <summary>
-        /// Defaults to `seconds=0`.
-        /// </summary>
         [Input("delegatedSubject")]
         public Input<string>? DelegatedSubject { get; set; }
 
@@ -137,7 +138,10 @@ namespace Pulumi.Authentik
         public Input<string>? FilterGroup { get; set; }
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("groupDeleteAction")]
         public Input<string>? GroupDeleteAction { get; set; }
@@ -165,7 +169,11 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderGoogleWorkspaceId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `do_nothing` - `delete` - `suspend` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `do_nothing`
+        ///   - `delete`
+        ///   - `suspend`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("userDeleteAction")]
         public Input<string>? UserDeleteAction { get; set; }
@@ -179,7 +187,7 @@ namespace Pulumi.Authentik
     public sealed class ProviderGoogleWorkspaceState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Input("credentials")]
         public Input<string>? Credentials { get; set; }
@@ -187,9 +195,6 @@ namespace Pulumi.Authentik
         [Input("defaultGroupEmailDomain")]
         public Input<string>? DefaultGroupEmailDomain { get; set; }
 
-        /// <summary>
-        /// Defaults to `seconds=0`.
-        /// </summary>
         [Input("delegatedSubject")]
         public Input<string>? DelegatedSubject { get; set; }
 
@@ -206,7 +211,10 @@ namespace Pulumi.Authentik
         public Input<string>? FilterGroup { get; set; }
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("groupDeleteAction")]
         public Input<string>? GroupDeleteAction { get; set; }
@@ -234,7 +242,11 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderGoogleWorkspaceId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `do_nothing` - `delete` - `suspend` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `do_nothing`
+        ///   - `delete`
+        ///   - `suspend`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("userDeleteAction")]
         public Input<string>? UserDeleteAction { get; set; }

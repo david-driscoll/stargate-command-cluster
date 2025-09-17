@@ -13,8 +13,12 @@ namespace Pulumi.Authentik
     public partial class StageUserLogin : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_continent` - `bind_continent_country` - `bind_continent_country_city` Defaults to
-        /// `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_continent`
+        ///   - `bind_continent_country`
+        ///   - `bind_continent_country_city`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Output("geoipBinding")]
         public Output<string?> GeoipBinding { get; private set; } = null!;
@@ -23,19 +27,30 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_asn` - `bind_asn_network` - `bind_asn_network_ip` Defaults to `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_asn`
+        ///   - `bind_asn_network`
+        ///   - `bind_asn_network_ip`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Output("networkBinding")]
         public Output<string?> NetworkBinding { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `seconds=0`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
+        /// </summary>
+        [Output("rememberDevice")]
+        public Output<string?> RememberDevice { get; private set; } = null!;
+
+        /// <summary>
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `seconds=0`.
         /// </summary>
         [Output("rememberMeOffset")]
         public Output<string?> RememberMeOffset { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `seconds=0`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `seconds=0`.
         /// </summary>
         [Output("sessionDuration")]
         public Output<string?> SessionDuration { get; private set; } = null!;
@@ -96,8 +111,12 @@ namespace Pulumi.Authentik
     public sealed class StageUserLoginArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_continent` - `bind_continent_country` - `bind_continent_country_city` Defaults to
-        /// `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_continent`
+        ///   - `bind_continent_country`
+        ///   - `bind_continent_country_city`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("geoipBinding")]
         public Input<string>? GeoipBinding { get; set; }
@@ -106,19 +125,30 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_asn` - `bind_asn_network` - `bind_asn_network_ip` Defaults to `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_asn`
+        ///   - `bind_asn_network`
+        ///   - `bind_asn_network_ip`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("networkBinding")]
         public Input<string>? NetworkBinding { get; set; }
 
         /// <summary>
-        /// Defaults to `seconds=0`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
+        /// </summary>
+        [Input("rememberDevice")]
+        public Input<string>? RememberDevice { get; set; }
+
+        /// <summary>
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `seconds=0`.
         /// </summary>
         [Input("rememberMeOffset")]
         public Input<string>? RememberMeOffset { get; set; }
 
         /// <summary>
-        /// Defaults to `seconds=0`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `seconds=0`.
         /// </summary>
         [Input("sessionDuration")]
         public Input<string>? SessionDuration { get; set; }
@@ -141,8 +171,12 @@ namespace Pulumi.Authentik
     public sealed class StageUserLoginState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_continent` - `bind_continent_country` - `bind_continent_country_city` Defaults to
-        /// `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_continent`
+        ///   - `bind_continent_country`
+        ///   - `bind_continent_country_city`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("geoipBinding")]
         public Input<string>? GeoipBinding { get; set; }
@@ -151,19 +185,30 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_asn` - `bind_asn_network` - `bind_asn_network_ip` Defaults to `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_asn`
+        ///   - `bind_asn_network`
+        ///   - `bind_asn_network_ip`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("networkBinding")]
         public Input<string>? NetworkBinding { get; set; }
 
         /// <summary>
-        /// Defaults to `seconds=0`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
+        /// </summary>
+        [Input("rememberDevice")]
+        public Input<string>? RememberDevice { get; set; }
+
+        /// <summary>
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `seconds=0`.
         /// </summary>
         [Input("rememberMeOffset")]
         public Input<string>? RememberMeOffset { get; set; }
 
         /// <summary>
-        /// Defaults to `seconds=0`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `seconds=0`.
         /// </summary>
         [Input("sessionDuration")]
         public Input<string>? SessionDuration { get; set; }

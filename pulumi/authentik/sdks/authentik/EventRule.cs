@@ -12,26 +12,36 @@ namespace Pulumi.Authentik
     [AuthentikResourceType("authentik:index/eventRule:EventRule")]
     public partial class EventRule : global::Pulumi.CustomResource
     {
+        /// <summary>
+        /// Send notification to event user Defaults to `false`.
+        /// </summary>
+        [Output("destinationEventUser")]
+        public Output<bool?> DestinationEventUser { get; private set; } = null!;
+
+        /// <summary>
+        /// Group to send notification to
+        /// </summary>
+        [Output("destinationGroup")]
+        public Output<string?> DestinationGroup { get; private set; } = null!;
+
         [Output("eventRuleId")]
         public Output<string> EventRuleId { get; private set; } = null!;
-
-        [Output("group")]
-        public Output<string?> Group { get; private set; } = null!;
 
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `notice` - `warning` - `alert` Defaults to `warning`.
+        /// Allowed values:
+        ///   - `notice`
+        ///   - `warning`
+        ///   - `alert`
+        ///  Defaults to `warning`.
         /// </summary>
         [Output("severity")]
         public Output<string?> Severity { get; private set; } = null!;
 
         [Output("transports")]
         public Output<ImmutableArray<string>> Transports { get; private set; } = null!;
-
-        [Output("webhookMapping")]
-        public Output<string?> WebhookMapping { get; private set; } = null!;
 
 
         /// <summary>
@@ -79,17 +89,30 @@ namespace Pulumi.Authentik
 
     public sealed class EventRuleArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Send notification to event user Defaults to `false`.
+        /// </summary>
+        [Input("destinationEventUser")]
+        public Input<bool>? DestinationEventUser { get; set; }
+
+        /// <summary>
+        /// Group to send notification to
+        /// </summary>
+        [Input("destinationGroup")]
+        public Input<string>? DestinationGroup { get; set; }
+
         [Input("eventRuleId")]
         public Input<string>? EventRuleId { get; set; }
-
-        [Input("group")]
-        public Input<string>? Group { get; set; }
 
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `notice` - `warning` - `alert` Defaults to `warning`.
+        /// Allowed values:
+        ///   - `notice`
+        ///   - `warning`
+        ///   - `alert`
+        ///  Defaults to `warning`.
         /// </summary>
         [Input("severity")]
         public Input<string>? Severity { get; set; }
@@ -102,9 +125,6 @@ namespace Pulumi.Authentik
             set => _transports = value;
         }
 
-        [Input("webhookMapping")]
-        public Input<string>? WebhookMapping { get; set; }
-
         public EventRuleArgs()
         {
         }
@@ -113,17 +133,30 @@ namespace Pulumi.Authentik
 
     public sealed class EventRuleState : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Send notification to event user Defaults to `false`.
+        /// </summary>
+        [Input("destinationEventUser")]
+        public Input<bool>? DestinationEventUser { get; set; }
+
+        /// <summary>
+        /// Group to send notification to
+        /// </summary>
+        [Input("destinationGroup")]
+        public Input<string>? DestinationGroup { get; set; }
+
         [Input("eventRuleId")]
         public Input<string>? EventRuleId { get; set; }
-
-        [Input("group")]
-        public Input<string>? Group { get; set; }
 
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `notice` - `warning` - `alert` Defaults to `warning`.
+        /// Allowed values:
+        ///   - `notice`
+        ///   - `warning`
+        ///   - `alert`
+        ///  Defaults to `warning`.
         /// </summary>
         [Input("severity")]
         public Input<string>? Severity { get; set; }
@@ -135,9 +168,6 @@ namespace Pulumi.Authentik
             get => _transports ?? (_transports = new InputList<string>());
             set => _transports = value;
         }
-
-        [Input("webhookMapping")]
-        public Input<string>? WebhookMapping { get; set; }
 
         public EventRuleState()
         {

@@ -28,7 +28,10 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> PropertyMappings { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `rdp` - `vnc` - `ssh`
+        /// Allowed values:
+        ///   - `rdp`
+        ///   - `vnc`
+        ///   - `ssh`
         /// </summary>
         [Output("protocol")]
         public Output<string> Protocol { get; private set; } = null!;
@@ -40,7 +43,7 @@ namespace Pulumi.Authentik
         public Output<string> RacEndpointId { get; private set; } = null!;
 
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Output("settings")]
         public Output<string?> Settings { get; private set; } = null!;
@@ -112,7 +115,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `rdp` - `vnc` - `ssh`
+        /// Allowed values:
+        ///   - `rdp`
+        ///   - `vnc`
+        ///   - `ssh`
         /// </summary>
         [Input("protocol", required: true)]
         public Input<string> Protocol { get; set; } = null!;
@@ -124,7 +130,7 @@ namespace Pulumi.Authentik
         public Input<string>? RacEndpointId { get; set; }
 
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Input("settings")]
         public Input<string>? Settings { get; set; }
@@ -158,7 +164,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `rdp` - `vnc` - `ssh`
+        /// Allowed values:
+        ///   - `rdp`
+        ///   - `vnc`
+        ///   - `ssh`
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }
@@ -170,7 +179,7 @@ namespace Pulumi.Authentik
         public Input<string>? RacEndpointId { get; set; }
 
         /// <summary>
-        /// JSON format expected. Use jsonencode() to pass objects. Defaults to `{}`.
+        /// JSON format expected. Use `jsonencode()` to pass objects. Defaults to `{}`.
         /// </summary>
         [Input("settings")]
         public Input<string>? Settings { get; set; }

@@ -1,0 +1,10 @@
+{
+  "resource": true,
+  "name": "terraform-provider",
+  "version": "0.14.0",
+  "parameterization": {
+    "name": "truenas",
+    "version": "0.11.1",
+    "value": "eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkudGVycmFmb3JtLmlvL2Rhcml1c2Jha3VuYXMvdHJ1ZW5hcyIsInZlcnNpb24iOiIwLjExLjEifX0="
+  }
+}

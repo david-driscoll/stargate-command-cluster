@@ -13,7 +13,7 @@ namespace Pulumi.Authentik
     public partial class ProviderProxy : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Defaults to `minutes=10`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=10`.
         /// </summary>
         [Output("accessTokenValidity")]
         public Output<string?> AccessTokenValidity { get; private set; } = null!;
@@ -85,7 +85,11 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> JwtFederationSources { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `proxy` - `forward_single` - `forward_domain` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `forward_single`
+        ///   - `forward_domain`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Output("mode")]
         public Output<string?> Mode { get; private set; } = null!;
@@ -100,7 +104,7 @@ namespace Pulumi.Authentik
         public Output<string> ProviderProxyId { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `days=30`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
         /// </summary>
         [Output("refreshTokenValidity")]
         public Output<string?> RefreshTokenValidity { get; private set; } = null!;
@@ -155,7 +159,7 @@ namespace Pulumi.Authentik
     public sealed class ProviderProxyArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Defaults to `minutes=10`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=10`.
         /// </summary>
         [Input("accessTokenValidity")]
         public Input<string>? AccessTokenValidity { get; set; }
@@ -239,7 +243,11 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `forward_single` - `forward_domain` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `forward_single`
+        ///   - `forward_domain`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -259,7 +267,7 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderProxyId { get; set; }
 
         /// <summary>
-        /// Defaults to `days=30`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
         /// </summary>
         [Input("refreshTokenValidity")]
         public Input<string>? RefreshTokenValidity { get; set; }
@@ -276,7 +284,7 @@ namespace Pulumi.Authentik
     public sealed class ProviderProxyState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Defaults to `minutes=10`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=10`.
         /// </summary>
         [Input("accessTokenValidity")]
         public Input<string>? AccessTokenValidity { get; set; }
@@ -366,7 +374,11 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `forward_single` - `forward_domain` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `forward_single`
+        ///   - `forward_domain`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -386,7 +398,7 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderProxyId { get; set; }
 
         /// <summary>
-        /// Defaults to `days=30`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
         /// </summary>
         [Input("refreshTokenValidity")]
         public Input<string>? RefreshTokenValidity { get; set; }

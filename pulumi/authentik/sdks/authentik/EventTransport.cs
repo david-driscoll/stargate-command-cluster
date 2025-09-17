@@ -12,11 +12,27 @@ namespace Pulumi.Authentik
     [AuthentikResourceType("authentik:index/eventTransport:EventTransport")]
     public partial class EventTransport : global::Pulumi.CustomResource
     {
+        /// <summary>
+        /// Defaults to `authentik Notification:`.
+        /// </summary>
+        [Output("emailSubjectPrefix")]
+        public Output<string?> EmailSubjectPrefix { get; private set; } = null!;
+
+        /// <summary>
+        /// Defaults to `email/event_notification.html`.
+        /// </summary>
+        [Output("emailTemplate")]
+        public Output<string?> EmailTemplate { get; private set; } = null!;
+
         [Output("eventTransportId")]
         public Output<string> EventTransportId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `local` - `webhook` - `webhook_slack` - `email`
+        /// Allowed values:
+        ///   - `local`
+        ///   - `webhook`
+        ///   - `webhook_slack`
+        ///   - `email`
         /// </summary>
         [Output("mode")]
         public Output<string> Mode { get; private set; } = null!;
@@ -85,11 +101,27 @@ namespace Pulumi.Authentik
 
     public sealed class EventTransportArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Defaults to `authentik Notification:`.
+        /// </summary>
+        [Input("emailSubjectPrefix")]
+        public Input<string>? EmailSubjectPrefix { get; set; }
+
+        /// <summary>
+        /// Defaults to `email/event_notification.html`.
+        /// </summary>
+        [Input("emailTemplate")]
+        public Input<string>? EmailTemplate { get; set; }
+
         [Input("eventTransportId")]
         public Input<string>? EventTransportId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `local` - `webhook` - `webhook_slack` - `email`
+        /// Allowed values:
+        ///   - `local`
+        ///   - `webhook`
+        ///   - `webhook_slack`
+        ///   - `email`
         /// </summary>
         [Input("mode", required: true)]
         public Input<string> Mode { get; set; } = null!;
@@ -120,11 +152,27 @@ namespace Pulumi.Authentik
 
     public sealed class EventTransportState : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Defaults to `authentik Notification:`.
+        /// </summary>
+        [Input("emailSubjectPrefix")]
+        public Input<string>? EmailSubjectPrefix { get; set; }
+
+        /// <summary>
+        /// Defaults to `email/event_notification.html`.
+        /// </summary>
+        [Input("emailTemplate")]
+        public Input<string>? EmailTemplate { get; set; }
+
         [Input("eventTransportId")]
         public Input<string>? EventTransportId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `local` - `webhook` - `webhook_slack` - `email`
+        /// Allowed values:
+        ///   - `local`
+        ///   - `webhook`
+        ///   - `webhook_slack`
+        ///   - `email`
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

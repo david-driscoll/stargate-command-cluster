@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Dumpify;
+using Humanizer;
 using Microsoft.Kiota.Abstractions;
 using Pulumi;
 using Pulumi.Cloudflare;
@@ -28,6 +29,7 @@ public class ProxmoxHost : ComponentResource
     public required Output<GetAPICredentialResult> Proxmox { get; init; }
     public required Input<string> InternalIpAddress { get; init; }
     public required Input<string> TailscaleIpAddress { get; init; }
+    public required Input<string> MacAddress { get; init; }
     public required bool IsBackupServer { get; init; }
     public bool InstallTailscale { get; init; } = true;
   }
@@ -130,7 +132,6 @@ public class ProxmoxHost : ComponentResource
         Connection = connection,
         Create = "chmod 755 /etc/cron.weekly/tailscale && /etc/cron.weekly/tailscale"
       }, CustomResourceOptions.Merge(cro, new() { DependsOn = [tailscaleCron] }));
-
     }
 
     var device = GetDevice.Invoke(new()
@@ -184,6 +185,7 @@ public class ProxmoxHost : ComponentResource
 
     // /etc/.pve-ignore.resolv.conf
   }
+
 
   public Output<GetDeviceResult> Device { get; set; }
 

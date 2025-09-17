@@ -13,25 +13,28 @@ namespace Pulumi.Authentik
     public partial class ProviderOauth2 : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Defaults to `minutes=1`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=1`.
         /// </summary>
         [Output("accessCodeValidity")]
         public Output<string?> AccessCodeValidity { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `minutes=10`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=10`.
         /// </summary>
         [Output("accessTokenValidity")]
         public Output<string?> AccessTokenValidity { get; private set; } = null!;
 
         [Output("allowedRedirectUris")]
-        public Output<ImmutableArray<string>> AllowedRedirectUris { get; private set; } = null!;
+        public Output<ImmutableArray<ImmutableDictionary<string, string>>> AllowedRedirectUris { get; private set; } = null!;
 
         [Output("authenticationFlow")]
         public Output<string?> AuthenticationFlow { get; private set; } = null!;
 
         [Output("authorizationFlow")]
         public Output<string> AuthorizationFlow { get; private set; } = null!;
+
+        [Output("backchannelLogoutUri")]
+        public Output<string?> BackchannelLogoutUri { get; private set; } = null!;
 
         [Output("clientId")]
         public Output<string> ClientId { get; private set; } = null!;
@@ -43,7 +46,10 @@ namespace Pulumi.Authentik
         public Output<string> ClientSecret { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `confidential` - `public` Defaults to `confidential`.
+        /// Allowed values:
+        ///   - `confidential`
+        ///   - `public`
+        ///  Defaults to `confidential`.
         /// </summary>
         [Output("clientType")]
         public Output<string?> ClientType { get; private set; } = null!;
@@ -61,7 +67,10 @@ namespace Pulumi.Authentik
         public Output<string> InvalidationFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `global` - `per_provider` Defaults to `per_provider`.
+        /// Allowed values:
+        ///   - `global`
+        ///   - `per_provider`
+        ///  Defaults to `per_provider`.
         /// </summary>
         [Output("issuerMode")]
         public Output<string?> IssuerMode { get; private set; } = null!;
@@ -94,7 +103,7 @@ namespace Pulumi.Authentik
         public Output<string> ProviderOauth2Id { get; private set; } = null!;
 
         /// <summary>
-        /// Defaults to `days=30`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
         /// </summary>
         [Output("refreshTokenValidity")]
         public Output<string?> RefreshTokenValidity { get; private set; } = null!;
@@ -103,8 +112,14 @@ namespace Pulumi.Authentik
         public Output<string?> SigningKey { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `hashed_user_id` - `user_id` - `user_uuid` - `user_username` - `user_email` - `user_upn` Defaults to
-        /// `hashed_user_id`.
+        /// Allowed values:
+        ///   - `hashed_user_id`
+        ///   - `user_id`
+        ///   - `user_uuid`
+        ///   - `user_username`
+        ///   - `user_email`
+        ///   - `user_upn`
+        ///  Defaults to `hashed_user_id`.
         /// </summary>
         [Output("subMode")]
         public Output<string?> SubMode { get; private set; } = null!;
@@ -160,13 +175,13 @@ namespace Pulumi.Authentik
     public sealed class ProviderOauth2Args : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Defaults to `minutes=1`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=1`.
         /// </summary>
         [Input("accessCodeValidity")]
         public Input<string>? AccessCodeValidity { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=10`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=10`.
         /// </summary>
         [Input("accessTokenValidity")]
         public Input<string>? AccessTokenValidity { get; set; }
@@ -184,6 +199,9 @@ namespace Pulumi.Authentik
 
         [Input("authorizationFlow", required: true)]
         public Input<string> AuthorizationFlow { get; set; } = null!;
+
+        [Input("backchannelLogoutUri")]
+        public Input<string>? BackchannelLogoutUri { get; set; }
 
         [Input("clientId", required: true)]
         public Input<string> ClientId { get; set; } = null!;
@@ -205,7 +223,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `confidential` - `public` Defaults to `confidential`.
+        /// Allowed values:
+        ///   - `confidential`
+        ///   - `public`
+        ///  Defaults to `confidential`.
         /// </summary>
         [Input("clientType")]
         public Input<string>? ClientType { get; set; }
@@ -223,7 +244,10 @@ namespace Pulumi.Authentik
         public Input<string> InvalidationFlow { get; set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `global` - `per_provider` Defaults to `per_provider`.
+        /// Allowed values:
+        ///   - `global`
+        ///   - `per_provider`
+        ///  Defaults to `per_provider`.
         /// </summary>
         [Input("issuerMode")]
         public Input<string>? IssuerMode { get; set; }
@@ -279,7 +303,7 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderOauth2Id { get; set; }
 
         /// <summary>
-        /// Defaults to `days=30`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
         /// </summary>
         [Input("refreshTokenValidity")]
         public Input<string>? RefreshTokenValidity { get; set; }
@@ -288,8 +312,14 @@ namespace Pulumi.Authentik
         public Input<string>? SigningKey { get; set; }
 
         /// <summary>
-        /// Allowed values: - `hashed_user_id` - `user_id` - `user_uuid` - `user_username` - `user_email` - `user_upn` Defaults to
-        /// `hashed_user_id`.
+        /// Allowed values:
+        ///   - `hashed_user_id`
+        ///   - `user_id`
+        ///   - `user_uuid`
+        ///   - `user_username`
+        ///   - `user_email`
+        ///   - `user_upn`
+        ///  Defaults to `hashed_user_id`.
         /// </summary>
         [Input("subMode")]
         public Input<string>? SubMode { get; set; }
@@ -303,13 +333,13 @@ namespace Pulumi.Authentik
     public sealed class ProviderOauth2State : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Defaults to `minutes=1`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=1`.
         /// </summary>
         [Input("accessCodeValidity")]
         public Input<string>? AccessCodeValidity { get; set; }
 
         /// <summary>
-        /// Defaults to `minutes=10`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `minutes=10`.
         /// </summary>
         [Input("accessTokenValidity")]
         public Input<string>? AccessTokenValidity { get; set; }
@@ -327,6 +357,9 @@ namespace Pulumi.Authentik
 
         [Input("authorizationFlow")]
         public Input<string>? AuthorizationFlow { get; set; }
+
+        [Input("backchannelLogoutUri")]
+        public Input<string>? BackchannelLogoutUri { get; set; }
 
         [Input("clientId")]
         public Input<string>? ClientId { get; set; }
@@ -348,7 +381,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `confidential` - `public` Defaults to `confidential`.
+        /// Allowed values:
+        ///   - `confidential`
+        ///   - `public`
+        ///  Defaults to `confidential`.
         /// </summary>
         [Input("clientType")]
         public Input<string>? ClientType { get; set; }
@@ -366,7 +402,10 @@ namespace Pulumi.Authentik
         public Input<string>? InvalidationFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `global` - `per_provider` Defaults to `per_provider`.
+        /// Allowed values:
+        ///   - `global`
+        ///   - `per_provider`
+        ///  Defaults to `per_provider`.
         /// </summary>
         [Input("issuerMode")]
         public Input<string>? IssuerMode { get; set; }
@@ -422,7 +461,7 @@ namespace Pulumi.Authentik
         public Input<string>? ProviderOauth2Id { get; set; }
 
         /// <summary>
-        /// Defaults to `days=30`.
+        /// Format: hours=1;minutes=2;seconds=3. Defaults to `days=30`.
         /// </summary>
         [Input("refreshTokenValidity")]
         public Input<string>? RefreshTokenValidity { get; set; }
@@ -431,8 +470,14 @@ namespace Pulumi.Authentik
         public Input<string>? SigningKey { get; set; }
 
         /// <summary>
-        /// Allowed values: - `hashed_user_id` - `user_id` - `user_uuid` - `user_username` - `user_email` - `user_upn` Defaults to
-        /// `hashed_user_id`.
+        /// Allowed values:
+        ///   - `hashed_user_id`
+        ///   - `user_id`
+        ///   - `user_uuid`
+        ///   - `user_username`
+        ///   - `user_email`
+        ///   - `user_upn`
+        ///  Defaults to `hashed_user_id`.
         /// </summary>
         [Input("subMode")]
         public Input<string>? SubMode { get; set; }

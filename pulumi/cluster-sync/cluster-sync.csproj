@@ -8,6 +8,8 @@
     <NoWarn>$(NoWarn);CS0436;RMG012;RMG020</NoWarn>
   </PropertyGroup>
 
+  <Import Project="../Packages.targets" />
+
   <ItemGroup>
     <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33"/>
     <Compile Remove="crds/**/*.*"/>
@@ -15,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="sdks\uptimekuma\Pulumi.Uptimekuma.csproj"/>
-    <ProjectReference Include="..\models\models.csproj"/>
+    <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
+    <ProjectReference Include="sdks\proxmox\Pulumi.Proxmox.csproj" />
+    <ProjectReference Include="sdks\truenas\Pulumi.Truenas.csproj" />
+    <ProjectReference Include="sdks\unifi\Pulumi.Unifi.csproj" />
+    <ProjectReference Include="sdks\uptimekuma\Pulumi.Uptimekuma.csproj" />
+    <Compile Include="..\models\**\*.cs" Exclude="..\models\obj\**\*.cs" LinkBase="models" />
   </ItemGroup>
 </Project>

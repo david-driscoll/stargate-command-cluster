@@ -8,32 +8,23 @@
     <NoWarn>$(NoWarn);CS0436;RMG012;RMG020</NoWarn>
   </PropertyGroup>
 
+  <Import Project="../Packages.targets" />
+
   <ItemGroup>
     <PackageReference Include="Duende.IdentityModel" Version="7.1.0" />
     <PackageReference Include="DynamicData" Version="9.4.1" />
-    <PackageReference Include="Microsoft.Kiota.Bundle" Version="1.19.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <PackageReference Include="Pulumi.Automation" Version="3.87.0" />
-    <PackageReference Include="Pulumi.Cloudflare" Version="6.8.0" />
-    <PackageReference Include="Pulumi.Docker" Version="4.8.2" />
-    <PackageReference Include="Pulumi.ProxmoxVE" Version="7.5.0" />
-<!--    <PackageReference Include="Pulumi.Tailscale" Version="0.21.1" />-->
-<!--    <PackageReference Include="Pulumi.TailscaleNative" Version="0.1.6" />-->
-    <PackageReference Include="Pulumiverse.Talos" Version="0.6.0" />
-    <PackageReference Include="Pulumiverse.Unifi" Version="0.1.1" />
-    <PackageReference Include="Rocket.Surgery.OnePasswordNativeUnofficial" Version="0.0.33" />
     <Compile Remove="crds/**/*.*" />
     <Compile Remove="sdks/**/*.*" />
+    <PackageReference Include="System.Interactive" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\models\models.csproj" />
+    <Compile Include="..\models\**\*.cs" Exclude="..\models\obj\**\*.cs" LinkBase="models" />
+    <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
     <ProjectReference Include="sdks\proxmox\Pulumi.Proxmox.csproj" />
     <ProjectReference Include="sdks\truenas\Pulumi.Truenas.csproj" />
-    <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\" />
+    <ProjectReference Include="sdks\unifi\Pulumi.Unifi.csproj" />
+    <ProjectReference Include="sdks\uptimekuma\Pulumi.Uptimekuma.csproj" />
   </ItemGroup>
 </Project>

@@ -4,8 +4,28 @@ runtime: dotnet
 backend:
   url: postgres://
 packages:
+  uptimekuma:
+    source: terraform-provider
+    version: 0.14.0
+    parameters:
+      - registry.terraform.io/kill3r-queen/uptimekuma
+  proxmox:
+    source: terraform-provider
+    version: 0.14.0
+    parameters:
+      - registry.terraform.io/Telmate/proxmox
+  truenas:
+    source: terraform-provider
+    version: 0.14.0
+    parameters:
+      - registry.terraform.io/dariusbakunas/truenas
   authentik:
     source: terraform-provider
-    version: 0.12.0
+    version: 0.14.0
     parameters:
-      - goauthentik/authentik
+      - registry.terraform.io/goauthentik/authentik
+  unifi:
+    source: terraform-provider
+    version: 0.14.0
+    parameters:
+      - registry.opentofu.org/filipowm/unifi

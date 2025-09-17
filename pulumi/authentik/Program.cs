@@ -44,14 +44,9 @@ return await Deployment.RunAsync(async () =>
   }
 
   var groups = new AuthentikGroups();
-  var onePasswordProvider = new Rocket.Surgery.OnePasswordNativeUnofficial.Provider("onepassword", new()
-  {
-    Vault = Environment.GetEnvironmentVariable("CONNECT_VAULT") ?? throw new InvalidOperationException("CONNECT_VAULT is not set"),
-    ConnectHost = Environment.GetEnvironmentVariable("CONNECT_HOST") ?? throw new InvalidOperationException("CONNECT_HOST is not set"),
-    ConnectToken = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ?? throw new InvalidOperationException("CONNECT_TOKEN is not set"),
-  });
+  var globals = new GlobalResources();
 
-  var flows = Flows2.CreateFlows(onePasswordProvider);
+  var flows = Flows2.CreateFlows(Globals.OnePasswordProvider);
   var clusterFlows = new AuthentikApplicationResources.ClusterFlows()
   {
     AuthorizationFlow = flows.ImplicitConsentFlow.Uuid,
@@ -79,7 +74,6 @@ return await Deployment.RunAsync(async () =>
 
   _ = new AuthentikApplicationResources(new()
   {
-    OnePasswordProvider = onePasswordProvider,
     Groups = groups,
     Cluster = cluster,
     ClusterInfo = clusters.ToImmutableDictionary(z => z.Metadata.Name, z => z),

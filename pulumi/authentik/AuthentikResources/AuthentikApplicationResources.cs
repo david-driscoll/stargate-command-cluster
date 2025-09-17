@@ -32,7 +32,6 @@ public class AuthentikApplicationResources : ComponentResource
 
   public class Args : ResourceArgs
   {
-    public required Rocket.Surgery.OnePasswordNativeUnofficial.Provider OnePasswordProvider { get; init; }
     public required AuthentikGroups Groups { get; init; }
     public required PropertyMappings PropertyMappings { get; init; }
     public required ClusterFlows ClusterFlows { get; init; }
@@ -194,7 +193,7 @@ public class AuthentikApplicationResources : ComponentResource
             ["openid_configuration_url"] = new () { Value = $"{new UriBuilder(clusterInfo.Spec.Domain) { Path = $"/application/o/{slug}/.well-known/openid-configuration" }}" },
           },
           Vault = "Eris",
-        }, new CustomResourceOptions() { Parent = this, Provider = args.OnePasswordProvider });
+        }, new CustomResourceOptions() { Parent = this, Provider = Globals.OnePasswordProvider });
 
 
         break;

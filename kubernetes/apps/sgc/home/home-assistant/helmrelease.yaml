@@ -39,6 +39,8 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          restartPolicy: Always
         containers:
           app:
             image:
@@ -58,18 +60,39 @@ spec:
                 cpu: 2
                 memory: 2Gi
             probes:
-              liveness: &probes
+              startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: &app-port 8123
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *app-port
+                  initialDelaySeconds: 0
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *app-port
                   initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 5
                   failureThreshold: 3
-              readiness: *probes
 
           code:
             image:

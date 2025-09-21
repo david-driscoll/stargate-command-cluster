@@ -22,7 +22,10 @@ namespace Pulumi.Authentik
         public Output<string?> AuthPassword { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `basic` - `bearer` Defaults to `basic`.
+        /// Allowed values:
+        ///   - `basic`
+        ///   - `bearer`
+        ///  Defaults to `basic`.
         /// </summary>
         [Output("authType")]
         public Output<string?> AuthType { get; private set; } = null!;
@@ -43,7 +46,10 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `twilio` - `generic` Defaults to `twilio`.
+        /// Allowed values:
+        ///   - `twilio`
+        ///   - `generic`
+        ///  Defaults to `twilio`.
         /// </summary>
         [Output("smsProvider")]
         public Output<string?> SmsProvider { get; private set; } = null!;
@@ -146,7 +152,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `basic` - `bearer` Defaults to `basic`.
+        /// Allowed values:
+        ///   - `basic`
+        ///   - `bearer`
+        ///  Defaults to `basic`.
         /// </summary>
         [Input("authType")]
         public Input<string>? AuthType { get; set; }
@@ -167,7 +176,10 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `twilio` - `generic` Defaults to `twilio`.
+        /// Allowed values:
+        ///   - `twilio`
+        ///   - `generic`
+        ///  Defaults to `twilio`.
         /// </summary>
         [Input("smsProvider")]
         public Input<string>? SmsProvider { get; set; }
@@ -226,7 +238,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `basic` - `bearer` Defaults to `basic`.
+        /// Allowed values:
+        ///   - `basic`
+        ///   - `bearer`
+        ///  Defaults to `basic`.
         /// </summary>
         [Input("authType")]
         public Input<string>? AuthType { get; set; }
@@ -247,7 +262,10 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `twilio` - `generic` Defaults to `twilio`.
+        /// Allowed values:
+        ///   - `twilio`
+        ///   - `generic`
+        ///  Defaults to `twilio`.
         /// </summary>
         [Input("smsProvider")]
         public Input<string>? SmsProvider { get; set; }

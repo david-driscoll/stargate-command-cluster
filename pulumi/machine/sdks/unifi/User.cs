@@ -13,17 +13,18 @@ namespace Pulumi.Unifi
     public partial class User : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allow this resource to take over management of an existing user in the UniFi controller. When true: * The resource can
-        /// manage users that were automatically created when devices connected * Existing settings will be overwritten with the
-        /// values specified in this resource * If false, attempting to manage an existing user will result in an error Use with
-        /// caution as it can modify settings for devices already connected to your network. Defaults to `true`.
+        /// Allow this resource to take over management of an existing user in the UniFi controller. When true:
+        ///   * The resource can manage users that were automatically created when devices connected
+        ///   * Existing settings will be overwritten with the values specified in this resource
+        ///   * If false, attempting to manage an existing user will result in an error
+        /// 
+        /// Use with caution as it can modify settings for devices already connected to your network. Defaults to `true`.
         /// </summary>
         [Output("allowExisting")]
         public Output<bool?> AllowExisting { get; private set; } = null!;
 
         /// <summary>
-        /// When true, this client will be blocked from accessing the network. Useful for temporarily or permanently restricting
-        /// network access for specific devices.
+        /// When true, this client will be blocked from accessing the network. Useful for temporarily or permanently restricting network access for specific devices.
         /// </summary>
         [Output("blocked")]
         public Output<bool?> Blocked { get; private set; } = null!;
@@ -35,8 +36,7 @@ namespace Pulumi.Unifi
         public Output<double?> DevIdOverride { get; private set; } = null!;
 
         /// <summary>
-        /// A static IPv4 address to assign to this client. Ensure this IP is within the client's network range and not already
-        /// assigned to another device.
+        /// A static IPv4 address to assign to this client. Ensure this IP is within the client's network range and not already assigned to another device.
         /// </summary>
         [Output("fixedIp")]
         public Output<string?> FixedIp { get; private set; } = null!;
@@ -54,36 +54,31 @@ namespace Pulumi.Unifi
         public Output<string> Ip { get; private set; } = null!;
 
         /// <summary>
-        /// A local DNS hostname for this client. When set, other devices on the network can resolve this name to the client's IP
-        /// address (e.g., 'printer.local', 'nas.home.arpa'). Such DNS record is automatically added to controller's DNS records.
+        /// A local DNS hostname for this client. When set, other devices on the network can resolve this name to the client's IP address (e.g., 'printer.local', 'nas.home.arpa'). Such DNS record is automatically added to controller's DNS records.
         /// </summary>
         [Output("localDnsRecord")]
         public Output<string?> LocalDnsRecord { get; private set; } = null!;
 
         /// <summary>
-        /// The MAC address of the device/client. This is used as the unique identifier and cannot be changed after creation. Must
-        /// be a valid MAC address format (e.g., '00:11:22:33:44:55'). MAC addresses are case-insensitive.
+        /// The MAC address of the device/client. This is used as the unique identifier and cannot be changed after creation. Must be a valid MAC address format (e.g., '00:11:22:33:44:55'). MAC addresses are case-insensitive.
         /// </summary>
         [Output("mac")]
         public Output<string> Mac { get; private set; } = null!;
 
         /// <summary>
-        /// A friendly name for the device/client. This helps identify the device in the UniFi interface (eg. 'Living Room TV',
-        /// 'John's Laptop').
+        /// A friendly name for the device/client. This helps identify the device in the UniFi interface (eg. 'Living Room TV', 'John's Laptop').
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the network this client should be associated with. This is particularly important when using VLANs or multiple
-        /// networks.
+        /// The ID of the network this client should be associated with. This is particularly important when using VLANs or multiple networks.
         /// </summary>
         [Output("networkId")]
         public Output<string?> NetworkId { get; private set; } = null!;
 
         /// <summary>
-        /// Additional information about the client that you want to record (e.g., 'Company asset tag #12345', 'Guest device -
-        /// expires 2024-03-01').
+        /// Additional information about the client that you want to record (e.g., 'Company asset tag #12345', 'Guest device - expires 2024-03-01').
         /// </summary>
         [Output("note")]
         public Output<string?> Note { get; private set; } = null!;
@@ -98,8 +93,7 @@ namespace Pulumi.Unifi
         public Output<bool?> SkipForgetOnDestroy { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the user group this client belongs to. User groups can be used to apply common settings and restrictions to
-        /// multiple clients.
+        /// The ID of the user group this client belongs to. User groups can be used to apply common settings and restrictions to multiple clients.
         /// </summary>
         [Output("userGroupId")]
         public Output<string?> UserGroupId { get; private set; } = null!;
@@ -151,17 +145,18 @@ namespace Pulumi.Unifi
     public sealed class UserArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allow this resource to take over management of an existing user in the UniFi controller. When true: * The resource can
-        /// manage users that were automatically created when devices connected * Existing settings will be overwritten with the
-        /// values specified in this resource * If false, attempting to manage an existing user will result in an error Use with
-        /// caution as it can modify settings for devices already connected to your network. Defaults to `true`.
+        /// Allow this resource to take over management of an existing user in the UniFi controller. When true:
+        ///   * The resource can manage users that were automatically created when devices connected
+        ///   * Existing settings will be overwritten with the values specified in this resource
+        ///   * If false, attempting to manage an existing user will result in an error
+        /// 
+        /// Use with caution as it can modify settings for devices already connected to your network. Defaults to `true`.
         /// </summary>
         [Input("allowExisting")]
         public Input<bool>? AllowExisting { get; set; }
 
         /// <summary>
-        /// When true, this client will be blocked from accessing the network. Useful for temporarily or permanently restricting
-        /// network access for specific devices.
+        /// When true, this client will be blocked from accessing the network. Useful for temporarily or permanently restricting network access for specific devices.
         /// </summary>
         [Input("blocked")]
         public Input<bool>? Blocked { get; set; }
@@ -173,43 +168,37 @@ namespace Pulumi.Unifi
         public Input<double>? DevIdOverride { get; set; }
 
         /// <summary>
-        /// A static IPv4 address to assign to this client. Ensure this IP is within the client's network range and not already
-        /// assigned to another device.
+        /// A static IPv4 address to assign to this client. Ensure this IP is within the client's network range and not already assigned to another device.
         /// </summary>
         [Input("fixedIp")]
         public Input<string>? FixedIp { get; set; }
 
         /// <summary>
-        /// A local DNS hostname for this client. When set, other devices on the network can resolve this name to the client's IP
-        /// address (e.g., 'printer.local', 'nas.home.arpa'). Such DNS record is automatically added to controller's DNS records.
+        /// A local DNS hostname for this client. When set, other devices on the network can resolve this name to the client's IP address (e.g., 'printer.local', 'nas.home.arpa'). Such DNS record is automatically added to controller's DNS records.
         /// </summary>
         [Input("localDnsRecord")]
         public Input<string>? LocalDnsRecord { get; set; }
 
         /// <summary>
-        /// The MAC address of the device/client. This is used as the unique identifier and cannot be changed after creation. Must
-        /// be a valid MAC address format (e.g., '00:11:22:33:44:55'). MAC addresses are case-insensitive.
+        /// The MAC address of the device/client. This is used as the unique identifier and cannot be changed after creation. Must be a valid MAC address format (e.g., '00:11:22:33:44:55'). MAC addresses are case-insensitive.
         /// </summary>
         [Input("mac", required: true)]
         public Input<string> Mac { get; set; } = null!;
 
         /// <summary>
-        /// A friendly name for the device/client. This helps identify the device in the UniFi interface (eg. 'Living Room TV',
-        /// 'John's Laptop').
+        /// A friendly name for the device/client. This helps identify the device in the UniFi interface (eg. 'Living Room TV', 'John's Laptop').
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The ID of the network this client should be associated with. This is particularly important when using VLANs or multiple
-        /// networks.
+        /// The ID of the network this client should be associated with. This is particularly important when using VLANs or multiple networks.
         /// </summary>
         [Input("networkId")]
         public Input<string>? NetworkId { get; set; }
 
         /// <summary>
-        /// Additional information about the client that you want to record (e.g., 'Company asset tag #12345', 'Guest device -
-        /// expires 2024-03-01').
+        /// Additional information about the client that you want to record (e.g., 'Company asset tag #12345', 'Guest device - expires 2024-03-01').
         /// </summary>
         [Input("note")]
         public Input<string>? Note { get; set; }
@@ -224,8 +213,7 @@ namespace Pulumi.Unifi
         public Input<bool>? SkipForgetOnDestroy { get; set; }
 
         /// <summary>
-        /// The ID of the user group this client belongs to. User groups can be used to apply common settings and restrictions to
-        /// multiple clients.
+        /// The ID of the user group this client belongs to. User groups can be used to apply common settings and restrictions to multiple clients.
         /// </summary>
         [Input("userGroupId")]
         public Input<string>? UserGroupId { get; set; }
@@ -239,17 +227,18 @@ namespace Pulumi.Unifi
     public sealed class UserState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allow this resource to take over management of an existing user in the UniFi controller. When true: * The resource can
-        /// manage users that were automatically created when devices connected * Existing settings will be overwritten with the
-        /// values specified in this resource * If false, attempting to manage an existing user will result in an error Use with
-        /// caution as it can modify settings for devices already connected to your network. Defaults to `true`.
+        /// Allow this resource to take over management of an existing user in the UniFi controller. When true:
+        ///   * The resource can manage users that were automatically created when devices connected
+        ///   * Existing settings will be overwritten with the values specified in this resource
+        ///   * If false, attempting to manage an existing user will result in an error
+        /// 
+        /// Use with caution as it can modify settings for devices already connected to your network. Defaults to `true`.
         /// </summary>
         [Input("allowExisting")]
         public Input<bool>? AllowExisting { get; set; }
 
         /// <summary>
-        /// When true, this client will be blocked from accessing the network. Useful for temporarily or permanently restricting
-        /// network access for specific devices.
+        /// When true, this client will be blocked from accessing the network. Useful for temporarily or permanently restricting network access for specific devices.
         /// </summary>
         [Input("blocked")]
         public Input<bool>? Blocked { get; set; }
@@ -261,8 +250,7 @@ namespace Pulumi.Unifi
         public Input<double>? DevIdOverride { get; set; }
 
         /// <summary>
-        /// A static IPv4 address to assign to this client. Ensure this IP is within the client's network range and not already
-        /// assigned to another device.
+        /// A static IPv4 address to assign to this client. Ensure this IP is within the client's network range and not already assigned to another device.
         /// </summary>
         [Input("fixedIp")]
         public Input<string>? FixedIp { get; set; }
@@ -280,36 +268,31 @@ namespace Pulumi.Unifi
         public Input<string>? Ip { get; set; }
 
         /// <summary>
-        /// A local DNS hostname for this client. When set, other devices on the network can resolve this name to the client's IP
-        /// address (e.g., 'printer.local', 'nas.home.arpa'). Such DNS record is automatically added to controller's DNS records.
+        /// A local DNS hostname for this client. When set, other devices on the network can resolve this name to the client's IP address (e.g., 'printer.local', 'nas.home.arpa'). Such DNS record is automatically added to controller's DNS records.
         /// </summary>
         [Input("localDnsRecord")]
         public Input<string>? LocalDnsRecord { get; set; }
 
         /// <summary>
-        /// The MAC address of the device/client. This is used as the unique identifier and cannot be changed after creation. Must
-        /// be a valid MAC address format (e.g., '00:11:22:33:44:55'). MAC addresses are case-insensitive.
+        /// The MAC address of the device/client. This is used as the unique identifier and cannot be changed after creation. Must be a valid MAC address format (e.g., '00:11:22:33:44:55'). MAC addresses are case-insensitive.
         /// </summary>
         [Input("mac")]
         public Input<string>? Mac { get; set; }
 
         /// <summary>
-        /// A friendly name for the device/client. This helps identify the device in the UniFi interface (eg. 'Living Room TV',
-        /// 'John's Laptop').
+        /// A friendly name for the device/client. This helps identify the device in the UniFi interface (eg. 'Living Room TV', 'John's Laptop').
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The ID of the network this client should be associated with. This is particularly important when using VLANs or multiple
-        /// networks.
+        /// The ID of the network this client should be associated with. This is particularly important when using VLANs or multiple networks.
         /// </summary>
         [Input("networkId")]
         public Input<string>? NetworkId { get; set; }
 
         /// <summary>
-        /// Additional information about the client that you want to record (e.g., 'Company asset tag #12345', 'Guest device -
-        /// expires 2024-03-01').
+        /// Additional information about the client that you want to record (e.g., 'Company asset tag #12345', 'Guest device - expires 2024-03-01').
         /// </summary>
         [Input("note")]
         public Input<string>? Note { get; set; }
@@ -324,8 +307,7 @@ namespace Pulumi.Unifi
         public Input<bool>? SkipForgetOnDestroy { get; set; }
 
         /// <summary>
-        /// The ID of the user group this client belongs to. User groups can be used to apply common settings and restrictions to
-        /// multiple clients.
+        /// The ID of the user group this client belongs to. User groups can be used to apply common settings and restrictions to multiple clients.
         /// </summary>
         [Input("userGroupId")]
         public Input<string>? UserGroupId { get; set; }

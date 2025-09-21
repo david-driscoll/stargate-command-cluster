@@ -19,7 +19,11 @@ namespace Pulumi.Authentik
         public Output<string?> ConsentExpireIn { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `always_require` - `permanent` - `expiring` Defaults to `always_require`.
+        /// Allowed values:
+        ///   - `always_require`
+        ///   - `permanent`
+        ///   - `expiring`
+        ///  Defaults to `always_require`.
         /// </summary>
         [Output("mode")]
         public Output<string?> Mode { get; private set; } = null!;
@@ -83,7 +87,11 @@ namespace Pulumi.Authentik
         public Input<string>? ConsentExpireIn { get; set; }
 
         /// <summary>
-        /// Allowed values: - `always_require` - `permanent` - `expiring` Defaults to `always_require`.
+        /// Allowed values:
+        ///   - `always_require`
+        ///   - `permanent`
+        ///   - `expiring`
+        ///  Defaults to `always_require`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -109,7 +117,11 @@ namespace Pulumi.Authentik
         public Input<string>? ConsentExpireIn { get; set; }
 
         /// <summary>
-        /// Allowed values: - `always_require` - `permanent` - `expiring` Defaults to `always_require`.
+        /// Allowed values:
+        ///   - `always_require`
+        ///   - `permanent`
+        ///   - `expiring`
+        ///  Defaults to `always_require`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

@@ -13,8 +13,12 @@ namespace Pulumi.Authentik
     public partial class StageUserLogin : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_continent` - `bind_continent_country` - `bind_continent_country_city` Defaults to
-        /// `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_continent`
+        ///   - `bind_continent_country`
+        ///   - `bind_continent_country_city`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Output("geoipBinding")]
         public Output<string?> GeoipBinding { get; private set; } = null!;
@@ -23,7 +27,12 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_asn` - `bind_asn_network` - `bind_asn_network_ip` Defaults to `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_asn`
+        ///   - `bind_asn_network`
+        ///   - `bind_asn_network_ip`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Output("networkBinding")]
         public Output<string?> NetworkBinding { get; private set; } = null!;
@@ -102,8 +111,12 @@ namespace Pulumi.Authentik
     public sealed class StageUserLoginArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_continent` - `bind_continent_country` - `bind_continent_country_city` Defaults to
-        /// `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_continent`
+        ///   - `bind_continent_country`
+        ///   - `bind_continent_country_city`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("geoipBinding")]
         public Input<string>? GeoipBinding { get; set; }
@@ -112,7 +125,12 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_asn` - `bind_asn_network` - `bind_asn_network_ip` Defaults to `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_asn`
+        ///   - `bind_asn_network`
+        ///   - `bind_asn_network_ip`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("networkBinding")]
         public Input<string>? NetworkBinding { get; set; }
@@ -153,8 +171,12 @@ namespace Pulumi.Authentik
     public sealed class StageUserLoginState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_continent` - `bind_continent_country` - `bind_continent_country_city` Defaults to
-        /// `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_continent`
+        ///   - `bind_continent_country`
+        ///   - `bind_continent_country_city`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("geoipBinding")]
         public Input<string>? GeoipBinding { get; set; }
@@ -163,7 +185,12 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `no_binding` - `bind_asn` - `bind_asn_network` - `bind_asn_network_ip` Defaults to `no_binding`.
+        /// Allowed values:
+        ///   - `no_binding`
+        ///   - `bind_asn`
+        ///   - `bind_asn_network`
+        ///   - `bind_asn_network_ip`
+        ///  Defaults to `no_binding`.
         /// </summary>
         [Input("networkBinding")]
         public Input<string>? NetworkBinding { get; set; }

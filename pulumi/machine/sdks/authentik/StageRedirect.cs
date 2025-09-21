@@ -19,7 +19,10 @@ namespace Pulumi.Authentik
         public Output<bool?> KeepContext { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `static` - `flow` Defaults to `flow`.
+        /// Allowed values:
+        ///   - `static`
+        ///   - `flow`
+        ///  Defaults to `flow`.
         /// </summary>
         [Output("mode")]
         public Output<string?> Mode { get; private set; } = null!;
@@ -89,7 +92,10 @@ namespace Pulumi.Authentik
         public Input<bool>? KeepContext { get; set; }
 
         /// <summary>
-        /// Allowed values: - `static` - `flow` Defaults to `flow`.
+        /// Allowed values:
+        ///   - `static`
+        ///   - `flow`
+        ///  Defaults to `flow`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -121,7 +127,10 @@ namespace Pulumi.Authentik
         public Input<bool>? KeepContext { get; set; }
 
         /// <summary>
-        /// Allowed values: - `static` - `flow` Defaults to `flow`.
+        /// Allowed values:
+        ///   - `static`
+        ///   - `flow`
+        ///  Defaults to `flow`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

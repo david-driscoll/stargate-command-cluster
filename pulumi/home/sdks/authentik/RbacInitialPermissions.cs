@@ -13,7 +13,9 @@ namespace Pulumi.Authentik
     public partial class RbacInitialPermissions : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `user` - `role`
+        /// Allowed values:
+        ///   - `user`
+        ///   - `role`
         /// </summary>
         [Output("mode")]
         public Output<string> Mode { get; private set; } = null!;
@@ -77,7 +79,9 @@ namespace Pulumi.Authentik
     public sealed class RbacInitialPermissionsArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `user` - `role`
+        /// Allowed values:
+        ///   - `user`
+        ///   - `role`
         /// </summary>
         [Input("mode", required: true)]
         public Input<string> Mode { get; set; } = null!;
@@ -108,7 +112,9 @@ namespace Pulumi.Authentik
     public sealed class RbacInitialPermissionsState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `user` - `role`
+        /// Allowed values:
+        ///   - `user`
+        ///   - `role`
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

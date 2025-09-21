@@ -64,10 +64,7 @@ namespace Pulumi.Proxmox
 
         private static readonly __Value<bool?> _pmDangerouslyIgnoreUnknownAttributes = new __Value<bool?>(() => __config.GetBoolean("pmDangerouslyIgnoreUnknownAttributes"));
         /// <summary>
-        /// By default this provider will exit if an unknown attribute is found. This is to prevent the accidential destruction of
-        /// VMs or Data when something in the proxmox API has changed/updated and is not confirmed to work with this provider. Set
-        /// this to true at your own risk. It may allow you to proceed in cases when the provider refuses to work, but be aware of
-        /// the danger in doing so.
+        /// By default this provider will exit if an unknown attribute is found. This is to prevent the accidential destruction of VMs or Data when something in the proxmox API has changed/updated and is not confirmed to work with this provider. Set this to true at your own risk. It may allow you to proceed in cases when the provider refuses to work, but be aware of the danger in doing so.
         /// </summary>
         public static bool? PmDangerouslyIgnoreUnknownAttributes
         {

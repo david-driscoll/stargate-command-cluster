@@ -22,8 +22,7 @@ namespace Pulumi.Truenas
         public Output<string> AclType { get; private set; } = null!;
 
         /// <summary>
-        /// Choose 'on' to update the access time for files when they are read. Choose 'off' to prevent producing log traffic when
-        /// reading files
+        /// Choose 'on' to update the access time for files when they are read. Choose 'off' to prevent producing log traffic when reading files
         /// </summary>
         [Output("atime")]
         public Output<string> Atime { get; private set; } = null!;
@@ -122,9 +121,7 @@ namespace Pulumi.Truenas
         public Output<string> SnapDir { get; private set; } = null!;
 
         /// <summary>
-        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the
-        /// settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled`
-        /// never waits for writes to complete.
+        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled` never waits for writes to complete.
         /// </summary>
         [Output("sync")]
         public Output<string> Sync { get; private set; } = null!;
@@ -193,8 +190,7 @@ namespace Pulumi.Truenas
         public Input<string>? AclMode { get; set; }
 
         /// <summary>
-        /// Choose 'on' to update the access time for files when they are read. Choose 'off' to prevent producing log traffic when
-        /// reading files
+        /// Choose 'on' to update the access time for files when they are read. Choose 'off' to prevent producing log traffic when reading files
         /// </summary>
         [Input("atime")]
         public Input<string>? Atime { get; set; }
@@ -302,9 +298,7 @@ namespace Pulumi.Truenas
         public Input<string>? SnapDir { get; set; }
 
         /// <summary>
-        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the
-        /// settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled`
-        /// never waits for writes to complete.
+        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled` never waits for writes to complete.
         /// </summary>
         [Input("sync")]
         public Input<string>? Sync { get; set; }
@@ -333,8 +327,7 @@ namespace Pulumi.Truenas
         public Input<string>? AclType { get; set; }
 
         /// <summary>
-        /// Choose 'on' to update the access time for files when they are read. Choose 'off' to prevent producing log traffic when
-        /// reading files
+        /// Choose 'on' to update the access time for files when they are read. Choose 'off' to prevent producing log traffic when reading files
         /// </summary>
         [Input("atime")]
         public Input<string>? Atime { get; set; }
@@ -451,9 +444,7 @@ namespace Pulumi.Truenas
         public Input<string>? SnapDir { get; set; }
 
         /// <summary>
-        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the
-        /// settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled`
-        /// never waits for writes to complete.
+        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled` never waits for writes to complete.
         /// </summary>
         [Input("sync")]
         public Input<string>? Sync { get; set; }

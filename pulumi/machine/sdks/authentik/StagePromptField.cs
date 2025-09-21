@@ -58,9 +58,25 @@ namespace Pulumi.Authentik
         public Output<string?> SubText { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `text` - `text_area` - `text_read_only` - `text_area_read_only` - `username` - `email` - `password` -
-        /// `number` - `checkbox` - `radio-button-group` - `dropdown` - `date` - `date-time` - `file` - `separator` - `hidden` -
-        /// `static` - `ak-locale`
+        /// Allowed values:
+        ///   - `text`
+        ///   - `text_area`
+        ///   - `text_read_only`
+        ///   - `text_area_read_only`
+        ///   - `username`
+        ///   - `email`
+        ///   - `password`
+        ///   - `number`
+        ///   - `checkbox`
+        ///   - `radio-button-group`
+        ///   - `dropdown`
+        ///   - `date`
+        ///   - `date-time`
+        ///   - `file`
+        ///   - `separator`
+        ///   - `hidden`
+        ///   - `static`
+        ///   - `ak-locale`
         /// </summary>
         [Output("type")]
         public Output<string> Type { get; private set; } = null!;
@@ -157,9 +173,25 @@ namespace Pulumi.Authentik
         public Input<string>? SubText { get; set; }
 
         /// <summary>
-        /// Allowed values: - `text` - `text_area` - `text_read_only` - `text_area_read_only` - `username` - `email` - `password` -
-        /// `number` - `checkbox` - `radio-button-group` - `dropdown` - `date` - `date-time` - `file` - `separator` - `hidden` -
-        /// `static` - `ak-locale`
+        /// Allowed values:
+        ///   - `text`
+        ///   - `text_area`
+        ///   - `text_read_only`
+        ///   - `text_area_read_only`
+        ///   - `username`
+        ///   - `email`
+        ///   - `password`
+        ///   - `number`
+        ///   - `checkbox`
+        ///   - `radio-button-group`
+        ///   - `dropdown`
+        ///   - `date`
+        ///   - `date-time`
+        ///   - `file`
+        ///   - `separator`
+        ///   - `hidden`
+        ///   - `static`
+        ///   - `ak-locale`
         /// </summary>
         [Input("type", required: true)]
         public Input<string> Type { get; set; } = null!;
@@ -218,9 +250,25 @@ namespace Pulumi.Authentik
         public Input<string>? SubText { get; set; }
 
         /// <summary>
-        /// Allowed values: - `text` - `text_area` - `text_read_only` - `text_area_read_only` - `username` - `email` - `password` -
-        /// `number` - `checkbox` - `radio-button-group` - `dropdown` - `date` - `date-time` - `file` - `separator` - `hidden` -
-        /// `static` - `ak-locale`
+        /// Allowed values:
+        ///   - `text`
+        ///   - `text_area`
+        ///   - `text_read_only`
+        ///   - `text_area_read_only`
+        ///   - `username`
+        ///   - `email`
+        ///   - `password`
+        ///   - `number`
+        ///   - `checkbox`
+        ///   - `radio-button-group`
+        ///   - `dropdown`
+        ///   - `date`
+        ///   - `date-time`
+        ///   - `file`
+        ///   - `separator`
+        ///   - `hidden`
+        ///   - `static`
+        ///   - `ak-locale`
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

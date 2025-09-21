@@ -34,7 +34,12 @@ namespace Pulumi.Authentik
         public Output<string> Identifier { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `verification` - `api` - `recovery` - `app_password` Defaults to `api`.
+        /// Allowed values:
+        ///   - `verification`
+        ///   - `api`
+        ///   - `recovery`
+        ///   - `app_password`
+        ///  Defaults to `api`.
         /// </summary>
         [Output("intent")]
         public Output<string?> Intent { get; private set; } = null!;
@@ -123,7 +128,12 @@ namespace Pulumi.Authentik
         public Input<string> Identifier { get; set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `verification` - `api` - `recovery` - `app_password` Defaults to `api`.
+        /// Allowed values:
+        ///   - `verification`
+        ///   - `api`
+        ///   - `recovery`
+        ///   - `app_password`
+        ///  Defaults to `api`.
         /// </summary>
         [Input("intent")]
         public Input<string>? Intent { get; set; }
@@ -170,7 +180,12 @@ namespace Pulumi.Authentik
         public Input<string>? Identifier { get; set; }
 
         /// <summary>
-        /// Allowed values: - `verification` - `api` - `recovery` - `app_password` Defaults to `api`.
+        /// Allowed values:
+        ///   - `verification`
+        ///   - `api`
+        ///   - `recovery`
+        ///   - `app_password`
+        ///  Defaults to `api`.
         /// </summary>
         [Input("intent")]
         public Input<string>? Intent { get; set; }

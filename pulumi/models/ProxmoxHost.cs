@@ -102,30 +102,36 @@ public class ProxmoxHost : ComponentResource
 
     if (args.InstallTailscale)
     {
-      var installJq = new RemoteCommand($"{name}-install-jq", new()
+      var configureSshEnv = new RemoteCommand($"{name}-configure-ssh-env", new()
       {
         Connection = connection,
-        Create = "apt-get install -y jq"
+        Create = "mkdir -p /etc/ssh/ssh_config.d && echo 'AcceptEnv TS_AUTHKEY' > /etc/ssh/ssh_config.d/99-tailscale.conf"
       }, cro);
 
       var installTailscale = new RemoteCommand($"{name}-install-tailscale", new()
       {
         Connection = connection,
         Create = "curl -fsSL https://tailscale.com/install.sh | sh"
-      }, cro);
+      }, CustomResourceOptions.Merge(cro, new() { DependsOn = [configureSshEnv] }));
+
+      var installJq = new RemoteCommand($"{name}-install-jq", new()
+      {
+        Connection = connection,
+        Create = "apt-get install -y jq"
+      }, CustomResourceOptions.Merge(cro, new() { DependsOn = [installTailscale] }));
 
       var tailscaleSet = new RemoteCommand($"{name}-tailscale-set", new()
       {
         Connection = connection,
         Create = Output.Format($"TS_AUTHKEY={args.Globals.TailscaleAuthKey.Key} tailscale set --hostname {name} --accept-dns --accept-routes --auto-update --advertise-exit-node --ssh=true")
-      });
+      }, CustomResourceOptions.Merge(cro, new() { DependsOn = [installTailscale] }));
 
       var tailscaleCron = new CopyToRemote($"{name}-tailscale-cron", new()
       {
         Connection = connection,
         RemotePath = "/etc/cron.weekly/tailscale",
         Source = new FileAsset(args.IsBackupServer ? "scripts/tailscale-pbs.sh" : "scripts/tailscale.sh"),
-      }, CustomResourceOptions.Merge(cro, new() { DependsOn = [installTailscale, tailscaleSet, installJq] }));
+      }, CustomResourceOptions.Merge(cro, new() { DependsOn = [installJq, tailscaleSet] }));
 
       var tailscaleSetCert = new RemoteCommand($"{name}-install-set", new()
       {
@@ -134,27 +140,11 @@ public class ProxmoxHost : ComponentResource
       }, CustomResourceOptions.Merge(cro, new() { DependsOn = [tailscaleCron] }));
     }
 
-    var device = GetDevice.Invoke(new()
-    {
-      Hostname = name,
-    }, new () {Provider = args.Globals.TailscaleProvider, Parent = this});
-
-    if (args.InstallTailscale)
-    {
-      _ = new DeviceTags($"{name}-tags", new()
-      {
-        Tags = ["tag:proxmox", "tag:exit-node"],
-        DeviceId = device.Apply(z => z.Id),
-      }, new () {Provider = args.Globals.TailscaleProvider, Parent = this, RetainOnDelete = true });
-
-      _ = new DeviceKey($"{name}-key", new()
-      {
-        KeyExpiryDisabled = true,
-        DeviceId = device.Apply(z => z.Id),
-      }, new () {Provider = args.Globals.TailscaleProvider, Parent = this});
-    }
-
-    Device = Output.Tuple(device, args.Globals.TailscaleClient, args.TailscaleIpAddress.ToOutput())
+    Device = Output.Tuple(
+        GetDevice.Invoke(new() { Hostname = name, }, new InvokeOptions { Provider = args.Globals.TailscaleProvider, Parent = this }),
+        args.Globals.TailscaleClient,
+        args.TailscaleIpAddress.ToOutput()
+      )
       .Apply(async z =>
       {
         var (device, client, ip) = z;
@@ -164,6 +154,23 @@ public class ProxmoxHost : ComponentResource
         });
         return device;
       });
+
+    if (args.InstallTailscale)
+    {
+      // Create device tags as separate resource
+      var deviceTags = new DeviceTags($"{name}-tags", new()
+      {
+        Tags = ["tag:proxmox", "tag:exit-node"],
+        DeviceId = Device.Apply(z => z.Id),
+      }, new CustomResourceOptions { Provider = args.Globals.TailscaleProvider, Parent = this, RetainOnDelete = true });
+
+      // Create device key as separate resource
+      var deviceKey = new DeviceKey($"{name}-key", new()
+      {
+        KeyExpiryDisabled = true,
+        DeviceId = Device.Apply(z => z.Id),
+      }, new CustomResourceOptions { Provider = args.Globals.TailscaleProvider, Parent = this });
+    }
 
 
     // _ = new Hosts($"{name}-hosts", new ()

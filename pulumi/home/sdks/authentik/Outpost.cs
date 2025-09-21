@@ -31,7 +31,12 @@ namespace Pulumi.Authentik
         public Output<string?> ServiceConnection { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `proxy` - `ldap` - `radius` - `rac` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `ldap`
+        ///   - `radius`
+        ///   - `rac`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Output("type")]
         public Output<string?> Type { get; private set; } = null!;
@@ -106,7 +111,12 @@ namespace Pulumi.Authentik
         public Input<string>? ServiceConnection { get; set; }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `ldap` - `radius` - `rac` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `ldap`
+        ///   - `radius`
+        ///   - `rac`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
@@ -143,7 +153,12 @@ namespace Pulumi.Authentik
         public Input<string>? ServiceConnection { get; set; }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `ldap` - `radius` - `rac` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `ldap`
+        ///   - `radius`
+        ///   - `rac`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

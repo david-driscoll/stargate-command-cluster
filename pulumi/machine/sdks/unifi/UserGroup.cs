@@ -13,22 +13,19 @@ namespace Pulumi.Unifi
     public partial class UserGroup : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// A descriptive name for the user group (e.g., 'Staff', 'Guests', 'IoT Devices'). This name will be displayed in the UniFi
-        /// controller interface and used when assigning clients to the group.
+        /// A descriptive name for the user group (e.g., 'Staff', 'Guests', 'IoT Devices'). This name will be displayed in the UniFi controller interface and used when assigning clients to the group.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The maximum allowed download speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited.
-        /// Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
+        /// The maximum allowed download speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
         /// </summary>
         [Output("qosRateMaxDown")]
         public Output<double?> QosRateMaxDown { get; private set; } = null!;
 
         /// <summary>
-        /// The maximum allowed upload speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note:
-        /// Values of 0 or 1 are not allowed. Defaults to `-1`.
+        /// The maximum allowed upload speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
         /// </summary>
         [Output("qosRateMaxUp")]
         public Output<double?> QosRateMaxUp { get; private set; } = null!;
@@ -86,22 +83,19 @@ namespace Pulumi.Unifi
     public sealed class UserGroupArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A descriptive name for the user group (e.g., 'Staff', 'Guests', 'IoT Devices'). This name will be displayed in the UniFi
-        /// controller interface and used when assigning clients to the group.
+        /// A descriptive name for the user group (e.g., 'Staff', 'Guests', 'IoT Devices'). This name will be displayed in the UniFi controller interface and used when assigning clients to the group.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The maximum allowed download speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited.
-        /// Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
+        /// The maximum allowed download speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
         /// </summary>
         [Input("qosRateMaxDown")]
         public Input<double>? QosRateMaxDown { get; set; }
 
         /// <summary>
-        /// The maximum allowed upload speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note:
-        /// Values of 0 or 1 are not allowed. Defaults to `-1`.
+        /// The maximum allowed upload speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
         /// </summary>
         [Input("qosRateMaxUp")]
         public Input<double>? QosRateMaxUp { get; set; }
@@ -121,22 +115,19 @@ namespace Pulumi.Unifi
     public sealed class UserGroupState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A descriptive name for the user group (e.g., 'Staff', 'Guests', 'IoT Devices'). This name will be displayed in the UniFi
-        /// controller interface and used when assigning clients to the group.
+        /// A descriptive name for the user group (e.g., 'Staff', 'Guests', 'IoT Devices'). This name will be displayed in the UniFi controller interface and used when assigning clients to the group.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The maximum allowed download speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited.
-        /// Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
+        /// The maximum allowed download speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
         /// </summary>
         [Input("qosRateMaxDown")]
         public Input<double>? QosRateMaxDown { get; set; }
 
         /// <summary>
-        /// The maximum allowed upload speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note:
-        /// Values of 0 or 1 are not allowed. Defaults to `-1`.
+        /// The maximum allowed upload speed in Kbps (kilobits per second) for clients in this group. Set to -1 for unlimited. Note: Values of 0 or 1 are not allowed. Defaults to `-1`.
         /// </summary>
         [Input("qosRateMaxUp")]
         public Input<double>? QosRateMaxUp { get; set; }

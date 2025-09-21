@@ -13,8 +13,7 @@ namespace Pulumi.Unifi
     public partial class SettingUsw : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Whether DHCP snooping is enabled. DHCP snooping is a security feature that filters untrusted DHCP messages and builds a
-        /// binding database of valid hosts.
+        /// Whether DHCP snooping is enabled. DHCP snooping is a security feature that filters untrusted DHCP messages and builds a binding database of valid hosts.
         /// </summary>
         [Output("dhcpSnoop")]
         public Output<bool> DhcpSnoop { get; private set; } = null!;
@@ -72,8 +71,7 @@ namespace Pulumi.Unifi
     public sealed class SettingUswArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Whether DHCP snooping is enabled. DHCP snooping is a security feature that filters untrusted DHCP messages and builds a
-        /// binding database of valid hosts.
+        /// Whether DHCP snooping is enabled. DHCP snooping is a security feature that filters untrusted DHCP messages and builds a binding database of valid hosts.
         /// </summary>
         [Input("dhcpSnoop", required: true)]
         public Input<bool> DhcpSnoop { get; set; } = null!;
@@ -93,8 +91,7 @@ namespace Pulumi.Unifi
     public sealed class SettingUswState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Whether DHCP snooping is enabled. DHCP snooping is a security feature that filters untrusted DHCP messages and builds a
-        /// binding database of valid hosts.
+        /// Whether DHCP snooping is enabled. DHCP snooping is a security feature that filters untrusted DHCP messages and builds a binding database of valid hosts.
         /// </summary>
         [Input("dhcpSnoop")]
         public Input<bool>? DhcpSnoop { get; set; }

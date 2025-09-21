@@ -28,7 +28,10 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `skip` - `deny` - `configure`
+        /// Allowed values:
+        ///   - `skip`
+        ///   - `deny`
+        ///   - `configure`
         /// </summary>
         [Output("notConfiguredAction")]
         public Output<string> NotConfiguredAction { get; private set; } = null!;
@@ -40,7 +43,11 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> WebauthnAllowedDeviceTypes { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `required` - `preferred` - `discouraged` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `required`
+        ///   - `preferred`
+        ///   - `discouraged`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Output("webauthnUserVerification")]
         public Output<string?> WebauthnUserVerification { get; private set; } = null!;
@@ -117,7 +124,10 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `skip` - `deny` - `configure`
+        /// Allowed values:
+        ///   - `skip`
+        ///   - `deny`
+        ///   - `configure`
         /// </summary>
         [Input("notConfiguredAction", required: true)]
         public Input<string> NotConfiguredAction { get; set; } = null!;
@@ -134,7 +144,11 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `required` - `preferred` - `discouraged` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `required`
+        ///   - `preferred`
+        ///   - `discouraged`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Input("webauthnUserVerification")]
         public Input<string>? WebauthnUserVerification { get; set; }
@@ -173,7 +187,10 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `skip` - `deny` - `configure`
+        /// Allowed values:
+        ///   - `skip`
+        ///   - `deny`
+        ///   - `configure`
         /// </summary>
         [Input("notConfiguredAction")]
         public Input<string>? NotConfiguredAction { get; set; }
@@ -190,7 +207,11 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `required` - `preferred` - `discouraged` Defaults to `preferred`.
+        /// Allowed values:
+        ///   - `required`
+        ///   - `preferred`
+        ///   - `discouraged`
+        ///  Defaults to `preferred`.
         /// </summary>
         [Input("webauthnUserVerification")]
         public Input<string>? WebauthnUserVerification { get; set; }

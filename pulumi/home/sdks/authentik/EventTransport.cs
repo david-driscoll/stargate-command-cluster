@@ -28,7 +28,11 @@ namespace Pulumi.Authentik
         public Output<string> EventTransportId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `local` - `webhook` - `webhook_slack` - `email`
+        /// Allowed values:
+        ///   - `local`
+        ///   - `webhook`
+        ///   - `webhook_slack`
+        ///   - `email`
         /// </summary>
         [Output("mode")]
         public Output<string> Mode { get; private set; } = null!;
@@ -113,7 +117,11 @@ namespace Pulumi.Authentik
         public Input<string>? EventTransportId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `local` - `webhook` - `webhook_slack` - `email`
+        /// Allowed values:
+        ///   - `local`
+        ///   - `webhook`
+        ///   - `webhook_slack`
+        ///   - `email`
         /// </summary>
         [Input("mode", required: true)]
         public Input<string> Mode { get; set; } = null!;
@@ -160,7 +168,11 @@ namespace Pulumi.Authentik
         public Input<string>? EventTransportId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `local` - `webhook` - `webhook_slack` - `email`
+        /// Allowed values:
+        ///   - `local`
+        ///   - `webhook`
+        ///   - `webhook_slack`
+        ///   - `email`
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

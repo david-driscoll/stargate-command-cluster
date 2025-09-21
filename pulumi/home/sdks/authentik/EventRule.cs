@@ -31,7 +31,11 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `notice` - `warning` - `alert` Defaults to `warning`.
+        /// Allowed values:
+        ///   - `notice`
+        ///   - `warning`
+        ///   - `alert`
+        ///  Defaults to `warning`.
         /// </summary>
         [Output("severity")]
         public Output<string?> Severity { get; private set; } = null!;
@@ -104,7 +108,11 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `notice` - `warning` - `alert` Defaults to `warning`.
+        /// Allowed values:
+        ///   - `notice`
+        ///   - `warning`
+        ///   - `alert`
+        ///  Defaults to `warning`.
         /// </summary>
         [Input("severity")]
         public Input<string>? Severity { get; set; }
@@ -144,7 +152,11 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `notice` - `warning` - `alert` Defaults to `warning`.
+        /// Allowed values:
+        ///   - `notice`
+        ///   - `warning`
+        ///   - `alert`
+        ///  Defaults to `warning`.
         /// </summary>
         [Input("severity")]
         public Input<string>? Severity { get; set; }

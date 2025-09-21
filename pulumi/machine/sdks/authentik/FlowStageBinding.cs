@@ -22,7 +22,11 @@ namespace Pulumi.Authentik
         public Output<string> FlowStageBindingId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `retry` - `restart` - `restart_with_context` Defaults to `retry`.
+        /// Allowed values:
+        ///   - `retry`
+        ///   - `restart`
+        ///   - `restart_with_context`
+        ///  Defaults to `retry`.
         /// </summary>
         [Output("invalidResponseAction")]
         public Output<string?> InvalidResponseAction { get; private set; } = null!;
@@ -31,7 +35,10 @@ namespace Pulumi.Authentik
         public Output<double> Order { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -104,7 +111,11 @@ namespace Pulumi.Authentik
         public Input<string>? FlowStageBindingId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `retry` - `restart` - `restart_with_context` Defaults to `retry`.
+        /// Allowed values:
+        ///   - `retry`
+        ///   - `restart`
+        ///   - `restart_with_context`
+        ///  Defaults to `retry`.
         /// </summary>
         [Input("invalidResponseAction")]
         public Input<string>? InvalidResponseAction { get; set; }
@@ -113,7 +124,10 @@ namespace Pulumi.Authentik
         public Input<double> Order { get; set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -148,7 +162,11 @@ namespace Pulumi.Authentik
         public Input<string>? FlowStageBindingId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `retry` - `restart` - `restart_with_context` Defaults to `retry`.
+        /// Allowed values:
+        ///   - `retry`
+        ///   - `restart`
+        ///   - `restart_with_context`
+        ///  Defaults to `retry`.
         /// </summary>
         [Input("invalidResponseAction")]
         public Input<string>? InvalidResponseAction { get; set; }
@@ -157,7 +175,10 @@ namespace Pulumi.Authentik
         public Input<double>? Order { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }

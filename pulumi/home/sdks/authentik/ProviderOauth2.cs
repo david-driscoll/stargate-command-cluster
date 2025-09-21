@@ -46,7 +46,10 @@ namespace Pulumi.Authentik
         public Output<string> ClientSecret { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `confidential` - `public` Defaults to `confidential`.
+        /// Allowed values:
+        ///   - `confidential`
+        ///   - `public`
+        ///  Defaults to `confidential`.
         /// </summary>
         [Output("clientType")]
         public Output<string?> ClientType { get; private set; } = null!;
@@ -64,7 +67,10 @@ namespace Pulumi.Authentik
         public Output<string> InvalidationFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `global` - `per_provider` Defaults to `per_provider`.
+        /// Allowed values:
+        ///   - `global`
+        ///   - `per_provider`
+        ///  Defaults to `per_provider`.
         /// </summary>
         [Output("issuerMode")]
         public Output<string?> IssuerMode { get; private set; } = null!;
@@ -106,8 +112,14 @@ namespace Pulumi.Authentik
         public Output<string?> SigningKey { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `hashed_user_id` - `user_id` - `user_uuid` - `user_username` - `user_email` - `user_upn` Defaults to
-        /// `hashed_user_id`.
+        /// Allowed values:
+        ///   - `hashed_user_id`
+        ///   - `user_id`
+        ///   - `user_uuid`
+        ///   - `user_username`
+        ///   - `user_email`
+        ///   - `user_upn`
+        ///  Defaults to `hashed_user_id`.
         /// </summary>
         [Output("subMode")]
         public Output<string?> SubMode { get; private set; } = null!;
@@ -211,7 +223,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `confidential` - `public` Defaults to `confidential`.
+        /// Allowed values:
+        ///   - `confidential`
+        ///   - `public`
+        ///  Defaults to `confidential`.
         /// </summary>
         [Input("clientType")]
         public Input<string>? ClientType { get; set; }
@@ -229,7 +244,10 @@ namespace Pulumi.Authentik
         public Input<string> InvalidationFlow { get; set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `global` - `per_provider` Defaults to `per_provider`.
+        /// Allowed values:
+        ///   - `global`
+        ///   - `per_provider`
+        ///  Defaults to `per_provider`.
         /// </summary>
         [Input("issuerMode")]
         public Input<string>? IssuerMode { get; set; }
@@ -294,8 +312,14 @@ namespace Pulumi.Authentik
         public Input<string>? SigningKey { get; set; }
 
         /// <summary>
-        /// Allowed values: - `hashed_user_id` - `user_id` - `user_uuid` - `user_username` - `user_email` - `user_upn` Defaults to
-        /// `hashed_user_id`.
+        /// Allowed values:
+        ///   - `hashed_user_id`
+        ///   - `user_id`
+        ///   - `user_uuid`
+        ///   - `user_username`
+        ///   - `user_email`
+        ///   - `user_upn`
+        ///  Defaults to `hashed_user_id`.
         /// </summary>
         [Input("subMode")]
         public Input<string>? SubMode { get; set; }
@@ -357,7 +381,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `confidential` - `public` Defaults to `confidential`.
+        /// Allowed values:
+        ///   - `confidential`
+        ///   - `public`
+        ///  Defaults to `confidential`.
         /// </summary>
         [Input("clientType")]
         public Input<string>? ClientType { get; set; }
@@ -375,7 +402,10 @@ namespace Pulumi.Authentik
         public Input<string>? InvalidationFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `global` - `per_provider` Defaults to `per_provider`.
+        /// Allowed values:
+        ///   - `global`
+        ///   - `per_provider`
+        ///  Defaults to `per_provider`.
         /// </summary>
         [Input("issuerMode")]
         public Input<string>? IssuerMode { get; set; }
@@ -440,8 +470,14 @@ namespace Pulumi.Authentik
         public Input<string>? SigningKey { get; set; }
 
         /// <summary>
-        /// Allowed values: - `hashed_user_id` - `user_id` - `user_uuid` - `user_username` - `user_email` - `user_upn` Defaults to
-        /// `hashed_user_id`.
+        /// Allowed values:
+        ///   - `hashed_user_id`
+        ///   - `user_id`
+        ///   - `user_uuid`
+        ///   - `user_username`
+        ///   - `user_email`
+        ///   - `user_upn`
+        ///  Defaults to `hashed_user_id`.
         /// </summary>
         [Input("subMode")]
         public Input<string>? SubMode { get; set; }

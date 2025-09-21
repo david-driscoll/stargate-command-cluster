@@ -103,8 +103,7 @@ namespace Pulumi.Truenas
         public Output<string> Path { get; private set; } = null!;
 
         /// <summary>
-        /// Append a suffix to the share connection path. This is used to provide unique shares on a per-user, per-computer, or
-        /// per-IP address basis.
+        /// Append a suffix to the share connection path. This is used to provide unique shares on a per-user, per-computer, or per-IP address basis.
         /// </summary>
         [Output("pathSuffix")]
         public Output<string?> PathSuffix { get; private set; } = null!;
@@ -143,8 +142,7 @@ namespace Pulumi.Truenas
         public Output<double> SharesmbId { get; private set; } = null!;
 
         /// <summary>
-        /// Enable Alternate Data Streams: Allow multiple NTFS data streams. Disabling this option causes macOS to write streams to
-        /// files on the filesystem.
+        /// Enable Alternate Data Streams: Allow multiple NTFS data streams. Disabling this option causes macOS to write streams to files on the filesystem.
         /// </summary>
         [Output("streams")]
         public Output<bool?> Streams { get; private set; } = null!;
@@ -310,8 +308,7 @@ namespace Pulumi.Truenas
         public Input<string> Path { get; set; } = null!;
 
         /// <summary>
-        /// Append a suffix to the share connection path. This is used to provide unique shares on a per-user, per-computer, or
-        /// per-IP address basis.
+        /// Append a suffix to the share connection path. This is used to provide unique shares on a per-user, per-computer, or per-IP address basis.
         /// </summary>
         [Input("pathSuffix")]
         public Input<string>? PathSuffix { get; set; }
@@ -344,8 +341,7 @@ namespace Pulumi.Truenas
         public Input<string>? ShareSmbId { get; set; }
 
         /// <summary>
-        /// Enable Alternate Data Streams: Allow multiple NTFS data streams. Disabling this option causes macOS to write streams to
-        /// files on the filesystem.
+        /// Enable Alternate Data Streams: Allow multiple NTFS data streams. Disabling this option causes macOS to write streams to files on the filesystem.
         /// </summary>
         [Input("streams")]
         public Input<bool>? Streams { get; set; }
@@ -467,8 +463,7 @@ namespace Pulumi.Truenas
         public Input<string>? Path { get; set; }
 
         /// <summary>
-        /// Append a suffix to the share connection path. This is used to provide unique shares on a per-user, per-computer, or
-        /// per-IP address basis.
+        /// Append a suffix to the share connection path. This is used to provide unique shares on a per-user, per-computer, or per-IP address basis.
         /// </summary>
         [Input("pathSuffix")]
         public Input<string>? PathSuffix { get; set; }
@@ -507,8 +502,7 @@ namespace Pulumi.Truenas
         public Input<double>? SharesmbId { get; set; }
 
         /// <summary>
-        /// Enable Alternate Data Streams: Allow multiple NTFS data streams. Disabling this option causes macOS to write streams to
-        /// files on the filesystem.
+        /// Enable Alternate Data Streams: Allow multiple NTFS data streams. Disabling this option causes macOS to write streams to files on the filesystem.
         /// </summary>
         [Input("streams")]
         public Input<bool>? Streams { get; set; }

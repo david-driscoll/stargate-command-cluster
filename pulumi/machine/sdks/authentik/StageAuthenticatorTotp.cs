@@ -16,7 +16,10 @@ namespace Pulumi.Authentik
         public Output<string?> ConfigureFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `6` - `8` Defaults to `6`.
+        /// Allowed values:
+        ///   - `6`
+        ///   - `8`
+        ///  Defaults to `6`.
         /// </summary>
         [Output("digits")]
         public Output<string?> Digits { get; private set; } = null!;
@@ -80,7 +83,10 @@ namespace Pulumi.Authentik
         public Input<string>? ConfigureFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `6` - `8` Defaults to `6`.
+        /// Allowed values:
+        ///   - `6`
+        ///   - `8`
+        ///  Defaults to `6`.
         /// </summary>
         [Input("digits")]
         public Input<string>? Digits { get; set; }
@@ -106,7 +112,10 @@ namespace Pulumi.Authentik
         public Input<string>? ConfigureFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `6` - `8` Defaults to `6`.
+        /// Allowed values:
+        ///   - `6`
+        ///   - `8`
+        ///  Defaults to `6`.
         /// </summary>
         [Input("digits")]
         public Input<string>? Digits { get; set; }

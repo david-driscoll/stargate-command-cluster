@@ -13,7 +13,11 @@ namespace Pulumi.Authentik
     public partial class StageMutualTls : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `subject` - `common_name` - `email` Defaults to `email`.
+        /// Allowed values:
+        ///   - `subject`
+        ///   - `common_name`
+        ///   - `email`
+        ///  Defaults to `email`.
         /// </summary>
         [Output("certAttribute")]
         public Output<string?> CertAttribute { get; private set; } = null!;
@@ -22,7 +26,10 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> CertificateAuthorities { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `optional` - `required` Defaults to `optional`.
+        /// Allowed values:
+        ///   - `optional`
+        ///   - `required`
+        ///  Defaults to `optional`.
         /// </summary>
         [Output("mode")]
         public Output<string?> Mode { get; private set; } = null!;
@@ -34,7 +41,10 @@ namespace Pulumi.Authentik
         public Output<string> StageMutualTlsId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `username` - `email` Defaults to `email`.
+        /// Allowed values:
+        ///   - `username`
+        ///   - `email`
+        ///  Defaults to `email`.
         /// </summary>
         [Output("userAttribute")]
         public Output<string?> UserAttribute { get; private set; } = null!;
@@ -86,7 +96,11 @@ namespace Pulumi.Authentik
     public sealed class StageMutualTlsArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `subject` - `common_name` - `email` Defaults to `email`.
+        /// Allowed values:
+        ///   - `subject`
+        ///   - `common_name`
+        ///   - `email`
+        ///  Defaults to `email`.
         /// </summary>
         [Input("certAttribute")]
         public Input<string>? CertAttribute { get; set; }
@@ -100,7 +114,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `optional` - `required` Defaults to `optional`.
+        /// Allowed values:
+        ///   - `optional`
+        ///   - `required`
+        ///  Defaults to `optional`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -112,7 +129,10 @@ namespace Pulumi.Authentik
         public Input<string>? StageMutualTlsId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `username` - `email` Defaults to `email`.
+        /// Allowed values:
+        ///   - `username`
+        ///   - `email`
+        ///  Defaults to `email`.
         /// </summary>
         [Input("userAttribute")]
         public Input<string>? UserAttribute { get; set; }
@@ -126,7 +146,11 @@ namespace Pulumi.Authentik
     public sealed class StageMutualTlsState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `subject` - `common_name` - `email` Defaults to `email`.
+        /// Allowed values:
+        ///   - `subject`
+        ///   - `common_name`
+        ///   - `email`
+        ///  Defaults to `email`.
         /// </summary>
         [Input("certAttribute")]
         public Input<string>? CertAttribute { get; set; }
@@ -140,7 +164,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `optional` - `required` Defaults to `optional`.
+        /// Allowed values:
+        ///   - `optional`
+        ///   - `required`
+        ///  Defaults to `optional`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -152,7 +179,10 @@ namespace Pulumi.Authentik
         public Input<string>? StageMutualTlsId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `username` - `email` Defaults to `email`.
+        /// Allowed values:
+        ///   - `username`
+        ///   - `email`
+        ///  Defaults to `email`.
         /// </summary>
         [Input("userAttribute")]
         public Input<string>? UserAttribute { get; set; }

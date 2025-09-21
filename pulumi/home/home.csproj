@@ -16,6 +16,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <Compile Remove="crds/**/*.*" />
     <Compile Remove="sdks/**/*.*" />
+    <None Include="sdks/**/*.cs" />
     <PackageReference Include="System.Interactive" Version="6.0.3" />
   </ItemGroup>
 

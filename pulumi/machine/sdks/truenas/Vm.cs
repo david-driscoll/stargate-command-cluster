@@ -40,8 +40,7 @@ namespace Pulumi.Truenas
         public Output<ImmutableArray<Outputs.VmDevice>> Devices { get; private set; } = null!;
 
         /// <summary>
-        /// Allocate RAM for the VM. Minimum value is 256 * 1024 * 1024 B. Units are bytes. Allocating too much memory can slow the
-        /// system or prevent VMs from running
+        /// Allocate RAM for the VM. Minimum value is 256 * 1024 * 1024 B. Units are bytes. Allocating too much memory can slow the system or prevent VMs from running
         /// </summary>
         [Output("memory")]
         public Output<double?> Memory { get; private set; } = null!;
@@ -53,8 +52,7 @@ namespace Pulumi.Truenas
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The time in seconds the system waits for the VM to cleanly shut down. During system shutdown, the system initiates
-        /// poweroff for the VM after the shutdown timeout has expired.
+        /// The time in seconds the system waits for the VM to cleanly shut down. During system shutdown, the system initiates poweroff for the VM after the shutdown timeout has expired.
         /// </summary>
         [Output("shutdownTimeout")]
         public Output<double?> ShutdownTimeout { get; private set; } = null!;
@@ -78,8 +76,7 @@ namespace Pulumi.Truenas
         public Output<string> TruenasVmId { get; private set; } = null!;
 
         /// <summary>
-        /// Number of virtual CPUs to allocate to the virtual machine. The maximum is 16, or fewer if the host CPU limits the
-        /// maximum. The VM operating system might also have operational or licensing restrictions on the number of CPUs.
+        /// Number of virtual CPUs to allocate to the virtual machine. The maximum is 16, or fewer if the host CPU limits the maximum. The VM operating system might also have operational or licensing restrictions on the number of CPUs.
         /// </summary>
         [Output("vcpus")]
         public Output<double?> Vcpus { get; private set; } = null!;
@@ -169,8 +166,7 @@ namespace Pulumi.Truenas
         }
 
         /// <summary>
-        /// Allocate RAM for the VM. Minimum value is 256 * 1024 * 1024 B. Units are bytes. Allocating too much memory can slow the
-        /// system or prevent VMs from running
+        /// Allocate RAM for the VM. Minimum value is 256 * 1024 * 1024 B. Units are bytes. Allocating too much memory can slow the system or prevent VMs from running
         /// </summary>
         [Input("memory")]
         public Input<double>? Memory { get; set; }
@@ -182,8 +178,7 @@ namespace Pulumi.Truenas
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The time in seconds the system waits for the VM to cleanly shut down. During system shutdown, the system initiates
-        /// poweroff for the VM after the shutdown timeout has expired.
+        /// The time in seconds the system waits for the VM to cleanly shut down. During system shutdown, the system initiates poweroff for the VM after the shutdown timeout has expired.
         /// </summary>
         [Input("shutdownTimeout")]
         public Input<double>? ShutdownTimeout { get; set; }
@@ -204,8 +199,7 @@ namespace Pulumi.Truenas
         public Input<string>? TruenasVmId { get; set; }
 
         /// <summary>
-        /// Number of virtual CPUs to allocate to the virtual machine. The maximum is 16, or fewer if the host CPU limits the
-        /// maximum. The VM operating system might also have operational or licensing restrictions on the number of CPUs.
+        /// Number of virtual CPUs to allocate to the virtual machine. The maximum is 16, or fewer if the host CPU limits the maximum. The VM operating system might also have operational or licensing restrictions on the number of CPUs.
         /// </summary>
         [Input("vcpus")]
         public Input<double>? Vcpus { get; set; }
@@ -251,8 +245,7 @@ namespace Pulumi.Truenas
         }
 
         /// <summary>
-        /// Allocate RAM for the VM. Minimum value is 256 * 1024 * 1024 B. Units are bytes. Allocating too much memory can slow the
-        /// system or prevent VMs from running
+        /// Allocate RAM for the VM. Minimum value is 256 * 1024 * 1024 B. Units are bytes. Allocating too much memory can slow the system or prevent VMs from running
         /// </summary>
         [Input("memory")]
         public Input<double>? Memory { get; set; }
@@ -264,8 +257,7 @@ namespace Pulumi.Truenas
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The time in seconds the system waits for the VM to cleanly shut down. During system shutdown, the system initiates
-        /// poweroff for the VM after the shutdown timeout has expired.
+        /// The time in seconds the system waits for the VM to cleanly shut down. During system shutdown, the system initiates poweroff for the VM after the shutdown timeout has expired.
         /// </summary>
         [Input("shutdownTimeout")]
         public Input<double>? ShutdownTimeout { get; set; }
@@ -294,8 +286,7 @@ namespace Pulumi.Truenas
         public Input<string>? TruenasVmId { get; set; }
 
         /// <summary>
-        /// Number of virtual CPUs to allocate to the virtual machine. The maximum is 16, or fewer if the host CPU limits the
-        /// maximum. The VM operating system might also have operational or licensing restrictions on the number of CPUs.
+        /// Number of virtual CPUs to allocate to the virtual machine. The maximum is 16, or fewer if the host CPU limits the maximum. The VM operating system might also have operational or licensing restrictions on the number of CPUs.
         /// </summary>
         [Input("vcpus")]
         public Input<double>? Vcpus { get; set; }

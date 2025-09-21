@@ -13,15 +13,16 @@ namespace Pulumi.Unifi
     public partial class StaticRoute : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// The administrative distance for this route. Lower values are preferred. Use this to control route selection when
-        /// multiple routes to the same destination exist.
+        /// The administrative distance for this route. Lower values are preferred. Use this to control route selection when multiple routes to the same destination exist.
         /// </summary>
         [Output("distance")]
         public Output<double> Distance { get; private set; } = null!;
 
         /// <summary>
-        /// The outbound interface to use for this route. Only used when type is set to 'interface-route'. Can be: * `WAN1` -
-        /// Primary WAN interface * `WAN2` - Secondary WAN interface * A network ID for internal networks
+        /// The outbound interface to use for this route. Only used when type is set to 'interface-route'. Can be:
+        ///   * `WAN1` - Primary WAN interface
+        ///   * `WAN2` - Secondary WAN interface
+        ///   * A network ID for internal networks
         /// </summary>
         [Output("interface")]
         public Output<string?> Interface { get; private set; } = null!;
@@ -33,15 +34,13 @@ namespace Pulumi.Unifi
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The destination network in CIDR notation that this route will direct traffic to (e.g., '10.0.0.0/16' or
-        /// '192.168.100.0/24').
+        /// The destination network in CIDR notation that this route will direct traffic to (e.g., '10.0.0.0/16' or '192.168.100.0/24').
         /// </summary>
         [Output("network")]
         public Output<string> Network { get; private set; } = null!;
 
         /// <summary>
-        /// The IP address of the next hop router for this route. Only used when type is set to 'nexthop-route'. This should be an
-        /// IP address that is directly reachable from your UniFi gateway.
+        /// The IP address of the next hop router for this route. Only used when type is set to 'nexthop-route'. This should be an IP address that is directly reachable from your UniFi gateway.
         /// </summary>
         [Output("nextHop")]
         public Output<string?> NextHop { get; private set; } = null!;
@@ -53,8 +52,10 @@ namespace Pulumi.Unifi
         public Output<string> Site { get; private set; } = null!;
 
         /// <summary>
-        /// The type of static route. Valid values are: * `interface-route` - Route traffic through a specific interface *
-        /// `nexthop-route` - Route traffic to a specific next-hop IP address * `blackhole` - Drop all traffic to this network
+        /// The type of static route. Valid values are:
+        ///   * `interface-route` - Route traffic through a specific interface
+        ///   * `nexthop-route` - Route traffic to a specific next-hop IP address
+        ///   * `blackhole` - Drop all traffic to this network
         /// </summary>
         [Output("type")]
         public Output<string> Type { get; private set; } = null!;
@@ -106,15 +107,16 @@ namespace Pulumi.Unifi
     public sealed class StaticRouteArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The administrative distance for this route. Lower values are preferred. Use this to control route selection when
-        /// multiple routes to the same destination exist.
+        /// The administrative distance for this route. Lower values are preferred. Use this to control route selection when multiple routes to the same destination exist.
         /// </summary>
         [Input("distance", required: true)]
         public Input<double> Distance { get; set; } = null!;
 
         /// <summary>
-        /// The outbound interface to use for this route. Only used when type is set to 'interface-route'. Can be: * `WAN1` -
-        /// Primary WAN interface * `WAN2` - Secondary WAN interface * A network ID for internal networks
+        /// The outbound interface to use for this route. Only used when type is set to 'interface-route'. Can be:
+        ///   * `WAN1` - Primary WAN interface
+        ///   * `WAN2` - Secondary WAN interface
+        ///   * A network ID for internal networks
         /// </summary>
         [Input("interface")]
         public Input<string>? Interface { get; set; }
@@ -126,15 +128,13 @@ namespace Pulumi.Unifi
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The destination network in CIDR notation that this route will direct traffic to (e.g., '10.0.0.0/16' or
-        /// '192.168.100.0/24').
+        /// The destination network in CIDR notation that this route will direct traffic to (e.g., '10.0.0.0/16' or '192.168.100.0/24').
         /// </summary>
         [Input("network", required: true)]
         public Input<string> Network { get; set; } = null!;
 
         /// <summary>
-        /// The IP address of the next hop router for this route. Only used when type is set to 'nexthop-route'. This should be an
-        /// IP address that is directly reachable from your UniFi gateway.
+        /// The IP address of the next hop router for this route. Only used when type is set to 'nexthop-route'. This should be an IP address that is directly reachable from your UniFi gateway.
         /// </summary>
         [Input("nextHop")]
         public Input<string>? NextHop { get; set; }
@@ -146,8 +146,10 @@ namespace Pulumi.Unifi
         public Input<string>? Site { get; set; }
 
         /// <summary>
-        /// The type of static route. Valid values are: * `interface-route` - Route traffic through a specific interface *
-        /// `nexthop-route` - Route traffic to a specific next-hop IP address * `blackhole` - Drop all traffic to this network
+        /// The type of static route. Valid values are:
+        ///   * `interface-route` - Route traffic through a specific interface
+        ///   * `nexthop-route` - Route traffic to a specific next-hop IP address
+        ///   * `blackhole` - Drop all traffic to this network
         /// </summary>
         [Input("type", required: true)]
         public Input<string> Type { get; set; } = null!;
@@ -161,15 +163,16 @@ namespace Pulumi.Unifi
     public sealed class StaticRouteState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The administrative distance for this route. Lower values are preferred. Use this to control route selection when
-        /// multiple routes to the same destination exist.
+        /// The administrative distance for this route. Lower values are preferred. Use this to control route selection when multiple routes to the same destination exist.
         /// </summary>
         [Input("distance")]
         public Input<double>? Distance { get; set; }
 
         /// <summary>
-        /// The outbound interface to use for this route. Only used when type is set to 'interface-route'. Can be: * `WAN1` -
-        /// Primary WAN interface * `WAN2` - Secondary WAN interface * A network ID for internal networks
+        /// The outbound interface to use for this route. Only used when type is set to 'interface-route'. Can be:
+        ///   * `WAN1` - Primary WAN interface
+        ///   * `WAN2` - Secondary WAN interface
+        ///   * A network ID for internal networks
         /// </summary>
         [Input("interface")]
         public Input<string>? Interface { get; set; }
@@ -181,15 +184,13 @@ namespace Pulumi.Unifi
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The destination network in CIDR notation that this route will direct traffic to (e.g., '10.0.0.0/16' or
-        /// '192.168.100.0/24').
+        /// The destination network in CIDR notation that this route will direct traffic to (e.g., '10.0.0.0/16' or '192.168.100.0/24').
         /// </summary>
         [Input("network")]
         public Input<string>? Network { get; set; }
 
         /// <summary>
-        /// The IP address of the next hop router for this route. Only used when type is set to 'nexthop-route'. This should be an
-        /// IP address that is directly reachable from your UniFi gateway.
+        /// The IP address of the next hop router for this route. Only used when type is set to 'nexthop-route'. This should be an IP address that is directly reachable from your UniFi gateway.
         /// </summary>
         [Input("nextHop")]
         public Input<string>? NextHop { get; set; }
@@ -201,8 +202,10 @@ namespace Pulumi.Unifi
         public Input<string>? Site { get; set; }
 
         /// <summary>
-        /// The type of static route. Valid values are: * `interface-route` - Route traffic through a specific interface *
-        /// `nexthop-route` - Route traffic to a specific next-hop IP address * `blackhole` - Drop all traffic to this network
+        /// The type of static route. Valid values are:
+        ///   * `interface-route` - Route traffic through a specific interface
+        ///   * `nexthop-route` - Route traffic to a specific next-hop IP address
+        ///   * `blackhole` - Drop all traffic to this network
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

@@ -63,7 +63,7 @@
 //       /*
 //        uptimekuma:
 //            source: terraform-provider
-//            version: 0.12.0
+//            version: 0.14.0
 //            parameters:
 //              - kill3r-queen/uptimekuma
 //        */

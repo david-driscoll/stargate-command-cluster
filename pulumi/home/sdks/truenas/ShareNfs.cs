@@ -39,25 +39,25 @@ namespace Pulumi.Truenas
         /// <summary>
         /// Mapall group
         /// </summary>
-        [Output("mapallGroup")]
+        [Output("mapall_group")]
         public Output<string?> MapallGroup { get; private set; } = null!;
 
         /// <summary>
         /// Mapall user
         /// </summary>
-        [Output("mapallUser")]
+        [Output("mapall_user")]
         public Output<string?> MapallUser { get; private set; } = null!;
 
         /// <summary>
         /// Maproot group
         /// </summary>
-        [Output("maprootGroup")]
+        [Output("maproot_group")]
         public Output<string?> MaprootGroup { get; private set; } = null!;
 
         /// <summary>
         /// Maproot user
         /// </summary>
-        [Output("maprootUser")]
+        [Output("maproot_user")]
         public Output<string?> MaprootUser { get; private set; } = null!;
 
         /// <summary>
@@ -67,10 +67,10 @@ namespace Pulumi.Truenas
         public Output<ImmutableArray<string>> Networks { get; private set; } = null!;
 
         /// <summary>
-        /// Sharing paths
+        /// Sharing path
         /// </summary>
-        [Output("paths")]
-        public Output<ImmutableArray<string>> Paths { get; private set; } = null!;
+        [Output("path")]
+        public Output<string> Path { get; private set; } = null!;
 
         /// <summary>
         /// Restrict some syslog diagnostics. See exports(5)
@@ -178,25 +178,25 @@ namespace Pulumi.Truenas
         /// <summary>
         /// Mapall group
         /// </summary>
-        [Input("mapallGroup")]
+        [Input("mapall_group")]
         public Input<string>? MapallGroup { get; set; }
 
         /// <summary>
         /// Mapall user
         /// </summary>
-        [Input("mapallUser")]
+        [Input("mapall_user")]
         public Input<string>? MapallUser { get; set; }
 
         /// <summary>
         /// Maproot group
         /// </summary>
-        [Input("maprootGroup")]
+        [Input("maproot_group")]
         public Input<string>? MaprootGroup { get; set; }
 
         /// <summary>
         /// Maproot user
         /// </summary>
-        [Input("maprootUser")]
+        [Input("maproot_user")]
         public Input<string>? MaprootUser { get; set; }
 
         [Input("networks")]
@@ -211,16 +211,16 @@ namespace Pulumi.Truenas
             set => _networks = value;
         }
 
-        [Input("paths", required: true)]
-        private InputList<string>? _paths;
+        [Input("path", required: true)]
+        private Input<string>? _path;
 
         /// <summary>
-        /// Sharing paths
+        /// Sharing path
         /// </summary>
-        public InputList<string> Paths
+        public Input<string> Path
         {
-            get => _paths ?? (_paths = new InputList<string>());
-            set => _paths = value;
+            get => _path;
+            set => _path = value;
         }
 
         /// <summary>
@@ -291,25 +291,25 @@ namespace Pulumi.Truenas
         /// <summary>
         /// Mapall group
         /// </summary>
-        [Input("mapallGroup")]
+        [Input("mapall_group")]
         public Input<string>? MapallGroup { get; set; }
 
         /// <summary>
         /// Mapall user
         /// </summary>
-        [Input("mapallUser")]
+        [Input("mapall_user")]
         public Input<string>? MapallUser { get; set; }
 
         /// <summary>
         /// Maproot group
         /// </summary>
-        [Input("maprootGroup")]
+        [Input("maproot_group")]
         public Input<string>? MaprootGroup { get; set; }
 
         /// <summary>
         /// Maproot user
         /// </summary>
-        [Input("maprootUser")]
+        [Input("maproot_user")]
         public Input<string>? MaprootUser { get; set; }
 
         [Input("networks")]
@@ -324,16 +324,16 @@ namespace Pulumi.Truenas
             set => _networks = value;
         }
 
-        [Input("paths")]
-        private InputList<string>? _paths;
+        [Input("path")]
+        private Input<string>? _path;
 
         /// <summary>
-        /// Sharing paths
+        /// Sharing path
         /// </summary>
-        public InputList<string> Paths
+        public Input<string> Path
         {
-            get => _paths ?? (_paths = new InputList<string>());
-            set => _paths = value;
+            get => _path;
+            set => _path = value;
         }
 
         /// <summary>

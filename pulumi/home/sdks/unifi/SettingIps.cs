@@ -13,67 +13,61 @@ namespace Pulumi.Unifi
     public partial class SettingIps : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// List of network IDs to enable ad blocking for. If any networks are configured, ad blocking will be automatically
-        /// enabled. Each entry should be a valid network ID from your UniFi configuration. Leave empty to disable ad blocking.
+        /// List of network IDs to enable ad blocking for. If any networks are configured, ad blocking will be automatically enabled. Each entry should be a valid network ID from your UniFi configuration. Leave empty to disable ad blocking.
         /// </summary>
         [Output("adBlockedNetworks")]
         public Output<ImmutableArray<string>> AdBlockedNetworks { get; private set; } = null!;
 
         /// <summary>
-        /// The advanced filtering preference for IPS. Valid values are: * `disabled` - Advanced filtering is disabled * `manual` -
-        /// Advanced filtering is enabled and manually configured
+        /// The advanced filtering preference for IPS. Valid values are:
+        ///   * `disabled` - Advanced filtering is disabled
+        ///   * `manual` - Advanced filtering is enabled and manually configured
         /// </summary>
         [Output("advancedFilteringPreference")]
         public Output<string> AdvancedFilteringPreference { get; private set; } = null!;
 
         /// <summary>
-        /// DNS filters configuration. If any filters are configured, DNS filtering will be automatically enabled. Each filter can
-        /// be applied to a specific network and provides content filtering capabilities.
+        /// DNS filters configuration. If any filters are configured, DNS filtering will be automatically enabled. Each filter can be applied to a specific network and provides content filtering capabilities.
         /// </summary>
         [Output("dnsFilters")]
         public Output<ImmutableArray<Outputs.SettingIpsDnsFilter>> DnsFilters { get; private set; } = null!;
 
         /// <summary>
-        /// List of enabled IPS threat categories. Each entry enables detection and prevention for a specific type of threat. The
-        /// list of valid categories includes common threats like malware, exploits, scanning, and policy violations. See the
-        /// validator for the complete list of available categories.
+        /// List of enabled IPS threat categories. Each entry enables detection and prevention for a specific type of threat. The list of valid categories includes common threats like malware, exploits, scanning, and policy violations. See the validator for the complete list of available categories.
         /// </summary>
         [Output("enabledCategories")]
         public Output<ImmutableArray<string>> EnabledCategories { get; private set; } = null!;
 
         /// <summary>
-        /// List of network IDs to enable IPS protection for. Each entry should be a valid network ID from your UniFi configuration.
-        /// IPS will only monitor and protect traffic on these networks.
+        /// List of network IDs to enable IPS protection for. Each entry should be a valid network ID from your UniFi configuration. IPS will only monitor and protect traffic on these networks.
         /// </summary>
         [Output("enabledNetworks")]
         public Output<ImmutableArray<string>> EnabledNetworks { get; private set; } = null!;
 
         /// <summary>
-        /// Honeypots configuration. Honeypots are decoy systems designed to detect, deflect, or study hacking attempts. They appear
-        /// as legitimate parts of the network but are isolated and monitored.
+        /// Honeypots configuration. Honeypots are decoy systems designed to detect, deflect, or study hacking attempts. They appear as legitimate parts of the network but are isolated and monitored.
         /// </summary>
         [Output("honeypots")]
         public Output<ImmutableArray<Outputs.SettingIpsHoneypot>> Honeypots { get; private set; } = null!;
 
         /// <summary>
-        /// The IPS operation mode. Valid values are: * `ids` - Intrusion Detection System mode (detect and log threats only) *
-        /// `ips` - Intrusion Prevention System mode (detect and block threats) * `ipsInline` - Inline Intrusion Prevention System
-        /// mode (more aggressive blocking) * `disabled` - IPS functionality is completely disabled
+        /// The IPS operation mode. Valid values are:
+        ///   * `ids` - Intrusion Detection System mode (detect and log threats only)
+        ///   * `ips` - Intrusion Prevention System mode (detect and block threats)
+        ///   * `ipsInline` - Inline Intrusion Prevention System mode (more aggressive blocking)
+        ///   * `disabled` - IPS functionality is completely disabled
         /// </summary>
         [Output("ipsMode")]
         public Output<string> IpsMode { get; private set; } = null!;
 
         /// <summary>
-        /// Whether memory optimization is enabled for IPS. When set to `true`, the system will use less memory at the cost of
-        /// potentially reduced detection capabilities. Useful for devices with limited resources. Defaults to `false`. Requires
-        /// controller version 9.0 or later.
+        /// Whether memory optimization is enabled for IPS. When set to `true`, the system will use less memory at the cost of potentially reduced detection capabilities. Useful for devices with limited resources. Defaults to `false`. Requires controller version 9.0 or later.
         /// </summary>
         [Output("memoryOptimized")]
         public Output<bool> MemoryOptimized { get; private set; } = null!;
 
         /// <summary>
-        /// Whether to restrict BitTorrent and other peer-to-peer file sharing traffic. When set to `true`, the system will block
-        /// P2P traffic across the network. Defaults to `false`.
+        /// Whether to restrict BitTorrent and other peer-to-peer file sharing traffic. When set to `true`, the system will block P2P traffic across the network. Defaults to `false`.
         /// </summary>
         [Output("restrictTorrents")]
         public Output<bool> RestrictTorrents { get; private set; } = null!;
@@ -85,8 +79,7 @@ namespace Pulumi.Unifi
         public Output<string> Site { get; private set; } = null!;
 
         /// <summary>
-        /// Suppression configuration for IPS. This allows you to customize which alerts are suppressed or tracked, and define
-        /// whitelisted traffic that should never trigger IPS alerts.
+        /// Suppression configuration for IPS. This allows you to customize which alerts are suppressed or tracked, and define whitelisted traffic that should never trigger IPS alerts.
         /// </summary>
         [Output("suppression")]
         public Output<Outputs.SettingIpsSuppression> Suppression { get; private set; } = null!;
@@ -141,8 +134,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _adBlockedNetworks;
 
         /// <summary>
-        /// List of network IDs to enable ad blocking for. If any networks are configured, ad blocking will be automatically
-        /// enabled. Each entry should be a valid network ID from your UniFi configuration. Leave empty to disable ad blocking.
+        /// List of network IDs to enable ad blocking for. If any networks are configured, ad blocking will be automatically enabled. Each entry should be a valid network ID from your UniFi configuration. Leave empty to disable ad blocking.
         /// </summary>
         public InputList<string> AdBlockedNetworks
         {
@@ -151,8 +143,9 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The advanced filtering preference for IPS. Valid values are: * `disabled` - Advanced filtering is disabled * `manual` -
-        /// Advanced filtering is enabled and manually configured
+        /// The advanced filtering preference for IPS. Valid values are:
+        ///   * `disabled` - Advanced filtering is disabled
+        ///   * `manual` - Advanced filtering is enabled and manually configured
         /// </summary>
         [Input("advancedFilteringPreference")]
         public Input<string>? AdvancedFilteringPreference { get; set; }
@@ -161,8 +154,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.SettingIpsDnsFilterArgs>? _dnsFilters;
 
         /// <summary>
-        /// DNS filters configuration. If any filters are configured, DNS filtering will be automatically enabled. Each filter can
-        /// be applied to a specific network and provides content filtering capabilities.
+        /// DNS filters configuration. If any filters are configured, DNS filtering will be automatically enabled. Each filter can be applied to a specific network and provides content filtering capabilities.
         /// </summary>
         public InputList<Inputs.SettingIpsDnsFilterArgs> DnsFilters
         {
@@ -174,9 +166,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _enabledCategories;
 
         /// <summary>
-        /// List of enabled IPS threat categories. Each entry enables detection and prevention for a specific type of threat. The
-        /// list of valid categories includes common threats like malware, exploits, scanning, and policy violations. See the
-        /// validator for the complete list of available categories.
+        /// List of enabled IPS threat categories. Each entry enables detection and prevention for a specific type of threat. The list of valid categories includes common threats like malware, exploits, scanning, and policy violations. See the validator for the complete list of available categories.
         /// </summary>
         public InputList<string> EnabledCategories
         {
@@ -188,8 +178,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _enabledNetworks;
 
         /// <summary>
-        /// List of network IDs to enable IPS protection for. Each entry should be a valid network ID from your UniFi configuration.
-        /// IPS will only monitor and protect traffic on these networks.
+        /// List of network IDs to enable IPS protection for. Each entry should be a valid network ID from your UniFi configuration. IPS will only monitor and protect traffic on these networks.
         /// </summary>
         public InputList<string> EnabledNetworks
         {
@@ -201,8 +190,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.SettingIpsHoneypotArgs>? _honeypots;
 
         /// <summary>
-        /// Honeypots configuration. Honeypots are decoy systems designed to detect, deflect, or study hacking attempts. They appear
-        /// as legitimate parts of the network but are isolated and monitored.
+        /// Honeypots configuration. Honeypots are decoy systems designed to detect, deflect, or study hacking attempts. They appear as legitimate parts of the network but are isolated and monitored.
         /// </summary>
         public InputList<Inputs.SettingIpsHoneypotArgs> Honeypots
         {
@@ -211,24 +199,23 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The IPS operation mode. Valid values are: * `ids` - Intrusion Detection System mode (detect and log threats only) *
-        /// `ips` - Intrusion Prevention System mode (detect and block threats) * `ipsInline` - Inline Intrusion Prevention System
-        /// mode (more aggressive blocking) * `disabled` - IPS functionality is completely disabled
+        /// The IPS operation mode. Valid values are:
+        ///   * `ids` - Intrusion Detection System mode (detect and log threats only)
+        ///   * `ips` - Intrusion Prevention System mode (detect and block threats)
+        ///   * `ipsInline` - Inline Intrusion Prevention System mode (more aggressive blocking)
+        ///   * `disabled` - IPS functionality is completely disabled
         /// </summary>
         [Input("ipsMode")]
         public Input<string>? IpsMode { get; set; }
 
         /// <summary>
-        /// Whether memory optimization is enabled for IPS. When set to `true`, the system will use less memory at the cost of
-        /// potentially reduced detection capabilities. Useful for devices with limited resources. Defaults to `false`. Requires
-        /// controller version 9.0 or later.
+        /// Whether memory optimization is enabled for IPS. When set to `true`, the system will use less memory at the cost of potentially reduced detection capabilities. Useful for devices with limited resources. Defaults to `false`. Requires controller version 9.0 or later.
         /// </summary>
         [Input("memoryOptimized")]
         public Input<bool>? MemoryOptimized { get; set; }
 
         /// <summary>
-        /// Whether to restrict BitTorrent and other peer-to-peer file sharing traffic. When set to `true`, the system will block
-        /// P2P traffic across the network. Defaults to `false`.
+        /// Whether to restrict BitTorrent and other peer-to-peer file sharing traffic. When set to `true`, the system will block P2P traffic across the network. Defaults to `false`.
         /// </summary>
         [Input("restrictTorrents")]
         public Input<bool>? RestrictTorrents { get; set; }
@@ -240,8 +227,7 @@ namespace Pulumi.Unifi
         public Input<string>? Site { get; set; }
 
         /// <summary>
-        /// Suppression configuration for IPS. This allows you to customize which alerts are suppressed or tracked, and define
-        /// whitelisted traffic that should never trigger IPS alerts.
+        /// Suppression configuration for IPS. This allows you to customize which alerts are suppressed or tracked, and define whitelisted traffic that should never trigger IPS alerts.
         /// </summary>
         [Input("suppression")]
         public Input<Inputs.SettingIpsSuppressionArgs>? Suppression { get; set; }
@@ -258,8 +244,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _adBlockedNetworks;
 
         /// <summary>
-        /// List of network IDs to enable ad blocking for. If any networks are configured, ad blocking will be automatically
-        /// enabled. Each entry should be a valid network ID from your UniFi configuration. Leave empty to disable ad blocking.
+        /// List of network IDs to enable ad blocking for. If any networks are configured, ad blocking will be automatically enabled. Each entry should be a valid network ID from your UniFi configuration. Leave empty to disable ad blocking.
         /// </summary>
         public InputList<string> AdBlockedNetworks
         {
@@ -268,8 +253,9 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The advanced filtering preference for IPS. Valid values are: * `disabled` - Advanced filtering is disabled * `manual` -
-        /// Advanced filtering is enabled and manually configured
+        /// The advanced filtering preference for IPS. Valid values are:
+        ///   * `disabled` - Advanced filtering is disabled
+        ///   * `manual` - Advanced filtering is enabled and manually configured
         /// </summary>
         [Input("advancedFilteringPreference")]
         public Input<string>? AdvancedFilteringPreference { get; set; }
@@ -278,8 +264,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.SettingIpsDnsFilterGetArgs>? _dnsFilters;
 
         /// <summary>
-        /// DNS filters configuration. If any filters are configured, DNS filtering will be automatically enabled. Each filter can
-        /// be applied to a specific network and provides content filtering capabilities.
+        /// DNS filters configuration. If any filters are configured, DNS filtering will be automatically enabled. Each filter can be applied to a specific network and provides content filtering capabilities.
         /// </summary>
         public InputList<Inputs.SettingIpsDnsFilterGetArgs> DnsFilters
         {
@@ -291,9 +276,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _enabledCategories;
 
         /// <summary>
-        /// List of enabled IPS threat categories. Each entry enables detection and prevention for a specific type of threat. The
-        /// list of valid categories includes common threats like malware, exploits, scanning, and policy violations. See the
-        /// validator for the complete list of available categories.
+        /// List of enabled IPS threat categories. Each entry enables detection and prevention for a specific type of threat. The list of valid categories includes common threats like malware, exploits, scanning, and policy violations. See the validator for the complete list of available categories.
         /// </summary>
         public InputList<string> EnabledCategories
         {
@@ -305,8 +288,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _enabledNetworks;
 
         /// <summary>
-        /// List of network IDs to enable IPS protection for. Each entry should be a valid network ID from your UniFi configuration.
-        /// IPS will only monitor and protect traffic on these networks.
+        /// List of network IDs to enable IPS protection for. Each entry should be a valid network ID from your UniFi configuration. IPS will only monitor and protect traffic on these networks.
         /// </summary>
         public InputList<string> EnabledNetworks
         {
@@ -318,8 +300,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.SettingIpsHoneypotGetArgs>? _honeypots;
 
         /// <summary>
-        /// Honeypots configuration. Honeypots are decoy systems designed to detect, deflect, or study hacking attempts. They appear
-        /// as legitimate parts of the network but are isolated and monitored.
+        /// Honeypots configuration. Honeypots are decoy systems designed to detect, deflect, or study hacking attempts. They appear as legitimate parts of the network but are isolated and monitored.
         /// </summary>
         public InputList<Inputs.SettingIpsHoneypotGetArgs> Honeypots
         {
@@ -328,24 +309,23 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The IPS operation mode. Valid values are: * `ids` - Intrusion Detection System mode (detect and log threats only) *
-        /// `ips` - Intrusion Prevention System mode (detect and block threats) * `ipsInline` - Inline Intrusion Prevention System
-        /// mode (more aggressive blocking) * `disabled` - IPS functionality is completely disabled
+        /// The IPS operation mode. Valid values are:
+        ///   * `ids` - Intrusion Detection System mode (detect and log threats only)
+        ///   * `ips` - Intrusion Prevention System mode (detect and block threats)
+        ///   * `ipsInline` - Inline Intrusion Prevention System mode (more aggressive blocking)
+        ///   * `disabled` - IPS functionality is completely disabled
         /// </summary>
         [Input("ipsMode")]
         public Input<string>? IpsMode { get; set; }
 
         /// <summary>
-        /// Whether memory optimization is enabled for IPS. When set to `true`, the system will use less memory at the cost of
-        /// potentially reduced detection capabilities. Useful for devices with limited resources. Defaults to `false`. Requires
-        /// controller version 9.0 or later.
+        /// Whether memory optimization is enabled for IPS. When set to `true`, the system will use less memory at the cost of potentially reduced detection capabilities. Useful for devices with limited resources. Defaults to `false`. Requires controller version 9.0 or later.
         /// </summary>
         [Input("memoryOptimized")]
         public Input<bool>? MemoryOptimized { get; set; }
 
         /// <summary>
-        /// Whether to restrict BitTorrent and other peer-to-peer file sharing traffic. When set to `true`, the system will block
-        /// P2P traffic across the network. Defaults to `false`.
+        /// Whether to restrict BitTorrent and other peer-to-peer file sharing traffic. When set to `true`, the system will block P2P traffic across the network. Defaults to `false`.
         /// </summary>
         [Input("restrictTorrents")]
         public Input<bool>? RestrictTorrents { get; set; }
@@ -357,8 +337,7 @@ namespace Pulumi.Unifi
         public Input<string>? Site { get; set; }
 
         /// <summary>
-        /// Suppression configuration for IPS. This allows you to customize which alerts are suppressed or tracked, and define
-        /// whitelisted traffic that should never trigger IPS alerts.
+        /// Suppression configuration for IPS. This allows you to customize which alerts are suppressed or tracked, and define whitelisted traffic that should never trigger IPS alerts.
         /// </summary>
         [Input("suppression")]
         public Input<Inputs.SettingIpsSuppressionGetArgs>? Suppression { get; set; }

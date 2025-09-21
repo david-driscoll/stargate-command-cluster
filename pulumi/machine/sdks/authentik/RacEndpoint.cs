@@ -28,7 +28,10 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> PropertyMappings { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `rdp` - `vnc` - `ssh`
+        /// Allowed values:
+        ///   - `rdp`
+        ///   - `vnc`
+        ///   - `ssh`
         /// </summary>
         [Output("protocol")]
         public Output<string> Protocol { get; private set; } = null!;
@@ -112,7 +115,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `rdp` - `vnc` - `ssh`
+        /// Allowed values:
+        ///   - `rdp`
+        ///   - `vnc`
+        ///   - `ssh`
         /// </summary>
         [Input("protocol", required: true)]
         public Input<string> Protocol { get; set; } = null!;
@@ -158,7 +164,10 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `rdp` - `vnc` - `ssh`
+        /// Allowed values:
+        ///   - `rdp`
+        ///   - `vnc`
+        ///   - `ssh`
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }

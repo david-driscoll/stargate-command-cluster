@@ -13,37 +13,35 @@ namespace Pulumi.Unifi
     public partial class SettingNtp : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// NTP server configuration mode. Valid values are: * `auto` - Use NTP servers configured on the controller * `manual` -
-        /// Use custom NTP servers specified in this resource When set to `auto`, all NTP server fields will be cleared. When set to
-        /// `manual`, at least one NTP server must be specified.
+        /// NTP server configuration mode. Valid values are:
+        /// * `auto` - Use NTP servers configured on the controller
+        /// * `manual` - Use custom NTP servers specified in this resource
+        /// 
+        /// When set to `auto`, all NTP server fields will be cleared. When set to `manual`, at least one NTP server must be specified.
         /// </summary>
         [Output("mode")]
         public Output<string> Mode { get; private set; } = null!;
 
         /// <summary>
-        /// Primary NTP server hostname or IP address. Must be a valid hostname (e.g., `pool.ntp.org`) or IPv4 address. Only
-        /// applicable when `mode` is set to `manual`.
+        /// Primary NTP server hostname or IP address. Must be a valid hostname (e.g., `pool.ntp.org`) or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Output("ntpServer1")]
         public Output<string> NtpServer1 { get; private set; } = null!;
 
         /// <summary>
-        /// Secondary NTP server hostname or IP address. Must be a valid hostname (e.g., `time.google.com`) or IPv4 address. Only
-        /// applicable when `mode` is set to `manual`.
+        /// Secondary NTP server hostname or IP address. Must be a valid hostname (e.g., `time.google.com`) or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Output("ntpServer2")]
         public Output<string> NtpServer2 { get; private set; } = null!;
 
         /// <summary>
-        /// Tertiary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set
-        /// to `manual`.
+        /// Tertiary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Output("ntpServer3")]
         public Output<string> NtpServer3 { get; private set; } = null!;
 
         /// <summary>
-        /// Quaternary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is
-        /// set to `manual`.
+        /// Quaternary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Output("ntpServer4")]
         public Output<string> NtpServer4 { get; private set; } = null!;
@@ -101,37 +99,35 @@ namespace Pulumi.Unifi
     public sealed class SettingNtpArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// NTP server configuration mode. Valid values are: * `auto` - Use NTP servers configured on the controller * `manual` -
-        /// Use custom NTP servers specified in this resource When set to `auto`, all NTP server fields will be cleared. When set to
-        /// `manual`, at least one NTP server must be specified.
+        /// NTP server configuration mode. Valid values are:
+        /// * `auto` - Use NTP servers configured on the controller
+        /// * `manual` - Use custom NTP servers specified in this resource
+        /// 
+        /// When set to `auto`, all NTP server fields will be cleared. When set to `manual`, at least one NTP server must be specified.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
 
         /// <summary>
-        /// Primary NTP server hostname or IP address. Must be a valid hostname (e.g., `pool.ntp.org`) or IPv4 address. Only
-        /// applicable when `mode` is set to `manual`.
+        /// Primary NTP server hostname or IP address. Must be a valid hostname (e.g., `pool.ntp.org`) or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer1")]
         public Input<string>? NtpServer1 { get; set; }
 
         /// <summary>
-        /// Secondary NTP server hostname or IP address. Must be a valid hostname (e.g., `time.google.com`) or IPv4 address. Only
-        /// applicable when `mode` is set to `manual`.
+        /// Secondary NTP server hostname or IP address. Must be a valid hostname (e.g., `time.google.com`) or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer2")]
         public Input<string>? NtpServer2 { get; set; }
 
         /// <summary>
-        /// Tertiary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set
-        /// to `manual`.
+        /// Tertiary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer3")]
         public Input<string>? NtpServer3 { get; set; }
 
         /// <summary>
-        /// Quaternary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is
-        /// set to `manual`.
+        /// Quaternary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer4")]
         public Input<string>? NtpServer4 { get; set; }
@@ -151,37 +147,35 @@ namespace Pulumi.Unifi
     public sealed class SettingNtpState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// NTP server configuration mode. Valid values are: * `auto` - Use NTP servers configured on the controller * `manual` -
-        /// Use custom NTP servers specified in this resource When set to `auto`, all NTP server fields will be cleared. When set to
-        /// `manual`, at least one NTP server must be specified.
+        /// NTP server configuration mode. Valid values are:
+        /// * `auto` - Use NTP servers configured on the controller
+        /// * `manual` - Use custom NTP servers specified in this resource
+        /// 
+        /// When set to `auto`, all NTP server fields will be cleared. When set to `manual`, at least one NTP server must be specified.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
 
         /// <summary>
-        /// Primary NTP server hostname or IP address. Must be a valid hostname (e.g., `pool.ntp.org`) or IPv4 address. Only
-        /// applicable when `mode` is set to `manual`.
+        /// Primary NTP server hostname or IP address. Must be a valid hostname (e.g., `pool.ntp.org`) or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer1")]
         public Input<string>? NtpServer1 { get; set; }
 
         /// <summary>
-        /// Secondary NTP server hostname or IP address. Must be a valid hostname (e.g., `time.google.com`) or IPv4 address. Only
-        /// applicable when `mode` is set to `manual`.
+        /// Secondary NTP server hostname or IP address. Must be a valid hostname (e.g., `time.google.com`) or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer2")]
         public Input<string>? NtpServer2 { get; set; }
 
         /// <summary>
-        /// Tertiary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set
-        /// to `manual`.
+        /// Tertiary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer3")]
         public Input<string>? NtpServer3 { get; set; }
 
         /// <summary>
-        /// Quaternary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is
-        /// set to `manual`.
+        /// Quaternary NTP server hostname or IP address. Must be a valid hostname or IPv4 address. Only applicable when `mode` is set to `manual`.
         /// </summary>
         [Input("ntpServer4")]
         public Input<string>? NtpServer4 { get; set; }

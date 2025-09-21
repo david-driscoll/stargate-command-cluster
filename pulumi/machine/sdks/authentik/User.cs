@@ -52,7 +52,12 @@ namespace Pulumi.Authentik
         public Output<string?> Path { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` - `internal_service_account` Defaults to `internal`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///   - `internal_service_account`
+        ///  Defaults to `internal`.
         /// </summary>
         [Output("type")]
         public Output<string?> Type { get; private set; } = null!;
@@ -169,7 +174,12 @@ namespace Pulumi.Authentik
         public Input<string>? Path { get; set; }
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` - `internal_service_account` Defaults to `internal`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///   - `internal_service_account`
+        ///  Defaults to `internal`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
@@ -244,7 +254,12 @@ namespace Pulumi.Authentik
         public Input<string>? Path { get; set; }
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` - `internal_service_account` Defaults to `internal`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///   - `internal_service_account`
+        ///  Defaults to `internal`.
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

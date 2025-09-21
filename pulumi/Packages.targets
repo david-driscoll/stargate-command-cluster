@@ -17,7 +17,11 @@
     <PackageReference Include="Pulumi.Cloudflare" Version="6.8.0" />
     <PackageReference Include="Pulumi.Docker" Version="4.8.2" />
     <PackageReference Include="Pulumi.ProxmoxVE" Version="7.5.0" />
-        <PackageReference Include="Pulumi.Tailscale" Version="0.21.1" />
+    <PackageReference Include="Pulumi.Tailscale" Version="0.21.1" />
     <PackageReference Include="Pulumiverse.Talos" Version="0.6.0" />
+    <PackageReference Include="Pulumi.Minio" Version="0.16.5" />
+    <PackageReference Include="Backblaze.Client" Version="1.1.1" />
+    <PackageReference Include="Pulumiverse.Purrl" Version="0.6.2" />
+    <PackageReference Include="TrueNAS.NET" Version="1.0.0" />
   </ItemGroup>
 </Project>

@@ -19,8 +19,7 @@ namespace Pulumi.Unifi
         public Output<bool> Enabled { get; private set; } = null!;
 
         /// <summary>
-        /// Whether DPI fingerprinting is enabled. Fingerprinting allows the controller to identify applications and services based
-        /// on traffic patterns.
+        /// Whether DPI fingerprinting is enabled. Fingerprinting allows the controller to identify applications and services based on traffic patterns.
         /// </summary>
         [Output("fingerprintingEnabled")]
         public Output<bool> FingerprintingEnabled { get; private set; } = null!;
@@ -84,8 +83,7 @@ namespace Pulumi.Unifi
         public Input<bool> Enabled { get; set; } = null!;
 
         /// <summary>
-        /// Whether DPI fingerprinting is enabled. Fingerprinting allows the controller to identify applications and services based
-        /// on traffic patterns.
+        /// Whether DPI fingerprinting is enabled. Fingerprinting allows the controller to identify applications and services based on traffic patterns.
         /// </summary>
         [Input("fingerprintingEnabled", required: true)]
         public Input<bool> FingerprintingEnabled { get; set; } = null!;
@@ -111,8 +109,7 @@ namespace Pulumi.Unifi
         public Input<bool>? Enabled { get; set; }
 
         /// <summary>
-        /// Whether DPI fingerprinting is enabled. Fingerprinting allows the controller to identify applications and services based
-        /// on traffic patterns.
+        /// Whether DPI fingerprinting is enabled. Fingerprinting allows the controller to identify applications and services based on traffic patterns.
         /// </summary>
         [Input("fingerprintingEnabled")]
         public Input<bool>? FingerprintingEnabled { get; set; }

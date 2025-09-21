@@ -85,7 +85,11 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> JwtFederationSources { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `proxy` - `forward_single` - `forward_domain` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `forward_single`
+        ///   - `forward_domain`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Output("mode")]
         public Output<string?> Mode { get; private set; } = null!;
@@ -239,7 +243,11 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `forward_single` - `forward_domain` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `forward_single`
+        ///   - `forward_domain`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
@@ -366,7 +374,11 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `proxy` - `forward_single` - `forward_domain` Defaults to `proxy`.
+        /// Allowed values:
+        ///   - `proxy`
+        ///   - `forward_single`
+        ///   - `forward_domain`
+        ///  Defaults to `proxy`.
         /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }

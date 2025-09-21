@@ -8,6 +8,8 @@ namespace models;
 
 using CloudflareProvider = Pulumi.Cloudflare.Provider;
 using OnePasswordProvider = Rocket.Surgery.OnePasswordNativeUnofficial.Provider;
+using MinioProvider = Pulumi.Minio.Provider;
+using TruenasProvider = Pulumi.Truenas.Provider;
 using TailscaleProvider = Pulumi.Tailscale.Provider;
 using UnifiProvider = Pulumi.Unifi.Provider;
 
@@ -88,7 +90,42 @@ public class GlobalResources : ComponentResource
       Tags = ["tag:proxmox", "tag:apps"],
       Description = "Proxmox Management Key",
     }, CustomResourceOptions.Merge(cro, new() { Provider = TailscaleProvider }));
+
+    TruenasCredential = GetAPICredential.Invoke(new()
+    {
+      Title = "Eris Truenas Credentials",
+      Id = "nvvnzwmhywhgjf7uywkkyq7jxy",
+      Vault = "Eris",
+    }, OnePasswordInvokeOptions);
+
+    TruenasProvider = new("truenas", new()
+    {
+      BaseUrl = TruenasCredential.Apply(z => Output.Format($"https://{TruenasCredential.Apply(z => z.Fields["domain"].Value)}/api/v2.0") ),
+      ApiKey = TruenasCredential.Apply(z => z.Credential!),
+    }, cro);
+
+    TruenasMinioCredential = GetLogin.Invoke(new()
+    {
+      Title = "minio root user",
+      Id = "4vyr6wzupgguzirpbnjum2geby",
+      Vault = "Eris",
+    }, OnePasswordInvokeOptions);
+
+    TruenasMinioProvider = new MinioProvider("truenas-minio", new()
+    {
+      MinioRegion = "homelab",
+      MinioInsecure = true,
+      MinioUser = TruenasMinioCredential.Apply(z => z.Username!),
+      MinioPassword = TruenasMinioCredential.Apply(z => z.Password!),
+      MinioServer = TruenasCredential.Apply(z => Output.Format($"http://{TruenasCredential.Apply(z => z.Fields["domain"].Value)}:9000") /*z.Fields["endpoint"].Value*/),
+    });
   }
+
+  public TruenasProvider TruenasProvider { get; set; }
+
+  public MinioProvider TruenasMinioProvider { get; set; }
+
+  public Output<GetLoginResult> TruenasMinioCredential { get; set; }
 
   public InvokeOptions OnePasswordInvokeOptions { get; set; }
   public Output<string> TailscaleDomain { get; set; }
@@ -100,6 +137,7 @@ public class GlobalResources : ComponentResource
   public CloudflareProvider CloudflareProvider { get; }
   public Output<GetAPICredentialResult> UnifiCredential { get; }
   public UnifiProvider UnifiProvider { get; }
+  public Output<GetAPICredentialResult> TruenasCredential { get; }
   public TailscaleProvider TailscaleProvider { get; }
   public TailnetKey TailscaleAuthKey { get; }
 }

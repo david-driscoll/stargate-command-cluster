@@ -34,8 +34,7 @@ namespace Pulumi.Unifi
 
         private static readonly __Value<bool?> _allowInsecure = new __Value<bool?>(() => __config.GetBoolean("allowInsecure"));
         /// <summary>
-        /// Skip verification of TLS certificates of API requests. You may need to set this to `true` if you are using your local
-        /// API without setting up a signed certificate. Can be specified with the `UNIFI_INSECURE` environment variable.
+        /// Skip verification of TLS certificates of API requests. You may need to set this to `true` if you are using your local API without setting up a signed certificate. Can be specified with the `UNIFI_INSECURE` environment variable.
         /// </summary>
         public static bool? AllowInsecure
         {
@@ -45,8 +44,7 @@ namespace Pulumi.Unifi
 
         private static readonly __Value<string?> _apiKey = new __Value<string?>(() => __config.Get("apiKey"));
         /// <summary>
-        /// API Key for the user accessing the API. Can be specified with the `UNIFI_API_KEY` environment variable. Controller
-        /// version 9.0.108 or later is required.
+        /// API Key for the user accessing the API. Can be specified with the `UNIFI_API_KEY` environment variable. Controller version 9.0.108 or later is required.
         /// </summary>
         public static string? ApiKey
         {
@@ -56,9 +54,7 @@ namespace Pulumi.Unifi
 
         private static readonly __Value<string?> _apiUrl = new __Value<string?>(() => __config.Get("apiUrl"));
         /// <summary>
-        /// URL of the controller API. Can be specified with the `UNIFI_API` environment variable. You should **NOT** supply the
-        /// path (`/api`), the SDK will discover the appropriate paths. This is to support UDM Pro style API paths as well as more
-        /// standard controller paths.
+        /// URL of the controller API. Can be specified with the `UNIFI_API` environment variable. You should **NOT** supply the path (`/api`), the SDK will discover the appropriate paths. This is to support UDM Pro style API paths as well as more standard controller paths.
         /// </summary>
         public static string? ApiUrl
         {
@@ -78,8 +74,7 @@ namespace Pulumi.Unifi
 
         private static readonly __Value<string?> _site = new __Value<string?>(() => __config.Get("site"));
         /// <summary>
-        /// The site in the Unifi controller this provider will manage. Can be specified with the `UNIFI_SITE` environment variable.
-        /// Default: `default`
+        /// The site in the Unifi controller this provider will manage. Can be specified with the `UNIFI_SITE` environment variable. Default: `default`
         /// </summary>
         public static string? Site
         {

@@ -13,8 +13,7 @@ namespace Pulumi.Unifi
     public partial class DnsRecord : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Whether the DNS record is active. Defaults to true. Set to false to temporarily disable resolution without removing the
-        /// record.
+        /// Whether the DNS record is active. Defaults to true. Set to false to temporarily disable resolution without removing the record.
         /// </summary>
         [Output("enabled")]
         public Output<bool> Enabled { get; private set; } = null!;
@@ -32,16 +31,18 @@ namespace Pulumi.Unifi
         public Output<double> Port { get; private set; } = null!;
 
         /// <summary>
-        /// Priority value for MX and SRV records. Lower values indicate higher priority. Required for MX and SRV records, ignored
-        /// for other types.
+        /// Priority value for MX and SRV records. Lower values indicate higher priority. Required for MX and SRV records, ignored for other types.
         /// </summary>
         [Output("priority")]
         public Output<double> Priority { get; private set; } = null!;
 
         /// <summary>
-        /// The content of the DNS record. The expected value depends on the record type: * For A records: IPv4 address (e.g.,
-        /// '192.168.1.10') * For AAAA records: IPv6 address * For CNAME records: Canonical name (e.g., 'server1.example.com') * For
-        /// MX records: Mail server hostname * For TXT records: Text content (e.g., 'v=spf1 include:_spf.example.com ~all')
+        /// The content of the DNS record. The expected value depends on the record type:
+        ///   * For A records: IPv4 address (e.g., '192.168.1.10')
+        ///   * For AAAA records: IPv6 address
+        ///   * For CNAME records: Canonical name (e.g., 'server1.example.com')
+        ///   * For MX records: Mail server hostname
+        ///   * For TXT records: Text content (e.g., 'v=spf1 include:_spf.example.com ~all')
         /// </summary>
         [Output("record")]
         public Output<string> Record { get; private set; } = null!;
@@ -53,25 +54,28 @@ namespace Pulumi.Unifi
         public Output<string> Site { get; private set; } = null!;
 
         /// <summary>
-        /// Time To Live (TTL) in seconds, determines how long DNS resolvers should cache this record. Set to 0 for automatic TTL.
-        /// Common values: 300 (5 minutes), 3600 (1 hour), 86400 (1 day).
+        /// Time To Live (TTL) in seconds, determines how long DNS resolvers should cache this record. Set to 0 for automatic TTL. Common values: 300 (5 minutes), 3600 (1 hour), 86400 (1 day).
         /// </summary>
         [Output("ttl")]
         public Output<double> Ttl { get; private set; } = null!;
 
         /// <summary>
-        /// The type of DNS record. Valid values are: * `A` - Maps a hostname to IPv4 address * `AAAA` - Maps a hostname to IPv6
-        /// address * `CNAME` - Creates an alias for another domain name * `MX` - Specifies mail servers for the domain * `NS` -
-        /// Delegates a subdomain to a set of name servers * `PTR` - Creates a pointer to a canonical name (reverse DNS) * `SOA` -
-        /// Specifies authoritative information about the domain * `SRV` - Specifies location of services (hostname and port) *
-        /// `TXT` - Holds descriptive text
+        /// The type of DNS record. Valid values are:
+        ///   * `A` - Maps a hostname to IPv4 address
+        ///   * `AAAA` - Maps a hostname to IPv6 address
+        ///   * `CNAME` - Creates an alias for another domain name
+        ///   * `MX` - Specifies mail servers for the domain
+        ///   * `NS` - Delegates a subdomain to a set of name servers
+        ///   * `PTR` - Creates a pointer to a canonical name (reverse DNS)
+        ///   * `SOA` - Specifies authoritative information about the domain
+        ///   * `SRV` - Specifies location of services (hostname and port)
+        ///   * `TXT` - Holds descriptive text
         /// </summary>
         [Output("type")]
         public Output<string> Type { get; private set; } = null!;
 
         /// <summary>
-        /// A relative weight for SRV records with the same priority. Higher values get proportionally more traffic. Only used with
-        /// SRV records.
+        /// A relative weight for SRV records with the same priority. Higher values get proportionally more traffic. Only used with SRV records.
         /// </summary>
         [Output("weight")]
         public Output<double> Weight { get; private set; } = null!;
@@ -123,8 +127,7 @@ namespace Pulumi.Unifi
     public sealed class DnsRecordArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Whether the DNS record is active. Defaults to true. Set to false to temporarily disable resolution without removing the
-        /// record.
+        /// Whether the DNS record is active. Defaults to true. Set to false to temporarily disable resolution without removing the record.
         /// </summary>
         [Input("enabled")]
         public Input<bool>? Enabled { get; set; }
@@ -142,16 +145,18 @@ namespace Pulumi.Unifi
         public Input<double>? Port { get; set; }
 
         /// <summary>
-        /// Priority value for MX and SRV records. Lower values indicate higher priority. Required for MX and SRV records, ignored
-        /// for other types.
+        /// Priority value for MX and SRV records. Lower values indicate higher priority. Required for MX and SRV records, ignored for other types.
         /// </summary>
         [Input("priority")]
         public Input<double>? Priority { get; set; }
 
         /// <summary>
-        /// The content of the DNS record. The expected value depends on the record type: * For A records: IPv4 address (e.g.,
-        /// '192.168.1.10') * For AAAA records: IPv6 address * For CNAME records: Canonical name (e.g., 'server1.example.com') * For
-        /// MX records: Mail server hostname * For TXT records: Text content (e.g., 'v=spf1 include:_spf.example.com ~all')
+        /// The content of the DNS record. The expected value depends on the record type:
+        ///   * For A records: IPv4 address (e.g., '192.168.1.10')
+        ///   * For AAAA records: IPv6 address
+        ///   * For CNAME records: Canonical name (e.g., 'server1.example.com')
+        ///   * For MX records: Mail server hostname
+        ///   * For TXT records: Text content (e.g., 'v=spf1 include:_spf.example.com ~all')
         /// </summary>
         [Input("record", required: true)]
         public Input<string> Record { get; set; } = null!;
@@ -163,25 +168,28 @@ namespace Pulumi.Unifi
         public Input<string>? Site { get; set; }
 
         /// <summary>
-        /// Time To Live (TTL) in seconds, determines how long DNS resolvers should cache this record. Set to 0 for automatic TTL.
-        /// Common values: 300 (5 minutes), 3600 (1 hour), 86400 (1 day).
+        /// Time To Live (TTL) in seconds, determines how long DNS resolvers should cache this record. Set to 0 for automatic TTL. Common values: 300 (5 minutes), 3600 (1 hour), 86400 (1 day).
         /// </summary>
         [Input("ttl")]
         public Input<double>? Ttl { get; set; }
 
         /// <summary>
-        /// The type of DNS record. Valid values are: * `A` - Maps a hostname to IPv4 address * `AAAA` - Maps a hostname to IPv6
-        /// address * `CNAME` - Creates an alias for another domain name * `MX` - Specifies mail servers for the domain * `NS` -
-        /// Delegates a subdomain to a set of name servers * `PTR` - Creates a pointer to a canonical name (reverse DNS) * `SOA` -
-        /// Specifies authoritative information about the domain * `SRV` - Specifies location of services (hostname and port) *
-        /// `TXT` - Holds descriptive text
+        /// The type of DNS record. Valid values are:
+        ///   * `A` - Maps a hostname to IPv4 address
+        ///   * `AAAA` - Maps a hostname to IPv6 address
+        ///   * `CNAME` - Creates an alias for another domain name
+        ///   * `MX` - Specifies mail servers for the domain
+        ///   * `NS` - Delegates a subdomain to a set of name servers
+        ///   * `PTR` - Creates a pointer to a canonical name (reverse DNS)
+        ///   * `SOA` - Specifies authoritative information about the domain
+        ///   * `SRV` - Specifies location of services (hostname and port)
+        ///   * `TXT` - Holds descriptive text
         /// </summary>
         [Input("type", required: true)]
         public Input<string> Type { get; set; } = null!;
 
         /// <summary>
-        /// A relative weight for SRV records with the same priority. Higher values get proportionally more traffic. Only used with
-        /// SRV records.
+        /// A relative weight for SRV records with the same priority. Higher values get proportionally more traffic. Only used with SRV records.
         /// </summary>
         [Input("weight")]
         public Input<double>? Weight { get; set; }
@@ -195,8 +203,7 @@ namespace Pulumi.Unifi
     public sealed class DnsRecordState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Whether the DNS record is active. Defaults to true. Set to false to temporarily disable resolution without removing the
-        /// record.
+        /// Whether the DNS record is active. Defaults to true. Set to false to temporarily disable resolution without removing the record.
         /// </summary>
         [Input("enabled")]
         public Input<bool>? Enabled { get; set; }
@@ -214,16 +221,18 @@ namespace Pulumi.Unifi
         public Input<double>? Port { get; set; }
 
         /// <summary>
-        /// Priority value for MX and SRV records. Lower values indicate higher priority. Required for MX and SRV records, ignored
-        /// for other types.
+        /// Priority value for MX and SRV records. Lower values indicate higher priority. Required for MX and SRV records, ignored for other types.
         /// </summary>
         [Input("priority")]
         public Input<double>? Priority { get; set; }
 
         /// <summary>
-        /// The content of the DNS record. The expected value depends on the record type: * For A records: IPv4 address (e.g.,
-        /// '192.168.1.10') * For AAAA records: IPv6 address * For CNAME records: Canonical name (e.g., 'server1.example.com') * For
-        /// MX records: Mail server hostname * For TXT records: Text content (e.g., 'v=spf1 include:_spf.example.com ~all')
+        /// The content of the DNS record. The expected value depends on the record type:
+        ///   * For A records: IPv4 address (e.g., '192.168.1.10')
+        ///   * For AAAA records: IPv6 address
+        ///   * For CNAME records: Canonical name (e.g., 'server1.example.com')
+        ///   * For MX records: Mail server hostname
+        ///   * For TXT records: Text content (e.g., 'v=spf1 include:_spf.example.com ~all')
         /// </summary>
         [Input("record")]
         public Input<string>? Record { get; set; }
@@ -235,25 +244,28 @@ namespace Pulumi.Unifi
         public Input<string>? Site { get; set; }
 
         /// <summary>
-        /// Time To Live (TTL) in seconds, determines how long DNS resolvers should cache this record. Set to 0 for automatic TTL.
-        /// Common values: 300 (5 minutes), 3600 (1 hour), 86400 (1 day).
+        /// Time To Live (TTL) in seconds, determines how long DNS resolvers should cache this record. Set to 0 for automatic TTL. Common values: 300 (5 minutes), 3600 (1 hour), 86400 (1 day).
         /// </summary>
         [Input("ttl")]
         public Input<double>? Ttl { get; set; }
 
         /// <summary>
-        /// The type of DNS record. Valid values are: * `A` - Maps a hostname to IPv4 address * `AAAA` - Maps a hostname to IPv6
-        /// address * `CNAME` - Creates an alias for another domain name * `MX` - Specifies mail servers for the domain * `NS` -
-        /// Delegates a subdomain to a set of name servers * `PTR` - Creates a pointer to a canonical name (reverse DNS) * `SOA` -
-        /// Specifies authoritative information about the domain * `SRV` - Specifies location of services (hostname and port) *
-        /// `TXT` - Holds descriptive text
+        /// The type of DNS record. Valid values are:
+        ///   * `A` - Maps a hostname to IPv4 address
+        ///   * `AAAA` - Maps a hostname to IPv6 address
+        ///   * `CNAME` - Creates an alias for another domain name
+        ///   * `MX` - Specifies mail servers for the domain
+        ///   * `NS` - Delegates a subdomain to a set of name servers
+        ///   * `PTR` - Creates a pointer to a canonical name (reverse DNS)
+        ///   * `SOA` - Specifies authoritative information about the domain
+        ///   * `SRV` - Specifies location of services (hostname and port)
+        ///   * `TXT` - Holds descriptive text
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
 
         /// <summary>
-        /// A relative weight for SRV records with the same priority. Higher values get proportionally more traffic. Only used with
-        /// SRV records.
+        /// A relative weight for SRV records with the same priority. Higher values get proportionally more traffic. Only used with SRV records.
         /// </summary>
         [Input("weight")]
         public Input<double>? Weight { get; set; }

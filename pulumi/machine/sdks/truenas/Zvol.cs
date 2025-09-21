@@ -34,9 +34,7 @@ namespace Pulumi.Truenas
         public Output<double> Copies { get; private set; } = null!;
 
         /// <summary>
-        /// Transparently reuse a single copy of duplicated data to save space. Deduplication can improve storage capacity, but is
-        /// RAM intensive. Compressing data is generally recommended before using deduplication. Deduplicating data is a one-way
-        /// process. *Deduplicated data cannot be undeduplicated!*.
+        /// Transparently reuse a single copy of duplicated data to save space. Deduplication can improve storage capacity, but is RAM intensive. Compressing data is generally recommended before using deduplication. Deduplicating data is a one-way process. *Deduplicated data cannot be undeduplicated!*.
         /// </summary>
         [Output("deduplication")]
         public Output<string?> Deduplication { get; private set; } = null!;
@@ -51,8 +49,7 @@ namespace Pulumi.Truenas
         public Output<string> EncryptionRoot { get; private set; } = null!;
 
         /// <summary>
-        /// The system restricts creating a zvol that brings the pool to over 80% capacity. Set to force creation of the zvol (not
-        /// recommended)
+        /// The system restricts creating a zvol that brings the pool to over 80% capacity. Set to force creation of the zvol (not recommended)
         /// </summary>
         [Output("forceSize")]
         public Output<bool?> ForceSize { get; private set; } = null!;
@@ -103,9 +100,7 @@ namespace Pulumi.Truenas
         public Output<double> Reservation { get; private set; } = null!;
 
         /// <summary>
-        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the
-        /// settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled`
-        /// never waits for writes to complete.
+        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled` never waits for writes to complete.
         /// </summary>
         [Output("sync")]
         public Output<string?> Sync { get; private set; } = null!;
@@ -187,9 +182,7 @@ namespace Pulumi.Truenas
         public Input<string> Compression { get; set; } = null!;
 
         /// <summary>
-        /// Transparently reuse a single copy of duplicated data to save space. Deduplication can improve storage capacity, but is
-        /// RAM intensive. Compressing data is generally recommended before using deduplication. Deduplicating data is a one-way
-        /// process. *Deduplicated data cannot be undeduplicated!*.
+        /// Transparently reuse a single copy of duplicated data to save space. Deduplication can improve storage capacity, but is RAM intensive. Compressing data is generally recommended before using deduplication. Deduplicating data is a one-way process. *Deduplicated data cannot be undeduplicated!*.
         /// </summary>
         [Input("deduplication")]
         public Input<string>? Deduplication { get; set; }
@@ -198,8 +191,7 @@ namespace Pulumi.Truenas
         public Input<string>? EncryptionAlgorithm { get; set; }
 
         /// <summary>
-        /// The system restricts creating a zvol that brings the pool to over 80% capacity. Set to force creation of the zvol (not
-        /// recommended)
+        /// The system restricts creating a zvol that brings the pool to over 80% capacity. Set to force creation of the zvol (not recommended)
         /// </summary>
         [Input("forceSize")]
         public Input<bool>? ForceSize { get; set; }
@@ -232,9 +224,7 @@ namespace Pulumi.Truenas
         public Input<string>? Readonly { get; set; }
 
         /// <summary>
-        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the
-        /// settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled`
-        /// never waits for writes to complete.
+        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled` never waits for writes to complete.
         /// </summary>
         [Input("sync")]
         public Input<string>? Sync { get; set; }
@@ -278,9 +268,7 @@ namespace Pulumi.Truenas
         public Input<double>? Copies { get; set; }
 
         /// <summary>
-        /// Transparently reuse a single copy of duplicated data to save space. Deduplication can improve storage capacity, but is
-        /// RAM intensive. Compressing data is generally recommended before using deduplication. Deduplicating data is a one-way
-        /// process. *Deduplicated data cannot be undeduplicated!*.
+        /// Transparently reuse a single copy of duplicated data to save space. Deduplication can improve storage capacity, but is RAM intensive. Compressing data is generally recommended before using deduplication. Deduplicating data is a one-way process. *Deduplicated data cannot be undeduplicated!*.
         /// </summary>
         [Input("deduplication")]
         public Input<string>? Deduplication { get; set; }
@@ -295,8 +283,7 @@ namespace Pulumi.Truenas
         public Input<string>? EncryptionRoot { get; set; }
 
         /// <summary>
-        /// The system restricts creating a zvol that brings the pool to over 80% capacity. Set to force creation of the zvol (not
-        /// recommended)
+        /// The system restricts creating a zvol that brings the pool to over 80% capacity. Set to force creation of the zvol (not recommended)
         /// </summary>
         [Input("forceSize")]
         public Input<bool>? ForceSize { get; set; }
@@ -347,9 +334,7 @@ namespace Pulumi.Truenas
         public Input<double>? Reservation { get; set; }
 
         /// <summary>
-        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the
-        /// settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled`
-        /// never waits for writes to complete.
+        /// Sets the data write synchronization. `inherit` takes the sync settings from the parent dataset, `standard` uses the settings that have been requested by the client software, `always` waits for data writes to complete, and `disabled` never waits for writes to complete.
         /// </summary>
         [Input("sync")]
         public Input<string>? Sync { get; set; }

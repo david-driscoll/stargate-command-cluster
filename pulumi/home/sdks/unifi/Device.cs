@@ -13,9 +13,11 @@ namespace Pulumi.Unifi
     public partial class Device : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Whether to automatically adopt the device when creating this resource. When true: * The controller will attempt to adopt
-        /// the device * Device must be in a pending adoption state * Device must be accessible on the network Set to false if you
-        /// want to manage adoption manually. Defaults to `true`.
+        /// Whether to automatically adopt the device when creating this resource. When true:
+        /// * The controller will attempt to adopt the device
+        /// * Device must be in a pending adoption state
+        /// * Device must be accessible on the network
+        /// Set to false if you want to manage adoption manually. Defaults to `true`.
         /// </summary>
         [Output("allowAdoption")]
         public Output<bool?> AllowAdoption { get; private set; } = null!;
@@ -30,26 +32,32 @@ namespace Pulumi.Unifi
         public Output<bool?> ForgetOnDestroy { get; private set; } = null!;
 
         /// <summary>
-        /// The MAC address of the device in standard format (e.g., 'aa:bb:cc:dd:ee:ff'). This is used to identify and manage
-        /// specific devices that have already been adopted by the controller.
+        /// The MAC address of the device in standard format (e.g., 'aa:bb:cc:dd:ee:ff'). This is used to identify and manage specific devices that have already been adopted by the controller.
         /// </summary>
         [Output("mac")]
         public Output<string> Mac { get; private set; } = null!;
 
         /// <summary>
-        /// A friendly name for the device that will be displayed in the UniFi controller UI. Examples: * 'Office-AP-1' for an
-        /// access point * 'Core-Switch-01' for a switch * 'Main-Gateway' for a gateway Choose descriptive names that indicate
-        /// location and purpose.
+        /// A friendly name for the device that will be displayed in the UniFi controller UI. Examples:
+        /// * 'Office-AP-1' for an access point
+        /// * 'Core-Switch-01' for a switch
+        /// * 'Main-Gateway' for a gateway
+        /// Choose descriptive names that indicate location and purpose.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// A list of port-specific configuration overrides for UniFi switches. This allows you to customize individual port
-        /// settings such as: * Port names and labels for easy identification * Port profiles for VLAN and security settings *
-        /// Operating modes for special functions Common use cases include: * Setting up trunk ports for inter-switch connections *
-        /// Configuring PoE settings for powered devices * Creating mirrored ports for network monitoring * Setting up link
-        /// aggregation between switches or servers
+        /// A list of port-specific configuration overrides for UniFi switches. This allows you to customize individual port settings such as:
+        ///   * Port names and labels for easy identification
+        ///   * Port profiles for VLAN and security settings
+        ///   * Operating modes for special functions
+        /// 
+        /// Common use cases include:
+        ///   * Setting up trunk ports for inter-switch connections
+        ///   * Configuring PoE settings for powered devices
+        ///   * Creating mirrored ports for network monitoring
+        ///   * Setting up link aggregation between switches or servers
         /// </summary>
         [Output("portOverrides")]
         public Output<ImmutableArray<Outputs.DevicePortOverride>> PortOverrides { get; private set; } = null!;
@@ -107,9 +115,11 @@ namespace Pulumi.Unifi
     public sealed class DeviceArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Whether to automatically adopt the device when creating this resource. When true: * The controller will attempt to adopt
-        /// the device * Device must be in a pending adoption state * Device must be accessible on the network Set to false if you
-        /// want to manage adoption manually. Defaults to `true`.
+        /// Whether to automatically adopt the device when creating this resource. When true:
+        /// * The controller will attempt to adopt the device
+        /// * Device must be in a pending adoption state
+        /// * Device must be accessible on the network
+        /// Set to false if you want to manage adoption manually. Defaults to `true`.
         /// </summary>
         [Input("allowAdoption")]
         public Input<bool>? AllowAdoption { get; set; }
@@ -118,16 +128,17 @@ namespace Pulumi.Unifi
         public Input<bool>? ForgetOnDestroy { get; set; }
 
         /// <summary>
-        /// The MAC address of the device in standard format (e.g., 'aa:bb:cc:dd:ee:ff'). This is used to identify and manage
-        /// specific devices that have already been adopted by the controller.
+        /// The MAC address of the device in standard format (e.g., 'aa:bb:cc:dd:ee:ff'). This is used to identify and manage specific devices that have already been adopted by the controller.
         /// </summary>
         [Input("mac")]
         public Input<string>? Mac { get; set; }
 
         /// <summary>
-        /// A friendly name for the device that will be displayed in the UniFi controller UI. Examples: * 'Office-AP-1' for an
-        /// access point * 'Core-Switch-01' for a switch * 'Main-Gateway' for a gateway Choose descriptive names that indicate
-        /// location and purpose.
+        /// A friendly name for the device that will be displayed in the UniFi controller UI. Examples:
+        /// * 'Office-AP-1' for an access point
+        /// * 'Core-Switch-01' for a switch
+        /// * 'Main-Gateway' for a gateway
+        /// Choose descriptive names that indicate location and purpose.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -136,11 +147,16 @@ namespace Pulumi.Unifi
         private InputList<Inputs.DevicePortOverrideArgs>? _portOverrides;
 
         /// <summary>
-        /// A list of port-specific configuration overrides for UniFi switches. This allows you to customize individual port
-        /// settings such as: * Port names and labels for easy identification * Port profiles for VLAN and security settings *
-        /// Operating modes for special functions Common use cases include: * Setting up trunk ports for inter-switch connections *
-        /// Configuring PoE settings for powered devices * Creating mirrored ports for network monitoring * Setting up link
-        /// aggregation between switches or servers
+        /// A list of port-specific configuration overrides for UniFi switches. This allows you to customize individual port settings such as:
+        ///   * Port names and labels for easy identification
+        ///   * Port profiles for VLAN and security settings
+        ///   * Operating modes for special functions
+        /// 
+        /// Common use cases include:
+        ///   * Setting up trunk ports for inter-switch connections
+        ///   * Configuring PoE settings for powered devices
+        ///   * Creating mirrored ports for network monitoring
+        ///   * Setting up link aggregation between switches or servers
         /// </summary>
         public InputList<Inputs.DevicePortOverrideArgs> PortOverrides
         {
@@ -163,9 +179,11 @@ namespace Pulumi.Unifi
     public sealed class DeviceState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Whether to automatically adopt the device when creating this resource. When true: * The controller will attempt to adopt
-        /// the device * Device must be in a pending adoption state * Device must be accessible on the network Set to false if you
-        /// want to manage adoption manually. Defaults to `true`.
+        /// Whether to automatically adopt the device when creating this resource. When true:
+        /// * The controller will attempt to adopt the device
+        /// * Device must be in a pending adoption state
+        /// * Device must be accessible on the network
+        /// Set to false if you want to manage adoption manually. Defaults to `true`.
         /// </summary>
         [Input("allowAdoption")]
         public Input<bool>? AllowAdoption { get; set; }
@@ -180,16 +198,17 @@ namespace Pulumi.Unifi
         public Input<bool>? ForgetOnDestroy { get; set; }
 
         /// <summary>
-        /// The MAC address of the device in standard format (e.g., 'aa:bb:cc:dd:ee:ff'). This is used to identify and manage
-        /// specific devices that have already been adopted by the controller.
+        /// The MAC address of the device in standard format (e.g., 'aa:bb:cc:dd:ee:ff'). This is used to identify and manage specific devices that have already been adopted by the controller.
         /// </summary>
         [Input("mac")]
         public Input<string>? Mac { get; set; }
 
         /// <summary>
-        /// A friendly name for the device that will be displayed in the UniFi controller UI. Examples: * 'Office-AP-1' for an
-        /// access point * 'Core-Switch-01' for a switch * 'Main-Gateway' for a gateway Choose descriptive names that indicate
-        /// location and purpose.
+        /// A friendly name for the device that will be displayed in the UniFi controller UI. Examples:
+        /// * 'Office-AP-1' for an access point
+        /// * 'Core-Switch-01' for a switch
+        /// * 'Main-Gateway' for a gateway
+        /// Choose descriptive names that indicate location and purpose.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -198,11 +217,16 @@ namespace Pulumi.Unifi
         private InputList<Inputs.DevicePortOverrideGetArgs>? _portOverrides;
 
         /// <summary>
-        /// A list of port-specific configuration overrides for UniFi switches. This allows you to customize individual port
-        /// settings such as: * Port names and labels for easy identification * Port profiles for VLAN and security settings *
-        /// Operating modes for special functions Common use cases include: * Setting up trunk ports for inter-switch connections *
-        /// Configuring PoE settings for powered devices * Creating mirrored ports for network monitoring * Setting up link
-        /// aggregation between switches or servers
+        /// A list of port-specific configuration overrides for UniFi switches. This allows you to customize individual port settings such as:
+        ///   * Port names and labels for easy identification
+        ///   * Port profiles for VLAN and security settings
+        ///   * Operating modes for special functions
+        /// 
+        /// Common use cases include:
+        ///   * Setting up trunk ports for inter-switch connections
+        ///   * Configuring PoE settings for powered devices
+        ///   * Creating mirrored ports for network monitoring
+        ///   * Setting up link aggregation between switches or servers
         /// </summary>
         public InputList<Inputs.DevicePortOverrideGetArgs> PortOverrides
         {

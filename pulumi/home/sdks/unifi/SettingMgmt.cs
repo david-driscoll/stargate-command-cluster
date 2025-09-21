@@ -25,8 +25,7 @@ namespace Pulumi.Unifi
         public Output<bool> AlertEnabled { get; private set; } = null!;
 
         /// <summary>
-        /// Enable automatic firmware upgrades for all UniFi devices at this site. When enabled, devices will automatically update
-        /// to the latest stable firmware version approved for your controller version.
+        /// Enable automatic firmware upgrades for all UniFi devices at this site. When enabled, devices will automatically update to the latest stable firmware version approved for your controller version.
         /// </summary>
         [Output("autoUpgrade")]
         public Output<bool> AutoUpgrade { get; private set; } = null!;
@@ -86,15 +85,13 @@ namespace Pulumi.Unifi
         public Output<bool> SshBindWildcard { get; private set; } = null!;
 
         /// <summary>
-        /// Enable SSH access to UniFi devices at this site. When enabled, you can connect to devices using SSH for advanced
-        /// configuration and troubleshooting. It's recommended to only enable this temporarily when needed.
+        /// Enable SSH access to UniFi devices at this site. When enabled, you can connect to devices using SSH for advanced configuration and troubleshooting. It's recommended to only enable this temporarily when needed.
         /// </summary>
         [Output("sshEnabled")]
         public Output<bool> SshEnabled { get; private set; } = null!;
 
         /// <summary>
-        /// List of SSH public keys that are allowed to connect to UniFi devices when SSH is enabled. Using SSH keys is more secure
-        /// than password authentication.
+        /// List of SSH public keys that are allowed to connect to UniFi devices when SSH is enabled. Using SSH keys is more secure than password authentication.
         /// </summary>
         [Output("sshKeys")]
         public Output<ImmutableArray<Outputs.SettingMgmtSshKey>> SshKeys { get; private set; } = null!;
@@ -186,8 +183,7 @@ namespace Pulumi.Unifi
         public Input<bool>? AlertEnabled { get; set; }
 
         /// <summary>
-        /// Enable automatic firmware upgrades for all UniFi devices at this site. When enabled, devices will automatically update
-        /// to the latest stable firmware version approved for your controller version.
+        /// Enable automatic firmware upgrades for all UniFi devices at this site. When enabled, devices will automatically update to the latest stable firmware version approved for your controller version.
         /// </summary>
         [Input("autoUpgrade")]
         public Input<bool>? AutoUpgrade { get; set; }
@@ -247,8 +243,7 @@ namespace Pulumi.Unifi
         public Input<bool>? SshBindWildcard { get; set; }
 
         /// <summary>
-        /// Enable SSH access to UniFi devices at this site. When enabled, you can connect to devices using SSH for advanced
-        /// configuration and troubleshooting. It's recommended to only enable this temporarily when needed.
+        /// Enable SSH access to UniFi devices at this site. When enabled, you can connect to devices using SSH for advanced configuration and troubleshooting. It's recommended to only enable this temporarily when needed.
         /// </summary>
         [Input("sshEnabled")]
         public Input<bool>? SshEnabled { get; set; }
@@ -257,8 +252,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.SettingMgmtSshKeyArgs>? _sshKeys;
 
         /// <summary>
-        /// List of SSH public keys that are allowed to connect to UniFi devices when SSH is enabled. Using SSH keys is more secure
-        /// than password authentication.
+        /// List of SSH public keys that are allowed to connect to UniFi devices when SSH is enabled. Using SSH keys is more secure than password authentication.
         /// </summary>
         public InputList<Inputs.SettingMgmtSshKeyArgs> SshKeys
         {
@@ -321,8 +315,7 @@ namespace Pulumi.Unifi
         public Input<bool>? AlertEnabled { get; set; }
 
         /// <summary>
-        /// Enable automatic firmware upgrades for all UniFi devices at this site. When enabled, devices will automatically update
-        /// to the latest stable firmware version approved for your controller version.
+        /// Enable automatic firmware upgrades for all UniFi devices at this site. When enabled, devices will automatically update to the latest stable firmware version approved for your controller version.
         /// </summary>
         [Input("autoUpgrade")]
         public Input<bool>? AutoUpgrade { get; set; }
@@ -382,8 +375,7 @@ namespace Pulumi.Unifi
         public Input<bool>? SshBindWildcard { get; set; }
 
         /// <summary>
-        /// Enable SSH access to UniFi devices at this site. When enabled, you can connect to devices using SSH for advanced
-        /// configuration and troubleshooting. It's recommended to only enable this temporarily when needed.
+        /// Enable SSH access to UniFi devices at this site. When enabled, you can connect to devices using SSH for advanced configuration and troubleshooting. It's recommended to only enable this temporarily when needed.
         /// </summary>
         [Input("sshEnabled")]
         public Input<bool>? SshEnabled { get; set; }
@@ -392,8 +384,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.SettingMgmtSshKeyGetArgs>? _sshKeys;
 
         /// <summary>
-        /// List of SSH public keys that are allowed to connect to UniFi devices when SSH is enabled. Using SSH keys is more secure
-        /// than password authentication.
+        /// List of SSH public keys that are allowed to connect to UniFi devices when SSH is enabled. Using SSH keys is more secure than password authentication.
         /// </summary>
         public InputList<Inputs.SettingMgmtSshKeyGetArgs> SshKeys
         {

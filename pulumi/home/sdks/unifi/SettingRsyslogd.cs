@@ -13,8 +13,7 @@ namespace Pulumi.Unifi
     public partial class SettingRsyslogd : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// List of log types to include in the remote syslog. Valid values: device, client, firewall_default_policy, triggers,
-        /// updates, admin_activity, critical, security_detections, vpn.
+        /// List of log types to include in the remote syslog. Valid values: device, client, firewall_default_policy, triggers, updates, admin_activity, critical, security_detections, vpn.
         /// </summary>
         [Output("contents")]
         public Output<ImmutableArray<string>> Contents { get; private set; } = null!;
@@ -135,8 +134,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _contents;
 
         /// <summary>
-        /// List of log types to include in the remote syslog. Valid values: device, client, firewall_default_policy, triggers,
-        /// updates, admin_activity, critical, security_detections, vpn.
+        /// List of log types to include in the remote syslog. Valid values: device, client, firewall_default_policy, triggers, updates, admin_activity, critical, security_detections, vpn.
         /// </summary>
         public InputList<string> Contents
         {
@@ -222,8 +220,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _contents;
 
         /// <summary>
-        /// List of log types to include in the remote syslog. Valid values: device, client, firewall_default_policy, triggers,
-        /// updates, admin_activity, critical, security_detections, vpn.
+        /// List of log types to include in the remote syslog. Valid values: device, client, firewall_default_policy, triggers, updates, admin_activity, critical, security_detections, vpn.
         /// </summary>
         public InputList<string> Contents
         {

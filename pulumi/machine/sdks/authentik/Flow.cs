@@ -13,8 +13,14 @@ namespace Pulumi.Authentik
     public partial class Flow : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `none` - `require_authenticated` - `require_unauthenticated` - `require_superuser` -
-        /// `require_redirect` - `require_outpost` Defaults to `none`.
+        /// Allowed values:
+        ///   - `none`
+        ///   - `require_authenticated`
+        ///   - `require_unauthenticated`
+        ///   - `require_superuser`
+        ///   - `require_redirect`
+        ///   - `require_outpost`
+        ///  Defaults to `none`.
         /// </summary>
         [Output("authentication")]
         public Output<string?> Authentication { get; private set; } = null!;
@@ -38,8 +44,14 @@ namespace Pulumi.Authentik
         public Output<string?> DeniedAction { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `authentication` - `authorization` - `invalidation` - `enrollment` - `unenrollment` - `recovery` -
-        /// `stage_configuration`
+        /// Allowed values:
+        ///   - `authentication`
+        ///   - `authorization`
+        ///   - `invalidation`
+        ///   - `enrollment`
+        ///   - `unenrollment`
+        ///   - `recovery`
+        ///   - `stage_configuration`
         /// </summary>
         [Output("designation")]
         public Output<string> Designation { get; private set; } = null!;
@@ -48,7 +60,13 @@ namespace Pulumi.Authentik
         public Output<string> FlowId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `stacked` - `content_left` - `content_right` - `sidebar_left` - `sidebar_right` Defaults to `stacked`.
+        /// Allowed values:
+        ///   - `stacked`
+        ///   - `content_left`
+        ///   - `content_right`
+        ///   - `sidebar_left`
+        ///   - `sidebar_right`
+        ///  Defaults to `stacked`.
         /// </summary>
         [Output("layout")]
         public Output<string?> Layout { get; private set; } = null!;
@@ -57,7 +75,10 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -121,8 +142,14 @@ namespace Pulumi.Authentik
     public sealed class FlowArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `none` - `require_authenticated` - `require_unauthenticated` - `require_superuser` -
-        /// `require_redirect` - `require_outpost` Defaults to `none`.
+        /// Allowed values:
+        ///   - `none`
+        ///   - `require_authenticated`
+        ///   - `require_unauthenticated`
+        ///   - `require_superuser`
+        ///   - `require_redirect`
+        ///   - `require_outpost`
+        ///  Defaults to `none`.
         /// </summary>
         [Input("authentication")]
         public Input<string>? Authentication { get; set; }
@@ -146,8 +173,14 @@ namespace Pulumi.Authentik
         public Input<string>? DeniedAction { get; set; }
 
         /// <summary>
-        /// Allowed values: - `authentication` - `authorization` - `invalidation` - `enrollment` - `unenrollment` - `recovery` -
-        /// `stage_configuration`
+        /// Allowed values:
+        ///   - `authentication`
+        ///   - `authorization`
+        ///   - `invalidation`
+        ///   - `enrollment`
+        ///   - `unenrollment`
+        ///   - `recovery`
+        ///   - `stage_configuration`
         /// </summary>
         [Input("designation", required: true)]
         public Input<string> Designation { get; set; } = null!;
@@ -156,7 +189,13 @@ namespace Pulumi.Authentik
         public Input<string>? FlowId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `stacked` - `content_left` - `content_right` - `sidebar_left` - `sidebar_right` Defaults to `stacked`.
+        /// Allowed values:
+        ///   - `stacked`
+        ///   - `content_left`
+        ///   - `content_right`
+        ///   - `sidebar_left`
+        ///   - `sidebar_right`
+        ///  Defaults to `stacked`.
         /// </summary>
         [Input("layout")]
         public Input<string>? Layout { get; set; }
@@ -165,7 +204,10 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -185,8 +227,14 @@ namespace Pulumi.Authentik
     public sealed class FlowState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `none` - `require_authenticated` - `require_unauthenticated` - `require_superuser` -
-        /// `require_redirect` - `require_outpost` Defaults to `none`.
+        /// Allowed values:
+        ///   - `none`
+        ///   - `require_authenticated`
+        ///   - `require_unauthenticated`
+        ///   - `require_superuser`
+        ///   - `require_redirect`
+        ///   - `require_outpost`
+        ///  Defaults to `none`.
         /// </summary>
         [Input("authentication")]
         public Input<string>? Authentication { get; set; }
@@ -210,8 +258,14 @@ namespace Pulumi.Authentik
         public Input<string>? DeniedAction { get; set; }
 
         /// <summary>
-        /// Allowed values: - `authentication` - `authorization` - `invalidation` - `enrollment` - `unenrollment` - `recovery` -
-        /// `stage_configuration`
+        /// Allowed values:
+        ///   - `authentication`
+        ///   - `authorization`
+        ///   - `invalidation`
+        ///   - `enrollment`
+        ///   - `unenrollment`
+        ///   - `recovery`
+        ///   - `stage_configuration`
         /// </summary>
         [Input("designation")]
         public Input<string>? Designation { get; set; }
@@ -220,7 +274,13 @@ namespace Pulumi.Authentik
         public Input<string>? FlowId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `stacked` - `content_left` - `content_right` - `sidebar_left` - `sidebar_right` Defaults to `stacked`.
+        /// Allowed values:
+        ///   - `stacked`
+        ///   - `content_left`
+        ///   - `content_right`
+        ///   - `sidebar_left`
+        ///   - `sidebar_right`
+        ///  Defaults to `stacked`.
         /// </summary>
         [Input("layout")]
         public Input<string>? Layout { get; set; }
@@ -229,7 +289,10 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }

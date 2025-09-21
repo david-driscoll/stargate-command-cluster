@@ -19,11 +19,15 @@ namespace Pulumi.Unifi
         public Output<string> AllowedSubnet { get; private set; } = null!;
 
         /// <summary>
-        /// Authentication method for guest access. Valid values are: * `none` - No authentication required * `hotspot` - Password
-        /// authentication * `facebook_wifi` - Facebook auth entication * `custom` - Custom authentication For password
-        /// authentication, set `auth` to `hotspot` and `password_enabled` to `true`. For voucher authentication, set `auth` to
-        /// `hotspot` and `voucher_enabled` to `true`. For payment authentication, set `auth` to `hotspot` and `payment_enabled` to
-        /// `true`.
+        /// Authentication method for guest access. Valid values are:
+        /// * `none` - No authentication required
+        /// * `hotspot` - Password authentication
+        /// * `facebook_wifi` - Facebook auth entication
+        /// * `custom` - Custom authentication
+        /// 
+        /// For password authentication, set `auth` to `hotspot` and `password_enabled` to `true`.
+        /// For voucher authentication, set `auth` to `hotspot` and `voucher_enabled` to `true`.
+        /// For payment authentication, set `auth` to `hotspot` and `payment_enabled` to `true`.
         /// </summary>
         [Output("auth")]
         public Output<string> Auth { get; private set; } = null!;
@@ -65,7 +69,11 @@ namespace Pulumi.Unifi
         public Output<double> ExpireNumber { get; private set; } = null!;
 
         /// <summary>
-        /// Unit for the expiration time. Valid values are: * `1` - Minute * `60` - Hour * `1440` - Day * `10080` - Week
+        /// Unit for the expiration time. Valid values are:
+        /// * `1` - Minute
+        /// * `60` - Hour
+        /// * `1440` - Day
+        /// * `10080` - Week
         /// </summary>
         [Output("expireUnit")]
         public Output<double> ExpireUnit { get; private set; } = null!;
@@ -131,8 +139,13 @@ namespace Pulumi.Unifi
         public Output<bool> PaymentEnabled { get; private set; } = null!;
 
         /// <summary>
-        /// Payment gateway. Valid values are: * `paypal` - PayPal * `stripe` - Stripe * `authorize` - Authorize.net * `quickpay` -
-        /// QuickPay * `merchantwarrior` - Merchant Warrior * `ippay` - IP Payments
+        /// Payment gateway. Valid values are:
+        /// * `paypal` - PayPal
+        /// * `stripe` - Stripe
+        /// * `authorize` - Authorize.net
+        /// * `quickpay` - QuickPay
+        /// * `merchantwarrior` - Merchant Warrior
+        /// * `ippay` - IP Payments
         /// </summary>
         [Output("paymentGateway")]
         public Output<string?> PaymentGateway { get; private set; } = null!;
@@ -314,11 +327,15 @@ namespace Pulumi.Unifi
         public Input<string>? AllowedSubnet { get; set; }
 
         /// <summary>
-        /// Authentication method for guest access. Valid values are: * `none` - No authentication required * `hotspot` - Password
-        /// authentication * `facebook_wifi` - Facebook auth entication * `custom` - Custom authentication For password
-        /// authentication, set `auth` to `hotspot` and `password_enabled` to `true`. For voucher authentication, set `auth` to
-        /// `hotspot` and `voucher_enabled` to `true`. For payment authentication, set `auth` to `hotspot` and `payment_enabled` to
-        /// `true`.
+        /// Authentication method for guest access. Valid values are:
+        /// * `none` - No authentication required
+        /// * `hotspot` - Password authentication
+        /// * `facebook_wifi` - Facebook auth entication
+        /// * `custom` - Custom authentication
+        /// 
+        /// For password authentication, set `auth` to `hotspot` and `password_enabled` to `true`.
+        /// For voucher authentication, set `auth` to `hotspot` and `voucher_enabled` to `true`.
+        /// For payment authentication, set `auth` to `hotspot` and `payment_enabled` to `true`.
         /// </summary>
         [Input("auth")]
         public Input<string>? Auth { get; set; }
@@ -360,7 +377,11 @@ namespace Pulumi.Unifi
         public Input<double>? ExpireNumber { get; set; }
 
         /// <summary>
-        /// Unit for the expiration time. Valid values are: * `1` - Minute * `60` - Hour * `1440` - Day * `10080` - Week
+        /// Unit for the expiration time. Valid values are:
+        /// * `1` - Minute
+        /// * `60` - Hour
+        /// * `1440` - Day
+        /// * `10080` - Week
         /// </summary>
         [Input("expireUnit")]
         public Input<double>? ExpireUnit { get; set; }
@@ -412,8 +433,13 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// Payment gateway. Valid values are: * `paypal` - PayPal * `stripe` - Stripe * `authorize` - Authorize.net * `quickpay` -
-        /// QuickPay * `merchantwarrior` - Merchant Warrior * `ippay` - IP Payments
+        /// Payment gateway. Valid values are:
+        /// * `paypal` - PayPal
+        /// * `stripe` - Stripe
+        /// * `authorize` - Authorize.net
+        /// * `quickpay` - QuickPay
+        /// * `merchantwarrior` - Merchant Warrior
+        /// * `ippay` - IP Payments
         /// </summary>
         [Input("paymentGateway")]
         public Input<string>? PaymentGateway { get; set; }
@@ -535,11 +561,15 @@ namespace Pulumi.Unifi
         public Input<string>? AllowedSubnet { get; set; }
 
         /// <summary>
-        /// Authentication method for guest access. Valid values are: * `none` - No authentication required * `hotspot` - Password
-        /// authentication * `facebook_wifi` - Facebook auth entication * `custom` - Custom authentication For password
-        /// authentication, set `auth` to `hotspot` and `password_enabled` to `true`. For voucher authentication, set `auth` to
-        /// `hotspot` and `voucher_enabled` to `true`. For payment authentication, set `auth` to `hotspot` and `payment_enabled` to
-        /// `true`.
+        /// Authentication method for guest access. Valid values are:
+        /// * `none` - No authentication required
+        /// * `hotspot` - Password authentication
+        /// * `facebook_wifi` - Facebook auth entication
+        /// * `custom` - Custom authentication
+        /// 
+        /// For password authentication, set `auth` to `hotspot` and `password_enabled` to `true`.
+        /// For voucher authentication, set `auth` to `hotspot` and `voucher_enabled` to `true`.
+        /// For payment authentication, set `auth` to `hotspot` and `payment_enabled` to `true`.
         /// </summary>
         [Input("auth")]
         public Input<string>? Auth { get; set; }
@@ -581,7 +611,11 @@ namespace Pulumi.Unifi
         public Input<double>? ExpireNumber { get; set; }
 
         /// <summary>
-        /// Unit for the expiration time. Valid values are: * `1` - Minute * `60` - Hour * `1440` - Day * `10080` - Week
+        /// Unit for the expiration time. Valid values are:
+        /// * `1` - Minute
+        /// * `60` - Hour
+        /// * `1440` - Day
+        /// * `10080` - Week
         /// </summary>
         [Input("expireUnit")]
         public Input<double>? ExpireUnit { get; set; }
@@ -657,8 +691,13 @@ namespace Pulumi.Unifi
         public Input<bool>? PaymentEnabled { get; set; }
 
         /// <summary>
-        /// Payment gateway. Valid values are: * `paypal` - PayPal * `stripe` - Stripe * `authorize` - Authorize.net * `quickpay` -
-        /// QuickPay * `merchantwarrior` - Merchant Warrior * `ippay` - IP Payments
+        /// Payment gateway. Valid values are:
+        /// * `paypal` - PayPal
+        /// * `stripe` - Stripe
+        /// * `authorize` - Authorize.net
+        /// * `quickpay` - QuickPay
+        /// * `merchantwarrior` - Merchant Warrior
+        /// * `ippay` - IP Payments
         /// </summary>
         [Input("paymentGateway")]
         public Input<string>? PaymentGateway { get; set; }

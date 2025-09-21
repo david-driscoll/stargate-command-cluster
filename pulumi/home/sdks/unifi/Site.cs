@@ -13,15 +13,13 @@ namespace Pulumi.Unifi
     public partial class Site : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// A human-readable description of the site (e.g., 'Main Office', 'Remote Branch', 'Client A Network'). This is used as the
-        /// display name in the UniFi controller interface.
+        /// A human-readable description of the site (e.g., 'Main Office', 'Remote Branch', 'Client A Network'). This is used as the display name in the UniFi controller interface.
         /// </summary>
         [Output("description")]
         public Output<string> Description { get; private set; } = null!;
 
         /// <summary>
-        /// The site's internal name in the UniFi system. This is automatically generated based on the description and is used in
-        /// API calls and configurations. It's typically a lowercase, hyphenated version of the description.
+        /// The site's internal name in the UniFi system. This is automatically generated based on the description and is used in API calls and configurations. It's typically a lowercase, hyphenated version of the description.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -73,8 +71,7 @@ namespace Pulumi.Unifi
     public sealed class SiteArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A human-readable description of the site (e.g., 'Main Office', 'Remote Branch', 'Client A Network'). This is used as the
-        /// display name in the UniFi controller interface.
+        /// A human-readable description of the site (e.g., 'Main Office', 'Remote Branch', 'Client A Network'). This is used as the display name in the UniFi controller interface.
         /// </summary>
         [Input("description", required: true)]
         public Input<string> Description { get; set; } = null!;
@@ -88,15 +85,13 @@ namespace Pulumi.Unifi
     public sealed class SiteState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A human-readable description of the site (e.g., 'Main Office', 'Remote Branch', 'Client A Network'). This is used as the
-        /// display name in the UniFi controller interface.
+        /// A human-readable description of the site (e.g., 'Main Office', 'Remote Branch', 'Client A Network'). This is used as the display name in the UniFi controller interface.
         /// </summary>
         [Input("description")]
         public Input<string>? Description { get; set; }
 
         /// <summary>
-        /// The site's internal name in the UniFi system. This is automatically generated based on the description and is used in
-        /// API calls and configurations. It's typically a lowercase, hyphenated version of the description.
+        /// The site's internal name in the UniFi system. This is automatically generated based on the description and is used in API calls and configurations. It's typically a lowercase, hyphenated version of the description.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }

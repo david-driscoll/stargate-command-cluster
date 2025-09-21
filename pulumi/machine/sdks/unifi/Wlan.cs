@@ -25,72 +25,63 @@ namespace Pulumi.Unifi
         public Output<bool?> BssTransition { get; private set; } = null!;
 
         /// <summary>
-        /// Enable 802.11r Fast BSS Transition for seamless roaming between APs. Requires client device support. Defaults to
-        /// `false`.
+        /// Enable 802.11r Fast BSS Transition for seamless roaming between APs. Requires client device support. Defaults to `false`.
         /// </summary>
         [Output("fastRoamingEnabled")]
         public Output<bool?> FastRoamingEnabled { get; private set; } = null!;
 
         /// <summary>
-        /// When enabled, the access points will not broadcast the network name (SSID). Clients will need to manually enter the SSID
-        /// to connect.
+        /// When enabled, the access points will not broadcast the network name (SSID). Clients will need to manually enter the SSID to connect.
         /// </summary>
         [Output("hideSsid")]
         public Output<bool?> HideSsid { get; private set; } = null!;
 
         /// <summary>
-        /// Mark this as a guest network. Guest networks are isolated from other networks and can have special restrictions like
-        /// captive portals.
+        /// Mark this as a guest network. Guest networks are isolated from other networks and can have special restrictions like captive portals.
         /// </summary>
         [Output("isGuest")]
         public Output<bool?> IsGuest { get; private set; } = null!;
 
         /// <summary>
-        /// Isolates wireless clients from each other at layer 2 (ethernet) level. When enabled, devices on this WLAN cannot
-        /// communicate directly with each other, improving security especially for guest networks or IoT devices. Each client can
-        /// only communicate with the gateway/router. Defaults to `false`.
+        /// Isolates wireless clients from each other at layer 2 (ethernet) level. When enabled, devices on this WLAN cannot communicate directly with each other, improving security especially for guest networks or IoT devices. Each client can only communicate with the gateway/router. Defaults to `false`.
         /// </summary>
         [Output("l2Isolation")]
         public Output<bool?> L2Isolation { get; private set; } = null!;
 
         /// <summary>
-        /// Enable MAC address filtering to control network access based on client MAC addresses. Works in conjunction with
-        /// `mac_filter_list` and `mac_filter_policy`.
+        /// Enable MAC address filtering to control network access based on client MAC addresses. Works in conjunction with `mac_filter_list` and `mac_filter_policy`.
         /// </summary>
         [Output("macFilterEnabled")]
         public Output<bool?> MacFilterEnabled { get; private set; } = null!;
 
         /// <summary>
-        /// List of MAC addresses to filter in XX:XX:XX:XX:XX:XX format. Only applied when `mac_filter_enabled` is true. MAC
-        /// addresses are case-insensitive.
+        /// List of MAC addresses to filter in XX:XX:XX:XX:XX:XX format. Only applied when `mac_filter_enabled` is true. MAC addresses are case-insensitive.
         /// </summary>
         [Output("macFilterLists")]
         public Output<ImmutableArray<string>> MacFilterLists { get; private set; } = null!;
 
         /// <summary>
-        /// MAC address filter policy. Valid values are: * `allow` - Only allow listed MAC addresses * `deny` - Block listed MAC
-        /// addresses Defaults to `deny`.
+        /// MAC address filter policy. Valid values are:
+        ///   * `allow` - Only allow listed MAC addresses
+        ///   * `deny` - Block listed MAC addresses Defaults to `deny`.
         /// </summary>
         [Output("macFilterPolicy")]
         public Output<string?> MacFilterPolicy { get; private set; } = null!;
 
         /// <summary>
-        /// Minimum data rate for 2.4GHz devices in Kbps. Use `0` to disable. Valid values: `1000`, `2000`, `5500`, `6000`, `9000`,
-        /// `11000`, `12000`, `18000`, `24000`, `36000`, `48000`, and `54000`
+        /// Minimum data rate for 2.4GHz devices in Kbps. Use `0` to disable. Valid values: `1000`, `2000`, `5500`, `6000`, `9000`, `11000`, `12000`, `18000`, `24000`, `36000`, `48000`,  and `54000`
         /// </summary>
         [Output("minimumDataRate2gKbps")]
         public Output<double?> MinimumDataRate2gKbps { get; private set; } = null!;
 
         /// <summary>
-        /// Minimum data rate for 5GHz devices in Kbps. Use `0` to disable. Valid values: `6000`, `9000`, `12000`, `18000`, `24000`,
-        /// `36000`, `48000`, and `54000`
+        /// Minimum data rate for 5GHz devices in Kbps. Use `0` to disable. Valid values: `6000`, `9000`, `12000`, `18000`, `24000`, `36000`, `48000`,  and `54000`
         /// </summary>
         [Output("minimumDataRate5gKbps")]
         public Output<double?> MinimumDataRate5gKbps { get; private set; } = null!;
 
         /// <summary>
-        /// Enable multicast enhancement to convert multicast traffic to unicast for better reliability and performance, especially
-        /// for applications like video streaming.
+        /// Enable multicast enhancement to convert multicast traffic to unicast for better reliability and performance, especially for applications like video streaming.
         /// </summary>
         [Output("multicastEnhance")]
         public Output<bool?> MulticastEnhance { get; private set; } = null!;
@@ -108,10 +99,7 @@ namespace Pulumi.Unifi
         public Output<string?> NetworkId { get; private set; } = null!;
 
         /// <summary>
-        /// When enabled, devices from specific manufacturers (identified by their OUI - Organizationally Unique Identifier) will be
-        /// prevented from connecting on 2.4GHz and forced to use 5GHz. This improves overall network performance by ensuring
-        /// capable devices use the less congested 5GHz band. Common examples include newer smartphones and laptops. Defaults to
-        /// `true`.
+        /// When enabled, devices from specific manufacturers (identified by their OUI - Organizationally Unique Identifier) will be prevented from connecting on 2.4GHz and forced to use 5GHz. This improves overall network performance by ensuring capable devices use the less congested 5GHz band. Common examples include newer smartphones and laptops. Defaults to `true`.
         /// </summary>
         [Output("no2ghzOui")]
         public Output<bool?> No2ghzOui { get; private set; } = null!;
@@ -123,45 +111,43 @@ namespace Pulumi.Unifi
         public Output<string?> Passphrase { get; private set; } = null!;
 
         /// <summary>
-        /// Protected Management Frames (PMF) mode. It cannot be disabled if using WPA3. Valid values are: * `required` - All
-        /// clients must support PMF (required for WPA3) * `optional` - Clients can optionally use PMF (recommended when
-        /// transitioning from WPA2 to WPA3) * `disabled` - PMF is disabled (not compatible with WPA3) Defaults to `disabled`.
+        /// Protected Management Frames (PMF) mode. It cannot be disabled if using WPA3. Valid values are:
+        ///   * `required` - All clients must support PMF (required for WPA3)
+        ///   * `optional` - Clients can optionally use PMF (recommended when transitioning from WPA2 to WPA3)
+        ///   * `disabled` - PMF is disabled (not compatible with WPA3) Defaults to `disabled`.
         /// </summary>
         [Output("pmfMode")]
         public Output<string?> PmfMode { get; private set; } = null!;
 
         /// <summary>
-        /// Enable ARP proxy on this WLAN. When enabled, the UniFi controller will respond to ARP requests on behalf of clients,
-        /// reducing broadcast traffic and potentially improving network performance. This is particularly useful in high-density
-        /// wireless environments. Defaults to `false`.
+        /// Enable ARP proxy on this WLAN. When enabled, the UniFi controller will respond to ARP requests on behalf of clients, reducing broadcast traffic and potentially improving network performance. This is particularly useful in high-density wireless environments. Defaults to `false`.
         /// </summary>
         [Output("proxyArp")]
         public Output<bool?> ProxyArp { get; private set; } = null!;
 
         /// <summary>
-        /// ID of the RADIUS profile to use for WPA Enterprise authentication (when security is 'wpaeap'). Reference existing
-        /// profiles using the `unifi.RadiusProfile` data source.
+        /// ID of the RADIUS profile to use for WPA Enterprise authentication (when security is 'wpaeap'). Reference existing profiles using the `unifi.RadiusProfile` data source.
         /// </summary>
         [Output("radiusProfileId")]
         public Output<string?> RadiusProfileId { get; private set; } = null!;
 
         /// <summary>
-        /// Time-based access control configuration for the wireless network. Allows automatic enabling/disabling of the network on
-        /// specified schedules.
+        /// Time-based access control configuration for the wireless network. Allows automatic enabling/disabling of the network on specified schedules.
         /// </summary>
         [Output("schedules")]
         public Output<ImmutableArray<Outputs.WlanSchedule>> Schedules { get; private set; } = null!;
 
         /// <summary>
-        /// The security protocol for the wireless network. Valid values are: * `wpapsk` - WPA Personal (PSK) with WPA2/WPA3 options
-        /// * `wpaeap` - WPA Enterprise (802.1x) * `open` - Open network (no encryption)
+        /// The security protocol for the wireless network. Valid values are:
+        ///   * `wpapsk` - WPA Personal (PSK) with WPA2/WPA3 options
+        ///   * `wpaeap` - WPA Enterprise (802.1x)
+        ///   * `open` - Open network (no encryption)
         /// </summary>
         [Output("security")]
         public Output<string> Security { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the UniFi site where the wireless network should be created. If not specified, the default site will be
-        /// used.
+        /// The name of the UniFi site where the wireless network should be created. If not specified, the default site will be used.
         /// </summary>
         [Output("site")]
         public Output<string> Site { get; private set; } = null!;
@@ -179,22 +165,22 @@ namespace Pulumi.Unifi
         public Output<string> UserGroupId { get; private set; } = null!;
 
         /// <summary>
-        /// Radio band selection. Valid values: * `both` - Both 2.4GHz and 5GHz (default) * `2g` - 2.4GHz only * `5g` - 5GHz only
-        /// Defaults to `both`.
+        /// Radio band selection. Valid values:
+        ///   * `both` - Both 2.4GHz and 5GHz (default)
+        ///   * `2g` - 2.4GHz only
+        ///   * `5g` - 5GHz only Defaults to `both`.
         /// </summary>
         [Output("wlanBand")]
         public Output<string?> WlanBand { get; private set; } = null!;
 
         /// <summary>
-        /// Enable WPA3 security protocol. Requires security to be set to `wpapsk` and PMF mode to be enabled. WPA3 provides
-        /// enhanced security features over WPA2.
+        /// Enable WPA3 security protocol. Requires security to be set to `wpapsk` and PMF mode to be enabled. WPA3 provides enhanced security features over WPA2.
         /// </summary>
         [Output("wpa3Support")]
         public Output<bool?> Wpa3Support { get; private set; } = null!;
 
         /// <summary>
-        /// Enable WPA3 transition mode, which allows both WPA2 and WPA3 clients to connect. This provides backward compatibility
-        /// while gradually transitioning to WPA3. Requires security to be set to `wpapsk` and `wpa3_support` to be true.
+        /// Enable WPA3 transition mode, which allows both WPA2 and WPA3 clients to connect. This provides backward compatibility while gradually transitioning to WPA3. Requires security to be set to `wpapsk` and `wpa3_support` to be true.
         /// </summary>
         [Output("wpa3Transition")]
         public Output<bool?> Wpa3Transition { get; private set; } = null!;
@@ -268,37 +254,31 @@ namespace Pulumi.Unifi
         public Input<bool>? BssTransition { get; set; }
 
         /// <summary>
-        /// Enable 802.11r Fast BSS Transition for seamless roaming between APs. Requires client device support. Defaults to
-        /// `false`.
+        /// Enable 802.11r Fast BSS Transition for seamless roaming between APs. Requires client device support. Defaults to `false`.
         /// </summary>
         [Input("fastRoamingEnabled")]
         public Input<bool>? FastRoamingEnabled { get; set; }
 
         /// <summary>
-        /// When enabled, the access points will not broadcast the network name (SSID). Clients will need to manually enter the SSID
-        /// to connect.
+        /// When enabled, the access points will not broadcast the network name (SSID). Clients will need to manually enter the SSID to connect.
         /// </summary>
         [Input("hideSsid")]
         public Input<bool>? HideSsid { get; set; }
 
         /// <summary>
-        /// Mark this as a guest network. Guest networks are isolated from other networks and can have special restrictions like
-        /// captive portals.
+        /// Mark this as a guest network. Guest networks are isolated from other networks and can have special restrictions like captive portals.
         /// </summary>
         [Input("isGuest")]
         public Input<bool>? IsGuest { get; set; }
 
         /// <summary>
-        /// Isolates wireless clients from each other at layer 2 (ethernet) level. When enabled, devices on this WLAN cannot
-        /// communicate directly with each other, improving security especially for guest networks or IoT devices. Each client can
-        /// only communicate with the gateway/router. Defaults to `false`.
+        /// Isolates wireless clients from each other at layer 2 (ethernet) level. When enabled, devices on this WLAN cannot communicate directly with each other, improving security especially for guest networks or IoT devices. Each client can only communicate with the gateway/router. Defaults to `false`.
         /// </summary>
         [Input("l2Isolation")]
         public Input<bool>? L2Isolation { get; set; }
 
         /// <summary>
-        /// Enable MAC address filtering to control network access based on client MAC addresses. Works in conjunction with
-        /// `mac_filter_list` and `mac_filter_policy`.
+        /// Enable MAC address filtering to control network access based on client MAC addresses. Works in conjunction with `mac_filter_list` and `mac_filter_policy`.
         /// </summary>
         [Input("macFilterEnabled")]
         public Input<bool>? MacFilterEnabled { get; set; }
@@ -307,8 +287,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _macFilterLists;
 
         /// <summary>
-        /// List of MAC addresses to filter in XX:XX:XX:XX:XX:XX format. Only applied when `mac_filter_enabled` is true. MAC
-        /// addresses are case-insensitive.
+        /// List of MAC addresses to filter in XX:XX:XX:XX:XX:XX format. Only applied when `mac_filter_enabled` is true. MAC addresses are case-insensitive.
         /// </summary>
         public InputList<string> MacFilterLists
         {
@@ -317,29 +296,27 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// MAC address filter policy. Valid values are: * `allow` - Only allow listed MAC addresses * `deny` - Block listed MAC
-        /// addresses Defaults to `deny`.
+        /// MAC address filter policy. Valid values are:
+        ///   * `allow` - Only allow listed MAC addresses
+        ///   * `deny` - Block listed MAC addresses Defaults to `deny`.
         /// </summary>
         [Input("macFilterPolicy")]
         public Input<string>? MacFilterPolicy { get; set; }
 
         /// <summary>
-        /// Minimum data rate for 2.4GHz devices in Kbps. Use `0` to disable. Valid values: `1000`, `2000`, `5500`, `6000`, `9000`,
-        /// `11000`, `12000`, `18000`, `24000`, `36000`, `48000`, and `54000`
+        /// Minimum data rate for 2.4GHz devices in Kbps. Use `0` to disable. Valid values: `1000`, `2000`, `5500`, `6000`, `9000`, `11000`, `12000`, `18000`, `24000`, `36000`, `48000`,  and `54000`
         /// </summary>
         [Input("minimumDataRate2gKbps")]
         public Input<double>? MinimumDataRate2gKbps { get; set; }
 
         /// <summary>
-        /// Minimum data rate for 5GHz devices in Kbps. Use `0` to disable. Valid values: `6000`, `9000`, `12000`, `18000`, `24000`,
-        /// `36000`, `48000`, and `54000`
+        /// Minimum data rate for 5GHz devices in Kbps. Use `0` to disable. Valid values: `6000`, `9000`, `12000`, `18000`, `24000`, `36000`, `48000`,  and `54000`
         /// </summary>
         [Input("minimumDataRate5gKbps")]
         public Input<double>? MinimumDataRate5gKbps { get; set; }
 
         /// <summary>
-        /// Enable multicast enhancement to convert multicast traffic to unicast for better reliability and performance, especially
-        /// for applications like video streaming.
+        /// Enable multicast enhancement to convert multicast traffic to unicast for better reliability and performance, especially for applications like video streaming.
         /// </summary>
         [Input("multicastEnhance")]
         public Input<bool>? MulticastEnhance { get; set; }
@@ -357,10 +334,7 @@ namespace Pulumi.Unifi
         public Input<string>? NetworkId { get; set; }
 
         /// <summary>
-        /// When enabled, devices from specific manufacturers (identified by their OUI - Organizationally Unique Identifier) will be
-        /// prevented from connecting on 2.4GHz and forced to use 5GHz. This improves overall network performance by ensuring
-        /// capable devices use the less congested 5GHz band. Common examples include newer smartphones and laptops. Defaults to
-        /// `true`.
+        /// When enabled, devices from specific manufacturers (identified by their OUI - Organizationally Unique Identifier) will be prevented from connecting on 2.4GHz and forced to use 5GHz. This improves overall network performance by ensuring capable devices use the less congested 5GHz band. Common examples include newer smartphones and laptops. Defaults to `true`.
         /// </summary>
         [Input("no2ghzOui")]
         public Input<bool>? No2ghzOui { get; set; }
@@ -382,24 +356,22 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// Protected Management Frames (PMF) mode. It cannot be disabled if using WPA3. Valid values are: * `required` - All
-        /// clients must support PMF (required for WPA3) * `optional` - Clients can optionally use PMF (recommended when
-        /// transitioning from WPA2 to WPA3) * `disabled` - PMF is disabled (not compatible with WPA3) Defaults to `disabled`.
+        /// Protected Management Frames (PMF) mode. It cannot be disabled if using WPA3. Valid values are:
+        ///   * `required` - All clients must support PMF (required for WPA3)
+        ///   * `optional` - Clients can optionally use PMF (recommended when transitioning from WPA2 to WPA3)
+        ///   * `disabled` - PMF is disabled (not compatible with WPA3) Defaults to `disabled`.
         /// </summary>
         [Input("pmfMode")]
         public Input<string>? PmfMode { get; set; }
 
         /// <summary>
-        /// Enable ARP proxy on this WLAN. When enabled, the UniFi controller will respond to ARP requests on behalf of clients,
-        /// reducing broadcast traffic and potentially improving network performance. This is particularly useful in high-density
-        /// wireless environments. Defaults to `false`.
+        /// Enable ARP proxy on this WLAN. When enabled, the UniFi controller will respond to ARP requests on behalf of clients, reducing broadcast traffic and potentially improving network performance. This is particularly useful in high-density wireless environments. Defaults to `false`.
         /// </summary>
         [Input("proxyArp")]
         public Input<bool>? ProxyArp { get; set; }
 
         /// <summary>
-        /// ID of the RADIUS profile to use for WPA Enterprise authentication (when security is 'wpaeap'). Reference existing
-        /// profiles using the `unifi.RadiusProfile` data source.
+        /// ID of the RADIUS profile to use for WPA Enterprise authentication (when security is 'wpaeap'). Reference existing profiles using the `unifi.RadiusProfile` data source.
         /// </summary>
         [Input("radiusProfileId")]
         public Input<string>? RadiusProfileId { get; set; }
@@ -408,8 +380,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.WlanScheduleArgs>? _schedules;
 
         /// <summary>
-        /// Time-based access control configuration for the wireless network. Allows automatic enabling/disabling of the network on
-        /// specified schedules.
+        /// Time-based access control configuration for the wireless network. Allows automatic enabling/disabling of the network on specified schedules.
         /// </summary>
         public InputList<Inputs.WlanScheduleArgs> Schedules
         {
@@ -418,15 +389,16 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The security protocol for the wireless network. Valid values are: * `wpapsk` - WPA Personal (PSK) with WPA2/WPA3 options
-        /// * `wpaeap` - WPA Enterprise (802.1x) * `open` - Open network (no encryption)
+        /// The security protocol for the wireless network. Valid values are:
+        ///   * `wpapsk` - WPA Personal (PSK) with WPA2/WPA3 options
+        ///   * `wpaeap` - WPA Enterprise (802.1x)
+        ///   * `open` - Open network (no encryption)
         /// </summary>
         [Input("security", required: true)]
         public Input<string> Security { get; set; } = null!;
 
         /// <summary>
-        /// The name of the UniFi site where the wireless network should be created. If not specified, the default site will be
-        /// used.
+        /// The name of the UniFi site where the wireless network should be created. If not specified, the default site will be used.
         /// </summary>
         [Input("site")]
         public Input<string>? Site { get; set; }
@@ -444,22 +416,22 @@ namespace Pulumi.Unifi
         public Input<string> UserGroupId { get; set; } = null!;
 
         /// <summary>
-        /// Radio band selection. Valid values: * `both` - Both 2.4GHz and 5GHz (default) * `2g` - 2.4GHz only * `5g` - 5GHz only
-        /// Defaults to `both`.
+        /// Radio band selection. Valid values:
+        ///   * `both` - Both 2.4GHz and 5GHz (default)
+        ///   * `2g` - 2.4GHz only
+        ///   * `5g` - 5GHz only Defaults to `both`.
         /// </summary>
         [Input("wlanBand")]
         public Input<string>? WlanBand { get; set; }
 
         /// <summary>
-        /// Enable WPA3 security protocol. Requires security to be set to `wpapsk` and PMF mode to be enabled. WPA3 provides
-        /// enhanced security features over WPA2.
+        /// Enable WPA3 security protocol. Requires security to be set to `wpapsk` and PMF mode to be enabled. WPA3 provides enhanced security features over WPA2.
         /// </summary>
         [Input("wpa3Support")]
         public Input<bool>? Wpa3Support { get; set; }
 
         /// <summary>
-        /// Enable WPA3 transition mode, which allows both WPA2 and WPA3 clients to connect. This provides backward compatibility
-        /// while gradually transitioning to WPA3. Requires security to be set to `wpapsk` and `wpa3_support` to be true.
+        /// Enable WPA3 transition mode, which allows both WPA2 and WPA3 clients to connect. This provides backward compatibility while gradually transitioning to WPA3. Requires security to be set to `wpapsk` and `wpa3_support` to be true.
         /// </summary>
         [Input("wpa3Transition")]
         public Input<bool>? Wpa3Transition { get; set; }
@@ -491,37 +463,31 @@ namespace Pulumi.Unifi
         public Input<bool>? BssTransition { get; set; }
 
         /// <summary>
-        /// Enable 802.11r Fast BSS Transition for seamless roaming between APs. Requires client device support. Defaults to
-        /// `false`.
+        /// Enable 802.11r Fast BSS Transition for seamless roaming between APs. Requires client device support. Defaults to `false`.
         /// </summary>
         [Input("fastRoamingEnabled")]
         public Input<bool>? FastRoamingEnabled { get; set; }
 
         /// <summary>
-        /// When enabled, the access points will not broadcast the network name (SSID). Clients will need to manually enter the SSID
-        /// to connect.
+        /// When enabled, the access points will not broadcast the network name (SSID). Clients will need to manually enter the SSID to connect.
         /// </summary>
         [Input("hideSsid")]
         public Input<bool>? HideSsid { get; set; }
 
         /// <summary>
-        /// Mark this as a guest network. Guest networks are isolated from other networks and can have special restrictions like
-        /// captive portals.
+        /// Mark this as a guest network. Guest networks are isolated from other networks and can have special restrictions like captive portals.
         /// </summary>
         [Input("isGuest")]
         public Input<bool>? IsGuest { get; set; }
 
         /// <summary>
-        /// Isolates wireless clients from each other at layer 2 (ethernet) level. When enabled, devices on this WLAN cannot
-        /// communicate directly with each other, improving security especially for guest networks or IoT devices. Each client can
-        /// only communicate with the gateway/router. Defaults to `false`.
+        /// Isolates wireless clients from each other at layer 2 (ethernet) level. When enabled, devices on this WLAN cannot communicate directly with each other, improving security especially for guest networks or IoT devices. Each client can only communicate with the gateway/router. Defaults to `false`.
         /// </summary>
         [Input("l2Isolation")]
         public Input<bool>? L2Isolation { get; set; }
 
         /// <summary>
-        /// Enable MAC address filtering to control network access based on client MAC addresses. Works in conjunction with
-        /// `mac_filter_list` and `mac_filter_policy`.
+        /// Enable MAC address filtering to control network access based on client MAC addresses. Works in conjunction with `mac_filter_list` and `mac_filter_policy`.
         /// </summary>
         [Input("macFilterEnabled")]
         public Input<bool>? MacFilterEnabled { get; set; }
@@ -530,8 +496,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _macFilterLists;
 
         /// <summary>
-        /// List of MAC addresses to filter in XX:XX:XX:XX:XX:XX format. Only applied when `mac_filter_enabled` is true. MAC
-        /// addresses are case-insensitive.
+        /// List of MAC addresses to filter in XX:XX:XX:XX:XX:XX format. Only applied when `mac_filter_enabled` is true. MAC addresses are case-insensitive.
         /// </summary>
         public InputList<string> MacFilterLists
         {
@@ -540,29 +505,27 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// MAC address filter policy. Valid values are: * `allow` - Only allow listed MAC addresses * `deny` - Block listed MAC
-        /// addresses Defaults to `deny`.
+        /// MAC address filter policy. Valid values are:
+        ///   * `allow` - Only allow listed MAC addresses
+        ///   * `deny` - Block listed MAC addresses Defaults to `deny`.
         /// </summary>
         [Input("macFilterPolicy")]
         public Input<string>? MacFilterPolicy { get; set; }
 
         /// <summary>
-        /// Minimum data rate for 2.4GHz devices in Kbps. Use `0` to disable. Valid values: `1000`, `2000`, `5500`, `6000`, `9000`,
-        /// `11000`, `12000`, `18000`, `24000`, `36000`, `48000`, and `54000`
+        /// Minimum data rate for 2.4GHz devices in Kbps. Use `0` to disable. Valid values: `1000`, `2000`, `5500`, `6000`, `9000`, `11000`, `12000`, `18000`, `24000`, `36000`, `48000`,  and `54000`
         /// </summary>
         [Input("minimumDataRate2gKbps")]
         public Input<double>? MinimumDataRate2gKbps { get; set; }
 
         /// <summary>
-        /// Minimum data rate for 5GHz devices in Kbps. Use `0` to disable. Valid values: `6000`, `9000`, `12000`, `18000`, `24000`,
-        /// `36000`, `48000`, and `54000`
+        /// Minimum data rate for 5GHz devices in Kbps. Use `0` to disable. Valid values: `6000`, `9000`, `12000`, `18000`, `24000`, `36000`, `48000`,  and `54000`
         /// </summary>
         [Input("minimumDataRate5gKbps")]
         public Input<double>? MinimumDataRate5gKbps { get; set; }
 
         /// <summary>
-        /// Enable multicast enhancement to convert multicast traffic to unicast for better reliability and performance, especially
-        /// for applications like video streaming.
+        /// Enable multicast enhancement to convert multicast traffic to unicast for better reliability and performance, especially for applications like video streaming.
         /// </summary>
         [Input("multicastEnhance")]
         public Input<bool>? MulticastEnhance { get; set; }
@@ -580,10 +543,7 @@ namespace Pulumi.Unifi
         public Input<string>? NetworkId { get; set; }
 
         /// <summary>
-        /// When enabled, devices from specific manufacturers (identified by their OUI - Organizationally Unique Identifier) will be
-        /// prevented from connecting on 2.4GHz and forced to use 5GHz. This improves overall network performance by ensuring
-        /// capable devices use the less congested 5GHz band. Common examples include newer smartphones and laptops. Defaults to
-        /// `true`.
+        /// When enabled, devices from specific manufacturers (identified by their OUI - Organizationally Unique Identifier) will be prevented from connecting on 2.4GHz and forced to use 5GHz. This improves overall network performance by ensuring capable devices use the less congested 5GHz band. Common examples include newer smartphones and laptops. Defaults to `true`.
         /// </summary>
         [Input("no2ghzOui")]
         public Input<bool>? No2ghzOui { get; set; }
@@ -605,24 +565,22 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// Protected Management Frames (PMF) mode. It cannot be disabled if using WPA3. Valid values are: * `required` - All
-        /// clients must support PMF (required for WPA3) * `optional` - Clients can optionally use PMF (recommended when
-        /// transitioning from WPA2 to WPA3) * `disabled` - PMF is disabled (not compatible with WPA3) Defaults to `disabled`.
+        /// Protected Management Frames (PMF) mode. It cannot be disabled if using WPA3. Valid values are:
+        ///   * `required` - All clients must support PMF (required for WPA3)
+        ///   * `optional` - Clients can optionally use PMF (recommended when transitioning from WPA2 to WPA3)
+        ///   * `disabled` - PMF is disabled (not compatible with WPA3) Defaults to `disabled`.
         /// </summary>
         [Input("pmfMode")]
         public Input<string>? PmfMode { get; set; }
 
         /// <summary>
-        /// Enable ARP proxy on this WLAN. When enabled, the UniFi controller will respond to ARP requests on behalf of clients,
-        /// reducing broadcast traffic and potentially improving network performance. This is particularly useful in high-density
-        /// wireless environments. Defaults to `false`.
+        /// Enable ARP proxy on this WLAN. When enabled, the UniFi controller will respond to ARP requests on behalf of clients, reducing broadcast traffic and potentially improving network performance. This is particularly useful in high-density wireless environments. Defaults to `false`.
         /// </summary>
         [Input("proxyArp")]
         public Input<bool>? ProxyArp { get; set; }
 
         /// <summary>
-        /// ID of the RADIUS profile to use for WPA Enterprise authentication (when security is 'wpaeap'). Reference existing
-        /// profiles using the `unifi.RadiusProfile` data source.
+        /// ID of the RADIUS profile to use for WPA Enterprise authentication (when security is 'wpaeap'). Reference existing profiles using the `unifi.RadiusProfile` data source.
         /// </summary>
         [Input("radiusProfileId")]
         public Input<string>? RadiusProfileId { get; set; }
@@ -631,8 +589,7 @@ namespace Pulumi.Unifi
         private InputList<Inputs.WlanScheduleGetArgs>? _schedules;
 
         /// <summary>
-        /// Time-based access control configuration for the wireless network. Allows automatic enabling/disabling of the network on
-        /// specified schedules.
+        /// Time-based access control configuration for the wireless network. Allows automatic enabling/disabling of the network on specified schedules.
         /// </summary>
         public InputList<Inputs.WlanScheduleGetArgs> Schedules
         {
@@ -641,15 +598,16 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The security protocol for the wireless network. Valid values are: * `wpapsk` - WPA Personal (PSK) with WPA2/WPA3 options
-        /// * `wpaeap` - WPA Enterprise (802.1x) * `open` - Open network (no encryption)
+        /// The security protocol for the wireless network. Valid values are:
+        ///   * `wpapsk` - WPA Personal (PSK) with WPA2/WPA3 options
+        ///   * `wpaeap` - WPA Enterprise (802.1x)
+        ///   * `open` - Open network (no encryption)
         /// </summary>
         [Input("security")]
         public Input<string>? Security { get; set; }
 
         /// <summary>
-        /// The name of the UniFi site where the wireless network should be created. If not specified, the default site will be
-        /// used.
+        /// The name of the UniFi site where the wireless network should be created. If not specified, the default site will be used.
         /// </summary>
         [Input("site")]
         public Input<string>? Site { get; set; }
@@ -667,22 +625,22 @@ namespace Pulumi.Unifi
         public Input<string>? UserGroupId { get; set; }
 
         /// <summary>
-        /// Radio band selection. Valid values: * `both` - Both 2.4GHz and 5GHz (default) * `2g` - 2.4GHz only * `5g` - 5GHz only
-        /// Defaults to `both`.
+        /// Radio band selection. Valid values:
+        ///   * `both` - Both 2.4GHz and 5GHz (default)
+        ///   * `2g` - 2.4GHz only
+        ///   * `5g` - 5GHz only Defaults to `both`.
         /// </summary>
         [Input("wlanBand")]
         public Input<string>? WlanBand { get; set; }
 
         /// <summary>
-        /// Enable WPA3 security protocol. Requires security to be set to `wpapsk` and PMF mode to be enabled. WPA3 provides
-        /// enhanced security features over WPA2.
+        /// Enable WPA3 security protocol. Requires security to be set to `wpapsk` and PMF mode to be enabled. WPA3 provides enhanced security features over WPA2.
         /// </summary>
         [Input("wpa3Support")]
         public Input<bool>? Wpa3Support { get; set; }
 
         /// <summary>
-        /// Enable WPA3 transition mode, which allows both WPA2 and WPA3 clients to connect. This provides backward compatibility
-        /// while gradually transitioning to WPA3. Requires security to be set to `wpapsk` and `wpa3_support` to be true.
+        /// Enable WPA3 transition mode, which allows both WPA2 and WPA3 clients to connect. This provides backward compatibility while gradually transitioning to WPA3. Requires security to be set to `wpapsk` and `wpa3_support` to be true.
         /// </summary>
         [Input("wpa3Transition")]
         public Input<bool>? Wpa3Transition { get; set; }

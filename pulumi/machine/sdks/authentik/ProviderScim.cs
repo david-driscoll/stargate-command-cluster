@@ -13,7 +13,11 @@ namespace Pulumi.Authentik
     public partial class ProviderScim : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Allowed values: - `default` - `aws` - `slack` Defaults to `default`.
+        /// Allowed values:
+        ///   - `default`
+        ///   - `aws`
+        ///   - `slack`
+        ///  Defaults to `default`.
         /// </summary>
         [Output("compatibilityMode")]
         public Output<string?> CompatibilityMode { get; private set; } = null!;
@@ -99,7 +103,11 @@ namespace Pulumi.Authentik
     public sealed class ProviderScimArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `default` - `aws` - `slack` Defaults to `default`.
+        /// Allowed values:
+        ///   - `default`
+        ///   - `aws`
+        ///   - `slack`
+        ///  Defaults to `default`.
         /// </summary>
         [Input("compatibilityMode")]
         public Input<string>? CompatibilityMode { get; set; }
@@ -162,7 +170,11 @@ namespace Pulumi.Authentik
     public sealed class ProviderScimState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Allowed values: - `default` - `aws` - `slack` Defaults to `default`.
+        /// Allowed values:
+        ///   - `default`
+        ///   - `aws`
+        ///   - `slack`
+        ///  Defaults to `default`.
         /// </summary>
         [Input("compatibilityMode")]
         public Input<string>? CompatibilityMode { get; set; }

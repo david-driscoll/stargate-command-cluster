@@ -13,11 +13,11 @@
   <ItemGroup>
     <Compile Remove="crds/**/*.*" />
     <Compile Remove="sdks/**/*.*" />
+    <None Include="sdks/**/*.*" />
     <Compile Include="..\models\**\*.cs" Exclude="..\models\obj\**\*.cs" LinkBase="models" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="sdks\truenas\Pulumi.Truenas.csproj" />
     <ProjectReference Include="sdks\unifi\Pulumi.Unifi.csproj" />
     <ProjectReference Include="sdks\uptimekuma\Pulumi.Uptimekuma.csproj" />
     <ProjectReference Include="sdks\authentik\Pulumi.Authentik.csproj" />

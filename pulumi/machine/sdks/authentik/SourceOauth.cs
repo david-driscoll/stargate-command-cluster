@@ -25,7 +25,10 @@ namespace Pulumi.Authentik
         public Output<string?> AuthenticationFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `basic_auth` - `post_body` Defaults to `basic_auth`.
+        /// Allowed values:
+        ///   - `basic_auth`
+        ///   - `post_body`
+        ///  Defaults to `basic_auth`.
         /// </summary>
         [Output("authorizationCodeAuthMethod")]
         public Output<string?> AuthorizationCodeAuthMethod { get; private set; } = null!;
@@ -58,7 +61,11 @@ namespace Pulumi.Authentik
         public Output<string?> EnrollmentFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("groupMatchingMode")]
         public Output<string?> GroupMatchingMode { get; private set; } = null!;
@@ -67,8 +74,7 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Manually configure JWKS keys for use with machine-to-machine authentication. JSON format expected. Use jsonencode() to
-        /// pass objects. Generated.
+        /// Manually configure JWKS keys for use with machine-to-machine authentication. JSON format expected. Use jsonencode() to pass objects. Generated.
         /// </summary>
         [Output("oidcJwks")]
         public Output<string> OidcJwks { get; private set; } = null!;
@@ -80,14 +86,16 @@ namespace Pulumi.Authentik
         public Output<string?> OidcJwksUrl { get; private set; } = null!;
 
         /// <summary>
-        /// Automatically configure source from OIDC well-known endpoint. URL is taken as is, and should end with
-        /// `.well-known/openid-configuration`.
+        /// Automatically configure source from OIDC well-known endpoint. URL is taken as is, and should end with `.well-known/openid-configuration`.
         /// </summary>
         [Output("oidcWellKnownUrl")]
         public Output<string?> OidcWellKnownUrl { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -105,8 +113,22 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> PropertyMappingsGroups { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `apple` - `openidconnect` - `entraid` - `azuread` - `discord` - `facebook` - `github` - `gitlab` -
-        /// `google` - `mailcow` - `okta` - `patreon` - `reddit` - `twitch` - `twitter`
+        /// Allowed values:
+        ///   - `apple`
+        ///   - `openidconnect`
+        ///   - `entraid`
+        ///   - `azuread`
+        ///   - `discord`
+        ///   - `facebook`
+        ///   - `github`
+        ///   - `gitlab`
+        ///   - `google`
+        ///   - `mailcow`
+        ///   - `okta`
+        ///   - `patreon`
+        ///   - `reddit`
+        ///   - `twitch`
+        ///   - `twitter`
         /// </summary>
         [Output("providerType")]
         public Output<string> ProviderType { get; private set; } = null!;
@@ -124,8 +146,13 @@ namespace Pulumi.Authentik
         public Output<string> SourceOauthId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("userMatchingMode")]
         public Output<string?> UserMatchingMode { get; private set; } = null!;
@@ -205,7 +232,10 @@ namespace Pulumi.Authentik
         public Input<string>? AuthenticationFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `basic_auth` - `post_body` Defaults to `basic_auth`.
+        /// Allowed values:
+        ///   - `basic_auth`
+        ///   - `post_body`
+        ///  Defaults to `basic_auth`.
         /// </summary>
         [Input("authorizationCodeAuthMethod")]
         public Input<string>? AuthorizationCodeAuthMethod { get; set; }
@@ -241,7 +271,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -250,8 +284,7 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Manually configure JWKS keys for use with machine-to-machine authentication. JSON format expected. Use jsonencode() to
-        /// pass objects. Generated.
+        /// Manually configure JWKS keys for use with machine-to-machine authentication. JSON format expected. Use jsonencode() to pass objects. Generated.
         /// </summary>
         [Input("oidcJwks")]
         public Input<string>? OidcJwks { get; set; }
@@ -263,14 +296,16 @@ namespace Pulumi.Authentik
         public Input<string>? OidcJwksUrl { get; set; }
 
         /// <summary>
-        /// Automatically configure source from OIDC well-known endpoint. URL is taken as is, and should end with
-        /// `.well-known/openid-configuration`.
+        /// Automatically configure source from OIDC well-known endpoint. URL is taken as is, and should end with `.well-known/openid-configuration`.
         /// </summary>
         [Input("oidcWellKnownUrl")]
         public Input<string>? OidcWellKnownUrl { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -298,8 +333,22 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `apple` - `openidconnect` - `entraid` - `azuread` - `discord` - `facebook` - `github` - `gitlab` -
-        /// `google` - `mailcow` - `okta` - `patreon` - `reddit` - `twitch` - `twitter`
+        /// Allowed values:
+        ///   - `apple`
+        ///   - `openidconnect`
+        ///   - `entraid`
+        ///   - `azuread`
+        ///   - `discord`
+        ///   - `facebook`
+        ///   - `github`
+        ///   - `gitlab`
+        ///   - `google`
+        ///   - `mailcow`
+        ///   - `okta`
+        ///   - `patreon`
+        ///   - `reddit`
+        ///   - `twitch`
+        ///   - `twitter`
         /// </summary>
         [Input("providerType", required: true)]
         public Input<string> ProviderType { get; set; } = null!;
@@ -317,8 +366,13 @@ namespace Pulumi.Authentik
         public Input<string>? SourceOauthId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }
@@ -356,7 +410,10 @@ namespace Pulumi.Authentik
         public Input<string>? AuthenticationFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `basic_auth` - `post_body` Defaults to `basic_auth`.
+        /// Allowed values:
+        ///   - `basic_auth`
+        ///   - `post_body`
+        ///  Defaults to `basic_auth`.
         /// </summary>
         [Input("authorizationCodeAuthMethod")]
         public Input<string>? AuthorizationCodeAuthMethod { get; set; }
@@ -398,7 +455,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -407,8 +468,7 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Manually configure JWKS keys for use with machine-to-machine authentication. JSON format expected. Use jsonencode() to
-        /// pass objects. Generated.
+        /// Manually configure JWKS keys for use with machine-to-machine authentication. JSON format expected. Use jsonencode() to pass objects. Generated.
         /// </summary>
         [Input("oidcJwks")]
         public Input<string>? OidcJwks { get; set; }
@@ -420,14 +480,16 @@ namespace Pulumi.Authentik
         public Input<string>? OidcJwksUrl { get; set; }
 
         /// <summary>
-        /// Automatically configure source from OIDC well-known endpoint. URL is taken as is, and should end with
-        /// `.well-known/openid-configuration`.
+        /// Automatically configure source from OIDC well-known endpoint. URL is taken as is, and should end with `.well-known/openid-configuration`.
         /// </summary>
         [Input("oidcWellKnownUrl")]
         public Input<string>? OidcWellKnownUrl { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -455,8 +517,22 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `apple` - `openidconnect` - `entraid` - `azuread` - `discord` - `facebook` - `github` - `gitlab` -
-        /// `google` - `mailcow` - `okta` - `patreon` - `reddit` - `twitch` - `twitter`
+        /// Allowed values:
+        ///   - `apple`
+        ///   - `openidconnect`
+        ///   - `entraid`
+        ///   - `azuread`
+        ///   - `discord`
+        ///   - `facebook`
+        ///   - `github`
+        ///   - `gitlab`
+        ///   - `google`
+        ///   - `mailcow`
+        ///   - `okta`
+        ///   - `patreon`
+        ///   - `reddit`
+        ///   - `twitch`
+        ///   - `twitter`
         /// </summary>
         [Input("providerType")]
         public Input<string>? ProviderType { get; set; }
@@ -474,8 +550,13 @@ namespace Pulumi.Authentik
         public Input<string>? SourceOauthId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }

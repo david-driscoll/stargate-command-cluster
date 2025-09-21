@@ -9,7 +9,6 @@ using k8s;
 using k8s.KubeConfigModels;
 using models;
 using Pulumi;
-using Pulumi.Automation;
 using Rocket.Surgery.OnePasswordNativeUnofficial;
 using Config = Pulumi.Config;
 
@@ -66,6 +65,13 @@ return await Deployment.RunAsync(async () =>
     MacAddress = "58:47:ca:7b:a9:9d",
     Proxmox = alphaSiteProxmox,
   });
+
+  var spike = new Truenas("spike", new()
+  {
+    Globals = globals,
+    Host = twilightSparkle,
+  });
+  spike.AddClusterBackup("test-backup", false);
 
   var celestia = new ProxmoxHost("celestia", new()
   {

@@ -22,15 +22,22 @@ namespace Pulumi.Authentik
         public Output<string?> AuthenticationFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `REDIRECT` - `POST` - `POST_AUTO` Defaults to `REDIRECT`.
+        /// Allowed values:
+        ///   - `REDIRECT`
+        ///   - `POST`
+        ///   - `POST_AUTO`
+        ///  Defaults to `REDIRECT`.
         /// </summary>
         [Output("bindingType")]
         public Output<string?> BindingType { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#sha1` - `http://www.w3.org/2001/04/xmlenc#sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#sha384` - `http://www.w3.org/2001/04/xmlenc#sha512` Defaults to
-        /// `http://www.w3.org/2001/04/xmlenc#sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#sha1`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#sha384`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha512`
+        ///  Defaults to `http://www.w3.org/2001/04/xmlenc#sha256`.
         /// </summary>
         [Output("digestAlgorithm")]
         public Output<string?> DigestAlgorithm { get; private set; } = null!;
@@ -48,7 +55,11 @@ namespace Pulumi.Authentik
         public Output<string?> EnrollmentFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("groupMatchingMode")]
         public Output<string?> GroupMatchingMode { get; private set; } = null!;
@@ -66,17 +77,23 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent` - `urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:WindowsDomainQualifiedName` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:transient` - `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified` Defaults
-        /// to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
+        /// Allowed values:
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:WindowsDomainQualifiedName`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:transient`
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified`
+        ///  Defaults to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
         /// </summary>
         [Output("nameIdPolicy")]
         public Output<string?> NameIdPolicy { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -91,11 +108,17 @@ namespace Pulumi.Authentik
         public Output<ImmutableArray<string>> PropertyMappingsGroups { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#rsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512` -
-        /// `http://www.w3.org/2000/09/xmldsig#dsa-sha1` Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#rsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512`
+        ///   - `http://www.w3.org/2000/09/xmldsig#dsa-sha1`
+        ///  Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
         /// </summary>
         [Output("signatureAlgorithm")]
         public Output<string?> SignatureAlgorithm { get; private set; } = null!;
@@ -122,8 +145,13 @@ namespace Pulumi.Authentik
         public Output<string?> TemporaryUserDeleteAfter { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("userMatchingMode")]
         public Output<string?> UserMatchingMode { get; private set; } = null!;
@@ -199,15 +227,22 @@ namespace Pulumi.Authentik
         public Input<string>? AuthenticationFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `REDIRECT` - `POST` - `POST_AUTO` Defaults to `REDIRECT`.
+        /// Allowed values:
+        ///   - `REDIRECT`
+        ///   - `POST`
+        ///   - `POST_AUTO`
+        ///  Defaults to `REDIRECT`.
         /// </summary>
         [Input("bindingType")]
         public Input<string>? BindingType { get; set; }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#sha1` - `http://www.w3.org/2001/04/xmlenc#sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#sha384` - `http://www.w3.org/2001/04/xmlenc#sha512` Defaults to
-        /// `http://www.w3.org/2001/04/xmlenc#sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#sha1`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#sha384`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha512`
+        ///  Defaults to `http://www.w3.org/2001/04/xmlenc#sha256`.
         /// </summary>
         [Input("digestAlgorithm")]
         public Input<string>? DigestAlgorithm { get; set; }
@@ -225,7 +260,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -237,17 +276,23 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent` - `urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:WindowsDomainQualifiedName` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:transient` - `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified` Defaults
-        /// to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
+        /// Allowed values:
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:WindowsDomainQualifiedName`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:transient`
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified`
+        ///  Defaults to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
         /// </summary>
         [Input("nameIdPolicy")]
         public Input<string>? NameIdPolicy { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -272,11 +317,17 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#rsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512` -
-        /// `http://www.w3.org/2000/09/xmldsig#dsa-sha1` Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#rsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512`
+        ///   - `http://www.w3.org/2000/09/xmldsig#dsa-sha1`
+        ///  Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
         /// </summary>
         [Input("signatureAlgorithm")]
         public Input<string>? SignatureAlgorithm { get; set; }
@@ -303,8 +354,13 @@ namespace Pulumi.Authentik
         public Input<string>? TemporaryUserDeleteAfter { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }
@@ -342,15 +398,22 @@ namespace Pulumi.Authentik
         public Input<string>? AuthenticationFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `REDIRECT` - `POST` - `POST_AUTO` Defaults to `REDIRECT`.
+        /// Allowed values:
+        ///   - `REDIRECT`
+        ///   - `POST`
+        ///   - `POST_AUTO`
+        ///  Defaults to `REDIRECT`.
         /// </summary>
         [Input("bindingType")]
         public Input<string>? BindingType { get; set; }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#sha1` - `http://www.w3.org/2001/04/xmlenc#sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#sha384` - `http://www.w3.org/2001/04/xmlenc#sha512` Defaults to
-        /// `http://www.w3.org/2001/04/xmlenc#sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#sha1`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#sha384`
+        ///   - `http://www.w3.org/2001/04/xmlenc#sha512`
+        ///  Defaults to `http://www.w3.org/2001/04/xmlenc#sha256`.
         /// </summary>
         [Input("digestAlgorithm")]
         public Input<string>? DigestAlgorithm { get; set; }
@@ -368,7 +431,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -386,17 +453,23 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Allowed values: - `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent` - `urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:WindowsDomainQualifiedName` -
-        /// `urn:oasis:names:tc:SAML:2.0:nameid-format:transient` - `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified` Defaults
-        /// to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
+        /// Allowed values:
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:WindowsDomainQualifiedName`
+        ///   - `urn:oasis:names:tc:SAML:2.0:nameid-format:transient`
+        ///   - `urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified`
+        ///  Defaults to `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent`.
         /// </summary>
         [Input("nameIdPolicy")]
         public Input<string>? NameIdPolicy { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -421,11 +494,17 @@ namespace Pulumi.Authentik
         }
 
         /// <summary>
-        /// Allowed values: - `http://www.w3.org/2000/09/xmldsig#rsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256` -
-        /// `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384` - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512` -
-        /// `http://www.w3.org/2000/09/xmldsig#dsa-sha1` Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
+        /// Allowed values:
+        ///   - `http://www.w3.org/2000/09/xmldsig#rsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#rsa-sha512`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384`
+        ///   - `http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512`
+        ///   - `http://www.w3.org/2000/09/xmldsig#dsa-sha1`
+        ///  Defaults to `http://www.w3.org/2001/04/xmldsig-more#rsa-sha256`.
         /// </summary>
         [Input("signatureAlgorithm")]
         public Input<string>? SignatureAlgorithm { get; set; }
@@ -452,8 +531,13 @@ namespace Pulumi.Authentik
         public Input<string>? TemporaryUserDeleteAfter { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }

@@ -28,7 +28,11 @@ namespace Pulumi.Authentik
         public Output<string> StageUserWriteId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `never_create` - `create_when_required` - `always_create` Defaults to `create_when_required`.
+        /// Allowed values:
+        ///   - `never_create`
+        ///   - `create_when_required`
+        ///   - `always_create`
+        ///  Defaults to `create_when_required`.
         /// </summary>
         [Output("userCreationMode")]
         public Output<string?> UserCreationMode { get; private set; } = null!;
@@ -40,7 +44,11 @@ namespace Pulumi.Authentik
         public Output<string?> UserPathTemplate { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` Defaults to `external`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///  Defaults to `external`.
         /// </summary>
         [Output("userType")]
         public Output<string?> UserType { get; private set; } = null!;
@@ -107,7 +115,11 @@ namespace Pulumi.Authentik
         public Input<string>? StageUserWriteId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `never_create` - `create_when_required` - `always_create` Defaults to `create_when_required`.
+        /// Allowed values:
+        ///   - `never_create`
+        ///   - `create_when_required`
+        ///   - `always_create`
+        ///  Defaults to `create_when_required`.
         /// </summary>
         [Input("userCreationMode")]
         public Input<string>? UserCreationMode { get; set; }
@@ -119,7 +131,11 @@ namespace Pulumi.Authentik
         public Input<string>? UserPathTemplate { get; set; }
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` Defaults to `external`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///  Defaults to `external`.
         /// </summary>
         [Input("userType")]
         public Input<string>? UserType { get; set; }
@@ -148,7 +164,11 @@ namespace Pulumi.Authentik
         public Input<string>? StageUserWriteId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `never_create` - `create_when_required` - `always_create` Defaults to `create_when_required`.
+        /// Allowed values:
+        ///   - `never_create`
+        ///   - `create_when_required`
+        ///   - `always_create`
+        ///  Defaults to `create_when_required`.
         /// </summary>
         [Input("userCreationMode")]
         public Input<string>? UserCreationMode { get; set; }
@@ -160,7 +180,11 @@ namespace Pulumi.Authentik
         public Input<string>? UserPathTemplate { get; set; }
 
         /// <summary>
-        /// Allowed values: - `internal` - `external` - `service_account` Defaults to `external`.
+        /// Allowed values:
+        ///   - `internal`
+        ///   - `external`
+        ///   - `service_account`
+        ///  Defaults to `external`.
         /// </summary>
         [Input("userType")]
         public Input<string>? UserType { get; set; }

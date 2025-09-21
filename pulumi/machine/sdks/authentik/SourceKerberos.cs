@@ -25,7 +25,11 @@ namespace Pulumi.Authentik
         public Output<string?> EnrollmentFlow { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("groupMatchingMode")]
         public Output<string?> GroupMatchingMode { get; private set; } = null!;
@@ -40,14 +44,16 @@ namespace Pulumi.Authentik
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// If enabled, the authentik-stored password will be updated upon login with the Kerberos password backend Defaults to
-        /// `false`.
+        /// If enabled, the authentik-stored password will be updated upon login with the Kerberos password backend Defaults to `false`.
         /// </summary>
         [Output("passwordLoginUpdateInternalPassword")]
         public Output<bool?> PasswordLoginUpdateInternalPassword { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Output("policyEngineMode")]
         public Output<string?> PolicyEngineMode { get; private set; } = null!;
@@ -119,8 +125,13 @@ namespace Pulumi.Authentik
         public Output<bool?> SyncUsersPassword { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Output("userMatchingMode")]
         public Output<string?> UserMatchingMode { get; private set; } = null!;
@@ -202,7 +213,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -217,14 +232,16 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// If enabled, the authentik-stored password will be updated upon login with the Kerberos password backend Defaults to
-        /// `false`.
+        /// If enabled, the authentik-stored password will be updated upon login with the Kerberos password backend Defaults to `false`.
         /// </summary>
         [Input("passwordLoginUpdateInternalPassword")]
         public Input<bool>? PasswordLoginUpdateInternalPassword { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -326,8 +343,13 @@ namespace Pulumi.Authentik
         public Input<bool>? SyncUsersPassword { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }
@@ -365,7 +387,11 @@ namespace Pulumi.Authentik
         public Input<string>? EnrollmentFlow { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `name_link` - `name_deny` Defaults to `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `name_link`
+        ///   - `name_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("groupMatchingMode")]
         public Input<string>? GroupMatchingMode { get; set; }
@@ -380,14 +406,16 @@ namespace Pulumi.Authentik
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// If enabled, the authentik-stored password will be updated upon login with the Kerberos password backend Defaults to
-        /// `false`.
+        /// If enabled, the authentik-stored password will be updated upon login with the Kerberos password backend Defaults to `false`.
         /// </summary>
         [Input("passwordLoginUpdateInternalPassword")]
         public Input<bool>? PasswordLoginUpdateInternalPassword { get; set; }
 
         /// <summary>
-        /// Allowed values: - `all` - `any` Defaults to `any`.
+        /// Allowed values:
+        ///   - `all`
+        ///   - `any`
+        ///  Defaults to `any`.
         /// </summary>
         [Input("policyEngineMode")]
         public Input<string>? PolicyEngineMode { get; set; }
@@ -489,8 +517,13 @@ namespace Pulumi.Authentik
         public Input<bool>? SyncUsersPassword { get; set; }
 
         /// <summary>
-        /// Allowed values: - `identifier` - `email_link` - `email_deny` - `username_link` - `username_deny` Defaults to
-        /// `identifier`.
+        /// Allowed values:
+        ///   - `identifier`
+        ///   - `email_link`
+        ///   - `email_deny`
+        ///   - `username_link`
+        ///   - `username_deny`
+        ///  Defaults to `identifier`.
         /// </summary>
         [Input("userMatchingMode")]
         public Input<string>? UserMatchingMode { get; set; }

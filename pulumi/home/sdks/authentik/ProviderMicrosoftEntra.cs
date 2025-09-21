@@ -31,7 +31,10 @@ namespace Pulumi.Authentik
         public Output<string?> FilterGroup { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Output("groupDeleteAction")]
         public Output<string?> GroupDeleteAction { get; private set; } = null!;
@@ -52,7 +55,10 @@ namespace Pulumi.Authentik
         public Output<string> TenantId { get; private set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Output("userDeleteAction")]
         public Output<string?> UserDeleteAction { get; private set; } = null!;
@@ -135,7 +141,10 @@ namespace Pulumi.Authentik
         public Input<string>? FilterGroup { get; set; }
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("groupDeleteAction")]
         public Input<string>? GroupDeleteAction { get; set; }
@@ -166,7 +175,10 @@ namespace Pulumi.Authentik
         public Input<string> TenantId { get; set; } = null!;
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("userDeleteAction")]
         public Input<string>? UserDeleteAction { get; set; }
@@ -207,7 +219,10 @@ namespace Pulumi.Authentik
         public Input<string>? FilterGroup { get; set; }
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("groupDeleteAction")]
         public Input<string>? GroupDeleteAction { get; set; }
@@ -238,7 +253,10 @@ namespace Pulumi.Authentik
         public Input<string>? TenantId { get; set; }
 
         /// <summary>
-        /// Allowed values: - `delete` - `do_nothing` Defaults to `delete`.
+        /// Allowed values:
+        ///   - `delete`
+        ///   - `do_nothing`
+        ///  Defaults to `delete`.
         /// </summary>
         [Input("userDeleteAction")]
         public Input<string>? UserDeleteAction { get; set; }

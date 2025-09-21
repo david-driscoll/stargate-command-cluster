@@ -13,50 +13,51 @@ namespace Pulumi.Unifi
     public partial class FirewallRule : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// The action to take when traffic matches this rule. Valid values are: * `accept` - Allow the traffic * `drop` - Silently
-        /// block the traffic * `reject` - Block the traffic and send an ICMP rejection message
+        /// The action to take when traffic matches this rule. Valid values are:
+        ///   * `accept` - Allow the traffic
+        ///   * `drop` - Silently block the traffic
+        ///   * `reject` - Block the traffic and send an ICMP rejection message
         /// </summary>
         [Output("action")]
         public Output<string> Action { get; private set; } = null!;
 
         /// <summary>
-        /// The destination IPv4 address or network in CIDR notation (e.g., '192.168.1.10' or '192.168.0.0/24'). The format must
-        /// match dst_network_type - use a single IP for ADDRv4 or CIDR for NETv4.
+        /// The destination IPv4 address or network in CIDR notation (e.g., '192.168.1.10' or '192.168.0.0/24'). The format must match dst_network_type - use a single IP for ADDRv4 or CIDR for NETv4.
         /// </summary>
         [Output("dstAddress")]
         public Output<string?> DstAddress { get; private set; } = null!;
 
         /// <summary>
-        /// The destination IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6
-        /// firewall rules.
+        /// The destination IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall rules.
         /// </summary>
         [Output("dstAddressIpv6")]
         public Output<string?> DstAddressIpv6 { get; private set; } = null!;
 
         /// <summary>
-        /// A list of firewall group IDs to use as destinations. Groups can contain IP addresses, networks, or port numbers. This
-        /// allows you to create reusable sets of addresses/ports and reference them in multiple rules.
+        /// A list of firewall group IDs to use as destinations. Groups can contain IP addresses, networks, or port numbers. This allows you to create reusable sets of addresses/ports and reference them in multiple rules.
         /// </summary>
         [Output("dstFirewallGroupIds")]
         public Output<ImmutableArray<string>> DstFirewallGroupIds { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the destination network this rule applies to. This can be found in the URL when viewing the network in the
-        /// UniFi controller.
+        /// The ID of the destination network this rule applies to. This can be found in the URL when viewing the network in the UniFi controller.
         /// </summary>
         [Output("dstNetworkId")]
         public Output<string?> DstNetworkId { get; private set; } = null!;
 
         /// <summary>
-        /// The type of destination network address. Valid values are: * `ADDRv4` - Single IPv4 address * `NETv4` - IPv4 network in
-        /// CIDR notation Defaults to `NETv4`.
+        /// The type of destination network address. Valid values are:
+        ///   * `ADDRv4` - Single IPv4 address
+        ///   * `NETv4` - IPv4 network in CIDR notation Defaults to `NETv4`.
         /// </summary>
         [Output("dstNetworkType")]
         public Output<string?> DstNetworkType { get; private set; } = null!;
 
         /// <summary>
-        /// The destination port(s) for this rule. Can be: * A single port number (e.g., '80') * A port range (e.g., '8000:8080') *
-        /// A list of ports/ranges separated by commas
+        /// The destination port(s) for this rule. Can be:
+        ///   * A single port number (e.g., '80')
+        ///   * A port range (e.g., '8000:8080')
+        ///   * A list of ports/ranges separated by commas
         /// </summary>
         [Output("dstPort")]
         public Output<string?> DstPort { get; private set; } = null!;
@@ -68,18 +69,23 @@ namespace Pulumi.Unifi
         public Output<bool?> Enabled { get; private set; } = null!;
 
         /// <summary>
-        /// The ICMP type name when protocol is set to 'icmp'. Common values include: * `echo-request` - ICMP ping requests *
-        /// `echo-reply` - ICMP ping replies * `destination-unreachable` - Host/network unreachable messages * `time-exceeded` - TTL
-        /// exceeded messages (traceroute)
+        /// The ICMP type name when protocol is set to 'icmp'. Common values include:
+        ///   * `echo-request` - ICMP ping requests
+        ///   * `echo-reply` - ICMP ping replies
+        ///   * `destination-unreachable` - Host/network unreachable messages
+        ///   * `time-exceeded` - TTL exceeded messages (traceroute)
         /// </summary>
         [Output("icmpTypename")]
         public Output<string?> IcmpTypename { get; private set; } = null!;
 
         /// <summary>
-        /// The ICMPv6 type name when protocol_v6 is set to 'ipv6-icmp'. Common values (not all are listed) include: *
-        /// `echo-request` - IPv6 ping requests * `echo-reply` - IPv6 ping replies * `neighbor-solicitation` - IPv6 neighbor
-        /// discovery * `neighbor-advertisement` - IPv6 neighbor announcements * `destination-unreachable` - Host/network
-        /// unreachable messages * `packet-too-big` - Path MTU discovery messages
+        /// The ICMPv6 type name when protocol_v6 is set to 'ipv6-icmp'. Common values (not all are listed) include:
+        ///   * `echo-request` - IPv6 ping requests
+        ///   * `echo-reply` - IPv6 ping replies
+        ///   * `neighbor-solicitation` - IPv6 neighbor discovery
+        ///   * `neighbor-advertisement` - IPv6 neighbor announcements
+        ///   * `destination-unreachable` - Host/network unreachable messages
+        ///   * `packet-too-big` - Path MTU discovery messages
         /// </summary>
         [Output("icmpV6Typename")]
         public Output<string?> IcmpV6Typename { get; private set; } = null!;
@@ -103,34 +109,50 @@ namespace Pulumi.Unifi
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The IPv4 protocol this rule applies to. Common values (not all are listed) include: * `all` - Match all protocols *
-        /// `tcp` - TCP traffic only (e.g., web, email) * `udp` - UDP traffic only (e.g., DNS, VoIP) * `tcp_udp` - Both TCP and UDP
-        /// * `icmp` - ICMP traffic (ping, traceroute) * Protocol numbers (1-255) for other protocols Examples: * Use 'tcp' for web
-        /// server rules (ports 80, 443) * Use 'udp' for VoIP or gaming traffic * Use 'all' for general network access rules
+        /// The IPv4 protocol this rule applies to. Common values (not all are listed) include:
+        ///   * `all` - Match all protocols
+        ///   * `tcp` - TCP traffic only (e.g., web, email)
+        ///   * `udp` - UDP traffic only (e.g., DNS, VoIP)
+        ///   * `tcp_udp` - Both TCP and UDP
+        ///   * `icmp` - ICMP traffic (ping, traceroute)
+        ///   * Protocol numbers (1-255) for other protocols
+        /// 
+        /// Examples:
+        ///   * Use 'tcp' for web server rules (ports 80, 443)
+        ///   * Use 'udp' for VoIP or gaming traffic
+        ///   * Use 'all' for general network access rules
         /// </summary>
         [Output("protocol")]
         public Output<string?> Protocol { get; private set; } = null!;
 
         /// <summary>
-        /// The IPv6 protocol this rule applies to. Similar to 'protocol' but for IPv6 traffic. Common values (not all are listed)
-        /// include: * `all` - Match all protocols * `tcp` - TCP traffic only * `udp` - UDP traffic only * `tcp_udp` - Both TCP and
-        /// UDP traffic * `ipv6-icmp` - ICMPv6 traffic
+        /// The IPv6 protocol this rule applies to. Similar to 'protocol' but for IPv6 traffic. Common values (not all are listed) include:
+        ///   * `all` - Match all protocols
+        ///   * `tcp` - TCP traffic only
+        ///   * `udp` - UDP traffic only
+        ///   * `tcp_udp` - Both TCP and UDP traffic
+        ///   * `ipv6-icmp` - ICMPv6 traffic
         /// </summary>
         [Output("protocolV6")]
         public Output<string?> ProtocolV6 { get; private set; } = null!;
 
         /// <summary>
-        /// The processing order for this rule. Lower numbers are processed first. Custom rules should use: * 2000-2999 for rules
-        /// processed before auto-generated rules * 4000-4999 for rules processed after auto-generated rules
+        /// The processing order for this rule. Lower numbers are processed first. Custom rules should use:
+        ///   * 2000-2999 for rules processed before auto-generated rules
+        ///   * 4000-4999 for rules processed after auto-generated rules
         /// </summary>
         [Output("ruleIndex")]
         public Output<double> RuleIndex { get; private set; } = null!;
 
         /// <summary>
-        /// Defines which traffic flow this rule applies to. The format is [NETWORK]_[DIRECTION], where: * NETWORK can be: WAN, LAN,
-        /// GUEST (or their IPv6 variants WANv6, LANv6, GUESTv6) * DIRECTION can be: * IN - Traffic entering the network * OUT -
-        /// Traffic leaving the network * LOCAL - Traffic destined for the USG/UDM itself Examples: WAN_IN (incoming WAN traffic),
-        /// LAN_OUT (outgoing LAN traffic), GUEST_LOCAL (traffic to Controller from guest network)
+        /// Defines which traffic flow this rule applies to. The format is [NETWORK]_[DIRECTION], where:
+        ///   * NETWORK can be: WAN, LAN, GUEST (or their IPv6 variants WANv6, LANv6, GUESTv6)
+        ///   * DIRECTION can be:
+        ///     * IN - Traffic entering the network
+        ///     * OUT - Traffic leaving the network
+        ///     * LOCAL - Traffic destined for the USG/UDM itself
+        /// 
+        /// Examples: WAN_IN (incoming WAN traffic), LAN_OUT (outgoing LAN traffic), GUEST_LOCAL (traffic to Controller from guest network)
         /// </summary>
         [Output("ruleset")]
         public Output<string> Ruleset { get; private set; } = null!;
@@ -148,53 +170,61 @@ namespace Pulumi.Unifi
         public Output<string?> SrcAddress { get; private set; } = null!;
 
         /// <summary>
-        /// The source IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall
-        /// rules.
+        /// The source IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall rules.
         /// </summary>
         [Output("srcAddressIpv6")]
         public Output<string?> SrcAddressIpv6 { get; private set; } = null!;
 
         /// <summary>
-        /// A list of firewall group IDs to use as sources. Groups can contain: * IP Address Groups - For matching specific IP
-        /// addresses * Network Groups - For matching entire subnets * Port Groups - For matching specific port numbers Example
-        /// uses: * Group of trusted admin IPs for remote access * Group of IoT device networks for isolation * Group of common
-        /// service ports for allowing specific applications
+        /// A list of firewall group IDs to use as sources. Groups can contain:
+        ///   * IP Address Groups - For matching specific IP addresses
+        ///   * Network Groups - For matching entire subnets
+        ///   * Port Groups - For matching specific port numbers
+        /// 
+        /// Example uses:
+        ///   * Group of trusted admin IPs for remote access
+        ///   * Group of IoT device networks for isolation
+        ///   * Group of common service ports for allowing specific applications
         /// </summary>
         [Output("srcFirewallGroupIds")]
         public Output<ImmutableArray<string>> SrcFirewallGroupIds { get; private set; } = null!;
 
         /// <summary>
-        /// The source MAC address this rule applies to. Use this to create rules that match specific devices regardless of their IP
-        /// address. Format: 'XX:XX:XX:XX:XX:XX'. MAC addresses are case-insensitive.
+        /// The source MAC address this rule applies to. Use this to create rules that match specific devices regardless of their IP address. Format: 'XX:XX:XX:XX:XX:XX'. MAC addresses are case-insensitive.
         /// </summary>
         [Output("srcMac")]
         public Output<string?> SrcMac { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the source network this rule applies to. This can be found in the URL when viewing the network in the UniFi
-        /// controller, or by using the network's name in the form `[site]/[network_name]`.
+        /// The ID of the source network this rule applies to. This can be found in the URL when viewing the network in the UniFi controller, or by using the network's name in the form `[site]/[network_name]`.
         /// </summary>
         [Output("srcNetworkId")]
         public Output<string?> SrcNetworkId { get; private set; } = null!;
 
         /// <summary>
-        /// The type of source network address. Valid values are: * `ADDRv4` - Single IPv4 address * `NETv4` - IPv4 network in CIDR
-        /// notation Defaults to `NETv4`.
+        /// The type of source network address. Valid values are:
+        ///   * `ADDRv4` - Single IPv4 address
+        ///   * `NETv4` - IPv4 network in CIDR notation Defaults to `NETv4`.
         /// </summary>
         [Output("srcNetworkType")]
         public Output<string?> SrcNetworkType { get; private set; } = null!;
 
         /// <summary>
-        /// The source port(s) for this rule. Can be: * A single port number (e.g., '80') * A port range (e.g., '8000:8080') * A
-        /// list of ports/ranges separated by commas
+        /// The source port(s) for this rule. Can be:
+        ///   * A single port number (e.g., '80')
+        ///   * A port range (e.g., '8000:8080')
+        ///   * A list of ports/ranges separated by commas
         /// </summary>
         [Output("srcPort")]
         public Output<string?> SrcPort { get; private set; } = null!;
 
         /// <summary>
-        /// Match established connections. When enabled: * Rule only applies to packets that are part of an existing connection *
-        /// Useful for allowing return traffic without creating separate rules * Common in WAN_IN rules to allow responses to
-        /// outbound connections Example: Allow established connections from WAN while blocking new incoming connections
+        /// Match established connections. When enabled:
+        ///   * Rule only applies to packets that are part of an existing connection
+        ///   * Useful for allowing return traffic without creating separate rules
+        ///   * Common in WAN_IN rules to allow responses to outbound connections
+        /// 
+        /// Example: Allow established connections from WAN while blocking new incoming connections
         /// </summary>
         [Output("stateEstablished")]
         public Output<bool?> StateEstablished { get; private set; } = null!;
@@ -264,22 +294,22 @@ namespace Pulumi.Unifi
     public sealed class FirewallRuleArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The action to take when traffic matches this rule. Valid values are: * `accept` - Allow the traffic * `drop` - Silently
-        /// block the traffic * `reject` - Block the traffic and send an ICMP rejection message
+        /// The action to take when traffic matches this rule. Valid values are:
+        ///   * `accept` - Allow the traffic
+        ///   * `drop` - Silently block the traffic
+        ///   * `reject` - Block the traffic and send an ICMP rejection message
         /// </summary>
         [Input("action", required: true)]
         public Input<string> Action { get; set; } = null!;
 
         /// <summary>
-        /// The destination IPv4 address or network in CIDR notation (e.g., '192.168.1.10' or '192.168.0.0/24'). The format must
-        /// match dst_network_type - use a single IP for ADDRv4 or CIDR for NETv4.
+        /// The destination IPv4 address or network in CIDR notation (e.g., '192.168.1.10' or '192.168.0.0/24'). The format must match dst_network_type - use a single IP for ADDRv4 or CIDR for NETv4.
         /// </summary>
         [Input("dstAddress")]
         public Input<string>? DstAddress { get; set; }
 
         /// <summary>
-        /// The destination IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6
-        /// firewall rules.
+        /// The destination IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall rules.
         /// </summary>
         [Input("dstAddressIpv6")]
         public Input<string>? DstAddressIpv6 { get; set; }
@@ -288,8 +318,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _dstFirewallGroupIds;
 
         /// <summary>
-        /// A list of firewall group IDs to use as destinations. Groups can contain IP addresses, networks, or port numbers. This
-        /// allows you to create reusable sets of addresses/ports and reference them in multiple rules.
+        /// A list of firewall group IDs to use as destinations. Groups can contain IP addresses, networks, or port numbers. This allows you to create reusable sets of addresses/ports and reference them in multiple rules.
         /// </summary>
         public InputList<string> DstFirewallGroupIds
         {
@@ -298,22 +327,24 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The ID of the destination network this rule applies to. This can be found in the URL when viewing the network in the
-        /// UniFi controller.
+        /// The ID of the destination network this rule applies to. This can be found in the URL when viewing the network in the UniFi controller.
         /// </summary>
         [Input("dstNetworkId")]
         public Input<string>? DstNetworkId { get; set; }
 
         /// <summary>
-        /// The type of destination network address. Valid values are: * `ADDRv4` - Single IPv4 address * `NETv4` - IPv4 network in
-        /// CIDR notation Defaults to `NETv4`.
+        /// The type of destination network address. Valid values are:
+        ///   * `ADDRv4` - Single IPv4 address
+        ///   * `NETv4` - IPv4 network in CIDR notation Defaults to `NETv4`.
         /// </summary>
         [Input("dstNetworkType")]
         public Input<string>? DstNetworkType { get; set; }
 
         /// <summary>
-        /// The destination port(s) for this rule. Can be: * A single port number (e.g., '80') * A port range (e.g., '8000:8080') *
-        /// A list of ports/ranges separated by commas
+        /// The destination port(s) for this rule. Can be:
+        ///   * A single port number (e.g., '80')
+        ///   * A port range (e.g., '8000:8080')
+        ///   * A list of ports/ranges separated by commas
         /// </summary>
         [Input("dstPort")]
         public Input<string>? DstPort { get; set; }
@@ -325,18 +356,23 @@ namespace Pulumi.Unifi
         public Input<bool>? Enabled { get; set; }
 
         /// <summary>
-        /// The ICMP type name when protocol is set to 'icmp'. Common values include: * `echo-request` - ICMP ping requests *
-        /// `echo-reply` - ICMP ping replies * `destination-unreachable` - Host/network unreachable messages * `time-exceeded` - TTL
-        /// exceeded messages (traceroute)
+        /// The ICMP type name when protocol is set to 'icmp'. Common values include:
+        ///   * `echo-request` - ICMP ping requests
+        ///   * `echo-reply` - ICMP ping replies
+        ///   * `destination-unreachable` - Host/network unreachable messages
+        ///   * `time-exceeded` - TTL exceeded messages (traceroute)
         /// </summary>
         [Input("icmpTypename")]
         public Input<string>? IcmpTypename { get; set; }
 
         /// <summary>
-        /// The ICMPv6 type name when protocol_v6 is set to 'ipv6-icmp'. Common values (not all are listed) include: *
-        /// `echo-request` - IPv6 ping requests * `echo-reply` - IPv6 ping replies * `neighbor-solicitation` - IPv6 neighbor
-        /// discovery * `neighbor-advertisement` - IPv6 neighbor announcements * `destination-unreachable` - Host/network
-        /// unreachable messages * `packet-too-big` - Path MTU discovery messages
+        /// The ICMPv6 type name when protocol_v6 is set to 'ipv6-icmp'. Common values (not all are listed) include:
+        ///   * `echo-request` - IPv6 ping requests
+        ///   * `echo-reply` - IPv6 ping replies
+        ///   * `neighbor-solicitation` - IPv6 neighbor discovery
+        ///   * `neighbor-advertisement` - IPv6 neighbor announcements
+        ///   * `destination-unreachable` - Host/network unreachable messages
+        ///   * `packet-too-big` - Path MTU discovery messages
         /// </summary>
         [Input("icmpV6Typename")]
         public Input<string>? IcmpV6Typename { get; set; }
@@ -360,34 +396,50 @@ namespace Pulumi.Unifi
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The IPv4 protocol this rule applies to. Common values (not all are listed) include: * `all` - Match all protocols *
-        /// `tcp` - TCP traffic only (e.g., web, email) * `udp` - UDP traffic only (e.g., DNS, VoIP) * `tcp_udp` - Both TCP and UDP
-        /// * `icmp` - ICMP traffic (ping, traceroute) * Protocol numbers (1-255) for other protocols Examples: * Use 'tcp' for web
-        /// server rules (ports 80, 443) * Use 'udp' for VoIP or gaming traffic * Use 'all' for general network access rules
+        /// The IPv4 protocol this rule applies to. Common values (not all are listed) include:
+        ///   * `all` - Match all protocols
+        ///   * `tcp` - TCP traffic only (e.g., web, email)
+        ///   * `udp` - UDP traffic only (e.g., DNS, VoIP)
+        ///   * `tcp_udp` - Both TCP and UDP
+        ///   * `icmp` - ICMP traffic (ping, traceroute)
+        ///   * Protocol numbers (1-255) for other protocols
+        /// 
+        /// Examples:
+        ///   * Use 'tcp' for web server rules (ports 80, 443)
+        ///   * Use 'udp' for VoIP or gaming traffic
+        ///   * Use 'all' for general network access rules
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }
 
         /// <summary>
-        /// The IPv6 protocol this rule applies to. Similar to 'protocol' but for IPv6 traffic. Common values (not all are listed)
-        /// include: * `all` - Match all protocols * `tcp` - TCP traffic only * `udp` - UDP traffic only * `tcp_udp` - Both TCP and
-        /// UDP traffic * `ipv6-icmp` - ICMPv6 traffic
+        /// The IPv6 protocol this rule applies to. Similar to 'protocol' but for IPv6 traffic. Common values (not all are listed) include:
+        ///   * `all` - Match all protocols
+        ///   * `tcp` - TCP traffic only
+        ///   * `udp` - UDP traffic only
+        ///   * `tcp_udp` - Both TCP and UDP traffic
+        ///   * `ipv6-icmp` - ICMPv6 traffic
         /// </summary>
         [Input("protocolV6")]
         public Input<string>? ProtocolV6 { get; set; }
 
         /// <summary>
-        /// The processing order for this rule. Lower numbers are processed first. Custom rules should use: * 2000-2999 for rules
-        /// processed before auto-generated rules * 4000-4999 for rules processed after auto-generated rules
+        /// The processing order for this rule. Lower numbers are processed first. Custom rules should use:
+        ///   * 2000-2999 for rules processed before auto-generated rules
+        ///   * 4000-4999 for rules processed after auto-generated rules
         /// </summary>
         [Input("ruleIndex", required: true)]
         public Input<double> RuleIndex { get; set; } = null!;
 
         /// <summary>
-        /// Defines which traffic flow this rule applies to. The format is [NETWORK]_[DIRECTION], where: * NETWORK can be: WAN, LAN,
-        /// GUEST (or their IPv6 variants WANv6, LANv6, GUESTv6) * DIRECTION can be: * IN - Traffic entering the network * OUT -
-        /// Traffic leaving the network * LOCAL - Traffic destined for the USG/UDM itself Examples: WAN_IN (incoming WAN traffic),
-        /// LAN_OUT (outgoing LAN traffic), GUEST_LOCAL (traffic to Controller from guest network)
+        /// Defines which traffic flow this rule applies to. The format is [NETWORK]_[DIRECTION], where:
+        ///   * NETWORK can be: WAN, LAN, GUEST (or their IPv6 variants WANv6, LANv6, GUESTv6)
+        ///   * DIRECTION can be:
+        ///     * IN - Traffic entering the network
+        ///     * OUT - Traffic leaving the network
+        ///     * LOCAL - Traffic destined for the USG/UDM itself
+        /// 
+        /// Examples: WAN_IN (incoming WAN traffic), LAN_OUT (outgoing LAN traffic), GUEST_LOCAL (traffic to Controller from guest network)
         /// </summary>
         [Input("ruleset", required: true)]
         public Input<string> Ruleset { get; set; } = null!;
@@ -405,8 +457,7 @@ namespace Pulumi.Unifi
         public Input<string>? SrcAddress { get; set; }
 
         /// <summary>
-        /// The source IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall
-        /// rules.
+        /// The source IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall rules.
         /// </summary>
         [Input("srcAddressIpv6")]
         public Input<string>? SrcAddressIpv6 { get; set; }
@@ -415,10 +466,15 @@ namespace Pulumi.Unifi
         private InputList<string>? _srcFirewallGroupIds;
 
         /// <summary>
-        /// A list of firewall group IDs to use as sources. Groups can contain: * IP Address Groups - For matching specific IP
-        /// addresses * Network Groups - For matching entire subnets * Port Groups - For matching specific port numbers Example
-        /// uses: * Group of trusted admin IPs for remote access * Group of IoT device networks for isolation * Group of common
-        /// service ports for allowing specific applications
+        /// A list of firewall group IDs to use as sources. Groups can contain:
+        ///   * IP Address Groups - For matching specific IP addresses
+        ///   * Network Groups - For matching entire subnets
+        ///   * Port Groups - For matching specific port numbers
+        /// 
+        /// Example uses:
+        ///   * Group of trusted admin IPs for remote access
+        ///   * Group of IoT device networks for isolation
+        ///   * Group of common service ports for allowing specific applications
         /// </summary>
         public InputList<string> SrcFirewallGroupIds
         {
@@ -427,37 +483,41 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The source MAC address this rule applies to. Use this to create rules that match specific devices regardless of their IP
-        /// address. Format: 'XX:XX:XX:XX:XX:XX'. MAC addresses are case-insensitive.
+        /// The source MAC address this rule applies to. Use this to create rules that match specific devices regardless of their IP address. Format: 'XX:XX:XX:XX:XX:XX'. MAC addresses are case-insensitive.
         /// </summary>
         [Input("srcMac")]
         public Input<string>? SrcMac { get; set; }
 
         /// <summary>
-        /// The ID of the source network this rule applies to. This can be found in the URL when viewing the network in the UniFi
-        /// controller, or by using the network's name in the form `[site]/[network_name]`.
+        /// The ID of the source network this rule applies to. This can be found in the URL when viewing the network in the UniFi controller, or by using the network's name in the form `[site]/[network_name]`.
         /// </summary>
         [Input("srcNetworkId")]
         public Input<string>? SrcNetworkId { get; set; }
 
         /// <summary>
-        /// The type of source network address. Valid values are: * `ADDRv4` - Single IPv4 address * `NETv4` - IPv4 network in CIDR
-        /// notation Defaults to `NETv4`.
+        /// The type of source network address. Valid values are:
+        ///   * `ADDRv4` - Single IPv4 address
+        ///   * `NETv4` - IPv4 network in CIDR notation Defaults to `NETv4`.
         /// </summary>
         [Input("srcNetworkType")]
         public Input<string>? SrcNetworkType { get; set; }
 
         /// <summary>
-        /// The source port(s) for this rule. Can be: * A single port number (e.g., '80') * A port range (e.g., '8000:8080') * A
-        /// list of ports/ranges separated by commas
+        /// The source port(s) for this rule. Can be:
+        ///   * A single port number (e.g., '80')
+        ///   * A port range (e.g., '8000:8080')
+        ///   * A list of ports/ranges separated by commas
         /// </summary>
         [Input("srcPort")]
         public Input<string>? SrcPort { get; set; }
 
         /// <summary>
-        /// Match established connections. When enabled: * Rule only applies to packets that are part of an existing connection *
-        /// Useful for allowing return traffic without creating separate rules * Common in WAN_IN rules to allow responses to
-        /// outbound connections Example: Allow established connections from WAN while blocking new incoming connections
+        /// Match established connections. When enabled:
+        ///   * Rule only applies to packets that are part of an existing connection
+        ///   * Useful for allowing return traffic without creating separate rules
+        ///   * Common in WAN_IN rules to allow responses to outbound connections
+        /// 
+        /// Example: Allow established connections from WAN while blocking new incoming connections
         /// </summary>
         [Input("stateEstablished")]
         public Input<bool>? StateEstablished { get; set; }
@@ -489,22 +549,22 @@ namespace Pulumi.Unifi
     public sealed class FirewallRuleState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The action to take when traffic matches this rule. Valid values are: * `accept` - Allow the traffic * `drop` - Silently
-        /// block the traffic * `reject` - Block the traffic and send an ICMP rejection message
+        /// The action to take when traffic matches this rule. Valid values are:
+        ///   * `accept` - Allow the traffic
+        ///   * `drop` - Silently block the traffic
+        ///   * `reject` - Block the traffic and send an ICMP rejection message
         /// </summary>
         [Input("action")]
         public Input<string>? Action { get; set; }
 
         /// <summary>
-        /// The destination IPv4 address or network in CIDR notation (e.g., '192.168.1.10' or '192.168.0.0/24'). The format must
-        /// match dst_network_type - use a single IP for ADDRv4 or CIDR for NETv4.
+        /// The destination IPv4 address or network in CIDR notation (e.g., '192.168.1.10' or '192.168.0.0/24'). The format must match dst_network_type - use a single IP for ADDRv4 or CIDR for NETv4.
         /// </summary>
         [Input("dstAddress")]
         public Input<string>? DstAddress { get; set; }
 
         /// <summary>
-        /// The destination IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6
-        /// firewall rules.
+        /// The destination IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall rules.
         /// </summary>
         [Input("dstAddressIpv6")]
         public Input<string>? DstAddressIpv6 { get; set; }
@@ -513,8 +573,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _dstFirewallGroupIds;
 
         /// <summary>
-        /// A list of firewall group IDs to use as destinations. Groups can contain IP addresses, networks, or port numbers. This
-        /// allows you to create reusable sets of addresses/ports and reference them in multiple rules.
+        /// A list of firewall group IDs to use as destinations. Groups can contain IP addresses, networks, or port numbers. This allows you to create reusable sets of addresses/ports and reference them in multiple rules.
         /// </summary>
         public InputList<string> DstFirewallGroupIds
         {
@@ -523,22 +582,24 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The ID of the destination network this rule applies to. This can be found in the URL when viewing the network in the
-        /// UniFi controller.
+        /// The ID of the destination network this rule applies to. This can be found in the URL when viewing the network in the UniFi controller.
         /// </summary>
         [Input("dstNetworkId")]
         public Input<string>? DstNetworkId { get; set; }
 
         /// <summary>
-        /// The type of destination network address. Valid values are: * `ADDRv4` - Single IPv4 address * `NETv4` - IPv4 network in
-        /// CIDR notation Defaults to `NETv4`.
+        /// The type of destination network address. Valid values are:
+        ///   * `ADDRv4` - Single IPv4 address
+        ///   * `NETv4` - IPv4 network in CIDR notation Defaults to `NETv4`.
         /// </summary>
         [Input("dstNetworkType")]
         public Input<string>? DstNetworkType { get; set; }
 
         /// <summary>
-        /// The destination port(s) for this rule. Can be: * A single port number (e.g., '80') * A port range (e.g., '8000:8080') *
-        /// A list of ports/ranges separated by commas
+        /// The destination port(s) for this rule. Can be:
+        ///   * A single port number (e.g., '80')
+        ///   * A port range (e.g., '8000:8080')
+        ///   * A list of ports/ranges separated by commas
         /// </summary>
         [Input("dstPort")]
         public Input<string>? DstPort { get; set; }
@@ -550,18 +611,23 @@ namespace Pulumi.Unifi
         public Input<bool>? Enabled { get; set; }
 
         /// <summary>
-        /// The ICMP type name when protocol is set to 'icmp'. Common values include: * `echo-request` - ICMP ping requests *
-        /// `echo-reply` - ICMP ping replies * `destination-unreachable` - Host/network unreachable messages * `time-exceeded` - TTL
-        /// exceeded messages (traceroute)
+        /// The ICMP type name when protocol is set to 'icmp'. Common values include:
+        ///   * `echo-request` - ICMP ping requests
+        ///   * `echo-reply` - ICMP ping replies
+        ///   * `destination-unreachable` - Host/network unreachable messages
+        ///   * `time-exceeded` - TTL exceeded messages (traceroute)
         /// </summary>
         [Input("icmpTypename")]
         public Input<string>? IcmpTypename { get; set; }
 
         /// <summary>
-        /// The ICMPv6 type name when protocol_v6 is set to 'ipv6-icmp'. Common values (not all are listed) include: *
-        /// `echo-request` - IPv6 ping requests * `echo-reply` - IPv6 ping replies * `neighbor-solicitation` - IPv6 neighbor
-        /// discovery * `neighbor-advertisement` - IPv6 neighbor announcements * `destination-unreachable` - Host/network
-        /// unreachable messages * `packet-too-big` - Path MTU discovery messages
+        /// The ICMPv6 type name when protocol_v6 is set to 'ipv6-icmp'. Common values (not all are listed) include:
+        ///   * `echo-request` - IPv6 ping requests
+        ///   * `echo-reply` - IPv6 ping replies
+        ///   * `neighbor-solicitation` - IPv6 neighbor discovery
+        ///   * `neighbor-advertisement` - IPv6 neighbor announcements
+        ///   * `destination-unreachable` - Host/network unreachable messages
+        ///   * `packet-too-big` - Path MTU discovery messages
         /// </summary>
         [Input("icmpV6Typename")]
         public Input<string>? IcmpV6Typename { get; set; }
@@ -585,34 +651,50 @@ namespace Pulumi.Unifi
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The IPv4 protocol this rule applies to. Common values (not all are listed) include: * `all` - Match all protocols *
-        /// `tcp` - TCP traffic only (e.g., web, email) * `udp` - UDP traffic only (e.g., DNS, VoIP) * `tcp_udp` - Both TCP and UDP
-        /// * `icmp` - ICMP traffic (ping, traceroute) * Protocol numbers (1-255) for other protocols Examples: * Use 'tcp' for web
-        /// server rules (ports 80, 443) * Use 'udp' for VoIP or gaming traffic * Use 'all' for general network access rules
+        /// The IPv4 protocol this rule applies to. Common values (not all are listed) include:
+        ///   * `all` - Match all protocols
+        ///   * `tcp` - TCP traffic only (e.g., web, email)
+        ///   * `udp` - UDP traffic only (e.g., DNS, VoIP)
+        ///   * `tcp_udp` - Both TCP and UDP
+        ///   * `icmp` - ICMP traffic (ping, traceroute)
+        ///   * Protocol numbers (1-255) for other protocols
+        /// 
+        /// Examples:
+        ///   * Use 'tcp' for web server rules (ports 80, 443)
+        ///   * Use 'udp' for VoIP or gaming traffic
+        ///   * Use 'all' for general network access rules
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }
 
         /// <summary>
-        /// The IPv6 protocol this rule applies to. Similar to 'protocol' but for IPv6 traffic. Common values (not all are listed)
-        /// include: * `all` - Match all protocols * `tcp` - TCP traffic only * `udp` - UDP traffic only * `tcp_udp` - Both TCP and
-        /// UDP traffic * `ipv6-icmp` - ICMPv6 traffic
+        /// The IPv6 protocol this rule applies to. Similar to 'protocol' but for IPv6 traffic. Common values (not all are listed) include:
+        ///   * `all` - Match all protocols
+        ///   * `tcp` - TCP traffic only
+        ///   * `udp` - UDP traffic only
+        ///   * `tcp_udp` - Both TCP and UDP traffic
+        ///   * `ipv6-icmp` - ICMPv6 traffic
         /// </summary>
         [Input("protocolV6")]
         public Input<string>? ProtocolV6 { get; set; }
 
         /// <summary>
-        /// The processing order for this rule. Lower numbers are processed first. Custom rules should use: * 2000-2999 for rules
-        /// processed before auto-generated rules * 4000-4999 for rules processed after auto-generated rules
+        /// The processing order for this rule. Lower numbers are processed first. Custom rules should use:
+        ///   * 2000-2999 for rules processed before auto-generated rules
+        ///   * 4000-4999 for rules processed after auto-generated rules
         /// </summary>
         [Input("ruleIndex")]
         public Input<double>? RuleIndex { get; set; }
 
         /// <summary>
-        /// Defines which traffic flow this rule applies to. The format is [NETWORK]_[DIRECTION], where: * NETWORK can be: WAN, LAN,
-        /// GUEST (or their IPv6 variants WANv6, LANv6, GUESTv6) * DIRECTION can be: * IN - Traffic entering the network * OUT -
-        /// Traffic leaving the network * LOCAL - Traffic destined for the USG/UDM itself Examples: WAN_IN (incoming WAN traffic),
-        /// LAN_OUT (outgoing LAN traffic), GUEST_LOCAL (traffic to Controller from guest network)
+        /// Defines which traffic flow this rule applies to. The format is [NETWORK]_[DIRECTION], where:
+        ///   * NETWORK can be: WAN, LAN, GUEST (or their IPv6 variants WANv6, LANv6, GUESTv6)
+        ///   * DIRECTION can be:
+        ///     * IN - Traffic entering the network
+        ///     * OUT - Traffic leaving the network
+        ///     * LOCAL - Traffic destined for the USG/UDM itself
+        /// 
+        /// Examples: WAN_IN (incoming WAN traffic), LAN_OUT (outgoing LAN traffic), GUEST_LOCAL (traffic to Controller from guest network)
         /// </summary>
         [Input("ruleset")]
         public Input<string>? Ruleset { get; set; }
@@ -630,8 +712,7 @@ namespace Pulumi.Unifi
         public Input<string>? SrcAddress { get; set; }
 
         /// <summary>
-        /// The source IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall
-        /// rules.
+        /// The source IPv6 address or network in CIDR notation (e.g., '2001:db8::1' or '2001:db8::/64'). Used for IPv6 firewall rules.
         /// </summary>
         [Input("srcAddressIpv6")]
         public Input<string>? SrcAddressIpv6 { get; set; }
@@ -640,10 +721,15 @@ namespace Pulumi.Unifi
         private InputList<string>? _srcFirewallGroupIds;
 
         /// <summary>
-        /// A list of firewall group IDs to use as sources. Groups can contain: * IP Address Groups - For matching specific IP
-        /// addresses * Network Groups - For matching entire subnets * Port Groups - For matching specific port numbers Example
-        /// uses: * Group of trusted admin IPs for remote access * Group of IoT device networks for isolation * Group of common
-        /// service ports for allowing specific applications
+        /// A list of firewall group IDs to use as sources. Groups can contain:
+        ///   * IP Address Groups - For matching specific IP addresses
+        ///   * Network Groups - For matching entire subnets
+        ///   * Port Groups - For matching specific port numbers
+        /// 
+        /// Example uses:
+        ///   * Group of trusted admin IPs for remote access
+        ///   * Group of IoT device networks for isolation
+        ///   * Group of common service ports for allowing specific applications
         /// </summary>
         public InputList<string> SrcFirewallGroupIds
         {
@@ -652,37 +738,41 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The source MAC address this rule applies to. Use this to create rules that match specific devices regardless of their IP
-        /// address. Format: 'XX:XX:XX:XX:XX:XX'. MAC addresses are case-insensitive.
+        /// The source MAC address this rule applies to. Use this to create rules that match specific devices regardless of their IP address. Format: 'XX:XX:XX:XX:XX:XX'. MAC addresses are case-insensitive.
         /// </summary>
         [Input("srcMac")]
         public Input<string>? SrcMac { get; set; }
 
         /// <summary>
-        /// The ID of the source network this rule applies to. This can be found in the URL when viewing the network in the UniFi
-        /// controller, or by using the network's name in the form `[site]/[network_name]`.
+        /// The ID of the source network this rule applies to. This can be found in the URL when viewing the network in the UniFi controller, or by using the network's name in the form `[site]/[network_name]`.
         /// </summary>
         [Input("srcNetworkId")]
         public Input<string>? SrcNetworkId { get; set; }
 
         /// <summary>
-        /// The type of source network address. Valid values are: * `ADDRv4` - Single IPv4 address * `NETv4` - IPv4 network in CIDR
-        /// notation Defaults to `NETv4`.
+        /// The type of source network address. Valid values are:
+        ///   * `ADDRv4` - Single IPv4 address
+        ///   * `NETv4` - IPv4 network in CIDR notation Defaults to `NETv4`.
         /// </summary>
         [Input("srcNetworkType")]
         public Input<string>? SrcNetworkType { get; set; }
 
         /// <summary>
-        /// The source port(s) for this rule. Can be: * A single port number (e.g., '80') * A port range (e.g., '8000:8080') * A
-        /// list of ports/ranges separated by commas
+        /// The source port(s) for this rule. Can be:
+        ///   * A single port number (e.g., '80')
+        ///   * A port range (e.g., '8000:8080')
+        ///   * A list of ports/ranges separated by commas
         /// </summary>
         [Input("srcPort")]
         public Input<string>? SrcPort { get; set; }
 
         /// <summary>
-        /// Match established connections. When enabled: * Rule only applies to packets that are part of an existing connection *
-        /// Useful for allowing return traffic without creating separate rules * Common in WAN_IN rules to allow responses to
-        /// outbound connections Example: Allow established connections from WAN while blocking new incoming connections
+        /// Match established connections. When enabled:
+        ///   * Rule only applies to packets that are part of an existing connection
+        ///   * Useful for allowing return traffic without creating separate rules
+        ///   * Common in WAN_IN rules to allow responses to outbound connections
+        /// 
+        /// Example: Allow established connections from WAN while blocking new incoming connections
         /// </summary>
         [Input("stateEstablished")]
         public Input<bool>? StateEstablished { get; set; }

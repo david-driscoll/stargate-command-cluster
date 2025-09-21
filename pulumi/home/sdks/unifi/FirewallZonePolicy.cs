@@ -19,22 +19,19 @@ namespace Pulumi.Unifi
         public Output<string> Action { get; private set; } = null!;
 
         /// <summary>
-        /// Creates a built-in policy for the opposite Zone Pair to automatically allow the return traffic. If disabled, return
-        /// traffic must be manually allowed
+        /// Creates a built-in policy for the opposite Zone Pair to automatically allow the return traffic. If disabled, return traffic must be manually allowed
         /// </summary>
         [Output("autoAllowReturnTraffic")]
         public Output<bool> AutoAllowReturnTraffic { get; private set; } = null!;
 
         /// <summary>
-        /// Optionally match on a firewall connection state such as traffic associated with an already existing connection. Valid
-        /// values are `ALL`, `RESPOND_ONLY`, or `CUSTOM`.
+        /// Optionally match on a firewall connection state such as traffic associated with an already existing connection. Valid values are `ALL`, `RESPOND_ONLY`, or `CUSTOM`.
         /// </summary>
         [Output("connectionStateType")]
         public Output<string> ConnectionStateType { get; private set; } = null!;
 
         /// <summary>
-        /// Connection states to match when `connection_state_type` is `CUSTOM`. Valid values include `ESTABLISHED`, `NEW`,
-        /// `RELATED`, and `INVALID`.
+        /// Connection states to match when `connection_state_type` is `CUSTOM`. Valid values include `ESTABLISHED`, `NEW`, `RELATED`, and `INVALID`.
         /// </summary>
         [Output("connectionStates")]
         public Output<ImmutableArray<string>> ConnectionStates { get; private set; } = null!;
@@ -76,8 +73,7 @@ namespace Pulumi.Unifi
         public Output<bool> Logging { get; private set; } = null!;
 
         /// <summary>
-        /// Optionally match on traffic encrypted by IPsec. This is typically used for Ipsec Policy-Based VPNs. Valid values are
-        /// `MATCH_IP_SEC` or `MATCH_NON_IP_SEC`.
+        /// Optionally match on traffic encrypted by IPsec. This is typically used for Ipsec Policy-Based VPNs. Valid values are `MATCH_IP_SEC` or `MATCH_NON_IP_SEC`.
         /// </summary>
         [Output("matchIpSecType")]
         public Output<string?> MatchIpSecType { get; private set; } = null!;
@@ -171,15 +167,13 @@ namespace Pulumi.Unifi
         public Input<string> Action { get; set; } = null!;
 
         /// <summary>
-        /// Creates a built-in policy for the opposite Zone Pair to automatically allow the return traffic. If disabled, return
-        /// traffic must be manually allowed
+        /// Creates a built-in policy for the opposite Zone Pair to automatically allow the return traffic. If disabled, return traffic must be manually allowed
         /// </summary>
         [Input("autoAllowReturnTraffic")]
         public Input<bool>? AutoAllowReturnTraffic { get; set; }
 
         /// <summary>
-        /// Optionally match on a firewall connection state such as traffic associated with an already existing connection. Valid
-        /// values are `ALL`, `RESPOND_ONLY`, or `CUSTOM`.
+        /// Optionally match on a firewall connection state such as traffic associated with an already existing connection. Valid values are `ALL`, `RESPOND_ONLY`, or `CUSTOM`.
         /// </summary>
         [Input("connectionStateType")]
         public Input<string>? ConnectionStateType { get; set; }
@@ -188,8 +182,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _connectionStates;
 
         /// <summary>
-        /// Connection states to match when `connection_state_type` is `CUSTOM`. Valid values include `ESTABLISHED`, `NEW`,
-        /// `RELATED`, and `INVALID`.
+        /// Connection states to match when `connection_state_type` is `CUSTOM`. Valid values include `ESTABLISHED`, `NEW`, `RELATED`, and `INVALID`.
         /// </summary>
         public InputList<string> ConnectionStates
         {
@@ -234,8 +227,7 @@ namespace Pulumi.Unifi
         public Input<bool>? Logging { get; set; }
 
         /// <summary>
-        /// Optionally match on traffic encrypted by IPsec. This is typically used for Ipsec Policy-Based VPNs. Valid values are
-        /// `MATCH_IP_SEC` or `MATCH_NON_IP_SEC`.
+        /// Optionally match on traffic encrypted by IPsec. This is typically used for Ipsec Policy-Based VPNs. Valid values are `MATCH_IP_SEC` or `MATCH_NON_IP_SEC`.
         /// </summary>
         [Input("matchIpSecType")]
         public Input<string>? MatchIpSecType { get; set; }
@@ -291,15 +283,13 @@ namespace Pulumi.Unifi
         public Input<string>? Action { get; set; }
 
         /// <summary>
-        /// Creates a built-in policy for the opposite Zone Pair to automatically allow the return traffic. If disabled, return
-        /// traffic must be manually allowed
+        /// Creates a built-in policy for the opposite Zone Pair to automatically allow the return traffic. If disabled, return traffic must be manually allowed
         /// </summary>
         [Input("autoAllowReturnTraffic")]
         public Input<bool>? AutoAllowReturnTraffic { get; set; }
 
         /// <summary>
-        /// Optionally match on a firewall connection state such as traffic associated with an already existing connection. Valid
-        /// values are `ALL`, `RESPOND_ONLY`, or `CUSTOM`.
+        /// Optionally match on a firewall connection state such as traffic associated with an already existing connection. Valid values are `ALL`, `RESPOND_ONLY`, or `CUSTOM`.
         /// </summary>
         [Input("connectionStateType")]
         public Input<string>? ConnectionStateType { get; set; }
@@ -308,8 +298,7 @@ namespace Pulumi.Unifi
         private InputList<string>? _connectionStates;
 
         /// <summary>
-        /// Connection states to match when `connection_state_type` is `CUSTOM`. Valid values include `ESTABLISHED`, `NEW`,
-        /// `RELATED`, and `INVALID`.
+        /// Connection states to match when `connection_state_type` is `CUSTOM`. Valid values include `ESTABLISHED`, `NEW`, `RELATED`, and `INVALID`.
         /// </summary>
         public InputList<string> ConnectionStates
         {
@@ -354,8 +343,7 @@ namespace Pulumi.Unifi
         public Input<bool>? Logging { get; set; }
 
         /// <summary>
-        /// Optionally match on traffic encrypted by IPsec. This is typically used for Ipsec Policy-Based VPNs. Valid values are
-        /// `MATCH_IP_SEC` or `MATCH_NON_IP_SEC`.
+        /// Optionally match on traffic encrypted by IPsec. This is typically used for Ipsec Policy-Based VPNs. Valid values are `MATCH_IP_SEC` or `MATCH_NON_IP_SEC`.
         /// </summary>
         [Input("matchIpSecType")]
         public Input<string>? MatchIpSecType { get; set; }

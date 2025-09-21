@@ -13,15 +13,15 @@ namespace Pulumi.Unifi
     public partial class DynamicDns : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// The fully qualified domain name to update with your current public IP address (e.g., 'myhouse.dyndns.org' or
-        /// 'myoffice.no-ip.com').
+        /// The fully qualified domain name to update with your current public IP address (e.g., 'myhouse.dyndns.org' or 'myoffice.no-ip.com').
         /// </summary>
         [Output("hostName")]
         public Output<string> HostName { get; private set; } = null!;
 
         /// <summary>
-        /// The WAN interface to use for the dynamic DNS updates. Valid values are: * `wan` - Primary WAN interface (default) *
-        /// `wan2` - Secondary WAN interface Defaults to `wan`.
+        /// The WAN interface to use for the dynamic DNS updates. Valid values are:
+        ///   * `wan` - Primary WAN interface (default)
+        ///   * `wan2` - Secondary WAN interface Defaults to `wan`.
         /// </summary>
         [Output("interface")]
         public Output<string?> Interface { get; private set; } = null!;
@@ -39,22 +39,23 @@ namespace Pulumi.Unifi
         public Output<string?> Password { get; private set; } = null!;
 
         /// <summary>
-        /// The update server hostname for your DDNS provider. Usually not required as the UniFi controller knows the correct
-        /// servers for common providers.
+        /// The update server hostname for your DDNS provider. Usually not required as the UniFi controller knows the correct servers for common providers.
         /// </summary>
         [Output("server")]
         public Output<string?> Server { get; private set; } = null!;
 
         /// <summary>
-        /// The Dynamic DNS service provider. Common values include: * `dyndns` - DynDNS service * `noip` - No-IP service *
-        /// `duckdns` - Duck DNS service Check your UniFi controller for the complete list of supported providers.
+        /// The Dynamic DNS service provider. Common values include:
+        ///   * `dyndns` - DynDNS service
+        ///   * `noip` - No-IP service
+        ///   * `duckdns` - Duck DNS service
+        /// Check your UniFi controller for the complete list of supported providers.
         /// </summary>
         [Output("service")]
         public Output<string> Service { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the UniFi site where the dynamic DNS configuration should be created. If not specified, the default site
-        /// will be used.
+        /// The name of the UniFi site where the dynamic DNS configuration should be created. If not specified, the default site will be used.
         /// </summary>
         [Output("site")]
         public Output<string> Site { get; private set; } = null!;
@@ -110,15 +111,15 @@ namespace Pulumi.Unifi
     public sealed class DynamicDnsArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The fully qualified domain name to update with your current public IP address (e.g., 'myhouse.dyndns.org' or
-        /// 'myoffice.no-ip.com').
+        /// The fully qualified domain name to update with your current public IP address (e.g., 'myhouse.dyndns.org' or 'myoffice.no-ip.com').
         /// </summary>
         [Input("hostName", required: true)]
         public Input<string> HostName { get; set; } = null!;
 
         /// <summary>
-        /// The WAN interface to use for the dynamic DNS updates. Valid values are: * `wan` - Primary WAN interface (default) *
-        /// `wan2` - Secondary WAN interface Defaults to `wan`.
+        /// The WAN interface to use for the dynamic DNS updates. Valid values are:
+        ///   * `wan` - Primary WAN interface (default)
+        ///   * `wan2` - Secondary WAN interface Defaults to `wan`.
         /// </summary>
         [Input("interface")]
         public Input<string>? Interface { get; set; }
@@ -146,22 +147,23 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The update server hostname for your DDNS provider. Usually not required as the UniFi controller knows the correct
-        /// servers for common providers.
+        /// The update server hostname for your DDNS provider. Usually not required as the UniFi controller knows the correct servers for common providers.
         /// </summary>
         [Input("server")]
         public Input<string>? Server { get; set; }
 
         /// <summary>
-        /// The Dynamic DNS service provider. Common values include: * `dyndns` - DynDNS service * `noip` - No-IP service *
-        /// `duckdns` - Duck DNS service Check your UniFi controller for the complete list of supported providers.
+        /// The Dynamic DNS service provider. Common values include:
+        ///   * `dyndns` - DynDNS service
+        ///   * `noip` - No-IP service
+        ///   * `duckdns` - Duck DNS service
+        /// Check your UniFi controller for the complete list of supported providers.
         /// </summary>
         [Input("service", required: true)]
         public Input<string> Service { get; set; } = null!;
 
         /// <summary>
-        /// The name of the UniFi site where the dynamic DNS configuration should be created. If not specified, the default site
-        /// will be used.
+        /// The name of the UniFi site where the dynamic DNS configuration should be created. If not specified, the default site will be used.
         /// </summary>
         [Input("site")]
         public Input<string>? Site { get; set; }
@@ -175,15 +177,15 @@ namespace Pulumi.Unifi
     public sealed class DynamicDnsState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The fully qualified domain name to update with your current public IP address (e.g., 'myhouse.dyndns.org' or
-        /// 'myoffice.no-ip.com').
+        /// The fully qualified domain name to update with your current public IP address (e.g., 'myhouse.dyndns.org' or 'myoffice.no-ip.com').
         /// </summary>
         [Input("hostName")]
         public Input<string>? HostName { get; set; }
 
         /// <summary>
-        /// The WAN interface to use for the dynamic DNS updates. Valid values are: * `wan` - Primary WAN interface (default) *
-        /// `wan2` - Secondary WAN interface Defaults to `wan`.
+        /// The WAN interface to use for the dynamic DNS updates. Valid values are:
+        ///   * `wan` - Primary WAN interface (default)
+        ///   * `wan2` - Secondary WAN interface Defaults to `wan`.
         /// </summary>
         [Input("interface")]
         public Input<string>? Interface { get; set; }
@@ -211,22 +213,23 @@ namespace Pulumi.Unifi
         }
 
         /// <summary>
-        /// The update server hostname for your DDNS provider. Usually not required as the UniFi controller knows the correct
-        /// servers for common providers.
+        /// The update server hostname for your DDNS provider. Usually not required as the UniFi controller knows the correct servers for common providers.
         /// </summary>
         [Input("server")]
         public Input<string>? Server { get; set; }
 
         /// <summary>
-        /// The Dynamic DNS service provider. Common values include: * `dyndns` - DynDNS service * `noip` - No-IP service *
-        /// `duckdns` - Duck DNS service Check your UniFi controller for the complete list of supported providers.
+        /// The Dynamic DNS service provider. Common values include:
+        ///   * `dyndns` - DynDNS service
+        ///   * `noip` - No-IP service
+        ///   * `duckdns` - Duck DNS service
+        /// Check your UniFi controller for the complete list of supported providers.
         /// </summary>
         [Input("service")]
         public Input<string>? Service { get; set; }
 
         /// <summary>
-        /// The name of the UniFi site where the dynamic DNS configuration should be created. If not specified, the default site
-        /// will be used.
+        /// The name of the UniFi site where the dynamic DNS configuration should be created. If not specified, the default site will be used.
         /// </summary>
         [Input("site")]
         public Input<string>? Site { get; set; }

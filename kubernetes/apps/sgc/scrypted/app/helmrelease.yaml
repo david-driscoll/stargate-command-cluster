@@ -34,21 +34,45 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          restartPolicy: Always
         containers:
           *app :
             image:
               repository: ghcr.io/koush/scrypted
               tag: v0.142.7-noble-full@sha256:e07520cb9cd4be246a5073435ebea84970719089a285efc50f9b613590cde055
             probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
               startup:
-                enabled: false
+                enabled: true
+                custom: true
                 spec:
+                  httpGet:
+                    path: /web/
+                    port: 11080
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 10
                   failureThreshold: 30
-                  periodSeconds: 5
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /web/
+                    port: 11080
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /web/
+                    port: 11080
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 2
             resources:
               requests:
                 cpu: 50m

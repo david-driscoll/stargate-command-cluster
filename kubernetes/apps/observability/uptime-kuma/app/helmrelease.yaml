@@ -35,6 +35,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          restartPolicy: Always
           securityContext:
             runAsNonRoot: false
             fsGroupChangePolicy: "OnRootMismatch"
@@ -47,6 +48,38 @@ spec:
               readOnlyRootFilesystem: false
             env:
               TZ: "${TIMEZONE}"
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3001
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 20
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3001
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3001
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
             resources:
               requests:
                 cpu: 100m

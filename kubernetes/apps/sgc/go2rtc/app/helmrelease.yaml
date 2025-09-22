@@ -36,6 +36,8 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         strategy: Recreate
+        pod:
+          restartPolicy: Always
         containers:
           app:
             image:
@@ -50,18 +52,37 @@ spec:
               UMASK: 002
               TZ: "${TIMEZONE}"
             probes:
-              liveness: &probes
+              startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: &http 80
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 20
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 10
+                  failureThreshold: 15
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *http
+                  periodSeconds: 30
+                  timeoutSeconds: 10
                   failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *http
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
               # startup:
               #   enabled: true
               #   spec:

@@ -36,6 +36,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          restartPolicy: Always
           securityContext:
             runAsUser: 568
             runAsGroup: 568
@@ -57,18 +58,39 @@ spec:
               - --port
               - "8181"
             probes:
-              liveness: &probes
+              startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /status
                     port: &port 8181
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 15
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: *port
                   initialDelaySeconds: 10
                   periodSeconds: 60
                   timeoutSeconds: 10
                   failureThreshold: 5
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

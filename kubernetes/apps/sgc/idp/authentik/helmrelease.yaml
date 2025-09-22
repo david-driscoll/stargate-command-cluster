@@ -48,6 +48,13 @@ spec:
       # fullnameOverride: authentik
       revisionHistoryLimit: 3
 
+      # Deployment strategy for zero-downtime updates
+      deploymentStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+
       deploymentAnnotations:
         reloader.stakater.com/auto: "true"
 
@@ -120,6 +127,37 @@ spec:
           cpu: 500m
           memory: 1024Mi
 
+      # Health probes for better restart recovery
+      livenessProbe:
+        failureThreshold: 5
+        initialDelaySeconds: 30
+        periodSeconds: 30
+        timeoutSeconds: 10
+        httpGet:
+          path: "/-/health/live/"
+          port: http
+
+      readinessProbe:
+        failureThreshold: 5
+        initialDelaySeconds: 15
+        periodSeconds: 10
+        timeoutSeconds: 5
+        httpGet:
+          path: "/-/health/ready/"
+          port: http
+
+      startupProbe:
+        failureThreshold: 60
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 10
+        httpGet:
+          path: "/-/health/live/"
+          port: http
+
+      # Graceful shutdown period
+      terminationGracePeriodSeconds: 60
+
       metrics:
         enabled: true
         serviceMonitor:
@@ -144,6 +182,40 @@ spec:
       tolerations: *tolerations
       affinity: *affinity
       resources: *resources
+
+      # Health probes for better restart recovery
+      livenessProbe:
+        failureThreshold: 5
+        initialDelaySeconds: 30
+        periodSeconds: 30
+        timeoutSeconds: 10
+        exec:
+          command:
+            - ak
+            - healthcheck
+
+      readinessProbe:
+        failureThreshold: 5
+        initialDelaySeconds: 15
+        periodSeconds: 10
+        timeoutSeconds: 5
+        exec:
+          command:
+            - ak
+            - healthcheck
+
+      startupProbe:
+        failureThreshold: 60
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 10
+        exec:
+          command:
+            - ak
+            - healthcheck
+
+      # Graceful shutdown period
+      terminationGracePeriodSeconds: 60
 
     serviceAccount:
       *app : {}

@@ -9,7 +9,6 @@ namespace models;
 using CloudflareProvider = Pulumi.Cloudflare.Provider;
 using OnePasswordProvider = Rocket.Surgery.OnePasswordNativeUnofficial.Provider;
 using MinioProvider = Pulumi.Minio.Provider;
-using TruenasProvider = Pulumi.Truenas.Provider;
 using TailscaleProvider = Pulumi.Tailscale.Provider;
 using UnifiProvider = Pulumi.Unifi.Provider;
 
@@ -98,12 +97,6 @@ public class GlobalResources : ComponentResource
       Vault = "Eris",
     }, OnePasswordInvokeOptions);
 
-    TruenasProvider = new("truenas", new()
-    {
-      BaseUrl = TruenasCredential.Apply(z => Output.Format($"https://{TruenasCredential.Apply(z => z.Fields["domain"].Value)}/api/v2.0") ),
-      ApiKey = TruenasCredential.Apply(z => z.Credential!),
-    }, cro);
-
     TruenasMinioCredential = GetLogin.Invoke(new()
     {
       Title = "minio root user",
@@ -120,8 +113,6 @@ public class GlobalResources : ComponentResource
       MinioServer = TruenasCredential.Apply(z => Output.Format($"http://{TruenasCredential.Apply(z => z.Fields["domain"].Value)}:9000") /*z.Fields["endpoint"].Value*/),
     });
   }
-
-  public TruenasProvider TruenasProvider { get; set; }
 
   public MinioProvider TruenasMinioProvider { get; set; }
 

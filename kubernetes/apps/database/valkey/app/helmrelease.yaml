@@ -9,13 +9,6 @@ spec:
   certIssuer: selfsigned
   certIssuerType: ClusterIssuer
   anonymousAuth: true
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - topologyKey: kubernetes.io/hostname
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
   tolerations: []
   nodeSelector: {}
   resources:

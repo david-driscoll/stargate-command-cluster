@@ -5,7 +5,7 @@ kind: Valkey
 metadata:
   name: &app ${APP}
 spec:
-  image: valkey/valkey:8.0.1
+  image: valkey/valkey:8.1.4@sha256:81db6d39e1bba3b3ff32bd3a1b19a6d69690f94a3954ec131277b9a26b95b3aa
   nodes: 2
   volumePermissions: true
   anonymousAuth: false

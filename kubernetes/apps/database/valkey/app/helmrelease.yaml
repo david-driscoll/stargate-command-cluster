@@ -1,14 +1,14 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/hyperspike.io/valkey_v1.json
 apiVersion: hyperspike.io/v1
 kind: Valkey
 metadata:
   name: &app ${APP}
 spec:
-  image: valkey/valkey:8.0.1
-  nodes: 2
-  volumePermissions: true
-  anonymousAuth: false
+  nodes: 3
+  tls: true
+  certIssuer: selfsigned
+  certIssuerType: ClusterIssuer
+  anonymousAuth: true
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -25,10 +25,15 @@ spec:
     limits:
       cpu: 200m
       memory: 1Gi
+  volumePermissions: true
+  exporterImage: ghcr.io/hyperspike/valkey-sidecar:latest
+  image: ghcr.io/hyperspike/valkey:latest
+  prometheus: true
   storage:
     spec:
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 8Gi
+          storage: 4Gi
+      storageClassName: longhorn-local

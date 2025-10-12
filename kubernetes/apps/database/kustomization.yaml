@@ -12,3 +12,4 @@ resources:
   - ./postgres/ks.yaml
   # - ./maria/ks.yaml
   - ./dragonfly/ks.yaml
+  - ./valkey/ks.yaml

@@ -66,12 +66,12 @@ return await Deployment.RunAsync(async () =>
     Proxmox = alphaSiteProxmox,
   });
 
-  var spike = new Truenas("spike", new()
-  {
-    Globals = globals,
-    Host = twilightSparkle,
-  });
-  spike.AddClusterBackup("test-backup", false);
+  // var spike = new Truenas("spike", new()
+  // {
+  //   Globals = globals,
+  //   Host = twilightSparkle,
+  // });
+  // spike.AddClusterBackup("test-backup", false);
 
   var celestia = new ProxmoxHost("celestia", new()
   {

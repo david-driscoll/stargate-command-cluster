@@ -912,6 +912,8 @@ spec:
                           type: string
                         refreshTokenValidity:
                           type: string
+                        backchannelLogoutUri:
+                          type: string
                         skipPathRegex:
                           type: string
                     radius:
@@ -966,7 +968,7 @@ spec:
                           items:
                             type: object
                             properties:
-                              matching_node:
+                              matching_mode:
                                 type: string
                               url:
                                 type: string
@@ -1008,6 +1010,8 @@ spec:
                         providerOAuth2Id:
                           type: string
                         refreshTokenValidity:
+                          type: string
+                        backchannelLogoutUri:
                           type: string
                         signingKey:
                           type: string

@@ -92,6 +92,7 @@
         "propertyMappings":{ "type": "string" },
         "providerProxyId": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
+        "backchannelLogoutUri": { "type": "string" },
         "skipPathRegex": { "type": "string" }
       }
     },
@@ -146,6 +147,7 @@
         "propertyMappings":{ "type": "string" },
         "providerOauth2Id": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
+        "backchannelLogoutUri": { "type": "string" },
         "signingKey": { "type": "string" },
         "subMode": { "type": "string" }
       },

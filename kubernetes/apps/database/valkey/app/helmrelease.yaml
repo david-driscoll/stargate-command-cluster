@@ -10,7 +10,7 @@ spec:
   # the config can take a while to restore
   maxHistory: 3
   interval: 1h
-  timeout: 1h
+  timeout: 10m
   install:
     createNamespace: true
     replace: true

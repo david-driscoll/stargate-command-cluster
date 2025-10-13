@@ -34,8 +34,8 @@ spec:
         containers:
           *app :
             image:
-              repository: valkey/valkey
-              tag: ghcr.io/valkey-io/valkey:9.0-alpine
+              repository: ghcr.io/valkey-io/valkey
+              tag: 9.0-alpine
             env:
               VALKEY_PORT: &port 6379
     persistence:

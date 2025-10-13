@@ -13,3 +13,4 @@ resources:
   # - ./maria/ks.yaml
   - ./dragonfly/ks.yaml
   - ./valkey/ks.yaml
+  - ./valkey-standalone/ks.yaml

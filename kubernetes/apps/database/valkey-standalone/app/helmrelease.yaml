@@ -35,7 +35,7 @@ spec:
           *app :
             image:
               repository: valkey/valkey
-              tag: 8.1.4-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b
+              tag: ghcr.io/valkey-io/valkey:9.0-alpine
             env:
               VALKEY_PORT: &port 6379
     persistence:

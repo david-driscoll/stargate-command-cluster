@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Valkey
+  category: ${CLUSTER_TITLE}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/valkey.svg
+  uptime:
+    redis:
+      database_connection_string: redis://valkey.database.svc.cluster.local
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster"
+  access_policy:
+    groups:
+      - admins

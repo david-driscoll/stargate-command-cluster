@@ -70,7 +70,9 @@ spec:
         runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-
+      env:
+        - name: USER
+          value: authentik
       envFrom: &envFrom
         - secretRef:
             name: authentik
@@ -182,6 +184,7 @@ spec:
     worker:
       enabled: true
       replicas: 2
+      env: *env
       envFrom: *envFrom
       tolerations: *tolerations
       affinity: *affinity

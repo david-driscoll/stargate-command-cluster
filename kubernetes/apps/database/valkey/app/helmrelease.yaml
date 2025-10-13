@@ -1,32 +1,50 @@
----
-apiVersion: hyperspike.io/v1
-kind: Valkey
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
 metadata:
   name: &app ${APP}
 spec:
-  nodes: 3
-  tls: false
-  # certIssuer: selfsigned
-  # certIssuerType: ClusterIssuer
-  anonymousAuth: true
-  tolerations: []
-  nodeSelector: {}
-  resources:
-    requests:
-      cpu: 50m
-      memory: 256Mi
-    limits:
-      cpu: 200m
-      memory: 1Gi
-  volumePermissions: true
-  exporterImage: ghcr.io/hyperspike/valkey-sidecar:v0.0.61
-  image: ghcr.io/hyperspike/valkey:8.1.4
-  prometheus: true
-  storage:
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 4Gi
-      storageClassName: longhorn-local
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  # the config can take a while to restore
+  maxHistory: 3
+  interval: 1h
+  timeout: 1h
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false # true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      *app :
+        containers:
+          *app :
+            image:
+              repository: valkey/valkey
+              tag: 8.1.4-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b
+            env:
+              VALKEY_PORT: &port 6379
+    persistence:
+      data:
+        enabled: true
+        size: 4Gi
+        storageClass: longhorn-local
+    service:
+      *app :
+        controller: *app
+        ports:
+          *app :
+            port: *port

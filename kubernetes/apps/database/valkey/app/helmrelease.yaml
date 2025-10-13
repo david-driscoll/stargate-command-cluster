@@ -5,9 +5,9 @@ metadata:
   name: &app ${APP}
 spec:
   nodes: 2
-  tls: true
-  certIssuer: selfsigned
-  certIssuerType: ClusterIssuer
+  tls: false
+  # certIssuer: selfsigned
+  # certIssuerType: ClusterIssuer
   anonymousAuth: true
   tolerations: []
   nodeSelector: {}

@@ -82,10 +82,14 @@ spec:
       volumeMounts:
         - mountPath: /media
           name: media
+        - mountPath: /.ssh/
+          name: ssh-config
       volumes:
         - name: media
           persistentVolumeClaim:
             claimName: *app
+        - name: ssh-config
+          empyDir: {}
 
     authentik:
       enabled: true

@@ -70,9 +70,6 @@ spec:
         runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
-      env:
-        - name: USER
-          value: authentik
       envFrom: &envFrom
         - secretRef:
             name: authentik
@@ -84,14 +81,10 @@ spec:
       volumeMounts:
         - mountPath: /media
           name: media
-        - mountPath: /.ssh/
-          name: ssh-config
       volumes:
         - name: media
           persistentVolumeClaim:
             claimName: *app
-        - name: ssh-config
-          empyDir: {}
 
     authentik:
       enabled: true
@@ -184,7 +177,6 @@ spec:
     worker:
       enabled: true
       replicas: 2
-      env: *env
       envFrom: *envFrom
       tolerations: *tolerations
       affinity: *affinity

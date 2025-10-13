@@ -19,8 +19,8 @@ spec:
       cpu: 200m
       memory: 1Gi
   volumePermissions: true
-  exporterImage: ghcr.io/hyperspike/valkey-sidecar:latest
-  image: ghcr.io/hyperspike/valkey:latest
+  exporterImage: ghcr.io/hyperspike/valkey-sidecar:v0.0.61
+  image: ghcr.io/hyperspike/valkey:8.1.4
   prometheus: true
   storage:
     spec:

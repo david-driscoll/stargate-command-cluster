@@ -4,7 +4,7 @@ kind: Valkey
 metadata:
   name: &app ${APP}
 spec:
-  nodes: 3
+  nodes: 2
   tls: true
   certIssuer: selfsigned
   certIssuerType: ClusterIssuer

@@ -38,11 +38,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn: []
-    # - name: pulumi-cluster-sync
-    #   namespace: *namespace
-    # - name: authentik
-    #   namespace: *namespace
+  dependsOn:
+    - name: pulumi-secrets
+      namespace: *namespace
   path: ./pulumi/home
   prune: true
   wait: true

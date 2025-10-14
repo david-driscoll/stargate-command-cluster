@@ -31,19 +31,19 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pulumi-authentik
+  name: &app pulumi-home
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: pulumi-cluster-sync
-      namespace: *namespace
-    - name: authentik
-      namespace: *namespace
-  path: ./pulumi/authentik/stack
+  dependsOn: []
+    # - name: pulumi-cluster-sync
+    #   namespace: *namespace
+    # - name: authentik
+    #   namespace: *namespace
+  path: ./pulumi/home
   prune: true
   wait: true
   force: false # true
@@ -63,7 +63,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pulumi-cluster-sync
+  name: &app pulumi-applications
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -71,9 +71,11 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: pulumi-secrets
+    - name: pulumi-home
       namespace: *namespace
-  path: ./pulumi/cluster-sync/stack
+    - name: authentik
+      namespace: *namespace
+  path: ./pulumi/applications
   prune: true
   wait: true
   force: false # true
@@ -88,3 +90,33 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app pulumi-cluster-sync
+#   namespace: &namespace sgc
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: pulumi-secrets
+#       namespace: *namespace
+#   path: ./pulumi/cluster-sync/stack
+#   prune: true
+#   wait: true
+#   force: false # true
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 10m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       NAMESPACE: *namespace

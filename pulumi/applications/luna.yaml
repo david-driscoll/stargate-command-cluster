@@ -1,0 +1,123 @@
+---
+# yaml-language-server: $schema=https://schemas.budimanjojo.com/pulumi.com/stack_v1.json
+apiVersion: pulumi.com/v1
+kind: Stack
+metadata:
+  name: &stack luna
+spec:
+  fluxSource:
+    sourceRef:
+      apiVersion: source.toolkit.fluxcd.io/v1
+      kind: GitRepository
+      name: flux-system
+    dir: stacks/applications
+  stack: *stack
+  resyncFrequencySeconds: 600
+  backend: postgres://postgres-rw.database.svc.cluster.local
+  continueResyncOnCommitMatch: false
+  destroyOnFinalize: false
+  workspaceReclaimPolicy: Delete
+  envRefs:
+    AWS_ACCESS_KEY_ID:
+      type: Secret
+      secret:
+        name: backblaze-home-operations
+        key: username
+    AWS_SECRET_ACCESS_KEY:
+      type: Secret
+      secret:
+        name: backblaze-home-operations
+        key: credential
+    AWS_USE_PATH_STYLE_ENDPOINT:
+      type: Literal
+      literal:
+        value: "true"
+    GITHUB_TOKEN:
+      type: Secret
+      secret:
+        name: pulumi-operator-github
+        key: credential
+    CONNECT_HOST:
+      type: Literal
+      literal:
+        value: "https://op-connect.${CLUSTER_DOMAIN}"
+    CONNECT_VAULT:
+      type: Literal
+      literal:
+        value: "Eris"
+    CONNECT_TOKEN:
+      type: Secret
+      secret:
+        name: pulumi-operator-connect-token
+        key: credential
+    PULUMI_CONFIG_PASSPHRASE:
+      type: Secret
+      secret:
+        name: pulumi-operator-passphrase
+        key: password
+    PGUSER:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: username
+    PGPASSWORD:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: password
+    PGHOST:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: hostname
+    PGPORT:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: port
+    PGDATABASE:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: database
+    # HOME:
+    #   type: Literal
+    #   literal:
+    #     value: /tmp/.pulumi
+    # PULUMI_HOME:
+    #   type: Literal
+    #   literal:
+    #     value: /tmp/.pulumi
+    # USER:
+    #   type: Literal
+    #   literal:
+    #     value: pulumi
+  secretsRef:
+    github:token:
+      type: Secret
+      secret:
+        name: pulumi-operator-github
+        key: credential
+    authentik:token:
+      type: Secret
+      secret:
+        name: authentik-secret
+        key: credential
+    authentik:url:
+      type: Secret
+      secret:
+        name: authentik-secret
+        key: url
+  workspaceTemplate:
+    spec:
+      # renovate: datasource=docker depName=pulumi/pulumi-nodejs
+      image: pulumi/pulumi-nodejs:3.202.0
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 1
+          memory: 1024Mi
+      # pulumiLogLevel: 11
+

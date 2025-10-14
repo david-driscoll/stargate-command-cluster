@@ -1,2 +1,0 @@
-[env]
-PULUMI_STACK = "pulumi-authentik"

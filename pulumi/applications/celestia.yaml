@@ -9,7 +9,7 @@ spec:
     sourceRef:
       apiVersion: source.toolkit.fluxcd.io/v1
       kind: GitRepository
-      name: flux-system
+      name: home-operations
     dir: stacks/applications
   stack: *stack
   resyncFrequencySeconds: 600

@@ -12,7 +12,7 @@ spec:
       name: home-operations
     dir: stacks/home
   stack: homelab
-  resyncFrequencySeconds: 600
+  resyncFrequencySeconds: 90
   backend: s3://home-operations/home?endpoint=s3.us-east-005.backblazeb2.com
   continueResyncOnCommitMatch: false
   destroyOnFinalize: false

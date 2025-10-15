@@ -19,6 +19,8 @@ spec:
   destroyOnFinalize: false
   workspaceReclaimPolicy: Delete
   refresh: true
+  # prerequisites:
+  #   - name: home-operations
   envRefs:
     AWS_ACCESS_KEY_ID:
       type: Secret
@@ -34,10 +36,6 @@ spec:
       type: Literal
       literal:
         value: "true"
-    AWS_REGION:
-      type: Literal
-      literal:
-        value: "us-east-005"
     GITHUB_TOKEN:
       type: Secret
       secret:
@@ -61,6 +59,31 @@ spec:
       secret:
         name: pulumi-operator-passphrase
         key: password
+    PGUSER:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: username
+    PGPASSWORD:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: password
+    PGHOST:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: hostname
+    PGPORT:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: port
+    PGDATABASE:
+      type: Secret
+      secret:
+        name: pulumi-operator-postgres
+        key: database
     # HOME:
     #   type: Literal
     #   literal:
@@ -93,7 +116,6 @@ spec:
     spec:
       # renovate: datasource=docker depName=pulumi/pulumi-nodejs
       image: pulumi/pulumi-nodejs:3.202.0
-      serviceAccountName: ${APP}
       resources:
         requests:
           cpu: 200m
@@ -102,3 +124,4 @@ spec:
           cpu: 1
           memory: 1024Mi
       # pulumiLogLevel: 11
+

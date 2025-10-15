@@ -11,6 +11,7 @@ spec:
       kind: GitRepository
       name: home-operations
     dir: stacks/home
+  serviceAccountName: ${APP}
   stack: homelab
   resyncFrequencySeconds: 90
   backend: s3://home-operations/home?endpoint=s3.us-east-005.backblazeb2.com

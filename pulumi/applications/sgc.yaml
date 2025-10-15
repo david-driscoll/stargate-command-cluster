@@ -11,6 +11,7 @@ spec:
       kind: GitRepository
       name: home-operations
     dir: stacks/applications
+  serviceAccountName: ${APP}
   stack: *stack
   resyncFrequencySeconds: 600
   backend: postgres://postgres-rw.database.svc.cluster.local
@@ -112,6 +113,7 @@ spec:
     spec:
       # renovate: datasource=docker depName=pulumi/pulumi-nodejs
       image: pulumi/pulumi-nodejs:3.202.0
+      serviceAccountName: ${APP}
       resources:
         requests:
           cpu: 200m

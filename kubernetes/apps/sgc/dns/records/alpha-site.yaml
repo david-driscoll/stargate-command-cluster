@@ -6,15 +6,9 @@ metadata:
   name: alpha-site-dns
 spec:
   endpoints:
-    - dnsName: "dockge.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${DOCKGE_IP}"]
-    - dnsName: "alpha-site.${ROOT_DOMAIN}"
-      recordType: A
-      targets: ["${ALPHA_SITE_IP}"]
     - dnsName: "adguard.${ROOT_DOMAIN}"
       recordType: CNAME
-      targets: &targets ["dockge.${ROOT_DOMAIN}"]
+      targets: &targets ["dockge-as.${ROOT_DOMAIN}"]
     - dnsName: "registry.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: *targets

@@ -3,7 +3,7 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: ${CLUSTER_CNAME}-${APP}
+  name: ${APP}
 spec:
   name: Grafana
   category: ${CLUSTER_TITLE}

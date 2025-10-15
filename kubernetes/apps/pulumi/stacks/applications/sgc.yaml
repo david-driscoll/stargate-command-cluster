@@ -23,20 +23,10 @@ spec:
   #   - name: home-operations
   #   - name: authentik
   envRefs:
-    AWS_ACCESS_KEY_ID:
-      type: Secret
-      secret:
-        name: backblaze-home-operations
-        key: username
-    AWS_SECRET_ACCESS_KEY:
-      type: Secret
-      secret:
-        name: backblaze-home-operations
-        key: credential
-    AWS_USE_PATH_STYLE_ENDPOINT:
+    PULUMI_BACKEND_URL:
       type: Literal
       literal:
-        value: "true"
+        value: postgres://postgres-rw.database.svc.cluster.local
     GITHUB_TOKEN:
       type: Secret
       secret:

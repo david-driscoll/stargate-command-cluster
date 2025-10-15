@@ -19,6 +19,9 @@ spec:
   destroyOnFinalize: false
   workspaceReclaimPolicy: Retain
   refresh: true
+  prerequisites:
+    - name: home-operations
+      namespace: pulumi
   envRefs:
     AWS_ACCESS_KEY_ID:
       type: Secret

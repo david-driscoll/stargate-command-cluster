@@ -17,7 +17,8 @@ spec:
   backend: postgres://postgres-rw.database.svc.cluster.local
   continueResyncOnCommitMatch: true
   destroyOnFinalize: false
-  workspaceReclaimPolicy: Delete
+  workspaceReclaimPolicy: Retain
+  refresh: true
   envRefs:
     AWS_ACCESS_KEY_ID:
       type: Secret
@@ -113,7 +114,6 @@ spec:
     spec:
       # renovate: datasource=docker depName=pulumi/pulumi-nodejs
       image: pulumi/pulumi-nodejs:3.202.0
-      serviceAccountName: ${APP}
       resources:
         requests:
           cpu: 200m

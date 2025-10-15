@@ -17,7 +17,7 @@ spec:
   backend: s3://home-operations/home?endpoint=s3.us-east-005.backblazeb2.com
   continueResyncOnCommitMatch: false
   destroyOnFinalize: false
-  workspaceReclaimPolicy: Delete
+  workspaceReclaimPolicy: Retain
   refresh: true
   envRefs:
     AWS_ACCESS_KEY_ID:
@@ -96,7 +96,7 @@ spec:
       serviceAccountName: ${APP}
       resources:
         requests:
-          cpu: 200m
+          cpu: 50m
           memory: 256Mi
         limits:
           cpu: 1

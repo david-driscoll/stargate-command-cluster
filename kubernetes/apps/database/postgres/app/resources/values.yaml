@@ -81,12 +81,6 @@ cluster:
     superuser: true
     passwordSecret:
       name: postgres-user
-  - name: pulumi-operator
-    ensure: present
-    login: true
-    superuser: false
-    passwordSecret:
-      name: pulumi-operator-postgres
   - name: grafana
     ensure: present
     login: true
@@ -99,6 +93,12 @@ cluster:
     superuser: false
     passwordSecret:
       name: authentik-postgres
+  - name: pulumi-operator
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: pulumi-operator-postgres
   monitoring:
     enabled: true
     podMonitor:

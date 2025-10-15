@@ -2,18 +2,11 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: sgc
+namespace: pulumi
 components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
-  - ./cluster/ks.yaml
   - ./shared/ks.yaml
-  # - ./go2rtc/ks.yaml
-  - ./dns/ks.yaml
-  - ./home/ks.yaml
-  # - ./scrypted/ks.yaml
-  # - ./dvr/ks.yaml
-  # - ./media/ks.yaml
-  - ./idp/ks.yaml
+  - ./stacks/ks.yaml

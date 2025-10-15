@@ -17,11 +17,11 @@ spec:
   backend: postgres://postgres-rw.database.svc.cluster.local
   continueResyncOnCommitMatch: true
   destroyOnFinalize: false
-  workspaceReclaimPolicy: Delete # Retain
-  # refresh: true
-  prerequisites:
-    - name: home-operations
-    - name: authentik
+  workspaceReclaimPolicy: Retain
+  refresh: true
+  # prerequisites:
+  #   - name: home-operations
+  #   - name: authentik
   envRefs:
     AWS_ACCESS_KEY_ID:
       type: Secret

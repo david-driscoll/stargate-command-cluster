@@ -35,7 +35,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/valkey-io/valkey
-              tag: 9.0-trixie
+              tag: 9.0-trixie@sha256:c1efaa42b614031d2b186214900d6fc353ed39d9d24a9c2b781b70d03808469c
             env:
               VALKEY_PORT: &port 6379
     persistence:

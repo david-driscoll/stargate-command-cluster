@@ -9,6 +9,6 @@ components:
 resources:
   - ./secret-store.yaml
   - ./shared/ks.yaml
-  # - ./stacks/ks.yaml
+  - ./stacks/ks.yaml
   - ./pulumi-operator/ks.yaml
 

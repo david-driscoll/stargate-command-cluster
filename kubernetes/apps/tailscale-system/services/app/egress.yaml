@@ -6,6 +6,6 @@ metadata:
 spec:
   type: egress
   hostnamePrefix: ${CLUSTER_CNAME}-egress
-  replicas: 2
+  replicas: 3
   tags: ["tag:egress"]
   proxyClass: proxy

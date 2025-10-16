@@ -5,7 +5,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-dockge-luna
 spec:
@@ -22,7 +21,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-dockge-celestia
 spec:
@@ -39,7 +37,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-as.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-dockge-as
 spec:

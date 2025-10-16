@@ -5,7 +5,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-proxmox-luna
 spec:
@@ -25,7 +24,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-proxmox-celestia
 spec:
@@ -46,7 +44,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-proxmox-alpha-site
 spec:

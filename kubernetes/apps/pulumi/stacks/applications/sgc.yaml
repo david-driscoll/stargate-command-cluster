@@ -23,10 +23,6 @@ spec:
   #   - name: home-operations
   #   - name: authentik
   envRefs:
-    PULUMI_BACKEND_URL:
-      type: Literal
-      literal:
-        value: postgres://postgres-rw.database.svc.cluster.local
     GITHUB_TOKEN:
       type: Secret
       secret:

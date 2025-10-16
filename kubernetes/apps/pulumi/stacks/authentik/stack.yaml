@@ -110,4 +110,5 @@ spec:
           cpu: 1
           memory: 1024Mi
       pulumiLogLevel: 11
+      
 

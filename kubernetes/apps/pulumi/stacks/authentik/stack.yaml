@@ -123,7 +123,7 @@ spec:
       image: pulumi/pulumi-nodejs:3.202.0
       resources:
         requests:
-          cpu: 50m
+          cpu: 500m
           memory: 256Mi
         limits:
           cpu: 2

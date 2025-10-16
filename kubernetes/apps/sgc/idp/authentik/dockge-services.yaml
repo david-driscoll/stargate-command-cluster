@@ -11,6 +11,10 @@ metadata:
 spec:
   externalName: dockge-luna
   type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
@@ -24,7 +28,10 @@ metadata:
 spec:
   externalName: dockge-celestia
   type: ExternalName
-
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
@@ -38,43 +45,7 @@ metadata:
 spec:
   externalName: dockge-as
   type: ExternalName
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    tailscale.com/proxy-group: egress
-  name: service-proxmox-luna
-spec:
-  externalName: luna
-  type: ExternalName
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    tailscale.com/proxy-group: egress
-  name: service-proxmox-celestia
-spec:
-  externalName: celestia
-  type: ExternalName
-
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    tailscale.com/proxy-group: egress
-  name: service-proxmox-alpha-site
-spec:
-  externalName: alpha-site
-  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https

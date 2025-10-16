@@ -11,6 +11,10 @@ metadata:
 spec:
   externalName: idp
   type: ExternalName
+  ports:
+    - name: https
+      port: 443
+      targetPort: 443
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1

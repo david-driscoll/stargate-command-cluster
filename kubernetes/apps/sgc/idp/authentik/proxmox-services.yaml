@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
+    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+    tailscale.com/proxy-group: egress
+  name: service-proxmox-luna
+spec:
+  externalName: luna
+  type: ExternalName
+  ports:
+    - port: 8006
+      targetPort: 8006
+      name: pve
+    - port: 8007
+      targetPort: 8007
+      name: pbs
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
+    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+    tailscale.com/proxy-group: egress
+  name: service-proxmox-celestia
+spec:
+  externalName: celestia
+  type: ExternalName
+  ports:
+    - port: 8006
+      targetPort: 8006
+      name: pve
+    - port: 8007
+      targetPort: 8007
+      name: pbs
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
+    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+    tailscale.com/proxy-group: egress
+  name: service-proxmox-alpha-site
+spec:
+  externalName: alpha-site
+  type: ExternalName
+  ports:
+    - port: 8006
+      targetPort: 8006
+      name: pve

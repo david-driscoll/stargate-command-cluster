@@ -73,8 +73,8 @@ spec:
   dependsOn:
     - name: home-operations
       namespace: *namespace
-    - name: authentik
-      namespace: *namespace
+    # - name: authentik
+    #   namespace: *namespace
     - name: authentik
       namespace: sgc
   path: ./kubernetes/apps/pulumi/stacks/applications

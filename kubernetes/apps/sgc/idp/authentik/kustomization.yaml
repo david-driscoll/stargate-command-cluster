@@ -6,4 +6,5 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./definition.yaml
-  - ./tailscale-services.yaml
+  - ./dockge-services.yaml
+  - ./proxmox-services.yaml

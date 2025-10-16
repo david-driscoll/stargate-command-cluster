@@ -2,12 +2,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ${APP}-tailscale
+  name: ${APP}-tailscale-ingress
   annotations:
-    reloader.stakater.com/auto: "true"
     tailscale.com/proxy-group: ingress
     tailscale.com/tags: "tag:apps"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
 spec:
   ingressClassName: tailscale
   defaultBackend:

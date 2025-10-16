@@ -6,7 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    # tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: egress
   name: service-dockge-luna
 spec:
   externalName: dockge-luna
@@ -19,7 +19,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    # tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: egress
   name: service-dockge-celestia
 spec:
   externalName: dockge-celestia

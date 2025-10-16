@@ -5,7 +5,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: egress-idp
 spec:
@@ -22,7 +21,6 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "go.${TAILSCALE_DOMAIN}"
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: egress-go
 spec:

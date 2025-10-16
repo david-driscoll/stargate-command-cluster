@@ -30,7 +30,7 @@ spec:
     CONNECT_HOST:
       type: Literal
       literal:
-        value: "https://op-connect.${CLUSTER_DOMAIN}"
+        value: "https://op-connect.kube-system.svc.cluster.local"
     CONNECT_VAULT:
       type: Literal
       literal:

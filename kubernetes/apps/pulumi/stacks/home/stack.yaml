@@ -46,7 +46,7 @@ spec:
     CONNECT_HOST:
       type: Literal
       literal:
-        value: "https://op-connect.kube-system.svc.cluster.local"
+        value: "http://onepassword-connect.kube-system.svc.cluster.local:8080"
     CONNECT_VAULT:
       type: Literal
       literal:

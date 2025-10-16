@@ -18,7 +18,7 @@ spec:
   continueResyncOnCommitMatch: false
   destroyOnFinalize: false
   workspaceReclaimPolicy: Retain
-  refresh: true
+  # refresh: true
   envRefs:
     AWS_ACCESS_KEY_ID:
       type: Secret

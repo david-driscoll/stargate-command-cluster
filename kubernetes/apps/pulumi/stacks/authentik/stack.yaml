@@ -18,7 +18,7 @@ spec:
   continueResyncOnCommitMatch: false
   destroyOnFinalize: false
   workspaceReclaimPolicy: Retain
-  refresh: true
+  # refresh: true
   # prerequisites:
   #   - name: home-operations
   envRefs:

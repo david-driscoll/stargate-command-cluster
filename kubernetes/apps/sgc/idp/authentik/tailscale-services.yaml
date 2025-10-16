@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    # tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
   name: service-dockge-luna
@@ -17,23 +17,24 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    # tailscale.com/tailnet-fqdn: "dockge-as.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
-  name: service-dockge-as
+  name: service-dockge-celestia
 spec:
-  externalName: dockge-as
+  externalName: dockge-celestia
   type: ExternalName
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    # tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "dockge-as.${TAILSCALE_DOMAIN}"
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/proxy-group: egress
-  name: service-dockge-celestia
+  name: service-dockge-as
 spec:
-  externalName: dockge-celestia
+  externalName: dockge-as
   type: ExternalName

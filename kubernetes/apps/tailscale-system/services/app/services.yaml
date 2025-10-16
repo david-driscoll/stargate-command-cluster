@@ -6,7 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    # tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: egress
   name: tailscale-idp
 spec:
   externalName: idp

@@ -66,6 +66,10 @@ spec:
                   secretKeyRef:
                     name: authkey
                     key: authkey
+              TSIDP_ENABLE_STS: "1"
+              TSIDP_LOG: "debug"
+              TSIDP_DEBUG_TSNET: "1"
+              TSIDP_DEBUG_ALL_REQUESTS: "1"
             securityContext:
               runAsUser: 568
               runAsGroup: 568

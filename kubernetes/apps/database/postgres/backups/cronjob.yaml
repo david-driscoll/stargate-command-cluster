@@ -50,7 +50,7 @@ spec:
           main: &job
             image:
               repository: daviddriscoll/pulumi
-              tag: latest@sha256:6a52b60b8fc09e568458bab6b3e8fecf11980050c3652fa223b41d9cd5b631ea
+              tag: latest@sha256:7b7f51b09488b31f5c85aa6791f2d1019cd3aec55d66cded226a6ba0756b797c
               pullPolicy: IfNotPresent
             envFrom:
               - secretRef:

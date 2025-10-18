@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: ssh-egress
   name: egress-dockge-luna
 spec:
   externalName: dockge-luna
@@ -14,6 +14,9 @@ spec:
     - port: 443
       targetPort: 443
       name: https
+    - port: 22
+      targetPort: 22
+      name: ssh
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
@@ -21,7 +24,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: ssh-egress
   name: egress-dockge-celestia
 spec:
   externalName: dockge-celestia
@@ -30,6 +33,9 @@ spec:
     - port: 443
       targetPort: 443
       name: https
+    - port: 22
+      targetPort: 22
+      name: ssh
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
@@ -37,7 +43,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-as.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: ssh-egress
   name: egress-dockge-as
 spec:
   externalName: dockge-as
@@ -46,3 +52,6 @@ spec:
     - port: 443
       targetPort: 443
       name: https
+    - port: 22
+      targetPort: 22
+      name: ssh

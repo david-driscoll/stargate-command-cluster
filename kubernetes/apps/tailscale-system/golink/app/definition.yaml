@@ -3,23 +3,24 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: tailscale-idp
+  name: tailscale-golink
 spec:
-  name: Tailscale IDP
-  category: ${CLUSTER_TITLE}
-  description: Tailscale Identity Provider
-  url: &url https://idp.${TAILSCALE_DOMAIN}
+  name: Links
+  category: Applications
+  description: Tailscale Go Link
+  url: &url https://go.${TAILSCALE_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale.svg
   access_policy:
     groups:
-      - admins
-  # authentik:
-  #   proxy:
-  #     mode: "forward_single"
-  #     externalHost: *url
+      - friends
+      - family
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
   uptime:
     http:
       url: *url
       method: GET
       accepted_statuscodes: ["200"]
-      parent_name: "system"
+      parent_name: "apps"

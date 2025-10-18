@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: ssh-egress
   name: egress-proxmox-luna
 spec:
   externalName: luna
@@ -17,6 +17,9 @@ spec:
     - port: 8007
       targetPort: 8007
       name: pbs
+    - port: 22
+      targetPort: 22
+      name: ssh
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
 apiVersion: v1
@@ -24,7 +27,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: ssh-egress
   name: egress-proxmox-celestia
 spec:
   externalName: celestia
@@ -44,7 +47,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: ssh-egress
   name: egress-proxmox-alpha-site
 spec:
   externalName: alpha-site
@@ -53,3 +56,6 @@ spec:
     - port: 8006
       targetPort: 8006
       name: pve
+    - port: 22
+      targetPort: 22
+      name: ssh

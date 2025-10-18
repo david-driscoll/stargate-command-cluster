@@ -11,4 +11,4 @@ resources:
   - ./authkey/ks.yaml
   - ./operator/ks.yaml
   - ./services/ks.yaml
-  - ./idp/ks.yaml
+  - ./golink/ks.yaml

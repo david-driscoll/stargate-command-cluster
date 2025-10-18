@@ -86,6 +86,14 @@
       },
     },
     {
+      description: "Immich",
+      groupName: "Immich",
+      matchPackageNames: ["ghcr.io/immich-app/*"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Spegel Group",
       groupName: "Spegel",
       matchDatasources: ["docker"],

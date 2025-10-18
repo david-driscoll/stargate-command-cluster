@@ -1,0 +1,9 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: Recorder
+metadata:
+  name: ${APP}-recorder
+spec:
+  enableUI: true
+  tags:
+    - "tag:recorder"

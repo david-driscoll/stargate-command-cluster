@@ -66,6 +66,7 @@ spec:
                   secretKeyRef:
                     name: authkey
                     key: authkey
+              TSIDP_ENABLE_STS: "1"
             securityContext:
               runAsUser: 568
               runAsGroup: 568

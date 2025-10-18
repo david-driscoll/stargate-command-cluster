@@ -173,6 +173,10 @@ spec:
           - "authentik.${ROOT_DOMAIN}"
           - "iris.${ROOT_DOMAIN}"
           - "canterlot.${ROOT_DOMAIN}"
+          # fix this at some point with ingress?
+          - "luna.auth.${ROOT_DOMAIN}"
+          - "celestia.auth.${ROOT_DOMAIN}"
+          - "alpha-site.auth.${ROOT_DOMAIN}"
 
     worker:
       enabled: true

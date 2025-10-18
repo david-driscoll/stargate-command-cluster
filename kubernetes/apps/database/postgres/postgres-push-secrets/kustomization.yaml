@@ -5,4 +5,3 @@ resources:
   - postgres-superuser-push-secret.yaml
   - authentik-postgres-push-secret.yaml
   - grafana-postgres-push-secret.yaml
-  - pulumi-operator-postgres-push-secret.yaml

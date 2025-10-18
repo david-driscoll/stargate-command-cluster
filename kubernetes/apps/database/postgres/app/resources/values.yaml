@@ -93,12 +93,6 @@ cluster:
     superuser: false
     passwordSecret:
       name: authentik-postgres
-  - name: pulumi-operator
-    ensure: present
-    login: true
-    superuser: false
-    passwordSecret:
-      name: pulumi-operator-postgres
   monitoring:
     enabled: true
     podMonitor:

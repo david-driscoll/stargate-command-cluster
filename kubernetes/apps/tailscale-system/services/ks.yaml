@@ -20,6 +20,8 @@ spec:
   dependsOn:
     - name: tailscale-operator
       namespace: *namespace
+    - name: tailscale-resources
+      namespace: *namespace
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -28,4 +30,3 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-

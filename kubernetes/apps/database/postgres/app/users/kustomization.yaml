@@ -9,5 +9,3 @@ resources:
   - authentik.sops.yaml
   - grafana.yaml
   - grafana.sops.yaml
-  - pulumi-operator.yaml
-  - pulumi-operator.sops.yaml

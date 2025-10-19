@@ -73,7 +73,7 @@ spec:
       image:
         repository: tailscale/tailscale
         tag: v1.88.4@sha256:360e10ad95ad03950f66df03e0dab66287f9f89076ee4012d50bc6adceafcdf3
-      defaultTags: "tag:${CLUSTER_CNAME}"
+      defaultTags: "tag:apps"
       podAnnotations:
         reloader.stakater.com/auto: "true"
       firewallMode: auto

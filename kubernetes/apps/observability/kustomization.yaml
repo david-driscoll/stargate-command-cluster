@@ -13,6 +13,6 @@ resources:
   - ./loki/ks.yaml
   - ./alloy/ks.yaml
   - ./grafana/ks.yaml
-  - ./uptime-kuma/ks.yaml
   - ./silence-operator/ks.yaml
   - ./exporters/ks.yaml
+  - ./gatus/ks.yaml

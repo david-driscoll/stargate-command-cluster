@@ -13,10 +13,10 @@ spec:
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
 metadata:
-  name: ssh-egress
+  name: ssh
 spec:
   type: egress
   hostnamePrefix: ${CLUSTER_CNAME}-ssh
   replicas: 1
-  tags: ["tag:ssh-egress"]
+  tags: ["tag:ssh"]
   proxyClass: proxy

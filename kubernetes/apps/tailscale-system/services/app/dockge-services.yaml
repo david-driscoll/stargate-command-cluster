@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh-egress
+    tailscale.com/proxy-group: ssh
   name: egress-dockge-luna
 spec:
   externalName: dockge-luna
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh-egress
+    tailscale.com/proxy-group: ssh
   name: egress-dockge-celestia
 spec:
   externalName: dockge-celestia
@@ -43,7 +43,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-as.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh-egress
+    tailscale.com/proxy-group: ssh
   name: egress-dockge-as
 spec:
   externalName: dockge-as

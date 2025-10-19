@@ -123,7 +123,7 @@ spec:
             subPath: config.yaml
             readOnly: true
       secret-file:
-        type: configMap
+        type: secret
         name: gatus-secret
         defaultMode: 0644
         globalMounts:

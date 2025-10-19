@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Gatus
+  category: ${CLUSTER_TITLE}
+  description: Gatus is an open-source status monitoring service.
+  url: &url https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gatus.svg
+  access_policy:
+    groups:
+      - friends
+      - family
+  authentik:
+    oauth2:
+      clientType: confidential
+      allowedRedirectUris:
+      - url: "https://${APP}.${CLUSTER_DOMAIN}/login/generic_oauth"
+      propertyMappings:
+        - email
+        - openid
+        - profile
+      includeClaimsInIdToken: true
+      subMode: user_email
+  uptime:
+    http:
+      url: *url
+      method: GET
+      accepted_statuscodes: ["200"]
+      parent_name: "cluster-system"

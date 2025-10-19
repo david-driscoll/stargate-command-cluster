@@ -8,5 +8,8 @@ configMapGenerator:
   - name: gatus-configmap
     files:
       - config.yaml=./resources/config.yaml
+  - name: gatus-secret
+    files:
+      - secret.yaml=./resources/secret.yaml
 generatorOptions:
   disableNameSuffixHash: true

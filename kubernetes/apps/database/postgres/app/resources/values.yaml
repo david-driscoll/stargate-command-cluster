@@ -87,6 +87,12 @@ cluster:
     superuser: false
     passwordSecret:
       name: grafana-postgres
+  - name: gatus
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: gatus-postgres
   - name: authentik
     ensure: present
     login: true

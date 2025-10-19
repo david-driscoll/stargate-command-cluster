@@ -49,8 +49,8 @@ spec:
         containers:
           main: &job
             image:
-              repository: daviddriscoll/pulumi
-              tag: latest@sha256:7b7f51b09488b31f5c85aa6791f2d1019cd3aec55d66cded226a6ba0756b797c
+              repository: mcr.microsoft.com/dotnet/sdk
+              tag: 10.0
               pullPolicy: IfNotPresent
             envFrom:
               - secretRef:

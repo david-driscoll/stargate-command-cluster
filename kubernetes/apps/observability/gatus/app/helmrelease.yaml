@@ -121,6 +121,14 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
+      secret-file:
+        type: configMap
+        name: gatus-secret
+        defaultMode: 0644
+        globalMounts:
+          - path: /config/secret.yaml
+            subPath: secret.yaml
+            readOnly: true
 
     ingress:
       internal:
@@ -135,7 +143,7 @@ spec:
           #       service:
           #         identifier: app
           #         port: http
-          - host: "gatus.${ROOT_DOMAIN}"
+          - host: "gatus.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -147,23 +155,16 @@ spec:
         *app :
           type: ClusterRole
           rules:
-            - apiGroups:
-                - ""
-              resources:
-                - services
-              verbs:
-                - get
-                - watch
-                - list
-            - apiGroups:
-                - gateway.networking.k8s.io
-              resources:
-                - gateways
-                - httproutes
-              verbs:
-                - get
-                - watch
-                - list
+
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["gateway.networking.k8s.io"]
+  resources: ["httproutes", "gateways"]
+  verbs: ["get", "list", "watch"]
       bindings:
         gatus:
           type: ClusterRoleBinding

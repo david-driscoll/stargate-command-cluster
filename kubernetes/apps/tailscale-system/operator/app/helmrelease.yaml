@@ -53,7 +53,7 @@ spec:
 
     operatorConfig:
       defaultTags:
-        - "tag:${CLUSTER_CNAME}-operator"
+        - "tag:operator"
       image:
         repository: ghcr.io/tailscale/k8s-operator
         tag: v1.88.4@sha256:9a35d316344e4d6f85733848e79947566132d16abdb5fefb60adc49e04b9745c

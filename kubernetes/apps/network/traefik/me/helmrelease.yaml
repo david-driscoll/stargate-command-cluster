@@ -48,13 +48,16 @@ spec:
           http:
             port: &httpPort 80
 
-    ingress:
+    route:
       internal:
-        className: internal
-        hosts:
-          - host: &host me.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: *httpPort
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "me.${CLUSTER_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *httpPort

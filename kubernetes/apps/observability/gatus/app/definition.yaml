@@ -18,7 +18,7 @@ spec:
     oauth2:
       clientType: confidential
       allowedRedirectUris:
-      - url: "https://${APP}.${CLUSTER_DOMAIN}/login/generic_oauth"
+      - url: "https://${APP}.${CLUSTER_DOMAIN}/authorization-code/callback"
       propertyMappings:
         - email
         - openid

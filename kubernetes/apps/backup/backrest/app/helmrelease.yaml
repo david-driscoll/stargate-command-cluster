@@ -78,7 +78,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: 9898
+            port: &port 9898
 
     route:
       internal:
@@ -92,7 +92,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: http
+                port: *port
 
     persistence:
       app:

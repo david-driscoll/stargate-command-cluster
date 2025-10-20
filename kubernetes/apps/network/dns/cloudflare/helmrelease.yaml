@@ -60,7 +60,7 @@ spec:
       - gateway-httproute
       - gateway-grpcroute
       # - gateway-tlsroute
-      - gateway-tcproute
+      # - gateway-tcproute
       - gateway-udproute
     txtPrefix: "${CLUSTER_CNAME}."
     txtOwnerId: "${CLUSTER_CNAME}"

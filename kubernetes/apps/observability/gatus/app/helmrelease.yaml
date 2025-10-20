@@ -141,8 +141,6 @@ spec:
           # - "uptime.${ROOT_DOMAIN}"
           - "gatus.${CLUSTER_DOMAIN}"
         kind: HTTPRoute
-        annotations:
-          uptime-kuma.autodiscovery.probe.enabled: "false"
         rules:
           - backendRefs:
               - identifier: app

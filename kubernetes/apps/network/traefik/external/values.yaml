@@ -78,8 +78,6 @@ logs:
 experimental:
   fastProxy:
     enabled: true
-  kubernetesGateway:
-    enabled: true
 web:
   forwardedHeaders:
     insecure: true

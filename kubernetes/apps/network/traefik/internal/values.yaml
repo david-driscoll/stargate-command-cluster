@@ -144,13 +144,15 @@ tlsStore:
       - secretName: &default-certificate le-production-tls
     defaultCertificate:
       secretName: *default-certificate
+gatewayClass:
+  enabled: true
 gateway:
+  enabled: true
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname "${INTERNAL_DOMAIN}"
   infrastructure:
     annotations:
         external-dns.alpha.kubernetes.io/hostname: *hostname
-  enabled: true
   name: internal
   listeners:
     web:
@@ -168,7 +170,7 @@ gateway:
       certificateRefs:
         - name: le-production-tls
           kind: Secret
-          
+
     postgres:
       protocol: TCP
       port: 5432

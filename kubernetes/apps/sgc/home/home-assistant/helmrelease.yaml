@@ -162,7 +162,7 @@ spec:
               - "[STATUS] == 200"
         rules:
           - backendRefs:
-              - name: app
+              - identifier: app
                 port: *app-port
 
       code-internal:
@@ -179,7 +179,7 @@ spec:
               - "[STATUS] == 200"
         rules:
           - backendRefs:
-              - name: code
+              - identifier: code
                 port: *code-port
 
     persistence:

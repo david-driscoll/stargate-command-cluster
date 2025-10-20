@@ -46,8 +46,8 @@ spec:
             args:
               - --auto-httproute
               - --enable-httproute
-              - --auto-service
-              - --enable-service
+              # - --auto-service
+              # - --enable-service
               - --auto-ingress
               - --enable-ingress
             restartPolicy: Always

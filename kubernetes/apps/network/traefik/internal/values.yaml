@@ -81,7 +81,6 @@ providers:
 logs:
   access:
     enabled: true
-    addInternals: true
   general:
     # -- Set [logs format](https://doc.traefik.io/traefik/observability/logs/#format)
     format: common
@@ -114,6 +113,7 @@ experimental:
     enabled: true
   kubernetesGateway:
     enabled: true
+  otlpLogs: true
 web:
   forwardedHeaders:
     insecure: true
@@ -124,3 +124,7 @@ websecure:
     insecure: true
   proxyProtocol:
     insecure: true
+gateway:
+  enabled: false
+gatewayClass:
+  enabled: false

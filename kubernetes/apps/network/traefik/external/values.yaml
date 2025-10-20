@@ -90,3 +90,7 @@ websecure:
     insecure: true
   proxyProtocol:
     insecure: true
+gateway:
+  enabled: false
+gatewayClass:
+  enabled: false

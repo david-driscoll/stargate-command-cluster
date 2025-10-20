@@ -6,6 +6,9 @@ resources:
   - ./helmrelease.yaml
   - ./definition.yaml
   - ./middleware
+  - ./external.yaml
+  - ./internal.yaml
+  - ./gatewayclass.yaml
 configMapGenerator:
   - name: traefik-internal-values
     files:

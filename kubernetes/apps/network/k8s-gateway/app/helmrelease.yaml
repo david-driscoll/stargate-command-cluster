@@ -53,4 +53,4 @@ spec:
       annotations:
         lbipam.cilium.io/ips: "${K8S_GATEWAY_IP}"
       externalTrafficPolicy: Cluster
-    watchedResources: ["Ingress", "Service"]
+    watchedResources: ["Ingress", "Service", "HTTPRoute", "TLSRoute", "GRPCRoute", "DNSEndpoint"]

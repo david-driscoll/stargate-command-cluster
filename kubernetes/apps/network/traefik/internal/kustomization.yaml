@@ -7,7 +7,6 @@ resources:
   - ./definition.yaml
   - ./middleware
   - ./external.yaml
-  - ./database.yaml
 configMapGenerator:
   - name: traefik-internal-values
     files:

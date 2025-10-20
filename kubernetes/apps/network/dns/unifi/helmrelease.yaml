@@ -90,6 +90,11 @@ spec:
       - "crd"
       - "ingress"
       - "service"
+      - gateway-httproute
+      - gateway-grpcroute
+      - gateway-tlsroute
+      - gateway-tcproute
+      - gateway-udproute
     txtOwnerId: "${CLUSTER_CNAME}"
     txtPrefix: "k8s.${CLUSTER_CNAME}."
     domainFilters:

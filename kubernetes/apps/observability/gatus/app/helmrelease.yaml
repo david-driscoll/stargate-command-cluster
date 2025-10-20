@@ -131,26 +131,22 @@ spec:
             subPath: secret.yaml
             readOnly: true
 
-    ingress:
+    route:
       internal:
-        className: internal
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          # - "uptime.${ROOT_DOMAIN}"
+          - "gatus.${CLUSTER_DOMAIN}"
+        kind: HTTPRoute
         annotations:
           uptime-kuma.autodiscovery.probe.enabled: "false"
-        hosts:
-          # - host: "uptime.${ROOT_DOMAIN}"
-          #   paths:
-          #     - path: /
-          #       pathType: Prefix
-          #       service:
-          #         identifier: app
-          #         port: http
-          - host: "gatus.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
     rbac:
       roles:
         *app :

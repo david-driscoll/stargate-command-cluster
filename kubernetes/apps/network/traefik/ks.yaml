@@ -145,7 +145,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: traefik-shared
+    - name: traefik-internal
       namespace: *namespace
   path: ./kubernetes/apps/network/traefik/external
   prune: true

@@ -111,8 +111,6 @@ experimental:
       version: "v1.0.0"
   fastProxy:
     enabled: true
-  kubernetesGateway:
-    enabled: true
   otlpLogs: true
 web:
   forwardedHeaders:

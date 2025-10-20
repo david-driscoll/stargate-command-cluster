@@ -90,7 +90,7 @@ providers:
     allowExternalNameServices: true
   kubernetesGateway:
     enabled: true
-    experimentalChannel: false
+    experimentalChannel: true
     statusAddress:
       ip: "${INTERNAL_IP}"
 logs:

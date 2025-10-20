@@ -19,6 +19,8 @@ additionalArguments:
   - '--providers.file.filename=/config/store.yaml'
   - '--serversTransport.insecureSkipVerify=true'
   - --certificatesresolvers.tailscale.tailscale=true
+  - --entryPoints.web.address=:80/tcp
+  - --entryPoints.websecure.address=:443/tcp
   - --entryPoints.postgres.address=:5432/tcp
   - --entryPoints.mariadb.address=:3306/tcp
 volumes:

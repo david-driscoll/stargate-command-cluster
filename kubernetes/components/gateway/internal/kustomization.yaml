@@ -4,19 +4,17 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 patches:
   - target:
-      group: networking.k8s.io
+      group: gateway.networking.k8s.io
       version: v1
-      kind: Ingress
+      kind: HTTPRoute
       name: ".*-internal$"
     patch: |-
-      apiVersion: networking.k8s.io/v1
-      kind: Ingress
+      apiVersion: gateway.networking.k8s.io/v1
+      kind: HTTPRoute
       metadata:
         name: not-used
         annotations:
-          reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
   - target:
       group: helm.toolkit.fluxcd.io
       version: v2
@@ -28,10 +26,8 @@ patches:
         name: not-used
       spec:
         values:
-          ingress:
+          route:
             internal:
               annotations:
-                reloader.stakater.com/auto: "true"
                 external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-                traefik.ingress.kubernetes.io/router.entrypoints: websecure
 

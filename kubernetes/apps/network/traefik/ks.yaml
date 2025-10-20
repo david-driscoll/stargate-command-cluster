@@ -60,7 +60,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/ingress/authenticated
+    - ../../../../components/gateway/authenticated
   postBuild:
     substitute:
       APP: *app
@@ -92,7 +92,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/ingress/internal
+    - ../../../../components/gateway/internal
   postBuild:
     substitute:
       APP: *app

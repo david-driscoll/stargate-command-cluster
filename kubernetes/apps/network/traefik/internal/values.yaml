@@ -36,6 +36,19 @@ ports:
   traefik:
     expose:
       default: true
+  web:
+    port: 80
+    exposedPort: 80
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+  websecure:
+    port: 443
+    exposedPort: 443
+    tls:
+      enabled: true
   postgres:
     expose:
       default: true
@@ -122,7 +135,34 @@ websecure:
     insecure: true
   proxyProtocol:
     insecure: true
+
+tlsStore:
+  default:
+    certificates:
+      - secretName: &default-certificate le-production-tls
+    defaultCertificate:
+      secretName: *default-certificate
 gateway:
-  enabled: false
-gatewayClass:
-  enabled: false
+  annotations:
+    external-dns.alpha.kubernetes.io/target: &hostname "${INTERNAL_DOMAIN}"
+  infrastructure:
+    annotations:
+        external-dns.alpha.kubernetes.io/hostname: *hostname
+  enabled: true
+  name: internal
+  listeners:
+    web:
+      port: 80
+      protocol: HTTP
+      namespacePolicy:
+        from: All
+
+    websecure:
+      port: 443
+      protocol: HTTPS
+      namespacePolicy:
+        from: All
+      mode: Terminate
+      certificateRefs:
+        - name: le-production-tls
+          kind: Secret

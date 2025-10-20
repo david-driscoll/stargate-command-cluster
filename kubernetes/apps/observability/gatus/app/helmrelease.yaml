@@ -46,7 +46,7 @@ spec:
             args:
               - --auto-httproute
               # - --auto-service
-              - --auto-ingress
+              # - --auto-ingressx
               - --enable-httproute
               - --enable-service
               - --enable-ingress

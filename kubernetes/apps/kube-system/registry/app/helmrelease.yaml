@@ -120,17 +120,19 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       internal:
-        className: internal
-        hosts:
-          - host: "registry.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "registry.${CLUSTER_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
 
     persistence:
       config-file:

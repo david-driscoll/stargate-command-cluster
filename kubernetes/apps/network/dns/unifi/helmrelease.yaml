@@ -92,7 +92,7 @@ spec:
       - "service"
       - gateway-httproute
       - gateway-grpcroute
-      - gateway-tlsroute
+      # - gateway-tlsroute
       - gateway-tcproute
       - gateway-udproute
     txtOwnerId: "${CLUSTER_CNAME}"

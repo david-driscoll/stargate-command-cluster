@@ -22,7 +22,7 @@ spec:
   targetNamespace: *namespace
   components:
     - ../../../../components/volsync
-    - ../../../../components/ingress/internal
+    - ../../../../components/gateway/internal
   postBuild:
     substitute:
       APP: *app

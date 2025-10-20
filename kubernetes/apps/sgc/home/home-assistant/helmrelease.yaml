@@ -50,7 +50,7 @@ spec:
             env:
               HASS_HTTP_TRUSTED_PROXY_1: "${CLUSTER_NETWORK}"
               HASS_HTTP_TRUSTED_PROXY_2: "${SERVICE_NETWORK}"
-              HASS_EXTERNAL_URL: "https://${APP}.${ROOT_DOMAIN}"
+              HASS_EXTERNAL_URL: "https://home.${ROOT_DOMAIN}"
               TZ: "${TIMEZONE}"
             resources:
               requests:
@@ -154,6 +154,7 @@ spec:
             namespace: network
             kind: Gateway
         hostnames:
+          - "home.${ROOT_DOMAIN}"
           - "${APP}.${ROOT_DOMAIN}"
         kind: HTTPRoute
         annotations:

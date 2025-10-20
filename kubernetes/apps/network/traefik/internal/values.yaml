@@ -168,3 +168,15 @@ gateway:
       certificateRefs:
         - name: le-production-tls
           kind: Secret
+          
+    postgres:
+      protocol: TCP
+      port: 5432
+      namespacePolicy:
+        from: All
+
+    mariadb:
+      protocol: TCP
+      port: 3306
+      namespacePolicy:
+        from: All

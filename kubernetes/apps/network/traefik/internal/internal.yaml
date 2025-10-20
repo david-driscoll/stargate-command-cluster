@@ -1,0 +1,43 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  namespace: network
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: web
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: websecure
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: le-production-tls
+            kind: Secret
+
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: mariadb
+      protocol: TCP
+      port: 3306
+      allowedRoutes:
+        namespaces:
+          from: All

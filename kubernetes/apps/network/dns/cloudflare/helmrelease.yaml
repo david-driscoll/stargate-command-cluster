@@ -57,6 +57,11 @@ spec:
       - "crd"
       - "ingress"
       - "service"
+      - gateway-httproute
+      - gateway-grpcroute
+      - gateway-tlsroute
+      - gateway-tcproute
+      - gateway-udproute
     txtPrefix: "${CLUSTER_CNAME}."
     txtOwnerId: "${CLUSTER_CNAME}"
     domainFilters: ["${ROOT_DOMAIN}"]

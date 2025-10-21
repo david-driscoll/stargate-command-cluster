@@ -56,7 +56,7 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   components:
-    - ../../../../components/ingress/authenticated
+    - ../../../../components/gateway/authenticated
   postBuild:
     substitute:
       APP: *app

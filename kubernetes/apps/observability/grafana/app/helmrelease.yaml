@@ -430,16 +430,13 @@ spec:
     #     labelSelector:
     #       matchLabels:
     #         app.kubernetes.io/name: *app
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      annotations:
-        reloader.stakater.com/auto: "true"
-        external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        gatus.home-operations.com/endpoint: |
-          group: system
-          conditions:
-            - "[STATUS] == 200"
-      hosts:
-        - ${APP}.${CLUSTER_DOMAIN}
+
+    route:
+      main:
+        enabled: true
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - ${APP}.${CLUSTER_DOMAIN}

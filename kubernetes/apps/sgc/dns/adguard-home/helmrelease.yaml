@@ -231,10 +231,6 @@ spec:
 
     route:
       internal:
-        parentRefs:
-          - name: internal
-            namespace: network
-            kind: Gateway
         hostnames:
           - "${APP}.${ROOT_DOMAIN}"
         kind: HTTPRoute
@@ -244,7 +240,11 @@ spec:
         rules:
           - backendRefs:
               - identifier: primary
-                port: http
+                port: *ui-port
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
       primary:
         parentRefs:
           - name: internal
@@ -259,7 +259,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: primary
-                port: http
+                port: *ui-port
       secondary:
         parentRefs:
           - name: internal
@@ -274,7 +274,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: secondary
-                port: http
+                port: *ui-port
       tertiary:
         parentRefs:
           - name: internal
@@ -289,4 +289,4 @@ spec:
         rules:
           - backendRefs:
               - identifier: tertiary
-                port: http
+                port: *ui-port

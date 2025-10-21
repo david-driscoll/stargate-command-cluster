@@ -153,25 +153,25 @@ spec:
             subPath: go2rtc.yaml
             readOnly: true
 
-    ingress:
+    route:
       internal:
-        className: internal
-        hosts:
-          - host: "${APP}.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *http
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "${APP}.${CLUSTER_DOMAIN}"
+        kind: HTTPRoute
         annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           gethomepage.dev/widget.url: "http://${APP}.${INTERNAL_CLUSTER_SERVICE}:6767"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media Management
           gethomepage.dev/icon: go2rtc.svg
           gethomepage.dev/name: Go2rtc
           gethomepage.dev/widget.type: "go2rtc"
-          gethomepage.dev/namespace: "{{ .Release.Namespace }}" # The kubernetes namespace the app resides in
+          gethomepage.dev/namespace: "{{ .Release.Namespace }}"
           gethomepage.dev/app: "${APP}"
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *http

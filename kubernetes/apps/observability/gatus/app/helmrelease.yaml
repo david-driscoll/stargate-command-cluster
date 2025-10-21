@@ -50,7 +50,7 @@ spec:
               - --enable-httproute
               - --enable-service
               - --enable-ingress
-              - --auto-group
+              # - --auto-group
             restartPolicy: Always
             resources:
               requests:

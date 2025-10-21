@@ -139,24 +139,20 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       internal:
-        className: internal
-        hosts:
-          - host: "${APP}.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: *port
-          - host: "plex-alt.${ROOT_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: *port
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "${APP}.${CLUSTER_DOMAIN}"
+          - "plex-alt.${ROOT_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
 
     persistence:
       config:

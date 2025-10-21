@@ -44,10 +44,10 @@ spec:
               repository: ghcr.io/home-operations/gatus-sidecar
               tag: 0.0.9@sha256:31a52dd0e579c1f865b2580a4bb715d2a893deb1351fedeaba73598e9a578cbe
             args:
-              - --auto-routes
+              - --auto-httproute
               - --auto-service
               # - --auto-ingress
-              - --enable-routes
+              - --enable-httproute
               - --enable-service
               - --enable-ingress
               - --auto-group

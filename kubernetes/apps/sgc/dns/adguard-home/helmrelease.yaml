@@ -230,63 +230,30 @@ spec:
           apps.kubernetes.io/pod-index: "2"
 
     route:
-      internal:
+      internal: &route
+        kind: HTTPRoute
+        annotations:
+          reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        rules:
+          - backendRefs:
+              - identifier: primary
+                port: *ui-port
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
         hostnames:
           - "${APP}.${ROOT_DOMAIN}"
-        kind: HTTPRoute
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        rules:
-          - backendRefs:
-              - identifier: primary
-                port: *ui-port
-        parentRefs:
-          - name: internal
-            namespace: network
-            kind: Gateway
       primary:
-        parentRefs:
-          - name: internal
-            namespace: network
-            kind: Gateway
+        <<: *route
         hostnames:
           - "${APP}-primary.${CLUSTER_DOMAIN}"
-        kind: HTTPRoute
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        rules:
-          - backendRefs:
-              - identifier: primary
-                port: *ui-port
       secondary:
-        parentRefs:
-          - name: internal
-            namespace: network
-            kind: Gateway
+        <<: *route
         hostnames:
           - "${APP}-secondary.${CLUSTER_DOMAIN}"
-        kind: HTTPRoute
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        rules:
-          - backendRefs:
-              - identifier: secondary
-                port: *ui-port
       tertiary:
-        parentRefs:
-          - name: internal
-            namespace: network
-            kind: Gateway
+        <<: *route
         hostnames:
           - "${APP}-tertiary.${CLUSTER_DOMAIN}"
-        kind: HTTPRoute
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        rules:
-          - backendRefs:
-              - identifier: tertiary
-                port: *ui-port

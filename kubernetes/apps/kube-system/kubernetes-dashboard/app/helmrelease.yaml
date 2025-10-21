@@ -50,17 +50,19 @@ spec:
     # - --system-banner="${CLUSTER_ENV} Environment"
     app:
       mode: dashboard
-      ingress:
+      route:
         enabled: true
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: HTTPRoute
         annotations:
           reloader.stakater.com/auto: "true"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        ingressClassName: internal
-        tls:
-          secretName: "le-production-tls"
-        hosts:
+        hostnames:
           - "kubeui.${CLUSTER_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
     settings:
       global:
         clusterName: "${CLUSTER_CNAME}"

@@ -36,17 +36,25 @@ spec:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      ingress:
-        enabled: true
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        ingressClassName: internal
-        hosts:
-          - alertmanager.${CLUSTER_DOMAIN}
-        paths:
-        - /
+      route:
+        main:
+          enabled: true
+          annotations:
+            reloader.stakater.com/auto: "true"
+            external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          hostnames:
+            - alertmanager.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: internal
+              namespace: network
+              kind: Gateway
+          filters:
+            - type: ExtensionRef
+              extensionRef:
+                group: traefik.io
+                kind: Middleware
+                name: network-authenticated-user
+
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true
@@ -70,15 +78,24 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          reloader.stakater.com/auto: "true"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hosts:
-          - prometheus.${CLUSTER_DOMAIN}
+      route:
+        main:
+          enabled: true
+          annotations:
+            reloader.stakater.com/auto: "true"
+            external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+          hostnames:
+            - prometheus.${CLUSTER_DOMAIN}
+          parentRefs:
+            - name: internal
+              namespace: network
+              kind: Gateway
+          filters:
+            - type: ExtensionRef
+              extensionRef:
+                group: traefik.io
+                kind: Middleware
+                name: network-authenticated-user
       prometheusSpec:
         image:
           registry: docker.io

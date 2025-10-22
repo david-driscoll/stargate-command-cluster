@@ -755,6 +755,165 @@ spec:
                       enum: [configMap, secret]
                     name:
                       type: string
+                gatus:
+                  type: object
+                  description: Configuration for a monitored endpoint
+                  required:
+                    - url
+                  properties:
+                    group:
+                      type: string
+                      description: Group to which the endpoint belongs
+                    url:
+                      type: string
+                      description: URL to monitor (supports http, https, tcp, udp, sctp, icmp, ws, wss, ssh, dns, starttls)
+                    method:
+                      type: string
+                      description: HTTP method to use
+                      enum: [GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS]
+                      default: GET
+                    conditions:
+                      type: array
+                      description: List of conditions to evaluate
+                      items:
+                        type: string
+                      minItems: 1
+                    interval:
+                      type: string
+                      description: Duration between each check
+                      default: "60s"
+                      pattern: '^[0-9]+(ns|us|µs|ms|s|m|h)$'
+                    timeout:
+                      type: string
+                      description: Maximum duration before timing out
+                      default: "10s"
+                      pattern: '^[0-9]+(ns|us|µs|ms|s|m|h)$'
+                    client:
+                      type: object
+                      description: Client configuration for HTTP requests
+                      properties:
+                        insecure:
+                          type: boolean
+                          description: Whether to skip TLS verification
+                          default: false
+                        ignore-redirect:
+                          type: boolean
+                          description: Whether to ignore redirects
+                          default: false
+                        timeout:
+                          type: string
+                          description: Client timeout
+                          pattern: '^[0-9]+(ns|us|µs|ms|s|m|h)$'
+                        dns-resolver:
+                          type: string
+                          description: DNS resolver to use (e.g., tcp://8.8.8.8:53)
+                        oauth2:
+                          type: object
+                          description: OAuth2 configuration
+                          properties: {}
+                          required:
+                            - token-url
+                            - client-id
+                            - client-secret
+                        identity-aware-proxy:
+                          type: object
+                          description: GCP Identity-Aware Proxy configuration
+                          properties: {}
+                          required:
+                            - audience
+                        proxy-url:
+                          type: string
+                          description: Proxy URL for requests
+                        network:
+                          type: string
+                          description: Network to use (tcp4 or tcp6)
+                          enum: [tcp4, tcp6]
+                    alerts:
+                      type: array
+                      description: Alerts to trigger on failure
+                      items:
+                        type: object
+                    body:
+                      type: string
+                      description: Request body
+                    headers:
+                      type: object
+                      description: HTTP headers to send
+                      additionalProperties:
+                        type: string
+                    graphql:
+                      type: boolean
+                      description: Whether this is a GraphQL query
+                      default: false
+                    dns:
+                      type: object
+                      description: DNS query configuration
+                      properties:
+                        query-type:
+                          type: string
+                          description: DNS query type
+                          enum: [A, AAAA, CNAME, MX, TXT, SRV, PTR, SOA, NS]
+                        query-name:
+                          type: string
+                          description: DNS query name
+                      required: [query-type, query-name]
+                    ssh:
+                      type: object
+                      description: SSH configuration
+                      properties:
+                        username:
+                          type: string
+                          description: SSH username
+                        password:
+                          type: string
+                          description: SSH password
+                        private-key:
+                          type: string
+                          description: SSH private key
+                      required: [username]
+                    ui:
+                      type: object
+                      description: UI customization options
+                      properties:
+                        title:
+                          type: string
+                          description: Title of the status page
+                          default: "Health Dashboard"
+                        description:
+                          type: string
+                          description: Description of the status page
+                        header:
+                          type: string
+                          description: Header text for the status page
+                        logo:
+                          type: string
+                          description: URL or path to logo image
+                        link:
+                          type: string
+                          description: Link for the logo/header
+                        buttons:
+                          type: array
+                          description: Custom buttons to display
+                          items:
+                            type: object
+                            properties:
+                              label:
+                                type: string
+                              url:
+                                type: string
+                              icon:
+                                type: string
+                    disable-monitoring-lock:
+                      type: boolean
+                      description: Whether to disable the monitoring lock for this endpoint
+                gatusFrom:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [configMap, secret]
+                    name:
+                      type: string
                 authentik:
                   type: object
                   properties:

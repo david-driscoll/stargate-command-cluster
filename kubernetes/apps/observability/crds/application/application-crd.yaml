@@ -756,6 +756,7 @@ spec:
                     name:
                       type: string
                 gatus:
+                  type: array
                   description: List of endpoints to monitor
                   items:
                     type: object

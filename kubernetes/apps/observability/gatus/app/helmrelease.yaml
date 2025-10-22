@@ -38,25 +38,6 @@ spec:
           securityContext:
             runAsNonRoot: false
             fsGroupChangePolicy: "OnRootMismatch"
-        initContainers:
-          gatus-sidecar:
-            image:
-              repository: ghcr.io/home-operations/gatus-sidecar
-              tag: 0.0.9@sha256:31a52dd0e579c1f865b2580a4bb715d2a893deb1351fedeaba73598e9a578cbe
-            args:
-              - --auto-httproute
-              - --auto-service
-              # - --auto-ingress
-              - --enable-httproute
-              - --enable-service
-              - --enable-ingress
-              # - --auto-group
-            restartPolicy: Always
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
         containers:
           app:
             image:
@@ -126,10 +107,8 @@ spec:
       secret-file:
         type: secret
         name: gatus-secret
-        defaultMode: 0644
         globalMounts:
-          - path: /config/secret.yaml
-            subPath: secret.yaml
+          - path: /config/secrets/
             readOnly: true
 
     route:

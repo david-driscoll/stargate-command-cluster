@@ -127,6 +127,15 @@
             "type": { "type": "string", "enum": ["configMap", "secret"] },
             "name": { "type": "string" }
           }
+        },
+        "gatus": {
+          "$ref": "./gatus.schema.json#/$defs/endpoint"
+        },
+        "gatusFrom": {
+          "properties": {
+            "type": { "type": "string", "enum": ["configMap", "secret"] },
+            "name": { "type": "string" }
+          }
         }
       }
     }

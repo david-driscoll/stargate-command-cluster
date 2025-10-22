@@ -44,6 +44,7 @@
         },
         "uptime": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "http": { "$ref": "./kuma/properties.json#/definitions/http" },
             "ping": { "$ref": "./kuma/properties.json#/definitions/ping" },
@@ -90,12 +91,17 @@
           }
         },
         "uptimeFrom": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "name"],
           "properties": {
             "type": { "type": "string", "enum": ["configMap", "secret"] },
             "name": { "type": "string" }
           }
         },
         "authentik": {
+          "type": "object",
+          "additionalProperties": false,
           "properties": {
             "ssf": { "$ref": "./authentik/properties.json#/definitions/ssf" },
             "scim": { "$ref": "./authentik/properties.json#/definitions/scim" },
@@ -119,19 +125,27 @@
             "googleWorkspace": {
               "$ref": "./authentik/properties.json#/definitions/googleWorkspace"
             }
-          },
-          "type": "object"
+          }
         },
         "authentikFrom": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "name"],
           "properties": {
             "type": { "type": "string", "enum": ["configMap", "secret"] },
             "name": { "type": "string" }
           }
         },
         "gatus": {
-          "$ref": "./gatus.schema.json#/$defs/endpoint"
+          "type": "array",
+          "items": {
+            "$ref": "./gatus.schema.json#/$defs/endpoint"
+          }
         },
         "gatusFrom": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "name"],
           "properties": {
             "type": { "type": "string", "enum": ["configMap", "secret"] },
             "name": { "type": "string" }

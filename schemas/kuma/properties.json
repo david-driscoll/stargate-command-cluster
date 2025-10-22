@@ -3,6 +3,7 @@
   "definitions": {
     "http": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "http" },
         "url": { "type": "string" },
@@ -53,6 +54,7 @@
     },
     "ping": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "ping" },
         "hostname": { "type": "string" },
@@ -70,6 +72,7 @@
     },
     "docker": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "docker" },
         "docker_container": { "type": "string" },
@@ -87,6 +90,7 @@
     },
     "dns": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "dns" },
         "hostname": { "type": "string" },
@@ -109,6 +113,7 @@
     },
     "gamedig": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "gamedig" },
         "game": { "type": "string" },
@@ -128,6 +133,7 @@
     },
     "group": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "group" },
         "accepted_statuscodes": { "items": { "type": "string" } },
@@ -143,6 +149,7 @@
     },
     "grpc-keyword": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "grpc-keyword" },
         "grpc_body": { "type": "string" },
@@ -168,6 +175,7 @@
     },
     "json-query": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "json-query" },
         "url": { "type": "string" },
@@ -209,6 +217,7 @@
     },
     "kafka-producer": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "kafka-producer" },
         "kafka_producer_sasl_options_mechanism": {
@@ -232,6 +241,7 @@
     },
     "keyword": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "keyword" },
         "url": { "type": "string" },
@@ -273,6 +283,7 @@
     },
     "mongodb": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "mongodb" },
         "database_connection_string": { "type": "string" },
@@ -289,6 +300,7 @@
     },
     "mqtt": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "mqtt" },
         "mqtt_check_type": {
@@ -314,6 +326,7 @@
     },
     "mysql": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "mysql" },
         "database_connection_string": { "type": "string" },
@@ -331,6 +344,7 @@
     },
     "port": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "port" },
         "hostname": { "type": "string" },
@@ -348,6 +362,7 @@
     },
     "postgres": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "postgres" },
         "database_connection_string": { "type": "string" },
@@ -364,6 +379,7 @@
     },
     "push": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "push" },
         "push_token": { "type": "string" },
@@ -380,6 +396,7 @@
     },
     "radius": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "radius" },
         "hostname": { "type": "string" },
@@ -402,6 +419,7 @@
     },
     "real-browser": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "real-browser" },
         "remote_browser": { "type": "string" },
@@ -420,6 +438,7 @@
     },
     "redis": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "redis" },
         "database_connection_string": { "type": "string" },
@@ -436,6 +455,7 @@
     },
     "steam": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "steam" },
         "hostname": { "type": "string" },
@@ -453,6 +473,7 @@
     },
     "sqlserver": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "sqlserver" },
         "database_connection_string": { "type": "string" },
@@ -469,6 +490,7 @@
     },
     "tailscale-ping": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": { "const": "tailscale-ping" },
         "hostname": { "type": "string" },

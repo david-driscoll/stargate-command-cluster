@@ -174,9 +174,6 @@ spec:
             - "authentik.${ROOT_DOMAIN}"
             - "iris.${ROOT_DOMAIN}"
             - "canterlot.${ROOT_DOMAIN}"
-            - "luna.auth.${ROOT_DOMAIN}"
-            - "celestia.auth.${ROOT_DOMAIN}"
-            - "alpha-site.auth.${ROOT_DOMAIN}"
           parentRefs:
             - name: internal
               namespace: network

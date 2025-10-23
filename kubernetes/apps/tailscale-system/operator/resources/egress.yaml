@@ -17,6 +17,6 @@ metadata:
 spec:
   type: egress
   hostnamePrefix: ${CLUSTER_CNAME}-ssh
-  replicas: 1
+  replicas: 2
   tags: ["tag:ssh"]
   proxyClass: proxy

@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-ip: "${DOCKGE_TAILSCALE_IP}"
+    tailscale.com/proxy-group: egress
+  name: alpha-site-dns
+spec:
+  externalName: alpha-site-dns
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https
+    - port: 784
+      targetPort: 784
+      name: quic
+    - port: 853
+      targetPort: 853
+      name: dnss
+    - port: 53
+      targetPort: 53
+      name: dns
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-ip: "${INTERNAL_TAILSCALE_VIP}"
+    tailscale.com/proxy-group: egress
+  name: adguard-home-dns
+spec:
+  externalName: adguard-home-dns
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https
+    - port: 784
+      targetPort: 784
+      name: quic
+    - port: 853
+      targetPort: 853
+      name: dnss
+    - port: 53
+      targetPort: 53
+      name: dns
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-ip: "${DISCORD_TAILSCALE_IP}"
+    tailscale.com/proxy-group: egress
+  name: discord-dns
+spec:
+  externalName: discord-dns
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https
+    - port: 784
+      targetPort: 784
+      name: quic
+    - port: 853
+      targetPort: 853
+      name: dnss
+    - port: 53
+      targetPort: 53
+      name: dns

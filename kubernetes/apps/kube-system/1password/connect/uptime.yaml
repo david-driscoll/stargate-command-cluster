@@ -11,9 +11,9 @@ spec:
   access_policy:
     groups:
       - admins
-  uptime:
-    http:
+  gatus:
+    - group: "System"
       url: https://op-connect.${CLUSTER_DOMAIN}/health
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster-system"
+      conditions:
+        - "status == 200"

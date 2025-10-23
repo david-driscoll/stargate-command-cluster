@@ -13,9 +13,9 @@ spec:
   access_policy:
     groups:
       - admins
-  uptime:
-    http:
+  gatus:
+    - group: "cluster-system"
       url: *url
       method: GET
-      accepted_statuscodes: ["404"]
-      parent_name: "cluster-system"
+      conditions:
+        - "status == 404"

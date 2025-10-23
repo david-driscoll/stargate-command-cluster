@@ -3,24 +3,6 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: ${APP}-group
-spec:
-  name: Adguard Home
-  category: DNS
-  url: https://${APP}.${ROOT_DOMAIN}
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
-  access_policy:
-    groups:
-      - friends
-      - family
-  uptime:
-    group:
-      parent_name: "system"
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
-apiVersion: driscoll.dev/v1
-kind: ApplicationDefinition
-metadata:
   name: ${APP}-primary
 spec:
   name: Primary Replica
@@ -30,12 +12,12 @@ spec:
   access_policy:
     groups:
       - admins
-  uptime:
-    http:
+  gatus:
+    - group: "AdGuard Home"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "${APP}-group"
+      conditions:
+        - "status == 200"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -50,12 +32,12 @@ spec:
   access_policy:
     groups:
       - admins
-  uptime:
-    http:
+  gatus:
+    - group: "AdGuard Home"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "${APP}-group"
+      conditions:
+        - "status == 200"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -70,9 +52,9 @@ spec:
   access_policy:
     groups:
       - admins
-  uptime:
-    http:
+  gatus:
+    - group: "AdGuard Home"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "${APP}-group"
+      conditions:
+        - "status == 200"

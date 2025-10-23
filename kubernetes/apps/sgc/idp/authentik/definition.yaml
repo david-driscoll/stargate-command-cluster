@@ -7,9 +7,9 @@ metadata:
 spec:
   name: Authentik
   category: Identity
-  uptime:
-    http:
+  gatus:
+    - group: "system"
       url: https://${APP}.${ROOT_DOMAIN}
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "system"
+      conditions:
+        - "status == 200"

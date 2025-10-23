@@ -16,11 +16,3 @@ spec:
   #   proxy:
   #     mode: "forward_single"
   #     externalHost: *url
-  uptime:
-    mqtt:
-      hostname: ${AUTOMATION_VIP}
-      port: 1883
-      mqtt_success_message: "Connected"
-      mqtt_topic: "homeassistant"
-      mqtt_check_type: connect
-      parent_name: "system"

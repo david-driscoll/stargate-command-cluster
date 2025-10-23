@@ -17,12 +17,12 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
-  uptime:
-    http:
+  gatus:
+    - group: "System"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster-system"
+      conditions:
+        - "status == 200"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -42,9 +42,9 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
-  uptime:
-    http:
+  gatus:
+    - group: "System"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster-system"
+      conditions:
+        - "status == 200"

@@ -25,9 +25,9 @@ spec:
         - profile
       includeClaimsInIdToken: true
       subMode: user_email
-  uptime:
-    http:
+  gatus:
+    - group: "System"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster-system"
+      conditions:
+        - "status == 200"

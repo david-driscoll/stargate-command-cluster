@@ -14,9 +14,9 @@ spec:
   access_policy:
     groups:
       - admins
-  uptime:
-    http:
+  gatus:
+    - group: "Cluster"
       url: https://registry.${CLUSTER_DOMAIN}/livez
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster"
+      conditions:
+        - "status == 200"

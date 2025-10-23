@@ -331,6 +331,10 @@
       "description": "Configuration for a monitored endpoint",
       "required": ["url"],
       "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the endpoint"
+        },
         "group": {
           "type": "string",
           "description": "Group to which the endpoint belongs"

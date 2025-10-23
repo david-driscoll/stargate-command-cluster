@@ -15,9 +15,9 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
-  uptime:
-    http:
+  gatus:
+    - group: "Cluster"
       url: *url
       method: GET
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster"
+      conditions:
+        - "status == 200"

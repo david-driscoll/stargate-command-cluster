@@ -5,14 +5,14 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Valkey
+  name: Valkey Standalone
   category: ${CLUSTER_TITLE}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/valkey.svg
-  uptime:
-    redis:
-      database_connection_string: redis://valkey-sa.database.svc.cluster.local
-      accepted_statuscodes: ["200"]
-      parent_name: "cluster"
+  gatus:
+    - group: "Cluster"
+      url: tcp://valkey-sa.database.svc.cluster.local:6379
+      conditions:
+      - "[CONNECTED] == true"
   access_policy:
     groups:
       - admins

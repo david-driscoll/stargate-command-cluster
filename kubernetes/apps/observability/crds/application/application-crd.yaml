@@ -763,6 +763,8 @@ spec:
                     description: Configuration for a monitored endpoint
                     required: [url]
                     properties:
+                      name:
+                        type: string
                       group:
                         type: string
                       url:

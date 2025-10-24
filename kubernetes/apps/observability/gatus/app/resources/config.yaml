@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/gatus.schema.json
 endpoints:
   - name: Internal DNS Check
+    group: "System"
     url: "100.111.209.201"
     dns:
       query-type: CNAME

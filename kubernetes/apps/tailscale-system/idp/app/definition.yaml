@@ -18,7 +18,7 @@ spec:
   #     mode: "forward_single"
   #     externalHost: *url
   gatus:
-    - group: "system"
+    - group: "System"
       url: *url
       method: GET
       conditions:

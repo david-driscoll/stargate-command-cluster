@@ -16,11 +16,11 @@ spec:
     - "${APP}.${CLUSTER_DOMAIN}"
   rules:
     - backendRefs:
-        - name: loki-gateway
-          port: 80
+        - name: loki
+          port: 9095
       filters:
         - type: ExtensionRef
           extensionRef:
             group: traefik.io
             kind: Middleware
-            name: network-authenticated-user
+            name: authenticated-user

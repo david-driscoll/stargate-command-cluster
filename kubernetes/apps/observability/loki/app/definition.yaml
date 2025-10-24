@@ -14,8 +14,8 @@ spec:
     groups:
       - admins
   gatus:
-    - group: "cluster-system"
+    - group: "System"
       url: *url
       method: GET
       conditions:
-        - "status == 404"
+        - "[STATUS] == 200"

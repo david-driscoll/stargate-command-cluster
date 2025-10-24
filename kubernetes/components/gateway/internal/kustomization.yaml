@@ -2,6 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
+resources:
+  - ./middleware.yaml
 patches:
   - target:
       group: gateway.networking.k8s.io
@@ -30,4 +32,3 @@ patches:
             internal:
               annotations:
                 external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-

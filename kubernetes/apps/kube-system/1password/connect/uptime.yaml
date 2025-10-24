@@ -16,4 +16,4 @@ spec:
       url: https://op-connect.${CLUSTER_DOMAIN}/health
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"

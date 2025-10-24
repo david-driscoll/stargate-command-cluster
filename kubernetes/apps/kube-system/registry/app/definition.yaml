@@ -19,4 +19,4 @@ spec:
       url: https://registry.${CLUSTER_DOMAIN}/livez
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"

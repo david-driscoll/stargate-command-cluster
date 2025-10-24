@@ -18,4 +18,4 @@ spec:
       url: https://${APP}.${CLUSTER_DOMAIN}/status
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"

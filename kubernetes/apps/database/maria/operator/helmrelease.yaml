@@ -29,7 +29,7 @@ spec:
     image:
       repository: ghcr.io/mariadb-operator/mariadb-operator
       pullPolicy: IfNotPresent
-      tag: 25.8.4@sha256:a1b50babea935f28a57df54ef3dd747ff53ac22a9fd953e992bb2f43563a2ab6
+      tag: 25.10.1@sha256:cad36b0e3f8c6c44fd7783cd02d812d7bed9a7a04e7dabbc2f4b69b30fa03f56
     ha:
       enabled: true
       replicas: 1

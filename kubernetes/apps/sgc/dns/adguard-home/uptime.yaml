@@ -17,7 +17,7 @@ spec:
       url: *url
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -37,7 +37,7 @@ spec:
       url: *url
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
 apiVersion: driscoll.dev/v1
@@ -57,4 +57,4 @@ spec:
       url: *url
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"

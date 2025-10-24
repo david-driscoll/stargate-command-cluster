@@ -22,4 +22,4 @@ spec:
       url: *url
       method: GET
       conditions:
-        - "status == 200"
+        - "[STATUS] == 200"

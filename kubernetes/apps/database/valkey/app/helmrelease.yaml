@@ -20,7 +20,7 @@ spec:
       memory: 1Gi
   volumePermissions: true
   exporterImage: ghcr.io/hyperspike/valkey-sidecar:v0.0.61@sha256:6cd5c47bf58d57e25f4df1f9a73de20ebb3ff6a713da7e46de633be5a124f44c
-  image: ghcr.io/valkey-io/valkey:9.0-trixie@sha256:c1efaa42b614031d2b186214900d6fc353ed39d9d24a9c2b781b70d03808469c
+  image: ghcr.io/valkey-io/valkey:9.0-trixie@sha256:4503e204c900a00ad393bec83c8c7c4c76b0529cd629e23b34b52011aefd1d27
   prometheus: true
   storage:
     spec:

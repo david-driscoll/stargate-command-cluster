@@ -9,6 +9,7 @@ resources:
   - ./democratic-csi.yaml
   - ./sops-age.sops.yaml
   - ./service-account.yaml
+  - ./middleware.yaml
   - ./templates
 configMapGenerator:
   - name: cluster-versions

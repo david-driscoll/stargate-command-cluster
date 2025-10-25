@@ -35,6 +35,7 @@ spec:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_ACCESSMODES: ReadWriteMany
+      TAILSCALE_SERVICE: authentik-server
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

@@ -42,7 +42,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/tvheadend/tvheadend
-              tag: master@sha256:2b9c3922605b897f0e25fec1f84ca32f08c7096b24205f67e8793eabf4e739a9
+              tag: master@sha256:d712118d24d1bd0a8018aca6f4e50a56400f208f086da135193464b67f1f49d3
               pullPolicy: IfNotPresent
 
             args: [--firstrun]

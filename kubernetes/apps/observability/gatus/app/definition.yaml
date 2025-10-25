@@ -15,16 +15,9 @@ spec:
       - friends
       - family
   authentik:
-    oauth2:
-      clientType: confidential
-      allowedRedirectUris:
-      - url: "https://${APP}.${CLUSTER_DOMAIN}/authorization-code/callback"
-      propertyMappings:
-        - email
-        - openid
-        - profile
-      includeClaimsInIdToken: true
-      subMode: user_email
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
   gatus:
     - group: "System"
       url: *url

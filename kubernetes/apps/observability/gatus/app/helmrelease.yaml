@@ -46,7 +46,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
               GATUS_CONFIG_PATH: /config
-              GATUS_WEB_PORT: &port 8080
+              GATUS_WEB_PORT: &port 8585
 
             probes:
               liveness: &probes

@@ -9,7 +9,7 @@ spec:
   category: ${CLUSTER_TITLE}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/redis.svg
   gatus:
-    - group: "Cluster"
+    - group: "Database"
       url: tcp://redis.database.svc.cluster.local:6379
       conditions:
       - "[CONNECTED] == true"

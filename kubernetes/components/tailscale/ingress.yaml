@@ -11,7 +11,7 @@ spec:
   ingressClassName: tailscale
   defaultBackend:
     service:
-      name: ${APP}
+      name: "${TAILSCALE_SERVICE:=${APP}}"
       port:
         name: "${TAILSCALE_PORT:=http}"
   tls:

@@ -162,6 +162,11 @@ spec:
         serviceMonitor:
           enabled: true
 
+      service:
+        annotations:
+          tailscale.com/hostname: authentik
+          tailscale.com/proxy-group: ingress
+
       route:
         main:
           enabled: true

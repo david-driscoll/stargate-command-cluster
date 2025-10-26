@@ -19,7 +19,7 @@ spec:
       mode: "forward_single"
       externalHost: *url
   gatus:
-    - group: "System"
+    - group: "${CLUSTER_TITLE}"
       url: *url
       method: GET
       conditions:

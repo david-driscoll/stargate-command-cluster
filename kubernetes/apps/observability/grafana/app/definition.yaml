@@ -26,7 +26,7 @@ spec:
       includeClaimsInIdToken: true
       subMode: user_email
   gatus:
-    - group: "System"
+    - group: "${CLUSTER_TITLE}"
       url: *url
       method: GET
       conditions:

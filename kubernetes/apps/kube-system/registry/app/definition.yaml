@@ -15,7 +15,7 @@ spec:
     groups:
       - admins
   gatus:
-    - group: "System"
+    - group: "${CLUSTER_TITLE}"
       url: https://registry.${CLUSTER_DOMAIN}/livez
       method: GET
       conditions:

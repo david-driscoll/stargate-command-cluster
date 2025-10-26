@@ -17,7 +17,7 @@ spec:
   rules:
     - backendRefs:
         - name: loki
-          port: 9095
+          port: 3100
       filters:
         - type: ExtensionRef
           extensionRef:

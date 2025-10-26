@@ -16,7 +16,7 @@ spec:
     - "${APP}.${CLUSTER_DOMAIN}"
   rules:
     - backendRefs:
-        - name: loki
+        - name: loki-headless
           port: 3100
       filters:
         - type: ExtensionRef

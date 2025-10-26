@@ -6,13 +6,13 @@ metadata:
   name: ${APP}
 spec:
   name: 1Password Connect
-  category: System
+  category: ${CLUSTER_TITLE}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/1password.svg
   access_policy:
     groups:
       - admins
   gatus:
-    - group: "System"
+    - group: "${CLUSTER_TITLE}"
       url: https://op-connect.${CLUSTER_DOMAIN}/health
       method: GET
       conditions:

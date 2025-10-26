@@ -18,9 +18,9 @@ spec:
     - backendRefs:
         - name: loki-headless
           port: 3100
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: authenticated-user
+      # filters:
+      #   - type: ExtensionRef
+      #     extensionRef:
+      #       group: traefik.io
+      #       kind: Middleware
+      #       name: authenticated-user

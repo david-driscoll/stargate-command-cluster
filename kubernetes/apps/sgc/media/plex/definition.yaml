@@ -14,7 +14,7 @@ spec:
       - friends
       - family
   gatus:
-    - url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token="op://Eris/Media Management Secrets/plex_alt_token"
+    - url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token=op://Eris/Media Management Secrets/plex_alt_token
       group: "Applications"
       method: GET
       conditions:

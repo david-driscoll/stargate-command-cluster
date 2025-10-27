@@ -120,8 +120,6 @@ spec:
       securityContext:
         runAsUser: 568
         runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups: [44, 109, 303, 568, 10000]
         seccompProfile: { type: RuntimeDefault }
       # nodeSelector:
@@ -168,15 +166,15 @@ spec:
           - path: /config/Library/Application Support/Plex Media Server/Plug-in Support/Caches
             subPath: plugincache
       media-movies:
-        existingClaim: media-movies
+        existingClaim: spike-media-movies
         globalMounts:
           - path: /media/movies
       media-tv:
-        existingClaim: media-tv
+        existingClaim: spike-media-tv
         globalMounts:
           - path: /media/tv
       media-dvr:
-        existingClaim: media-dvr
+        existingClaim: spike-media-dvr
         globalMounts:
           - path: /media/dvr
       tmpfs:

@@ -8,11 +8,11 @@ spec:
   name: Valkey Standalone
   category: ${CLUSTER_TITLE}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/valkey.svg
-  gatus:
-    - group: "System"
-      url: tcp://valkey-sa.database.svc.cluster.local:6379
-      conditions:
-      - "[CONNECTED] == true"
+  # gatus:
+  #   - group: "System"
+  #     url: tcp://valkey-sa.database.svc.cluster.local:6379
+  #     conditions:
+  #     - "[CONNECTED] == true"
   access_policy:
     groups:
       - admins

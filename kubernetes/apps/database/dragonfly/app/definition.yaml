@@ -8,11 +8,11 @@ spec:
   name: Dragonfly
   category: ${CLUSTER_TITLE}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/redis.svg
-  gatus:
-    - group: "System"
-      url: tcp://redis.database.svc.cluster.local:6379
-      conditions:
-      - "[CONNECTED] == true"
+  # gatus:
+  #   - group: "System"
+  #     url: tcp://redis.database.svc.cluster.local:6379
+  #     conditions:
+  #     - "[CONNECTED] == true"
   access_policy:
     groups:
       - admins

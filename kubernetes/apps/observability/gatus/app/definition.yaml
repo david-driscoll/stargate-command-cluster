@@ -20,7 +20,7 @@ spec:
       externalHost: *url
       skipPathRegex: "^/api([/?].*)?$"
   gatus:
-    - group: "K8S: ${CLUSTER_TITLE}"
+    - group: "System"
       url: *url
       method: GET
       conditions:

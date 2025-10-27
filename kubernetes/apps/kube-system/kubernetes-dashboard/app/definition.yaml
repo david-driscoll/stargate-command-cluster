@@ -19,7 +19,7 @@ spec:
   #     mode: "forward_single"
   #     externalHost: *url
   gatus:
-    - group: "K8S: ${CLUSTER_TITLE}"
+    - group: "System"
       url: *url
       method: GET
       conditions:

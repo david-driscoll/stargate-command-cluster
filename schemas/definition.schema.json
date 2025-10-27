@@ -141,15 +141,6 @@
           "items": {
             "$ref": "./gatus.schema.json#/$defs/endpoint"
           }
-        },
-        "gatusFrom": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type", "name"],
-          "properties": {
-            "type": { "type": "string", "enum": ["configMap", "secret"] },
-            "name": { "type": "string" }
-          }
         }
       }
     }

@@ -9,41 +9,9 @@ spec:
   category: ${CLUSTER_TITLE}
   description: MariaDB monitoring
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mariadb.svg
-  uptimeFrom:
-    type: secret
-    name: ${APP}-uptime
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/secret-uptime.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: ${APP}-uptime
-spec:
-  refreshPolicy: Periodic
-  refreshInterval: 4m
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: database
-  dataFrom:
-    - extract:
-        key: maria-superuser
-      rewrite:
-        - regexp:
-            source: "[\\W]"
-            target: _
-  target:
-    name: ${APP}-uptime
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    template:
-      metadata:
-        labels:
-          cnpg.io/reload: "true"
-        annotations:
-          reloader.stakater.com/auto: "true"
-          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      data:
-        type: mysql
-        name: "${APP}"
-        database_connection_string: "{{ .public_uri }}"
-        parent_name: "cluster"
+  gatus:
+    - group: "${CLUSTER_TITLE}"
+      url: "tcp://mariadb.database.svc.cluster.local:6379"
+      interval: 30s
+      conditions:
+        - "[CONNECTED] == true"

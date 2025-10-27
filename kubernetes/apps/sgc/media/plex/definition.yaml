@@ -5,46 +5,18 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Plex (Cheyenne)
+  name: Plex (Equestria)
   category: Media
-  url: https://${APP}.${CLUSTER_DOMAIN}
+  url: https://${APP}.${ROOT_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/plex.svg
   access_policy:
     groups:
       - friends
       - family
-  uptimeFrom:
-    type: secret
-    name: ${APP}-uptime
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/secret-uptime.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: ${APP}-uptime
-spec:
-  refreshPolicy: Periodic
-  refreshInterval: 4m
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword-connect
-  dataFrom:
-    - extract:
-        key: "Media Management Secrets"
-  target:
-    name: ${APP}-uptime
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    template:
-      metadata:
-        labels:
-          cnpg.io/reload: "true"
-        annotations:
-          reloader.stakater.com/auto: "true"
-          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      data:
-        type: http
-        url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token={{ .plex_alt_token }}
-        method: GET
-        accepted_statuscodes: "200"
-        parent_name: "apps"
+  gatus:
+    - url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token="op://Eris/Media Management Secrets/plex_alt_token"
+      parent: "Applications"
+      method: GET
+      conditions:
+      - "[STATUS] == 200"
+      parent_name: "apps"

@@ -901,14 +901,6 @@ spec:
                                   type: string
                       disable-monitoring-lock:
                         type: boolean
-                gatusFrom:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      enum: [configMap, secret]
-                    name:
-                      type: string
                 authentik:
                   type: object
                   properties:

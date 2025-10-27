@@ -11,8 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: shared-volumes
-      namespace: *namespace
     - name: volsync
       namespace: volsync-system
   path: ./kubernetes/apps/sgc/media/plex

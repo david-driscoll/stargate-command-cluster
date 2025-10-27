@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "mikestead.dotenv",
     "mitchdenny.ecdc",
     "blueglassblock.better-json5",
     "irongeek.vscode-env",

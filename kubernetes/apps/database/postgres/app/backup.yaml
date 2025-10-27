@@ -50,7 +50,7 @@ spec:
           main: &job
             image:
               repository: rclone/rclone
-              tag: master@sha256:c3996488932d55280251823c32c205c1514662a4006af6150eea4e6b9a7f3ca9
+              tag: master@sha256:88f7ef0ec9ea5f3981aae195755dc77486ea8f9f4373bbb642d360add624f47a
               pullPolicy: IfNotPresent
             env:
               PUID: 1000

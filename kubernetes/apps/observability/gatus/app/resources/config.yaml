@@ -2,7 +2,7 @@
 endpoints:
   - name: Internal DNS Check
     enabled: false
-    group: "${CLUSTER_TITLE}"
+    group: "K8S: ${CLUSTER_TITLE}"
     url: "100.111.209.201"
     dns:
       query-type: CNAME

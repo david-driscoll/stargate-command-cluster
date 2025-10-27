@@ -18,8 +18,9 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
+      skipPathRegex: "^/api([/?].*)?$"
   gatus:
-    - group: "${CLUSTER_TITLE}"
+    - group: "K8S: ${CLUSTER_TITLE}"
       url: *url
       method: GET
       conditions:

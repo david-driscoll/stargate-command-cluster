@@ -1,131 +1,223 @@
-# GitHub Copilot Guide for Stargate Command Cluster
+# Equestria Cluster - Talos Kubernetes GitOps Repository
 
-Talos + Flux GitOps repo. Use `mise` for dev tooling, `task` for common operations, `sops (age)` for secrets, and Flux/Kustomize for deployments.
+This is a production Talos Kubernetes cluster using GitOps with Flux, managed via mise for development tooling and Task for build automation.
 
-Key locations
-- `kubernetes/` — manifests (apps grouped by namespace under `kubernetes/apps/*`).
-- `kubernetes/flux/cluster/ks.yaml` — cluster Kustomization that injects `decryption: sops` and `postBuild` substitutions into child kustomizations.
-- `kubernetes/components/common/cluster-secrets.sops.yaml` and `sops-age.sops.yaml` — shared sops secrets (root `age.key` is git-ignored).
-- `bootstrap/helmfile.yaml` and `scripts/bootstrap-apps.sh` — bootstrap ordering and helmfile-based initial installs.
+Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
-Quick developer workflow
-- Install dev tools: `mise install` (see `.mise.toml` for pinned versions).
-- Generate configuration: `task init` then `task configure`.
-- Validate Kustomizations locally: `flux-local test --enable-helm --all-namespaces --path ./kubernetes/flux/cluster -v` (CI runs this on PRs: `.github/workflows/flux-local.yaml`).
-- Force a reconcile: `task reconcile` (maps to Flux CLI in `Taskfile.yaml`).
+## Working Effectively
 
-Project-specific patterns (follow these exactly)
-- Apps: add `kubernetes/apps/<NAMESPACE>/<APP>` with `ks.yaml` (Flux Kustomization), `kustomization.yaml`, and `helmrelease.yaml` when using Helm. Many apps use the `app-template` chart (see `kubernetes/components/repos/app-template/ocirepository.yaml`).
-- Secrets: always add `*.sops.yaml` and keep `age.key` out of git. CI and bootstrap scripts expect `cluster-secrets.sops.yaml` and `shared-secrets.sops.yaml`.
-- Flux child kustomizations rely on `postBuild` substitutions from `cluster-secrets` and `shared-secrets` — do not remove those without updating `kubernetes/flux/cluster/ks.yaml`.
-- Programmatic updates: maintainers use C# scripts (`kubernetes/**/Update.cs`). Use `task update` or `dotnet run .mise/tasks/do-update.cs` to run updates so SOPS handling is consistent.
+### Essential Tool Installation
 
-### Components reference — how apps consume them
+-   **CRITICAL**: Install mise first, then all required tools:
 
-- common
-  - Purpose: shared namespaces, service-accounts, SOPS secret holders and cluster-wide variables (`CLUSTER_DOMAIN`, `INTERNAL_DOMAIN`, Tailscale IPs).
-  - Usage: Ensure `kubernetes/components/common/cluster-secrets.sops.yaml` and `shared-secrets.sops.yaml` are present and encrypted. `kubernetes/flux/cluster/ks.yaml` injects them into child Kustomizations via `postBuild`.
-  - Examples: `kubernetes/components/common/cluster-secrets.sops.yaml`, `kubernetes/components/common/Update.cs`.
+    ```bash
+    # Install mise (may fail due to network restrictions - see troubleshooting)
+    curl https://mise.run | sh
+    # OR try alternative: curl -L https://install.mise.jdx.dev/install.sh | sh
 
-- repos/app-template
-  - Purpose: registers the `app-template` OCI repo used by the standardized HelmRelease pattern.
-  - Usage: Helm-based apps use `chartRef.kind: OCIRepository name: app-template` in their `helmrelease.yaml`.
-  - Examples: `kubernetes/components/repos/app-template/ocirepository.yaml`, `kubernetes/apps/observability/gatus/app/helmrelease.yaml`.
+    # Trust the config and install all tools - takes 10-15 minutes. NEVER CANCEL.
+    mise trust
+    pip install pipx  # Required for makejinja
+    mise install  # TIMEOUT: 20+ minutes
+    ```
 
-- ingress (internal / authenticated / external)
-  - Purpose: provide reusable Ingress/Gateway annotations and HelmRelease ingress values for internal-only, authenticated (SSO), and public (external-dns) exposure.
-  - Usage: Add the component to an app's `ks.yaml` (e.g. `- ../../../../components/ingress/internal`) and set HelmRelease `route` or `ingress` values to select `internal`/`authenticated`/`external`.
-  - Examples: `kubernetes/components/ingress/internal/kustomization.yaml`, `kubernetes/components/ingress/authenticated/kustomization.yaml`, `kubernetes/apps/observability/grafana/ks.yaml`.
+-   **If mise installation fails due to network restrictions**: Document this limitation and proceed with available tools for validation only.
 
-- gateway (internal / authenticated)
-  - Purpose: Gateway API resources that act as parentRefs for HTTPRoute/Route blocks created by apps.
-  - Usage: Apps that use Gateway API reference a parent `Gateway` (e.g., `parentRefs.name: internal, namespace: network`) in their HelmRelease `route` values.
-  - Examples: `kubernetes/components/gateway/internal/kustomization.yaml`, `kubernetes/apps/observability/gatus/app/helmrelease.yaml` (route.parentRefs).
+### Bootstrap and Build Process
 
-- tailscale
-  - Purpose: Tailscale operator, idp integration, and tailscale-managed ingress bits.
-  - Usage: Include `components/tailscale` for apps that should be reachable over Tailscale or use Tailscale nameserver.
-  - Examples: `kubernetes/components/tailscale/kustomization.yaml`, `kubernetes/apps/sgc/idp/ks.yaml`.
+-   **NEVER attempt full bootstrap without physical Talos cluster hardware**
+-   Configuration generation (without deployment):
+    ```bash
+    task init        # Generate config files from templates
+    task configure   # Template out Kubernetes and Talos configs - takes 2-5 minutes
+    ```
+-   **Cluster Bootstrap (requires physical hardware)**:
+    ```bash
+    task bootstrap:talos  # Install Talos - takes 15-30 minutes. NEVER CANCEL.
+    task bootstrap:apps   # Bootstrap applications - takes 10-20 minutes. NEVER CANCEL.
+    ```
 
-- volsync (local / remote / backblaze)
-  - Purpose: Templates and CRs for PVC replication and offsite backups (volsync + restic).
-  - Usage: Apps that require replicated volumes include `components/volsync` (or `volsync/local` / `volsync/remote` / `volsync/backblaze`) and use the provided templates (PVC, ReplicationSource, ReplicationDestination, externalsecret). Many `Update.cs` scripts call these templates programmatically.
-  - Examples: `kubernetes/components/volsync/local/replicationsource.yaml`, `kubernetes/components/volsync/pvc.yaml`, `kubernetes/apps/sgc/dns/adguard-home/Update.cs`.
+### Validation and Testing
 
-- databases (postgres / mysql / mariadb)
-  - Purpose: Components contain DB cluster templates (CRDs), database provisioning manifests (users, databases, backups) and recommended resource defaults used by apps.
-  - Usage: Use `components/postgres`, `components/mysql`, or `components/mariadb` for cluster- or namespace-scoped DB provisioning. Store DB credentials in per-app `*.sops.yaml` secrets (e.g., `kubernetes/apps/database/postgres/secret.sops.yaml`) and reference those secrets from HelmRelease values. Prefer the component templates for creating databases/users rather than hand-rolling raw SQL resources.
-  - Examples: `kubernetes/components/postgres/database.yaml`, `kubernetes/components/mysql/cluster.yaml`, `kubernetes/components/mariadb/database.yaml`, `kubernetes/apps/database/postgres/ks.yaml`.
+-   **Primary validation method** (works without cluster):
+    ```bash
+    # Flux manifest validation - takes 79 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
+    flux-local test --enable-helm --all-namespaces --path ./kubernetes/flux/cluster -v
+    # OR use Docker if flux-local not installed:
+    docker run --rm -v "$(pwd):/workspace" -w /workspace ghcr.io/allenporter/flux-local:v7.8.0 test --enable-helm --all-namespaces --path /workspace/kubernetes/flux/cluster -v
+    ```
+-   **Additional validation tools**:
+    ```bash
+    # Basic Kubernetes manifest validation (install kubeconform first)
+    kubeconform -summary -verbose kubernetes/apps/*/kustomization.yaml
+    # Check dependencies in bootstrap script
+    bash scripts/bootstrap-apps.sh  # Will fail gracefully, showing missing tools
+    ```
 
-- democratic-csi
-  - Purpose: Storage runtime configuration and CRs for democratic-csi, exposing storage classes used by applications.
-  - Usage: Install once as a cluster-scoped component (found under `components/common/democratic-csi.yaml`). Applications request the storage class by name in their PVCs or volsync templates.
-  - Examples: `kubernetes/components/common/democratic-csi.yaml`, `kubernetes/apps/*/*/ks.yaml` references to storage classes.
+### Cluster Operations (requires running cluster)
 
-- code (code-server)
-  - Purpose: Developer-focused code-server HelmRelease using the `app-template` pattern to quickly provision per-namespace dev instances.
-  - Usage: Use `components/code/code-server.yaml` as a reference HelmRelease (or include the component directly when you want a standardized code-server). Adjust host and ingress values to `${APP}-code.${CLUSTER_DOMAIN}` and set `persistence`/`service` ports to match your app's conventions.
-  - Example: `kubernetes/components/code/code-server.yaml` shows how `APP`, `CLUSTER_DOMAIN`, `INGRESS class` and port anchors are used.
+-   **Post-deployment verification**:
+    ```bash
+    cilium status                    # Check Cilium CNI status
+    flux check                       # Verify Flux system health
+    flux get sources git flux-system
+    flux get ks -A                   # Check Kustomizations
+    flux get hr -A                   # Check HelmReleases
+    kubectl get pods --all-namespaces --watch  # Monitor rollout
+    ```
+-   **Force Flux sync**:
+    ```bash
+    task reconcile  # Force pull from Git repository
+    ```
 
-Programmatic updates and templates
-- Purpose: C# `Update.cs` scripts under `kubernetes/apps/*/*/Update.cs` generate or synchronize derived resources from templates in `kubernetes/components/*/` and write out `.sops.yaml` secrets where needed.
-- Behavior: The scripts read templates (e.g., `GetTemplate("kubernetes/components/volsync/local/replicationsource.yaml")`), generate resource YAML, write files, and (for `.sops.yaml`) re-encrypt using `sops -e -i` (see `kubernetes/components/common/Update.cs` for patterns).
-- Guidance: Prefer running `task update` (or `dotnet run .mise/tasks/do-update.cs`) to regenerate files. Do not manually edit files that are generated by `Update.cs` except when intentionally modifying the source templates.
+## Validation Scenarios
 
-How apps consume components — checklist
-1. Add the component to the app's `ks.yaml` or `kustomization.yaml`. Example: `- ../../../../components/ingress/internal`.
-2. Match the component conventions in your HelmRelease values (e.g., set `route.internal.hostnames` or `ingress.internal.annotations`). See `kubernetes/apps/observability/gatus/app/helmrelease.yaml` for a pattern that declares `route.internal.parentRefs` and `hostnames`.
-3. Add any app-specific encrypted secrets as `secret.sops.yaml` under the app directory and reference them in HelmRelease values.
-4. If local templates/volsync/db resources are needed, use the component templates (PVC, replication CRs) or run the app's `Update.cs` if present.
-5. Locally validate with `dotnet run .mise/tasks/do-update.cs` (if used) and `flux-local test` before opening a PR.
+-   **ALWAYS run flux-local testing** after making changes to kubernetes/ directory
+-   **ALWAYS test** that bootstrap script dependency validation works: `bash scripts/bootstrap-apps.sh`
+-   **After cluster changes**: Run complete verification workflow including cilium status and flux checks
+-   **Manual testing**: If cluster is available, perform end-to-end GitOps workflow testing
 
-Integration points to watch
-- 1Password / op://: Many environment and CI values use `op://` references (`.mise.toml` and some templates). Do not commit credentials — always use `*.sops.yaml` or 1Password integration.
-- Renovate: `.github/renovate.json5` targets HelmCharts, helmfile, kustomize, and kubernetes manifests. Avoid large, overlapping changes to charts or component templates in the same PR as Renovate updates.
-- CI: `.github/workflows/flux-local.yaml` runs `flux-local` tests and diffs. Keep PRs small — flux-local diffs are limited by size and CI posts the diff to PR comments.
+## Common Troubleshooting
 
-Safety checklist for AI agents (must follow)
-- NEVER commit unencrypted secrets or `age.key`.
-- Prefer `Update.cs` scripts for any change that touches generated files or `.sops.yaml` files.
-- Preserve `postBuild` substitutions in child kustomizations (`cluster-secrets`, `shared-secrets`) unless you intentionally change cluster injection behavior.
-- Use `flux-local test` locally and rely on CI diffs before merging.
-- For changes to ingress/gateway behavior, double-check Gateway parentRefs (`network` namespace) and Traefik/IngressClass annotations used by `components/ingress/*`.
+### Installation Issues
 
-References to inspect when modifying code
-- `Taskfile.yaml`, `.taskfiles/*` — quick tasks and commands.
-- `.mise.toml` — pinned toolchain, environment variables, and `task update` script configuration.
-- `scripts/bootstrap-apps.sh`, `bootstrap/helmfile.yaml` — bootstrap order and CRD steps.
-- `kubernetes/flux/cluster/ks.yaml` — cluster Kustomization and postBuild substitution behavior.
-- `kubernetes/components/*/` — templates used by `Update.cs` scripts.
-- Any `kubernetes/apps/*/*/Update.cs` — look for `GetTemplate()` usage and follow that pattern.
+-   **"Missing required deps"**: Normal when tools not installed - shows helmfile, sops, talhelper, etc.
+-   **Network restrictions blocking mise**: Use available tools (kubectl, yq, docker) for validation only
+-   **Python compilation errors**: Run `mise settings python.compile=0` then retry
+-   **GitHub token issues**: Unset `GITHUB_TOKEN` environment variable and retry
 
-MCP servers (tools) agents should use
+### Expected Timing and Failures
 
-- mcp_context7_resolve-library-id + mcp_context7_get-library-docs
-  - Use for authoritative library documentation and code examples (Pulumi providers, SDKs like `@1password/connect`, Unifi SDKs). Always call `resolve-library-id` first unless the caller supplies a Context7-compatible ID (`/org/project`).
+-   **mise install**: 10-20 minutes depending on network. NEVER CANCEL.
+-   **flux-local test**: 79 seconds. NEVER CANCEL. Set timeout to 120+ seconds minimum.
+-   **task bootstrap:talos**: 15-30 minutes. NEVER CANCEL.
+-   **task bootstrap:apps**: 10-20 minutes. NEVER CANCEL.
+-   **Cluster rollout**: 10+ minutes normal. Do not interrupt.
 
-- mcp_microsoft-doc_microsoft_docs_search + mcp_microsoft-doc_microsoft_code_sample_search + mcp_microsoft-doc_microsoft_docs_fetch
-  - Use for Microsoft/Azure docs and official code samples. Prefer `code_sample_search` with `language` set when you need runnable snippets. For Azure-related generation or deployment plans, call the Azure best-practice tool (get_bestpractices) first as required by repo rules.
+## Infrastructure Requirements
 
-- mcp_duckduckgo_search + mcp_duckduckgo_fetch_content
-  - General web search and page fetching for vendor docs, blog posts, or quick troubleshooting. Use when library-specific or vendor-specific MCPs do not return sufficient context.
+### Physical Requirements
 
-- mcp_github_pull_request_read, mcp_github_list_discussions, mcp_github_search_issues, mcp_github_list_projects
-  - Use to inspect PRs, changed files, discussions and project context in the target repo. Prefer `mcp_github_pull_request_read(method: get_files|get_diff|get)` to obtain exact diffs and changed file lists before editing code or proposing PR changes.
+-   **This is a running production cluster config**, not a template
+-   **Requires specific Talos hardware**: Multiple nodes with exact network configurations
+-   **Storage**: Longhorn with specific disk configurations per node
+-   **Network**: Static IPs, specific hardware addresses defined in talconfig.yaml
 
-- mcp_flux-operator_get_flux_instance
-  - Use to get a report of Flux controllers/CRDs and their status when investigating GitOps/Flux issues.
+### External Dependencies
 
-- mcp_kubernetes_namespaces_list + mcp_kubernetes_resources_create_or_update/get/delete
-  - Use for cluster-aware workflows (listing namespaces, creating or updating resources). Only call resource-changing tools when the user explicitly asks to modify a cluster; otherwise prefer read-only queries and local validation (`flux-local`).
+-   **OnePassword Connect**: Used for secret management (required for SOPS)
+-   **Cloudflare account**: Required for DNS and tunnel management
+-   **Talos Image Factory**: For custom system extensions
 
-- mcp_pulumi_neo-task-launcher
-  - Use to launch Pulumi Neo tasks (automated infra work) when the user requests an automated Pulumi operation. Always supply clear context and expected artifacts.
+### Secret Management
 
-- activate_* tools (activate_kubernetes_resource_management, activate_pulumi_deployment_tools, activate_flux_reconciliation_tools, etc.)
-  - Call the appropriate `activate_` tool before using specialized domain tools; they ensure the agent has access to the right capabilities and permissions.
+-   **SOPS with Age**: All secrets encrypted with age.key file
+-   **OnePassword integration**: Credentials managed via op:// references
+-   **NEVER commit unencrypted secrets**: All .sops.yaml files must be encrypted
 
-Quick rules
-- Prefer specialized MCP tools (Context7, Microsoft-doc, GitHub, Flux) over a generic web search when authoritative docs are available.
-- Resolve library IDs with `mcp_context7_resolve-library-id` before fetching library docs.
-- Never call cluster-modifying tools or Pulumi/Pulumi-Neo tasks without explicit user consent.
+## Repository Structure
+
+### Key Directories
+
+-   `/.taskfiles/`: Build automation (bootstrap, k8s, talos)
+-   `/kubernetes/flux/cluster/`: Main Flux configuration entry point (ks.yaml defines cluster-meta and cluster-apps)
+-   `/kubernetes/apps/`: Application deployments organized by namespace (kustomization.yaml + ks.yaml per namespace)
+-   `/kubernetes/components/`: Shared Kustomize components (common/, ingress/, postgres/, etc.)
+-   `/talos/`: Talos Linux configuration and patches
+-   `/scripts/`: Shell scripts, primarily bootstrap-apps.sh
+-   `/bootstrap/`: Helmfile-based initial cluster setup
+
+### Configuration Files
+
+-   `.mise.toml`: Development tool versions and environment setup
+-   `Taskfile.yaml`: Main task runner with includes
+-   `talos/talconfig.yaml`: Complete Talos cluster configuration
+-   `talos/talenv.yaml`: Version pinning for Talos and Kubernetes
+
+## Code Organization Patterns
+
+### Kubernetes Namespace Structure
+
+Each namespace directory follows this pattern:
+
+-   `kustomization.yaml`: Lists all Flux Kustomizations (ks.yaml files) and shared components
+-   `secret-store.yaml`: OnePassword External Secrets integration for the namespace
+-   Individual app directories containing Flux `ks.yaml` files
+
+### Flux Kustomization (ks.yaml) Pattern
+
+All applications use standardized ks.yaml files with:
+
+-   `&app` and `&namespace` YAML anchors for DRY configuration
+-   Consistent dependency declarations (`dependsOn`)
+-   Component references to shared functionality (`../../../../components/ingress/internal`, etc.)
+-   PostBuild substitution variables (`APP`, `NAMESPACE`, plus app-specific vars)
+
+### App onboarding: vendor Helm charts (e.g., Homechart)
+
+When adding a new app that ships its own Helm chart, follow this pattern:
+
+1) App folder layout under the target namespace
+- `kubernetes/apps/<NAMESPACE>/<CATEGORY>/<APP>/`
+    - `kustomization.yaml` that references:
+        - `helmrelease.yaml` (can include an embedded HelmRepository followed by the HelmRelease in a single multi-doc file)
+        - `externalsecret.yaml` (if the app needs DB or other credentials)
+        - `definition.yaml` (ApplicationDefinition + optional Gatus checks)
+
+2) Helm repository and release
+- Prefer embedding a small, app-specific HelmRepository in the same file as the HelmRelease (two YAML documents). Example fields to set in the HelmRelease:
+    - `chart.spec.chart`: upstream chart name
+    - `chart.spec.sourceRef`: references the embedded HelmRepository by name
+    - `values.ingress`: set `ingressClassName` and host to `${APP}.${ROOT_DOMAIN}`
+    - If the chart includes its own Postgres, disable it via `values.postgresql.enabled: false` and use the shared cluster Postgres instead
+
+3) Database provisioning via component
+- If the app uses Postgres, include `../../../../components/postgres` in the app Kustomization’s `components` list and add a `dependsOn` entry for `postgres` in the `database` namespace. The Database (CNPG) object is created by the component; no app-local DB manifests are required.
+
+4) ExternalSecret pattern for DB credentials
+- Use a `ClusterSecretStore` named `database` to extract the per-app key `'${APP}-postgres'` and rewrite keys with a `postgres_` prefix.
+- Emit the exact env vars the chart expects using `target.template.data`. For example, for Homechart:
+    - `HOMECHART_postgresql_hostname`, `HOMECHART_postgresql_database`, `HOMECHART_postgresql_username`, `HOMECHART_postgresql_password`, `HOMECHART_postgresql_port` (5432)
+- Avoid unsupported fields (e.g., `decode`) in ExternalSecret; use `rewrite` + template variables instead.
+
+5) Ingress and base URL alignment
+- If the app needs a base URL env (e.g., `HOMECHART_APP_BASEURL`), set it to `https://${APP}.${ROOT_DOMAIN}` and ensure the ingress host matches the same value.
+
+6) Namespace ks.yaml wiring
+- Add a new Kustomization entry in `kubernetes/apps/<NAMESPACE>/<CATEGORY>/ks.yaml` pointing to the app folder, with:
+    - `components`: at minimum `../../../../components/ingress/internal` and, if applicable, `../../../../components/postgres`
+    - `dependsOn`: reference `postgres` in `database` namespace when using the Postgres component
+    - `postBuild.substitute`: include `APP` and `NAMESPACE` (and any app-specific substitutions)
+
+7) Optional components
+- Add `../../../../components/tailscale` to expose the app over Tailscale if desired.
+- Add `../../../../components/volsync` when persistent data should be replicated/backed up; set `VOLSYNC_*` substitutions as needed.
+
+8) ApplicationDefinition and health
+- Provide a `definition.yaml` for UI metadata (name, icon, URL, access policy) and a simple Gatus check for the app URL.
+
+9) Validate before pushing
+- Run flux-local testing (or the Docker-based variant) to validate manifests render and Helm charts resolve:
+    - `docker run --rm -v "$(pwd):/workspace" -w /workspace ghcr.io/allenporter/flux-local:v7.8.0 test --enable-helm --all-namespaces --path /workspace/kubernetes/flux/cluster -v`
+
+Notes
+- It’s acceptable to register shared Helm repositories under `kubernetes/flux/meta/repos/` when used by multiple apps. For one-off vendor charts, embedding the HelmRepository with the app’s HelmRelease keeps the scope local and avoids clutter under `flux/meta`.
+
+## Automation and Updates
+
+-   **Renovate**: Automated dependency updates via .github/renovate.json5
+-   **GitHub Actions**: flux-local testing on all kubernetes/ changes
+-   **C# Update Scripts**: Custom update automation in `kubernetes/*/Update.cs` files
+    -   Run all updates: `task update` or `dotnet run .mise/tasks/do-update.cs`
+    -   Update scripts handle SOPS encryption/decryption automatically
+    -   Example: Tailscale nameserver IP sync from live cluster to secrets
+-   **Husky pre-commit**: Runs dotnet husky tasks automatically
+-   **mise tooling**: All development dependencies managed via `.mise.toml`
+
+## Critical Reminders
+
+-   **NEVER CANCEL long-running builds or deploys** - may take 45+ minutes
+-   **ALWAYS validate with flux-local** before pushing kubernetes/ changes
+-   **VERIFY .sops.yaml encryption** before committing secrets
+-   **SET EXPLICIT TIMEOUTS** (60+ minutes) for bootstrap commands
+-   **This is a production config** - exercise extreme caution with changes

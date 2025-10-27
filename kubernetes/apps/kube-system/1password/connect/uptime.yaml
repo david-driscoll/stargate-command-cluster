@@ -12,7 +12,7 @@ spec:
     groups:
       - admins
   gatus:
-    - group: "${CLUSTER_TITLE}"
+    - group: "K8S: ${CLUSTER_TITLE}"
       url: https://op-connect.${CLUSTER_DOMAIN}/health
       method: GET
       conditions:

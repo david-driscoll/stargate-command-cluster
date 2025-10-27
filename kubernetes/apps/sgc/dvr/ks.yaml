@@ -13,7 +13,7 @@
 #   dependsOn:
 #     - name: volsync
 #       namespace: volsync-system
-#     - name: shared-volumes
+#     - name: spike-volumes
 #       namespace: *namespace
 #   path: ./kubernetes/apps/sgc/dvr/tvheadend
 #   prune: true
@@ -128,7 +128,7 @@
 #   dependsOn:
 #     - name: volsync
 #       namespace: volsync-system
-#     - name: shared-volumes
+#     - name: spike-volumes
 #       namespace: *namespace
 #     - name: tvheadend
 #       namespace: *namespace

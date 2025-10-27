@@ -4,35 +4,37 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: media-dvr
+  name: spike-media-dvr
+  labels:
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: truenas-stash
   mountOptions:
-    - noatime
-    - nfsvers=4
+    - nfsvers=4.1
+    - hard
+    - intr
   capacity:
     storage: 200Gi
+  storageClassName: nfs-csi
   csi:
-    driver: org.democratic-csi.stash
-    readOnly: false
-    volumeHandle: stash-dvr
+    driver: nfs.csi.k8s.io
+    volumeHandle: spike-media-dvr-volume-id
     volumeAttributes:
       server: "${SPIKE_IP}"
       share: /mnt/stash/media/dvr
-      node_attach_driver: nfs
-      provisioner_driver: freenas-api-nfs
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/persistentvolumeclaim-v1.json
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: media-dvr
+  name: spike-media-dvr
+  labels:
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
-  storageClassName: truenas-stash
-  volumeName: media-dvr
+  storageClassName: nfs-csi
+  volumeName: spike-media-dvr
   accessModes:
     - ReadWriteMany
   resources:

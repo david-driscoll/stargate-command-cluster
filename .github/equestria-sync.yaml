@@ -18,6 +18,9 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/democratic-csi/
     dest: kubernetes/apps/democratic-csi/
     deleteOrphaned: true
+  - source: kubernetes/apps/nfs-system/
+    dest: kubernetes/apps/nfs-system/
+    deleteOrphaned: true
   - source: kubernetes/apps/network/
     dest: kubernetes/apps/network/
     deleteOrphaned: true

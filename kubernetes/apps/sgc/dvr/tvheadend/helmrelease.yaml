@@ -29,11 +29,7 @@ spec:
     recreate: true
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: truenas-iscsi-stash
-      namespace: democratic-csi
-    - name: truenas-stash
-      namespace: democratic-csi
+  dependsOn: []
   values:
     controllers:
       *app :
@@ -67,8 +63,6 @@ spec:
       #   effect: NoSchedule
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
         runAsGroup: 568
         runAsNonRoot: true
         runAsUser: 568
@@ -128,7 +122,7 @@ spec:
       tivi-sync:
         existingClaim: tivi-sync
       media-dvr:
-        existingClaim: media-dvr
+        existingClaim: spike-media-dvr
         globalMounts:
           - path: /media/dvr
       timeshift:

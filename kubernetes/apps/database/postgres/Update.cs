@@ -276,6 +276,7 @@ catch (Exception ex)
 
 static IEnumerable<YamlMappingNode> ReadStream(string path)
 {
+  AnsiConsole.MarkupLine($"[blue]Reading YAML stream from {path}[/]");
   var doc = new YamlStream();
   using var reader = new StringReader(File.ReadAllText(path));
   doc.Load(reader);

@@ -19,7 +19,7 @@ spec:
   #     externalHost: *url
   gatus:
     - group: "Applications"
-      url: *url
+      url: https://idp.${TAILSCALE_DOMAIN}/.well-known/openid-configuration
       method: GET
       conditions:
         - "[STATUS] == 200"

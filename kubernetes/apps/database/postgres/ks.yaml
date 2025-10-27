@@ -64,39 +64,39 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app pgadmin
-  namespace: &namespace database
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: postgres
-      namespace: *namespace
-  path: ./kubernetes/apps/database/postgres/pgadmin
-  prune: true
-  wait: true
-  force: false # true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 10m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/gateway/internal
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app pgadmin
+#   namespace: &namespace database
+# spec:
+#   targetNamespace: *namespace
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: postgres
+#       namespace: *namespace
+#   path: ./kubernetes/apps/database/postgres/pgadmin
+#   prune: true
+#   wait: true
+#   force: false # true
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 10m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   components:
+#     - ../../../../components/volsync
+#     - ../../../../components/gateway/internal
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       NAMESPACE: *namespace
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

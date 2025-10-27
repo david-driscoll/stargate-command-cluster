@@ -11,7 +11,7 @@ spec:
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mariadb.svg
   gatus:
     - group: "${CLUSTER_TITLE}"
-      url: "tcp://mariadb.database.svc.cluster.local:6379"
+      url: "tcp://mariadb.${CLUSTER_DOMAIN}:6379"
       interval: 30s
       conditions:
         - "[CONNECTED] == true"

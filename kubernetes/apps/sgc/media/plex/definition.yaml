@@ -15,8 +15,7 @@ spec:
       - family
   gatus:
     - url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token="op://Eris/Media Management Secrets/plex_alt_token"
-      parent: "Applications"
+      group: "Applications"
       method: GET
       conditions:
       - "[STATUS] == 200"
-      parent_name: "apps"

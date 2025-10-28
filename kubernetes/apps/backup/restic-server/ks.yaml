@@ -28,7 +28,7 @@ spec:
     namespace: flux-system
   components:
     - ../../../../components/volsync
-    - ../../../../components/gateway/authenticated
+    - ../../../../components/gateway/forwardauth
   postBuild:
     substitute:
       APP: *app

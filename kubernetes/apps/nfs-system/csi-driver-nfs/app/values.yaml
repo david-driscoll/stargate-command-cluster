@@ -49,7 +49,7 @@ controller:
   replicas: 2
   strategyType: RollingUpdate
   runOnMaster: false
-  runOnControlPlane: false
+  runOnControlPlane: true
   livenessProbe:
     healthPort: 29652
   logLevel: 5
@@ -127,7 +127,7 @@ node:
         memory: 20Mi
 
 externalSnapshotter:
-  enabled: false
+  enabled: true
   name: snapshot-controller
   priorityClassName: system-cluster-critical
   controller:

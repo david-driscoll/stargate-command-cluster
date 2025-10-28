@@ -46,9 +46,13 @@ spec:
               templateAs: Values
             - key: uri
               templateAs: Values
+            - key: uriql
+              templateAs: Values
             - key: public-jdbc-uri
               templateAs: Values
             - key: public-uri
+              templateAs: Values
+            - key: public-uriql
               templateAs: Values
   dataFrom:
     - extract:

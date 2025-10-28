@@ -14,6 +14,8 @@ data:
   jdbc-uri: "jdbc:postgres://{{ .hostname }}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}&sslmode=disable"
   public-jdbc-uri: "jdbc:postgres://${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}&sslmode=disable"
   uri: "postgres://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}/{{ .database }}?sslmode=disable"
+  uriql: "postgresql://{{ .username }}:{{ .password }}@{{ .hostname }}:{{ .port }}/{{ .database }}?sslmode=disable"
   public-uri: "postgres://{{ .username }}:{{ .password }}@${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}?sslmode=disable"
+  public-uriql: "postgresql://{{ .username }}:{{ .password }}@${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}?sslmode=disable"
   connection-string: "Host={{ .hostname }};Port={{ .port }};Database={{ .database }};Username={{ .username }};Password={{ .password }};Trust Server Certificate=true;SSL Mode=Disable;"
   public-connection-string: "Host=${APP}.${CLUSTER_DOMAIN};Port={{ .port }};Database={{ .database }};Username={{ .username }};Password={{ .password }};Trust Server Certificate=true;SSL Mode=Disable;"

@@ -16,11 +16,11 @@ spec:
     - "${APP}.${CLUSTER_DOMAIN}"
   rules:
     - backendRefs:
-        - name: loki-headless
+        - name: loki
           port: 3100
-      # filters:
-      #   - type: ExtensionRef
-      #     extensionRef:
-      #       group: traefik.io
-      #       kind: Middleware
-      #       name: authenticated-user
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: authenticated-user

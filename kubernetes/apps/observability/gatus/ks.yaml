@@ -18,7 +18,7 @@ spec:
   path: ./kubernetes/apps/observability/gatus/app
   components:
     - ../../../../components/postgres
-    - ../../../../components/gateway/authenticated
+    - ../../../../components/gateway/forwardauth
     - ../../../../components/tailscale
   prune: true
   wait: true

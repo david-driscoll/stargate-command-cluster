@@ -440,3 +440,9 @@ spec:
             kind: Gateway
         hostnames:
           - ${APP}.${CLUSTER_DOMAIN}
+        filters:
+          - type: ExtensionRef
+            extensionRef:
+              group: traefik.io
+              kind: Middleware
+              name: local-user

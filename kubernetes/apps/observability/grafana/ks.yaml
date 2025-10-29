@@ -21,7 +21,6 @@ spec:
   components:
     - ../../../../components/volsync
     - ../../../../components/postgres
-    - ../../../../components/gateway/internal
   prune: true
   wait: true
   force: false # true

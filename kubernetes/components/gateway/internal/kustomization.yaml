@@ -30,3 +30,29 @@ patches:
             internal:
               annotations:
                 external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+  - target:
+      group: gateway.networking.k8s.io
+      version: v1
+      kind: HTTPRoute
+    patch: |-
+      - op: add
+        path: /spec/rules/0/filters
+        value:
+          - type: ExtensionRef
+            extensionRef:
+              group: traefik.io
+              kind: Middleware
+              name: local-user
+  - target:
+      group: helm.toolkit.fluxcd.io
+      version: v2
+      kind: HelmRelease
+    patch: |-
+      - op: add
+        path: /spec/values/route/internal/rules/0/filters
+        value:
+          - type: ExtensionRef
+            extensionRef:
+              group: traefik.io
+              kind: Middleware
+              name: local-user

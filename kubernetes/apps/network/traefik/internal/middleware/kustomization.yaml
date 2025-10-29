@@ -12,3 +12,4 @@ resources:
   - ./tailscale-user.yaml
   - ./strip-query-string.yaml
   - ./host-header.yaml
+  - ./error-pages.yaml

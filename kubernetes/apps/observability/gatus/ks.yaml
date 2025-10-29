@@ -19,7 +19,6 @@ spec:
   components:
     - ../../../../components/postgres
     - ../../../../components/gateway/forwardauth
-    - ../../../../components/tailscale
   prune: true
   wait: true
   force: false # true

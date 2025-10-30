@@ -15,6 +15,7 @@ spec:
       - "PATCH"
     accessControlAllowHeaders:
       - "*"
+    accessControlAllowCredentials: true
     accessControlAllowOriginListRegex:
       - "https?://.*\\.driscoll\\.tech"
     addVaryHeader: true

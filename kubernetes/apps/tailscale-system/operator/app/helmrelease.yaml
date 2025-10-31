@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: tailscale-operator
-      version: 1.88.4
+      version: 1.90.5
       sourceRef:
         kind: HelmRepository
         name: tailscale
@@ -56,7 +56,7 @@ spec:
         - "tag:operator"
       image:
         repository: ghcr.io/tailscale/k8s-operator
-        tag: v1.88.4@sha256:9a35d316344e4d6f85733848e79947566132d16abdb5fefb60adc49e04b9745c
+        tag: v1.90.5@sha256:92857fa2131347ebfbefdd8c6aacfdc86a1e412e4d310099adf2b6c3c085c582
         pullPolicy: IfNotPresent
       hostname: "${CLUSTER_CNAME}-operator"
       podAnnotations:
@@ -72,7 +72,7 @@ spec:
     proxyConfig:
       image:
         repository: tailscale/tailscale
-        tag: v1.88.4@sha256:360e10ad95ad03950f66df03e0dab66287f9f89076ee4012d50bc6adceafcdf3
+        tag: v1.90.5@sha256:8528b4f401c950308efc5cdb32b7030c3dc3c3f41884b6f1af25157a7ae051bb
       defaultTags: "tag:apps"
       podAnnotations:
         reloader.stakater.com/auto: "true"

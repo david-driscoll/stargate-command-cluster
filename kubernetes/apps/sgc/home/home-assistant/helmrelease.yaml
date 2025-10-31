@@ -41,6 +41,7 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           restartPolicy: Always
+          terminationGracePeriodSeconds: 30
         containers:
           app:
             image:

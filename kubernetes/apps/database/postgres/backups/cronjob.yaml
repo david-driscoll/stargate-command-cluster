@@ -50,7 +50,7 @@ spec:
           main: &job
             image:
               repository: mcr.microsoft.com/dotnet/sdk
-              tag: 10.0
+              tag: '10.0'
               pullPolicy: IfNotPresent
             envFrom:
               - secretRef:

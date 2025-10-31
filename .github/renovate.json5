@@ -13,15 +13,6 @@
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
   schedule: ["every weekend"],
   ignorePaths: ["**/*.sops.*"],
-  enabledManagers: [
-    "github-actions",
-    "helm-values",
-    "helmfile",
-    "kustomize",
-    "custom.regex",
-    "flux",
-    "kubernetes",
-  ],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
     pinDigests: false,

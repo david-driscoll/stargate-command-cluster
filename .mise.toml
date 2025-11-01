@@ -26,7 +26,7 @@ CONNECT_TOKEN = "op://Eris/OnePassword Connect Token/credential"
 
 [tools]
 python = "3.13.3"
-"pipx:makejinja" = "2.7.2"
+"pipx:makejinja" = "2.8.1"
 krew = "0.4.5"
 
 kubectl = "1.33.0"

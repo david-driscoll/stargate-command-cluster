@@ -59,10 +59,11 @@ spec:
               TZ: "${TIMEZONE}"
             command:
               - rclone
-              - copy
+              - sync
               - local:${BACKBLAZE_DB_BUCKET}
               - backblaze:${BACKBLAZE_DB_BUCKET}
               - --progress
+              - --delete-after
 
     defaultPodOptions:
       securityContext: &podSecurityContext

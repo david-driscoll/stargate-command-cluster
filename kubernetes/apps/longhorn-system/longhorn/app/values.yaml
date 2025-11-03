@@ -17,7 +17,7 @@ defaultSettings:
   nodeDownPoddeletionPolicy: Retain-both-statefulset-and-deployment-pod
   volumeAttachmentRecoveryPolicy: never
   orphanAutoDeletion: true
-  replicaAutoBalance: true
+  replicaAutoBalance: best-effort
   storageMinimalAvailablePercentage: 5
   storageReservedPercentageForDefaultDisk: 10
 

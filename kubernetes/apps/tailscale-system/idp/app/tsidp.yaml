@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app tailscale-idp
+  name: &app tsidp
 spec:
   chartRef:
     kind: OCIRepository
@@ -47,7 +47,6 @@ spec:
               - -c
               - |
                 chown -R 568:568 /data/tsidp/
-                chown -R 568:568 /.config/
             securityContext:
               runAsUser: 0
               runAsGroup: 0
@@ -111,13 +110,3 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data/tsidp/
-            subPath: tsidp
-          - path: /.config/
-            subPath: config
-      empty:
-        type: emptyDir
-        globalMounts:
-          - path: /.cache/
-            subPath: cache
-          - path: /user/
-            subPath: user

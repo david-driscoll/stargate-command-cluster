@@ -6,7 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: egress
-  name: tailscale-idp
+  name: tsidp
 spec:
   externalName: idp
   type: ExternalName
@@ -22,7 +22,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "go.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: egress
-  name: tailscale-go
+  name: tsgo
 spec:
   type: ExternalName
   externalName: go

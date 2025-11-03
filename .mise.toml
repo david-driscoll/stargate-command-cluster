@@ -25,7 +25,7 @@ CONNECT_VAULT = "Eris"
 CONNECT_TOKEN = "op://Eris/OnePassword Connect Token/credential"
 
 [tools]
-python = "3.14.0"
+python = "3.13.1"
 "pipx:makejinja" = "2.8.1"
 krew = "0.4.5"
 
@@ -49,6 +49,7 @@ cloudflared = "2025.6.1"
 cue = "0.13.2"
 gh = "2.74.2"
 "aqua:brumhard/krewfile" = "0.6.3"
+"pipx:flux-local" = "latest"
 
 [tasks.update]
 description = 'Update all apps that have an update script'

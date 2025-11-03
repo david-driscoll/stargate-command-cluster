@@ -130,6 +130,7 @@ spec:
     namespace: flux-system
   components:
     - ../../../../components/volsync
+    - ../../../../components/volsync/backblaze
     - ../../../../components/tailscale
   postBuild:
     substitute:

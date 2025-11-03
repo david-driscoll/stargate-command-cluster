@@ -3,17 +3,17 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "${APP}"
+  name: "${APP}-backblaze"
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
 spec:
-  sourcePVC: "${APP}"
+  sourcePVC: "${APP}-backblaze"
   trigger:
     schedule: "0 3 * * *"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
     pruneIntervalDays: 14
-    repository: "${APP}-volsync-secret"
+    repository: "${APP}-volsync-backblaze"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=openebs-hostpath}"
@@ -32,5 +32,5 @@ spec:
     #     cpu: "500m"
     #     memory: "4Gi"
     retain:
-      hourly: 24
       daily: 7
+      monthly: 3

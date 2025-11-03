@@ -22,7 +22,7 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: "data-adguard-home-2-volsync-secret"
+  name: "data-adguard-home-2-volsync"
 spec:
   refreshInterval: 4m
   secretStoreRef:
@@ -111,5 +111,5 @@ spec:
     #     cpu: "500m"
     #     memory: "4Gi"
     retain:
+      hourly: 24
       daily: 7
-      monthly: 3

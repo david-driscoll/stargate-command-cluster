@@ -37,6 +37,24 @@ spec:
         pod:
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee
+            command:
+              - /bin/sh
+              - -c
+              - |
+                chown -R 1000:1000 /data/tsidp/
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities:
+                add:
+                  - CHOWN
+                  - FOWNER
+
         containers:
           *app :
             nameOverride: *app
@@ -53,6 +71,9 @@ spec:
                     name: authkey
                     key: authkey
               TSIDP_ENABLE_STS: "1"
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
 
     defaultPodOptions:
       securityContext:

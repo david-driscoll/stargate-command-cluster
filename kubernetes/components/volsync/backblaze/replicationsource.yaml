@@ -7,7 +7,7 @@ metadata:
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
 spec:
-  sourcePVC: "${APP}-backblaze"
+  sourcePVC: "${APP}"
   trigger:
     schedule: "0 3 * * *"
   restic:

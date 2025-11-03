@@ -6,7 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: ssh
-  name: egress-proxmox-luna
+  name: ssh-proxmox-luna
 spec:
   externalName: luna
   type: ExternalName
@@ -28,7 +28,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: ssh
-  name: egress-proxmox-celestia
+  name: ssh-proxmox-celestia
 spec:
   externalName: celestia
   type: ExternalName
@@ -48,7 +48,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: ssh
-  name: egress-proxmox-alpha-site
+  name: ssh-proxmox-alpha-site
 spec:
   externalName: alpha-site
   type: ExternalName

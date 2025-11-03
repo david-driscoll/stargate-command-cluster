@@ -53,8 +53,6 @@ spec:
                     name: authkey
                     key: authkey
               TSIDP_ENABLE_STS: "1"
-            securityContext:
-              runAsNonRoot: true
 
     defaultPodOptions:
       securityContext:

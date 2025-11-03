@@ -75,29 +75,6 @@ spec:
               runAsGroup: 568
               runAsNonRoot: true
               fsGroup: 568
-            probes:
-              readiness: &probe
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /.well-known/openid-configuration
-                    port: 443
-                    scheme: HTTPS
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  successThreshold: 1
-                  failureThreshold: 3
-              liveness: *probe
-              startup: *probe
-            resources:
-              requests:
-                memory: 128Mi
-                cpu: 200m
-              limits:
-                memory: 512Mi
-                cpu: 800m
 
     defaultPodOptions:
       securityContext:

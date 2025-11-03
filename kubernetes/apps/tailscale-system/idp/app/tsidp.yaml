@@ -37,23 +37,6 @@ spec:
         pod:
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
-        initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: latest@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee
-            command:
-              - /bin/sh
-              - -c
-              - |
-                chown -R 568:568 /data/tsidp/
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities:
-                add:
-                  - CHOWN
-                  - FOWNER
         containers:
           *app :
             nameOverride: *app
@@ -62,7 +45,7 @@ spec:
               tag: v0.0.6@sha256:b5bbc533cf4847c5ee19abbef241ed02152a837c1e5f5488cd41455ad0204236
             env:
               TS_HOSTNAME: idp
-              TS_STATE_DIR: /data/tsidp
+              TS_STATE_DIR: /tsidp
               TAILSCALE_USE_WIP_CODE: "1"
               TS_AUTHKEY:
                 valueFrom:
@@ -70,11 +53,6 @@ spec:
                     name: authkey
                     key: authkey
               TSIDP_ENABLE_STS: "1"
-            securityContext:
-              runAsUser: 568
-              runAsGroup: 568
-              runAsNonRoot: true
-              fsGroup: 568
 
     defaultPodOptions:
       securityContext:
@@ -86,4 +64,5 @@ spec:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /data/tsidp/
+          - path: /tsidp/
+            subPath: different

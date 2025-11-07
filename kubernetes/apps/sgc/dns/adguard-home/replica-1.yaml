@@ -34,6 +34,7 @@ spec:
       metadata:
         labels:
           cnpg.io/reload: "true"
+          volsync: "true"
         annotations:
           reloader.stakater.com/auto: "true"
       data:

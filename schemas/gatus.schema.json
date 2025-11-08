@@ -898,10 +898,32 @@
           "type": "string",
           "description": "Pushover user key"
         },
+        "title": {
+          "type": "string",
+          "description": "Message title"
+        },
         "priority": {
           "type": "integer",
           "description": "Message priority",
           "default": 0
+        },
+        "resolved-priority": {
+          "type": "integer",
+          "description": "Resolved message priority",
+          "default": -1
+        },
+        "send-on-resolved": {
+          "type": "boolean",
+          "description": "Whether to send a notification when resolved",
+          "default": true
+        },
+        "sound": {
+          "type": "string",
+          "description": "Notification sound"
+        },
+        "ttl": {
+          "type": "integer",
+          "description": "Time to live for the message in seconds"
         },
         "default-alert": {
           "$ref": "#/$defs/alert"

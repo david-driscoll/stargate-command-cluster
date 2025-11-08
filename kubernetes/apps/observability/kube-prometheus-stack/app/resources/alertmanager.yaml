@@ -36,7 +36,7 @@ receivers:
     pushover_configs:
       - html: true
         user_key: "{{ .pushover_username }}"
-        token: "{{ .pushover_credential }}"
+        token: "{{ .pushover_password }}"
         url_title: View in AlertManager
         message: |-
           {{ "{{-" }} range .Alerts {{ "}}" }}

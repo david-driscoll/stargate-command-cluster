@@ -25,7 +25,7 @@ CONNECT_VAULT = "Eris"
 CONNECT_TOKEN = "op://Eris/OnePassword Connect Token/credential"
 
 [tools]
-python = "3.13.1"
+python = "3.14.0"
 "pipx:makejinja" = "2.8.1"
 krew = "0.4.5"
 

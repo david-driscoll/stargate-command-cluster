@@ -82,6 +82,10 @@ spec:
       shareProcessNamespace: true
 
     persistence:
+      certs:
+        type: emptyDir
+        globalMounts:
+          - path: /data/tsidp/certs
       data:
         existingClaim: *app
         globalMounts:

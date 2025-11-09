@@ -1,12 +1,5 @@
 {
   "servers": {
-    "kubernetes": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "kubernetes-mcp-server@latest"
-      ]
-    },
     "flux-operator-mcp": {
       "command": "flux-operator-mcp",
       "args": [
@@ -16,40 +9,12 @@
         "KUBECONFIG": "./kubeconfig"
       }
     },
-    "github": {
-      "type": "http",
-      "url": "https://api.githubcopilot.com/mcp/"
-    },
-    "microsoft-docs": {
-      "type": "http",
-      "url": "https://learn.microsoft.com/api/mcp"
-    },
-    "context7": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp@latest"
-      ]
-    },
-    "memory": {
-      "type": "stdio",
-      "command": "/opt/homebrew/bin/npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory@latest"
-      ],
+    "talos-mcp": {
+      "command": "/Users/david/.local/bin/talos-mcp-server",
       "env": {
-        "MEMORY_FILE_PATH": "${input:memory_file_path}"
+        "TALOSCONFIG": "./talos/clusterconfig/talosconfig"
       }
     }
   },
-  "inputs": [
-    {
-      "id": "memory_file_path",
-      "type": "promptString",
-      "description": "Path to the memory storage file",
-      "password": false
-    }
-  ]
+  "inputs": []
 }

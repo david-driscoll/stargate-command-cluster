@@ -8,19 +8,28 @@ spec:
   name: Home Assistant
   category: Applications
   description: Home automation and things that make the house angry.
-  url: &url https://home.${ROOT_DOMAIN}
+  url: https://home.${ROOT_DOMAIN}/auth/oidc/welcome
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/home-assistant.svg
   access_policy:
     groups:
       - friends
       - family
-  # authentik:
-  #   proxy:
-  #     mode: "forward_single"
-  #     externalHost: *url
+  authentik:
+    oauth2:
+      clientType: confidential
+      allowedRedirectUris:
+      - url: "https://home.${ROOT_DOMAIN}/auth/oidc/callback"
+      - url: "https://home.${TAILSCALE_DOMAIN}/auth/oidc/callback"
+      - url: "https://${APP}.${ROOT_DOMAIN}/auth/oidc/callback"
+      propertyMappings:
+        - email
+        - openid
+        - profile
+      includeClaimsInIdToken: true
+      subMode: user_email
   gatus:
     - group: "Applications"
-      url: *url
+      url: https://home.${ROOT_DOMAIN}
       method: GET
       conditions:
         - "[STATUS] == 200"

@@ -2,6 +2,17 @@ machine:
   kubelet:
     extraConfig:
       serializeImagePulls: false
+      imageGCHighThresholdPercent: 80
+      imageGCLowThresholdPercent: 60
+      evictionHard:
+        imagefs.available: "10%"
+        nodefs.available: "7%"
+        nodefs.inodesFree: "5%"
+      evictionSoft:
+        imagefs.available: "15%"
+      evictionSoftGracePeriod:
+        imagefs.available: "5m"
+      evictionPressureTransitionPeriod: "5m"
     nodeIP:
       validSubnets:
         - 10.10.0.0/16

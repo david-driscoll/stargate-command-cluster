@@ -99,6 +99,17 @@ loki.process "pod_logs" {
       }
   }
 
+  stage.match {
+    selector = "{namespace=~\"^(pulumi|flux-system)$\"}"
+
+    stages {
+      stage.drop {
+        expression = "(?i)\\b(debug|trace)\\b"
+        drop_counter_reason = "drop_debug_trace"
+      }
+    }
+  }
+
 	forward_to = [loki.write.default.receiver]
 }
 

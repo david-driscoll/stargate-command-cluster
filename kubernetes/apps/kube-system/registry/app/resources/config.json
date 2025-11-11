@@ -148,6 +148,20 @@
               "destination": "/cgr.dev"
             }
           ]
+        },
+        {
+          "urls": ["https://mcr.microsoft.com"],
+          "tlsVerify": true,
+          "onDemand": true,
+          "maxRetries": 3,
+          "retryDelay": "15m",
+          "onlySigned": false,
+          "content": [
+            {
+              "prefix": "**",
+              "destination": "/mcr.microsoft.com"
+            }
+          ]
         }
       ]
     }

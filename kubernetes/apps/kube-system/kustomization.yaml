@@ -14,7 +14,7 @@ resources:
   - ./1password/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
-  - ./containerd-cleanup
+  # - ./containerd-cleanup
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
   - ./kubernetes-dashboard/ks.yaml

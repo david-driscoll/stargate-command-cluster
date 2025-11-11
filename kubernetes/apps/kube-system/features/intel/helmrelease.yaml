@@ -43,6 +43,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    manager:
-      devices:
-        gpu: true
+    name: intel-gpu-plugin
+    nodeFeatureRule: true
+    sharedDevNum: 4 # Allow 4 containers per GPU (8 total slots across 2 nodes)
+    allocationPolicy: balanced # Spread workloads evenly across available GPUs

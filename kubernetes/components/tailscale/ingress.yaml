@@ -6,7 +6,7 @@ metadata:
   annotations:
     tailscale.com/proxy-group: ingress
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    # tailscale.com/tags: "tag:apps"
+    tailscale.com/tags: "tag:apps"
 spec:
   ingressClassName: tailscale
   defaultBackend:

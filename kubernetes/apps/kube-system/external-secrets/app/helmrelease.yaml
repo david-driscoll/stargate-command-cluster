@@ -48,3 +48,11 @@ spec:
         repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
+    reloader:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi

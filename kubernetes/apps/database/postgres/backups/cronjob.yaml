@@ -47,7 +47,7 @@ spec:
           suspend: false
         type: cronjob
         containers:
-          main: &job
+          main:
             image:
               repository: mcr.microsoft.com/dotnet/sdk
               tag: '10.0@sha256:ed46c853a4f100ba7aab2394e9fb9f9b8989e93346b04632dbce11e5da7623d8'
@@ -67,15 +67,15 @@ spec:
                 memory: 512Mi
                 cpu: 500m
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 999
-        runAsGroup: 999
-        fsGroup: 999
-        runAsNonRoot: true
-        fsGroupChangePolicy: "OnRootMismatch"
-        seccompProfile:
-          type: RuntimeDefault
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsUser: 999
+    #     runAsGroup: 999
+    #     fsGroup: 999
+    #     runAsNonRoot: true
+    #     fsGroupChangePolicy: "OnRootMismatch"
+    #     seccompProfile:
+    #       type: RuntimeDefault
 
     persistence:
       script:

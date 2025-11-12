@@ -10,3 +10,5 @@ configMapGenerator:
   - name: thanos-values
     files:
       - values.yaml=./values.yaml
+    options:
+      disableNameSuffixHash: true

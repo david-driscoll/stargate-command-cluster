@@ -69,7 +69,7 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/observability/
     exclude: |
       kustomization.yaml
-      uptime-kuma/
+      thanos/
   - source: kubernetes/apps/tailscale-system/
     dest: kubernetes/apps/tailscale-system/
     exclude: |

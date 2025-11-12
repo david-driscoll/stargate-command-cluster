@@ -36,7 +36,7 @@ receive:
     annotations:
       reloader.stakater.com/auto: "true"
       tailscale.com/hostname: thanos-receive
-      tailscale.com/proxy-group: metrics
+      tailscale.com/proxy-group: ingress
       tailscale.com/tags: "tag:metrics"
     replicas: 2
     resources:
@@ -65,7 +65,7 @@ queryFrontend:
     annotations:
       reloader.stakater.com/auto: "true"
       tailscale.com/hostname: thanos-query
-      tailscale.com/proxy-group: metrics
+      tailscale.com/proxy-group: ingress
       tailscale.com/tags: "tag:metrics"
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       traefik.ingress.kubernetes.io/router.entrypoints: websecure

@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+  - ./proxy-group.yaml
 configMapGenerator:
   - name: thanos-values
     files:

@@ -20,14 +20,3 @@ spec:
   replicas: 2
   tags: ["tag:ssh"]
   proxyClass: proxy
----
-apiVersion: tailscale.com/v1alpha1
-kind: ProxyGroup
-metadata:
-  name: metrics
-spec:
-  type: egress
-  hostnamePrefix: ${CLUSTER_CNAME}-metrics
-  replicas: 2
-  tags: ["tag:metrics"]
-  proxyClass: proxy

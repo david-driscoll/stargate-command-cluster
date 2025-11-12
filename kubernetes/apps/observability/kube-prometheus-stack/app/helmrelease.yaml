@@ -119,6 +119,16 @@ spec:
             cpu: 100m
           limits:
             memory: 2000Mi
+        remoteWrite:
+          - url: http://thanos-remote-write.observability.svc.cluster.local:19291/api/v1/receive
+            queueConfig:
+              maxSamplesPerSend: 10000
+              batchSendDeadline: 5s
+              minShards: 1
+              maxShards: 4
+        externalLabels:
+          cluster: ${CLUSTER_CNAME}
+          environment: homelab
         storageSpec:
           volumeClaimTemplate:
             spec:

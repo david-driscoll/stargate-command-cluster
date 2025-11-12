@@ -6,9 +6,9 @@ metadata:
   name: thanos
 spec:
   interval: 1h
-  url: oci://ghcr.io/stevehipwell/helm-charts
+  url: oci://ghcr.io/stevehipwell/helm-charts/thanos
   ref:
-    tag: thanos-1.22.0
+    tag: 1.22.0
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2

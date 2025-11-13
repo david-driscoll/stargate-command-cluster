@@ -160,7 +160,7 @@ spec:
         hostname: thanos-receive.${TAILSCALE_DOMAIN}
         ingressClassName: tailscale
         annotations:
-          tailscale.com/proxy-group: observability
+          tailscale.com/proxy-group: ingress
           tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
           tailscale.com/tags: "tag:observability"
     # receiveDistributor:

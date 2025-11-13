@@ -119,6 +119,7 @@ spec:
             cpu: 100m
           limits:
             memory: 2000Mi
+        remoteWriteDashboards: true
         remoteWrite:
           - url: http://thanos-remote-write.observability.svc.cluster.local:19291/api/v1/receive
             queueConfig:
@@ -165,6 +166,8 @@ spec:
     grafana:
       enabled: false
       forceDeployDashboards: true
+    # thanosRuler:
+    #   enabled: true
     additionalPrometheusRulesMap:
       oom-rules:
         groups:

@@ -6,7 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "thanos-receive.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: metrics
-  name: thanos-remote-write
+  name: thanos-receive-router
 spec:
   externalName: thanos-receive.${TAILSCALE_DOMAIN}
   type: ExternalName

@@ -33,13 +33,16 @@ receive:
 
   router:
     enabled: true
-    annotations:
-      reloader.stakater.com/auto: "true"
-      tailscale.com/expose: "true"
-      tailscale.com/hostname: thanos-receive
-      tailscale.com/proxy-group: metrics
-      tailscale.com/tags: "tag:metrics"
     replicas: 2
+    service:
+      annotations:
+        reloader.stakater.com/auto: "true"
+        tailscale.com/expose: "true"
+        tailscale.com/hostname: thanos-receive
+        tailscale.com/proxy-group: metrics
+        tailscale.com/tags: "tag:metrics"
+      type: LoadBalancer
+      loadBalancerClass: tailscale
     resources:
       requests:
         cpu: 100m

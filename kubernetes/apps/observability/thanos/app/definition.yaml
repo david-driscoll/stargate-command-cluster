@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: thanos-query
+spec:
+  name: Thanos Query
+  category: ${CLUSTER_TITLE}
+  description: Thanos is a highly available, long term Prometheus setup with global query view.
+  url: &url https://thanos.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/thanos.svg
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+  gatus:
+    - group: "System"
+      url: https://loki.${CLUSTER_DOMAIN}/ready
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

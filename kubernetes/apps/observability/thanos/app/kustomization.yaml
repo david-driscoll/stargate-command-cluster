@@ -6,9 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./proxy-group.yaml
-configMapGenerator:
-  - name: thanos-values
-    files:
-      - values.yaml=./values.yaml
-    options:
-      disableNameSuffixHash: true
+  - ./definition.yaml

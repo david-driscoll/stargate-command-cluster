@@ -5,12 +5,13 @@ kind: OCIRepository
 metadata:
   name: thanos
 spec:
-  interval: 1h
-  url: oci://ghcr.io/stevehipwell/helm-charts/thanos
+  interval: 12h
+  url: oci://registry-1.docker.io/bitnamicharts/thanos
   ref:
-    tag: 1.22.0
+    tag: 17.3.1
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -22,10 +23,147 @@ spec:
     kind: OCIRepository
     name: thanos
   interval: 1h
-  install:
-    crds: CreateReplace
-  upgrade:
-    crds: CreateReplace
-  valuesFrom:
-    - kind: Secret
-      name: thanos-values
+  values:
+    global:
+      security:
+        allowInsecureImages: true
+
+    image:
+      registry: quay.io
+      repository: thanos/thanos
+      tag: v0.40.1
+
+    existingObjstoreSecret: thanos-objstore
+
+    # Thanos Query - Aggregates data from sidecars and object storage
+    query:
+      enabled: true
+      replicaCount: 1
+      replicaLabel: ["__replica__"]
+      dnsDiscovery:
+        sidecarsService: prometheus-operated
+        sidecarsNamespace: observability
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
+
+    # Query Frontend - Caching layer for queries (Grafana connects here)
+    queryFrontend:
+      enabled: true
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
+        hostname: thanos.${ROOT_DOMAIN}
+        tls: true
+
+    # Bucket Web - Browse object storage via web UI
+    bucketweb:
+      enabled: true
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+
+    # Store Gateway - Accesses historical data from object storage
+    storegateway:
+      enabled: true
+      replicaCount: 1
+      persistence:
+        enabled: true
+        storageClass: openebs-hostpath
+        size: 10Gi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
+
+    # Compactor - Downsamples and compacts object storage data
+    compactor:
+      enabled: true
+      retentionResolutionRaw: 14d
+      retentionResolution5m: 180d
+      retentionResolution1h: 1y
+      persistence:
+        enabled: true
+        storageClass: openebs-hostpath
+        size: 10Gi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 256Mi
+        limits:
+          memory: 1Gi
+
+    # Ruler - Evaluates recording and alerting rules on historical data
+    ruler:
+      enabled: true
+      alertmanagers:
+        - http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+      replicaCount: 1
+      config: |-
+        groups:
+          - name: "PrometheusWatcher"
+            rules:
+              - alert: "PrometheusDown"
+                annotations:
+                  summary: "Prometheus has disappeared from Thanos target discovery"
+                  description: "Prometheus instance has been down for more than 5 minutes"
+                expr: absent(up{job="kube-prometheus-stack-prometheus"})
+                for: 5m
+                labels:
+                  severity: critical
+                  component: observability
+      dnsDiscovery:
+        enabled: true
+      persistence:
+        enabled: true
+        storageClass: openebs-hostpath
+        size: 10Gi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+
+    receive:
+      enabled: true
+      mode: standalone
+      # logLevel: info
+      tsdbRetention: 30d
+      persistence:
+        enabled: true
+        storageClass: openebs-hostpath
+      ingress:
+        enabled: true
+        hostname: thanos-receive.${TAILSCALE_DOMAIN}
+        ingressClassName: tailscale
+        annotations:
+          tailscale.com/proxy-group: ingress
+          tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+          tailscale.com/tags: "tag:observability"
+    # receiveDistributor:
+    #   enabled: true
+    #   logLevel: info
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true

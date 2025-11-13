@@ -15,3 +15,6 @@ spec:
       name: thanos-query-frontend
       port:
         name: http
+  tls:
+    - hosts:
+        - thanos

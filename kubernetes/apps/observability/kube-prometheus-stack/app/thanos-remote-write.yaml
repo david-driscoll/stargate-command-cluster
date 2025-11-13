@@ -10,7 +10,6 @@ metadata:
 spec:
   externalName: thanos-receive.${TAILSCALE_DOMAIN}
   type: ExternalName
-
   ports:
     - port: 19291
       targetPort: 19291

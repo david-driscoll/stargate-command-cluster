@@ -10,6 +10,8 @@ objstoreConfig:
       secret_key: {{ .minio_password }}
       insecure: true
 
+logLevel: debug
+
 receive:
   enabled: true
   retention: 30d

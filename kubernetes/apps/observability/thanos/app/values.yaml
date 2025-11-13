@@ -12,7 +12,7 @@ objstoreConfig:
 
 receive:
   enabled: true
-  retention: 7d
+  retention: 30d
   replicationFactor: 1
 
   ingestor:
@@ -38,7 +38,7 @@ receive:
       annotations:
         reloader.stakater.com/auto: "true"
         tailscale.com/expose: "true"
-        tailscale.com/hostname: thanos-receive
+        tailscale.com/hostname: thanos-receive.${TAILSCALE_DOMAIN}
         tailscale.com/proxy-group: metrics
         tailscale.com/tags: "tag:metrics"
       type: LoadBalancer

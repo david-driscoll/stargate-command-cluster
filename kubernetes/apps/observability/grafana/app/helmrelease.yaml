@@ -41,7 +41,7 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_SECURITY_COOKIE_SAMESITE: *app
-      GF_SERVER_ROOT_URL: https://${APP}.${CLUSTER_DOMAIN}
+      GF_SERVER_ROOT_URL: https://${APP}.${ROOT_DOMAIN}
     envFromSecrets:
       - name: grafana-secret
     grafana.ini:
@@ -436,7 +436,7 @@ spec:
             namespace: network
             kind: Gateway
         hostnames:
-          - ${APP}.${CLUSTER_DOMAIN}
+          - ${APP}.${ROOT_DOMAIN}
         filters:
           - type: ExtensionRef
             extensionRef:

@@ -36,6 +36,7 @@ spec:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
+      logLevel: debug
       route:
         main:
           enabled: true
@@ -78,6 +79,7 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
+      logLevel: debug
       route:
         main:
           enabled: true
@@ -138,6 +140,7 @@ spec:
                 requests:
                   storage: 50Gi
     prometheus-node-exporter:
+      logLevel: debug
       fullnameOverride: node-exporter
       prometheus:
         monitor:
@@ -149,6 +152,7 @@ spec:
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     kube-state-metrics:
+      logLevel: debug
       fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
         - pods=[*]
@@ -164,6 +168,7 @@ spec:
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     grafana:
+      logLevel: debug
       enabled: false
       forceDeployDashboards: true
     # thanosRuler:

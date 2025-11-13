@@ -67,6 +67,9 @@ spec:
           external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
+          tailscale.com/tags: "tag:observability"
+          tailscale.com/proxy-group: ingress
+          tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
         hostname: thanos.${ROOT_DOMAIN}
 
     # Bucket Web - Browse object storage via web UI
@@ -157,7 +160,7 @@ spec:
         hostname: thanos-receive.${TAILSCALE_DOMAIN}
         ingressClassName: tailscale
         annotations:
-          tailscale.com/proxy-group: ingress
+          tailscale.com/proxy-group: observability
           tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
           tailscale.com/tags: "tag:observability"
     # receiveDistributor:

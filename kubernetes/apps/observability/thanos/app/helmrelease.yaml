@@ -65,6 +65,8 @@ spec:
         ingressClassName: internal
         annotations:
           external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
         hostname: thanos.${ROOT_DOMAIN}
 
     # Bucket Web - Browse object storage via web UI

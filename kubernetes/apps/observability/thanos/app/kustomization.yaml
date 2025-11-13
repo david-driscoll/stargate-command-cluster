@@ -7,3 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./proxy-group.yaml
   - ./definition.yaml
+  - ./tailscale-ingress.yaml

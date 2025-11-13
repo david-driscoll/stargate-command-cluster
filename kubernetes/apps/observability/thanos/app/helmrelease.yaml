@@ -40,14 +40,6 @@ spec:
       enabled: true
       replicaCount: 1
       replicaLabel: ["__replica__"]
-      ingress:
-        enabled: true
-        hostname: thanos.${TAILSCALE_DOMAIN}
-        ingressClassName: tailscale
-        annotations:
-          tailscale.com/proxy-group: ingress
-          tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-          tailscale.com/tags: "tag:observability"
       dnsDiscovery:
         sidecarsService: prometheus-operated
         sidecarsNamespace: observability
@@ -74,7 +66,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
         hostname: thanos.${ROOT_DOMAIN}
-        tls: true
 
     # Bucket Web - Browse object storage via web UI
     bucketweb:

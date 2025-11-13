@@ -39,8 +39,8 @@ receive:
         reloader.stakater.com/auto: "true"
         tailscale.com/expose: "true"
         tailscale.com/hostname: thanos-receive.${TAILSCALE_DOMAIN}
-        tailscale.com/proxy-group: metrics
-        tailscale.com/tags: "tag:metrics"
+        tailscale.com/proxy-group: ingress
+        tailscale.com/tags: "tag:observability"
       type: LoadBalancer
       loadBalancerClass: tailscale
     resources:
@@ -70,7 +70,7 @@ queryFrontend:
       reloader.stakater.com/auto: "true"
       tailscale.com/hostname: thanos-query
       tailscale.com/proxy-group: ingress
-      tailscale.com/tags: "tag:metrics"
+      tailscale.com/tags: "tag:observability"
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.middlewares: network-local-user@kubernetescrd

@@ -5,11 +5,12 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "thanos-receive.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: metrics
+    tailscale.com/proxy-group: observability
   name: thanos-remote-write
 spec:
   externalName: thanos-receive.${TAILSCALE_DOMAIN}
   type: ExternalName
+
   ports:
     - port: 19291
       targetPort: 19291

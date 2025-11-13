@@ -157,12 +157,15 @@ spec:
         storageClass: openebs-hostpath
       ingress:
         enabled: true
-        hostname: thanos-receive.${TAILSCALE_DOMAIN}
         ingressClassName: tailscale
         annotations:
+          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
+          tailscale.com/tags: "tag:observability"
           tailscale.com/proxy-group: ingress
           tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-          tailscale.com/tags: "tag:observability"
+        hostname: thanos-receive.${ROOT_DOMAIN}
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

@@ -23,7 +23,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thanos-receive-tailscale
+  name: thanos-remote-write
   annotations:
     tailscale.com/proxy-group: ingress
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"

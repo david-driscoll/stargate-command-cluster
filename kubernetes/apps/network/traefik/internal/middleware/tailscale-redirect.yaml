@@ -5,7 +5,9 @@ kind: Middleware
 metadata:
   name: tailscale-redirect
 spec:
-  redirectRegex:
-    regex: ^https?://(.*?)/(.*)
-    replacement: https://${1}.${TAILSCALE_DOMAIN}/${2}
-    permanent: true
+  chain:
+    middlewares: []
+  # redirectRegex:
+  #   regex: ^https?://(.*?)/(.*)
+  #   replacement: https://${1}.${TAILSCALE_DOMAIN}/${2}
+  #   permanent: true

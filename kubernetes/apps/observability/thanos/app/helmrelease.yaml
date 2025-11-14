@@ -155,14 +155,14 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-      # service:
-      #   annotations:
-      #     tailscale.com/expose: "true"
-      #     tailscale.com/hostname: "thanos-write"
-      #     tailscale.com/proxy-group: ingress
-      #     tailscale.com/tags: "tag:observability"
-      #   type: LoadBalancer
-      #   loadBalancerClass: tailscale
+      service:
+        annotations:
+          tailscale.com/expose: "true"
+          tailscale.com/hostname: "${CLUSTER_CNAME}-thanos-write"
+          tailscale.com/proxy-group: ingress
+          tailscale.com/tags: "tag:observability"
+        type: LoadBalancer
+        loadBalancerClass: tailscale
       # ingress:
       #   enabled: true
       #   ingressClassName: tailscale

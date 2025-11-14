@@ -156,7 +156,7 @@ spec:
         enabled: true
         storageClass: openebs-hostpath
       ingress:
-        enabled: true
+        enabled: false # just using tailscale for ingress atm
         ingressClassName: tailscale
         annotations:
           external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}

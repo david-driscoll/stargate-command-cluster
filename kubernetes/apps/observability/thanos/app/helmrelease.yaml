@@ -158,7 +158,7 @@ spec:
       # service:
       #   annotations:
       #     tailscale.com/expose: "true"
-      #     tailscale.com/hostname: "thanos-receive"
+      #     tailscale.com/hostname: "thanos-write"
       #     tailscale.com/proxy-group: ingress
       #     tailscale.com/tags: "tag:observability"
       #   type: LoadBalancer
@@ -170,7 +170,7 @@ spec:
           tailscale.com/tags: "tag:observability"
           tailscale.com/proxy-group: ingress
           tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-        hostname: thanos-receive
+        hostname: thanos-write
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

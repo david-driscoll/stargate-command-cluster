@@ -23,7 +23,7 @@ spec:
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: &hostname thanos-receive
+#   name: &hostname thanos-write
 #   annotations:
 #     tailscale.com/proxy-group: ingress
 #     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
@@ -32,7 +32,7 @@ spec:
 #   ingressClassName: tailscale
 #   defaultBackend:
 #     service:
-#       name: thanos-receive
+#       name: thanos-write
 #       port:
 #         name: http
 #   tls:

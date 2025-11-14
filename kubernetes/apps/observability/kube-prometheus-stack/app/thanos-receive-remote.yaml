@@ -4,13 +4,13 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    tailscale.com/tailnet-fqdn: "thanos-receive.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "thanos-write.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: observability
-  name: thanos-receive-remote
+  name: thanos-write-remote
 spec:
   externalName: placeholder
   type: ExternalName
-  ports:
-    - name: https
-      port: 443
-      protocol: TCP
+  # ports:
+  #   - name: https
+  #     port: 443
+  #     protocol: TCP

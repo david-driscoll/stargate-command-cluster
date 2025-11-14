@@ -155,17 +155,11 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-      ingress:
-        enabled: false # just using tailscale for ingress atm
-        ingressClassName: tailscale
+      service:
         annotations:
-          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
-          tailscale.com/tags: "tag:observability"
+          tailscale.com/hostname: "thanos-write"
           tailscale.com/proxy-group: ingress
-          tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-        hostname: thanos-receive.${ROOT_DOMAIN}
+          tailscale.com/tags: "tag:observability"
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

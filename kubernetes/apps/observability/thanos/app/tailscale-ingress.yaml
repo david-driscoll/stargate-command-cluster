@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &hostname thanos-query
+  name: thanos-query
   annotations:
     tailscale.com/proxy-group: ingress
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
@@ -17,24 +17,4 @@ spec:
         name: http
   tls:
     - hosts:
-        - *hostname
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &hostname thanos-write
-  annotations:
-    tailscale.com/proxy-group: ingress
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    tailscale.com/tags: "tag:observability"
-spec:
-  ingressClassName: tailscale
-  defaultBackend:
-    service:
-      name: thanos-receive
-      port:
-        name: http
-  tls:
-    - hosts:
-        - *hostname
+        - thanos

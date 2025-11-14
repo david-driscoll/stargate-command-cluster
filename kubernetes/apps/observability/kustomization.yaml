@@ -16,4 +16,4 @@ resources:
   - ./silence-operator/ks.yaml
   - ./exporters/ks.yaml
   - ./gatus/ks.yaml
-  - ./thanos/ks.yaml
+  # - ./thanos/ks.yaml

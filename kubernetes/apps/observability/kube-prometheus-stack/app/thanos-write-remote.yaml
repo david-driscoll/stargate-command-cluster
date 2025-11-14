@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "thanos-write.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    # tailscale.com/proxy-group: egress
   name: thanos-write-remote
 spec:
   externalName: placeholder

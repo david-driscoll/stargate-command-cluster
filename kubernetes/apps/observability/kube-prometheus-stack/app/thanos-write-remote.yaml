@@ -11,7 +11,15 @@ spec:
   externalName: thanos-write.${TAILSCALE_DOMAIN}
   type: ExternalName
   ports:
-    - port: 19291
-      targetPort: remote-write
-      name: remote-write
+    - name: http
+      port: 10902
+      protocol: TCP
+    - name: grpc
+      port: 10901
+      protocol: TCP
+    - name: remote
+      port: 19291
+      protocol: TCP
+    - name: capnproto
+      port: 19391
       protocol: TCP

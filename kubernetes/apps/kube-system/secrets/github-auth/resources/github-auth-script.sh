@@ -30,7 +30,7 @@ DOCKER_USERNAME=${GITHUB_USERNAME:-github}
 # Install go-github-apps tool with better error handling
 echo "Installing go-github-apps..."
 # renovate: datasource=github-releases depName=nabeken/go-github-apps
-VERSION="v0.2.4"
+VERSION=v0.2.5
 
 curl -4 -sSLf https://raw.githubusercontent.com/nabeken/go-github-apps/master/install-via-release.sh | bash -s -- -v ${VERSION}
 

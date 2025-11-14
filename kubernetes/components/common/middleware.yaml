@@ -7,8 +7,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: error-pages
-        namespace: network
       - name: internal-network
         namespace: network
 ---
@@ -20,8 +18,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: error-pages
-        namespace: network
       - name: authentik-outpost
         namespace: ${CLUSTER_CNAME}
       - name: internal-network

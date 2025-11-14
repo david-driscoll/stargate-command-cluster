@@ -158,7 +158,7 @@ spec:
       service:
         annotations:
           tailscale.com/hostname: "thanos-write"
-          tailscale.com/proxy-group: ingress
+          # tailscale.com/proxy-group: ingress
           tailscale.com/tags: "tag:observability"
         type: LoadBalancer
         loadBalancerClass: tailscale

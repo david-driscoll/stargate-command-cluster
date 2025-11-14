@@ -37,4 +37,4 @@ spec:
         name: http
   tls:
     - hosts:
-        - thanos
+        - thanos-receive

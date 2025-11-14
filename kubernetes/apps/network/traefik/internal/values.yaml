@@ -38,6 +38,8 @@ ports:
   traefik:
     expose:
       default: true
+    middlewares:
+      - network-error-pages@kubernetescrd
   web:
     port: 80
     exposedPort: 80
@@ -46,13 +48,15 @@ ports:
         to: websecure
         scheme: https
         permanent: true
+    middlewares:
+      - network-error-pages@kubernetescrd
   websecure:
     port: 443
     exposedPort: 443
     tls:
       enabled: true
-    # middlewares:
-    #   - network-error-pages@kubernetescrd
+    middlewares:
+      - network-error-pages@kubernetescrd
   postgres:
     expose:
       default: true

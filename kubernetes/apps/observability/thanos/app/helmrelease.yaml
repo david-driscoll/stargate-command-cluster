@@ -167,6 +167,7 @@ spec:
         enabled: true
         ingressClassName: tailscale
         annotations:
+          tailscale.com/hostname: "thanos-write"
           tailscale.com/tags: "tag:observability"
           tailscale.com/proxy-group: ingress
           tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"

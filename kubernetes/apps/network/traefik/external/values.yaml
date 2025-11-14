@@ -3,7 +3,7 @@
 image:
   registry: ghcr.io
   repository: traefik/traefik
-  tag: v3.6.0@sha256:e4153c8abbeaf88bfae33796b1860c584fb937ce31c53d0137012e9bfc3af99b
+  tag: v3.6.1@sha256:fd5932c796f7e2db9fd6bff485ef693d53797f0ee8ad03dc68aa424ea6f21958
 fullnameOverride: traefik-external
 deployment:
   kind: Deployment

@@ -51,8 +51,8 @@ ports:
     exposedPort: 443
     tls:
       enabled: true
-    middlewares:
-      - network-error-pages@kubernetescrd
+    # middlewares:
+    #   - network-error-pages@kubernetescrd
   postgres:
     expose:
       default: true

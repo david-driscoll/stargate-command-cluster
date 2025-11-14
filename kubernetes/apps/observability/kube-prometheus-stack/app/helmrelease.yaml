@@ -144,7 +144,7 @@ spec:
           limits:
             memory: 2000Mi
         # remoteWrite:
-        #   - url: http://thanos-remote-write.observability.svc.cluster.local:19291/api/v1/receive
+        #   - url: http://thanos-write-remote.observability.svc.cluster.local:19291/api/v1/receive
         #     queueConfig:
         #       maxSamplesPerSend: 10000
         #       batchSendDeadline: 5s

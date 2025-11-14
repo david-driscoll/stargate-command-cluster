@@ -155,14 +155,22 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-      service:
+      # service:
+      #   annotations:
+      #     tailscale.com/expose: "true"
+      #     tailscale.com/hostname: "thanos-receive"
+      #     tailscale.com/proxy-group: ingress
+      #     tailscale.com/tags: "tag:observability"
+      #   type: LoadBalancer
+      #   loadBalancerClass: tailscale
+      ingress:
+        enabled: true
+        ingressClassName: tailscale
         annotations:
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: "thanos-receive"
-          # tailscale.com/proxy-group: ingress
           tailscale.com/tags: "tag:observability"
-        type: LoadBalancer
-        loadBalancerClass: tailscale
+          tailscale.com/proxy-group: ingress
+          tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+        hostname: thanos-receive
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

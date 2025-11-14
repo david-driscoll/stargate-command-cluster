@@ -145,7 +145,7 @@ spec:
             memory: 2000Mi
         # remoteWriteDashboards: true
         # remoteWrite:
-        #   - url: http://thanos-receive-remote.observability.svc.cluster.local:19291/api/v1/receive
+        #   - url: https://thanos-receive.${TAILSCALE_DOMAIN}/api/v1/receive
         #     queueConfig:
         #       maxSamplesPerSend: 10000
         #       batchSendDeadline: 5s

@@ -21,7 +21,7 @@ spec:
           type: s3
           config:
             bucket: {{ .minio_bucket }}
-            endpoint: http://spike.tailscale-system.svc.cluster.local:9000
+            endpoint: spike.tailscale-system.svc.cluster.local:9000
             access_key: {{ .minio_username }}
             secret_key: {{ .minio_password }}
             insecure: true

@@ -11,6 +11,6 @@ spec:
   externalName: placeholder
   type: ExternalName
   ports:
-    - name: https
-      port: 443
+    - name: grpc
+      port: 10901
       protocol: TCP

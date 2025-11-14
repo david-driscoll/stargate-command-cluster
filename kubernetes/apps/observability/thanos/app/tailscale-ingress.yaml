@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thanos-query
+  name: thanos-query-tailscale
   annotations:
     tailscale.com/proxy-group: ingress
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
@@ -23,7 +23,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thanos-receive
+  name: thanos-receive-tailscale
   annotations:
     tailscale.com/proxy-group: ingress
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"

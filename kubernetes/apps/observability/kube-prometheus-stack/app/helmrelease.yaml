@@ -96,6 +96,12 @@ spec:
                 group: traefik.io
                 kind: Middleware
                 name: authenticated-user
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
+      thanosServiceExternal:
+        enabled: true
       prometheusSpec:
         image:
           registry: docker.io
@@ -106,12 +112,6 @@ spec:
           runAsUser: 64535
           runAsGroup: 64535
           fsGroup: 64535
-        thanosService:
-          enabled: true
-        thanosServiceMonitor:
-          enabled: true
-        thanosServiceExternal:
-          enabled: true
         # thanosIngress:
         #   enabled: true
         #   annotations:

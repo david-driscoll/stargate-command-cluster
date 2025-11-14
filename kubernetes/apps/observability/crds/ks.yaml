@@ -39,8 +39,8 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/crds/application
   prune: true
-  wait: true
-  force: false # true
+  wait: false
+  force: true
   interval: 1h
   retryInterval: 2m
   timeout: 10m

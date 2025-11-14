@@ -50,7 +50,7 @@ spec:
   dependsOn: []
   path: ./kubernetes/apps/sgc/idp/authentik-remote-cluster
   prune: true
-  wait: true
+  wait: false
   force: true
   interval: 1h
   retryInterval: 2m

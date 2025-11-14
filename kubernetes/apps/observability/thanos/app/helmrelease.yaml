@@ -151,7 +151,7 @@ spec:
       enabled: true
       mode: standalone
       # logLevel: info
-      tsdbRetention: 30d
+      tsdbRetention: 14d
       persistence:
         enabled: true
         storageClass: openebs-hostpath
@@ -160,6 +160,8 @@ spec:
           tailscale.com/hostname: "thanos-write"
           tailscale.com/proxy-group: ingress
           tailscale.com/tags: "tag:observability"
+        type: LoadBalancer
+        loadBalancerClass: tailscale
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

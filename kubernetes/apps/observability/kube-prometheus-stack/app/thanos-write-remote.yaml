@@ -13,4 +13,4 @@ spec:
   ports:
     - port: 19291
       targetPort: 19291
-      name: remote-write
+      name: remote

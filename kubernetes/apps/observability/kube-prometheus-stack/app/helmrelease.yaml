@@ -127,7 +127,7 @@ spec:
         thanos:
           objectStorageConfig:
             existingSecret:
-              name: thanos-objstore
+              name: ${APP}-objstore
               key: objstore.yml
 
         podMonitorSelectorNilUsesHelmValues: false

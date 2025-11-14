@@ -13,4 +13,4 @@ resources:
   - ./strip-query-string.yaml
   - ./host-header.yaml
   - ./error-pages.yaml
-  - ./tailscale-redirect.yaml
+  # - ./tailscale-redirect.yaml

@@ -157,7 +157,7 @@ spec:
         storageClass: openebs-hostpath
       service:
         annotations:
-          tailscale.com/hostname: "thanos-write"
+          tailscale.com/hostname: "thanos-write.${TAILSCALE_DOMAIN}"
           # tailscale.com/proxy-group: ingress
           tailscale.com/tags: "tag:observability"
         type: LoadBalancer

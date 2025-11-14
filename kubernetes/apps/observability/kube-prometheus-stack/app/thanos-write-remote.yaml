@@ -12,6 +12,6 @@ spec:
   type: ExternalName
   ports:
     - port: 19291
-      targetPort: 19291
+      targetPort: remote-write
       name: remote-write
       protocol: TCP

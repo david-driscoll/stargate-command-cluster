@@ -70,6 +70,7 @@ david-driscoll/equestria-cluster:
     exclude: |
       kustomization.yaml
       thanos/
+      grafana/
   - source: kubernetes/apps/tailscale-system/
     dest: kubernetes/apps/tailscale-system/
     exclude: |

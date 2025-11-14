@@ -12,5 +12,6 @@ spec:
   type: ExternalName
   ports:
     - port: 19291
-      targetPort: 19291
-      name: remote
+      nodePort: 31470
+      name: remote-write
+      protocol: TCP

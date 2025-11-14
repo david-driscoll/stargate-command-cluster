@@ -1,0 +1,22 @@
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyClass
+metadata:
+  name: accept-routes
+spec:
+  metrics:
+    enable: true
+    serviceMonitor:
+      enable: true
+  tailscale:
+    acceptRoutes: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-ip: "${SPIKE_IP}"
+    tailscale.com/proxy-class: accept-routes
+  name: spike
+spec:
+  externalName: unused
+  type: ExternalName

@@ -9,4 +9,5 @@ resources:
   - ./externalsecret.yaml
   - ./ingress.yaml
   - ./proxy.yaml
+  - ./spike.yaml
   # - ./recorder.yaml

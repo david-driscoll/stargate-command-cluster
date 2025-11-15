@@ -1,0 +1,13 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyGroup
+metadata:
+  name: ${CLUSTER_CNAME}
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  type: kube-apiserver
+  replicas: 2
+  tags: ["tag:${CLUSTER_CNAME}"]
+  kubeAPIServer:
+    mode: auth

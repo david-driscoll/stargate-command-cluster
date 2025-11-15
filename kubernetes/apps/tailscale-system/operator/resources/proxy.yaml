@@ -2,16 +2,9 @@
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyClass
 metadata:
-  name: proxy
+  name: default
 spec:
   metrics:
     enable: true
     serviceMonitor:
       enable: true
-  # staticEndpoints:
-  #   nodePort:
-  #     ports:
-  #       - port: 31667
-  #         endPort: 31680
-  #     selector:
-  #       kubernetes.io/os: linux

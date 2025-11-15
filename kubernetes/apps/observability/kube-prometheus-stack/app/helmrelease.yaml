@@ -103,15 +103,6 @@ spec:
         enabled: true
       thanosServiceMonitor:
         enabled: true
-      thanosServiceExternal:
-        enabled: true
-        annotations:
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: "${APP}-thanos-write"
-          # tailscale.com/proxy-group: ingress
-          tailscale.com/tags: "tag:observability"
-        type: LoadBalancer
-        loadBalancerClass: tailscale
       prometheusSpec:
         image:
           registry: docker.io

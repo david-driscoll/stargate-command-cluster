@@ -34,5 +34,6 @@ spec:
   type: ExternalName
   ports:
     - port: 9000
+      targetPort: 9000
       name: http
 

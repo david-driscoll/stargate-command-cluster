@@ -56,9 +56,7 @@ kind: Ingress
 metadata:
   name: thanos-write-tailscale
   annotations:
-    tailscale.com/proxy-group: ingress
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-#     tailscale.com/tags: "tag:observability"
+    tailscale.com/tags: "tag:observability"
 spec:
   ingressClassName: tailscale
   rules:

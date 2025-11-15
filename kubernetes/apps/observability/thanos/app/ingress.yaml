@@ -32,7 +32,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: "thanos-write.${ROOT_DOMAIN}"
+    - host: "thanos-write.${CLUSTER_DOMAIN}"
       http:
         paths:
           - path: /

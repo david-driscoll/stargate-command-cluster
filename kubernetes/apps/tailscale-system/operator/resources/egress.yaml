@@ -18,14 +18,3 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-ssh
   replicas: 2
   tags: ["tag:ssh"]
----
-apiVersion: tailscale.com/v1alpha1
-kind: ProxyGroup
-metadata:
-  name: observability
-spec:
-  type: egress
-  hostnamePrefix: ${CLUSTER_CNAME}-observability
-  replicas: 2
-  tags: ["tag:observability"]
-  proxyClass: accept-routes

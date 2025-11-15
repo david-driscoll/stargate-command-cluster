@@ -10,6 +10,17 @@ spec:
   tailscale:
     acceptRoutes: true
 ---
+apiVersion: tailscale.com/v1alpha1
+kind: ProxyGroup
+metadata:
+  name: observability
+spec:
+  type: egress
+  hostnamePrefix: ${CLUSTER_CNAME}-observability
+  replicas: 2
+  tags: ["tag:observability"]
+  proxyClass: accept-routes
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
 apiVersion: v1
 kind: Service

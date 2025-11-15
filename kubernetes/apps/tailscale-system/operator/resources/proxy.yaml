@@ -8,4 +8,6 @@ spec:
     enable: true
     serviceMonitor:
       enable: true
+  tailscale:
+    acceptRoutes: true
 

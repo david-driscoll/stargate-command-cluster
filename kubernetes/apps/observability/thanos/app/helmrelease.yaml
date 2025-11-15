@@ -155,6 +155,8 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
+      ingress:
+        enabled: false
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

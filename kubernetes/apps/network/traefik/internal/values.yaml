@@ -68,11 +68,13 @@ ingressClass:
   isDefaultClass: false
   name: internal
 metrics:
-  enabled: true
-  serviceMonitor:
-    enabled: true
-    namespaceSelector:
-      any: true
+  prometheus:
+    service:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+    prometheusRule:
+      enabled: true
 resources:
   requests:
     cpu: 50m

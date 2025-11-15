@@ -166,19 +166,11 @@ spec:
         storageClass: longhorn
       resources:
         requests:
-          cpu: 1
+          cpu: 500m
           memory: 1Gi
         limits:
-          cpu: 2
+          cpu: 1
           memory: 4Gi
-      ingress:
-        enabled: false
-        ingressClassName: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
-          external-dns.alpha.kubernetes.io/hostname: thanos-write.${ROOT_DOMAIN}
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hostname: thanos-write.${ROOT_DOMAIN}
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

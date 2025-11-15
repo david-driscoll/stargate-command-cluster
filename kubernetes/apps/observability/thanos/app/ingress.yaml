@@ -3,13 +3,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thanos-query-tailscale
+  name: thanos-query
   annotations:
-    tailscale.com/proxy-group: ingress
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    tailscale.com/tags: "tag:observability"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
-  ingressClassName: tailscale
+  ingressClassName: internal
   defaultBackend:
     service:
       name: thanos-query-frontend
@@ -23,18 +22,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thanos-write-tailscale
+  name: thanos-write
   annotations:
-    tailscale.com/proxy-group: ingress
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-    tailscale.com/tags: "tag:apps"
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
-  ingressClassName: tailscale
+  ingressClassName: internal
   defaultBackend:
     service:
       name: thanos-receive
       port:
         name: grpc
-  tls:
-    - hosts:
-        - thanos-write

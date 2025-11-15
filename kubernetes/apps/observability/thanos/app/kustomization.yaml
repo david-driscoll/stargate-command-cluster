@@ -7,3 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./definition.yaml
   - ./tailscale-ingress.yaml
+  - ./ingress.yaml

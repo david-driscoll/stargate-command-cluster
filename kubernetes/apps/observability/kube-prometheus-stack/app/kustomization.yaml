@@ -7,7 +7,6 @@ resources:
   - ./helmrelease.yaml
   - ./scrapeconfig.yaml
   - ./definition.yaml
-  - ./objstore.yaml
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:

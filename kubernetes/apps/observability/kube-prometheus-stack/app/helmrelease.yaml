@@ -131,11 +131,6 @@ spec:
         #   ingressClassName: tailscale
         #   hosts:
         #     - thanos-sidecar-write.${TAILSCALE_DOMAIN}
-        thanos:
-          objectStorageConfig:
-            existingSecret:
-              name: ${APP}-objstore
-              key: objstore.yml
 
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false

@@ -163,13 +163,6 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-      service:
-        annotations:
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: "thanos-write"
-          tailscale.com/tags: "tag:observability"
-        type: LoadBalancer
-        loadBalancerClass: tailscale
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

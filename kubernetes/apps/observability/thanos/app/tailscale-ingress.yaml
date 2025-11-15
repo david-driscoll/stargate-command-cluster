@@ -18,3 +18,23 @@ spec:
   tls:
     - hosts:
         - thanos
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: thanos-write
+  annotations:
+    tailscale.com/proxy-group: ingress
+    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+    tailscale.com/tags: "tag:apps"
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: thanos-receive
+      port:
+        name: http
+  tls:
+    - hosts:
+        - thanos-write

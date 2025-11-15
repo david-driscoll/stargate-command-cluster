@@ -6,7 +6,7 @@ metadata:
   name: ${APP}
 spec:
   name: Grafana
-  category: ${CLUSTER_TITLE}
+  category: &category Observability
   description: Grafana is an open-source platform for monitoring and observability.
   url: &url https://${APP}.${ROOT_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/grafana.svg
@@ -26,7 +26,7 @@ spec:
       includeClaimsInIdToken: true
       subMode: user_email
   gatus:
-    - group: "System"
+    - group: *category
       url: *url
       method: GET
       conditions:

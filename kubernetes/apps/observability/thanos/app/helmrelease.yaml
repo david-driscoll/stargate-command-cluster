@@ -87,7 +87,7 @@ spec:
       replicaCount: 1
       persistence:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: longhorn
         size: 10Gi
       resources:
         requests:
@@ -104,7 +104,7 @@ spec:
       retentionResolution1h: 1y
       persistence:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: longhorn
         size: 10Gi
       resources:
         requests:
@@ -147,7 +147,7 @@ spec:
         enabled: true
       persistence:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: longhorn
         size: 10Gi
       resources:
         requests:
@@ -163,7 +163,7 @@ spec:
       tsdbRetention: 14d
       persistence:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: longhorn
       # resources:
       #   requests:
       #     cpu: 200m

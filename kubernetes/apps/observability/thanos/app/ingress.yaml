@@ -35,10 +35,17 @@ spec:
     - host: "thanos-write.${CLUSTER_DOMAIN}"
       http:
         paths:
-          - path: /
+          - path: /api/v1/receive
             pathType: Prefix
             backend:
               service:
                 name: thanos-receive
                 port:
                   name: grpc
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thanos-receive
+                port:
+                  name: http

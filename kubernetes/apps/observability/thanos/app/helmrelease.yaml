@@ -165,7 +165,7 @@ spec:
         storageClass: openebs-hostpath
       ingress:
         enabled: true
-        hostname: thanos-write.${TAILSCALE_DOMAIN}
+        hostname: thanos-write
         annotations:
           tailscale.com/tags: "tag:apps"
           tailscale.com/proxy-group: ingress

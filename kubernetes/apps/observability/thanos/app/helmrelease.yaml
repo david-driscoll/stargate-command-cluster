@@ -155,13 +155,6 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hostname: thanos-write.${ROOT_DOMAIN}
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

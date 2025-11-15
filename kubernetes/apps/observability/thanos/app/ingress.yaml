@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: "thanos-write.${ROOT_DOMAIN}"
+    - host: "thanos.${ROOT_DOMAIN}"
       http:
         paths:
           - path: /

@@ -67,9 +67,6 @@ spec:
           external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
-          tailscale.com/tags: "tag:observability"
-          tailscale.com/proxy-group: ingress
-          tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
         hostname: thanos.${ROOT_DOMAIN}
 
     # Bucket Web - Browse object storage via web UI
@@ -129,7 +126,18 @@ spec:
                 annotations:
                   summary: "Prometheus has disappeared from Thanos target discovery"
                   description: "Prometheus instance has been down for more than 5 minutes"
-                expr: absent(up{job="kube-prometheus-stack-prometheus"})
+                expr: absent(up{job="kube-prometheus-stack-prometheus",cluster="${CLUSTER_CNAME}"})
+                for: 5m
+                labels:
+                  severity: critical
+                  component: observability
+          - name: "PrometheusWatcher"
+            rules:
+              - alert: "PrometheusDown"
+                annotations:
+                  summary: "Prometheus has disappeared from Thanos target discovery"
+                  description: "Prometheus instance has been down for more than 5 minutes"
+                expr: absent(up{job="kube-prometheus-stack-prometheus",cluster="equestria"})
                 for: 5m
                 labels:
                   severity: critical

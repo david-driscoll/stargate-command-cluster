@@ -166,10 +166,11 @@ spec:
         storageClass: longhorn
       resources:
         requests:
-          cpu: 200m
+          cpu: 1
           memory: 1Gi
         limits:
-          memory: 2Gi
+          cpu: 2
+          memory: 4Gi
       ingress:
         enabled: false
         ingressClassName: internal

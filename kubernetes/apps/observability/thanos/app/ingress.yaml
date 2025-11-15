@@ -41,7 +41,7 @@ spec:
               service:
                 name: thanos-receive
                 port:
-                  name: grpc
+                  name: remote
           # - path: /
           #   pathType: Prefix
           #   backend:

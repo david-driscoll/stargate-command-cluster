@@ -60,6 +60,15 @@ spec:
           memory: 128Mi
         limits:
           memory: 1Gi
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: thanos.${ROOT_DOMAIN}
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
+        hostname: thanos.${ROOT_DOMAIN}
 
     # Bucket Web - Browse object storage via web UI
     bucketweb:
@@ -156,7 +165,13 @@ spec:
         enabled: true
         storageClass: openebs-hostpath
       ingress:
-        enabled: false
+        enabled: true
+        ingressClassName: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ${INTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: thanos-write.${ROOT_DOMAIN}
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        hostname: thanos-write.${ROOT_DOMAIN}
     # receiveDistributor:
     #   enabled: true
     #   logLevel: info

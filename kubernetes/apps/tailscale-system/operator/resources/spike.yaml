@@ -16,14 +16,12 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-ip: "${SPIKE_IP}"
-    tailscale.com/proxy-class: accept-routes
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: observability
   name: spike
 spec:
   externalName: unused
   type: ExternalName
   ports:
     - port: 9000
-      targetPort: 9000
       name: http
 

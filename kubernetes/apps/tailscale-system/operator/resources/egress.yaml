@@ -8,7 +8,6 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-egress
   replicas: 3
   tags: ["tag:egress"]
-  proxyClass: proxy
 ---
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
@@ -19,7 +18,6 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-ssh
   replicas: 2
   tags: ["tag:ssh"]
-  proxyClass: proxy
 ---
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
@@ -30,4 +28,4 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-observability
   replicas: 2
   tags: ["tag:observability"]
-  proxyClass: proxy
+  proxyClass: accept-routes

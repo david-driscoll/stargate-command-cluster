@@ -2,7 +2,7 @@
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
 metadata:
-  name: ${CLUSTER_CNAME}
+  name: kubeproxy
   annotations:
     reloader.stakater.com/auto: "true"
 spec:

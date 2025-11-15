@@ -127,6 +127,11 @@ spec:
             cpu: 100m
           limits:
             memory: 2000Mi
+        thanos:
+          objectStorageConfig:
+            existingSecret:
+              name: thanos-objstore
+              key: objstore.yml
         # remoteWriteDashboards: true
         # remoteWrite:
         #   - url: http://thanos-write-remote.observability.svc.cluster.local:19291/api/v1/receive

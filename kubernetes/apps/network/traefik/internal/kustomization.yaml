@@ -1,18 +1,16 @@
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
-  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
-  - ./helmrelease.yaml
-  - ./definition.yaml
-  - ./middleware
-  - ./external.yaml
-  - ./error-pages.yaml
 configMapGenerator:
-  - name: traefik-internal-values
-    files:
-      - values.yaml=./values.yaml
-    options:
-      disableNameSuffixHash: true
+- files:
+  - values.yaml=./values.yaml
+  name: traefik-internal-values
+  options:
+    disableNameSuffixHash: true
+kind: Kustomization
+namespace: network
+resources:
+- https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
+- ./helmrelease.yaml
+- ./definition.yaml
+- ./middleware
+- ./external.yaml
+- ./error-pages.yaml

@@ -68,7 +68,9 @@ ingressClass:
   isDefaultClass: false
   name: internal
 metrics:
+  addInternals: true
   prometheus:
+    disableAPICheck: true
     service:
       enabled: true
     serviceMonitor:

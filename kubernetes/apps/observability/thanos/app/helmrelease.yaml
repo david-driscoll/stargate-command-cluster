@@ -164,13 +164,12 @@ spec:
       persistence:
         enabled: true
         storageClass: longhorn
-      # resources:
-      #   requests:
-      #     cpu: 200m
-      #     memory: 1Gi
-      #   limits:
-      #     cpu: 500m
-      #     memory: 2Gi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
       ingress:
         enabled: false
         ingressClassName: internal

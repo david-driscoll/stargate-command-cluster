@@ -41,11 +41,11 @@ spec:
               service:
                 name: thanos-receive
                 port:
-                  name: remote
-          # - path: /
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: thanos-receive
-          #       port:
-          #         name: http
+                  name: grpc
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thanos-receive
+                port:
+                  name: http

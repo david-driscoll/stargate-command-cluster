@@ -120,7 +120,7 @@ spec:
       replicaCount: 1
       config: |-
         groups:
-          - name: "PrometheusWatcher"
+          - name: "PrometheusWatcher ${CLUSTER_CNAME}"
             rules:
               - alert: "PrometheusDown"
                 annotations:
@@ -131,7 +131,7 @@ spec:
                 labels:
                   severity: critical
                   component: observability
-          - name: "PrometheusWatcher"
+          - name: "PrometheusWatcher equestria"
             rules:
               - alert: "PrometheusDown"
                 annotations:

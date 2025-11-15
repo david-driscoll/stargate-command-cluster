@@ -9,14 +9,17 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
   ingressClassName: internal
-  defaultBackend:
-    service:
-      name: thanos-query-frontend
-      port:
-        name: http
-  tls:
-    - hosts:
-        - thanos
+  rules:
+    - host: "thanos-write.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thanos-query-frontend
+                port:
+                  name: http
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/ingress.json
 apiVersion: networking.k8s.io/v1
@@ -28,8 +31,14 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
   ingressClassName: internal
-  defaultBackend:
-    service:
-      name: thanos-receive
-      port:
-        name: grpc
+  rules:
+    - host: "thanos-write.${ROOT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thanos-receive
+                port:
+                  name: grpc

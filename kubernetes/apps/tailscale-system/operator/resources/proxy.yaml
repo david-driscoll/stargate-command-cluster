@@ -8,3 +8,4 @@ spec:
     enable: true
     serviceMonitor:
       enable: true
+

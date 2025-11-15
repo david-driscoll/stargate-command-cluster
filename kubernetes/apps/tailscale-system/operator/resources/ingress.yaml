@@ -8,4 +8,3 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-ingress
   replicas: 3
   tags: ["tag:ingress", "tag:apps"]
-  proxyClass: proxy

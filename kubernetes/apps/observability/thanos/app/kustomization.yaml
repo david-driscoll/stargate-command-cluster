@@ -6,4 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./definition.yaml
-  # - ./ingress.yaml
+  - ./ingress.yaml

@@ -164,6 +164,12 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
       ingress:
         enabled: true
         ingressClassName: internal

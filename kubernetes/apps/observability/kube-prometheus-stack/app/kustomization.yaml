@@ -7,6 +7,7 @@ resources:
   - ./helmrelease.yaml
   - ./scrapeconfig.yaml
   - ./definition.yaml
+  - ./thanos-write.yaml
 configMapGenerator:
   - name: alertmanager-config-tpl
     files:

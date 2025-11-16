@@ -22,6 +22,32 @@ dashboards:
   enabled: true
 hubble:
   enabled: true
+  relay:
+    enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - flow
+      - icmp
+      - iperf3
+      - l7
+      - tcp
+      - udp
+    dashboards:
+      enabled: true
+    enableOpenMetrics: true
+    serviceMonitor:
+      enabled: true
+  ui:
+    enabled: true
+    ingress:
+      enabled: true
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "hubble.${CLUSTER_DOMAIN}"
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      hosts:
+        - hubble.${CLUSTER_DOMAIN}
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: "${CLUSTER_NETWORK}"

@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "thanos-write.${TAILSCALE_DOMAIN}"
+    tailscale.com/proxy-group: egress
+  name: thanos-write-ingress
+spec:
+  externalName: unused
+  type: ExternalName

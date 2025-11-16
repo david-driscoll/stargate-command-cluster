@@ -22,6 +22,8 @@ dashboards:
   enabled: true
 hubble:
   enabled: true
+  relay:
+    enabled: true
   metrics:
     enabled:
       - dns

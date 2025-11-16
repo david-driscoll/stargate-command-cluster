@@ -77,7 +77,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thanos-write-tailscale
+  name: ${APP}-receive-ingress-tailscale
   annotations:
     tailscale.com/proxy-group: ingress
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
@@ -85,7 +85,7 @@ metadata:
 spec:
   ingressClassName: tailscale
   rules:
-    - host: "thanos-write.${TAILSCALE_DOMAIN}"
+    - host: "${APP}-receive-ingress.${TAILSCALE_DOMAIN}"
       http:
         paths:
           - path: /api/v1/receive
@@ -104,4 +104,4 @@ spec:
                   name: http
   tls:
     - hosts:
-        - thanos-write
+        - ${APP}-receive-ingress

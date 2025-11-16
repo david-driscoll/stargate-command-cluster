@@ -67,14 +67,14 @@ ingressClass:
   enabled: true
   isDefaultClass: false
   name: internal
-metrics:
-  addInternals: true
-  prometheus:
-    disableAPICheck: true
-    service:
-      enabled: true
-    serviceMonitor:
-      enabled: true
+# metrics:
+#   addInternals: true
+#   prometheus:
+#     disableAPICheck: true
+#     service:
+#       enabled: true
+#     serviceMonitor:
+#       enabled: true
 resources:
   requests:
     cpu: 50m

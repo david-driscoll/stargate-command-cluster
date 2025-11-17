@@ -44,7 +44,8 @@ hubble:
     ingress:
       enabled: true
       annotations:
-        external-dns.alpha.kubernetes.io/target: "hubble.${CLUSTER_DOMAIN}"
+        external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        external-dns.alpha.kubernetes.io/hostname: hubble.${CLUSTER_DOMAIN}
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
         - hubble.${CLUSTER_DOMAIN}

@@ -6,5 +6,6 @@ metadata:
 spec:
   type: ingress
   hostnamePrefix: ${CLUSTER_CNAME}-ingress
-  replicas: 3
+  replicas: 2
   tags: ["tag:ingress", "tag:apps"]
+  proxyClass: default

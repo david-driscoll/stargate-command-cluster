@@ -6,8 +6,9 @@ metadata:
 spec:
   type: egress
   hostnamePrefix: ${CLUSTER_CNAME}-egress
-  replicas: 3
+  replicas: 2
   tags: ["tag:egress"]
+  proxyClass: default
 ---
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
@@ -18,3 +19,4 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-ssh
   replicas: 2
   tags: ["tag:ssh"]
+  proxyClass: default

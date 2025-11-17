@@ -1,10 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.19.0-pre.2/install/kubernetes/cilium/values.schema.json
 autoDirectNodeRoutes: true
-bgpControlPlane:
-  enabled: false
-bandwidthManager:
-  enabled: true
 bpf:
   masquerade: true
   # Ref: https://github.com/siderolabs/talos/issues/10002

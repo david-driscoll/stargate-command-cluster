@@ -161,12 +161,6 @@ spec:
       mode: standalone
       # logLevel: info
       tsdbRetention: 14d
-      service:
-        annotations:
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: ${APP}-receive-service
-          tailscale.com/tags: "tag:observability"
-          tailscale.com/proxy-group: ingress
       persistence:
         enabled: true
         storageClass: longhorn

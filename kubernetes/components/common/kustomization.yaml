@@ -11,12 +11,6 @@ resources:
   - ./service-account.yaml
   - ./middleware.yaml
   - ./templates
-configMapGenerator:
-  - name: cluster-versions
-    envs:
-      - ../../../versions.env
-    options:
-      disableNameSuffixHash: true
 patches:
   - target:
       group: helm.toolkit.fluxcd.io/v2

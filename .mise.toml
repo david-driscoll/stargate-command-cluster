@@ -24,7 +24,7 @@ talos = "1.10.4"
 talhelper = "3.0.39"
 yq = "4.48.2"
 jq = "1.8.1"
-helm = "4.0.0"
+helm = "3.19.2"
 helmfile = "1.1.9"
 kubeconform = "0.7.0"
 kustomize = "5.8.0"
@@ -37,11 +37,11 @@ cloudflared = "2025.6.1"
 cue = "0.13.2"
 gh = "2.74.2"
 "aqua:brumhard/krewfile" = "0.6.3"
-"pipx:flux-local" = "latest"
+"pipx:flux-local" = "7.11.0"
 
 [tasks.update]
 description = 'Update all apps that have an update script'
 run = [
   'dotnet run .mise/tasks/do-update.cs',
-  'flux-local test --enable-helm --all-namespaces --sources "flux-system" --path ./kubernetes/flux/cluster/ --verbosity 1',
+  'flux-local test --enable-helm --all-namespaces --sources "flux-system" --path ./kubernetes/flux/ --verbosity 1',
 ]

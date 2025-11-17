@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.17.5/install/kubernetes/cilium/values.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.19.0-pre.2/install/kubernetes/cilium/values.schema.json
 autoDirectNodeRoutes: true
 bpf:
   masquerade: true
@@ -59,7 +59,7 @@ l2announcements:
   enabled: true
 loadBalancer:
   algorithm: maglev
-  mode: "dsr"
+  mode: dsr
 localRedirectPolicy: true
 operator:
   dashboards:
@@ -68,7 +68,6 @@ operator:
     enabled: true
     serviceMonitor:
       enabled: true
-  replicas: 1
   rollOutPods: true
 prometheus:
   enabled: true
@@ -77,27 +76,5 @@ prometheus:
     trustCRDsExist: true
 rollOutCiliumPods: true
 routingMode: native
-securityContext:
-  capabilities:
-    ciliumAgent:
-      - CHOWN
-      - KILL
-      - NET_ADMIN
-      - NET_RAW
-      - IPC_LOCK
-      - SYS_ADMIN
-      - SYS_RESOURCE
-      - PERFMON
-      - BPF
-      - DAC_OVERRIDE
-      - FOWNER
-      - SETGID
-      - SETUID
-    cleanCiliumState:
-      - NET_ADMIN
-      - SYS_ADMIN
-      - SYS_RESOURCE
 socketLB:
   hostNamespaceOnly: true
-debug:
-  enabled: true

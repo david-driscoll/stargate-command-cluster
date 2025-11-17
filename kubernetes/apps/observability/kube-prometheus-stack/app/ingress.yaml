@@ -5,8 +5,8 @@ kind: Ingress
 metadata:
   name: ${APP}-receive-ingress-tailscale
   annotations:
-    tailscale.com/proxy-group: ingress
-    tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
+    # tailscale.com/proxy-group: ingress
+    # tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/tags: "tag:observability"
 spec:
   ingressClassName: tailscale

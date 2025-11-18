@@ -36,6 +36,8 @@ spec:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
+      annotations:
+        reloader.stakater.com/auto: "true"
       route:
         main:
           enabled: true
@@ -80,7 +82,9 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
-      logLevel: debug
+      annotations:
+        reloader.stakater.com/auto: "true"
+      # logLevel: debug
       route:
         main:
           enabled: true

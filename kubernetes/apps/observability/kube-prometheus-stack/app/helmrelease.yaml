@@ -43,6 +43,7 @@ spec:
             reloader.stakater.com/auto: "true"
             external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           hostnames:
+            - alertmanager.${ROOT_DOMAIN}
             - alertmanager.${CLUSTER_DOMAIN}
           parentRefs:
             - name: internal
@@ -64,7 +65,7 @@ spec:
         #   name: alertmanager
         #   global:
         #     resolvetimeout: 10m
-        externalUrl: https://alertmanager.${CLUSTER_DOMAIN}
+        externalUrl: https://alertmanager.${ROOT_DOMAIN}
         storage:
           volumeClaimTemplate:
             spec:
@@ -87,6 +88,7 @@ spec:
             reloader.stakater.com/auto: "true"
             external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           hostnames:
+            - prometheus.${ROOT_DOMAIN}
             - prometheus.${CLUSTER_DOMAIN}
           parentRefs:
             - name: internal

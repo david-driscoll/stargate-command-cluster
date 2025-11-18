@@ -117,7 +117,9 @@ spec:
     ruler:
       enabled: true
       alertmanagers:
-        - http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+        - http://alertmanager-operated.observability.svc.cluster.local:9093
+      # Ensure Ruler queries the aggregated Thanos Query to evaluate rules across clusters
+      queryUrl: http://thanos-query.observability.svc.cluster.local:10902
       replicaCount: 1
       config: |-
         groups:
@@ -158,6 +160,8 @@ spec:
 
     receive:
       enabled: true
+      networkPolicy:
+        enabled: false
       mode: standalone
       # logLevel: info
       tsdbRetention: 14d

@@ -7,9 +7,6 @@ resources:
   - ./helmrelease.yaml
   - ./scrapeconfig.yaml
   - ./definition.yaml
-configMapGenerator:
-  - name: alertmanager-config-tpl
-    files:
-      - alertmanager.yaml=./resources/alertmanager.yaml
+  - ./config.yaml
 generatorOptions:
   disableNameSuffixHash: true

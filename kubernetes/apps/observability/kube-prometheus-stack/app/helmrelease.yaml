@@ -60,8 +60,8 @@ spec:
 
       alertmanagerSpec:
         replicas: 2
-        useExistingSecret: true
-        configSecret: alertmanager-secret
+        alertmanagerConfiguration:
+          name: alertmanager
         clusterLabel: ${CLUSTER_CNAME}
         # alertmanagerConfiguration:
         #   name: alertmanager

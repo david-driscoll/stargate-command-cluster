@@ -42,6 +42,7 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
+      skipPathRegex: "^/api([/?].*)?$"
   gatus:
     - group: "System"
       url: *url

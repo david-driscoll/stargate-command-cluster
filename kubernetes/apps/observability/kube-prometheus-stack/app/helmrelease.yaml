@@ -36,7 +36,6 @@ spec:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      fullnameOverride: alertmanager
       route:
         main:
           enabled: true
@@ -60,6 +59,7 @@ spec:
         replicas: 2
         useExistingSecret: true
         configSecret: alertmanager-secret
+        clusterLabel: ${CLUSTER_CNAME}
         # alertmanagerConfiguration:
         #   name: alertmanager
         #   global:
@@ -79,7 +79,6 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
-      fullnameOverride: prometheus
       logLevel: debug
       route:
         main:
@@ -132,19 +131,13 @@ spec:
             existingSecret:
               name: thanos-objstore
               key: objstore.yml
-        # remoteWriteDashboards: true
-        # remoteWrite:
-        #   - url: http://thanos-write-remote.observability.svc.cluster.local:19291/api/v1/receive
-        #     queueConfig:
-        #       maxSamplesPerSend: 10000
-        #       batchSendDeadline: 5s
-        #       minShards: 1
-        #       maxShards: 4
+        remoteWriteDashboards: true
         externalLabels:
           cluster: ${CLUSTER_CNAME}
           environment: homelab
           region: home
         storageSpec:
+          serviceName: prometheus
           volumeClaimTemplate:
             spec:
               storageClassName: longhorn

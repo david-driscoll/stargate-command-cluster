@@ -75,9 +75,9 @@ spec:
             {{ .CommonLabels.alertname }}
           ttl: 86400s
           token:
-            name: alertmanager
+            name: alertmanager-secret
             key: pushover_api_token
           userKey:
-            name: alertmanager
+            name: alertmanager-secret
             key: pushover_user_key
           urlTitle: View in Alertmanager

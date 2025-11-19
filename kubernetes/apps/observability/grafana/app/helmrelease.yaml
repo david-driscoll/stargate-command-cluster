@@ -187,7 +187,7 @@ spec:
             uid: prometheus
             isDefault: true
             access: proxy
-            url: http://thanos-query.observability.svc.cluster.local:10902
+            url: http://thanos-query.observability.svc.cluster.local:9090
             jsonData:
               timeInterval: 1m
           - name: "Loki"

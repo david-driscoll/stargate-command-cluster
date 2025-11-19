@@ -36,7 +36,6 @@ spec:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      enabled: false
       annotations:
         reloader.stakater.com/auto: "true"
       service:

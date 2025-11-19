@@ -15,5 +15,5 @@ resources:
   - ./alloy/ks.yaml
   - ./grafana/ks.yaml
   - ./exporters/ks.yaml
-  # - ./thanos/ks.yaml
+  - ./thanos/ks.yaml
   - ./smartctl-exporter/ks.yaml

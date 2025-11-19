@@ -180,10 +180,10 @@ spec:
           tailscale.com/hostname: thanos-write-svc
       resources:
         requests:
-          cpu: 500m
+          cpu: 200m
           memory: 1Gi
         limits:
-          cpu: 1
+          cpu: 500m
           memory: 4Gi
     # receiveDistributor:
     #   enabled: true

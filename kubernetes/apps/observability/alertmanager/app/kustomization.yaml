@@ -7,6 +7,5 @@ resources:
   - ./helmrelease.yaml
   - ./definition.yaml
   - ./config.yaml
-  - ./grafana-secret.yaml
 generatorOptions:
   disableNameSuffixHash: true

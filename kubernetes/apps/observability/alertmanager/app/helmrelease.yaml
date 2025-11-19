@@ -32,6 +32,7 @@ spec:
       retries: 3
   values:
     nameOverride: *name
+    fullnameOverride: *name
     ipFamilyPolicy: SingleStack
     ipFamilies:
       - IPv4

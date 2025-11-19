@@ -9,11 +9,11 @@ components:
 resources:
   - ./secret-store.yaml
   - ./crds/ks.yaml
+  - ./alertmanager/ks.yaml
   - ./prometheus/ks.yaml
   - ./loki/ks.yaml
   - ./alloy/ks.yaml
   - ./grafana/ks.yaml
-  - ./alertmanager/ks.yaml
   - ./exporters/ks.yaml
   - ./thanos/ks.yaml
   - ./smartctl-exporter/ks.yaml

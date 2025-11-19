@@ -38,6 +38,10 @@ spec:
     alertmanager:
       annotations:
         reloader.stakater.com/auto: "true"
+      service:
+        annotations:
+          tailscale.com/expose: "true"
+          tailscale.com/hostname: alertmanager-svc
       route:
         main:
           enabled: true

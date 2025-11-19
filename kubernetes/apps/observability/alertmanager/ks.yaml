@@ -3,6 +3,39 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app alertmanager
+  namespace: &namespace observability
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
+  path: ./kubernetes/apps/observability/prometheus/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+  interval: 24h
+  retryInterval: 1m
+  timeout: 10m
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app silence-operator
   namespace: &namespace observability
 spec:
@@ -15,7 +48,7 @@ spec:
       kind: HelmRelease
       name: silence-operator
       namespace: *namespace
-  path: ./kubernetes/apps/observability/silence-operator/app
+  path: ./kubernetes/apps/observability/alertmanager/silence-operator
   prune: true
   wait: true
   force: false # true
@@ -44,7 +77,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: silence-operator
-  path: ./kubernetes/apps/observability/silence-operator/silences
+  path: ./kubernetes/apps/observability/alertmanager/silences
   prune: true
   wait: true
   force: false # true

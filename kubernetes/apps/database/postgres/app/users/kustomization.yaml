@@ -7,7 +7,5 @@ resources:
   - postgres-superuser.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
-  - gatus.yaml
-  - gatus.sops.yaml
   - grafana.yaml
   - grafana.sops.yaml

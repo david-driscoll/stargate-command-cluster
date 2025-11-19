@@ -4,5 +4,4 @@ resources:
   - postgres-user-push-secret.yaml
   - postgres-superuser-push-secret.yaml
   - authentik-postgres-push-secret.yaml
-  - gatus-postgres-push-secret.yaml
   - grafana-postgres-push-secret.yaml

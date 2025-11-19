@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app gatus
+  name: &app prometheus
   namespace: &namespace observability
 spec:
   targetNamespace: *namespace
@@ -11,24 +11,22 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: volsync
+      namespace: volsync-system
     - name: onepassword-connect
       namespace: kube-system
     - name: external-secrets
       namespace: kube-system
-  path: ./kubernetes/apps/observability/gatus/app
-  components:
-    - ../../../../components/postgres
-    - ../../../../components/gateway/forwardauth
+  path: ./kubernetes/apps/observability/prometheus/app
   prune: true
-  wait: true
-  force: false # true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  wait: false
+  interval: 24h
+  retryInterval: 1m
+  timeout: 10m
   postBuild:
     substitute:
       APP: *app

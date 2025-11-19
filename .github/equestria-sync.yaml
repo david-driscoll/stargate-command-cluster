@@ -69,9 +69,10 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/observability/
     exclude: |
       kustomization.yaml
-      thanos/
+      alertmanager/
+      exporters/
       grafana/
-      kube-prometheus-stack/app/helmrelease.yaml
+      thanos/
   - source: kubernetes/apps/tailscale-system/
     dest: kubernetes/apps/tailscale-system/
     exclude: |

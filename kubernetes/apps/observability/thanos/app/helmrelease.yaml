@@ -129,7 +129,7 @@ spec:
                 annotations:
                   summary: "Prometheus has disappeared from Thanos target discovery"
                   description: "Prometheus instance has been down for more than 5 minutes"
-                expr: absent(up{job="kube-prometheus-stack-prometheus",cluster="${CLUSTER_CNAME}"})
+                expr: absent(up{job="prometheus-prometheus",cluster="${CLUSTER_CNAME}"})
                 for: 5m
                 labels:
                   severity: critical
@@ -140,7 +140,7 @@ spec:
                 annotations:
                   summary: "Prometheus has disappeared from Thanos target discovery"
                   description: "Prometheus instance has been down for more than 5 minutes"
-                expr: absent(up{job="kube-prometheus-stack-prometheus",cluster="equestria"})
+                expr: absent(up{job="prometheus-prometheus",cluster="equestria"})
                 for: 5m
                 labels:
                   severity: critical

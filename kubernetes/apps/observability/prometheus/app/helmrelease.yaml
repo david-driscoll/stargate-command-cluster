@@ -97,7 +97,7 @@ spec:
           region: home
         # Send alerts to central SGC Alertmanager via static target (SNI + TLS)
         alertingEndpoints:
-          - name: alertmanager-sgc
+          - name: alertmanager-operated
             namespace: observability
             port: http
             scheme: http

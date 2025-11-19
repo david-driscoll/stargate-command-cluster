@@ -72,11 +72,11 @@ spec:
       thanosServiceMonitor:
         enabled: true
       prometheusSpec:
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
-        ruleSelectorNilUsesHelmValues: false
-        scrapeConfigSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
+        # podMonitorSelectorNilUsesHelmValues: false
+        # probeSelectorNilUsesHelmValues: false
+        # ruleSelectorNilUsesHelmValues: false
+        # scrapeConfigSelectorNilUsesHelmValues: false
+        # serviceMonitorSelectorNilUsesHelmValues: false
         retention: 14d
         retentionSize: 50GB
         resources:
@@ -96,7 +96,6 @@ spec:
           environment: homelab
           region: home
         storageSpec:
-          serviceName: prometheus
           volumeClaimTemplate:
             spec:
               storageClassName: longhorn

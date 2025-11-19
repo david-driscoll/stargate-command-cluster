@@ -116,8 +116,13 @@ spec:
     # Ruler - Evaluates recording and alerting rules on historical data
     ruler:
       enabled: true
-      alertmanagers:
-        - http://alertmanager-operated.observability.svc.cluster.local:9093
+      alertmanagersConfig:
+        alertmanagers:
+          - static_configs:
+              - alertmanager-operated.observability.svc.cluster.local:9093
+            scheme: http
+            timeout: 10s
+            api_version: v2
       # Ensure Ruler queries the aggregated Thanos Query to evaluate rules across clusters
       queryUrl: http://thanos-query.observability.svc.cluster.local:10902
       replicaCount: 1

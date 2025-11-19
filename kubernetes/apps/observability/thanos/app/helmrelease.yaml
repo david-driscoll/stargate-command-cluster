@@ -23,6 +23,7 @@ spec:
     kind: OCIRepository
     name: thanos
   interval: 1h
+  timeout: 10m
   values:
     global:
       security:

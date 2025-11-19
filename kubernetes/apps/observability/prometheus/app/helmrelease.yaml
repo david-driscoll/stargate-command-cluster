@@ -95,6 +95,15 @@ spec:
           cluster: ${CLUSTER_CNAME}
           environment: homelab
           region: home
+        # Send alerts to central SGC Alertmanager via static target (SNI + TLS)
+        alertingEndpoints:
+          - name: alertmanager-sgc
+            namespace: observability
+            port: http
+            scheme: http
+            apiVersion: v2
+            pathPrefix: /
+            timeout: 10s
         storageSpec:
           volumeClaimTemplate:
             spec:

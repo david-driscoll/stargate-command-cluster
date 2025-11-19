@@ -82,11 +82,11 @@ spec:
           runAsGroup: 64535
           fsGroup: 64535
 
-        # podMonitorSelectorNilUsesHelmValues: false
-        # probeSelectorNilUsesHelmValues: false
-        # ruleSelectorNilUsesHelmValues: false
-        # scrapeConfigSelectorNilUsesHelmValues: false
-        # serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
         retention: 14d
         retentionSize: 50GB
         resources:

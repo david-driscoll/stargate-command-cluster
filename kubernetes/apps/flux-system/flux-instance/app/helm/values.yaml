@@ -1,8 +1,10 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/controlplaneio-fluxcd/charts/refs/heads/main/charts/flux-instance/values.schema.json
 instance:
   distribution:
     # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
     version: 2.7.3
+    registry: "ghcr.io/fluxcd"
   cluster:
     networkPolicy: false
   components:
@@ -11,6 +13,7 @@ instance:
     - helm-controller
     - notification-controller
   sync:
+    name: flux-system
     kind: GitRepository
     url: "https://github.com/david-driscoll/stargate-command-cluster.git"
     ref: "refs/heads/main"

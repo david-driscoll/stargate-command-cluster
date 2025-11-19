@@ -36,6 +36,7 @@ spec:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
+      enabled: false
       annotations:
         reloader.stakater.com/auto: "true"
       service:
@@ -66,7 +67,7 @@ spec:
         replicas: 2
         alertmanagerConfiguration:
           name: alertmanager
-        clusterLabel: ${CLUSTER_CNAME}
+        clusterLabel: homelab
         # alertmanagerConfiguration:
         #   name: alertmanager
         #   global:

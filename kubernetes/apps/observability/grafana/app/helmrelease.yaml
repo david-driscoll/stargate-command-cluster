@@ -310,12 +310,6 @@ spec:
         #   revision: 9
         #   datasource:
         #     - {name: DS_PROMETHEUS, value: Prometheus}
-        envoy:
-          # renovate: depName="Envoy Proxy Monitoring gRPC"
-          gnetId: 23239
-          revision: 1
-          datasource:
-            - {name: DS_AFRANET_PROMETHEUS, value: Prometheus}
         # cloudflared:
         #   # renovate: depName="Cloudflare Tunnels (cloudflared)"
         #   gnetId: 17457
@@ -366,34 +360,34 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
-      thanos:
-        thanos-bucket-replicate:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/bucket-replicate.json
-          datasource: Prometheus
-        thanos-compact:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/compact.json
-          datasource: Prometheus
-        thanos-overview:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/overview.json
-          datasource: Prometheus
-        thanos-query-frontend:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/query-frontend.json
-          datasource: Prometheus
-        thanos-query:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/query.json
-          datasource: Prometheus
-        thanos-receive:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/receive.json
-          datasource: Prometheus
-        thanos-rule:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/rule.json
-          datasource: Prometheus
-        thanos-sidecar:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/sidecar.json
-          datasource: Prometheus
-        thanos-store:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/store.json
-          datasource: Prometheus
+      # thanos:
+      #   thanos-bucket-replicate:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/bucket-replicate.json
+      #     datasource: Prometheus
+      #   thanos-compact:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/compact.json
+      #     datasource: Prometheus
+      #   thanos-overview:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/overview.json
+      #     datasource: Prometheus
+      #   thanos-query-frontend:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/query-frontend.json
+      #     datasource: Prometheus
+      #   thanos-query:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/query.json
+      #     datasource: Prometheus
+      #   thanos-receive:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/receive.json
+      #     datasource: Prometheus
+      #   thanos-rule:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/rule.json
+      #     datasource: Prometheus
+      #   thanos-sidecar:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/sidecar.json
+      #     datasource: Prometheus
+      #   thanos-store:
+      #     url: https://raw.githubusercontent.com/thanos-io/thanos/refs/heads/main/examples/dashboards/store.json
+      #     datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true

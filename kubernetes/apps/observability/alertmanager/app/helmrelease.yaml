@@ -68,7 +68,6 @@ spec:
         replicas: 2
         alertmanagerConfiguration:
           name: alertmanager
-        clusterLabel: homelab
         # alertmanagerConfiguration:
         #   name: alertmanager
         #   global:

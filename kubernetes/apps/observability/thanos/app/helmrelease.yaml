@@ -221,13 +221,13 @@ spec:
                   severity: critical
           - name: loki-compactor
             rules:
-                - alert: LokiCompactorFailures
-                  annotations:
-                    summary: Loki compactor is reporting failed compactions on {{ "{{" }} $labels.instance {{ "}}" }}
-                  expr: increase(loki_compactor_compactions_failed_total[10m]) > 0
-                  for: 10m
-                  labels:
-                    severity: warning
+              - alert: LokiCompactorFailures
+                annotations:
+                  summary: Loki compactor is reporting failed compactions on {{ "{{" }} $labels.instance {{ "}}" }}
+                expr: increase(loki_compactor_compactions_failed_total[10m]) > 0
+                for: 10m
+                labels:
+                  severity: warning
       dnsDiscovery:
         enabled: true
       persistence:

@@ -7,3 +7,9 @@ resources:
   - ./externalsecret.yaml
   - ./definition.yaml
   - ./ingress.yaml
+configMapGenerator:
+- name: thanos-ruler
+  files:
+  - ruler.yml=./resources/ruler.yml
+  options:
+    disableNameSuffixHash: true

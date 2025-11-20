@@ -95,7 +95,14 @@ spec:
           cluster: ${CLUSTER_CNAME}
           environment: homelab
           region: home
-        # Alert forwarding is now handled centrally by Thanos Ruler; no per-cluster alertmanagers configured here.
+        alertingEndpoints:
+          - name: alertmanager-operated
+            namespace: observability
+            port: http-web
+            scheme: http
+            apiVersion: v2
+            pathPrefix: /
+            timeout: 10s
         storageSpec:
           volumeClaimTemplate:
             spec:

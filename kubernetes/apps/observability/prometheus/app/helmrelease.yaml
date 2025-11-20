@@ -103,6 +103,14 @@ spec:
             apiVersion: v2
             pathPrefix: /
             timeout: 10s
+        additionalAlertManagerConfigs:
+          - scheme: http
+            api_version: v2
+            path_prefix: /
+            timeout: 10s
+            static_configs:
+              - targets:
+                - alertmanager-operated.observability.svc.cluster.local:9093
         storageSpec:
           volumeClaimTemplate:
             spec:

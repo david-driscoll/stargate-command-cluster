@@ -105,6 +105,14 @@ spec:
             apiVersion: v2
             pathPrefix: /
             timeout: 10s
+        # # Also add a static alertmanager configuration to ensure discovery when k8s endpoints do not match expectations
+        # additionalAlertManagerConfigs:
+        #   - scheme: http
+        #     api_version: v2
+        #     path_prefix: /
+        #     static_configs:
+        #       - targets:
+        #           - alertmanager-operated.observability.svc.cluster.local:9093
         storageSpec:
           volumeClaimTemplate:
             spec:

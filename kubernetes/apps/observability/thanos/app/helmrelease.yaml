@@ -220,7 +220,7 @@ spec:
                 labels:
                   severity: critical
           - name: loki-compactor
-              rules:
+            rules:
                 - alert: LokiCompactorFailures
                   annotations:
                     summary: Loki compactor is reporting failed compactions on {{ "{{" }} $labels.instance {{ "}}" }}

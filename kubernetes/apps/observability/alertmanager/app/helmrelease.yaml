@@ -43,7 +43,8 @@ spec:
       service:
         annotations:
           tailscale.com/expose: "true"
-          tailscale.com/hostname: alertmanager-svc
+          tailscale.com/hostname: alertmanager
+          tailscale.com/tags: "tag:observability"
       route:
         main:
           enabled: true

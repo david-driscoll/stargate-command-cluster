@@ -74,6 +74,7 @@ david-driscoll/equestria-cluster:
       grafana/
       prometheus/
       thanos/
+      loki/
   - source: kubernetes/apps/tailscale-system/
     dest: kubernetes/apps/tailscale-system/
     exclude: |

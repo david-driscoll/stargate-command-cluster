@@ -99,7 +99,8 @@ spec:
         alertingEndpoints:
           - name: alertmanager-operated
             namespace: observability
-            port: http
+            # service port name used by the alertmanager-operated service is `http-web`
+            port: http-web
             scheme: http
             apiVersion: v2
             pathPrefix: /

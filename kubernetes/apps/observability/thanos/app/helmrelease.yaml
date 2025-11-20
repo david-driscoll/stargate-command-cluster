@@ -155,7 +155,8 @@ spec:
       service:
         annotations:
           tailscale.com/expose: "true"
-          tailscale.com/hostname: thanos-write-svc
+          tailscale.com/hostname: thanos-write
+          tailscale.com/tags: "tag:observability"
       resources:
         requests:
           cpu: 200m

@@ -6,7 +6,7 @@ metadata:
   name: loki
 spec:
   name: Loki
-  category: ${CLUSTER_TITLE}
+  category: &category ${CLUSTER_TITLE}
   description: Loki is a log aggregation system designed to work with Prometheus.
   url: &url https://loki.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/loki.svg
@@ -18,7 +18,7 @@ spec:
       mode: "forward_single"
       externalHost: *url
   gatus:
-    - group: "System"
+    - group: *category
       url: https://loki.${CLUSTER_DOMAIN}/ready
       method: GET
       conditions:

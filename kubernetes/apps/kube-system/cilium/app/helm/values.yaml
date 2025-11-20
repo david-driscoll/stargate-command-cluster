@@ -23,7 +23,7 @@ dashboards:
 hubble:
   enabled: true
   relay:
-    enabled: true
+    enabled: false
   metrics:
     enabled:
       - dns
@@ -40,7 +40,7 @@ hubble:
     serviceMonitor:
       enabled: true
   ui:
-    enabled: true
+    enabled: false
     ingress:
       enabled: true
       ingressClassName: internal

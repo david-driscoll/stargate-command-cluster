@@ -53,9 +53,6 @@ spec:
       route:
         main:
           enabled: true
-          annotations:
-            reloader.stakater.com/auto: "true"
-            external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           hostnames:
             - prometheus.${CLUSTER_DOMAIN}
           parentRefs:

@@ -95,8 +95,8 @@ spec:
       - gateway-tlsroute
       - gateway-tcproute
       - gateway-udproute
+    txtPrefix: "${CLUSTER_CNAME}-"
     txtOwnerId: "${CLUSTER_CNAME}"
-    txtPrefix: "k8s.${CLUSTER_CNAME}."
     domainFilters:
       - "${ROOT_DOMAIN}"
       - "${TAILSCALE_DOMAIN}"

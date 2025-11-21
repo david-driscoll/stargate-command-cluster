@@ -39,9 +39,10 @@ spec:
     - name: external-secrets
       namespace: kube-system
   values:
+    fullnameOverride: *app
     logLevel: debug
-    interval: 1m
-    policy: sync
+    interval: 10m
+    triggerLoopOnEvent: true
     provider:
       name: cloudflare
     env:

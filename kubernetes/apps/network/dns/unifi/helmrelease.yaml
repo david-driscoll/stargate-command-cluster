@@ -55,7 +55,8 @@ spec:
   values:
     fullnameOverride: *app
     logLevel: debug
-    interval: 1m
+    interval: 10m
+    triggerLoopOnEvent: true
     policy: sync
     provider:
       name: webhook
@@ -83,7 +84,6 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    triggerLoopOnEvent: true
     extraArgs: []
     sources:
       - "traefik-proxy"

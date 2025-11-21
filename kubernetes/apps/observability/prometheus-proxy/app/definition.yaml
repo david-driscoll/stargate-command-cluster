@@ -3,13 +3,13 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: loki
+  name: prometheus
 spec:
-  name: Loki
-  category: &category ${CLUSTER_TITLE}
-  description: Loki is a log aggregation system designed to work with Prometheus.
-  url: &url https://loki.${CLUSTER_DOMAIN}
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/loki.svg
+  name: Prometheus
+  category: ${CLUSTER_TITLE}
+  description: Prometheus is an open-source systems monitoring and alerting toolkit.
+  url: &url https://prometheus.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
   access_policy:
     groups:
       - admins
@@ -18,8 +18,9 @@ spec:
       mode: "forward_single"
       externalHost: *url
   gatus:
-    - group: *category
-      url: https://loki.${CLUSTER_DOMAIN}/ready
+    - group: "System"
+      url: *url
       method: GET
       conditions:
         - "[STATUS] == 200"
+

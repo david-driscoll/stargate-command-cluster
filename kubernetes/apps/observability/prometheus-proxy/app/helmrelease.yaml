@@ -32,11 +32,14 @@ spec:
       retries: 3
   values:
     nameOverride: *name
+    fullnameOverride: *name
     ipFamilyPolicy: SingleStack
     ipFamilies:
       - IPv4
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
+      enabled: false
+    grafana:
       enabled: false
     kubeEtcd:
       service:
@@ -47,7 +50,6 @@ spec:
     prometheus:
       annotations:
         reloader.stakater.com/auto: "true"
-      # logLevel: debug
       route:
         main:
           enabled: true
@@ -55,7 +57,6 @@ spec:
             reloader.stakater.com/auto: "true"
             external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
           hostnames:
-            - prometheus.${ROOT_DOMAIN}
             - prometheus.${CLUSTER_DOMAIN}
           parentRefs:
             - name: internal
@@ -67,10 +68,6 @@ spec:
                 group: traefik.io
                 kind: Middleware
                 name: authenticated-user
-      thanosService:
-        enabled: true
-      thanosServiceMonitor:
-        enabled: true
       prometheusSpec:
         # podMonitorSelectorNilUsesHelmValues: false
         # probeSelectorNilUsesHelmValues: false
@@ -85,12 +82,14 @@ spec:
             cpu: 100m
           limits:
             memory: 2000Mi
-        thanos:
-          objectStorageConfig:
-            existingSecret:
-              name: thanos-objstore
-              key: objstore.yml
         remoteWriteDashboards: true
+        remoteWrite:
+          - url: http://thanos-write.observability.svc.cluster.local:19291/api/v1/receive
+            queueConfig:
+              maxSamplesPerSend: 10000
+              batchSendDeadline: 5s
+              minShards: 1
+              maxShards: 4
         externalLabels:
           cluster: ${CLUSTER_CNAME}
           environment: homelab
@@ -98,7 +97,7 @@ spec:
         alertingEndpoints:
           - name: alertmanager-operated
             namespace: observability
-            port: http-web
+            port: http
             scheme: http
             apiVersion: v2
             pathPrefix: /
@@ -118,6 +117,17 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
+    thanosRuler:
+      enabled: false
+      alertmanagersConfig:
+        existingSecret:
+          name: thanos-ruler-alertmanager-config
+          key: alertmanager.yaml
+        queryEndpoints:
+          - prometheus-operated.observability.svc.cluster.local:9090
+      # thanosRulerSpec:
+      #   alertDropLabels:
+      #     - cluster
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
@@ -144,7 +154,4 @@ spec:
               replacement: $1
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
-    grafana:
-      enabled: false
-      forceDeployDashboards: true
-    # End of values for prometheus HelmRelease
+    # Prometheus local rule maps removed; rules are evaluated centrally by Thanos Ruler

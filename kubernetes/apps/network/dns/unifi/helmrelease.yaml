@@ -99,7 +99,7 @@ spec:
     txtOwnerId: "${CLUSTER_CNAME}"
     domainFilters:
       - "${ROOT_DOMAIN}"
-      - "${TAILSCALE_DOMAIN}"
+      # - "${TAILSCALE_DOMAIN}"
     serviceMonitor:
       enabled: true
     podAnnotations:

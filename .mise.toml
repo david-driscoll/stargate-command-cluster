@@ -10,7 +10,7 @@ SCRIPTS_DIR = "{{config_root}}/scripts"
 TALOS_DIR = "{{config_root}}/talos"
 CONNECT_HOST = "https://op-connect.equestria.driscoll.tech/"
 CONNECT_VAULT = "Eris"
-CONNECT_TOKEN = "op://Eris/OnePassword Connect Token/credential"
+CONNECT_TOKEN = "op://Eris/Eris 1Password Connect Access Token/credential"
 
 [tools]
 python = "3.13.1"

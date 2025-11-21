@@ -61,6 +61,7 @@ function apply_sops_secrets() {
         "${ROOT_DIR}/kubernetes/components/common/cluster-secrets.sops.yaml"
         "${ROOT_DIR}/kubernetes/components/common/shared-secrets.sops.yaml"
         "${ROOT_DIR}/kubernetes/components/common/sops-age.sops.yaml"
+        "${ROOT_DIR}/kubernetes/apps/kube-system/1password/connect/secret.sops.yaml"
     )
 
     for secret in "${secrets[@]}"; do

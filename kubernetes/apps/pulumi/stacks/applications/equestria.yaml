@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://schemas.budimanjojo.com/pulumi.com/stack_v1.json
+apiVersion: pulumi.com/v1
+kind: Stack
+metadata:
+  name: &stack equestria
+spec:
+  fluxSource:
+    sourceRef:
+      apiVersion: source.toolkit.fluxcd.io/v1
+      kind: GitRepository
+      name: home-operations
+    dir: stacks/applications
+  serviceAccountName: ${APP}
+  stack: *stack
+  resyncFrequencySeconds: 300
+  retryMaxBackoffDurationSeconds: 60
+  backend: s3://home-operations/applications?endpoint=truenas.driscoll.tech:9000&s3ForcePathStyle=true&disableSSL=true
+  continueResyncOnCommitMatch: true
+  destroyOnFinalize: false
+  workspaceReclaimPolicy: Delete
+  # refresh: true
+  prerequisites:
+    - name: home-operations
+    - name: authentik
+  envRefs:
+    AWS_ACCESS_KEY_ID:
+      type: Secret
+      secret:
+        name: truenas-home-operations
+        key: username
+    AWS_SECRET_ACCESS_KEY:
+      type: Secret
+      secret:
+        name: truenas-home-operations
+        key: password
+    AWS_USE_PATH_STYLE_ENDPOINT:
+      type: Literal
+      literal:
+        value: "true"
+    AWS_REGION:
+      type: Literal
+      literal:
+        value: "home-operations"
+    GITHUB_TOKEN:
+      type: Secret
+      secret:
+        name: pulumi-operator-github
+        key: credential
+    CONNECT_HOST:
+      type: Literal
+      literal:
+        value: "http://onepassword-connect.kube-system.svc.cluster.local:8080"
+    CONNECT_VAULT:
+      type: Literal
+      literal:
+        value: "Eris"
+    CONNECT_TOKEN:
+      type: Secret
+      secret:
+        name: pulumi-operator-connect-token
+        key: credential
+    PULUMI_CONFIG_PASSPHRASE:
+      type: Secret
+      secret:
+        name: pulumi-operator-passphrase
+        key: password
+  secretsRef:
+    github:token:
+      type: Secret
+      secret:
+        name: pulumi-operator-github
+        key: credential
+    authentik:token:
+      type: Secret
+      secret:
+        name: authentik-secret
+        key: credential
+    authentik:url:
+      type: Secret
+      secret:
+        name: authentik-secret
+        key: url
+  workspaceTemplate:
+    spec:
+      # renovate: datasource=docker depName=pulumi/pulumi-nodejs
+      image: ghcr.io/pulumi/pulumi-nodejs:3.207.0@sha256:32eb6e9a0e2844c8da6d3d1a1b5739cddb8766faef78a7d0938383c130aebdcf
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 1
+          memory: 2Gi
+      # pulumiLogLevel: 11

@@ -52,3 +52,4 @@ spec:
         traefik.ingress.kubernetes.io/router.middlewares: network-authenticated-user@kubernetescrd
       hosts:
         - alloy.${CLUSTER_DOMAIN}
+      faroPort: 12345

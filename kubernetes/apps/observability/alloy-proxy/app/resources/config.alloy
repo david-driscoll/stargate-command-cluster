@@ -88,6 +88,7 @@ discovery.relabel "pod_logs" {
 loki.source.kubernetes "pod_logs" {
   targets    = discovery.relabel.pod_logs.output
   forward_to = [loki.process.pod_logs.receiver]
+  relabel_rules = [discovery.relabel.pod_logs.rules]
 }
 
 // loki.process receives log entries from other Loki components, applies one or more processing stages,

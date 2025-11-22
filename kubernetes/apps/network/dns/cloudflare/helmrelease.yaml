@@ -43,6 +43,7 @@ spec:
     logLevel: debug
     interval: 10m
     triggerLoopOnEvent: true
+    policy: sync
     provider:
       name: cloudflare
     env:

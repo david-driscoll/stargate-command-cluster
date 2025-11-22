@@ -12,7 +12,7 @@ spec:
     groups:
       - admins
   # gatus:
-  #   - group: "System"
+  #   - group: *category
   #     url: tcp://valkey.database.svc.cluster.local:6379
   #     conditions:
   #     - "[CONNECTED] == true"

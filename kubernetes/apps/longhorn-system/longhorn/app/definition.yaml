@@ -18,8 +18,7 @@ spec:
       mode: "forward_single"
       externalHost: *url
   gatus:
-    - group: "System"
-      url: *url
+    - url: *url
       method: GET
       conditions:
         - "[STATUS] == 200"

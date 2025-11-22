@@ -19,7 +19,7 @@
 #       mode: "forward_single"
 #       externalHost: *url
 #   gatus:
-#     - group: "System"
+#     - group: *category
 #       url: *url
 #       method: GET
 #       conditions:

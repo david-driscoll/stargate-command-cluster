@@ -28,8 +28,7 @@ spec:
       includeClaimsInIdToken: true
       subMode: user_email
   gatus:
-    - group: "Applications"
-      url: https://home.${ROOT_DOMAIN}
+    - url: https://home.${ROOT_DOMAIN}
       method: GET
       conditions:
         - "[STATUS] == 200"

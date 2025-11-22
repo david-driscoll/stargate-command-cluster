@@ -10,8 +10,7 @@ spec:
   description: Postgres monitoring
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postgres.svg
   gatus:
-    - group: "System"
-      url: "tcp://postgres.${CLUSTER_DOMAIN}:5432"
+    - url: "tcp://postgres.${CLUSTER_DOMAIN}:5432"
       interval: 30s
       conditions:
         - "[CONNECTED] == true"

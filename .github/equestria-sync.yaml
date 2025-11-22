@@ -72,7 +72,8 @@ david-driscoll/equestria-cluster:
     exclude: |
       kustomization.yaml
       prometheus-proxy/
-      alloy/app/kustomization.yaml
+      exporters/
+      alloy/
   - source: kubernetes/apps/tailscale-system/
     dest: kubernetes/apps/tailscale-system/
     exclude: |

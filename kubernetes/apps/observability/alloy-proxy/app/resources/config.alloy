@@ -97,7 +97,7 @@ loki.process "pod_logs" {
       values = {
         cluster = "${CLUSTER_CNAME}",
         environment = "homelab",
-        region = "home"
+        region = "home",
       }
   }
 
@@ -121,7 +121,9 @@ loki.process "cluster_events" {
 
   stage.static_labels {
     values = {
-      cluster = "main",
+      cluster = "${CLUSTER_CNAME}",
+      environment = "homelab",
+      region = "home",
     }
   }
 

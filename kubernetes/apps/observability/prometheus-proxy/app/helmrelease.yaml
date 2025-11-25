@@ -66,6 +66,7 @@ spec:
                 kind: Middleware
                 name: authenticated-user
       prometheusSpec:
+        externalUrl: https://prometheus.${CLUSTER_DOMAIN}
         # podMonitorSelectorNilUsesHelmValues: false
         # probeSelectorNilUsesHelmValues: false
         # ruleSelectorNilUsesHelmValues: false

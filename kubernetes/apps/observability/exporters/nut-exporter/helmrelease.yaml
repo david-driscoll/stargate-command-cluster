@@ -30,6 +30,7 @@ spec:
               tag: "3.2.2@sha256:a203474e5b24eddf33b45013d9dd72c41769abeaad6a8cbf6316610a96dc5a95"
             env:
               TZ: ${TIMEZONE}
+            args: --nut.vars_enable="battery.charge,battery.charge,battery.runtime,battery.type,device.mfr,device.model,device.type,driver.name,driver.parameter.pollfreq,driver.parameter.pollinterval,driver.parameter.port,driver.parameter.vendorid,driver.version,driver.version.data,driver.version.internal,input.voltage,outlet.1.status,outlet.desc,outlet.id,outlet.switchable,output.frequency,output.frequency.nominal,output.voltage,output.voltage.nominal,ups.beeper.status,ups.delay.shutdown,ups.firmware,ups.load,ups.mfr,ups.model,ups.power.nominal,ups.productid,ups.start.battery,ups.status,ups.timer.shutdown,ups.vendorid,ups.vendorid"
             probes:
               liveness:
                 enabled: true
@@ -51,3 +52,34 @@ spec:
             enabled: true
             protocol: TCP
             port: 9199
+
+    serviceMonitor:
+      app:
+        enabled: true
+        serviceName: *app
+        endpoints:
+          - interval: 30s
+            path: /ups_metrics
+            port: metrics
+            scheme: http
+            scrapeTimeout: 30s
+            metricRelabelings:
+              - action: replace
+                replacement: server
+                sourceLabels:
+                  - instance
+                targetLabel: instance
+              - action: replace
+                replacement: server
+                sourceLabels:
+                  - server
+                targetLabel: server
+              - action: labeldrop
+                regex: (pod)
+            params:
+              server:
+                - ${ALPHA_SITE_IP}
+            selector:
+              matchLabels:
+                app.kubernetes.io/instance: *app
+                app.kubernetes.io/name: *app

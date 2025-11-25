@@ -75,10 +75,11 @@ spec:
         retentionSize: 50GB
         resources:
           requests:
-            memory: 500Mi
             cpu: 100m
+            memory: 1Gi
           limits:
-            memory: 2000Mi
+            cpu: 500m
+            memory: 2Gi
         remoteWriteDashboards: true
         remoteWrite:
           - url: http://thanos-write.observability.svc.cluster.local:19291/api/v1/receive

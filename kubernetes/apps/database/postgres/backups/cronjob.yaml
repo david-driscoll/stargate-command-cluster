@@ -58,7 +58,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - set -eux; export DEBIAN_FRONTEND=noninteractive; apt-get update && apt-get install -y --no-install-recommends postgresql-client-17 && dotnet run /scripts/App.cs
+              - set -eux; export DEBIAN_FRONTEND=noninteractive; apt-get update && apt-get install -y postgresql-client-17 && dotnet run /scripts/App.cs
             resources:
               requests:
                 memory: 256Mi

@@ -167,7 +167,7 @@ async Task CleanupOldBackups(BackblazeClient client, string bucketId)
   var cutoffDate = DateTime.UtcNow.AddDays(-30);
   // List files in the dumps folder
   var listResponse = await client.Files.GetEnumerableAsync(new ListFileNamesRequest(bucketId) { Prefix = "dumps/" });
-  if (listResponse == null) return;
+  if (listResponse?.ToList() is not { Count: > 0 }) return;
 
   foreach (var file in listResponse)
   {

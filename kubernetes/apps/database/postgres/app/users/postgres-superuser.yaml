@@ -53,6 +53,10 @@ spec:
               templateAs: Values
             - key: public-uriql
               templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
   dataFrom:
     - extract:
         key: "postgres-superuser-password"

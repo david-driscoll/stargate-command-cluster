@@ -159,6 +159,11 @@ async Task UploadFile(BackblazeClient client, string bucketId, string localFileP
     progress,
     CancellationToken.None
   );
+  uploadResponse.Dump("Upload Response");
+  if (!uploadResponse.HttpResponse.IsSuccessStatusCode)
+  {
+    throw new InvalidOperationException($"Failed to upload file to Backblaze: {uploadResponse.Error.Message}");
+  }
 
 }
 

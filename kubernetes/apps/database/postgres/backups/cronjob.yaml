@@ -63,7 +63,7 @@ spec:
                 export DEBIAN_FRONTEND=noninteractive;
                 apt-get update
                 && apt install -y postgresql-common
-                && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+                && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
                 && apt-get install -y --no-install-recommends postgresql-client-17
                 && dotnet run /scripts/App.cs
             resources:

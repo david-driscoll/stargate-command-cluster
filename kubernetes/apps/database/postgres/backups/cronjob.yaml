@@ -58,7 +58,17 @@ spec:
             command:
               - /bin/sh
               - -c
-              - set -eux; export DEBIAN_FRONTEND=noninteractive; apt-get update && apt-get install -y postgresql-client-17 && dotnet run /scripts/App.cs
+              - >-
+                set -eux;
+                export DEBIAN_FRONTEND=noninteractive;
+                apt-get update
+                && apt-get install -y --no-install-recommends ca-certificates gnupg curl lsb-release
+                && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg
+                && echo \"deb [signed-by=/usr/share/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list
+                && apt-get update
+                && apt-get install -y --no-install-recommends postgresql-client-17
+                && rm -rf /var/lib/apt/lists/*
+                && dotnet run /scripts/App.cs
             resources:
               requests:
                 memory: 256Mi

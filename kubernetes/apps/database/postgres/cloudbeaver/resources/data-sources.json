@@ -1,0 +1,40 @@
+{
+  "folders": {},
+  "connections": {
+    "postgres": {
+      "provider": "postgresql",
+      "driver": "postgresql",
+      "name": "Postgres",
+      "save-password": true,
+      "show-system-objects": true,
+      "configuration": {
+        "host": "{{ .postgres_hostname }}",
+        "port": "{{ .postgres_port }}",
+        "database": "{{ .postgres_database }}",
+        "user": "{{ .postgres_username }}",
+        "password": "{{ .postgres_password }}",
+        "url": "jdbc:postgresql://{{ .postgres_hostname }}:{{ .postgres_port }}/{{ .postgres_database }}",
+        "configurationType": "MANUAL",
+        "type": "db",
+        "closeIdleConnection": true
+      }
+    },
+    "redis": {
+      "provider": "redis",
+      "driver": "redis",
+      "name": "Redis",
+      "save-password": false,
+      "show-system-objects": true,
+      "configuration": {
+        "host": "valkey.database.svc.cluster.local",
+        "port": "6379",
+        "user": "",
+        "password": "",
+        "url": "redis://valkey.database.svc.cluster.local:6379",
+        "configurationType": "MANUAL",
+        "type": "cache",
+        "closeIdleConnection": true
+      }
+    }
+  }
+}

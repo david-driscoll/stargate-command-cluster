@@ -1,0 +1,128 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.2.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app cloudbeaver
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false # true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        enabled: true
+        pod:
+          restartPolicy: Always
+          terminationGracePeriodSeconds: 30
+        initContainers:
+          download-drivers:
+            image:
+              repository: curlimages/curl
+              tag: 8.1.2
+              pullPolicy: IfNotPresent
+            command:
+              - sh
+              - -c
+              - |
+                set -eux
+                if [ -n "${CLOUDBEAVER_REDIS_DRIVER_URL:-}" ]; then
+                  echo "Downloading Redis driver from ${CLOUDBEAVER_REDIS_DRIVER_URL}"
+                  mkdir -p /opt/cloudbeaver/drivers
+                  curl -fsSL -o /opt/cloudbeaver/drivers/redis-driver.jar "${CLOUDBEAVER_REDIS_DRIVER_URL}"
+                else
+                  echo "No Redis driver URL specified; skipping download"
+                fi
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+        containers:
+          *app :
+            image:
+              repository: dbeaver/cloudbeaver
+              tag: 25.0@sha256:PLACEHOLDER
+              pullPolicy: IfNotPresent
+            env:
+              TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            securityContext:
+              readOnlyRootFilesystem: false
+            resources:
+              requests:
+                cpu: 100m
+                memory: 200Mi
+              limits:
+                cpu: 500m
+                memory: 1Gi
+    serviceAccount:
+      *app : {}
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
+        seccompProfile:
+          type: RuntimeDefault
+    persistence:
+      *app :
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /opt/cloudbeaver/conf/
+      config:
+        type: secret
+        name: ${APP}-config
+        defaultMode: 493
+        globalMounts:
+          - path: /opt/cloudbeaver/workspace/GlobalConfiguration/.dbeaver
+            subPath: .dbeaver
+          - path: /opt/cloudbeaver/conf/cloudbeaver.conf
+            subPath: cloudbeaver.conf
+      drivers:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/cloudbeaver/drivers
+    service:
+      *app :
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 8978
+    route:
+      internal:
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "${APP}.${ROOT_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: *port

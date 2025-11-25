@@ -3,20 +3,21 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: pgadmin
+  name: ${APP}
 spec:
-  name: Postgres Admin
+  name: CloudBeaver
   category: ${CLUSTER_TITLE}
-  description: TODO some more work here
-  url: &url https://${APP}.${CLUSTER_DOMAIN}
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/peanut.svg
+  description: CloudBeaver - web based database manager
+  icon: https://dbeaver.com/wp-content/uploads/2022/06/favicon-32x32.png
+  url: &url "https://${APP}.${CLUSTER_DOMAIN}"
   access_policy:
     groups:
       - admins
-  # authentik:
-  #   proxy:
-  #     mode: "forward_single"
-  #     externalHost: *url
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+      skipPathRegex: "^/api([/?].*)?$"
   gatus:
     - url: *url
       method: GET

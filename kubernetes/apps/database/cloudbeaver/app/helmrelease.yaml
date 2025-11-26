@@ -64,10 +64,8 @@ spec:
               tag: 25.0@sha256:PLACEHOLDER
               pullPolicy: IfNotPresent
             env:
-              TZ: ${TIMEZONE}
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
+              TZ: "${TIMEZONE}"
+              CLOUDBEAVER_ENABLED_DRIVERS: "postgresql"
             securityContext:
               readOnlyRootFilesystem: false
             resources:

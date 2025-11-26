@@ -79,6 +79,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /opt/cloudbeaver/conf/
+          - path: /.local/share/DBeaverData/
     service:
       *app :
         controller: *app

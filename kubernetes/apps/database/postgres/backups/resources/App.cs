@@ -145,15 +145,16 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
   }
 }
 
-async Task UploadFile(BackblazeClient client, string bucketId, string localFilePath, string fileName)
+async Task UploadFile(BackblazeClient client, string bucketName, string localFilePath, string fileName)
 {
   using var fileStream = File.OpenRead(localFilePath);
-  var uploadUrlResponse = await client.Files.GetUploadUrlAsync(bucketId);
+  var bucket = await client.Buckets.FindByNameAsync(bucketName);
+  var uploadUrlResponse = await client.Files.GetUploadUrlAsync(bucket.BucketId);
 
   var progress = new NaiveProgress<ICopyProgress>();
 
   var uploadResponse = await client.Files.UploadAsync(
-    bucketId,
+    bucketName,
     fileName,
     localFilePath,
     progress,

@@ -40,7 +40,7 @@ spec:
           *app :
             image:
               repository: dbeaver/cloudbeaver
-              tag: 25.0@sha256:PLACEHOLDER
+              tag: "25.2.5"
               pullPolicy: IfNotPresent
             env:
               TZ: "${TIMEZONE}"

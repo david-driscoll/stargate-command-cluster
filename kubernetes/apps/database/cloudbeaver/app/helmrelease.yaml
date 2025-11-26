@@ -66,10 +66,6 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     persistence:
-      *app :
-        existingClaim: ${APP}
-        globalMounts:
-          - path: /opt/cloudbeaver/conf/
       config:
         type: secret
         name: ${APP}-config
@@ -79,10 +75,10 @@ spec:
             subPath: .dbeaver
           - path: /opt/cloudbeaver/conf/cloudbeaver.conf
             subPath: cloudbeaver.conf
-      drivers:
+      cloudbeaver:
         type: emptyDir
         globalMounts:
-          - path: /opt/cloudbeaver/drivers
+          - path: /opt/cloudbeaver/conf/
     service:
       *app :
         controller: *app

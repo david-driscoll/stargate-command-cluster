@@ -51,9 +51,6 @@ ports:
     exposedPort: 443
     tls:
       enabled: true
-    middlewares:
-      - name: authentik-cors
-        namespace: network
   postgres:
     expose:
       default: true
@@ -177,9 +174,6 @@ gateway:
       certificateRefs:
         - name: le-production-tls
           kind: Secret
-      middlewares:
-        - name: authentik-cors
-          namespace: network
 
     postgres:
       protocol: TCP

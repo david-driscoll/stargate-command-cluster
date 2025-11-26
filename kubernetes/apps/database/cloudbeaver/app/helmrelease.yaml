@@ -36,27 +36,6 @@ spec:
         pod:
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
-        initContainers:
-          download-drivers:
-            image:
-              repository: curlimages/curl
-              tag: 8.1.2
-              pullPolicy: IfNotPresent
-            command:
-              - sh
-              - -c
-              - |
-                set -eux
-                if [ -n "${CLOUDBEAVER_REDIS_DRIVER_URL:-}" ]; then
-                  echo "Downloading Redis driver from ${CLOUDBEAVER_REDIS_DRIVER_URL}"
-                  mkdir -p /opt/cloudbeaver/drivers
-                  curl -fsSL -o /opt/cloudbeaver/drivers/redis-driver.jar "${CLOUDBEAVER_REDIS_DRIVER_URL}"
-                else
-                  echo "No Redis driver URL specified; skipping download"
-                fi
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
         containers:
           *app :
             image:

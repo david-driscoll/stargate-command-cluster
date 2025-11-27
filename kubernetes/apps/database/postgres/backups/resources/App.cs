@@ -154,7 +154,7 @@ async Task UploadFile(BackblazeClient client, string bucketName, string localFil
   var progress = new NaiveProgress<ICopyProgress>();
 
   var uploadResponse = await client.Files.UploadAsync(
-    bucketName,
+    bucket.BucketId,
     fileName,
     localFilePath,
     progress,

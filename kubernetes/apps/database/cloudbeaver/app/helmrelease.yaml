@@ -56,15 +56,6 @@ spec:
                 memory: 1Gi
     serviceAccount:
       *app : {}
-    defaultPodOptions:
-      securityContext:
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        runAsGroup: 568
-        runAsNonRoot: true
-        runAsUser: 568
-        seccompProfile:
-          type: RuntimeDefault
     persistence:
       config:
         type: secret

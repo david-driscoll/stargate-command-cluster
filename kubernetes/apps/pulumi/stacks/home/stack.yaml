@@ -82,7 +82,12 @@ spec:
     spec:
       # renovate: datasource=docker depName=pulumi/pulumi-nodejs
       image: ghcr.io/pulumi/pulumi-nodejs:3.209.0@sha256:d5048944c8f4f68c91ad17d8921febad58a76763a4abd2b2a70271b8b585f780
-      serviceAccountName: ${APP}
+      env:
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: pulumi-operator-github
+              key: credential
       resources:
         requests:
           cpu: 200m

@@ -83,7 +83,7 @@ spec:
   workspaceTemplate:
     spec:
       # renovate: datasource=docker depName=pulumi/pulumi-nodejs
-      image: ghcr.io/pulumi/pulumi-nodejs:3.208.0@sha256:d1cf24db7815a358205f5ef30b994657a72663f92ac5b4874cdddf4d881e7665
+      image: ghcr.io/pulumi/pulumi-nodejs:3.209.0@sha256:d5048944c8f4f68c91ad17d8921febad58a76763a4abd2b2a70271b8b585f780
       resources:
         requests:
           cpu: 200m

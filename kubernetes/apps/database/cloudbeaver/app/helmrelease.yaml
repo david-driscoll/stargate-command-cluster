@@ -45,6 +45,13 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               CLOUDBEAVER_ENABLED_DRIVERS: "postgresql"
+              CLOUDBEAVER_APP_ANONYMOUS_ACCESS_ENABLED: "true"
+              CLOUDBEAVER_APP_SUPPORTS_CUSTOM_CONNECTIONS: "true"
+              CLOUDBEAVER_APP_READ_ONLY_CONNECTION_INFO: "true"
+              CLOUDBEAVER_WEB_SERVER_PORT: "8978"
+              CLOUDBEAVER_WORKSPACE_LOCATION: "/workspace"
+              CLOUDBEAVER_CORE_THEMING_THEME: "dark"
+              CLOUDBEAVER_APP_GRANT_CONNECTIONS_ACCESS_TO_ANONYMOUS_TEAM: "true"
             securityContext:
               readOnlyRootFilesystem: false
             resources:
@@ -63,12 +70,10 @@ spec:
         defaultMode: 493
         globalMounts:
           - path: /opt/cloudbeaver/workspace/GlobalConfiguration/.dbeaver
-            subPath: .dbeaver
-          - path: /opt/cloudbeaver/conf/cloudbeaver.conf
-            subPath: cloudbeaver.conf
       cloudbeaver:
         type: emptyDir
         globalMounts:
+          - path: /workspace/
           - path: /opt/cloudbeaver/conf/
           - path: /.local/share/DBeaverData/
     service:

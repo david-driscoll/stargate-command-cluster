@@ -10,6 +10,5 @@ configMapGenerator:
 - name: ${APP}-config
   files:
   - data-sources.json=./resources/data-sources.json
-  - cloudbeaver.conf=./resources/cloudbeaver.conf
   options:
     disableNameSuffixHash: true

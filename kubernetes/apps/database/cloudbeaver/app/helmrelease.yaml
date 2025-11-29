@@ -52,6 +52,8 @@ spec:
               CLOUDBEAVER_WORKSPACE_LOCATION: "/workspace"
               CLOUDBEAVER_CORE_THEMING_THEME: "dark"
               CLOUDBEAVER_APP_GRANT_CONNECTIONS_ACCESS_TO_ANONYMOUS_TEAM: "true"
+              CB_SERVER_NAME: "CloudBeaver on ${CLUSTER_TITLE}"
+              CB_SERVER_URL: "https://${APP}.${CLUSTER_DOMAIN}/"
             securityContext:
               readOnlyRootFilesystem: false
             resources:

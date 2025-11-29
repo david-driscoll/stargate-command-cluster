@@ -44,7 +44,6 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: "${TIMEZONE}"
-              CLOUDBEAVER_ENABLED_DRIVERS: "postgresql"
               CLOUDBEAVER_APP_ANONYMOUS_ACCESS_ENABLED: "true"
               CLOUDBEAVER_APP_SUPPORTS_CUSTOM_CONNECTIONS: "true"
               CLOUDBEAVER_APP_READ_ONLY_CONNECTION_INFO: "true"

@@ -3,10 +3,8 @@
   "connections": {
     "postgres": {
       "provider": "postgresql",
-      "driver": "postgresql",
+      "driver": "postgres-jdbc",
       "name": "Postgres",
-      "save-password": true,
-      "show-system-objects": true,
       "configuration": {
         "host": "{{ .postgres_hostname }}",
         "port": "{{ .postgres_port }}",

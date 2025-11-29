@@ -9,14 +9,14 @@ mode: standalone
 recovery:
   method: object_store
   clusterName: "${CLUSTER_CNAME}"
-  endpointURL: https://{{ .backblaze_hostname }}/
+  endpointURL: "{{ .minio_endpoint }}"
   provider: s3
   s3:
-    region: "${CLUSTER_CNAME}"
-    bucket: "{{ .backblaze_bucket }}"
+    region: "{{ .minio_region }}"
+    bucket: "{{ .backblaze_bucket }}-restore"
     path: "/"
-    accessKey: "{{ .backblaze_username }}"
-    secretKey: "{{ .backblaze_credential }}"
+    accessKey: "{{ .minio_username }}"
+    secretKey: "{{ .minio_password }}"
 backups:
   enabled: true
   endpointURL: "{{ .minio_endpoint }}"
@@ -46,7 +46,7 @@ cluster:
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}
-    storageClass: longhorn-local
+    storageClass: longhorn
   resources:
     requests:
       cpu: ${POSTGRES_REQUESTS_CPU}

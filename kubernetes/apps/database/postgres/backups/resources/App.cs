@@ -147,7 +147,7 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
 
 async Task UploadFile(BackblazeClient client, string bucketName, string localFilePath, string fileName)
 {
-  await using var fileStream = File.OpenRead(localFilePath);
+  using var fileStream = File.OpenRead(localFilePath);
   var bucket = await client.Buckets.FindByNameAsync(bucketName);
   var uploadUrlResponse = await client.Files.GetUploadUrlAsync(bucket.BucketId);
 
@@ -157,15 +157,15 @@ async Task UploadFile(BackblazeClient client, string bucketName, string localFil
     bucket.BucketId,
     fileName,
     fileStream,
-DateTime.Now,
-true,
-false,
-false,
-true,
+    DateTime.Now,
+    true,
+    false,
+    false,
+    true,
     progress,
     CancellationToken.None
   );
-  uploadResponse.Dump("Upload Response");
+  uploadResponse.Response.Dump("Upload Response");
   if (!uploadResponse.HttpResponse.IsSuccessStatusCode)
   {
     throw new InvalidOperationException($"Failed to upload file to Backblaze: {uploadResponse.Error.Message}");

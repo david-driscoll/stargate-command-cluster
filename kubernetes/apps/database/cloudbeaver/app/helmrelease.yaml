@@ -53,7 +53,9 @@ spec:
               CLOUDBEAVER_CORE_THEMING_THEME: "dark"
               CLOUDBEAVER_APP_GRANT_CONNECTIONS_ACCESS_TO_ANONYMOUS_TEAM: "true"
               CB_SERVER_NAME: "CloudBeaver on ${CLUSTER_TITLE}"
+              CLOUDBEAVER_WEB_SERVER_NAME: "CloudBeaver on ${CLUSTER_TITLE}"
               CB_SERVER_URL: "https://${APP}.${CLUSTER_DOMAIN}/"
+              CLOUDBEAVER_WEB_SERVER_URL: "https://${APP}.${CLUSTER_DOMAIN}/"
             securityContext:
               readOnlyRootFilesystem: false
             resources:
@@ -71,7 +73,7 @@ spec:
         name: ${APP}-config
         defaultMode: 493
         globalMounts:
-          - path: /opt/cloudbeaver/workspace/GlobalConfiguration/.dbeaver
+          - path: /workspace/GlobalConfiguration/.dbeaver
       cloudbeaver:
         type: emptyDir
         globalMounts:

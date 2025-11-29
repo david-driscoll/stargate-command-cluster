@@ -113,7 +113,7 @@ async Task<List<string>> GetDatabases(NpgsqlDataSource dataSource)
 
 async Task CreateDatabaseDump(FullItem postgres, string database, string outputFile)
 {
-  var host = GetField(postgres, "public-hostname");
+  var host = GetField(postgres, "hostname");
   var port = GetField(postgres, "port");
   var user = GetField(postgres, "username");
   var password = GetField(postgres, "password");

@@ -79,7 +79,7 @@ foreach (var db in databases)
     await UploadFile(backblazeClient, GetField(backblaze, "bucket"), backupFile, fileName);
 
     Console.WriteLine($"Successfully uploaded {backupFile} to Backblaze");
-    File.Delete(backupFile);
+    // File.Delete(backupFile);
   }
   else
   {
@@ -147,7 +147,6 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
 
 async Task UploadFile(BackblazeClient client, string bucketName, string localFilePath, string fileName)
 {
-  using var fileStream = File.OpenRead(localFilePath);
   var bucket = await client.Buckets.FindByNameAsync(bucketName);
   var uploadUrlResponse = await client.Files.GetUploadUrlAsync(bucket.BucketId);
 

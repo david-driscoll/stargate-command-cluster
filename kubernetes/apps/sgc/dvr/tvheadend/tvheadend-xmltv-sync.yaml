@@ -49,7 +49,7 @@ spec:
           *app :
             image:
               repository: alpine/socat
-              tag: latest@sha256:8370cf9b250bfae9d67a5309750bfdf882ca8b7053b6c88c943d230eca92e762
+              tag: latest@sha256:b857f6b307559525fa7e233b4e79dfb9a9c9e1b555a6f7fbeddbbbf4270cc124
               pullPolicy: IfNotPresent
             command:
               - /epgp/startup.sh

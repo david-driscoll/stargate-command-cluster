@@ -8,6 +8,7 @@ version:
 mode: recovery
 recovery:
   method: object_store
+  database: authentik
   clusterName: "${CLUSTER_CNAME}"
   endpointURL: "{{ .minio_endpoint }}"
   provider: s3

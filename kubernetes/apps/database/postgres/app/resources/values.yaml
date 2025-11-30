@@ -14,7 +14,7 @@ recovery:
   s3:
     region: "{{ .minio_region }}"
     bucket: "{{ .backblaze_bucket }}-restore"
-    path: "/"
+    path: "/postgres/"
     accessKey: "{{ .minio_username }}"
     secretKey: "{{ .minio_password }}"
 backups:

@@ -133,7 +133,7 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
 
 async Task CleanupOldBackups()
 {
-  var items = Directory.EnumerateFiles("/mnt/stash/backup/postgres", "*.bak", new EnumerationOptions { RecurseSubdirectories = true })
+  var items = Directory.EnumerateFiles(backupDir, "*.bak", new EnumerationOptions { RecurseSubdirectories = true })
   .Select(z => new FileInfo(z))
   .Where(z => z.LastWriteTimeUtc < DateTime.UtcNow.AddDays(-30));
 

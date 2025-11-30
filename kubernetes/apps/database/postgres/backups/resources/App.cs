@@ -37,7 +37,7 @@ async Task<FullItem> GetItemByTitle(string title)
 static string GetField(FullItem item, string label) => item.Fields.Single(f => f.Label == label).Value ?? throw new InvalidOperationException($"{label} field not found in {item.Title}");
 var backblaze = await GetItemByTitle("Backblaze S3 ${CLUSTER_TITLE} Database");
 var postgres = await GetItemByTitle("${CLUSTER_KEY}-postgres-superuser");
-var connectionString = postgres.Fields.Single(f => f.Label == "public-connection-string").Value.Dump();
+var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
 
 var backupDir = "/backups";
 

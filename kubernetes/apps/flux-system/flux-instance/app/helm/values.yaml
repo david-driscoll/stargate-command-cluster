@@ -18,3 +18,9 @@ instance:
     url: "https://github.com/david-driscoll/stargate-command-cluster.git"
     ref: "refs/heads/main"
     path: kubernetes/flux/cluster
+  kustomize:
+    patches: []
+
+healthcheck:
+  enabled: true
+

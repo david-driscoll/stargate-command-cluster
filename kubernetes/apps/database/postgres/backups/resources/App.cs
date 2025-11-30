@@ -5,7 +5,6 @@
 #:package Spectre.Console.Json@0.50.0
 #:package KubernetesClient@*
 #:package Microsoft.Extensions.Logging@9.*
-#:package Backblaze.Client@1.*
 #:package Dumpify@0.6.6
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
 #:package ProcessX@1.5.6
@@ -16,9 +15,6 @@
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Text.Json;
-using Bytewizer.Backblaze.Client;
-using Bytewizer.Backblaze.Models;
-using Bytewizer.Backblaze.Progress;
 using Dumpify;
 using Npgsql;
 using OnePassword.Connect.Sdk;
@@ -43,16 +39,13 @@ var backblaze = await GetItemByTitle("Backblaze S3 ${CLUSTER_TITLE} Database");
 var postgres = await GetItemByTitle("${CLUSTER_KEY}-postgres-superuser");
 var connectionString = postgres.Fields.Single(f => f.Label == "public-connection-string").Value.Dump();
 
-var backupDir = "/tmp/backups";
+var backupDir = "/backups";
 var timestamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
 
 Console.WriteLine($"Starting PostgreSQL backup at {DateTime.UtcNow}");
 
 // Create backup directory
 Directory.CreateDirectory(backupDir);
-
-// Initialize Backblaze client
-var backblazeClient = BackblazeClient.Initialize(GetField(backblaze, "username"), GetField(backblaze, "credential"));
 
 await using var dataSource = NpgsqlDataSource.Create(connectionString);
 
@@ -65,21 +58,14 @@ Console.WriteLine($"Found databases: {string.Join(", ", databases)}");
 foreach (var db in databases)
 {
   Console.WriteLine($"Backing up database: {db}");
-  var backupFile = Path.Combine(backupDir, $"{db}_{timestamp}.sql.gz");
+  var backupFile = Path.Combine(backupDir, db, $"{db}_{timestamp}.sql.gz");
+  Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
 
   await CreateDatabaseDump(postgres, db, backupFile);
 
   if (File.Exists(backupFile))
   {
     Console.WriteLine($"Successfully created backup: {backupFile}");
-
-    // Upload to Backblaze
-    Console.WriteLine($"Uploading {backupFile} to Backblaze...");
-    var fileName = $"dumps/{db}/{Path.GetFileName(backupFile)}";
-    await UploadFile(backblazeClient, GetField(backblaze, "bucket"), backupFile, fileName);
-
-    Console.WriteLine($"Successfully uploaded {backupFile} to Backblaze");
-    File.Delete(backupFile);
   }
   else
   {
@@ -90,7 +76,7 @@ foreach (var db in databases)
 
 // Cleanup old backups (keep last 30 days)
 Console.WriteLine("Cleaning up old backups...");
-await CleanupOldBackups(backblazeClient, GetField(backblaze, "bucket"));
+await CleanupOldBackups();
 
 Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow}");
 
@@ -145,45 +131,15 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
   }
 }
 
-async Task UploadFile(BackblazeClient client, string bucketName, string localFilePath, string fileName)
+async Task CleanupOldBackups()
 {
-  using var fileStream = File.OpenRead(localFilePath);
-  var bucket = await client.Buckets.FindByNameAsync(bucketName);
-  var uploadUrlResponse = await client.Files.GetUploadUrlAsync(bucket.BucketId);
+  var items = Directory.EnumerateFiles("/mnt/stash/backup/postgres", "*.bak", new EnumerationOptions { RecurseSubdirectories = true })
+  .Select(z => new FileInfo(z))
+  .Where(z => z.LastWriteTimeUtc < DateTime.UtcNow.AddDays(-30));
 
-  var progress = new NaiveProgress<ICopyProgress>();
-
-  var uploadResponse = await client.Files.UploadAsync(
-    bucket.BucketId,
-    fileName,
-    fileStream,
-    DateTime.Now,
-    true,
-    false,
-    false,
-    true,
-    progress,
-    CancellationToken.None
-  );
-  uploadResponse.Response.Dump("Upload Response");
-  if (!uploadResponse.HttpResponse.IsSuccessStatusCode)
+  foreach (var item in items)
   {
-    throw new InvalidOperationException($"Failed to upload file to Backblaze: {uploadResponse.Error.Message}");
-  }
-
-}
-
-async Task CleanupOldBackups(BackblazeClient client, string bucketId)
-{
-  var cutoffDate = DateTime.UtcNow.AddDays(-30);
-  // List files in the dumps folder
-  var listResponse = await client.Files.GetEnumerableAsync(new ListFileNamesRequest(bucketId) { Prefix = "dumps/" });
-  if (listResponse?.ToList() is not { Count: > 0 }) return;
-
-  foreach (var file in listResponse)
-  {
-    if (file.UploadTimestamp >= cutoffDate) continue;
-    Console.WriteLine($"Deleting old backup: {file.FileName}");
-    await client.Files.DeleteAsync(file.FileId, file.FileName);
+    Console.WriteLine($"Deleting old backup: {item.FullName}");
+    item.Delete();
   }
 }

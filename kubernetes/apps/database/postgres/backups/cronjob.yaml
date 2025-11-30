@@ -99,3 +99,7 @@ spec:
             subPath: tmp
           - path: /.dotnet
             subPath: dotnet
+      backups:
+        type: nfs
+        server: ${SPIKE_IP}
+        path: /mnt/stash/backup/postgres

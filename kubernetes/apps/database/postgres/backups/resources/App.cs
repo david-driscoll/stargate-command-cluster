@@ -73,10 +73,6 @@ foreach (var db in databases)
   }
 }
 
-// Cleanup old backups (keep last 30 days)
-Console.WriteLine("Cleaning up old backups...");
-await CleanupOldBackups();
-
 Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow}");
 
 // Helper methods
@@ -127,18 +123,5 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
   {
     var error = await process.StandardError.ReadToEndAsync();
     throw new InvalidOperationException($"pg_dump failed: {error}");
-  }
-}
-
-async Task CleanupOldBackups()
-{
-  var items = Directory.EnumerateFiles(backupDir, "*.bak", new EnumerationOptions { RecurseSubdirectories = true })
-  .Select(z => new FileInfo(z))
-  .Where(z => z.LastWriteTimeUtc < DateTime.UtcNow.AddDays(-30));
-
-  foreach (var item in items)
-  {
-    Console.WriteLine($"Deleting old backup: {item.FullName}");
-    item.Delete();
   }
 }

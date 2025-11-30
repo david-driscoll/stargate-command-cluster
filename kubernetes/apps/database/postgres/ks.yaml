@@ -14,8 +14,6 @@ spec:
   dependsOn:
     - name: postgres-operator
       namespace: cloudnative-pg
-    - name: traefik-internal
-      namespace: network
   prune: true
   wait: true
   force: false # true

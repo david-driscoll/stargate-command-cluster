@@ -40,7 +40,6 @@ var postgres = await GetItemByTitle("${CLUSTER_KEY}-postgres-superuser");
 var connectionString = postgres.Fields.Single(f => f.Label == "public-connection-string").Value.Dump();
 
 var backupDir = "/backups";
-var timestamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
 
 Console.WriteLine($"Starting PostgreSQL backup at {DateTime.UtcNow}");
 
@@ -58,7 +57,7 @@ Console.WriteLine($"Found databases: {string.Join(", ", databases)}");
 foreach (var db in databases)
 {
   Console.WriteLine($"Backing up database: {db}");
-  var backupFile = Path.Combine(backupDir, db, $"{db}_{timestamp}.sql.gz");
+  var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
   Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
 
   await CreateDatabaseDump(postgres, db, backupFile);

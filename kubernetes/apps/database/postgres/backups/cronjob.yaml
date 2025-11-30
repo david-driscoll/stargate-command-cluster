@@ -102,4 +102,4 @@ spec:
       backups:
         type: nfs
         server: ${SPIKE_IP}
-        path: /mnt/stash/backup/postgres
+        path: /mnt/stash/data/pgdump

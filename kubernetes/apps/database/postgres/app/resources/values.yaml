@@ -24,7 +24,7 @@ backups:
   s3:
     region: "{{ .minio_region }}"
     bucket: "{{ .backblaze_bucket }}"
-    path: "/"
+    path: "/cluster_a/"
     accessKey: "{{ .minio_username }}"
     secretKey: "{{ .minio_password }}"
   wal:

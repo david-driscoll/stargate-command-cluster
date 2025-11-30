@@ -1,15 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/charts/refs/heads/main/charts/cluster/values.schema.json
-nameOverride: "postgres"
-fullnameOverride: "postgres"
+nameOverride: &name "postgres"
+fullnameOverride: *name
 type: postgresql
 version:
   postgresql: "17.5"
 mode: recovery
 recovery:
   method: object_store
-  database: authentik
-  clusterName: "${CLUSTER_CNAME}"
+  clusterName: *name
   endpointURL: "{{ .minio_endpoint }}"
   provider: s3
   s3:

@@ -20,7 +20,7 @@ spec:
   storageClassName: nfs-csi
   csi:
     driver: nfs.csi.k8s.io
-    volumeHandle: spike-media-movies-volume-id
+    volumeHandle: spike-media-movies-old-volume-id
     volumeAttributes:
       server: "${SPIKE_IP}"
       share: /mnt/stash/media/movies-old

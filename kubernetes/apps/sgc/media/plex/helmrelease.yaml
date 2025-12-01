@@ -165,18 +165,18 @@ spec:
             subPath: cache
           - path: /config/Library/Application Support/Plex Media Server/Plug-in Support/Caches
             subPath: plugincache
+      media:
+        existingClaim: spike-media
+        globalMounts:
+          - path: /media/
       media-movies:
         existingClaim: spike-media-movies
         globalMounts:
-          - path: /media/movies
+          - path: /old/media/movies
       media-tv:
         existingClaim: spike-media-tv
         globalMounts:
-          - path: /media/tv
-      media-dvr:
-        existingClaim: spike-media-dvr
-        globalMounts:
-          - path: /media/dvr
+          - path: /old/media/tv
       tmpfs:
         type: emptyDir
         advancedMounts:

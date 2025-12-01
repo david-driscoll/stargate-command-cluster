@@ -23,7 +23,7 @@ spec:
     volumeHandle: spike-media-movies-volume-id
     volumeAttributes:
       server: "${SPIKE_IP}"
-      share: /mnt/stash/media/movies
+      share: /mnt/stash/media/movies-old
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master-standalone-strict/persistentvolumeclaim-v1.json
 apiVersion: v1

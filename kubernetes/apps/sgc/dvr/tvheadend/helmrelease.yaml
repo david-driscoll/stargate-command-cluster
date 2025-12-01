@@ -122,9 +122,10 @@ spec:
       tivi-sync:
         existingClaim: tivi-sync
       media-dvr:
-        existingClaim: spike-media-dvr
+        existingClaim: spike-media
         globalMounts:
           - path: /media/dvr
+            subPath: dvr
       timeshift:
         enabled: true
         type: emptyDir

@@ -169,14 +169,6 @@ spec:
         existingClaim: spike-media
         globalMounts:
           - path: /media/
-      media-movies:
-        existingClaim: spike-media-movies-old
-        globalMounts:
-          - path: /old/media/movies
-      media-tv:
-        existingClaim: spike-media-tv-old
-        globalMounts:
-          - path: /old/media/tv
       tmpfs:
         type: emptyDir
         advancedMounts:

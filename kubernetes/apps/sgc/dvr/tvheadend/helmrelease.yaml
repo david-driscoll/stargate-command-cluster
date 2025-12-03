@@ -122,7 +122,7 @@ spec:
       tivi-sync:
         existingClaim: tivi-sync
       media-dvr:
-        existingClaim: spike-media
+        existingClaim: truenas-media
         globalMounts:
           - path: /media/dvr
             subPath: dvr

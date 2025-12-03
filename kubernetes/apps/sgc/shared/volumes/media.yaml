@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: spike-media
+  name: truenas-media
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
 spec:
@@ -20,7 +20,7 @@ spec:
   storageClassName: nfs-csi
   csi:
     driver: nfs.csi.k8s.io
-    volumeHandle: spike-media-volume-id
+    volumeHandle: truenas-media-volume-id
     volumeAttributes:
       server: "${SPIKE_IP}"
       share: /mnt/stash/media
@@ -29,12 +29,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: spike-media
+  name: truenas-media
   labels:
     kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   storageClassName: nfs-csi
-  volumeName: spike-media
+  volumeName: truenas-media
   accessModes:
     - ReadWriteMany
   resources:

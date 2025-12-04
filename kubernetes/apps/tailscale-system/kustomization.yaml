@@ -8,7 +8,7 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
-  - ./authkey/ks.yaml
+  # - ./authkey/ks.yaml
   - ./operator/ks.yaml
   - ./services/ks.yaml
   - ./idp/ks.yaml

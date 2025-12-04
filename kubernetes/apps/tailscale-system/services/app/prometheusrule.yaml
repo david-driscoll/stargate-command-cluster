@@ -85,28 +85,18 @@ spec:
             description: "Dockge service {{ $labels.instance }} is unhealthy."
             summary: "Dockge service is unhealthy"
           expr: |
-            (1 - avg by (instance) (rate(probe_success{probe=~"dockge.*https"}[5m]))) > 0.1
+            (1 - avg by (instance) (rate(probe_success{probe=~"dockge-(luna|celestia|as)-https"}[5m]))) > 0.1
           for: 5m
           labels:
             severity: warning
 
         # Proxmox service specific alerts
-        - alert: ProxmoxPVEUnhealthy
+        - alert: ProxmoxServiceUnhealthy
           annotations:
-            description: "Proxmox PVE on {{ $labels.instance }} is unhealthy."
-            summary: "Proxmox PVE is unhealthy"
+            description: "Proxmox service on {{ $labels.instance }} is unhealthy."
+            summary: "Proxmox service is unhealthy"
           expr: |
-            (1 - avg by (instance) (rate(probe_success{probe=~"proxmox.*pve"}[5m]))) > 0.1
-          for: 5m
-          labels:
-            severity: warning
-
-        - alert: ProxmoxPBSUnhealthy
-          annotations:
-            description: "Proxmox PBS on {{ $labels.instance }} is unhealthy."
-            summary: "Proxmox PBS is unhealthy"
-          expr: |
-            (1 - avg by (instance) (rate(probe_success{probe=~"proxmox.*pbs"}[5m]))) > 0.1
+            (1 - avg by (instance) (rate(probe_success{probe=~"proxmox-(luna|celestia|alpha-site)"}[5m]))) > 0.1
           for: 5m
           labels:
             severity: warning
@@ -116,7 +106,7 @@ spec:
             description: "SSH connectivity to {{ $labels.instance }} has been lost."
             summary: "SSH connectivity lost"
           expr: |
-            (1 - avg by (instance) (rate(probe_success{probe=~"(dockge|proxmox).*ssh"}[5m]))) > 0.1
+            (1 - avg by (instance) (rate(probe_success{probe=~"(dockge|proxmox).*(luna|celestia|alpha-site)-ssh"}[5m]))) > 0.1
           for: 5m
           labels:
             severity: warning

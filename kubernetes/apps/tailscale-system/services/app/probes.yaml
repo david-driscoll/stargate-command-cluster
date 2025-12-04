@@ -103,8 +103,8 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://proxmox-luna.${TAILSCALE_DOMAIN}:8006
-        - https://proxmox-luna.${TAILSCALE_DOMAIN}:8007
+        - https://luna.${TAILSCALE_DOMAIN}:8006
+        - https://luna.${TAILSCALE_DOMAIN}:8007
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -119,7 +119,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - proxmox-luna.${TAILSCALE_DOMAIN}:22
+        - luna.${TAILSCALE_DOMAIN}:22
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -134,8 +134,8 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://proxmox-celestia.${TAILSCALE_DOMAIN}:8006
-        - https://proxmox-celestia.${TAILSCALE_DOMAIN}:8007
+        - https://celestia.${TAILSCALE_DOMAIN}:8006
+        - https://celestia.${TAILSCALE_DOMAIN}:8007
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -150,8 +150,8 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://proxmox-alpha-site.${TAILSCALE_DOMAIN}:8006
-        - https://proxmox-alpha-site.${TAILSCALE_DOMAIN}:8007
+        - https://alpha-site.${TAILSCALE_DOMAIN}:8006
+        - https://alpha-site.${TAILSCALE_DOMAIN}:8007
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -166,4 +166,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - proxmox-alpha-site.${TAILSCALE_DOMAIN}:22
+        - alpha-site.${TAILSCALE_DOMAIN}:22

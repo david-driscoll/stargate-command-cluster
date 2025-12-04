@@ -22,7 +22,7 @@ metadata:
   namespace: tailscale-system
 spec:
   interval: 5m
-  module: tcp_connect
+  module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
@@ -52,7 +52,7 @@ metadata:
   namespace: tailscale-system
 spec:
   interval: 5m
-  module: tcp_connect
+  module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
@@ -82,7 +82,7 @@ metadata:
   namespace: tailscale-system
 spec:
   interval: 5m
-  module: tcp_connect
+  module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
@@ -113,7 +113,7 @@ metadata:
   namespace: tailscale-system
 spec:
   interval: 5m
-  module: tcp_connect
+  module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
@@ -151,7 +151,7 @@ spec:
     staticConfig:
       static:
         - https://proxmox-alpha-site.${TAILSCALE_DOMAIN}:8006
-        - https://proxmox-alpha-site.${TAILSCALE_DOMAIN}:8006
+        - https://proxmox-alpha-site.${TAILSCALE_DOMAIN}:8007
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -160,7 +160,7 @@ metadata:
   namespace: tailscale-system
 spec:
   interval: 5m
-  module: tcp_connect
+  module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:

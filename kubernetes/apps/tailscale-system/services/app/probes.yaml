@@ -18,7 +18,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-luna-ssh
+  name: dockge-luna
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -48,7 +48,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-celestia-ssh
+  name: dockge-celestia
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -58,7 +58,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - ssh-dockge-celestia.tailscale-system.svc.cluster.local:22
+        - dockge-celestia.tailscale-system.svc.cluster.local:22
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -73,12 +73,12 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://ssh-dockge-as.tailscale-system.svc.cluster.local:443
+        - https://dockge-as.tailscale-system.svc.cluster.local:443
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-as-ssh
+  name: dockge-as
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -88,7 +88,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - ssh-dockge-as.tailscale-system.svc.cluster.local:22
+        - dockge-as.tailscale-system.svc.cluster.local:22
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -103,7 +103,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://ssh-proxmox-luna.tailscale-system.svc.cluster.local:8006
+        - https://proxmox-luna.tailscale-system.svc.cluster.local:8006
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -118,12 +118,12 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://ssh-proxmox-luna.tailscale-system.svc.cluster.local:8007
+        - https://proxmox-luna.tailscale-system.svc.cluster.local:8007
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: proxmox-luna-ssh
+  name: proxmox-luna
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -133,7 +133,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - ssh-proxmox-luna.tailscale-system.svc.cluster.local:22
+        - proxmox-luna.tailscale-system.svc.cluster.local:22
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -148,7 +148,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://ssh-proxmox-celestia.tailscale-system.svc.cluster.local:8006
+        - https://proxmox-celestia.tailscale-system.svc.cluster.local:8006
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -163,7 +163,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://ssh-proxmox-celestia.tailscale-system.svc.cluster.local:8007
+        - https://proxmox-celestia.tailscale-system.svc.cluster.local:8007
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -178,12 +178,12 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://ssh-proxmox-alpha-site.tailscale-system.svc.cluster.local:8006
+        - https://proxmox-alpha-site.tailscale-system.svc.cluster.local:8006
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: proxmox-alpha-site-ssh
+  name: proxmox-alpha-site
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -193,4 +193,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - ssh-proxmox-alpha-site.tailscale-system.svc.cluster.local:22
+        - proxmox-alpha-site.tailscale-system.svc.cluster.local:22

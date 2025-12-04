@@ -1,5 +1,4 @@
 ---
-# Blackbox exporter probes for alloy-proxy (loki)
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
@@ -7,7 +6,7 @@ metadata:
   namespace: observability
 spec:
   interval: 5m
-  module: http_2xx
+  module: http_404
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:

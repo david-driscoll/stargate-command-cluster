@@ -8,6 +8,7 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
+  - ./watchdog.yaml
   - ./crds/ks.yaml
   - ./prometheus-proxy/ks.yaml
   - ./alloy-proxy/ks.yaml

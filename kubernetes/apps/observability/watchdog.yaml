@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: watchdog
+  namespace: observability
+spec:
+  groups:
+    - name: watchdog
+      interval: 30s
+      rules:
+        # Watchdog alert - always firing to verify alerting pipeline
+        - alert: Watchdog
+          annotations:
+            description: "This is a watchdog alert for testing the alerting pipeline."
+            summary: "Watchdog alert is firing"
+          expr: vector(1)
+          labels:
+            severity: info

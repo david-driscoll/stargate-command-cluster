@@ -31,6 +31,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: alloy
+    priorityClassName: observability-critical
     alloy:
       configMap:
         create: false

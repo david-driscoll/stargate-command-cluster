@@ -50,6 +50,7 @@ spec:
     prometheus:
       annotations:
         reloader.stakater.com/auto: "true"
+      priorityClassName: observability-critical
       route:
         main:
           enabled: true

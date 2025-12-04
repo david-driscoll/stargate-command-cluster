@@ -45,9 +45,8 @@ spec:
         #
         - alert: SmartDeviceMediaErrors
           annotations:
-            summary:
-              Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
-              has {{ $value }} media errors.
+            description: "Mounted drive {{ $labels.device }} on device {{ $labels.instance }} has {{ $value | humanize }} media errors (threshold: > 10)."
+            summary: Device has media errors
           expr: smartctl_device_media_errors > 10
           for: 15m
           labels:

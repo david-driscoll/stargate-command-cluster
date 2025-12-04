@@ -6,7 +6,7 @@ metadata:
   name: thanos-write-http
   namespace: observability
 spec:
-  interval: 60s
+  interval: 5m
   module: http_2xx
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -21,7 +21,7 @@ metadata:
   name: thanos-write-grpc
   namespace: observability
 spec:
-  interval: 60s
+  interval: 5m
   module: tcp_connect
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -36,7 +36,7 @@ metadata:
   name: thanos-write-remote
   namespace: observability
 spec:
-  interval: 60s
+  interval: 5m
   module: tcp_connect
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -51,7 +51,7 @@ metadata:
   name: alertmanager-http
   namespace: observability
 spec:
-  interval: 60s
+  interval: 5m
   module: http_2xx
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115

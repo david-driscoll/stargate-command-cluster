@@ -140,7 +140,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: proxmox-alpha-site-pve
+  name: proxmox-alpha-site
   namespace: tailscale-system
 spec:
   interval: 5m

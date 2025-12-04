@@ -1,0 +1,196 @@
+---
+# Blackbox exporter probes for dockge and proxmox services
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-luna-https
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-dockge-luna.tailscale-system.svc.cluster.local:443
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-luna-ssh
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - ssh-dockge-luna.tailscale-system.svc.cluster.local:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-celestia-https
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-dockge-celestia.tailscale-system.svc.cluster.local:443
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-celestia-ssh
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - ssh-dockge-celestia.tailscale-system.svc.cluster.local:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-as-https
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-dockge-as.tailscale-system.svc.cluster.local:443
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-as-ssh
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - ssh-dockge-as.tailscale-system.svc.cluster.local:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-luna-pve
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-proxmox-luna.tailscale-system.svc.cluster.local:8006
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-luna-pbs
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-proxmox-luna.tailscale-system.svc.cluster.local:8007
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-luna-ssh
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - ssh-proxmox-luna.tailscale-system.svc.cluster.local:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-celestia-pve
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-proxmox-celestia.tailscale-system.svc.cluster.local:8006
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-celestia-pbs
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-proxmox-celestia.tailscale-system.svc.cluster.local:8007
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-alpha-site-pve
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - https://ssh-proxmox-alpha-site.tailscale-system.svc.cluster.local:8006
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-alpha-site-ssh
+  namespace: tailscale-system
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - ssh-proxmox-alpha-site.tailscale-system.svc.cluster.local:22

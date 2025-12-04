@@ -6,3 +6,4 @@ resources:
   - ./dockge-services.yaml
   - ./proxmox-services.yaml
   - ./tailscale.yaml
+  - ./probes.yaml

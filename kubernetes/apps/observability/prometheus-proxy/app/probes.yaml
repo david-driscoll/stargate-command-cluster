@@ -18,36 +18,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: thanos-write-grpc
-  namespace: observability
-spec:
-  interval: 5m
-  module: tcp_connect
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - thanos-write.observability.svc.cluster.local:10902
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
-  name: thanos-write-remote
-  namespace: observability
-spec:
-  interval: 5m
-  module: tcp_connect
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - thanos-write.observability.svc.cluster.local:19291
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
   name: alertmanager-http
   namespace: observability
 spec:

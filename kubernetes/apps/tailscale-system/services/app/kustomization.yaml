@@ -7,3 +7,4 @@ resources:
   - ./proxmox-services.yaml
   - ./tailscale.yaml
   - ./probes.yaml
+  - ./prometheusrule.yaml

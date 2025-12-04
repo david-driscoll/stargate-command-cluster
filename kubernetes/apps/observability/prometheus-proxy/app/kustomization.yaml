@@ -8,5 +8,7 @@ resources:
   - ./thanos-write.yaml
   - ./alertmanager-operated.yaml
   - ./externalsecret.yaml
+  - ./probes.yaml
+  - ./prometheusrule.yaml
 generatorOptions:
   disableNameSuffixHash: true

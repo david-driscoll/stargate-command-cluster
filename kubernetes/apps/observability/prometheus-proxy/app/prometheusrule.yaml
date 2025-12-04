@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: prometheus-proxy-health
+  namespace: observability
+spec:
+  groups:
+    - name: prometheus_proxy_health
+      interval: 30s
+      rules:
+        # Thanos Write connectivity alerts
+        - alert: ThanosWriteHTTPUnhealthy
+          annotations:
+            description: "Thanos Write HTTP endpoint at port 10901 is unhealthy."
+            summary: "Thanos Write HTTP is unhealthy"
+          expr: |
+            (1 - avg(rate(probe_success{probe="thanos-write-http"}[5m]))) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+
+        - alert: ThanosWriteGRPCUnhealthy
+          annotations:
+            description: "Thanos Write GRPC endpoint at port 10902 is unhealthy."
+            summary: "Thanos Write GRPC is unhealthy"
+          expr: |
+            (1 - avg(rate(probe_success{probe="thanos-write-grpc"}[5m]))) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+
+        - alert: ThanosWriteRemoteUnhealthy
+          annotations:
+            description: "Thanos Write remote endpoint at port 19291 is unhealthy."
+            summary: "Thanos Write remote is unhealthy"
+          expr: |
+            (1 - avg(rate(probe_success{probe="thanos-write-remote"}[5m]))) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+
+        # AlertManager connectivity alerts
+        - alert: AlertmanagerProxyUnhealthy
+          annotations:
+            description: "AlertManager proxy endpoint is unhealthy."
+            summary: "AlertManager proxy is unhealthy"
+          expr: |
+            (1 - avg(rate(probe_success{probe="alertmanager-http"}[5m]))) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+
+        # AlertManager critical alert if completely down
+        - alert: AlertmanagerProxyDown
+          annotations:
+            description: "AlertManager proxy endpoint is completely down."
+            summary: "AlertManager proxy is down"
+          expr: |
+            avg(rate(probe_success{probe="alertmanager-http"}[5m])) == 0
+          for: 2m
+          labels:
+            severity: critical
+
+        # Thanos connectivity critical alert
+        - alert: ThanosWriteDown
+          annotations:
+            description: "Thanos Write service is completely down, unable to receive metrics."
+            summary: "Thanos Write is down"
+          expr: |
+            (count(avg by (probe) (rate(probe_success{probe=~"thanos-write.*"}[5m])) == 0)) >= 2
+          for: 2m
+          labels:
+            severity: critical
+
+        # Recording rules for prometheus proxy health
+        - record: prometheus_proxy:thanos:health:5m
+          expr: |
+            avg by (probe) (rate(probe_success{probe=~"thanos-write.*"}[5m]))
+
+        - record: prometheus_proxy:alertmanager:health:5m
+          expr: |
+            avg(rate(probe_success{probe="alertmanager-http"}[5m]))
+
+        # Probe latency alerting
+        - alert: PrometheusProxyHighLatency
+          annotations:
+            description: "Prometheus proxy probe '{{ $labels.probe }}' has high latency (p99: {{ $value | humanizeDuration }})."
+            summary: "Prometheus proxy high latency"
+          expr: |
+            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket{probe=~"(thanos-write|alertmanager).*"}[5m]))) > 5
+          for: 10m
+          labels:
+            severity: warning

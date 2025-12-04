@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alloy-proxy-health
+  namespace: observability
+spec:
+  groups:
+    - name: alloy_proxy_health
+      interval: 30s
+      rules:
+        # Loki connectivity alerts
+        - alert: LokiProxyUnhealthy
+          annotations:
+            description: "Loki proxy endpoint is unhealthy."
+            summary: "Loki proxy is unhealthy"
+          expr: |
+            (1 - avg(rate(probe_success{probe="loki-http"}[5m]))) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+
+        - alert: LokiProxyDown
+          annotations:
+            description: "Loki proxy endpoint is completely down."
+            summary: "Loki proxy is down"
+          expr: |
+            avg(rate(probe_success{probe="loki-http"}[5m])) == 0
+          for: 2m
+          labels:
+            severity: critical
+
+        # Recording rule for loki health
+        - record: alloy_proxy:loki:health:5m
+          expr: |
+            avg(rate(probe_success{probe="loki-http"}[5m]))
+
+        # Loki latency alerting
+        - alert: LokiProxyHighLatency
+          annotations:
+            description: "Loki proxy probe has high latency (p99: {{ $value | humanizeDuration }})."
+            summary: "Loki proxy high latency"
+          expr: |
+            histogram_quantile(0.99, sum by (le) (rate(probe_duration_seconds_bucket{probe="loki-http"}[5m]))) > 5
+          for: 10m
+          labels:
+            severity: warning

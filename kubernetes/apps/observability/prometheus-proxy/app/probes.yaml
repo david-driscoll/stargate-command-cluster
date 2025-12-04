@@ -1,0 +1,61 @@
+---
+# Blackbox exporter probes for prometheus proxy services (thanos, alertmanager, loki)
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: thanos-write-http
+  namespace: observability
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - http://thanos-write.observability.svc.cluster.local:10901
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: thanos-write-grpc
+  namespace: observability
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - thanos-write.observability.svc.cluster.local:10902
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: thanos-write-remote
+  namespace: observability
+spec:
+  interval: 60s
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - thanos-write.observability.svc.cluster.local:19291
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: alertmanager-http
+  namespace: observability
+spec:
+  interval: 60s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:19115
+  targets:
+    staticConfig:
+      static:
+        - http://alertmanager-operated.observability.svc.cluster.local:9093

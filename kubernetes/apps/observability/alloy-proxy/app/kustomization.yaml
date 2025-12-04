@@ -6,6 +6,8 @@ resources:
   - ./helmrelease.yaml
   - ./definition.yaml
   - ./loki-headless.yaml
+  - ./probes.yaml
+  - ./prometheusrule.yaml
 configMapGenerator:
   - name: alloy-configmap
     files:

@@ -47,8 +47,8 @@ spec:
           annotations:
             summary:
               Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
-              has media errors.
-          expr: smartctl_device_media_errors != 0
+              has {{ $value }} media errors.
+          expr: smartctl_device_media_errors > 10
           for: 15m
           labels:
             severity: critical

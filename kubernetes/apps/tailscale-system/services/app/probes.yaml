@@ -13,12 +13,12 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://dockge-luna.${TAILSCALE_DOMAIN}:443
+        - https://dockge-luna.tailscale-system.svc.cluster.local:443
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-luna
+  name: dockge-luna-ssh
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -28,7 +28,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - dockge-luna.${TAILSCALE_DOMAIN}:22
+        - dockge-luna.tailscale-system.svc.cluster.local:22
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
@@ -43,12 +43,12 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://dockge-celestia.${TAILSCALE_DOMAIN}:443
+        - https://dockge-celestia.tailscale-system.svc.cluster.local:443
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-celestia
+  name: dockge-celestia-ssh
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -78,7 +78,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-as
+  name: dockge-as-ssh
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -123,7 +123,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: proxmox-luna
+  name: proxmox-luna-ssh
   namespace: tailscale-system
 spec:
   interval: 60s
@@ -183,7 +183,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: proxmox-alpha-site
+  name: proxmox-alpha-site-ssh
   namespace: tailscale-system
 spec:
   interval: 60s

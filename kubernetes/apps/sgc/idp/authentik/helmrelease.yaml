@@ -125,8 +125,8 @@ spec:
           cpu: 50m
           memory: 512Mi
         limits:
-          cpu: 500m
-          memory: 1024Mi
+          cpu: 1
+          memory: 1Gi
 
       # Health probes for better restart recovery
       livenessProbe:

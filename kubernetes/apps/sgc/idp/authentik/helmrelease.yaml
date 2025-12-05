@@ -191,7 +191,7 @@ spec:
 
     worker:
       enabled: true
-      replicas: 2
+      replicas: 1
       envFrom: *envFrom
       tolerations: *tolerations
       affinity: *affinity

@@ -44,7 +44,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
+
     global:
+      priorityClassName: authentik-critical
       # fullnameOverride: authentik
       revisionHistoryLimit: 3
 

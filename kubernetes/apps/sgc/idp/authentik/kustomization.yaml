@@ -7,3 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./definition.yaml
   - ./cors-middleware.yaml
+  - ./priority-class.yaml

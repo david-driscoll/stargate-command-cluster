@@ -1,0 +1,9 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: authentik-critical
+description: High priority for critical authentik components
+value: 2000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority

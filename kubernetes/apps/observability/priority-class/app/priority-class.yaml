@@ -4,6 +4,6 @@ kind: PriorityClass
 metadata:
   name: observability-critical
 description: High priority for critical observability components (Prometheus, AlertManager, Thanos, Loki, Alloy)
-value: 1000000000
+value: 1000
 globalDefault: false
 preemptionPolicy: PreemptLowerPriority

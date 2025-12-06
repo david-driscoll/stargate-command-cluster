@@ -13,11 +13,11 @@ spec:
   access_policy:
     groups:
       - admins
-  authentik:
-    proxy:
-      mode: "forward_single"
-      externalHost: *url
-      skipPathRegex: "^/api([/?].*)?$"
+  # authentik:
+  #   proxy:
+  #     mode: "forward_single"
+  #     externalHost: *url
+  #     skipPathRegex: "^/api([/?].*)?$"
   gatus:
     - url: *url
       method: GET

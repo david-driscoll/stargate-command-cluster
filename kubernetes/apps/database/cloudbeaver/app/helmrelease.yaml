@@ -40,7 +40,7 @@ spec:
           *app :
             image:
               repository: dbeaver/cloudbeaver
-              tag: "25.2.5@sha256:39a41f50f7bdb28909c682def92a5587ab6f23ed67e291c1113e53d7722d4111"
+              tag: "25.3.0@sha256:4096459268c7c211c7ad829cbd91be2a23d210d8aa499370544359d23dc5b4df"
               pullPolicy: IfNotPresent
             env:
               TZ: "${TIMEZONE}"

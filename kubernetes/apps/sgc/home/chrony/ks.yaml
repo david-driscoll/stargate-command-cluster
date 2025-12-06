@@ -1,0 +1,29 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: chrony
+  namespace: sgc
+spec:
+  targetNamespace: sgc
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: chrony
+  dependsOn:
+    - name: sgc-secrets
+      namespace: sgc
+  path: ./kubernetes/apps/sgc/home/chrony
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  postBuild:
+    substitute:
+      APP: chrony
+      NAMESPACE: sgc

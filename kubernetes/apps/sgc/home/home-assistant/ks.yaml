@@ -1,0 +1,42 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: home-assistant
+  namespace: sgc
+spec:
+  targetNamespace: sgc
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: home-assistant
+  path: ./kubernetes/apps/sgc/home/home-assistant
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+    - name: sgc-secrets
+      namespace: sgc
+    - name: mosquitto
+      namespace: sgc
+    - name: matter
+      namespace: sgc
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../../components/volsync
+    # - ../../../../components/volsync/backblaze
+    - ../../../../components/tailscale
+  postBuild:
+    substitute:
+      APP: home-assistant
+      NAMESPACE: sgc
+      VOLSYNC_CAPACITY: 40Gi
+      TAILSCALE_SERVICE: home-assistant-app
+      TAILSCALE_HOST: home

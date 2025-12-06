@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: truenas-volumes
+  namespace: sgc
+spec:
+  targetNamespace: sgc
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: truenas-volumes
+  dependsOn:
+    - name: csi-driver-nfs
+      namespace: nfs-system
+  path: ./kubernetes/apps/sgc/shared/volumes
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system

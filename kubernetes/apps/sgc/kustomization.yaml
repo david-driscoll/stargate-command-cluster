@@ -9,11 +9,11 @@ components:
 resources:
   - ./secret-store.yaml
   - ./cluster/ks.yaml
-  - ./shared/ks.yaml
-  # - ./go2rtc/ks.yaml
+  - ./shared
+  # - ./go2rtc
   - ./dns/ks.yaml
-  - ./home/ks.yaml
-  # - ./scrypted/ks.yaml
-  # - ./dvr/ks.yaml
-  # - ./media/ks.yaml
-  - ./idp/ks.yaml
+  - ./home
+  # - ./scrypted
+  # - ./dvr
+  # - ./media
+  - ./idp

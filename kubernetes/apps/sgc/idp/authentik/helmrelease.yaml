@@ -191,11 +191,17 @@ spec:
 
     worker:
       enabled: true
-      replicas: 2
+      replicas: 1
       envFrom: *envFrom
       tolerations: *tolerations
       affinity: *affinity
-      resources: *resources
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 2
+          memory: 2Gi
 
       # Health probes for better restart recovery
       livenessProbe:

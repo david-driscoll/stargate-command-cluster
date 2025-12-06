@@ -110,3 +110,13 @@ spec:
           for: 10m
           labels:
             severity: warning
+
+        - alert: NUTServerUnreachable
+          annotations:
+            description: "NUT (Network UPS Tools) server on {{ $labels.instance }} is unreachable."
+            summary: "NUT server connectivity lost"
+          expr: |
+            (1 - avg by (instance) (rate(probe_success{probe="proxmox-alpha-site-nut"}[5m]))) > 0.1
+          for: 10m
+          labels:
+            severity: warning

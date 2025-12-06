@@ -167,3 +167,18 @@ spec:
     staticConfig:
       static:
         - alpha-site.${TAILSCALE_DOMAIN}:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-alpha-site-nut
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - alpha-site.${TAILSCALE_DOMAIN}:3493

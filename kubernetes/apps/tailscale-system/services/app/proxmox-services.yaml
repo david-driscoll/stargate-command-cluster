@@ -53,6 +53,9 @@ spec:
   externalName: alpha-site
   type: ExternalName
   ports:
+    - port: 3493
+      targetPort: 3493
+      name: nut
     - port: 8006
       targetPort: 8006
       name: pve

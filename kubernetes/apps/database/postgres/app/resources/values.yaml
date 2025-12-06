@@ -44,6 +44,7 @@ backups:
 cluster:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5
+  priorityClassName: system-cluster-critical
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}
     storageClass: longhorn
@@ -83,6 +84,11 @@ cluster:
       shared_buffers: "${POSTGRES_SHARED_BUFFERS}"
       pg_stat_statements.max: "10000"
       pg_stat_statements.track: all
+      wal_sender_timeout: "120s"
+      wal_receiver_timeout: "120s"
+      tcp_keepalives_idle: "10"
+      tcp_keepalives_interval: "10"
+      tcp_keepalives_count: "3"
     pg_hba: []
     pg_ident: []
     shared_preload_libraries: []

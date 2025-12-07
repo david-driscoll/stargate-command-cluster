@@ -67,6 +67,8 @@ spec:
                 kind: Middleware
                 name: authenticated-user
       prometheusSpec:
+        scrapeInterval: 60s
+        evaluationInterval: 60s
         externalUrl: https://prometheus.${CLUSTER_DOMAIN}
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
@@ -117,17 +119,6 @@ spec:
               resources:
                 requests:
                   storage: 20Gi
-    thanosRuler:
-      enabled: false
-      alertmanagersConfig:
-        existingSecret:
-          name: thanos-ruler-alertmanager-config
-          key: alertmanager.yaml
-        queryEndpoints:
-          - prometheus-operated.observability.svc.cluster.local:9090
-      # thanosRulerSpec:
-      #   alertDropLabels:
-      #     - cluster
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
@@ -154,4 +145,8 @@ spec:
               replacement: $1
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
+    kubelet:
+      serviceMonitor:
+        resourceInterval: 60s
+        cAdvisorInterval: 60s
     # Prometheus local rule maps removed; rules are evaluated centrally by Thanos Ruler

@@ -147,6 +147,6 @@ spec:
               targetLabel: kubernetes_node
     kubelet:
       serviceMonitor:
-        resourceInterval: 60s
-        cAdvisorInterval: 60s
+        resourceInterval: 30s
+        cAdvisorInterval: 30s
     # Prometheus local rule maps removed; rules are evaluated centrally by Thanos Ruler

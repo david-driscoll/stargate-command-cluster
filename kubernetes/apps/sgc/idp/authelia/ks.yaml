@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: authelia
+  namespace: sgc
+spec:
+  targetNamespace: sgc
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: authelia
+  dependsOn:
+    - name: postgres
+      namespace: database
+  path: ./kubernetes/apps/sgc/idp/authelia
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../../components/postgres
+  postBuild:
+    substitute:
+      APP: authelia
+      NAMESPACE: sgc

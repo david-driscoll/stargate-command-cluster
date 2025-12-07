@@ -1,0 +1,120 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: authelia
+spec:
+  interval: 1h
+  url: https://charts.authelia.com/
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app authelia
+spec:
+  chart:
+    spec:
+      chart: authelia
+      version: 0.9.7
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: authelia
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    domain: ${ROOT_DOMAIN}
+    
+    ingress:
+      enabled: false
+    
+    configMap:
+      enabled: false
+    
+    secret:
+      enabled: false
+    
+    pod:
+      kind: Deployment
+      replicas: 2
+      annotations:
+        reloader.stakater.com/auto: "true"
+      
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+      
+      env:
+        - name: TZ
+          value: ${TIMEZONE}
+        - name: AUTHELIA_SERVER_DISABLE_HEALTHCHECK
+          value: "false"
+        - name: X_AUTHELIA_CONFIG
+          value: /config/configuration.yaml
+      
+      extraVolumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+      
+      extraVolumes:
+        - name: config
+          secret:
+            secretName: authelia-config
+            items:
+              - key: configuration.yaml
+                path: configuration.yaml
+      
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+      
+      securityContext:
+        container:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+        pod:
+          fsGroup: 1000
+          fsGroupChangePolicy: OnRootMismatch
+    
+    service:
+      annotations:
+        tailscale.com/hostname: authelia
+        tailscale.com/proxy-group: ingress
+    
+    serviceMonitor:
+      enabled: true
+

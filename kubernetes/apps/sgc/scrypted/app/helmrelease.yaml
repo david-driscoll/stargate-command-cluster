@@ -86,9 +86,11 @@ spec:
             securityContext:
               privileged: true
 
-    # defaultPodOptions:
-    #   # required for mDNS and other host network features
-    #   hostNetwork: true
+    defaultPodOptions:
+      # required for mDNS and other host network features
+      hostNetwork: true
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
 
     service:
       *app :

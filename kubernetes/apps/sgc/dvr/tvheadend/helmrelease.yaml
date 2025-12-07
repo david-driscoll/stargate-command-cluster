@@ -68,8 +68,8 @@ spec:
         runAsUser: 568
         seccompProfile:
           type: RuntimeDefault
-      # nodeSelector:
-      #   intel.feature.node.kubernetes.io/gpu: "true"
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
     service:
       *app :
         controller: *app

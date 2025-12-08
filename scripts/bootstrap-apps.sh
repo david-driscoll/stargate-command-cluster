@@ -95,6 +95,9 @@ function apply_crds() {
         https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.87.0/stripped-down-crds.yaml
         # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
         # https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.20.0/docs/sources/crd/crd-manifest.yaml
+        # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
+        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
+        https://raw.githubusercontent.com/external-secrets-inc/reloader/refs/heads/main/config/crd/bases/reloader.external-secrets.io_configs.yaml
         "${ROOT_DIR}/kubernetes/apps/observability/crds/application-crd.yaml"
         "${ROOT_DIR}/kubernetes/apps/observability/crds/cluster-crd.yaml"
     )

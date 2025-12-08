@@ -1,0 +1,314 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.2.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app external-secrets-reloader
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    global:
+      labels:
+        app.kubernetes.io/name: *app
+        control-plane: controller-manager
+
+    serviceAccount:
+      *app :
+        forceRename: &controller-manager reloader-controller-manager
+    rbac:
+      roles:
+        &election-role reloader-leader-election-role:
+          forceRename: *election-role
+          type: Role
+          rules:
+            - apiGroups:
+              - ""
+              resources:
+              - configmaps
+              verbs:
+              - get
+              - list
+              - watch
+              - create
+              - update
+              - patch
+              - delete
+            - apiGroups:
+              - coordination.k8s.io
+              resources:
+              - leases
+              verbs:
+              - get
+              - list
+              - watch
+              - create
+              - update
+              - patch
+              - delete
+            - apiGroups:
+              - ""
+              resources:
+              - events
+              verbs:
+              - create
+              - patch
+        &manager-role reloader-manager-role:
+          forceRename: *manager-role
+          type: ClusterRole
+          rules:
+          - apiGroups:
+            - ""
+            resources:
+            - secrets
+            verbs:
+            - get
+            - list
+            - watch
+          - apiGroups:
+            - apps
+            resources:
+            - deployments
+            verbs:
+            - get
+            - list
+            - patch
+            - update
+            - watch
+          - apiGroups:
+            - coordination.k8s.io
+            resources:
+            - leases
+            verbs:
+            - create
+            - get
+            - patch
+            - update
+          - apiGroups:
+            - external-secrets.io
+            resources:
+            - externalsecrets
+            - pushsecrets
+            verbs:
+            - get
+            - list
+            - patch
+            - update
+            - watch
+          - apiGroups:
+            - reloader.external-secrets.io
+            resources:
+            - configs
+            - configs/status
+            verbs:
+            - get
+            - list
+            - patch
+            - update
+            - watch
+          - apiGroups:
+            - reloader.external-secrets.io
+            resources:
+            - configs/finalizers
+            verbs:
+            - update
+          - apiGroups:
+            - workflows.external-secrets.io
+            resources:
+            - workflowruntemplates
+            verbs:
+            - get
+            - list
+            - patch
+            - update
+            - watch
+        &metrics-auth-role reloader-metrics-auth-role:
+          forceRename: *metrics-auth-role
+          type: ClusterRole
+          rules:
+          - apiGroups:
+            - authentication.k8s.io
+            resources:
+            - tokenreviews
+            verbs:
+            - create
+          - apiGroups:
+            - authorization.k8s.io
+            resources:
+            - subjectaccessreviews
+            verbs:
+            - create
+        &metrics-reader reloader-metrics-reader:
+          forceRename: *metrics-reader
+          type: ClusterRole
+          rules:
+          - nonResourceURLs:
+            - /metrics
+            verbs:
+            - get
+        &editor-role reloader-editor-role:
+          forceRename: *editor-role
+          type: ClusterRole
+          rules:
+          - apiGroups:
+            - reloader.external-secrets.io
+            resources:
+            - config
+            verbs:
+            - create
+            - delete
+            - get
+            - list
+            - patch
+            - update
+            - watch
+          - apiGroups:
+            - reloader.external-secrets.io
+            resources:
+            - config/status
+            verbs:
+            - get
+        &viewer-role reloader-viewer-role:
+          forceRename: *viewer-role
+          type: ClusterRole
+          rules:
+          - apiGroups:
+            - reloader.external-secrets.io
+            resources:
+            - config
+            verbs:
+            - get
+            - list
+            - watch
+          - apiGroups:
+            - reloader.external-secrets.io
+            resources:
+            - config/status
+            verbs:
+            - get
+      bindings:
+        &election-rolebinding reloader-leader-election-rolebinding:
+          forceRename: *election-rolebinding
+          type: RoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: *election-role
+          subjects:
+            - kind: ServiceAccount
+              name: *controller-manager
+              namespace: ${NAMESPACE}
+        &manager-rolebinding reloader-manager-rolebinding:
+          forceRename: *manager-rolebinding
+          type: ClusterRoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: *manager-role
+          subjects:
+            - kind: ServiceAccount
+              name: *controller-manager
+              namespace: ${NAMESPACE}
+        &metrics-auth-rolebinding reloader-metrics-auth-rolebinding:
+          forceRename: *metrics-auth-rolebinding
+          type: ClusterRoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: *metrics-auth-role
+          subjects:
+            - kind: ServiceAccount
+              name: *controller-manager
+              namespace: ${NAMESPACE}
+    service:
+      &metrics-service reloader-controller-manager-metrics-service:
+        forceRename: *metrics-service
+        ports:
+          https:
+            port: 8443
+            protocol: TCP
+            targetPort: 8443
+      &manager-socket reloader-controller-manager-socket:
+        forceRename: *manager-socket
+        ports:
+          sock:
+            port: 8000
+            protocol: TCP
+            targetPort: 8000
+      &webhook-service reloader-controller-manager-webhook:
+        forceRename: *webhook-service
+        ports:
+          http:
+            port: 8090
+            protocol: TCP
+            targetPort: 8090
+
+    controllers:
+      *app :
+        replicas: 1
+        pod:
+          restartPolicy: Always
+          terminationGracePeriodSeconds: 30
+        containers:
+          manager:
+            args:
+            - --metrics-bind-address=:8443
+            - --leader-elect
+            - --health-probe-bind-address=:8081
+            command:
+            - /bin/reloader
+            image:
+              repository: ghcr.io/external-secrets-inc/reloader
+              tag: 0.0.5-29.gfb00e3b@sha256:1a7d0fc9fe831c265420bc1fb3af297ad03a599c4802956c97d6e2de9deeabbf
+            probes:
+              liveness:
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+              readiness:
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                cpu: 500m
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              runAsNonRoot: true
+        serviceAccount:
+          name: *controller-manager

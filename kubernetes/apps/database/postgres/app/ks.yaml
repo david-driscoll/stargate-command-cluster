@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/database/postgres
+  path: ./kubernetes/apps/database/postgres/app
   dependsOn:
     - name: postgres-operator
       namespace: cloudnative-pg

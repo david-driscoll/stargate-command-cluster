@@ -98,6 +98,8 @@ function apply_crds() {
         # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
         https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
         https://raw.githubusercontent.com/external-secrets-inc/reloader/refs/heads/main/config/crd/bases/reloader.external-secrets.io_configs.yaml
+        https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+        https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml
         "${ROOT_DIR}/kubernetes/apps/observability/crds/application-crd.yaml"
         "${ROOT_DIR}/kubernetes/apps/observability/crds/cluster-crd.yaml"
     )

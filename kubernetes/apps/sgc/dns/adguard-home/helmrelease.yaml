@@ -65,7 +65,7 @@ spec:
                 cpu: 500m
                 memory: 500Mi
         pod:
-          priorityClassName: system-cluster-critical
+          priorityClassName: system-node-critical
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

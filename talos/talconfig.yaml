@@ -25,6 +25,16 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    userVolumes: &userVolumes
+      - name: longhorn
+        filesystem:
+          type: xfs
+        provisioning:
+          diskSelector:
+            match: disk.dev_path == "/dev/sda"
+          grow: false
+          minSize: 1TB
+          maxSize: 1TB
     nodeLabels: &nodeLabels
       node.longhorn.io/create-default-disk: 'config'
     nodeAnnotations: &nodeAnnotations
@@ -45,12 +55,12 @@ nodes:
           - intel_iommu=on
           - iommu=pt
           - sysctl.kernel.kexec_load_disabled=1
-          # - apparmor=0                          # Less security, faster puter
-          # - init_on_alloc=0                     # Less security, faster puter
-          # - init_on_free=0                      # Less security, faster puter
-          # - mitigations=off                     # Less security, faster puter
-          # - security=none                       # Less security, faster puter
-          # - talos.auditd.disabled=1             # Less security, faster puter
+          - apparmor=0                          # Less security, faster puter
+          - init_on_alloc=0                     # Less security, faster puter
+          - init_on_free=0                      # Less security, faster puter
+          - mitigations=off                     # Less security, faster puter
+          - security=none                       # Less security, faster puter
+          - talos.auditd.disabled=1             # Less security, faster puter
         systemExtensions:
           officialExtensions:
             - siderolabs/i915
@@ -75,6 +85,7 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    userVolumes: *userVolumes
     nodeLabels: *nodeLabels
     nodeAnnotations: *nodeAnnotations
     schematic: *schematic
@@ -96,6 +107,7 @@ nodes:
     machineSpec:
       secureboot: false
     controlPlane: true
+    userVolumes: *userVolumes
     nodeLabels: *nodeLabels
     nodeAnnotations: *nodeAnnotations
     schematic: *schematic
@@ -114,7 +126,6 @@ nodes:
 
 # Global patches
 patches:
-  - "@./patches/global/machine-disks.yaml"
   - "@./patches/global/machine-files.yaml"
   - "@./patches/global/machine-kubelet.yaml"
   - "@./patches/global/machine-network.yaml"

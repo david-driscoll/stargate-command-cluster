@@ -44,7 +44,7 @@ backups:
 cluster:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5
-  priorityClassName: system-cluster-critical
+  priorityClassName: system-node-critical
   storage:
     size: ${POSTGRES_STORAGE:=10Gi}
     storageClass: longhorn

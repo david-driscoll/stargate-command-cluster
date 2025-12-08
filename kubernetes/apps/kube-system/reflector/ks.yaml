@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/kube-system/reflector/app
+  path: ./kubernetes/apps/kube-system/reflector
   prune: true
   wait: true
   force: false # true

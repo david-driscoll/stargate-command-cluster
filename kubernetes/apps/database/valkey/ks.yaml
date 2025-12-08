@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn: []
-  path: ./kubernetes/apps/database/valkey/app
+  path: ./kubernetes/apps/database/valkey
   prune: true
   wait: true
   force: false # true

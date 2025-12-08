@@ -15,7 +15,7 @@ spec:
       namespace: kube-system
     - name: external-secrets
       namespace: kube-system
-  path: ./kubernetes/apps/nfs-system/csi-driver-nfs/app
+  path: ./kubernetes/apps/nfs-system/csi-driver-nfs
   prune: true
   wait: true
   force: false # true

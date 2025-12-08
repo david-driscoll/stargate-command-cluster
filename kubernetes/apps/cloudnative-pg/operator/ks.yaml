@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/cloudnative-pg/operator/app
+  path: ./kubernetes/apps/cloudnative-pg/operator
   prune: true
   wait: true
   force: false # true

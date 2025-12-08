@@ -16,7 +16,7 @@ spec:
       name: *app
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/flux-system/weave/app
+  path: ./kubernetes/apps/flux-system/weave
   prune: true
   wait: false
   force: false # true

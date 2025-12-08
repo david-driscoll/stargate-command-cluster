@@ -8,4 +8,5 @@ components:
 resources:
   - ./secret-store.yaml
   - ./longhorn/ks.yaml
+  - ./storageclass/ks.yaml
 

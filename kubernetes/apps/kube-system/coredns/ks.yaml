@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/kube-system/coredns/app
+  path: ./kubernetes/apps/kube-system/coredns
   prune: true
   wait: false
   force: false # true

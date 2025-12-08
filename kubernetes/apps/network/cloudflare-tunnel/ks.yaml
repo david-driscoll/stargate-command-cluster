@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cloudflare-dns
       namespace: *namespace
-  path: ./kubernetes/apps/network/cloudflare-tunnel/app
+  path: ./kubernetes/apps/network/cloudflare-tunnel
   prune: true
   wait: true
   force: false # true

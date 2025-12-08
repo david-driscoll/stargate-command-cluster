@@ -8,7 +8,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/kube-system/registry/app
+  path: ./kubernetes/apps/kube-system/registry
   prune: true
   wait: true
   force: false # true
@@ -21,8 +21,8 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   components:
-    - ../../../../components/volsync
-    - ../../../../components/gateway/internal
+    - ../../../components/volsync
+    - ../../../components/gateway/internal
   postBuild:
     substitute:
       APP: *app

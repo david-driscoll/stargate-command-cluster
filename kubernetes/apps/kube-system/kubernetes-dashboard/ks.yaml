@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/kube-system/kubernetes-dashboard/app
+  path: ./kubernetes/apps/kube-system/kubernetes-dashboard
   prune: true
   wait: false
   force: false # true

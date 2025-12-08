@@ -14,7 +14,7 @@ spec:
   dependsOn:
     - name: tailscale-operator
       namespace: *namespace
-  path: ./kubernetes/apps/tailscale-system/authkey/app
+  path: ./kubernetes/apps/tailscale-system/authkey
   prune: true
   wait: false
   force: false # true

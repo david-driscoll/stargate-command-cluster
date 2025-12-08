@@ -2,16 +2,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: chrony
-  namespace: sgc
+  name: &app chrony
+  namespace: &namespace sgc
 spec:
-  targetNamespace: sgc
+  targetNamespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: chrony
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: sgc-secrets
-      namespace: sgc
+      namespace: *namespace
   path: ./kubernetes/apps/sgc/home/chrony
   prune: true
   wait: true
@@ -25,5 +25,5 @@ spec:
     namespace: flux-system
   postBuild:
     substitute:
-      APP: chrony
-      NAMESPACE: sgc
+      APP: *app
+      NAMESPACE: *namespace

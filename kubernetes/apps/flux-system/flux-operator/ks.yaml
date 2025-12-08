@@ -14,7 +14,7 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: *namespace
-  path: ./kubernetes/apps/flux-system/flux-operator/app
+  path: ./kubernetes/apps/flux-system/flux-operator
   prune: true
   wait: false
   force: false # true

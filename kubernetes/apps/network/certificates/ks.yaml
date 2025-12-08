@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cert-manager-issuers
       namespace: cert-manager
-  path: ./kubernetes/apps/network/certificates/app
+  path: ./kubernetes/apps/network/certificates
   prune: true
   wait: true
   force: false # true

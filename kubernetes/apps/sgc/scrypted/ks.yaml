@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
-  path: ./kubernetes/apps/sgc/scrypted/app
+  path: ./kubernetes/apps/sgc/scrypted
   prune: true
   wait: true
   force: false # true

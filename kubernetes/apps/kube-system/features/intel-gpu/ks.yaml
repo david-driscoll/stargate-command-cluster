@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app intel-device-plugin-gpu
+  namespace: &namespace kube-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: intel-device-plugin-operator
+      namespace: *namespace
+  healthCheckExprs:
+    - apiVersion: deviceplugin.intel.com/v1
+      kind: GpuDevicePlugin
+      failed: status.desiredNumberScheduled != status.numberReady
+      current: status.desiredNumberScheduled == status.numberReady
+  path: ./kubernetes/apps/kube-system/features/intel-gpu
+  prune: true
+  wait: true
+  force: false # true
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace

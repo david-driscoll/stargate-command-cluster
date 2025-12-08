@@ -91,8 +91,8 @@ try
       // AnsiConsole.MarkupLine($"[blue]Processing component: {component.name}[/]");
       if (!Directory.Exists(component.path))
       {
-        AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist.[/]");
-        throw new FileNotFoundException($"Component file {component.path} does not exist.");
+        AnsiConsole.MarkupLine($"[red]Component file {component.path} does not exist for {documentName}.[/]");
+        throw new FileNotFoundException($"Component file {component.path} does not exist for {documentName}.");
       }
       try
       {

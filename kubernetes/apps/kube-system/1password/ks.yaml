@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/kube-system/1password/connect
+  path: ./kubernetes/apps/kube-system/1password
   prune: true
   wait: true
   force: false # true

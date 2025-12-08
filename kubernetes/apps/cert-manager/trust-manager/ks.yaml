@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: *namespace
-  path: ./kubernetes/apps/cert-manager/trust-manager/app
+  path: ./kubernetes/apps/cert-manager/trust-manager
   prune: true
   wait: true
   force: false # true
@@ -23,43 +23,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app trust-manager-bundles
-  namespace: &namespace cert-manager
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: trust-manager
-      namespace: *namespace
-    - name: certificates
-      namespace: network
-  path: ./kubernetes/apps/cert-manager/trust-manager/bundles
-  prune: true
-  wait: true
-  force: false # true
-  interval: 1h
-  retryInterval: 2m
-  timeout: 10m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  healthChecks:
-    - apiVersion: trust.cert-manager.io/v1alpha1
-      kind: Bundle
-      name: public-bundle
-      namespace: *namespace
   postBuild:
     substitute:
       APP: *app

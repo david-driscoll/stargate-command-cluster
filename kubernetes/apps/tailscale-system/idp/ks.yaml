@@ -15,7 +15,7 @@ spec:
       namespace: *namespace
     - name: volsync
       namespace: volsync-system
-  path: ./kubernetes/apps/tailscale-system/idp/app
+  path: ./kubernetes/apps/tailscale-system/idp
   prune: true
   wait: true
   force: false # true
@@ -27,7 +27,7 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/volsync
+    - ../../../components/volsync
   postBuild:
     substitute:
       APP: *app

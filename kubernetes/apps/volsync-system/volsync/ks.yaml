@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: csi-driver-nfs
       namespace: nfs-system
-  path: ./kubernetes/apps/volsync-system/volsync/app
+  path: ./kubernetes/apps/volsync-system/volsync
   prune: true
   wait: true
   force: false # true

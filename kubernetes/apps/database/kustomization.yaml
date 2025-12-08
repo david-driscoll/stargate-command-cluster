@@ -9,6 +9,6 @@ components:
 resources:
   - ./secret-store.yaml
   - ./backblaze.yaml
-  - ./postgres/ks.yaml
+  - ./postgres
   - ./valkey/ks.yaml
-  # - ./cloudbeaver/ks.yaml
+  - ./cloudbeaver/ks.yaml

@@ -10,7 +10,7 @@ resources:
   - ./secret-store.yaml
   - ./certificates/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
-  - ./dns/ks.yaml
+  - ./external-dns
   - ./k8s-gateway/ks.yaml
-  - ./shared/ks.yaml
-  - ./traefik/ks.yaml
+  - ./secrets/ks.yaml
+  - ./traefik

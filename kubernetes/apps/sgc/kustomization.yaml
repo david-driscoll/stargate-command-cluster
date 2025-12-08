@@ -8,12 +8,9 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
-  - ./cluster/ks.yaml
   - ./shared
-  # - ./go2rtc
-  - ./dns/ks.yaml
+  - ./dns
   - ./home
-  # - ./scrypted
-  # - ./dvr
-  # - ./media
   - ./idp
+  # - ./scrypted
+  # - ./media

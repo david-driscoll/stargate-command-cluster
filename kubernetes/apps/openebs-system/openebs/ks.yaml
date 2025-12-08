@@ -15,7 +15,7 @@ spec:
       namespace: kube-system
     - name: external-secrets
       namespace: kube-system
-  path: ./kubernetes/apps/openebs-system/openebs/app
+  path: ./kubernetes/apps/openebs-system/openebs
   prune: true
   wait: true
   force: false # true

@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: volsync
       namespace: volsync-system
-  path: ./kubernetes/apps/sgc/scrypted/app
+  path: ./kubernetes/apps/sgc/scrypted
   prune: true
   wait: true
   force: false # true
@@ -24,8 +24,8 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/volsync
-    - ../../../../components/tailscale
+    - ../../../components/volsync
+    - ../../../components/tailscale
   postBuild:
     substitute:
       APP: *app

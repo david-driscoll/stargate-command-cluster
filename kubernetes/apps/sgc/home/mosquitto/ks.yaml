@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: mosquitto
-  namespace: sgc
+  name: &app mosquitto
+  namespace: &namespace sgc
 spec:
-  targetNamespace: sgc
+  targetNamespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: mosquitto
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/sgc/home/mosquitto
   prune: true
   wait: true
@@ -25,5 +25,5 @@ spec:
     namespace: flux-system
   postBuild:
     substitute:
-      APP: mosquitto
-      NAMESPACE: sgc
+      APP: *app
+      NAMESPACE: *namespace

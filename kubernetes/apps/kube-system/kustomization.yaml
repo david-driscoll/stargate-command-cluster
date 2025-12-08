@@ -14,14 +14,13 @@ resources:
   - ./1password/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
-  # - ./containerd-cleanup
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
   - ./kubernetes-dashboard/ks.yaml
-  - ./features/ks.yaml
-  - ./secrets/ks.yaml
+  - ./features
+  - ./secrets
   - ./spegel/ks.yaml
   - ./reflector/ks.yaml
   - ./snapshot-controller/ks.yaml
-  - ./external-secrets/ks.yaml
+  - ./external-secrets
   - ./registry/ks.yaml

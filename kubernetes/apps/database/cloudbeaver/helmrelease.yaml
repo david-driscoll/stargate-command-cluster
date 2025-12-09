@@ -72,13 +72,11 @@ spec:
         name: ${APP}-config
         defaultMode: 493
         globalMounts:
-          - path: /data/workspace/GlobalConfiguration/.dbeaver
+          - path: /opt/cloudbeaver/workspace/.dbeaver
       cloudbeaver:
         type: emptyDir
         globalMounts:
-          - path: /data/
-          - path: /opt/cloudbeaver/conf/
-          - path: /.local/share/DBeaverData/
+          - path: /opt/cloudbeaver/workspace
     service:
       *app :
         controller: *app

@@ -53,8 +53,8 @@ spec:
               CLOUDBEAVER_APP_GRANT_CONNECTIONS_ACCESS_TO_ANONYMOUS_TEAM: "true"
               CB_SERVER_NAME: "CloudBeaver on ${CLUSTER_TITLE}"
               CLOUDBEAVER_WEB_SERVER_NAME: "CloudBeaver on ${CLUSTER_TITLE}"
-              CB_SERVER_URL: "https://${APP}.${CLUSTER_DOMAIN}/"
-              CLOUDBEAVER_WEB_SERVER_URL: "https://${APP}.${CLUSTER_DOMAIN}/"
+              CB_SERVER_URL: "https://sql.${CLUSTER_DOMAIN}/"
+              CLOUDBEAVER_WEB_SERVER_URL: "https://sql.${CLUSTER_DOMAIN}/"
             securityContext:
               readOnlyRootFilesystem: false
             resources:
@@ -91,7 +91,7 @@ spec:
             namespace: network
             kind: Gateway
         hostnames:
-          - "${APP}.${CLUSTER_DOMAIN}"
+          - "sql.${CLUSTER_DOMAIN}"
         kind: HTTPRoute
         rules:
           - backendRefs:

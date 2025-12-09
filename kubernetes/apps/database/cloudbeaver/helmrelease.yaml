@@ -52,8 +52,8 @@ spec:
               CLOUDBEAVER_APP_GRANT_CONNECTIONS_ACCESS_TO_ANONYMOUS_TEAM: "true"
               CLOUDBEAVER_WEB_SERVER_NAME: &server-name "CloudBeaver on ${CLUSTER_TITLE}"
               CLOUDBEAVER_WEB_SERVER_URL: &server-url "https://sql.${CLUSTER_DOMAIN}/"
-              CLOUDBEAVER_APP_ADMIN_CREDENTIALS_SAVE_ENABLED: "false"
-              CLOUDBEAVER_APP_PUBLIC_CREDENTIALS_SAVE_ENABLED: "false"
+              CLOUDBEAVER_APP_ADMIN_CREDENTIALS_SAVE_ENABLED: "true"
+              CLOUDBEAVER_APP_PUBLIC_CREDENTIALS_SAVE_ENABLED: "true"
               CB_SERVER_NAME:  *server-name
               CB_SERVER_URL: *server-url
               # auth is handled via traefik

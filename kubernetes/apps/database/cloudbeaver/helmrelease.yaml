@@ -59,7 +59,7 @@ spec:
               CB_SERVER_URL: *server-url
               # auth is handled via traefik
               CB_ADMIN_NAME: cbadmin
-              CB_ADMIN_PASSWORD: cbadmin
+              CB_ADMIN_PASSWORD: password
             securityContext:
               readOnlyRootFilesystem: false
             resources:

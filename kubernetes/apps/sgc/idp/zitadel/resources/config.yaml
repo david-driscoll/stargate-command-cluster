@@ -1,0 +1,265 @@
+Log:
+  Level: info # ZITADEL_LOG_LEVEL
+  Formatter:
+    Format: text # ZITADEL_LOG_FORMATTER_FORMAT
+
+# Exposes metrics on /debug/metrics
+Metrics:
+  Type: otel # ZITADEL_METRICS_TYPE
+
+Tracing:
+  Type: otel # ZITADEL_TRACING_TYPE
+  Fraction: 1.0 # ZITADEL_TRACING_FRACTION
+  # The endpoint of the otel collector endpoint
+  Endpoint: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp/v1/metrics" #ZITADEL_TRACING_ENDPOINT
+  ServiceName: "Zitadel" #ZITADEL_TRACING_SERVICENAME
+
+ExternalDomain: ${APP}.${ROOT_DOMAIN} # ZITADEL_EXTERNALDOMAIN
+ExternalSecure: true # ZITADEL_EXTERNALSECURE
+WebAuthNName: Zitadel # ZITADEL_WEBAUTHNNAME
+
+Database:
+  # Postgres is the default database of ZITADEL
+  postgres:
+    Host: {{ .postgres_host }} # ZITADEL_DATABASE_POSTGRES_HOST
+    Port: {{ .postgres_port }} # ZITADEL_DATABASE_POSTGRES_PORT
+    Database: {{ .postgres_database }} # ZITADEL_DATABASE_POSTGRES_DATABASE
+    User:
+      Username: {{ .postgres_username }} # ZITADEL_DATABASE_POSTGRES_USER_USERNAME
+      Password: "{{ .postgres_password }}" # ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
+      SSL:
+        Mode: disable
+    # Admin:
+    #   # By default, ExistingDatabase is not specified in the connection string
+    #   # If the connection resolves to a database that is not existing in your system, configure an existing one here
+    #   # It is used in zitadel init to connect to postgres and create a dedicated database for ZITADEL.
+    #   ExistingDatabase: # ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
+    #   Username: postgres # ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
+    #   Password: postgres # ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
+    #   SSL:
+    #     Mode: disable # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
+    #     RootCert: "" # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_ROOTCERT
+    #     Cert: "" # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_CERT
+    #     Key: "" # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_KEY
+
+# Caches are EXPERIMENTAL. The following config may have breaking changes in the future.
+# If no config is provided, caching is disabled by default.
+Caches:
+  # Connectors are reused by caches.
+  Connectors:
+    # Postgres connector uses the configured database (postgres or cockraochdb) as cache.
+    # It is suitable for deployments with multiple containers.
+    # The cache is enabled by default because it is the default cache states for IdP form callbacks
+    Postgres:
+      Enabled: true
+      AutoPrune:
+        Interval: 15m
+        TimeOut: 30s
+    Redis:
+      Enabled: true
+      Addr: valkey.database.svc.cluster.local:6379
+      ClientName: Zitadel
+      Username: ""
+      Password: ""
+      DBOffset: 5
+
+  # Instance caches auth middleware instances, gettable by domain or ID.
+  Instance:
+    # Connector must be enabled above.
+    # When connector is empty, this cache will be disabled.
+    Connector: redis
+  # Milestones caches instance milestone state, gettable by instance ID
+  Milestones:
+    Connector: redis
+  # Organization cache, gettable by primary domain or ID.
+  Organization:
+    Connector: redis
+  # IdP callbacks using form POST cache, required for handling them securely and without possible too big request urls.
+  IdPFormCallbacks:
+    Connector: postgres
+  # Federated logouts store the information needed to handle federated logout and their state transfer
+  FederatedLogouts:
+    Connector: postgres
+
+Machine:
+  # Cloud-hosted VMs need to specify their metadata endpoint so that the machine can be uniquely identified.
+  Identification:
+    Hostname:
+      Enabled: true # ZITADEL_MACHINE_IDENTIFICATION_HOSTNAME_ENABLED
+
+# Storage for assets like user avatar, organization logo, icon, font, ...
+AssetStorage:
+  Type: db
+
+Notifications:
+  LegacyEnabled: false # ZITADEL_NOTIFICATIONS_LEGACYENABLED
+  Workers: 1 # ZITADEL_NOTIFICATIONS_WORKERS
+
+Executions:
+  Workers: 1 # ZITADEL_EXECUTIONS_WORKERS
+
+OIDC:
+  CodeMethodS256: true # ZITADEL_OIDC_CODEMETHODS256
+  AuthMethodPost: true # ZITADEL_OIDC_AUTHMETHODPOST
+  AuthMethodPrivateKeyJWT: true # ZITADEL_OIDC_AUTHMETHODPRIVATEKEYJWT
+  GrantTypeRefreshToken: true # ZITADEL_OIDC_GRANTTYPEREFRESHTOKEN
+  RequestObjectSupported: true # ZITADEL_OIDC_REQUESTOBJECTSUPPORTED
+
+EncryptionKeys:
+  DomainVerification:
+    EncryptionKeyID: "domainVerificationKey" # ZITADEL_ENCRYPTIONKEYS_DOMAINVERIFICATION_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_DOMAINVERIFICATION_DECRYPTIONKEYIDS (comma separated list)
+  IDPConfig:
+    EncryptionKeyID: "idpConfigKey" # ZITADEL_ENCRYPTIONKEYS_IDPCONFIG_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_IDPCONFIG_DECRYPTIONKEYIDS (comma separated list)
+  OIDC:
+    EncryptionKeyID: "oidcKey" # ZITADEL_ENCRYPTIONKEYS_OIDC_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_OIDC_DECRYPTIONKEYIDS (comma separated list)
+  SAML:
+    EncryptionKeyID: "samlKey" # ZITADEL_ENCRYPTIONKEYS_SAML_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_SAML_DECRYPTIONKEYIDS (comma separated list)
+  OTP:
+    EncryptionKeyID: "otpKey" # ZITADEL_ENCRYPTIONKEYS_OTP_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_OTP_DECRYPTIONKEYIDS (comma separated list)
+  SMS:
+    EncryptionKeyID: "smsKey" # ZITADEL_ENCRYPTIONKEYS_SMS_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_SMS_DECRYPTIONKEYIDS (comma separated list)
+  SMTP:
+    EncryptionKeyID: "smtpKey" # ZITADEL_ENCRYPTIONKEYS_SMTP_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_SMTP_DECRYPTIONKEYIDS (comma separated list)
+  User:
+    EncryptionKeyID: "userKey" # ZITADEL_ENCRYPTIONKEYS_USER_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_USER_DECRYPTIONKEYIDS (comma separated list)
+  Target:
+    EncryptionKeyID: "targetKey" # ZITADEL_ENCRYPTIONKEYS_TARGET_ENCRYPTIONKEYID
+    DecryptionKeyIDs: # ZITADEL_ENCRYPTIONKEYS_TARGET_DECRYPTIONKEYIDS (comma separated list)
+  CSRFCookieKeyID: "csrfCookieKey" # ZITADEL_ENCRYPTIONKEYS_CSRFCOOKIEKEYID
+  UserAgentCookieKeyID: "userAgentCookieKey" # ZITADEL_ENCRYPTIONKEYS_USERAGENTCOOKIEKEYID
+
+SystemAPIUsers:
+  - superuser:
+      KeyData: "{{ .superuser_public_key | b64enc }}"
+      Memberships:
+      - MemberType: System
+        Roles:
+          - "SYSTEM_OWNER"
+          # Actually, we don't recommend adding IAM_OWNER and ORG_OWNER to the System membership, as this basically enables god mode for the system user
+          # - "IAM_OWNER"
+          # - "ORG_OWNER"
+LogStore:
+  Access:
+    Stdout:
+      Enabled: true # ZITADEL_LOGSTORE_ACCESS_STDOUT_ENABLED
+  Execution:
+    Stdout:
+      Enabled: true # ZITADEL_LOGSTORE_EXECUTION_STDOUT_ENABLED
+
+# The DefaultInstance section defines the default values for each new virtual instance that is created.
+# Check out https://zitadel.com/docs/concepts/structure/instance#multiple-virtual-instances for more information about virtual instances.
+# For the initial setup, the default values are used to create the first instance.
+# However, you might want to have your first instance created by the setup job to have a different configuration.
+# To overwrite the default values for the initial setup, configure the FirstInstance yaml section and pass it using the --steps flag.
+DefaultInstance:
+  InstanceName: Zitadel # ZITADEL_DEFAULTINSTANCE_INSTANCENAME
+  DefaultLanguage: en # ZITADEL_DEFAULTINSTANCE_DEFAULTLANGUAGE
+  Org:
+    Name: Zitadel # ZITADEL_DEFAULTINSTANCE_ORG_NAME
+    Human:
+      # In case that UserLoginMustBeDomain is false (default) and if you don't overwrite the username with an email,
+      # it will be suffixed by the org domain (org-name + domain from config).
+      # for example zitadel-admin in org `My Org` on domain.tld -> zitadel-admin@my-org.domain.tld
+      UserName: zitadel-admin # ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_USERNAME
+      FirstName: Zitadel # ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_FIRSTNAME
+      LastName: Admin # ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_LASTNAME
+      NickName: Del # ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_NICKNAME
+      DisplayName: Zitadel Admin # ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_DISPLAYNAME
+      Email:
+        Verified: true # ZITADEL_DEFAULTINSTANCE_ORG_HUMAN_EMAIL_VERIFIED
+    # In the DefaultInstance.Org.Machine section, the initial organization's admin user with the role IAM_OWNER is defined.
+    # If DefaultInstance.Org.Machine.Machine is defined, a service user is created with the IAM_OWNER role.
+    Machine:
+      Machine:
+        Username: zitadel-machine
+        Name: Replicators
+      MachineKey:
+        ExpirationDate: 2100-01-01T00:00:00Z
+      Pat:
+        ExpirationDate: 2100-01-01T00:00:00Z
+    LoginClient:
+      Machine:
+        Username: zitadel-login
+        Name: Zitadel Login Client
+      Pat:
+        ExpirationDate: 2100-01-01T00:00:00Z
+  LoginPolicy:
+    AllowUsernamePassword: true # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_ALLOWUSERNAMEPASSWORD
+    AllowRegister: false # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_ALLOWREGISTER
+    AllowExternalIDP: true # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_ALLOWEXTERNALIDP
+    ForceMFA: false # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_FORCEMFA
+    HidePasswordReset: true # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_HIDEPASSWORDRESET
+    IgnoreUnknownUsernames: false # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_IGNOREUNKNOWNUSERNAMES
+    AllowDomainDiscovery: false # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_ALLOWDOMAINDISCOVERY
+    # 1 is allowed, 0 is not allowed
+    PasswordlessType: 1 # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_PASSWORDLESSTYPE
+    # DefaultRedirectURL is empty by default because we use the Console UI
+    DefaultRedirectURI: # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_DEFAULTREDIRECTURI
+    # 240h = 10d
+    PasswordCheckLifetime: 240h # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_PASSWORDCHECKLIFETIME
+    # 240h = 10d
+    ExternalLoginCheckLifetime: 240h # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_EXTERNALLOGINCHECKLIFETIME
+    # 720h = 30d
+    MfaInitSkipLifetime: 720h # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_MFAINITSKIPLIFETIME
+    SecondFactorCheckLifetime: 18h # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_SECONDFACTORCHECKLIFETIME
+    MultiFactorCheckLifetime: 12h # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_MULTIFACTORCHECKLIFETIME
+  PrivacyPolicy:
+    TOSLink: "" # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_TOSLINK
+    PrivacyLink: "" # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_PRIVACYLINK
+    HelpLink: "" # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_HELPLINK
+    SupportEmail: "" # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_SUPPORTEMAIL
+    DocsLink: https://zitadel.com/docs # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_DOCSLINK
+    CustomLink: "" # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_CUSTOMLINK
+    CustomLinkText: "" # ZITADEL_DEFAULTINSTANCE_PRIVACYPOLICY_CUSTOMLINKTEXT
+  LabelPolicy:
+    PrimaryColor: "#5469d4" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_PRIMARYCOLOR
+    BackgroundColor: "#fafafa" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_BACKGROUNDCOLOR
+    WarnColor: "#cd3d56" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_WARNCOLOR
+    FontColor: "#000000" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_FONTCOLOR
+    PrimaryColorDark: "#2073c4" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_PRIMARYCOLORDARK
+    BackgroundColorDark: "#111827" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_BACKGROUNDCOLORDARK
+    WarnColorDark: "#ff3b5b" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_WARNCOLORDARK
+    FontColorDark: "#ffffff" # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_FONTCOLORDARK
+    HideLoginNameSuffix: false # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_HIDELOGINNAMESUFFIX
+    ErrorMsgPopup: false # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_ERRORMSGPOPUP
+    DisableWatermark: false # ZITADEL_DEFAULTINSTANCE_LABELPOLICY_DISABLEWATERMARK
+  LockoutPolicy:
+    MaxPasswordAttempts: 5 # ZITADEL_DEFAULTINSTANCE_LOCKOUTPOLICY_MAXPASSWORDATTEMPTS
+    MaxOTPAttempts: 5 # ZITADEL_DEFAULTINSTANCE_LOCKOUTPOLICY_MAXOTPATTEMPTS
+    ShouldShowLockoutFailure: true # ZITADEL_DEFAULTINSTANCE_LOCKOUTPOLICY_SHOULDSHOWLOCKOUTFAILURE
+
+  # WebKeys configures the OIDC token signing keys that are generated when a new instance is created.
+  WebKeys:
+    Type: "rsa" # ZITADEL_DEFAULTINSTANCE_WEBKEYS_TYPE
+    Config:
+     RSABits: "4096" # ZITADEL_DEFAULTINSTANCE_WEBKEYS_CONFIG_BITS
+     RSAHasher: "sha256" # ZITADEL_DEFAULTINSTANCE_WEBKEYS_CONFIG_HASHER
+
+  # Sets the default values for lifetime and expiration for OIDC in each newly created instance
+  # This default can be overwritten for each instance during runtime
+  # Overwrites the system defaults
+  # If defined but not all durations are set it will result in an error
+  OIDCSettings:
+    AccessTokenLifetime: 12h # ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_ACCESSTOKENLIFETIME
+    IdTokenLifetime: 12h # ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_IDTOKENLIFETIME
+    # 720h are 30 days
+    RefreshTokenIdleExpiration: 720h # ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENIDLEEXPIRATION
+    # 2160h are 90 days
+    RefreshTokenExpiration: 2160h # ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENEXPIRATION
+
+AuditLogRetention: 30d # ZITADEL_AUDITLOGRETENTION
+
+# The ServicePing are periodic reports of analytics data and the usage of ZITADEL.
+# It is sent to a central endpoint to help us improve ZITADEL.
+# It's enabled by default, but you can opt out either completely or by disabling specific telemetry data.
+ServicePing:
+  # By setting Enabled to false, the service ping is disabled completely.
+  Enabled: false # ZITADEL_SERVICEPING_ENABLED

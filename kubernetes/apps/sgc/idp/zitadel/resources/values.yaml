@@ -1,10 +1,9 @@
 # Default values for zitadel.
 zitadel:
   configmapConfig: {}
-  secretConfig:
-    configSecretName: zitadel-config
-    configSecretKey: config.yaml
-    masterkeySecretName: zitadel-masterkey
+  configSecretName: zitadel-config
+  configSecretKey: config.yaml
+  masterkeySecretName: zitadel-masterkey
 replicaCount: 3
 login:
   enabled: true

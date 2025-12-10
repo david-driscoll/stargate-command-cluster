@@ -1,20 +1,27 @@
-apiVersion: app.k8s.io/v1beta1
-kind: Application
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
 metadata:
-  name: zitadel
-  namespace: idp
+  name: ${APP}
 spec:
-  componentKinds:
-    - group: helm.toolkit.fluxcd.io
-      kind: HelmRelease
-  descriptor:
-    type: identity
-    version: v1
-    description: Zitadel identity provider
-    keywords:
-      - identity
-      - oidc
-      - sso
-    links:
-      - description: Documentation
-        url: https://zitadel.com/docs
+  name: Zitadel
+  category: Identity
+  gatus:
+    - group: "Applications"
+      url: https://auth.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"
+
+    - group: "Applications"
+      url: https://login.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"
+
+    - group: "Applications"
+      url: https://zitadel.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

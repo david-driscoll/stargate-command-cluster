@@ -21,7 +21,7 @@ WebAuthNName: Zitadel # ZITADEL_WEBAUTHNNAME
 Database:
   # Postgres is the default database of ZITADEL
   postgres:
-    Host: {{ .postgres_hostname }} # ZITADEL_DATABASE_POSTGRES_HOST
+    Host: {{ .postgres_host }} # ZITADEL_DATABASE_POSTGRES_HOST
     Port: {{ .postgres_port }} # ZITADEL_DATABASE_POSTGRES_PORT
     Database: {{ .postgres_database }} # ZITADEL_DATABASE_POSTGRES_DATABASE
     User:
@@ -29,18 +29,10 @@ Database:
       Password: "{{ .postgres_password }}" # ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
       SSL:
         Mode: disable
-    # Admin:
-    #   # By default, ExistingDatabase is not specified in the connection string
-    #   # If the connection resolves to a database that is not existing in your system, configure an existing one here
-    #   # It is used in zitadel init to connect to postgres and create a dedicated database for ZITADEL.
-    #   ExistingDatabase: # ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
-    #   Username: postgres # ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-    #   Password: postgres # ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
-    #   SSL:
-    #     Mode: disable # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
-    #     RootCert: "" # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_ROOTCERT
-    #     Cert: "" # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_CERT
-    #     Key: "" # ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_KEY
+    Admin:
+      ExistingDatabase: {{ .postgres_database }} # ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
+      Username: {{ .postgres_username }} # ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
+      Password: "{{ .postgres_password }}" # ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
 
 # Caches are EXPERIMENTAL. The following config may have breaking changes in the future.
 # If no config is provided, caching is disabled by default.

@@ -21,7 +21,7 @@ WebAuthNName: Zitadel # ZITADEL_WEBAUTHNNAME
 Database:
   # Postgres is the default database of ZITADEL
   postgres:
-    Host: {{ .postgres_host }} # ZITADEL_DATABASE_POSTGRES_HOST
+    Host: {{ .postgres_hostname }} # ZITADEL_DATABASE_POSTGRES_HOST
     Port: {{ .postgres_port }} # ZITADEL_DATABASE_POSTGRES_PORT
     Database: {{ .postgres_database }} # ZITADEL_DATABASE_POSTGRES_DATABASE
     User:

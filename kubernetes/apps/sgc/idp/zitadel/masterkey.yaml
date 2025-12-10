@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/onepassword.com/onepassworditem_v1.json
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+    name: zitadel-masterkey
+    annotations:
+      reloader.stakater.com/auto: "true"
+spec:
+    itemPath: "vaults/Eris/items/5ds7lijggrdnoxfu326ld6ofu4"

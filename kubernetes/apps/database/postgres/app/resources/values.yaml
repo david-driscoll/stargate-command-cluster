@@ -73,6 +73,12 @@ cluster:
     superuser: false
     passwordSecret:
       name: authentik-postgres
+  - name: zitadel
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: zitadel-postgres
   monitoring:
     enabled: true
     podMonitor:

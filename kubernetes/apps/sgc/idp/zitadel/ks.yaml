@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app authentik
+  name: &app zitadel
   namespace: &namespace sgc
 spec:
   targetNamespace: *namespace
@@ -10,11 +10,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: volsync
-      namespace: volsync-system
     - name: postgres
       namespace: database
-  path: ./kubernetes/apps/sgc/idp/authentik
+  path: ./kubernetes/apps/sgc/idp/zitadel
   prune: true
   wait: true
   force: false
@@ -26,11 +24,8 @@ spec:
     name: flux-system
     namespace: flux-system
   components:
-    - ../../../../components/volsync
     - ../../../../components/postgres
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      TAILSCALE_SERVICE: authentik-server

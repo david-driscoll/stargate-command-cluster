@@ -1,0 +1,46 @@
+# Default values for zitadel.
+zitadel:
+  configmapConfig: {}
+  configSecretName: zitadel-config
+  configSecretKey: config.yaml
+  masterkeySecretName: zitadel-masterkey
+replicaCount: 3
+login:
+  enabled: true
+  replicaCount: 3
+  image:
+    repository: ghcr.io/zitadel/zitadel-login
+    tag: v4.7.1
+    pullPolicy: IfNotPresent
+
+image:
+  repository: ghcr.io/zitadel/zitadel
+  tag: v4.7.1
+  pullPolicy: IfNotPresent
+
+# # Additional environment variables
+# env:
+#   []
+#   # - name: ZITADEL_DATABASE_POSTGRES_HOST
+#   #   valueFrom:
+#   #     secretKeyRef:
+#   #       name: postgres-pguser-postgres
+#   #       key: host
+
+# # Additional environment variables from the given secret name
+# # Zitadel can be configured using environment variables from a secret.
+# # Reference: https://zitadel.com/docs/self-hosting/manage/configure#configure-by-environment-variables
+# envVarsSecret: ""
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1
+    memory: 1Gi
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true

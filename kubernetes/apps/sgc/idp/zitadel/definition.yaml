@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Zitadel
+  category: Identity
+  gatus:
+    - group: "Applications"
+      url: https://auth.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"
+
+    - group: "Applications"
+      url: https://login.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"
+
+    - group: "Applications"
+      url: https://zitadel.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

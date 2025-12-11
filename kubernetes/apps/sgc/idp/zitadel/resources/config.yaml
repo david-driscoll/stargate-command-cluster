@@ -153,6 +153,7 @@ LogStore:
 # However, you might want to have your first instance created by the setup job to have a different configuration.
 # To overwrite the default values for the initial setup, configure the FirstInstance yaml section and pass it using the --steps flag.
 DefaultInstance:
+  Skip: false
   InstanceName: Zitadel # ZITADEL_DEFAULTINSTANCE_INSTANCENAME
   DefaultLanguage: en # ZITADEL_DEFAULTINSTANCE_DEFAULTLANGUAGE
   Org:
@@ -177,6 +178,7 @@ DefaultInstance:
         Name: Replicators
       MachineKey:
         ExpirationDate: 2100-01-01T00:00:00Z
+        Type: 1
       Pat:
         ExpirationDate: 2100-01-01T00:00:00Z
     LoginClient:

@@ -31,7 +31,7 @@ login:
   replicaCount: 3
   image:
     repository: ghcr.io/zitadel/zitadel-login
-    tag: v4.7.1
+    tag: v4.7.2@sha256:c43f064243a6811273acf581446a233b2df07a122a3397b88ba180cc9686384f
     pullPolicy: IfNotPresent
 image:
   repository: ghcr.io/zitadel/zitadel

@@ -9,6 +9,7 @@ resources:
   - ./helmrelease.yaml
   - ./definition.yaml
   - ./httproute.yaml
+  - ./push-secrets.yaml
 configMapGenerator:
   - name: zitadel-values
     files:

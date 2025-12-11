@@ -141,5 +141,5 @@ kube-state-metrics:
           targetLabel: kubernetes_node
 kubelet:
   serviceMonitor:
-    resourceInterval: 30s
-    cAdvisorInterval: 30s
+    resourceInterval: 15s
+    cAdvisorInterval: 15s

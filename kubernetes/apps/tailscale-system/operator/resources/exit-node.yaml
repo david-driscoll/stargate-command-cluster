@@ -2,7 +2,7 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: "${CLUSTER_CNAME}"
+  name: exit-node
 spec:
   exitNode: true
   hostname: "${CLUSTER_CNAME}"

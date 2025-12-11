@@ -9,7 +9,7 @@ spec:
   category: ${CLUSTER_TITLE}
   description: CloudBeaver - web based database manager
   icon: https://dbeaver.com/wp-content/uploads/2022/06/favicon-32x32.png
-  url: &url "https://${APP}.${CLUSTER_DOMAIN}"
+  url: &url "https://sql.${CLUSTER_DOMAIN}"
   access_policy:
     groups:
       - admins

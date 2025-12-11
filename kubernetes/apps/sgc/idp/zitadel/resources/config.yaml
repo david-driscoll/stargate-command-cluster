@@ -247,7 +247,7 @@ DefaultInstance:
     # 2160h are 90 days
     RefreshTokenExpiration: 2160h # ZITADEL_DEFAULTINSTANCE_OIDCSETTINGS_REFRESHTOKENEXPIRATION
 
-AuditLogRetention: 30d # ZITADEL_AUDITLOGRETENTION
+AuditLogRetention: 720h # ZITADEL_AUDITLOGRETENTION
 
 # The ServicePing are periodic reports of analytics data and the usage of ZITADEL.
 # It is sent to a central endpoint to help us improve ZITADEL.

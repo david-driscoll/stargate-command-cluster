@@ -7,4 +7,5 @@ spec:
   exitNode: true
   hostname: "${CLUSTER_CNAME}"
   tags:
+    - "tag:${CLUSTER_CNAME}"
     - "tag:exit-node"

@@ -30,9 +30,9 @@ Database:
       SSL:
         Mode: disable
     Admin:
-      ExistingDatabase: {{ .postgres_database }} # ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
-      Username: {{ .postgres_username }} # ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-      Password: "{{ .postgres_password }}" # ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
+      ExistingDatabase: {{ .superuser_database }} # ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
+      Username: {{ .superuser_username }} # ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
+      Password: "{{ .superuser_password }}" # ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
 
 # Caches are EXPERIMENTAL. The following config may have breaking changes in the future.
 # If no config is provided, caching is disabled by default.

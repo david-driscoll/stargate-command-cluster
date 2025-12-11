@@ -56,6 +56,9 @@ spec:
     - port: 8006
       targetPort: 8006
       name: pve
+    - port: 3493
+      targetPort: 3493
+      name: nut
     - port: 22
       targetPort: 22
       name: ssh

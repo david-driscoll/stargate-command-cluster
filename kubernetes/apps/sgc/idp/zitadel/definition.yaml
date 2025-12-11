@@ -9,18 +9,6 @@ spec:
   category: Identity
   gatus:
     - group: "Applications"
-      url: https://auth.${ROOT_DOMAIN}
-      method: GET
-      conditions:
-        - "[STATUS] == 200"
-
-    - group: "Applications"
-      url: https://login.${ROOT_DOMAIN}
-      method: GET
-      conditions:
-        - "[STATUS] == 200"
-
-    - group: "Applications"
       url: https://zitadel.${ROOT_DOMAIN}
       method: GET
       conditions:

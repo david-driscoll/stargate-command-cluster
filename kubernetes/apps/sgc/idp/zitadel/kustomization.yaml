@@ -8,7 +8,6 @@ resources:
   - ./masterkey.yaml
   - ./helmrelease.yaml
   - ./definition.yaml
-  - ./httproute.yaml
   - ./push-secrets.yaml
 configMapGenerator:
   - name: zitadel-values

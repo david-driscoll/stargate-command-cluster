@@ -11,7 +11,7 @@ Tracing:
   Type: otel # ZITADEL_TRACING_TYPE
   Fraction: 1.0 # ZITADEL_TRACING_FRACTION
   # The endpoint of the otel collector endpoint
-  Endpoint: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/otlp/v1/metrics" #ZITADEL_TRACING_ENDPOINT
+  Endpoint: "prometheus-operated.observability.svc.cluster.local:9090" #ZITADEL_TRACING_ENDPOINT
   ServiceName: "Zitadel" #ZITADEL_TRACING_SERVICENAME
 
 ExternalDomain: ${APP}.${ROOT_DOMAIN} # ZITADEL_EXTERNALDOMAIN

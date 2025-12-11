@@ -7,7 +7,8 @@ metadata:
     reloader.stakater.com/auto: "true"
 spec:
   type: kube-apiserver
-  replicas: 2
-  tags: ["tag:${CLUSTER_CNAME}"]
   kubeAPIServer:
     mode: auth
+  replicas: 1
+  tags:
+    - "tag:k8s"

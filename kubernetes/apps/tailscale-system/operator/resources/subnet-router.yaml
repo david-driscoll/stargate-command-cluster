@@ -2,14 +2,12 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: "${CLUSTER_CNAME}"
+  name: &name "${CLUSTER_CNAME}-router"
 spec:
-  exitNode: true
-  hostname: "${CLUSTER_CNAME}"
+  hostname: *name
   subnetRouter:
     advertiseRoutes:
       - "${CLUSTER_NETWORK}"
       - "${SERVICE_NETWORK}"
   tags:
     - "tag:${CLUSTER_CNAME}"
-    - "tag:exit-node"

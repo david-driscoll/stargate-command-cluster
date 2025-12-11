@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./dns-config.yaml
   - ./egress.yaml
-  - ./exit-node.yaml
+  # - ./exit-node.yaml
   - ./externalsecret.yaml
   - ./ingress.yaml
   - ./kubeproxy.yaml

@@ -28,7 +28,7 @@ zitadel:
 replicaCount: 2
 image:
   repository: ghcr.io/zitadel/zitadel
-  tag: v4.7.0
+  tag: v4.7.0@sha256:06d77bfb26d50772de46cba8efb9b157d3f26ab9fa66d62dacf383322a6b2ef1
   pullPolicy: IfNotPresent
 ingress:
   enabled: true
@@ -42,7 +42,7 @@ login:
   replicaCount: 2
   image:
     repository: ghcr.io/zitadel/zitadel-login
-    tag: v4.7.0
+    tag: v4.7.0@sha256:df9fd202a88e402169f97bc3ec201c053f3d051ab94cd27ab7476378b95b1b8e
     pullPolicy: IfNotPresent
   ingress:
     enabled: true

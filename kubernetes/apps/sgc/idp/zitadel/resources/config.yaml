@@ -187,28 +187,28 @@ DefaultInstance:
         Name: Zitadel Login Client
       Pat:
         ExpirationDate: 2100-01-01T00:00:00Z
-        # Once a feature is set on the instance (true or false), system level feature settings
-    # will be ignored until instance level features are reset.
-    Features:
-      LoginDefaultOrg: true # ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINDEFAULTORG
-      UserSchema: # ZITADEL_DEFAULTINSTANCE_FEATURES_USERSCHEMA
-      TokenExchange: true # ZITADEL_DEFAULTINSTANCE_FEATURES_TOKENEXCHANGE
-      ImprovedPerformance:  # ZITADEL_DEFAULTINSTANCE_FEATURES_IMPROVEDPERFORMANCE
-      # https://github.com/zitadel/zitadel/blob/main/internal/feature/feature.go#L64-L68
-      #   - 1 # OrgByID
-      #   - 2 # ProjectGrant
-      #   - 3 # Project
-      #   - 4 # UserGrant
-      #   - 5 # OrgDomainVerified
-      DebugOIDCParentError: # ZITADEL_DEFAULTINSTANCE_FEATURES_DEBUGOIDCPARENTERROR
-      OIDCSingleV1SessionTermination: true # ZITADEL_DEFAULTINSTANCE_FEATURES_OIDCSINGLEV1SESSIONTERMINATION
-      EnableBackChannelLogout: true # ZITADEL_DEFAULTINSTANCE_FEATURES_ENABLEBACKCHANNELLOGOUT
-      LoginV2:
-        Required: true # ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED
-        BaseURI: # ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_BASEURI
-      PermissionCheckV2: true # ZITADEL_DEFAULTINSTANCE_FEATURES_PERMISSIONCHECKV2
-      ConsoleUseV2UserApi: true # ZITADEL_DEFAULTINSTANCE_FEATURES_CONSOLEUSEV2USERAPI
-      EnableRelationalTables: true # ZITADEL_DEFAULTINSTANCE_FEATURES_ENABLERELATIONALTABLES
+  # Once a feature is set on the instance (true or false), system level feature settings
+  # will be ignored until instance level features are reset.
+  Features:
+    LoginDefaultOrg: true # ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINDEFAULTORG
+    UserSchema: # ZITADEL_DEFAULTINSTANCE_FEATURES_USERSCHEMA
+    TokenExchange: true # ZITADEL_DEFAULTINSTANCE_FEATURES_TOKENEXCHANGE
+    ImprovedPerformance:  # ZITADEL_DEFAULTINSTANCE_FEATURES_IMPROVEDPERFORMANCE
+    # https://github.com/zitadel/zitadel/blob/main/internal/feature/feature.go#L64-L68
+    #   - 1 # OrgByID
+    #   - 2 # ProjectGrant
+    #   - 3 # Project
+    #   - 4 # UserGrant
+    #   - 5 # OrgDomainVerified
+    DebugOIDCParentError: # ZITADEL_DEFAULTINSTANCE_FEATURES_DEBUGOIDCPARENTERROR
+    OIDCSingleV1SessionTermination: true # ZITADEL_DEFAULTINSTANCE_FEATURES_OIDCSINGLEV1SESSIONTERMINATION
+    EnableBackChannelLogout: true # ZITADEL_DEFAULTINSTANCE_FEATURES_ENABLEBACKCHANNELLOGOUT
+    LoginV2:
+      Required: true # ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED
+      BaseURI: # ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_BASEURI
+    PermissionCheckV2: true # ZITADEL_DEFAULTINSTANCE_FEATURES_PERMISSIONCHECKV2
+    ConsoleUseV2UserApi: true # ZITADEL_DEFAULTINSTANCE_FEATURES_CONSOLEUSEV2USERAPI
+    EnableRelationalTables: true # ZITADEL_DEFAULTINSTANCE_FEATURES_ENABLERELATIONALTABLES
 
   LoginPolicy:
     AllowUsernamePassword: true # ZITADEL_DEFAULTINSTANCE_LOGINPOLICY_ALLOWUSERNAMEPASSWORD

@@ -24,4 +24,5 @@ resources:
   - ./snapshot-controller/ks.yaml
   - ./external-secrets
   - ./registry/ks.yaml
+  - ./etcd-backup/ks.yaml
   # - ./multus/ks.yaml

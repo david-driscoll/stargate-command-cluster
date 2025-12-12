@@ -11,6 +11,6 @@ resources:
   - ./certificates/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
   - ./external-dns
-  # - ./k8s-gateway/ks.yaml
+  - ./k8s-gateway/ks.yaml
   - ./secrets/ks.yaml
   - ./traefik

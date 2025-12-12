@@ -8,3 +8,4 @@ resources:
   - ./definition.yaml
   - ./cors-middleware.yaml
   - ./priority-class.yaml
+  - ./k8s-services.yaml

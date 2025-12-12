@@ -1,14 +1,3 @@
-apiVersion: tailscale.com/v1alpha1
-kind: ProxyClass
-metadata:
-  name: accept-routes
-spec:
-  metrics:
-    enable: true
-    serviceMonitor:
-      enable: true
-  tailscale:
-    acceptRoutes: true
 ---
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
@@ -20,20 +9,3 @@ spec:
   replicas: 2
   tags: ["tag:observability"]
   proxyClass: accept-routes
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    tailscale.com/tailnet-ip: "${SPIKE_IP}"
-    tailscale.com/proxy-group: observability
-  name: spike
-spec:
-  externalName: unused
-  type: ExternalName
-  ports:
-    - port: 9000
-      targetPort: 9000
-      name: http
-

@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-ip: "10.10.206.201"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: k8s-equestria
 spec:
   externalName: k8s-equestria
@@ -21,7 +21,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-ip: "10.10.206.201"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: k8s-sgc
 spec:
   externalName: k8s-sgc

@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: proxmox-luna
 spec:
   externalName: luna
@@ -27,7 +27,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: proxmox-celestia
 spec:
   externalName: celestia

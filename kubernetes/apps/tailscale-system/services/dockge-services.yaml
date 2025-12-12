@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: dockge-luna
 spec:
   externalName: dockge-luna
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: dockge-celestia
 spec:
   externalName: dockge-celestia
@@ -43,7 +43,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "dockge-as.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: dockge-as
 spec:
   externalName: dockge-as

@@ -22,3 +22,6 @@ spec:
     - dnsName: "${INTERNAL_DOMAIN}"
       recordType: A
       targets: ["${INTERNAL_IP}"]
+    - dnsName: "apiserver.${CLUSTER_DOMAIN}"
+      recordType: A
+      targets: ["${CLUSTER_API_IP}"]

@@ -7,5 +7,3 @@ resources:
   - postgres-superuser.sops.yaml
   - authentik.yaml
   - authentik.sops.yaml
-  - zitadel.yaml
-  - zitadel.sops.yaml

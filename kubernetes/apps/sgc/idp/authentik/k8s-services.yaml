@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "equestria-operator.${TAILSCALE_DOMAIN}"
+    tailscale.com/proxy-group: ssh
+  name: k8s-equestria
+spec:
+  externalName: k8s-equestria
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: k8s
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "sgc-operator.${TAILSCALE_DOMAIN}"
+    tailscale.com/proxy-group: ssh
+  name: k8s-sgc
+spec:
+  externalName: k8s-sgc
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: k8s

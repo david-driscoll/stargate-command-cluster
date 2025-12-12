@@ -8,7 +8,6 @@ metadata:
 spec:
   type: kube-apiserver
   kubeAPIServer:
-    mode: auth
-  replicas: 1
+    mode: noauth
   tags:
     - "tag:k8s"

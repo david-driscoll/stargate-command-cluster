@@ -13,10 +13,10 @@ spec:
   access_policy:
     groups:
       - admins
-  # authentik:
-  #   proxy:
-  #     mode: "forward_single"
-  #     externalHost: *url
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
   gatus:
     - url: *url
       method: GET

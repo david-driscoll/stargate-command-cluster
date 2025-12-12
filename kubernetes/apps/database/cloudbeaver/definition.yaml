@@ -17,7 +17,6 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
-  #     skipPathRegex: "^/api([/?].*)?$"
   gatus:
     - url: *url
       method: GET

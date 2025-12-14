@@ -8,7 +8,7 @@ metadata:
 spec:
   groups:
     - name: blackbox_probes
-      interval: 30s
+      interval: 1m
       rules:
         # Recording rules for probe success rates
         - record: blackbox:probe:success:rate5m

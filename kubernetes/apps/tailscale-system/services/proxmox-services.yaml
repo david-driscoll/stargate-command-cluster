@@ -47,7 +47,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: ssh
+    tailscale.com/proxy-group: management
   name: proxmox-alpha-site
 spec:
   externalName: alpha-site

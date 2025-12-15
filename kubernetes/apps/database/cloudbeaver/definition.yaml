@@ -8,7 +8,7 @@ spec:
   name: CloudBeaver
   category: ${CLUSTER_TITLE}
   description: CloudBeaver - web based database manager
-  icon: https://dbeaver.com/wp-content/uploads/2022/06/favicon-32x32.png
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cloudbeaver.svg
   url: &url "https://sql.${CLUSTER_DOMAIN}"
   access_policy:
     groups:
@@ -17,6 +17,7 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
+  #     skipPathRegex: "^/api([/?].*)?$"
   gatus:
     - url: *url
       method: GET

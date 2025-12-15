@@ -6,7 +6,7 @@ metadata:
   name: ${APP}
 spec:
   name: Plex (Equestria)
-  category: Media
+  category: &category Applications
   url: https://${APP}.${ROOT_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/plex.svg
   access_policy:
@@ -15,7 +15,7 @@ spec:
       - family
   gatus:
     - url: https://${APP}.${CLUSTER_DOMAIN}/connections?X-Plex-Token=op://Eris/Media Management Secrets/plex_alt_token
-      group: "Applications"
+      group: *category
       method: GET
       conditions:
       - "[STATUS] == 200"

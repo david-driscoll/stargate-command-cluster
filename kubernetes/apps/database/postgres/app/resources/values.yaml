@@ -53,7 +53,6 @@ cluster:
       cpu: ${POSTGRES_REQUESTS_CPU}
       memory: ${POSTGRES_REQUESTS_MEMORY}
     limits:
-      cpu: ${POSTGRES_LIMITS_CPU}
       memory: ${POSTGRES_LIMITS_MEMORY}
   logLevel: "info"
   affinity:

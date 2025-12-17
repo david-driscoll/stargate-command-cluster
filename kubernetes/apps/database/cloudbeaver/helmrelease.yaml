@@ -66,7 +66,7 @@ spec:
                 cpu: 100m
                 memory: 200Mi
               limits:
-                cpu: 500m
+                # cpu: 500m
                 memory: 1Gi
     serviceAccount:
       *app : {}

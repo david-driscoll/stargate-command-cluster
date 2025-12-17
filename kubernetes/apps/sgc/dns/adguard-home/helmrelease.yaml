@@ -62,7 +62,7 @@ spec:
               requests:
                 cpu: 50m
               limits:
-                cpu: 500m
+                # cpu: 500m
                 memory: 500Mi
         pod:
           priorityClassName: system-node-critical

@@ -73,7 +73,7 @@ spec:
             cpu: 50m
             memory: 200Mi
           limits:
-            cpu: 200m
+            # cpu: 200m
             memory: 400Mi
     api:
       scaling:
@@ -84,7 +84,7 @@ spec:
             cpu: 50m
             memory: 200Mi
           limits:
-            cpu: 200m
+            # cpu: 200m
             memory: 400Mi
     auth:
       scaling:
@@ -95,7 +95,7 @@ spec:
             cpu: 10m
             memory: 200Mi
           limits:
-            cpu: 100m
+            # cpu: 100m
             memory: 400Mi
     affinity:
       podAntiAffinity:

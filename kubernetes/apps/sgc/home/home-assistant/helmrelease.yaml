@@ -84,7 +84,7 @@ spec:
                 memory: 1Gi
                 cpu: 200m
               limits:
-                cpu: 2
+                # cpu: 2
                 memory: 4Gi
             probes:
               startup:

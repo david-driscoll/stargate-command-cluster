@@ -68,11 +68,11 @@ spec:
                 && dotnet run /scripts/App.cs
             resources:
               requests:
-                memory: 256Mi
                 cpu: 100m
+                memory: 256Mi
               limits:
+                # cpu: 500m
                 memory: 512Mi
-                cpu: 500m
 
     # defaultPodOptions:
     #   securityContext:

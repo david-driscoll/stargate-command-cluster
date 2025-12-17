@@ -54,6 +54,10 @@ ports:
     transport:
       respondingTimeouts:
         readTimeout: "0s"
+    http:
+      encodedCharacters:
+        allowEncodedSlash: true
+        allowEncodedQuestionMark: true
   postgres:
     expose:
       default: true
@@ -89,7 +93,7 @@ resources:
     cpu: 100m
     memory: 100Mi
   limits:
-    cpu: 400m
+    # cpu: 400m
     memory: 200Mi
 providers:
   kubernetesCRD:

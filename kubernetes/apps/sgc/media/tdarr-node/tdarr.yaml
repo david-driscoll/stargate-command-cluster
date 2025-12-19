@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-ip: "tdarr-server.${TAILSCALE_DOMAIN}"
+    tailscale.com/proxy-group: observability
+  name: tdarr-server
+spec:
+  externalName: tdarr-server
+  type: ExternalName
+  ports:
+    - port: 8266
+      targetPort: 8266
+      name: tdarr-server

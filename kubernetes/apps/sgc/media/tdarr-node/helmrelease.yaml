@@ -37,6 +37,7 @@ spec:
                 gpu.intel.com/i915: 2
               limits:
                 memory: 2Gi
+                gpu.intel.com/i915: 2
         pod:
           affinity:
             nodeAffinity:

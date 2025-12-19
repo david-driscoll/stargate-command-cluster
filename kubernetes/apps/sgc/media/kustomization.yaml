@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
+  - ./tdarr-node/ks.yaml

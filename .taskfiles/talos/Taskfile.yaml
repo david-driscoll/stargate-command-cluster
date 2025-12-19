@@ -4,6 +4,18 @@ version: '3'
 
 tasks:
 
+  backup-etcd:
+    desc: Backup etcd before major upgrade
+    dir: '{{.TALOS_DIR}}'
+    cmd: |
+      echo "Backing up etcd from control plane node..."
+      talosctl -n 192.168.1.77 etcd snapshot etcd-pre-upgrade-$(date +%Y%m%d-%H%M%S).db
+      echo "Backup completed successfully"
+    preconditions:
+      - talosctl config info
+      - test -f {{.TALOSCONFIG}}
+      - which talosctl
+
   generate-config:
     desc: Generate Talos configuration
     dir: '{{.TALOS_DIR}}'

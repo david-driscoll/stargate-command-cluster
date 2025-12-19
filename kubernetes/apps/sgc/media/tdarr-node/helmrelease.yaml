@@ -23,7 +23,7 @@ spec:
               TZ: ${TIMEZONE}
               PUID: 1000
               PGID: 1000
-              serverIP: tdarr.server.${ROOT_DOMAIN}
+              serverIP: tdarr-server.${ROOT_DOMAIN}
               serverPort: 443
               inContainer: true
               nodeName:

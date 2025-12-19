@@ -13,7 +13,8 @@ spec:
   values:
     controllers:
       *app :
-        type: daemonset
+        type: deployment
+        replicas: 3
         containers:
           app:
             image:
@@ -49,9 +50,11 @@ spec:
                     - "true"
     defaultPodOptions:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        # Let the image entrypoint (s6) run as root and drop to PUID/PGID itself; forcing
+        # runAsUser prevented it from setting supplemental groups and triggered
+        # "s6-applyuidgid: fatal: unable to set supplementary group list: Operation not permitted".
         supplementalGroups: [568]
+        # seccompProfile: { type: RuntimeDefault }
     persistence:
       media:
         existingClaim: truenas-media

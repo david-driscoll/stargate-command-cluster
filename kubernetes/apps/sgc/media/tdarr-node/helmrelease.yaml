@@ -24,7 +24,7 @@ spec:
               TZ: ${TIMEZONE}
               PUID: 1000
               PGID: 1000
-              serverURL: http://tdarr-server.${TAILSCALE_DOMAIN}:8266
+              serverURL: http://tdarr-server.${CLUSTER_CNAME}.svc.cluster.local:8266
               inContainer: true
               nodeName:
                 valueFrom:

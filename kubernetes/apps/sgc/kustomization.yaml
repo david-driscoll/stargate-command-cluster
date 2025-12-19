@@ -13,4 +13,4 @@ resources:
   - ./home
   - ./idp
   # - ./scrypted
-  # - ./media
+  - ./media

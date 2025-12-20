@@ -46,13 +46,13 @@ hubble:
       ingressClassName: internal
       annotations:
         external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        external-dns.alpha.kubernetes.io/hostname: hubble.sgc.driscoll.tech
+        external-dns.alpha.kubernetes.io/hostname: hubble.${CLUSTER_DOMAIN}
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
-        - hubble.sgc.driscoll.tech
+        - hubble.${CLUSTER_DOMAIN}
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: "10.209.0.0/16"
+ipv4NativeRoutingCIDR: "${CLUSTER_NETWORK}"
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true

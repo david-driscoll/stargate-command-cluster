@@ -51,7 +51,7 @@ spec:
           restic:
             image:
               repository: ghcr.io/ahinko/restic
-              tag: 0.18.1
+              tag: 0.18.1@sha256:fa719796676a241c783aa789c0053c92dc92e5d5818722cefb03c5ce163fb904
             workingDir: /data
             args:
               - backup
@@ -87,7 +87,7 @@ spec:
           restic:
             image:
               repository: ghcr.io/ahinko/restic
-              tag: 0.18.1
+              tag: 0.18.1@sha256:fa719796676a241c783aa789c0053c92dc92e5d5818722cefb03c5ce163fb904
             args:
               - forget
               - --keep-last=7 # change me - set retention policy

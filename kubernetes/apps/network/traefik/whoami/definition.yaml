@@ -15,7 +15,6 @@ spec:
     proxy:
       mode: "forward_single"
       externalHost: *url
-      
   gatus:
     - url: *url
       method: GET

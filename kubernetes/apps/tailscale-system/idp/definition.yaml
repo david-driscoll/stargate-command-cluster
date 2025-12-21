@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: tsidp
+spec:
+  name: Tailscale IDP
+  category: ${CLUSTER_TITLE}
+  description: Tailscale Identity Provider
+  url: &url https://idp.${TAILSCALE_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale.svg
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+  gatus:
+    - group: "Applications"
+      url: https://idp.${TAILSCALE_DOMAIN}/.well-known/openid-configuration
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

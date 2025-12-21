@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
+  name: tsidp
+spec:
+  externalName: idp
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   annotations:
+#     tailscale.com/tailnet-fqdn: "go.${TAILSCALE_DOMAIN}"
+#     tailscale.com/proxy-group: egress
+#   name: tsgo
+# spec:
+#   type: ExternalName
+#   externalName: go
+#   ports:
+#     - port: 443
+#       targetPort: 443
+#       name: https

@@ -1,0 +1,169 @@
+---
+# Blackbox exporter probes for dockge and proxmox services
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-luna-https
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://dockge-luna.${TAILSCALE_DOMAIN}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-luna-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - dockge-luna.${TAILSCALE_DOMAIN}:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-celestia-https
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://dockge-celestia.${TAILSCALE_DOMAIN}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-celestia-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - dockge-celestia.${TAILSCALE_DOMAIN}:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-as-https
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://dockge-as.${TAILSCALE_DOMAIN}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-as-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - dockge-as.${TAILSCALE_DOMAIN}:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-luna
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://luna.${TAILSCALE_DOMAIN}:8006
+        - https://luna.${TAILSCALE_DOMAIN}:8007
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-luna-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - luna.${TAILSCALE_DOMAIN}:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-celestia
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://celestia.${TAILSCALE_DOMAIN}:8006
+        - https://celestia.${TAILSCALE_DOMAIN}:8007
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-alpha-site
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://alpha-site.${TAILSCALE_DOMAIN}:8006
+        - https://alpha-site.${TAILSCALE_DOMAIN}:8007
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-alpha-site-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - alpha-site.${TAILSCALE_DOMAIN}:22

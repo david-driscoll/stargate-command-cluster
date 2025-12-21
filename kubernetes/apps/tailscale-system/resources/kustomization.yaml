@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./dns-config.yaml
+  - ./egress.yaml
+  - ./exit-node.yaml
+  - ./externalsecret.yaml
+  - ./ingress.yaml
+  - ./kubeproxy.yaml
+  - ./proxy.yaml
+  - ./spike.yaml
+  - ./subnet-router.yaml
+  # - ./recorder.yaml

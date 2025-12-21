@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tailscale-system
+components:
+  - ../../components/common
+  - ../../components/repos/app-template
+resources:
+  - ./secret-store.yaml
+  - ./authkey/ks.yaml
+  - ./operator/ks.yaml
+  - ./services/ks.yaml
+  - ./resources/ks.yaml
+  - ./idp/ks.yaml

@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: blackbox-probes
+  namespace: tailscale-system
+spec:
+  groups:
+    - name: blackbox_probes
+      interval: 30s
+      rules:
+        # Recording rules for probe success rates
+        - record: blackbox:probe:success:rate5m
+          expr: |
+            sum by (instance, job, probe) (rate(probe_success[5m]))
+
+        - record: blackbox:probe:failure:rate5m
+          expr: |
+            sum by (instance, job, probe) (rate(probe_failed[5m]))
+
+        # Recording rules for probe duration percentiles
+        - record: blackbox:probe:duration:p99
+          expr: |
+            histogram_quantile(0.99, sum by (instance, job, probe, le) (rate(probe_duration_seconds_bucket[5m])))
+
+        # Alert for probe failures
+        - alert: BlackboxProbeFailing
+          annotations:
+            description: "Blackbox probe '{{ $labels.probe }}' for {{ $labels.instance }} has failed {{ $value | humanizePercentage }} of the time."
+            summary: "Blackbox probe is failing"
+          expr: |
+            (1 - avg by (instance, probe) (rate(probe_success[5m]))) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+
+        # Alert for probe failures - critical
+        - alert: BlackboxProbeFailingCritical
+          annotations:
+            description: "Blackbox probe '{{ $labels.probe }}' for {{ $labels.instance }} has failed {{ $value | humanizePercentage }} of the time."
+            summary: "Blackbox probe is failing critically"
+          expr: |
+            (1 - avg by (instance, probe) (rate(probe_success[5m]))) > 0.5
+          for: 2m
+          labels:
+            severity: critical
+
+        # Alert for high probe latency
+        - alert: BlackboxProbeHighLatency
+          annotations:
+            description: "Blackbox probe '{{ $labels.probe }}' for {{ $labels.instance }} has p99 latency of {{ $value | humanizeDuration }}."
+            summary: "Blackbox probe latency is high"
+          expr: |
+            histogram_quantile(0.99, sum by (instance, probe, le) (rate(probe_duration_seconds_bucket[5m]))) > 10
+          for: 10m
+          labels:
+            severity: warning
+
+        # Alert for probe timing out
+        - alert: BlackboxProbeSslCertificateExpiringSoon
+          annotations:
+            description: "Blackbox probe '{{ $labels.probe }}' for {{ $labels.instance }} SSL certificate expires in {{ $value | humanizeDuration }}."
+            summary: "SSL certificate expiring soon"
+          expr: |
+            probe_ssl_earliest_cert_expiry - time() < 86400 * 7
+          for: 1h
+          labels:
+            severity: warning
+
+        # Alert for probe timeout
+        - alert: BlackboxProbeTimeout
+          annotations:
+            description: "Blackbox probe '{{ $labels.probe }}' for {{ $labels.instance }} timed out."
+            summary: "Blackbox probe timeout"
+          expr: |
+            sum by (instance, probe) (rate(probe_failed_due_to_timeout[5m])) > 0
+          for: 2m
+          labels:
+            severity: warning
+
+        # Dockge service specific alerts
+        - alert: DockgeServiceUnhealthy
+          annotations:
+            description: "Dockge service {{ $labels.instance }} is unhealthy."
+            summary: "Dockge service is unhealthy"
+          expr: |
+            (1 - avg by (instance) (rate(probe_success{probe=~"dockge-(luna|celestia|as)-https"}[10m]))) > 0.1
+          for: 10m
+          labels:
+            severity: warning
+
+        # Proxmox service specific alerts
+        - alert: ProxmoxServiceUnhealthy
+          annotations:
+            description: "Proxmox service on {{ $labels.instance }} is unhealthy."
+            summary: "Proxmox service is unhealthy"
+          expr: |
+            (1 - avg by (instance) (rate(probe_success{probe=~"proxmox-(luna|celestia|alpha-site)"}[10m]))) > 0.1
+          for: 10m
+          labels:
+            severity: warning
+
+        - alert: SSHConnectivityLost
+          annotations:
+            description: "SSH connectivity to {{ $labels.instance }} has been lost."
+            summary: "SSH connectivity lost"
+          expr: |
+            (1 - avg by (instance) (rate(probe_success{probe=~"(dockge|proxmox).*(luna|celestia|alpha-site)-ssh"}[5m]))) > 0.1
+          for: 10m
+          labels:
+            severity: warning

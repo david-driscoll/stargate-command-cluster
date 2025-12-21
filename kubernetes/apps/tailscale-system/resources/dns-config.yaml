@@ -1,0 +1,14 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: DNSConfig
+metadata:
+  name: tailscale-nameserver
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  nameserver:
+    service:
+      clusterIP: ${TAILSCALE_NAMESERVER_IP}
+    image:
+      repo: tailscale/k8s-nameserver
+      tag: unstable

@@ -18,7 +18,7 @@ spec:
   retryInterval: 2m
   timeout: 10m
   dependsOn:
-    - name: tailscale-operator
+    - name: tailscale-resources
       namespace: *namespace
   sourceRef:
     kind: GitRepository

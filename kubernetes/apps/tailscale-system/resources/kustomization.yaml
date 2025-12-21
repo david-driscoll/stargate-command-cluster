@@ -9,7 +9,7 @@ resources:
   - ./externalsecret.yaml
   - ./ingress.yaml
   - ./kubeproxy.yaml
-  # - ./proxy.yaml
+  - ./proxy.yaml
   - ./spike.yaml
   - ./subnet-router.yaml
   # - ./recorder.yaml

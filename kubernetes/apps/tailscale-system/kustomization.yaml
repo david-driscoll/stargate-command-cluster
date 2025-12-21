@@ -10,6 +10,6 @@ resources:
   - ./secret-store.yaml
   - ./authkey/ks.yaml
   - ./operator/ks.yaml
-  # - ./services/ks.yaml
-  # - ./resources/ks.yaml
+  - ./services/ks.yaml
+  - ./resources/ks.yaml
   - ./idp/ks.yaml

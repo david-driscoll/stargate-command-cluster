@@ -22,7 +22,7 @@ spec:
     middlewares:
       - name: error-pages
         namespace: network
-      - name: authentik-outpost
-        namespace: ${CLUSTER_CNAME}
+      # - name: authentik-outpost
+      #   namespace: ${CLUSTER_CNAME}
       - name: internal-network
         namespace: network

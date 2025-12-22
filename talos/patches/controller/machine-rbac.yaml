@@ -5,4 +5,4 @@ machine:
     kubernetesTalosAPIAccess:
       enabled: true
       allowedRoles: ["os:admin"]
-      allowedKubernetesNamespaces: ["actions-runner-system", "system-upgrade"]
+      allowedKubernetesNamespaces: ["actions-runner-system", "system-upgrade", "kube-system"]

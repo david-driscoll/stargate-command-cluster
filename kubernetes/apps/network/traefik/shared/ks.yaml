@@ -10,9 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: certificates
-      namespace: *namespace
+  dependsOn: []
   path: ./kubernetes/apps/network/traefik/shared
   prune: true
   wait: false

@@ -100,11 +100,13 @@ function apply_crds() {
         https://raw.githubusercontent.com/external-secrets-inc/reloader/refs/heads/main/config/crd/bases/reloader.external-secrets.io_configs.yaml
         "${ROOT_DIR}/kubernetes/apps/observability/crds/application-crd.yaml"
         "${ROOT_DIR}/kubernetes/apps/observability/crds/cluster-crd.yaml"
-"https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_connectors.yaml"
-"https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_dnsconfigs.yaml"
-"https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_proxyclasses.yaml"
-"https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_proxygroups.yaml"
+        "https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_connectors.yaml"
+        "https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_dnsconfigs.yaml"
+        "https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_proxyclasses.yaml"
+        "https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_proxygroups.yaml"
         "https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_recorders.yaml"
+        "https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml"
+        "https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml"
 
     )
 

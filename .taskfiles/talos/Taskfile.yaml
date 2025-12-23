@@ -76,6 +76,8 @@ tasks:
       MODE: '{{.MODE | default "auto"}}'
     requires:
       vars: [IP]
+    deps:
+      - generate-config
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
@@ -117,6 +119,8 @@ tasks:
     vars:
       KUBERNETES_VERSION:
         sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/talenv.yaml
+    deps:
+      - generate-config
     preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
@@ -127,5 +131,19 @@ tasks:
     dir: '{{.TALOS_DIR}}'
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
     cmd: talhelper gencommand reset --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false" | bash
+    deps:
+      - generate-config
+    preconditions:
+      - which talhelper
+
+  reset-node:
+    desc: Resets a node back to maintenance mode [IP=required]
+    dir: '{{.TALOS_DIR}}'
+    prompt: This will reset the node back to maintenance mode... continue?
+    cmd: talhelper gencommand reset --node {{.IP}} --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false" | bash
+    requires:
+      vars: [IP]
+    deps:
+      - generate-config
     preconditions:
       - which talhelper

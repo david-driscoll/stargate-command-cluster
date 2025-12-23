@@ -1,6 +1,7 @@
 machine:
   features:
     rbac: true
+    stableHostname: true
     kubernetesTalosAPIAccess:
       enabled: true
       allowedRoles: ["os:admin"]

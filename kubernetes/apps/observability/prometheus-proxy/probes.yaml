@@ -3,7 +3,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: thanos-write-http
+  name: thanos-receive-http
   namespace: observability
 spec:
   interval: 5m
@@ -13,7 +13,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - http://thanos-write.observability.svc.cluster.local:10901
+        - http://thanos-receive.observability.svc.cluster.local:10901
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe

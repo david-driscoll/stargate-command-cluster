@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./definition.yaml
-  - ./thanos-write.yaml
+  - ./thanos-receive.yaml
   - ./alertmanager-operated.yaml
   - ./externalsecret.yaml
   - ./probes.yaml

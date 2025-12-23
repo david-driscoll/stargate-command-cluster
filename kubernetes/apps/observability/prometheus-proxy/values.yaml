@@ -53,7 +53,7 @@ prometheus:
         memory: 2Gi
     remoteWriteDashboards: true
     remoteWrite:
-      - url: http://thanos-write.observability.svc.cluster.local:19291/api/v1/receive
+      - url: http://thanos-receive.observability.svc.cluster.local:19291/api/v1/receive
         queueConfig:
           maxSamplesPerSend: 10000
           batchSendDeadline: 5s

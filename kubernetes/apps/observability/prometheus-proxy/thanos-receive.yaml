@@ -4,9 +4,9 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    tailscale.com/tailnet-fqdn: "thanos-write.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "thanos-receive.${TAILSCALE_DOMAIN}"
     tailscale.com/tags: "tag:observability"
-  name: thanos-write
+  name: thanos-receive
 spec:
   externalName: unused
   type: ExternalName

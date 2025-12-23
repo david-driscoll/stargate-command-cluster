@@ -16,7 +16,7 @@ spec:
             description: "Thanos Write HTTP endpoint at port 10901 is unhealthy."
             summary: "Thanos Write HTTP is unhealthy"
           expr: |
-            (1 - avg(rate(probe_success{probe="thanos-write-http"}[5m]))) > 0.1
+            (1 - avg(rate(probe_success{probe="thanos-receive-http"}[5m]))) > 0.1
           for: 5m
           labels:
             severity: warning
@@ -26,7 +26,7 @@ spec:
             description: "Thanos Write GRPC endpoint at port 10902 is unhealthy."
             summary: "Thanos Write GRPC is unhealthy"
           expr: |
-            (1 - avg(rate(probe_success{probe="thanos-write-grpc"}[5m]))) > 0.1
+            (1 - avg(rate(probe_success{probe="thanos-receive-grpc"}[5m]))) > 0.1
           for: 5m
           labels:
             severity: warning
@@ -36,7 +36,7 @@ spec:
             description: "Thanos Write remote endpoint at port 19291 is unhealthy."
             summary: "Thanos Write remote is unhealthy"
           expr: |
-            (1 - avg(rate(probe_success{probe="thanos-write-remote"}[5m]))) > 0.1
+            (1 - avg(rate(probe_success{probe="thanos-receive-remote"}[5m]))) > 0.1
           for: 5m
           labels:
             severity: warning
@@ -69,7 +69,7 @@ spec:
             description: "Thanos Write service is completely down, unable to receive metrics."
             summary: "Thanos Write is down"
           expr: |
-            (count(avg by (probe) (rate(probe_success{probe=~"thanos-write.*"}[5m])) == 0)) >= 2
+            (count(avg by (probe) (rate(probe_success{probe=~"thanos-receive.*"}[5m])) == 0)) >= 2
           for: 2m
           labels:
             severity: critical
@@ -77,7 +77,7 @@ spec:
         # Recording rules for prometheus proxy health
         - record: prometheus_proxy:thanos:health:5m
           expr: |
-            avg by (probe) (rate(probe_success{probe=~"thanos-write.*"}[5m]))
+            avg by (probe) (rate(probe_success{probe=~"thanos-receive.*"}[5m]))
 
         - record: prometheus_proxy:alertmanager:health:5m
           expr: |
@@ -89,7 +89,7 @@ spec:
             description: "Prometheus proxy probe '{{ $labels.probe }}' has high latency (p99: {{ $value | humanizeDuration }})."
             summary: "Prometheus proxy high latency"
           expr: |
-            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket{probe=~"(thanos-write|alertmanager).*"}[5m]))) > 5
+            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket{probe=~"(thanos-receive|alertmanager).*"}[5m]))) > 5
           for: 10m
           labels:
             severity: warning

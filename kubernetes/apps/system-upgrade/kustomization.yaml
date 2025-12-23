@@ -8,5 +8,5 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./secret-store.yaml
-  - ./controller/ks.yaml
-  - ./plans/ks.yaml
+  - ./tuppr/ks.yaml
+  - ./upgrades/ks.yaml

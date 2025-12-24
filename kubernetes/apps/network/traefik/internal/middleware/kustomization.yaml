@@ -14,4 +14,5 @@ resources:
   - ./host-header.yaml
   - ./error-pages.yaml
   - ./default-cors.yaml
+  - ./outpost.yaml
   # - ./tailscale-redirect.yaml

@@ -81,11 +81,11 @@ spec:
               TZ: "${TIMEZONE}"
             resources:
               requests:
-                memory: 1Gi
+                memory: 2Gi
                 cpu: 200m
               limits:
                 # cpu: 2
-                memory: 4Gi
+                memory: 5Gi
             probes:
               startup:
                 enabled: true

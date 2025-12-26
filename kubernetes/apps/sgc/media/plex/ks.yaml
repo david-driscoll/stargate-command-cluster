@@ -29,4 +29,4 @@ spec:
       APP: plex
       NAMESPACE: sgc
       TAILSCALE_HOST: plex-sgc
-      VOLSYNC_CAPACITY: 100Gi
+      VOLSYNC_CAPACITY: 60Gi

@@ -13,10 +13,9 @@ CONNECT_VAULT = "Eris"
 CONNECT_TOKEN = "op://Eris/Eris 1Password Connect Access Token/credential"
 
 [tools]
-python = "3.13.1"
+python = "3.14.2"
 "pipx:makejinja" = "2.8.2"
 krew = "0.4.5"
-
 kubectl = "1.33.4"
 powershell-core = "7.5.1"
 1password-cli = "2.30.3"

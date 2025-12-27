@@ -1,61 +1,139 @@
 ---
-# yaml-language-server: $schema=https://lds-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: amd-device-plugin
-  namespace: kube-system
-spec:
-  interval: 1h
-  url: https://rocm.github.io/k8s-device-plugin/
-  timeout: 3m
----
-apiVersion: node.k8s.io/v1
-kind: RuntimeClass
-metadata:
-  name: amd
-handler: amd
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.2.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app amd-device-plugin
-  namespace: &namespace kube-system
+  name: &app etcd-backup
 spec:
-  chart:
-    spec:
-      chart: amd-gpu
-      version: 0.20.0
-      sourceRef:
-        kind: HelmRepository
-        name: *app
-        namespace: *namespace
-  maxHistory: 3
   interval: 1h
-  timeout: 10m
-  install:
-    createNamespace: true
-    replace: true
-    remediation:
-      retries: 7
-  upgrade:
-    crds: CreateReplace
-    cleanupOnFail: true
-    remediation:
-      retries: 7
-      strategy: rollback
-  rollback:
-    force: false # true
-    cleanupOnFail: true
-    recreate: true
-  uninstall:
-    keepHistory: false
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   values:
-    labeller:
-      enabled: true
-    nfd:
-      enabled: false
-    securityContext:
-      allowPrivilegeEscalation: true
-    node_selector_enabled: false
+    controllers:
+      etcd-backup:
+        type: cronjob
+        cronjob:
+          schedule: "12 4 * * *"
+          parallelism: 1
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+
+        initContainers:
+          talosctl:
+            image:
+              repository: ghcr.io/siderolabs/talosctl
+              tag: v1.11.6
+            args:
+              - -n
+              - "$(CP_NODE_IP)"
+              - etcd
+              - snapshot
+              - /data/etcd.snapshot
+            env:
+              - name: CP_NODE_IP
+                value: "${CLUSTER_API_IP}"
+
+        containers:
+          restic:
+            image:
+              repository: ghcr.io/ahinko/restic
+              tag: 0.18.1@sha256:fa719796676a241c783aa789c0053c92dc92e5d5818722cefb03c5ce163fb904
+            workingDir: /data
+            args:
+              - backup
+              - --host
+              - kubernetes # set a consistent hostname to avoid restic rescans
+              - . # use workingDir to get relative paths in backup
+            envFrom:
+              - secretRef:
+                  name: talos-etcd-restic-keys
+            env:
+              - name: RESTIC_REPOSITORY
+                value: /repository/etcd
+
+        pod:
+          hostNetwork: true
+          hostPID: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+      defrag:
+        type: cronjob
+        cronjob:
+          schedule: "3 9 * * *" # daily at 09:03
+          parallelism: 1
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+
+        containers:
+          etcd-defrag:
+            image:
+              repository: ghcr.io/ahrtr/etcd-defrag
+              tag: v0.36.0
+            args:
+            - --endpoints=https://127.0.0.1:2379
+            - --cluster
+            - --cacert=/certs/ca.crt
+            - --cert=/certs/admin.crt
+            - --key=/certs/admin.key
+            - --defrag-rule=dbQuotaUsage > 0.4 || dbSizeFree > 100*1024*1024
+            - --move-leader
+            - --wait-between-defrags=30s
+            - --etcd-storage-quota-bytes=2147483648
+            - --auto-disalarm
+            - --disalarm-threshold=0.8
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 25m
+                memory: 128Mi
+              limits:
+                memory: 128Mi
+      prune:
+        type: cronjob
+        cronjob:
+          schedule: "32 5 1 * *" # change me - 1st of month at 05:32
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+
+        containers:
+          restic:
+            image:
+              repository: ghcr.io/ahinko/restic
+              tag: 0.18.1@sha256:fa719796676a241c783aa789c0053c92dc92e5d5818722cefb03c5ce163fb904
+            args:
+              - forget
+              - --keep-last=7 # change me - set retention policy
+              - --keep-weekly=4 # see: https://restic.readthedocs.io/en/latest/060_forget.html
+              - --prune
+            envFrom:
+              - secretRef:
+                  name: talos-etcd-restic-keys
+            env:
+              - name: RESTIC_REPOSITORY
+                value: /repository/etcd
+
+    persistence:
+      backupdata:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+      repository:
+        type: nfs
+        server: "10.10.10.10"
+        path: "/mnt/stash/backup/${CLUSTER_CNAME}/volsync"
+
+      serviceaccount:
+        type: secret
+        name: etcd-backup-talos
+        advancedMounts:
+          etcd-backup:
+            talosctl:
+              - path: /var/run/secrets/talos.dev
+                readOnly: true

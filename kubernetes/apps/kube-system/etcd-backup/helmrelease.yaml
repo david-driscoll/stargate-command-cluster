@@ -1,17 +1,4 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: app-template
-spec:
-  interval: 12h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 4.5.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.2.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -75,8 +62,40 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *app
+      defrag:
+        type: cronjob
+        cronjob:
+          schedule: "3 9 * * *" # daily at 09:03
+          parallelism: 1
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
 
-      purne:
+        containers:
+          etcd-defrag:
+            image:
+              repository: ghcr.io/ahrtr/etcd-defrag
+              tag: v0.36.0
+            args:
+            - --endpoints=https://127.0.0.1:2379
+            - --cluster
+            - --cacert=/certs/ca.crt
+            - --cert=/certs/admin.crt
+            - --key=/certs/admin.key
+            - --defrag-rule=dbQuotaUsage > 0.5 || dbSizeFree > 100*1024*1024
+            - --move-leader
+            - --wait-between-defrags=30s
+            - --etcd-storage-quota-bytes=2147483648
+            - --auto-disalarm
+            - --disalarm-threshold=0.8
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 25m
+                memory: 128Mi
+              limits:
+                memory: 128Mi
+      prune:
         type: cronjob
         cronjob:
           schedule: "32 5 1 * *" # change me - 1st of month at 05:32

@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   healthCheckExprs:
     - apiVersion: cert-manager.io/v1
       kind: ClusterIssuer

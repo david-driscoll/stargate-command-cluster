@@ -3,6 +3,12 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-  - ./local
-  # - ./remote
+  - ./externalsecret.yaml
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
   - ./pvc.yaml
+commonLabels:
+  app.kubernetes.io/name: "${APP}"
+  driscoll.dev/name: "${APP}"
+  kustomize.toolkit.fluxcd.io/force: enabled
+  kustomize.toolkit.fluxcd.io/ssa: IfNotPresent

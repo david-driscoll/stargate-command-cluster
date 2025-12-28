@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: plex
+      driscoll.dev/name: plex
   dependsOn:
     - name: volsync
       namespace: volsync-system

@@ -8,6 +8,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   path: ./kubernetes/apps/kube-system/registry
   prune: true
   wait: true

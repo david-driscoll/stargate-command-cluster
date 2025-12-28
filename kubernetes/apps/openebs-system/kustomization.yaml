@@ -10,5 +10,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./secret-store.yaml
   - ./openebs/ks.yaml

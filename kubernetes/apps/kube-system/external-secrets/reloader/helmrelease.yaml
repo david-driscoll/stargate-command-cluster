@@ -33,6 +33,7 @@ spec:
     global:
       labels:
         app.kubernetes.io/name: *app
+        driscoll.dev/name: *app
         control-plane: controller-manager
 
     serviceAccount:

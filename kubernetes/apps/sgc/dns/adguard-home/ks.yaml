@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   path: ./kubernetes/apps/sgc/dns/adguard-home
   prune: true
   wait: true

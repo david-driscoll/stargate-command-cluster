@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: tautulli
+      driscoll.dev/name: tautulli
   dependsOn:
     - name: plex
       namespace: sgc

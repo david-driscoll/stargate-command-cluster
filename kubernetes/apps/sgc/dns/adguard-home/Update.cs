@@ -79,10 +79,10 @@ if (!metadataNode.Children.TryGetValue("name", out var mn) || mn is not YamlScal
 var app = nameNode.Value;
 
 
-var secretTemplate = GetTemplate("kubernetes/components/volsync/local/externalsecret.yaml");
-var replicationSourceTemplate = GetTemplate("kubernetes/components/volsync/local/replicationsource.yaml");
+var secretTemplate = GetTemplate("kubernetes/components/volsync/externalsecret.yaml");
+var replicationSourceTemplate = GetTemplate("kubernetes/components/volsync/replicationsource.yaml");
 var pvcTemplate = GetTemplate("kubernetes/components/volsync/pvc.yaml");
-var destinationTemplate = GetTemplate("kubernetes/components/volsync/local/replicationdestination.yaml", z =>
+var destinationTemplate = GetTemplate("kubernetes/components/volsync/replicationdestination.yaml", z =>
 {
   if (!z.TryGetValue("VOLSYNC_CACHE_CAPACITY", out var cacheCapacity)) { return; }
   if (!defaults.TryGetValue("VOLSYNC_CAPACITY", out var capacity)) { return; }

@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: authentik-remote-cluster
+      driscoll.dev/name: authentik-remote-cluster
   dependsOn: []
   path: ./kubernetes/apps/sgc/idp/authentik-remote-cluster
   prune: true

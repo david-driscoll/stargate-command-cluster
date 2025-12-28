@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: truenas-volumes
+      driscoll.dev/name: truenas-volumes
   dependsOn:
     - name: csi-driver-nfs
       namespace: nfs-system

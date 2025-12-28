@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   path: ./kubernetes/apps/observability/priority-class
   prune: true
   wait: true

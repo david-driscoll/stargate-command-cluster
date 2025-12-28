@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   path: ./kubernetes/apps/database/postgres/backups
   dependsOn:
     - name: postgres

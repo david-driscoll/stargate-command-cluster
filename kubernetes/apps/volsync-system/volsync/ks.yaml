@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   dependsOn:
     - name: csi-driver-nfs
       namespace: nfs-system

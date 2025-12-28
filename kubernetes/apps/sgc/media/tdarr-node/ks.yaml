@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *name
+      driscoll.dev/name: *name
   dependsOn: []
   path: ./kubernetes/apps/sgc/media/tdarr-node
   prune: true

@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
   dependsOn: []
   path: ./kubernetes/apps/network/traefik/shared
   prune: true

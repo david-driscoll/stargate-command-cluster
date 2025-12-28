@@ -10,7 +10,6 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./secret-store.yaml
   - ./1password/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml

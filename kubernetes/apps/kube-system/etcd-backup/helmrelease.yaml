@@ -98,7 +98,7 @@ spec:
       prune:
         type: cronjob
         cronjob:
-          schedule: "32 5 1 * *" # change me - 1st of month at 05:32
+          schedule: "32 5 1 * *" 
           successfulJobsHistory: 1
           failedJobsHistory: 1
 

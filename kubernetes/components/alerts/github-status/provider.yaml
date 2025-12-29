@@ -6,6 +6,6 @@ metadata:
   name: github-status
 spec:
   type: github
-  address: ${GITHUB_REPOSITORY}
+  address: https://github.com/david-driscoll/stargate-command-cluster
   secretRef:
     name: github-status-token-secret

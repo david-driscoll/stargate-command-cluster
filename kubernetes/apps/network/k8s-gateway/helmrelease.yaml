@@ -52,5 +52,6 @@ spec:
       port: 53
       annotations:
         lbipam.cilium.io/ips: "${K8S_GATEWAY_IP}"
+        io.cilium/lb-ipam-ips: "${K8S_GATEWAY_IP}"
       externalTrafficPolicy: Cluster
     watchedResources: ["Ingress", "Service", "HTTPRoute", "TLSRoute", "GRPCRoute", "DNSEndpoint"]

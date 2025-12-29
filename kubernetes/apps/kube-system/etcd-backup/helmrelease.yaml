@@ -98,7 +98,7 @@ spec:
       prune:
         type: cronjob
         cronjob:
-          schedule: "32 5 1 * *" 
+          schedule: "32 5 1 * *"
           successfulJobsHistory: 1
           failedJobsHistory: 1
 

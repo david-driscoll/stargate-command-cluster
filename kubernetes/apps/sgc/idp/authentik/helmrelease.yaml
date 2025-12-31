@@ -30,12 +30,12 @@ spec:
     createNamespace: true
     replace: true
     remediation:
-      retries: 7
+      retries: 12
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: 7
+      retries: 12
       strategy: rollback
   rollback:
     force: false # true

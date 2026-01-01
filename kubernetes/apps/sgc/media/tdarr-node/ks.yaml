@@ -4,6 +4,9 @@ kind: Kustomization
 metadata:
   name: &name tdarr-node
   namespace: &namespace sgc
+  labels:
+    app.kubernetes.io/name: *name
+    driscoll.dev/name: *name
 spec:
   targetNamespace: *namespace
   commonMetadata:

@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: &app pg-backups
   namespace: &namespace database
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
 spec:
   targetNamespace: *namespace
   commonMetadata:

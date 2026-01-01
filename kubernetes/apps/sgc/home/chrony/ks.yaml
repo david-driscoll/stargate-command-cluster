@@ -4,6 +4,9 @@ kind: Kustomization
 metadata:
   name: &app chrony
   namespace: &namespace sgc
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
 spec:
   targetNamespace: *namespace
   commonMetadata:

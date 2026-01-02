@@ -18,6 +18,8 @@ spec:
       namespace: volsync-system
     - name: postgres
       namespace: database
+    - name: external-secrets
+      namespace: external-secrets
   path: ./kubernetes/apps/sgc/idp/authentik
   prune: true
   wait: true

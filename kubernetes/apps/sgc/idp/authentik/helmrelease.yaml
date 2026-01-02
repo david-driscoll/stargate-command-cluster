@@ -148,7 +148,7 @@ spec:
           port: http
 
       startupProbe:
-        failureThreshold: 60
+        failureThreshold: 90
         initialDelaySeconds: 30
         periodSeconds: 10
         timeoutSeconds: 10

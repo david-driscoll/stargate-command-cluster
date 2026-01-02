@@ -4,21 +4,13 @@ set -euo pipefail
 APP_ID="${GITHUB_APP_ID:?GITHUB_APP_ID is required}"
 INSTALL_ID="${GITHUB_INSTALLATION_ID:?GITHUB_INSTALLATION_ID is required}"
 KEY_PATH="/secrets/private-key.pem"
-NAMESPACE="${NAMESPACE:-flux-system}"
-SECRET_NAME="github-status-token-secret"
-GOBIN="/tmp/bin"
-BINARY="${GOBIN}/gha-token"
+SECRET_NAME="github-status"
 SA_TOKEN_PATH="/var/run/secrets/kubernetes.io/serviceaccount/token"
 CA_CERT_PATH="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 
 # Ensure dependencies are available (curl + git for go install)
 apk add --no-cache curl ca-certificates git >/dev/null
-
-mkdir -p "${GOBIN}"
-export GOBIN
-if [ ! -x "${BINARY}" ]; then
-  go install github.com/slawekzachcial/gha-token@latest
-fi
+go install github.com/slawekzachcial/gha-token@latest
 
 ACCESS_TOKEN="$("${BINARY}" --appId "${APP_ID}" --keyPath "${KEY_PATH}" --installId "${INSTALL_ID}")"
 
@@ -33,6 +25,6 @@ curl -sSf \
   -H "Content-Type: application/merge-patch+json" \
   -X PATCH \
   -d "${PATCH_PAYLOAD}" \
-  "https://kubernetes.default.svc.cluster.local/api/v1/namespaces/${NAMESPACE}/secrets/${SECRET_NAME}"
+  "https://kubernetes.default.svc.cluster.local/api/v1/namespaces/flux-system/secrets/${SECRET_NAME}"
 
 echo "Successfully updated GitHub token secret"

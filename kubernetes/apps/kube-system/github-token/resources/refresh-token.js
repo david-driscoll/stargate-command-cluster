@@ -5,7 +5,11 @@ const https = require("https");
 async function refreshToken() {
   const appId = process.env.GITHUB_APP_ID;
   const installationIdRaw = process.env.GITHUB_INSTALLATION_ID;
-  const privateKey = process.env.GITHUB_PRIVATE_KEY;
+  // Replace escaped newlines to ensure PEM parses correctly
+  const privateKey = (process.env.GITHUB_PRIVATE_KEY || "").replace(
+    /\\n/g,
+    "\n"
+  );
 
   if (!appId || !installationIdRaw || !privateKey) {
     throw new Error("Missing required environment variables");

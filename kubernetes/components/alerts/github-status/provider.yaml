@@ -6,6 +6,6 @@ metadata:
   name: github-status
 spec:
   type: github
-  address: https://github.com/david-driscoll/equestria-cluster
+  address: https://github.com/${GITHUB_REPOSITORY_OWNER}
   secretRef:
-    name: github-token
+    name: github-status-token-secret

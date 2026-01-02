@@ -3,7 +3,7 @@ const fs = require("fs");
 const https = require("https");
 
 async function refreshToken() {
-  const appId = process.env.GITHUB_APP_ID;
+  const appIdRaw = process.env.GITHUB_APP_ID;
   const installationIdRaw = process.env.GITHUB_INSTALLATION_ID;
   // Replace escaped newlines to ensure PEM parses correctly
   const privateKey = (process.env.GITHUB_PRIVATE_KEY || "").replace(
@@ -11,14 +11,15 @@ async function refreshToken() {
     "\n"
   );
 
-  if (!appId || !installationIdRaw || !privateKey) {
+  if (!appIdRaw || !installationIdRaw || !privateKey) {
     throw new Error("Missing required environment variables");
   }
 
+  const appId = Number.parseInt(appIdRaw, 10);
   const installationId = Number.parseInt(installationIdRaw, 10);
-  if (Number.isNaN(installationId)) {
+  if (Number.isNaN(appId)) throw new Error("GITHUB_APP_ID is not a number");
+  if (Number.isNaN(installationId))
     throw new Error("GITHUB_INSTALLATION_ID is not a number");
-  }
 
   // Initialize the GitHub App
   const app = new App({
@@ -36,7 +37,10 @@ async function refreshToken() {
 
   const accessToken = token.token;
   console.log(
-    "Generated installation access token for installation " + installationId
+    "Generated installation access token for app " +
+      appId +
+      " installation " +
+      installationId
   );
 
   // Read Kubernetes service account token

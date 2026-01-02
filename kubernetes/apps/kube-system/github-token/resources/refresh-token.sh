@@ -11,7 +11,7 @@ CA_CERT_PATH="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 # Ensure dependencies are available (curl + git for go install)
 apk add --no-cache curl ca-certificates git >/dev/null
 
-ACCESS_TOKEN="$(go run github.com/slawekzachcial/gha-token@latest --appId "${APP_ID}" --keyPath "${KEY_PATH}" --installId "${INSTALL_ID}")"
+ACCESS_TOKEN="$(go run github.com/slawekzachcial/gha-token@latest --appId $GITHUB_APP_ID --keyPath $KEY_PATH --installId $GITHUB_INSTALLATION_ID)"
 
 token_b64=$(printf '%s' "${ACCESS_TOKEN}" | base64 | tr -d '\n')
 service_account_token=$(cat "${SA_TOKEN_PATH}")

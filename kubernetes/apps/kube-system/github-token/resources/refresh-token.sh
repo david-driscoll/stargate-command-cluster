@@ -1,8 +1,6 @@
 #!/bin/sh
 set -euo pipefail
 
-APP_ID="${GITHUB_APP_ID:?GITHUB_APP_ID is required}"
-INSTALL_ID="${GITHUB_INSTALLATION_ID:?GITHUB_INSTALLATION_ID is required}"
 KEY_PATH="/secrets/private-key.pem"
 SECRET_NAME="github-status"
 SA_TOKEN_PATH="/var/run/secrets/kubernetes.io/serviceaccount/token"
@@ -11,9 +9,9 @@ CA_CERT_PATH="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 # Ensure dependencies are available (curl + git for go install)
 apk add --no-cache curl ca-certificates git >/dev/null
 
-echo "Generating GitHub access token for App ID $APP_ID and Installation ID $INSTALL_ID"
+echo "Generating GitHub access token for App ID $GITHUB_APP_ID and Installation ID $GITHUB_APP_INSTALLATION_ID"
 
-ACCESS_TOKEN="$(go run github.com/slawekzachcial/gha-token@latest --appId $APP_ID --keyPath $KEY_PATH --installId $INSTALL_ID)"
+ACCESS_TOKEN="$(go run github.com/slawekzachcial/gha-token@latest --appId $GITHUB_APP_ID --keyPath $KEY_PATH --installId $GITHUB_APP_INSTALLATION_ID)"
 
 token_b64=$(printf '%s' "${ACCESS_TOKEN}" | base64 | tr -d '\n')
 service_account_token=$(cat "${SA_TOKEN_PATH}")

@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-4.2.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app github-token-job
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 15m
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false # true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        type: cronjob
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          backoffLimit: 6
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 1
+          schedule: "50 * * * *"
+          startingDeadlineSeconds: 30
+          successfulJobsHistory: 1
+          suspend: false
+        containers:
+          app:
+            image:
+              repository: node
+              tag: "20-alpine"
+            command:
+              - node
+              - /scripts/refresh-token.js
+            env:
+              GITHUB_APP_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: github-app
+                    key: github_app_id
+              GITHUB_INSTALLATION_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: github-app
+                    key: github_app_installation_id
+              GITHUB_PRIVATE_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: github-app
+                    key: github_app_private_key
+              NAMESPACE:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+    persistence:
+      scripts:
+        type: configMap
+        name: github-token-scripts
+        globalMounts:
+          - path: /scripts
+            readOnly: true
+    rbac:
+      roles:
+        &github-token-role github-token-role:
+          forceRename: *github-token-role
+          type: Role
+          rules:
+            - apiGroups: [""]
+              resources: ["secrets"]
+              resourceNames: ["github-status-token-secret"]
+              verbs: ["get", "patch", "update"]
+      bindings:
+        &github-token-rolebinding github-token-rolebinding:
+          forceRename: *github-token-rolebinding
+          type: RoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: *github-token-role
+          subjects:
+            - kind: ServiceAccount
+              name: *app
+              namespace: ${NAMESPACE}
+    serviceAccount:
+      *app : {}
+

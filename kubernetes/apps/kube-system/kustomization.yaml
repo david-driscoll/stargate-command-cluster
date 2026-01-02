@@ -26,3 +26,4 @@ resources:
   - ./registry/ks.yaml
   - ./etcd-backup/ks.yaml
   # - ./multus/ks.yaml
+  - ./github-token/ks.yaml

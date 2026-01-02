@@ -1,4 +1,5 @@
-const { App } = require("@octokit/app");
+// Use the CommonJS-friendly entry point; the package is ESM-first
+const { App } = require("@octokit/app/dist-node/index.js");
 const fs = require("fs");
 const https = require("https");
 

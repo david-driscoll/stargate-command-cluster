@@ -52,7 +52,11 @@ spec:
               - /bin/sh
               - -c
             args:
-              - npm_config_cache=/tmp/npm-cache npm install octokit --no-progress --prefer-offline --no-fund --loglevel=error && node /scripts/refresh-token.js
+              - >-
+                rm -rf /tmp/npm-cache /tmp/octokit &&
+                mkdir -p /tmp/npm-cache /tmp/octokit &&
+                npm_config_cache=/tmp/npm-cache npm install octokit@latest --no-save --prefer-offline --no-progress --no-fund --loglevel=error --prefix /tmp/octokit &&
+                NODE_PATH=/tmp/octokit/node_modules node /scripts/refresh-token.js
             env:
               GITHUB_APP_ID:
                 valueFrom:

@@ -37,7 +37,7 @@ cilium-cli = "0.18.4"
 cloudflared = "2025.6.1"
 cue = "0.13.2"
 gh = "2.74.2"
-"aqua:brumhard/krewfile" = "0.6.3"
+"aqua:brumhard/krewfile" = "0.7.0"
 "pipx:flux-local" = "8.1.0"
 
 [tasks.update]

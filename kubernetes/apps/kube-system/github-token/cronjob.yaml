@@ -52,7 +52,7 @@ spec:
               - /bin/sh
               - -c
             args:
-              - npm install octokit && node /scripts/refresh-token.js
+              - npm_config_cache=/tmp/npm-cache npm install octokit --no-progress --prefer-offline --no-fund --loglevel=error && node /scripts/refresh-token.js
             env:
               GITHUB_APP_ID:
                 valueFrom:
@@ -80,6 +80,8 @@ spec:
         globalMounts:
           - path: /scripts
             readOnly: true
+      tmp:
+        type: emptyDir
     rbac:
       roles:
         &github-token-role github-token-role:

@@ -55,7 +55,8 @@ spec:
               - >-
                 rm -rf /tmp/npm-cache /tmp/octokit &&
                 mkdir -p /tmp/npm-cache /tmp/octokit &&
-                npm_config_cache=/tmp/npm-cache npm install @octokit/app@latest --no-save --prefix /tmp/octokit &&
+                cd /tmp/octokit &&
+                npm_config_cache=/tmp/npm-cache npm install @octokit/app --no-save &&
                 NODE_PATH=/tmp/octokit/node_modules node /scripts/refresh-token.js
             env:
               GITHUB_APP_ID:

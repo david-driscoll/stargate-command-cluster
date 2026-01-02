@@ -1,5 +1,4 @@
 #!/bin/sh
-set -euo pipefail
 
 apt-get update
 apt-get install -y curl jq ca-certificates

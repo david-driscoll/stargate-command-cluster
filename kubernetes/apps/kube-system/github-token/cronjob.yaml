@@ -47,7 +47,8 @@ spec:
           app:
             image:
               repository: golang
-              tag: "1.22.6-alpine"
+              tag: 1.25.5-bookworm@sha256:2c7c65601b020ee79db4c1a32ebee0bf3d6b298969ec683e24fcbea29305f10e
+              pullPolicy: IfNotPresent
             command:
               - /bin/sh
               - /scripts/refresh-token.sh

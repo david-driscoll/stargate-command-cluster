@@ -1,4 +1,4 @@
-const { App } = require("octokit");
+const { App } = require("@octokit/app");
 const fs = require("fs");
 const https = require("https");
 

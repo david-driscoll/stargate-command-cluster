@@ -46,18 +46,12 @@ spec:
         containers:
           app:
             image:
-              repository: node
-              tag: "20-alpine"
+              repository: golang
+              tag: "1.22.6-alpine"
             command:
               - /bin/sh
-              - -c
-            args:
-              - >-
-                rm -rf /tmp/npm-cache /tmp/octokit &&
-                mkdir -p /tmp/npm-cache /tmp/octokit &&
-                cd /tmp/octokit &&
-                npm_config_cache=/tmp/npm-cache npm install @octokit/app --no-save &&
-                NODE_PATH=/tmp/octokit/node_modules node /scripts/refresh-token.js
+              - /scripts/refresh-token.sh
+            args: []
             env:
               GITHUB_APP_ID:
                 valueFrom:
@@ -69,11 +63,6 @@ spec:
                   secretKeyRef:
                     name: github-app
                     key: github_app_installation_id
-              GITHUB_PRIVATE_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: github-app
-                    key: github_app_private_key
               NAMESPACE:
                 valueFrom:
                   fieldRef:
@@ -84,6 +73,13 @@ spec:
         name: github-token-scripts
         globalMounts:
           - path: /scripts
+            readOnly: true
+      secrets:
+        type: secret
+        name: github-app
+        globalMounts:
+          - path: /secrets/private-key.pem
+            subPath: github_app_private_key
             readOnly: true
       tmp:
         type: emptyDir

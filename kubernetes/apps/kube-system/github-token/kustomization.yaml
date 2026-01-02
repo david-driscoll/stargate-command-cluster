@@ -9,6 +9,6 @@ resources:
 configMapGenerator:
   - name: github-token-scripts
     files:
-      - refresh-token.js=./resources/refresh-token.js
+      - refresh-token.sh=./resources/refresh-token.sh
 generatorOptions:
   disableNameSuffixHash: true

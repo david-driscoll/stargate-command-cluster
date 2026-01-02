@@ -38,7 +38,7 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     exclude: |
-      features/ks.yaml
+      features/kustomization.yaml
     deleteOrphaned: true
   - source: kubernetes/apps/flux-system/weave/
     dest: kubernetes/apps/flux-system/weave/

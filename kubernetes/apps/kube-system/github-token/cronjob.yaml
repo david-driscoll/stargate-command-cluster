@@ -49,8 +49,10 @@ spec:
               repository: node
               tag: "20-alpine"
             command:
-              - node
-              - /scripts/refresh-token.js
+              - /bin/sh
+              - -c
+            args:
+              - npm install octokit && node /scripts/refresh-token.js
             env:
               GITHUB_APP_ID:
                 valueFrom:

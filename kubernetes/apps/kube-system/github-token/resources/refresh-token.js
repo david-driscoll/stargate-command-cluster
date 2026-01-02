@@ -1,7 +1,7 @@
 // Use the CommonJS-friendly entry point; the package is ESM-first
-const { App } = require("@octokit/app/dist-node/index.js");
-const fs = require("fs");
-const https = require("https");
+import { App } from "@octokit/app";
+import fs from "fs";
+import https from "https";
 
 async function refreshToken() {
   const appIdRaw = process.env.GITHUB_APP_ID;

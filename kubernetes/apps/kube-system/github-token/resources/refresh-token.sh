@@ -8,7 +8,7 @@ chmod +x ./kubectl
 
 echo "Generating GitHub access token for App ID $GITHUB_APP_ID and Installation ID $GITHUB_APP_INSTALLATION_ID"
 
-ACCESS_TOKEN="$(go run github.com/slawekzachcial/gha-token@latest --appId $GITHUB_APP_ID --keyPath $KEY_PATH --installId $GITHUB_APP_INSTALLATION_ID)"
+ACCESS_TOKEN="$(go run github.com/slawekzachcial/gha-token@latest --appId $GITHUB_APP_ID --keyPath /secrets/private-key.pem --installId $GITHUB_APP_INSTALLATION_ID)"
 
 echo "access_token: $ACCESS_TOKEN"
 

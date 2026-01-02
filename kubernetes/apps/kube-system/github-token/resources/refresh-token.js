@@ -4,11 +4,16 @@ const https = require("https");
 
 async function refreshToken() {
   const appId = process.env.GITHUB_APP_ID;
-  const installationId = process.env.GITHUB_INSTALLATION_ID;
+  const installationIdRaw = process.env.GITHUB_INSTALLATION_ID;
   const privateKey = process.env.GITHUB_PRIVATE_KEY;
 
-  if (!appId || !installationId || !privateKey) {
+  if (!appId || !installationIdRaw || !privateKey) {
     throw new Error("Missing required environment variables");
+  }
+
+  const installationId = Number.parseInt(installationIdRaw, 10);
+  if (Number.isNaN(installationId)) {
+    throw new Error("GITHUB_INSTALLATION_ID is not a number");
   }
 
   // Initialize the GitHub App
@@ -26,7 +31,9 @@ async function refreshToken() {
   }
 
   const accessToken = token.token;
-  console.log("Generated installation access token");
+  console.log(
+    "Generated installation access token for installation " + installationId
+  );
 
   // Read Kubernetes service account token
   const tokenFile = "/var/run/secrets/kubernetes.io/serviceaccount/token";
@@ -34,7 +41,8 @@ async function refreshToken() {
   const caCertFile = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
 
   const namespace = process.env.NAMESPACE || "flux-system";
-  const secretName = "github-token";
+  // Keep secret name aligned with RBAC resourceNames
+  const secretName = "github-status-token-secret";
 
   // Patch the Kubernetes secret using the API
   const patchData = {

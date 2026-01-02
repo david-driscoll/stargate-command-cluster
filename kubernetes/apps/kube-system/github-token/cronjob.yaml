@@ -86,22 +86,22 @@ spec:
         type: emptyDir
     rbac:
       roles:
-        &github-token-role github-token-role:
-          forceRename: *github-token-role
+        github-token:
           type: Role
           rules:
             - apiGroups: [""]
               resources: ["secrets"]
-              resourceNames: ["github-status-token-secret"]
-              verbs: ["get", "patch", "update"]
+              verbs: ["get", "create", "update", "patch"]
+            - apiGroups: [""]
+              resources: ["configmaps"]
+              verbs: ["get", "create", "update", "patch"]
       bindings:
-        &github-token-rolebinding github-token-rolebinding:
-          forceRename: *github-token-rolebinding
+        github-token:
           type: RoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: Role
-            name: *github-token-role
+            name: github-token
           subjects:
             - kind: ServiceAccount
               name: *app

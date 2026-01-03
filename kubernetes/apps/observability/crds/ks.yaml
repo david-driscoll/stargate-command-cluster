@@ -17,7 +17,6 @@ spec:
   path: ./kubernetes/apps/observability/crds
   prune: true
   wait: false
-  force: true
   interval: 1h
   retryInterval: 2m
   timeout: 10m

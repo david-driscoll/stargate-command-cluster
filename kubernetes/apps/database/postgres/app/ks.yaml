@@ -18,6 +18,8 @@ spec:
   dependsOn:
     - name: postgres-operator
       namespace: cloudnative-pg
+    - name: external-secrets
+      namespace: kube-system
   prune: true
   wait: true
   force: false # true

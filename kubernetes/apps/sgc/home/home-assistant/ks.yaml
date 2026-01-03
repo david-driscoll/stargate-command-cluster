@@ -29,6 +29,10 @@ spec:
       namespace: sgc
     - name: matter
       namespace: sgc
+    - name: external-secrets
+      namespace: kube-system
+    - name: tailscale-operator
+      namespace: tailscale-system
   sourceRef:
     kind: GitRepository
     name: flux-system

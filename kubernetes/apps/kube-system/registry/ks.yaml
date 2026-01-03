@@ -9,6 +9,11 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
+  dependsOn:
+    - name: external-secrets
+      namespace: *namespace
+    - name: volsync
+      namespace: volsync-system
   path: ./kubernetes/apps/kube-system/registry
   prune: true
   wait: true

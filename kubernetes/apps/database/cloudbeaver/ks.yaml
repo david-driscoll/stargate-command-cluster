@@ -19,6 +19,8 @@ spec:
   dependsOn:
     - name: postgres
       namespace: *namespace
+    - name: external-secrets
+      namespace: kube-system
   prune: true
   wait: true
   force: false

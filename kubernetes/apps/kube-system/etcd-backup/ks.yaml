@@ -11,6 +11,9 @@ spec:
       driscoll.dev/name: *app
   interval: 1h
   path: ./kubernetes/apps/kube-system/etcd-backup
+  dependsOn:
+    - name: external-secrets
+      namespace: *namespace
   prune: true
   sourceRef:
     kind: GitRepository

@@ -15,8 +15,7 @@ cluster:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
       quota-backend-bytes: 4294967296
-      election-timeout: 5000ms
-      log-slow-duration: 500ms
+      election-timeout: 5000
     advertisedSubnets:
       - 10.10.0.0/16
   proxy:

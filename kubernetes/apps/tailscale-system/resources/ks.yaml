@@ -21,6 +21,8 @@ spec:
   dependsOn:
     - name: tailscale-operator
       namespace: *namespace
+    - name: external-secrets
+      namespace: kube-system
   sourceRef:
     kind: GitRepository
     name: flux-system

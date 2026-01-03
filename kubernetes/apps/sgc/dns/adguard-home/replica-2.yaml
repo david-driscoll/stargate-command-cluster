@@ -109,3 +109,6 @@ spec:
     retain:
       hourly: 24
       daily: 7
+      monthly: 1
+      last: "10"
+      weekly: 4

@@ -22,7 +22,7 @@ spec:
       runAsUser: ${VOLSYNC_PUID:=568}
       runAsGroup: ${VOLSYNC_PGID:=568}
       fsGroup: ${VOLSYNC_PGID:=568}
-      fsGroupChangePolicy: None
+
     # moverResources:
     #   requests:
     #     cpu: "50m"
@@ -33,3 +33,6 @@ spec:
     retain:
       hourly: 24
       daily: 7
+      monthly: 1
+      last: "10"
+      weekly: 4

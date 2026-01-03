@@ -65,6 +65,7 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+      fsGroupChangePolicy: None
     # moverResources:
     #   requests:
     #     cpu: "50m"
@@ -97,6 +98,7 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+      fsGroupChangePolicy: None
     # moverResources:
     #   requests:
     #     cpu: "50m"

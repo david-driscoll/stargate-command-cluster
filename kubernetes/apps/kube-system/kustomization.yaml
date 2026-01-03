@@ -23,7 +23,7 @@ resources:
   - ./reflector/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./external-secrets
-  # - ./registry/ks.yaml
+  - ./registry/ks.yaml
   - ./etcd-backup/ks.yaml
   # - ./multus/ks.yaml
   - ./github-token/ks.yaml

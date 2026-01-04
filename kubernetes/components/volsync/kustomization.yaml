@@ -11,4 +11,3 @@ commonLabels:
   app.kubernetes.io/name: "${APP}"
   driscoll.dev/name: "${APP}"
   kustomize.toolkit.fluxcd.io/force: enabled
-  kustomize.toolkit.fluxcd.io/ssa: IfNotPresent

@@ -94,7 +94,7 @@ resources:
     memory: 100Mi
   limits:
     # cpu: 400m
-    memory: 200Mi
+    memory: 512Mi
 providers:
   kubernetesCRD:
     ingressClass: "internal"

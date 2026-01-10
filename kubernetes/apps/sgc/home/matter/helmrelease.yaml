@@ -73,8 +73,8 @@ spec:
       *app :
         controller: *app
         type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
+        # annotations:
+        #   io.cilium/lb-ipam-ips: "${AUTOMATION_VIP}"
         externalIPs:
           - "${AUTOMATION_VIP}"
         ports:

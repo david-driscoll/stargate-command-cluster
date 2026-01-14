@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app traefik-external
+  name: &app traefik-internal
   namespace: &namespace network
   labels:
     app.kubernetes.io/name: *app
@@ -14,10 +14,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
-  dependsOn:
-    - name: traefik-internal
-      namespace: *namespace
-  path: ./kubernetes/apps/network/traefik/external
+  dependsOn: []
+  path: ./kubernetes/apps/network/traefik
   prune: true
   wait: false
   force: false # true

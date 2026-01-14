@@ -4,8 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./helmrelease.yaml
+  - ./externalsecret.yaml
 configMapGenerator:
-  - name: traefik-external-values
+  - name: ${APP}-values
     files:
       - values.yaml=./values.yaml
     options:

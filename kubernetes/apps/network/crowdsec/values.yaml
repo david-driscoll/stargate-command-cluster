@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/crowdsecurity/helm-charts/refs/heads/main/charts/crowdsec/values.schema.json
+container_runtime: containerd
+config:
+  config.yaml.local: |
+    db_config:
+      type:     postgresql
+      user:     {{ .postgres_username }}
+      password: {{ .postgres_password }}
+      db_name:  {{ .postgres_database }}
+      host:     {{ .postgres_hostname }}
+      port:     {{ .postgres_port }}
+    api:
+      server:
+        auto_registration: # Activate if not using TLS for authentication
+          enabled: true
+          token: "$${REGISTRATION_TOKEN}"  # /!\ do not change
+          allowed_ranges: # /!\ adapt to the pod IP ranges used by your cluster
+            - "${CLUSTER_NETWORK}"
+            - "${SERVICE_NETWORK}"
+            - "127.0.0.1/32"
+            - "192.168.0.0/16"
+            - "10.0.0.0/8"
+            - "100.64.0.0/10"
+            - "172.16.0.0/12"
+
+deployAnnotations:
+  reloader.stakater.com/auto: "true"
+lapi:
+  enabled: true
+  env:
+    - name: TZ
+      value: ${TIMEZONE}
+    - name: ENROLL_KEY
+      value: '{{ .apikey_credential }}'
+    - name: BOUNCER_KEY_traefik
+      value: "{{ .apikey_bouncer }}"
+    - name: ENROLL_INSTANCE_NAME
+      value: '${CLUSTER_CNAME}'
+    - name: ENROLL_TAGS
+      value: 'k8s ${CLUSTER_CNAME}'
+  dashboard:
+    enabled: true
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  deployAnnotations:
+    reloader.stakater.com/auto: "true"
+agent:
+  acquisition:
+    - namespace: network
+      podName: traefik-*
+      program: traefik
+    - namespace: '*'
+      podName: postgres-*
+      program: pgsql
+  env:
+    - name: TZ
+      value: ${TIMEZONE}
+    - name: COLLECTIONS
+      value: >-
+        crowdsecurity/nextcloud
+        crowdsecurity/home-assistant
+        crowdsecurity/linux
+        crowdsecurity/traefik
+        crowdsecurity/base-http-scenarios
+        crowdsecurity/http-cve
+        crowdsecurity/pgsql
+    - name: PARSERS
+      value: >-
+        crowdsecurity/cri-logs
+        crowdsecurity/docker-logs
+  deployAnnotations:
+    reloader.stakater.com/auto: "true"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true

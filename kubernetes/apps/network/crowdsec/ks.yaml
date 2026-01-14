@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app traefik-internal
+  name: &app crowdsec
   namespace: &namespace network
   labels:
     app.kubernetes.io/name: *app
@@ -14,10 +14,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
-  dependsOn:
-    - name: traefik-shared
-      namespace: *namespace
-  path: ./kubernetes/apps/network/traefik/internal
+  path: ./kubernetes/apps/network/crowdsec
+  components:
+    - ../../../components/postgres
   prune: true
   wait: false
   force: false # true
@@ -28,11 +27,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-      name: *app
-      namespace: *namespace
   postBuild:
     substitute:
       APP: *app

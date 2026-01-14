@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name crowdsec-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "crowdsec-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app crowdsec
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: crowdsec
+  owner: crowdsec
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: crowdsec
+    - ensure: present
+      name: crowdsec
+      owner: crowdsec

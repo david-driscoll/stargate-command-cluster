@@ -13,4 +13,5 @@ resources:
   - ./external-dns
   - ./k8s-gateway/ks.yaml
   - ./secrets/ks.yaml
-  - ./traefik
+  - ./traefik/ks.yaml
+  - ./whoami/ks.yaml

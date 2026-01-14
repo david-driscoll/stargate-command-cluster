@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-postgres-password
+stringData:
+  username: ENC[AES256_GCM,data:HLsRMU1vBSc=,iv:mm+HU0J/F1pCa6sDtkaCOVAxKkbHLlJBC7Sm2ZAF/9Y=,tag:ACtF+DktnL+3F0FChzHoRg==,type:str]
+  database: ENC[AES256_GCM,data:q83xwFgyrpk=,iv:ZGw/6wSgJ92ApTxa5XPRY/P18amNjgzNrAr3Tk3SaW8=,tag:ehHNcIpzv2sxshXgtwpJhw==,type:str]
+  port: ENC[AES256_GCM,data:L4jZXw==,iv:0/2TIkktPk/euDnV0ctmDBl+Ret7NWkITMfFQ8E5oQU=,tag:qRAWkrpd2iVNCL7VhLly2Q==,type:str]
+  hostname: ENC[AES256_GCM,data:yNgOhpxI7c6KsFj/BzwL0W9IXHkfwYB1LHl81sYwBo+Ku/uvQCs=,iv:rvdjrkFxCvwzk0luuLiY1Y2khVVyvYsvk6LMozA0mM8=,tag:3WsRZcvTIsiYlu5pvBBSmA==,type:str]
+  password: ENC[AES256_GCM,data:9sGRkF01IX8wdt/pwQHsAA52WqOYqYjUGmaR9PMBXaw=,iv:UpAkMW0iHTH+Vebc2prw3IX8/xKej3EVJ1SJUlAzzBw=,tag:7GRTdbB6ym9xNHYfU2Xqxg==,type:str]
+sops:
+  age:
+    - recipient: age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAyeW1NVFpZVzY5aVVVako4
+        d0dpVDVoTHdiS0szMFNnVHFlLzVvUndsejBzCmpPVVdhQWlwNmJIdUJpejMxS0F1
+        U2dNZW1ZSnlyWkh0bHdrYnJsTmViQkUKLS0tIGVQUnhNSVE1SVNyYVB5WFVKeXRo
+        YW1YQkRlZjlDTFlLclM5cHQwVGRoRXcKAw8IcgzZOZjbk8Mxe5B0Oy8p+Gp6VhL+
+        eAVTgGqCStvm759RZBwQ0V+FQzizDUddEKn2aEs/gGd6Am2k3ljLyQ==
+        -----END AGE ENCRYPTED FILE-----
+    - recipient: age1klzrc4tp666ykn8u4y2nt80n0tcx52lvezrr54zswz55w2pdsgyqhcdfyr
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0TThNczZUTWhMRW5mRWdt
+        YmZ5QmpMbGJzeFQwMzJPZGVsUkdpVTZwWm5VCjRiL25KenBHZWh4YkZtQVVoVTJa
+        eDhwUUllRjdRR2IvSUhteUR3d3BBT0EKLS0tIDNPZXJkZGRjNGpKTUVjNzhMOVpM
+        UTlwUy8rbW8zbDBYZ0RkUmRYc2NSVzQKAVuN3Dyqs/vuegwLFD3NBG6Ee8W5dN7X
+        P4JurnBXrPjhdhdNLXWLnog6QSxkJZqCljTmzLxxmgA/g7vdk64A/g==
+        -----END AGE ENCRYPTED FILE-----
+    - recipient: age150z0s36kl9vud8728c5e4zqq6nmyywekk76rwvjclcsfc8mrxuuqr0qfg6
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBheWduUkdiSlBabkxPMi90
+        SXhWRzg2dGpRRUR6TDgyV21nZHdvaE54cldZCmdVKzRpanI4RysyT3JJemJPNUMv
+        TEtVTFdMK01wV0dDNW84NWs2UjV2L2sKLS0tIFZlNTVNTVJSeHBvOXdnZURKK2V6
+        V1dCc1lLWmZKUXRGa25MZm5HVGw5TEkKfturb7JCLvr8GVrDPLaXiHCUHjz3vokP
+        db4Xc7oWDLzU3IcP1O9RjgXGb+SOT+IDCo9ddjuAtmz7AamuRIXG5w==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-01-14T02:55:48Z"
+  mac: ENC[AES256_GCM,data:RcqnBxby5R0f3qgb774S2HWRp7Z9NHnq5F2mhptIupREzAFk9KqO0UQinRd805GTfYO8CR2noQRL+Ybhy5Z1D8oxPq682XCykRPLQ1VpZJOcyQ5vRboVkpsUTCWj+KfRUBx3xQ89kf2EjRaH5BxX9SvEo67HenIIbXTmlBfsu/8=,iv:AgQDSLNraR3jgIMgVyy6neHIff7HmQaYLn68TgTs44E=,tag:7/ygkFz3UoEnC07u/Nkftw==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.11.0

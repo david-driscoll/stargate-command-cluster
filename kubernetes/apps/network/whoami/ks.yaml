@@ -17,7 +17,7 @@ spec:
   dependsOn:
     - name: certificates
       namespace: *namespace
-  path: ./kubernetes/apps/network/traefik/whoami
+  path: ./kubernetes/apps/network/whoami
   prune: true
   wait: true
   force: false # true
@@ -28,8 +28,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components:
-    - ../../../../components/gateway/forwardauth
+  components: []
   postBuild:
     substitute:
       APP: *app

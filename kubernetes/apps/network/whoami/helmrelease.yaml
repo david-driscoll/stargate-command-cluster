@@ -58,19 +58,6 @@ spec:
           - "whoami.${CLUSTER_DOMAIN}"
         kind: HTTPRoute
         rules:
-          - matches:
-              - headers:
-                  - name: X-Api-Key
-                    value: ".*"
-            backendRefs:
-              - identifier: main
-                port: *httpPort
-            filters:
-              - type: ExtensionRef
-                extensionRef:
-                  group: traefik.io
-                  kind: Middleware
-                  name: local-user
           - backendRefs:
               - identifier: main
                 port: *httpPort

@@ -66,6 +66,12 @@ cluster:
     superuser: true
     passwordSecret:
       name: postgres-user
+  - name: crowdsec
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: crowdsec-postgres
   - name: authentik
     ensure: present
     login: true

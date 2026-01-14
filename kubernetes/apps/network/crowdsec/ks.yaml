@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app traefik-whoami
+  name: &app crowdsec
   namespace: &namespace network
   labels:
     app.kubernetes.io/name: *app
@@ -14,12 +14,11 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
-  dependsOn:
-    - name: certificates
-      namespace: *namespace
-  path: ./kubernetes/apps/network/traefik/whoami
+  path: ./kubernetes/apps/network/crowdsec
+  components:
+    - ../../../components/postgres
   prune: true
-  wait: true
+  wait: false
   force: false # true
   interval: 1h
   retryInterval: 2m
@@ -28,7 +27,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  components: []
   postBuild:
     substitute:
       APP: *app

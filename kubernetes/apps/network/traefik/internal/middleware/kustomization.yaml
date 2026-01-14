@@ -15,4 +15,6 @@ resources:
   - ./error-pages.yaml
   - ./default-cors.yaml
   - ./outpost.yaml
+  # - ./fail2ban.yaml
+  # - ./crowdsec.yaml
   # - ./tailscale-redirect.yaml

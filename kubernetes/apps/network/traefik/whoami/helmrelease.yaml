@@ -61,3 +61,9 @@ spec:
           - backendRefs:
               - identifier: main
                 port: *httpPort
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: traefik.io
+                  kind: Middleware
+                  name: authenticated-user

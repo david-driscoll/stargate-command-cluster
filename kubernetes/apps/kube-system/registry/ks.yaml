@@ -28,7 +28,6 @@ spec:
   targetNamespace: *namespace
   components:
     - ../../../components/volsync
-    - ../../../components/gateway/internal
   postBuild:
     substitute:
       APP: *app

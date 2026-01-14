@@ -34,6 +34,9 @@ volumes:
   - name: traefik-tls-settings
     mountPath: '/config'
     type: configMap
+  - name: crowdsec-secret
+    mountPath: /etc/secrets/crowdsec
+    type: secret
 ports:
   traefik:
     expose:
@@ -141,19 +144,49 @@ experimental:
     traefik-plugin-query-modification:
       moduleName: "github.com/kingjan1999/traefik-plugin-query-modification"
       version: "v1.0.0"
+    fail2ban:
+      moduleName: "github.com/tomMoulard/fail2ban"
+      version: "v0.8.9"
+    crowdsec-bouncer-traefik-plugin:
+      moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      version: "v1.5.0-beta1"
   fastProxy:
     enabled: true
   otlpLogs: true
 web:
   forwardedHeaders:
     insecure: true
+    trustedIPs:
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+      - 100.64.0.0/10
   proxyProtocol:
     insecure: true
+    trustedIPs:
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+      - 100.64.0.0/10
 websecure:
   forwardedHeaders:
     insecure: true
+    trustedIPs:
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+      - 100.64.0.0/10
   proxyProtocol:
     insecure: true
+    trustedIPs:
+      - "${CLUSTER_NETWORK}"
+      - "${SERVICE_NETWORK}"
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+      - 100.64.0.0/10
 
 tlsStore:
   default:

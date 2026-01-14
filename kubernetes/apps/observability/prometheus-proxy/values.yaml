@@ -27,6 +27,24 @@ prometheus:
         - name: internal
           namespace: network
           kind: Gateway
+      matches:
+        - headers:
+            - name: X-Api-Key
+              value: ".*"
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: local-user
+    auth:
+      enabled: true
+      hostnames:
+        - prometheus.${CLUSTER_DOMAIN}
+      parentRefs:
+        - name: internal
+          namespace: network
+          kind: Gateway
       filters:
         - type: ExtensionRef
           extensionRef:

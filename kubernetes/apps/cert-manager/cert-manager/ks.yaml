@@ -19,7 +19,7 @@ spec:
   path: ./kubernetes/apps/cert-manager/cert-manager
   prune: true
   wait: true
-  force: false # true
+  force: false
   retryInterval: 2m
   timeout: 15m
   sourceRef:

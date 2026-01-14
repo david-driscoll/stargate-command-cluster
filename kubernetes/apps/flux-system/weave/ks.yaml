@@ -20,7 +20,7 @@ spec:
   path: ./kubernetes/apps/flux-system/weave
   prune: true
   wait: false
-  force: false # true
+  force: false
   retryInterval: 2m
   timeout: 10m
   sourceRef:

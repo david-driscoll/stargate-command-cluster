@@ -20,7 +20,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/adguard
   prune: true
   wait: true
-  force: false # true
+  force: false
   interval: 1h
   retryInterval: 2m
   timeout: 10m

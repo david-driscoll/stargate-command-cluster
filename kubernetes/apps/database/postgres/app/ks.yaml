@@ -22,7 +22,7 @@ spec:
       namespace: kube-system
   prune: true
   wait: true
-  force: false # true
+  force: false
   suspend: false
   interval: 1h
   retryInterval: 2m

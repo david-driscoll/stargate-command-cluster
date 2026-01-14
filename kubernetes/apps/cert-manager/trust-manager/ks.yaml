@@ -17,7 +17,7 @@ spec:
   path: ./kubernetes/apps/cert-manager/trust-manager
   prune: true
   wait: true
-  force: false # true
+  force: false
   interval: 1h
   timeout: 15m
   sourceRef:

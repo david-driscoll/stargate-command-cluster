@@ -17,7 +17,7 @@ spec:
   path: ./kubernetes/apps/network/k8s-gateway
   prune: true
   wait: false
-  force: false # true
+  force: false
   interval: 1h
   retryInterval: 2m
   timeout: 10m

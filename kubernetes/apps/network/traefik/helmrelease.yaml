@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app traefik-internal
+  name: &app traefik
   namespace: network
 spec:
   chart:
@@ -36,4 +36,4 @@ spec:
     keepHistory: false
   valuesFrom:
     - kind: ConfigMap
-      name: traefik-internal-values
+      name: traefik-values

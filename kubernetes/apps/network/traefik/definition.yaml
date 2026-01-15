@@ -3,7 +3,7 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: traefik-internal
+  name: traefik-${CLUSTER_CNAME}
 spec:
   name: Traefik Dashboard
   category: ${CLUSTER_TITLE}

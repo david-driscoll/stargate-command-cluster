@@ -7,7 +7,7 @@ components:
   - ../../components/alerts
   - ../../components/common
 resources:
-  - ./capacitor/ks.yaml
+  # - ./capacitor/ks.yaml
   - ./flux-instance/ks.yaml
   - ./flux-operator/ks.yaml
   - ./weave/ks.yaml

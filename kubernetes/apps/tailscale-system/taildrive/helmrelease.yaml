@@ -1,0 +1,104 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app taildrive
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 15m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: true
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    fullnameOverride: *app
+    controllers:
+      app:
+        initContainers:
+          sysctler:
+            image:
+              repository: tailscale/tailscale
+              tag: v1.92.5@sha256:4a0aaacee6f28e724c1f80c986e5776c9c979d8f7e19274c2cae2d495cc8d625
+            command:
+              - /bin/sh
+              - '-c'
+            args:
+              - >-
+                sysctl -w net.ipv4.ip_forward=1 && if sysctl
+                net.ipv6.conf.all.forwarding; then sysctl -w
+                net.ipv6.conf.all.forwarding=1; fi
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            securityContext:
+              privileged: true
+        containers:
+          app:
+            image:
+              repository: ghcr.io/tailscale/tailscale
+              tag: v1.92.5@sha256:4a0aaacee6f28e724c1f80c986e5776c9c979d8f7e19274c2cae2d495cc8d625
+            command:
+              - /bin/sh
+              - '-c'
+            args:
+              - >-
+              - tailscale up --hostname=${APP}
+                tailscale drive share media /media
+                tailscale drive share backup /backup
+                tailscale drive share opencloud /opencloud
+                tailscale drive share taildrive /taildrive
+            env:
+              TS_AUTHKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: authkey
+                    key: authkey
+            securityContext:
+              privileged: true
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      data:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /taildrive
+      nfs-media:
+        type: nfs
+        server: ${SPIKE_IP}
+        path: /mnt/stash/media
+        globalMounts:
+          - path: /media
+      nfs-backup:
+        type: nfs
+        server: ${SPIKE_IP}
+        path: /mnt/stash/backup
+        globalMounts:
+          - path: /backup
+      nfs-opencloud:
+        type: nfs
+        server: ${SPIKE_IP}
+        path: /mnt/stash/data/opencloud
+        globalMounts:
+          - path: /opencloud

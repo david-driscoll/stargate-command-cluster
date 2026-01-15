@@ -13,3 +13,4 @@ resources:
   - ./services/ks.yaml
   - ./resources/ks.yaml
   - ./idp/ks.yaml
+  - ./taildrive/ks.yaml

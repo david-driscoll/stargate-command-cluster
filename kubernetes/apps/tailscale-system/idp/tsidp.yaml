@@ -65,8 +65,10 @@ spec:
             #   - -client_id=tailscale-idp
             #   - -client_secret=${TAILSCALE_CLIENT_SECRET}
             env:
-              TS_HOSTNAME: idp
-              TS_STATE_DIR: /data/tsidp
+              TS_HOSTNAME: &idp idp
+              TS_STATE_DIR: /data
+              TSIDP_HOSTNAME: *idp
+              TSIDP_STATE_DIR: /data
               TAILSCALE_USE_WIP_CODE: "1"
               TS_AUTHKEY:
                 valueFrom:
@@ -85,11 +87,7 @@ spec:
       shareProcessNamespace: true
 
     persistence:
-      # certs:
-      #   type: emptyDir
-      #   globalMounts:
-      #     - path: /data/tsidp/certs
       data:
         existingClaim: *app
         globalMounts:
-          - path: /data/tsidp/
+          - path: /data

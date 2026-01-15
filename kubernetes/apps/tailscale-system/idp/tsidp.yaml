@@ -46,7 +46,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                chown -R 1000:1000 /data/tsidp/
+                chown -R 1000:1000 /data
             securityContext:
               runAsUser: 0
               runAsGroup: 0
@@ -61,9 +61,6 @@ spec:
             image:
               repository: ghcr.io/tailscale/tsidp
               tag: v0.0.9@sha256:3462c9dec80b1a524b21315729ea7456e5cf9386ee4d8f0900372c99fddba0e3
-            # args:
-            #   - -client_id=tailscale-idp
-            #   - -client_secret=${TAILSCALE_CLIENT_SECRET}
             env:
               TS_HOSTNAME: &idp idp
               TS_STATE_DIR: /data
@@ -76,10 +73,6 @@ spec:
                     name: authkey
                     key: authkey
               TSIDP_ENABLE_STS: "1"
-            securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-
     defaultPodOptions:
       securityContext:
         seccompProfile:

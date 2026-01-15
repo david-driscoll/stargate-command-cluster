@@ -73,6 +73,10 @@ spec:
                     name: authkey
                     key: authkey
               TSIDP_ENABLE_STS: "1"
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+
     defaultPodOptions:
       securityContext:
         seccompProfile:

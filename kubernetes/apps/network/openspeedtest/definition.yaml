@@ -3,7 +3,7 @@
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: openspeedtest-${CLUSTER_CNAME}
+  name: openspeedtest
 spec:
   name: OpenSpeedTest
   category: ${CLUSTER_TITLE}

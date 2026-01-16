@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: openspeedtest
+spec:
+  name: OpenSpeedTest
+  category: ${CLUSTER_TITLE}
+  description: Network speed testing and diagnostics.
+  url: https://openspeedtest.${ROOT_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/openspeedtest.svg
+  access_policy:
+    groups:
+      - friends
+      - family
+  gatus:
+    - url: https://openspeedtest.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

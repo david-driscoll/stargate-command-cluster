@@ -184,10 +184,6 @@ spec:
           - "home.${ROOT_DOMAIN}"
           - "${APP}.${ROOT_DOMAIN}"
         kind: HTTPRoute
-        annotations:
-          gatus.home-operations.com/endpoint: |
-            conditions:
-              - "[STATUS] == 200"
         rules:
           - backendRefs:
               - identifier: app
@@ -201,10 +197,6 @@ spec:
         hostnames:
           - "${APP}-code.${ROOT_DOMAIN}"
         kind: HTTPRoute
-        annotations:
-          gatus.home-operations.com/endpoint: |
-            conditions:
-              - "[STATUS] == 200"
         rules:
           - backendRefs:
               - identifier: code

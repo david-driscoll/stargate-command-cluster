@@ -8,7 +8,6 @@ spec:
   url: oci://ghcr.io/bjw-s-labs/helm/app-template
   ref:
     tag: 4.5.0
-
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
@@ -67,7 +66,7 @@ spec:
             namespace: network
             kind: Gateway
         hostnames:
-          - "${APP}.${ROOT_DOMAIN}"
+          - "${APP}.${CLUSTER_DOMAIN}"
         kind: HTTPRoute
         rules:
           - backendRefs:

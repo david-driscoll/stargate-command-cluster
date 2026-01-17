@@ -8,14 +8,14 @@ spec:
   name: OpenSpeedTest
   category: ${CLUSTER_TITLE}
   description: Network speed testing and diagnostics.
-  url: https://openspeedtest.${ROOT_DOMAIN}
+  url: https://openspeedtest.${CLUSTER_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/openspeedtest.svg
   access_policy:
     groups:
       - friends
       - family
   gatus:
-    - url: https://openspeedtest.${ROOT_DOMAIN}
+    - url: https://openspeedtest.${CLUSTER_DOMAIN}
       method: GET
       conditions:
         - "[STATUS] == 200"

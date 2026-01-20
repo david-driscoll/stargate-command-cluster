@@ -1058,7 +1058,7 @@ spec:
                           type: string
                         refreshTokenValidity:
                           type: string
-                        backchannelLogoutUri:
+                        logoutUri:
                           type: string
                         skipPathRegex:
                           type: string
@@ -1157,7 +1157,7 @@ spec:
                           type: string
                         refreshTokenValidity:
                           type: string
-                        backchannelLogoutUri:
+                        logoutUri:
                           type: string
                         signingKey:
                           type: string

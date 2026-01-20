@@ -116,7 +116,7 @@
         },
         "providerProxyId": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
-        "backchannelLogoutUri": { "type": "string" },
+        "logoutUri": { "type": "string" },
         "skipPathRegex": { "type": "string" }
       }
     },
@@ -196,7 +196,7 @@
         },
         "providerOauth2Id": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
-        "backchannelLogoutUri": { "type": "string" },
+        "logoutUri": { "type": "string" },
         "signingKey": { "type": "string" },
         "subMode": { "type": "string" }
       },

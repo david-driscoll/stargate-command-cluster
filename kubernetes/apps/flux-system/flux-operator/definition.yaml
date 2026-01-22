@@ -5,12 +5,12 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}
 spec:
-  name: Capacitor
+  name: Flux Operator
   category: ${CLUSTER_TITLE}
-  description: Access to the Capacitor dashboard
-  url: &url https://capacitor.${CLUSTER_DOMAIN}
+  description: Access to the Flux Operator dashboard
+  url: &url https://flux.${CLUSTER_DOMAIN}
   # TODO: Change me someday
-  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/lighttpd.svg
+  icon: https://fluxoperator.dev/favicon.svg
   access_policy:
     groups:
       - admins

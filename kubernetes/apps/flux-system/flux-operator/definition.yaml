@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Capacitor
+  category: ${CLUSTER_TITLE}
+  description: Access to the Capacitor dashboard
+  url: &url https://capacitor.${CLUSTER_DOMAIN}
+  # TODO: Change me someday
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/lighttpd.svg
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+  gatus:
+    - url: *url
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

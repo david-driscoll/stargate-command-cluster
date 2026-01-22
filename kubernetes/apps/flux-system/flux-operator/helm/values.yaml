@@ -1,3 +1,12 @@
 ---
 serviceMonitor:
   create: true
+web:
+  httpRoute:
+    enabled: true
+    parentRefs:
+      - name: internal
+        namespace: network
+        kind: Gateway
+    hostnames:
+      - "flux.${CLUSTER_DOMAIN}"

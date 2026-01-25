@@ -4,7 +4,6 @@ image:
   registry: ghcr.io
   repository: traefik/traefik
   tag: v3.6.7@sha256:2c5e029ee3638d3788b4ca7c8ef454baa8f924b91b190b3fd2742bee721ebeea
-fullnameOverride: traefik
 deployment:
   kind: Deployment
   replicas: 2
@@ -44,16 +43,29 @@ ports:
   web:
     port: 80
     exposedPort: 80
-    redirections:
-      entryPoint:
-        to: websecure
-        scheme: https
-        permanent: true
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+      forwardedHeaders: &protocol-settings
+        insecure: true
+        trustedIPs:
+          - "${CLUSTER_NETWORK}"
+          - "${SERVICE_NETWORK}"
+          - 10.0.0.0/8
+          - 192.168.0.0/16
+          - 100.64.0.0/10
+      proxyProtocol: *protocol-settings
   websecure:
     port: 443
     exposedPort: 443
-    tls:
-      enabled: true
+    http:
+      tls:
+        enabled: true
+      forwardedHeaders: *protocol-settings
+      proxyProtocol: *protocol-settings
     transport:
       respondingTimeouts:
         readTimeout: "0s"
@@ -66,10 +78,6 @@ ports:
     transport:
       respondingTimeouts:
         readTimeout: "0s"
-    http:
-      encodedCharacters:
-        allowEncodedSlash: true
-        allowEncodedQuestionMark: true
   mariadb:
     expose:
       default: true
@@ -153,40 +161,6 @@ experimental:
   fastProxy:
     enabled: true
   otlpLogs: true
-web:
-  forwardedHeaders:
-    insecure: true
-    trustedIPs:
-      - "${CLUSTER_NETWORK}"
-      - "${SERVICE_NETWORK}"
-      - 10.0.0.0/8
-      - 192.168.0.0/16
-      - 100.64.0.0/10
-  proxyProtocol:
-    insecure: true
-    trustedIPs:
-      - "${CLUSTER_NETWORK}"
-      - "${SERVICE_NETWORK}"
-      - 10.0.0.0/8
-      - 192.168.0.0/16
-      - 100.64.0.0/10
-websecure:
-  forwardedHeaders:
-    insecure: true
-    trustedIPs:
-      - "${CLUSTER_NETWORK}"
-      - "${SERVICE_NETWORK}"
-      - 10.0.0.0/8
-      - 192.168.0.0/16
-      - 100.64.0.0/10
-  proxyProtocol:
-    insecure: true
-    trustedIPs:
-      - "${CLUSTER_NETWORK}"
-      - "${SERVICE_NETWORK}"
-      - 10.0.0.0/8
-      - 192.168.0.0/16
-      - 100.64.0.0/10
 
 tlsStore:
   default:

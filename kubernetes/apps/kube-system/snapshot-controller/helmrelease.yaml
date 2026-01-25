@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 4.2.0
+    tag: 5.0.2
   url: oci://ghcr.io/piraeusdatastore/helm-charts/snapshot-controller
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -43,17 +43,23 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # Chart v5 enables webhook by default; disable to avoid TLS setup
+    webhook:
+      enabled: false
+    # Ensure CRDs are installed as part of the chart
+    installCRDs: true
     controller:
       replicaCount: 2
       serviceMonitor:
         create: true
-      volumeSnapshotClasses:
-        - name: longhorn-snapclass
-          annotations:
-            snapshot.storage.kubernetes.io/is-default-class: "true"
-          driver: driver.longhorn.io
-          deletionPolicy: Retain
-          parameters:
-            # needed for successful VolumeSnapshots
-            # see: https://github.com/longhorn/longhorn/issues/2534#issuecomment-1010508714
-            type: snap
+    # Chart v5 expects volumeSnapshotClasses at the top-level
+    volumeSnapshotClasses:
+      - name: longhorn-snapclass
+        annotations:
+          snapshot.storage.kubernetes.io/is-default-class: "true"
+        driver: driver.longhorn.io
+        deletionPolicy: Retain
+        parameters:
+          # needed for successful VolumeSnapshots
+          # see: https://github.com/longhorn/longhorn/issues/2534#issuecomment-1010508714
+          type: snap

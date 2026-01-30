@@ -16,7 +16,7 @@ resources:
   - ./coredns/ks.yaml
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
-  - ./kubernetes-dashboard/ks.yaml
+  # - ./kubernetes-dashboard/ks.yaml
   - ./features
   - ./secrets
   - ./spegel/ks.yaml

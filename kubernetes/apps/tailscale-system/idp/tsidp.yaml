@@ -60,7 +60,7 @@ spec:
             nameOverride: *app
             image:
               repository: ghcr.io/tailscale/tsidp
-              tag: v0.0.10@sha256:0475ca18d39d5abae15a0957383cb96e1d382dd847556a62b45255591a5277c8
+              tag: v0.0.11@sha256:f1d52123e43c80bd060baf4ed2d93f28bd5bc044fbf4c33d8bda4aad0c12abca
             env:
               TS_HOSTNAME: &idp idp
               TS_STATE_DIR: /data

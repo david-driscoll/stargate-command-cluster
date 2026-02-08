@@ -3,7 +3,8 @@
 defaultBackupStore:
   backupTarget: nfs://${SPIKE_IP}:/mnt/stash/backup/${CLUSTER_CNAME}/longhorn
   # backupTargetCredentialSecret: s3-secret
-
+preUpgradeChecker:
+  upgradeVersionCheck: false
 persistence:
   defaultDataLocality: best-effort
 defaultSettings:

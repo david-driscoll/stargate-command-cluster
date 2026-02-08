@@ -1,5 +1,8 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.19.0-pre.2/install/kubernetes/cilium/values.schema.json
+# Ref: https://docs.cilium.io/en/stable/operations/upgrade/#version-specific-notes
+# Required for safe upgrades from pre-1.19 versions to minimize datapath disruption
+upgradeCompatibility: "1.18"
 autoDirectNodeRoutes: true
 bpf:
   masquerade: true

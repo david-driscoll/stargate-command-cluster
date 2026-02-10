@@ -76,11 +76,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-      seadoc:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        replicas: 1
-        containers:
           seadoc:
             image:
               repository: seafileltd/sdoc-server
@@ -165,7 +160,6 @@ spec:
             mariadb:
               - path: /var/lib/mysql
                 subPath: mysql
-          seadoc:
             seadoc:
               - path: /shared
                 subPath: seafile
@@ -188,7 +182,6 @@ spec:
             seafile:
               - path: /shared/seafile/logs
                 subPath: seafile
-          seadoc:
             seadoc:
               - path: /shared/seafile/logs
                 subPath: seadoc
@@ -196,14 +189,14 @@ spec:
           #   notification-server:
           #     - path: /shared/seafile/logs
           #       subPath: notification-server
-          # thumbnail-server:
-          #   thumbnail-server:
+          # md-server:
+          #   md-server:
           #     - path: /shared/seafile/logs
-          #       subPath: thumbnail-server
-          md-server:
-            md-server:
+          #       subPath: md-server
+          thumbnail-server:
+            thumbnail-server:
               - path: /shared/seafile/logs
-                subPath: md-server
+                subPath: thumbnail-server
 
 
     service:
@@ -220,7 +213,7 @@ spec:
           http:
             port: &mariadb-port 3306
       seadoc:
-        controller: seadoc
+        controller: *app
         type: ClusterIP
         ports:
           http:
@@ -275,7 +268,7 @@ spec:
         kind: HTTPRoute
         rules:
           - backendRefs:
-              - identifier: seadoc
+              - identifier: *app
                 port: *seadoc-port
             filters:
               - type: ExtensionRef

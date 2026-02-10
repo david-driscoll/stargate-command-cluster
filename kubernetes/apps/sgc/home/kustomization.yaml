@@ -6,4 +6,5 @@ resources:
   # - ./matter/ks.yaml
   - ./mosquitto/ks.yaml
   - ./home-assistant/ks.yaml
-  - ./opencloud/ks.yaml
+  # - ./opencloud/ks.yaml
+  - ./seafile/ks.yaml

@@ -1,0 +1,116 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app seafile
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        initContainers:
+          set-ownership:
+            image:
+              repository: busybox
+              tag: latest@sha256:2383baad1860bbe9d8a7a843775048fd07d8afe292b94bd876df64a69aae7cb1
+            command: ['sh', '-c', 'chown -R root:root /shared']
+        containers:
+          seafile:
+            image:
+              repository: seafileltd/seafile-mc
+              tag: 13.0-latest@sha256:6a47d79613a2e3a31680f8ed42bea9e0ecc2df0f17e00f2e75f38489fa1d132e
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            dependsOn:
+              - zmariadb
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+          zmariadb:
+            image:
+              repository: mariadb
+              tag: lts@sha256:1cac8492bd78b1ec693238dc600be173397efd7b55eabc725abc281dc855b482
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          *app :
+            set-ownership:
+              - path: /shared
+                subPath: seafile
+              - path: /mysql
+                subPath: mysql
+            seafile:
+              - path: /shared
+                subPath: seafile
+            mariadb:
+              - path: /var/lib/mysql
+                subPath: mysql
+
+    service:
+      *app :
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: &port 80
+
+    route:
+      internal:
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "${APP}.${ROOT_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: *port
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: traefik.io
+                  kind: Middleware
+                  name: local-user

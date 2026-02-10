@@ -2,6 +2,13 @@
 controllers:
   opencloud:
     forceRename: opencloud
+    pod:
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 568
     containers:
       opencloud:
         image: &img
@@ -12,11 +19,18 @@ controllers:
           - "-c"
           - "opencloud init || true; opencloud server"
         env:
+          IDM_CREATE_DEMO_USERS: false
+          IDM_ADMIN_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: opencloud-secret
+                key: idm-admin-password
+          PROXY_HTTP_ADDR: 0.0.0.0:9200
           OC_ADMIN_USER_ID: a15f91db-50ff-4b61-aafa-ad5276a4c21e
           OC_ENABLE_OCM: false
           OC_INSECURE: false
           OC_LOG_LEVEL: info
-          OC_URL: &url https://cloud.${ROOT_DOMAIN}
+          OC_URL: &url https://opencloud.${ROOT_DOMAIN}
           OC_OIDC_ISSUER: https://${OIDC_ISSUER}
           OC_EXCLUDE_RUN_SERVICES: idp,ocm
           OC_ADD_RUN_SERVICES: notifications
@@ -34,7 +48,6 @@ controllers:
           WEB_OIDC_SCOPE: "openid profile email"
           PROXY_CSP_CONFIG_FILE_LOCATION: &cspPath /etc/opencloud/csp.yaml
           PROXY_OIDC_REWRITE_WELLKNOWN: true # mobile apps try to re-register via internal idp
-          PROXY_HTTP_ADDR: 0.0.0.0:9200
           # metrics
           PROXY_DEBUG_ADDR: 0.0.0.0:9205
 
@@ -59,13 +72,13 @@ controllers:
           # prevent nested mounts
           WEB_ASSET_APPS_PATH: /opt/extensions/usr/share/nginx/html/apps
 
-          # NOTIFICATIONS_SMTP_HOST: smtp-relay.cluster-infra
-          # NOTIFICATIONS_SMTP_PORT: 25
-          # NOTIFICATIONS_SMTP_SENDER: bot@${ROOT_DOMAIN}
-          # NOTIFICATIONS_SMTP_INSECURE: true
+          NOTIFICATIONS_SMTP_HOST: smtp-relay.cluster-infra
+          NOTIFICATIONS_SMTP_PORT: 25
+          NOTIFICATIONS_SMTP_SENDER: bot@${ROOT_DOMAIN}
+          NOTIFICATIONS_SMTP_INSECURE: true
 
           STORAGE_USERS_DRIVER: posix
-          # STORAGE_USERS_ID_CACHE_STORE: nats-js-kv
+          STORAGE_USERS_ID_CACHE_STORE: nats-js-kv
 
           # Enable Radicale (CalDAV/CardDAV) behind Opencloud proxy
           RADICALE_ENABLED: "true"
@@ -94,34 +107,6 @@ controllers:
                 port: &port 9200
                 path: /health
           readiness: *probes
-      # taildrive:
-      #   image:
-      #     repository: docker.io/tailscale/tailscale
-      #     tag: latest@sha256:21df0b5a84efa35c0a507f4dd2340e1b1295683634a28968707354d5bd991d9c
-      #   command:
-      #     - /bin/sh
-      #     - -c
-      #     - |
-      #       tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/tmp/tailscaled.sock &
-      #       sleep 2
-      #       tailscale --socket=/tmp/tailscaled.sock up --authkey "$TS_AUTHKEY" --hostname "opencloud-taildrive" --accept-dns=false --tun=userspace-networking --reset --advertise-tags=tag:shared-drive
-      #       tailscale --socket=/tmp/tailscaled.sock serve --json /etc/tailscale/taildrive.json
-      #       tail -f /dev/null
-      #   env:
-      #     TS_AUTHKEY:
-      #       valueFrom:
-      #         secretKeyRef:
-      #           name: tailscale-authkey
-      #           key: authkey
-      #   resources:
-      #     requests:
-      #       cpu: 20m
-      #       memory: 64Mi
-      #     limits:
-      #       memory: 256Mi
-  wopi:
-    strategy: RollingUpdate
-    containers:
       wopi:
         image: *img
         command:
@@ -197,15 +182,6 @@ controllers:
             memory: 500Mi
           limits:
             memory: 5Gi
-defaultPodOptionsStrategy: merge
-defaultPodOptions:
-  securityContext:
-    runAsNonRoot: true
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
-    fsGroupChangePolicy: OnRootMismatch
-    seccompProfile: { type: RuntimeDefault }
 service:
   opencloud:
     forceRename: opencloud
@@ -222,12 +198,12 @@ service:
       caldav:
         port: 5232
   tika:
-    controller: tika
+    controller: opencloud
     ports:
       http:
         port: 9998
   wopi:
-    controller: wopi
+    controller: opencloud
     ports:
       http:
         port: 9300

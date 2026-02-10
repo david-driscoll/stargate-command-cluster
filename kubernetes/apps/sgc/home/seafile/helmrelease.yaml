@@ -76,66 +76,66 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-          seadoc:
-            image:
-              repository: seafileltd/sdoc-server
-              tag: 2.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            dependsOn:
-              - seafile
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
-          notification-server:
-            image:
-              repository: seafileltd/notification-server
-              tag: 13.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            dependsOn:
-              - seafile
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
-          md-server:
-            image:
-              repository: seafileltd/seafile-md-server
-              tag: 13.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            dependsOn:
-              - seafile
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
-          thumbnail-server:
-            image:
-              repository: seafileltd/thumbnail-server
-              tag: 13.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            dependsOn:
-              - seafile
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
+          # seadoc:
+          #   image:
+          #     repository: seafileltd/sdoc-server
+          #     tag: 2.0-latest
+          #   envFrom:
+          #     - secretRef:
+          #         name: ${APP}-env
+          #   dependsOn:
+          #     - seafile
+          #   resources:
+          #     requests:
+          #       cpu: 50m
+          #       memory: 256Mi
+          #     limits:
+          #       memory: 1Gi
+          # notification-server:
+          #   image:
+          #     repository: seafileltd/notification-server
+          #     tag: 13.0-latest
+          #   envFrom:
+          #     - secretRef:
+          #         name: ${APP}-env
+          #   dependsOn:
+          #     - seafile
+          #   resources:
+          #     requests:
+          #       cpu: 50m
+          #       memory: 256Mi
+          #     limits:
+          #       memory: 1Gi
+          # md-server:
+          #   image:
+          #     repository: seafileltd/seafile-md-server
+          #     tag: 13.0-latest
+          #   envFrom:
+          #     - secretRef:
+          #         name: ${APP}-env
+          #   dependsOn:
+          #     - seafile
+          #   resources:
+          #     requests:
+          #       cpu: 50m
+          #       memory: 256Mi
+          #     limits:
+          #       memory: 1Gi
+          # thumbnail-server:
+          #   image:
+          #     repository: seafileltd/thumbnail-server
+          #     tag: 13.0-latest
+          #   envFrom:
+          #     - secretRef:
+          #         name: ${APP}-env
+          #   dependsOn:
+          #     - seafile
+          #   resources:
+          #     requests:
+          #       cpu: 50m
+          #       memory: 256Mi
+          #     limits:
+          #       memory: 1Gi
 
     persistence:
       data:
@@ -150,21 +150,21 @@ spec:
             seafile:
               - path: /shared
                 subPath: seafile
-            seadoc:
-              - path: /shared
-                subPath: seafile
-            notification-server:
-              - path: /shared
-                subPath: seafile
-            thumbnail-server:
-              - path: /shared
-                subPath: seafile
-            md-server:
-              - path: /shared
-                subPath: seafile
             mariadb:
               - path: /var/lib/mysql
                 subPath: mysql
+            # seadoc:
+            #   - path: /shared
+            #     subPath: seafile
+            # notification-server:
+            #   - path: /shared
+            #     subPath: seafile
+            # thumbnail-server:
+            #   - path: /shared
+            #     subPath: seafile
+            # md-server:
+            #   - path: /shared
+            #     subPath: seafile
       tmp:
         type: emptyDir
         advancedMounts:
@@ -172,18 +172,18 @@ spec:
             seafile:
               - path: /shared/seafile/logs
                 subPath: seafile
-            seadoc:
-              - path: /shared/seafile/logs
-                subPath: seadoc
-            notification-server:
-              - path: /shared/seafile/logs
-                subPath: notification-server
-            thumbnail-server:
-              - path: /shared/seafile/logs
-                subPath: thumbnail-server
-            md-server:
-              - path: /shared/seafile/logs
-                subPath: md-server
+            # seadoc:
+            #   - path: /shared/seafile/logs
+            #     subPath: seadoc
+            # notification-server:
+            #   - path: /shared/seafile/logs
+            #     subPath: notification-server
+            # thumbnail-server:
+            #   - path: /shared/seafile/logs
+            #     subPath: thumbnail-server
+            # md-server:
+            #   - path: /shared/seafile/logs
+            #     subPath: md-server
 
 
     service:

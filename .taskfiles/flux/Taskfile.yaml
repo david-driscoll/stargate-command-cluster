@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  delete-kustomization:
+    interactive: true
+    desc: delete a given kustomization
+    requires:
+      vars: [NAMESPACE, NAME]
+    preconditions:
+      - which kubectl
+      - which flux
+    cmds:
+      - |
+        echo "Removing finalizer from Kustomization {{.NAMESPACE}}/{{.NAME}}"
+        kubectl -n "{{.NAMESPACE}}" patch kustomization "{{.NAME}}" --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+        flux -n "{{.NAMESPACE}}" delete kustomization "{{.NAME}}" --silent
+      - |
+        echo "Reconciling flux-system Kustomization to apply changes"
+        flux -n flux-system reconcile kustomization cluster-apps

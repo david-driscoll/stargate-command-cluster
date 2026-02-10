@@ -14,6 +14,15 @@ tasks:
               - Failed
               - Succeeded
         cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true
+  cleanup-resource:
+    desc: Clean up a given resource by kind and name
+    requires:
+      vars: [NAME, NAMESPACE]
+    preconditions:
+      - which kubectl
+    cmds:
+      - kubectl get all -l app.kubernetes.io/name={{.NAME}} -n {{.NAMESPACE}} -o name | xargs kubectl patch -p '{"metadata":{"finalizers":[]}}' --type=merge -n {{.NAMESPACE}}
+      - kubectl delete all -l app.kubernetes.io/name={{.NAME}} -n {{.NAMESPACE}}
   restart-flux:
     cmd: kubectl rollout restart deployment,statefulset,daemonset -n flux-system
   restart-kube:

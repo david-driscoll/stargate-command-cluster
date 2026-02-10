@@ -5,22 +5,14 @@
 # GITHUB_PRIV_KEY - GitHub App Private Key (PEM format) - note the variable name for go-github-apps
 # GITHUB_INSTALLATION_ID - Installation ID for the GitHub App
 # GITHUB_USERNAME - Username for docker registry authentication (can be any value for GitHub)
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
+chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
 apt-get update
-apt-get install -y curl jq
-
-# Download kubectl with better error handling
-echo "Downloading kubectl..."
-KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt 2>/dev/null || echo "v1.34.0")
-if ! curl -4 -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" 2>/dev/null; then
-    echo "Failed to download kubectl, trying fallback version..."
-    curl -4 -LO "https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl" || {
-        echo "Error: Could not download kubectl"
-        exit 1
-    }
-fi
-chmod +x ./kubectl
-./kubectl version --client
+apt-get install -y curl jq ca-certificates kubectl
+kubectl version
 
 # Set defaults for optional variables
 SECRET_NAME="ghcr-auth"
@@ -53,7 +45,7 @@ echo "Installation access token obtained successfully"
 # Create docker-registry secret
 echo "Creating docker-registry secret: $SECRET_NAME"
 
-kubectl_cmd="./kubectl create secret docker-registry $SECRET_NAME \
+kubectl_cmd="kubectl create secret docker-registry $SECRET_NAME \
     --namespace=kube-system \
     --docker-server=$DOCKER_SERVER \
     --docker-username=$DOCKER_USERNAME \
@@ -61,13 +53,13 @@ kubectl_cmd="./kubectl create secret docker-registry $SECRET_NAME \
     --docker-email=noreply@github.com"
 
 # Execute with dry-run first, then apply
-$kubectl_cmd --dry-run=client -o yaml | ./kubectl apply -f -
+$kubectl_cmd --dry-run=client -o yaml | kubectl apply -f -
 
 # Add annotations for reflection and reloading
 echo "Adding annotations to secret..."
-./kubectl annotate secret $SECRET_NAME reloader.stakater.com/auto='true' --namespace=kube-system --overwrite
-./kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-allowed='true' --namespace=kube-system --overwrite
-./kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-auto-enabled='true' --namespace=kube-system --overwrite
+kubectl annotate secret $SECRET_NAME reloader.stakater.com/auto='true' --namespace=kube-system --overwrite
+kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-allowed='true' --namespace=kube-system --overwrite
+kubectl annotate secret $SECRET_NAME reflector.v1.k8s.emberstack.com/reflection-auto-enabled='true' --namespace=kube-system --overwrite
 
 echo "Docker registry secret '$SECRET_NAME' created successfully!"
 echo "To use this secret in a pod, add the following to your pod spec:"

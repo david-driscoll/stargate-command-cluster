@@ -94,42 +94,42 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-      notification-server:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        replicas: 1
-        containers:
-          notification-server:
-            image:
-              repository: seafileltd/notification-server
-              tag: 13.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
-      md-server:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        replicas: 1
-        containers:
-          md-server:
-            image:
-              repository: seafileltd/seafile-md-server
-              tag: 13.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
+      # notification-server:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   replicas: 1
+      #   containers:
+      #     notification-server:
+      #       image:
+      #         repository: seafileltd/notification-server
+      #         tag: 13.0-latest
+      #       envFrom:
+      #         - secretRef:
+      #             name: ${APP}-env
+      #       resources:
+      #         requests:
+      #           cpu: 50m
+      #           memory: 256Mi
+      #         limits:
+      #           memory: 1Gi
+      # md-server:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   replicas: 1
+      #   containers:
+      #     md-server:
+      #       image:
+      #         repository: seafileltd/seafile-md-server
+      #         tag: 13.0-latest
+      #       envFrom:
+      #         - secretRef:
+      #             name: ${APP}-env
+      #       resources:
+      #         requests:
+      #           cpu: 50m
+      #           memory: 256Mi
+      #         limits:
+      #           memory: 1Gi
       thumbnail-server:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -225,24 +225,24 @@ spec:
         ports:
           http:
             port: &seadoc-port 80
-      notification-server:
-        controller: notification-server
-        type: ClusterIP
-        ports:
-          http:
-            port: &notification-server 80
+      # notification-server:
+      #   controller: notification-server
+      #   type: ClusterIP
+      #   ports:
+      #     http:
+      #       port: &notification-server 80
       thumbnail-server:
         controller: thumbnail-server
         type: ClusterIP
         ports:
           http:
             port: &thumbnail-server-port 80
-      md-server:
-        controller: md-server
-        type: ClusterIP
-        ports:
-          http:
-            port: &md-server-port 80
+      # md-server:
+      #   controller: md-server
+      #   type: ClusterIP
+      #   ports:
+      #     http:
+      #       port: &md-server-port 80
 
     route:
       internal:

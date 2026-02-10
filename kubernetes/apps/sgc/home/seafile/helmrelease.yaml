@@ -59,7 +59,7 @@ spec:
           zmariadb:
             image:
               repository: mariadb
-              tag: lts@sha256:1cac8492bd78b1ec693238dc600be173397efd7b55eabc725abc281dc855b482
+              tag: lts@sha256:7fcb6109db2ba31b22a5709c1eaf9e84f76c9f1b9b9031ef09f24092f7f207cc
             envFrom:
               - secretRef:
                   name: ${APP}-env

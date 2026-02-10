@@ -48,6 +48,8 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
+            ports:
+              - containerPort: &seafile-port 8082
             dependsOn:
               - zmariadb
             resources:
@@ -83,53 +85,44 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
+            ports:
+              - containerPort: &seadoc-port 8888
             resources:
               requests:
                 cpu: 50m
                 memory: 256Mi
               limits:
                 memory: 1Gi
-      # notification-server:
-      #   annotations:
-      #     reloader.stakater.com/auto: "true"
-      #   replicas: 1
-      #   containers:
-      #     notification-server:
-      #       image:
-      #         repository: seafileltd/notification-server
-      #         tag: 13.0-latest
-      #       envFrom:
-      #         - secretRef:
-      #             name: ${APP}-env
-      #       resources:
-      #         requests:
-      #           cpu: 50m
-      #           memory: 256Mi
-      #         limits:
-      #           memory: 1Gi
-      # md-server:
-      #   annotations:
-      #     reloader.stakater.com/auto: "true"
-      #   replicas: 1
-      #   containers:
-      #     md-server:
-      #       image:
-      #         repository: seafileltd/seafile-md-server
-      #         tag: 13.0-latest
-      #       envFrom:
-      #         - secretRef:
-      #             name: ${APP}-env
-      #       resources:
-      #         requests:
-      #           cpu: 50m
-      #           memory: 256Mi
-      #         limits:
-      #           memory: 1Gi
-      thumbnail-server:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        replicas: 1
-        containers:
+          notification-server:
+            image:
+              repository: seafileltd/notification-server
+              tag: 13.0-latest
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            ports:
+              - containerPort: &notification-server-port 8083
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+          md-server:
+            image:
+              repository: seafileltd/seafile-md-server
+              tag: 13.0-latest
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            ports:
+              - containerPort: &md-server-port 8085
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
           thumbnail-server:
             image:
               repository: seafileltd/thumbnail-server
@@ -137,6 +130,8 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
+            ports:
+              - containerPort: &thumbnail-server-port 8084
             resources:
               requests:
                 cpu: 50m
@@ -163,15 +158,12 @@ spec:
             seadoc:
               - path: /shared
                 subPath: seafile
-          # notification-server:
-          #   notification-server:
-          #     - path: /shared
-          #       subPath: seafile
-          # md-server:
-          #   md-server:
-          #     - path: /shared
-          #       subPath: seafile
-          thumbnail-server:
+            notification-server:
+              - path: /shared
+                subPath: seafile
+            md-server:
+              - path: /shared
+                subPath: seafile
             thumbnail-server:
               - path: /shared
                 subPath: seafile
@@ -185,15 +177,12 @@ spec:
             seadoc:
               - path: /shared/seafile/logs
                 subPath: seadoc
-          # notification-server:
-          #   notification-server:
-          #     - path: /shared/seafile/logs
-          #       subPath: notification-server
-          # md-server:
-          #   md-server:
-          #     - path: /shared/seafile/logs
-          #       subPath: md-server
-          thumbnail-server:
+            notification-server:
+              - path: /shared/seafile/logs
+                subPath: notification-server
+            md-server:
+              - path: /shared/seafile/logs
+                subPath: md-server
             thumbnail-server:
               - path: /shared/seafile/logs
                 subPath: thumbnail-server
@@ -205,7 +194,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 80
+            port: *seafile-port
       mariadb:
         controller: *app
         type: ClusterIP
@@ -217,25 +206,25 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &seadoc-port 7070
-      # notification-server:
-      #   controller: notification-server
-      #   type: ClusterIP
-      #   ports:
-      #     http:
-      #       port: &notification-server 80
-      # md-server:
-      #   controller: md-server
-      #   type: ClusterIP
-      #   ports:
-      #     http:
-      #       port: &md-server-port 80
-      thumbnail-server:
-        controller: thumbnail-server
+            port: *seadoc-port
+      notification-server:
+        controller: *app
         type: ClusterIP
         ports:
           http:
-            port: &thumbnail-server-port 80
+            port: *notification-server-port
+      md-server:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: *md-server-port
+      thumbnail-server:
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: *thumbnail-server-port
 
     route:
       internal:
@@ -250,7 +239,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: *app
-                port: *port
+                port: *seafile-port
             filters:
               - type: ExtensionRef
                 extensionRef:

@@ -94,31 +94,31 @@ controllers:
                 port: &port 9200
                 path: /health
           readiness: *probes
-      taildrive:
-        image:
-          repository: docker.io/tailscale/tailscale
-          tag: latest@sha256:21df0b5a84efa35c0a507f4dd2340e1b1295683634a28968707354d5bd991d9c
-        command:
-          - /bin/sh
-          - -c
-          - |
-            tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/tmp/tailscaled.sock &
-            sleep 2
-            tailscale --socket=/tmp/tailscaled.sock up --authkey "$TS_AUTHKEY" --hostname "opencloud-taildrive" --accept-dns=false --tun=userspace-networking --reset --advertise-tags=tag:shared-drive
-            tailscale --socket=/tmp/tailscaled.sock serve --json /etc/tailscale/taildrive.json
-            tail -f /dev/null
-        env:
-          TS_AUTHKEY:
-            valueFrom:
-              secretKeyRef:
-                name: tailscale-authkey
-                key: authkey
-        resources:
-          requests:
-            cpu: 20m
-            memory: 64Mi
-          limits:
-            memory: 256Mi
+      # taildrive:
+      #   image:
+      #     repository: docker.io/tailscale/tailscale
+      #     tag: latest@sha256:21df0b5a84efa35c0a507f4dd2340e1b1295683634a28968707354d5bd991d9c
+      #   command:
+      #     - /bin/sh
+      #     - -c
+      #     - |
+      #       tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/tmp/tailscaled.sock &
+      #       sleep 2
+      #       tailscale --socket=/tmp/tailscaled.sock up --authkey "$TS_AUTHKEY" --hostname "opencloud-taildrive" --accept-dns=false --tun=userspace-networking --reset --advertise-tags=tag:shared-drive
+      #       tailscale --socket=/tmp/tailscaled.sock serve --json /etc/tailscale/taildrive.json
+      #       tail -f /dev/null
+      #   env:
+      #     TS_AUTHKEY:
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: tailscale-authkey
+      #           key: authkey
+      #   resources:
+      #     requests:
+      #       cpu: 20m
+      #       memory: 64Mi
+      #     limits:
+      #       memory: 256Mi
   wopi:
     strategy: RollingUpdate
     containers:
@@ -145,17 +145,6 @@ controllers:
           MICRO_REGISTRY: nats-js-kv
           OC_URL: *url
         securityContext: *sec
-  collabora:
-    strategy: RollingUpdate
-    pod:
-      hostUsers: false
-      securityContext:
-        # Upstream 'cool' group
-        runAsUser: 1001
-        runAsGroup: 1001
-        seccompProfile:
-          type: Unconfined # This seems necessary
-    containers:
       collabora:
         image:
           repository: docker.io/collabora/code
@@ -195,11 +184,6 @@ controllers:
                 port: 9980
                 path: /hosting/discovery
           readiness: *probes
-  tika:
-    strategy: RollingUpdate
-    pod:
-      hostUsers: false
-    containers:
       tika:
         image:
           repository: docker.io/apache/tika

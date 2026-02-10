@@ -79,22 +79,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-          seadoc:
-            image:
-              repository: seafileltd/sdoc-server
-              tag: 2.0-latest
-            envFrom:
-              - secretRef:
-                  name: ${APP}-env
-            ports:
-              - containerPort: 80
-                hostPort: &seadoc-port 8888
-            resources:
-              requests:
-                cpu: 50m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
 
     persistence:
       data:
@@ -112,9 +96,6 @@ spec:
             mariadb:
               - path: /var/lib/mysql
                 subPath: mysql
-            seadoc:
-              - path: /shared
-                subPath: seafile
       tmp:
         type: emptyDir
         advancedMounts:
@@ -122,10 +103,6 @@ spec:
             seafile:
               - path: /shared/seafile/logs
                 subPath: seafile
-            seadoc:
-              - path: /shared/seafile/logs
-                subPath: seadoc
-
 
     service:
       *app :
@@ -140,12 +117,6 @@ spec:
         ports:
           http:
             port: &mariadb-port 3306
-      seadoc:
-        controller: *app
-        type: ClusterIP
-        ports:
-          http:
-            port: *seadoc-port
 
     route:
       internal:
@@ -161,25 +132,6 @@ spec:
           - backendRefs:
               - identifier: *app
                 port: *seafile-port
-            filters:
-              - type: ExtensionRef
-                extensionRef:
-                  group: traefik.io
-                  kind: Middleware
-                  name: local-user
-      seadoc:
-        parentRefs:
-          - name: internal
-            namespace: network
-            kind: Gateway
-        hostnames:
-          - "seadoc.${ROOT_DOMAIN}"
-          - "docs.${ROOT_DOMAIN}"
-        kind: HTTPRoute
-        rules:
-          - backendRefs:
-              - identifier: *app
-                port: *seadoc-port
             filters:
               - type: ExtensionRef
                 extensionRef:

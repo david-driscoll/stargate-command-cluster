@@ -224,7 +224,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &seadoc-port 80
+            port: &seadoc-port 7070
       # notification-server:
       #   controller: notification-server
       #   type: ClusterIP

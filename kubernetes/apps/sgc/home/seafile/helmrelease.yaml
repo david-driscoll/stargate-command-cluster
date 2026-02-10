@@ -78,6 +78,12 @@ spec:
                 memory: 1Gi
 
     persistence:
+      settings:
+        type: secret
+        name: ${APP}-settings
+        globalMounts:
+          - path: /opt/seafile/conf/seahub_settings.py
+            subPath: seahub_settings.py
       data:
         existingClaim: *app
         advancedMounts:

@@ -48,9 +48,6 @@ spec:
             envFrom:
               - secretRef:
                   name: ${APP}-env
-            ports:
-              - containerPort: 80
-                hostPort: &seafile-port 8082
             dependsOn:
               - zmariadb
             resources:
@@ -110,7 +107,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: *seafile-port
+            port: &seafile-port 80
       mariadb:
         controller: *app
         type: ClusterIP

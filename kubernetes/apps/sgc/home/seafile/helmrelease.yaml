@@ -81,9 +81,13 @@ spec:
       settings:
         type: secret
         name: ${APP}-settings
-        globalMounts:
-          - path: /opt/seafile/conf/seahub_settings.py
-            subPath: seahub_settings.py
+        advancedMounts:
+          *app :
+            set-ownership:
+              - path: /shared
+                subPath: seafile
+              - path: /mysql
+                subPath: mysql
       data:
         existingClaim: *app
         advancedMounts:
@@ -94,6 +98,8 @@ spec:
               - path: /mysql
                 subPath: mysql
             seafile:
+              - path: /opt/seafile/conf/
+                subPath: conf
               - path: /shared
                 subPath: seafile
             mariadb:

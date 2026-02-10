@@ -80,6 +80,9 @@ spec:
             image:
               repository: seafileltd/notification-server
               tag: 13.0-latest
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
             dependsOn:
               - seafile
             resources:
@@ -92,6 +95,9 @@ spec:
             image:
               repository: seafileltd/seafile-md-server
               tag: 13.0-latest
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
             dependsOn:
               - seafile
             resources:
@@ -104,6 +110,9 @@ spec:
             image:
               repository: seafileltd/thumbnail-server
               tag: 13.0-latest
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
             dependsOn:
               - seafile
             resources:

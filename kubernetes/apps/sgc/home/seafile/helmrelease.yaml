@@ -218,7 +218,7 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: &port 3306
+            port: &mariadb-port 3306
       seadoc:
         controller: seadoc
         type: ClusterIP

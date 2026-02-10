@@ -18,11 +18,20 @@ tasks:
     desc: Clean up a given resource by kind and name
     requires:
       vars: [NAME, NAMESPACE]
+    ignore_error: true
     preconditions:
       - which kubectl
     cmds:
-      - kubectl get all -l app.kubernetes.io/name={{.NAME}} -n {{.NAMESPACE}} -o name | xargs kubectl patch -p '{"metadata":{"finalizers":[]}}' --type=merge -n {{.NAMESPACE}}
-      - kubectl delete all -l app.kubernetes.io/name={{.NAME}} -n {{.NAMESPACE}}
+      - |
+        # Get all namespace-scoped resource types (as singular names, e.g., "configmap" instead of "configmaps")
+        RESOURCE_TYPES=$(kubectl api-resources -o name)
+
+        # For each resource type, get resources in the target namespace
+        for resource in $RESOURCE_TYPES; do
+          echo -e "\n--- Resource: $resource ---"
+          (kubectl get "$resource" -l app.kubernetes.io/name={{.NAME}} -n "{{.NAMESPACE}}" -o name || '') | xargs kubectl patch -p '{"metadata":{"finalizers":[]}}' --type=merge -n {{.NAMESPACE}} || true
+          kubectl delete "$resource" -l app.kubernetes.io/name={{.NAME}} -n "{{.NAMESPACE}}" --ignore-not-found=true || true
+        done
   restart-flux:
     cmd: kubectl rollout restart deployment,statefulset,daemonset -n flux-system
   restart-kube:

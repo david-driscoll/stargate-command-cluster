@@ -52,8 +52,8 @@ spec:
               - zmariadb
             resources:
               requests:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 50m
+                memory: 256Mi
               limits:
                 memory: 2Gi
           zmariadb:
@@ -72,7 +72,22 @@ spec:
                   key: INIT_SEAFILE_MYSQL_ROOT_PASSWORD
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+          seadoc:
+            image:
+              repository: seafileltd/sdoc-server
+              tag: 2.0-latest
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            dependsOn:
+              - seafile
+            resources:
+              requests:
+                cpu: 50m
                 memory: 256Mi
               limits:
                 memory: 1Gi
@@ -87,8 +102,8 @@ spec:
               - seafile
             resources:
               requests:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 50m
+                memory: 256Mi
               limits:
                 memory: 1Gi
           md-server:
@@ -102,8 +117,8 @@ spec:
               - seafile
             resources:
               requests:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 50m
+                memory: 256Mi
               limits:
                 memory: 1Gi
           thumbnail-server:
@@ -117,8 +132,8 @@ spec:
               - seafile
             resources:
               requests:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 50m
+                memory: 256Mi
               limits:
                 memory: 1Gi
 
@@ -133,6 +148,9 @@ spec:
               - path: /mysql
                 subPath: mysql
             seafile:
+              - path: /shared
+                subPath: seafile
+            seadoc:
               - path: /shared
                 subPath: seafile
             notification-server:
@@ -154,6 +172,9 @@ spec:
             seafile:
               - path: /shared/seafile/logs
                 subPath: seafile
+            seadoc:
+              - path: /shared/seafile/logs
+                subPath: seadoc
             notification-server:
               - path: /shared/seafile/logs
                 subPath: notification-server

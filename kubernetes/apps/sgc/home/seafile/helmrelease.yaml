@@ -169,16 +169,16 @@ spec:
             seadoc:
               - path: /shared
                 subPath: seafile
-          notification-server:
-            notification-server:
-              - path: /shared
-                subPath: seafile
+          # notification-server:
+          #   notification-server:
+          #     - path: /shared
+          #       subPath: seafile
+          # md-server:
+          #   md-server:
+          #     - path: /shared
+          #       subPath: seafile
           thumbnail-server:
             thumbnail-server:
-              - path: /shared
-                subPath: seafile
-          md-server:
-            md-server:
               - path: /shared
                 subPath: seafile
       tmp:
@@ -192,14 +192,14 @@ spec:
             seadoc:
               - path: /shared/seafile/logs
                 subPath: seadoc
-          notification-server:
-            notification-server:
-              - path: /shared/seafile/logs
-                subPath: notification-server
-          thumbnail-server:
-            thumbnail-server:
-              - path: /shared/seafile/logs
-                subPath: thumbnail-server
+          # notification-server:
+          #   notification-server:
+          #     - path: /shared/seafile/logs
+          #       subPath: notification-server
+          # thumbnail-server:
+          #   thumbnail-server:
+          #     - path: /shared/seafile/logs
+          #       subPath: thumbnail-server
           md-server:
             md-server:
               - path: /shared/seafile/logs
@@ -231,18 +231,18 @@ spec:
       #   ports:
       #     http:
       #       port: &notification-server 80
-      thumbnail-server:
-        controller: thumbnail-server
-        type: ClusterIP
-        ports:
-          http:
-            port: &thumbnail-server-port 80
       # md-server:
       #   controller: md-server
       #   type: ClusterIP
       #   ports:
       #     http:
       #       port: &md-server-port 80
+      thumbnail-server:
+        controller: thumbnail-server
+        type: ClusterIP
+        ports:
+          http:
+            port: &thumbnail-server-port 80
 
     route:
       internal:

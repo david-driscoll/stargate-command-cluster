@@ -83,11 +83,9 @@ spec:
         name: ${APP}-settings
         advancedMounts:
           *app :
-            set-ownership:
-              - path: /shared
-                subPath: seafile
-              - path: /mysql
-                subPath: mysql
+            seafile:
+              - path: /opt/seafile/conf/
+                subPath: seahub_settings.py
       data:
         existingClaim: *app
         advancedMounts:

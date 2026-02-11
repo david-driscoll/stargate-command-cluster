@@ -27,8 +27,6 @@ spec:
       namespace: sgc
     - name: mosquitto
       namespace: sgc
-    - name: matter
-      namespace: sgc
     - name: external-secrets
       namespace: kube-system
     - name: tailscale-operator

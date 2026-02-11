@@ -84,7 +84,7 @@ spec:
         advancedMounts:
           *app :
             seafile:
-              - path: /opt/seafile/conf/
+              - path: /opt/seafile/conf/seahub_settings.py
                 subPath: seahub_settings.py
       data:
         existingClaim: *app

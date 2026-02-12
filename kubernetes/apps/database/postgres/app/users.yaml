@@ -411,27 +411,4 @@ spec:
             source: "[\\W]"
             target: _
 
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: &app postgres
-  annotations:
-    reloader.stakater.com/auto: "true"
-spec:
-  cluster:
-    name: postgres
-  name: postgres
-  owner: postgres
-  ensure: present
-  allowConnections: true
-  databaseReclaimPolicy: retain
-  schemas:
-    - ensure: present
-      name: public
-      owner: postgres
-    - ensure: present
-      name: postgres
-      owner: postgres
 

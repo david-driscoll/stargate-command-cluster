@@ -191,7 +191,7 @@ try
 
   foreach (var (roleName, databaseName) in databases
   .Select(x => (RoleName: GetName(x) + "-postgres", DatabaseName: (string?)x))
-  .Concat([(RoleName: "postgres-user", DatabaseName: null), (RoleName: "postgres-superuser", DatabaseName: "postgres")]))
+  .Concat([(RoleName: "postgres-user", DatabaseName: null), (RoleName: "postgres-superuser", DatabaseName: null)]))
   {
     var userYaml = (await ReadFile(userTemplate))
     .Replace("${APP}-user", databaseName)

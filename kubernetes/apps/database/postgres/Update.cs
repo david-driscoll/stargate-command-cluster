@@ -5,6 +5,7 @@
 #:package Spectre.Console@0.50.0
 #:package Spectre.Console.Json@0.50.0
 #:package Dumpify@0.6.6
+#:package ProcessX@1.5.6
 
 
 using System.Buffers.Text;
@@ -17,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Cysharp.Diagnostics;
 using Dumpify;
 using gfs.YamlDotNet.YamlPath;
 using Microsoft.VisualBasic;
@@ -47,8 +49,9 @@ try
   var kustomizeComponents = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
   // Now lets search for all the implied users, and update minio.yaml
-  foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
+  await foreach (var (kustomizePath, kustomizeDoc) in Directory.EnumerateFiles("kubernetes/apps/", "*.yaml", new EnumerationOptions() { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive })
       .Where(file => file.EndsWith("ks.yaml", StringComparison.OrdinalIgnoreCase))
+      .ToAsyncEnumerable()
       .SelectMany(ReadStream, (doc, path) => (doc, path)))
   {
     if (kustomizeDoc == null)
@@ -95,17 +98,17 @@ try
       }
       try
       {
-        ResolveSubComponents(allComponents, component);
+        await ResolveSubComponents(allComponents, component);
       }
       catch (Exception ex)
       {
         continue;
       }
     }
-    static void ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
+    static async Task ResolveSubComponents(HashSet<string> allComponents, (string name, string path) component)
     {
 
-      var componentDoc = ReadStream(Path.Combine(component.path, "kustomization.yaml")).Single();
+      var componentDoc = await ReadStream(Path.Combine(component.path, "kustomization.yaml")).SingleOrDefaultAsync();
       if (componentDoc == null)
       {
         AnsiConsole.MarkupLine($"[yellow]Failed to read kustomization file: {Path.Combine(component.path, "kustomization.yaml")}.[/]");
@@ -116,7 +119,7 @@ try
       foreach (var subComponent in subComponents)
       {
         allComponents.Add(subComponent.name);
-        ResolveSubComponents(allComponents, subComponent);
+        await ResolveSubComponents(allComponents, subComponent);
       }
     }
     kustomizeComponents[documentName] = allComponents;
@@ -135,7 +138,7 @@ try
 
   #region Update postgres cluster yaml with roles
   var postgresClusterPath = "kubernetes/apps/database/postgres/app/resources/values.yaml";
-  var postgresClusterDoc = ReadStream(postgresClusterPath).SingleOrDefault();
+  var postgresClusterDoc = await ReadStream(postgresClusterPath).SingleOrDefaultAsync();
   if (postgresClusterDoc == null)
   {
     AnsiConsole.MarkupLine($"[red]Failed to read Postgres cluster file: {postgresClusterPath}.[/]");
@@ -181,24 +184,23 @@ try
   var sopsOutput = new StringBuilder();
 
   var existingSops =
-  ReadStream(sopsOutputPath)
+  await ReadStream(sopsOutputPath)
   .Select(z => (name: z.Query("/metadata/name").OfType<YamlScalarNode>().SingleOrDefault()?.Value, node: z))
   .Where(z => z.name is not null)
-  .ToDictionary(z => z.name!, z => z.node) ?? new Dictionary<string, YamlMappingNode>();
+  .ToDictionaryAsync(z => z.name!, z => z.node) ?? new Dictionary<string, YamlMappingNode>();
 
-  var addedSecret = false;
   foreach (var database in databases)
   {
     var roleName = GetName(database);
-    var userYaml = File.ReadAllText(userTemplate)
+    var userYaml = (await ReadFile(userTemplate))
     .Replace("${APP}-user", database)
     .Replace("postgres-user-password", $"{roleName}-postgres-password")
     .Replace("postgres-user", $"{roleName}-postgres")
     ;
-    var databaseYaml = File.ReadAllText(databaseTemplate)
+    var databaseYaml = (await ReadFile(databaseTemplate))
     .Replace("${APP}", database)
     ;
-    var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
+    var pushSecretYaml = (await ReadFile(pushSecretTemplate))
     .Replace("push-secret-template", $"{roleName}-postgres")
     .Replace("push-secret-template", $"{roleName}-postgres")
     ;
@@ -211,7 +213,15 @@ try
     pushSecretsOutput.AppendLine($"""
   {pushSecretYaml}
   """);
-    var found = existingSops.TryGetValue($"{database}-postgres-password", out var existingNode);
+  }
+
+  var addedSecret = false;
+  foreach (var user in databases
+  .Select(GetName)
+  .Select(x => x += "-postgres")
+  .Concat(["postgres-user", "postgres-superuser"]))
+  {
+    var found = existingSops.TryGetValue($"{user}-password", out var existingNode);
     if (!found)
     {
       addedSecret = true;
@@ -222,10 +232,10 @@ try
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {database}-postgres-password
+      name: {user}-postgres-password
     stringData:
-      username: "{database}"
-      database: "{database}"
+      username: "{user}"
+      database: "{user}"
       port: "5432"
       hostname: "postgres-rw.database.svc.cluster.local"
       password: "{existingNode?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
@@ -237,17 +247,6 @@ try
   if (addedSecret)
   {
     await Overwrite(sopsOutputPath, sopsOutput);
-    await Task.Delay(100);
-
-    Process.Start(new ProcessStartInfo
-    {
-      FileName = "sops",
-      Arguments = $"--encrypt --in-place {sopsOutputPath}",
-      RedirectStandardOutput = true,
-      RedirectStandardError = true,
-      UseShellExecute = false,
-      CreateNoWindow = true
-    })?.WaitForExit();
   }
 
 }
@@ -262,26 +261,28 @@ catch (Exception ex)
 
 static async Task Overwrite(string path, StringBuilder stringBuilder)
 {
-  await using var stream = File.Open(path, File.Exists(path) ? FileMode.Truncate : FileMode.Create);
-  using var writer = new StreamWriter(stream);
-  await writer.WriteAsync(stringBuilder);
+  await WriteFile(path, stringBuilder.ToString());
 }
-static IEnumerable<YamlMappingNode> ReadStream(string path)
+static async IAsyncEnumerable<YamlMappingNode> ReadStream(string path)
 {
   if (!File.Exists(path))
   {
     AnsiConsole.MarkupLine($"[red]File {path} does not exist.[/]");
-    return [];
+    yield break;
   }
+
   var doc = new YamlStream();
-  using var reader = new StringReader(File.ReadAllText(path));
+  using var reader = new StringReader(await ReadFile(path));
   doc.Load(reader);
 
 
   var rootNodes = doc.Documents
   .Select(z => (z.RootNode as YamlMappingNode)!)
   .Where(z => z is not null);
-  return rootNodes;
+  foreach (var rootNode in rootNodes)
+  {
+    yield return rootNode;
+  }
 }
 
 static YamlMappingNode UpdateRoleNode(ISerializer serializer, YamlNode copy, string name, string key)
@@ -298,4 +299,24 @@ static YamlMappingNode UpdateRoleNode(ISerializer serializer, YamlNode copy, str
   superuserRef.Value = name == "immich" ? "true" : "false";
   secretRef.Children["name"] = new YamlScalarNode(key);
   return userNode;
+}
+
+static async ValueTask<string> ReadFile(string path)
+{
+  return path.EndsWith(".sops.yaml", StringComparison.OrdinalIgnoreCase) ? (await ProcessX.StartAsync($"sops -d {path}".Dump(), workingDirectory: Directory.GetCurrentDirectory())
+    .AggregateAsync(new StringBuilder(), (sb, line, ct) =>
+  {
+    sb.AppendLine(line);
+    return ValueTask.FromResult(sb);
+  }, CancellationToken.None)).ToString() : File.ReadAllText(path);
+}
+
+static async ValueTask WriteFile(string path, string content)
+{
+  await using var stream = File.Open(path, File.Exists(path) ? FileMode.Truncate : FileMode.Create);
+  await stream.WriteAsync(Encoding.UTF8.GetBytes(content));
+  if (path.EndsWith(".sops.yaml", StringComparison.OrdinalIgnoreCase))
+  {
+    await ProcessX.StartAsync($"sops -e -i {path}".Dump(), workingDirectory: Directory.GetCurrentDirectory()).ToTask();
+  }
 }

@@ -189,26 +189,27 @@ try
   .Where(z => z.name is not null)
   .ToDictionaryAsync(z => z.name!, z => z.node) ?? new Dictionary<string, YamlMappingNode>();
 
-  foreach (var database in databases)
+  foreach (var (roleName, databaseName) in databases
+  .Select(x => (RoleName: GetName(x) + "-postgres", DatabaseName: (string?)x))
+  .Concat([(RoleName: "postgres-user", DatabaseName: null), (RoleName: "postgres-superuser", DatabaseName: "postgres")]))
   {
-    var roleName = GetName(database);
     var userYaml = (await ReadFile(userTemplate))
-    .Replace("${APP}-user", database)
-    .Replace("postgres-user-password", $"{roleName}-postgres-password")
-    .Replace("postgres-user", $"{roleName}-postgres")
+    .Replace("${APP}-user", databaseName)
+    .Replace("postgres-user-password", $"{roleName}-password")
+    .Replace("postgres-user", roleName)
     ;
     var databaseYaml = (await ReadFile(databaseTemplate))
-    .Replace("${APP}", database)
+    .Replace("${APP}", databaseName)
     ;
     var pushSecretYaml = (await ReadFile(pushSecretTemplate))
-    .Replace("push-secret-template", $"{roleName}-postgres")
-    .Replace("push-secret-template", $"{roleName}-postgres")
+    .Replace("push-secret-template", roleName)
+    .Replace("push-secret-template", roleName)
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
     var pushSecretsFileName = Path.Combine(pushSecretsDirectory, $"{roleName}-postgres-push-secret.yaml");
     usersOutput.AppendLine($"""
   {userYaml}
-  {databaseYaml}
+  {(databaseName is null ? "" : databaseYaml)}
   """);
     pushSecretsOutput.AppendLine($"""
   {pushSecretYaml}

@@ -1,0 +1,42 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app oxycloud
+  namespace: &namespace sgc
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+    - name: postgres
+      namespace: database
+    - name: external-secrets
+      namespace: kube-system
+  path: ./kubernetes/apps/sgc/home/oxycloud
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../../components/volsync
+    - ../../../../components/postgres
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      VOLSYNC_ACCESSMODES: ReadWriteMany
+      VOLSYNC_CAPACITY: 50Gi

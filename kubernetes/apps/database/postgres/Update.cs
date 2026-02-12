@@ -35,7 +35,6 @@ try
 {
 
   var kustomizationUserList = new HashSet<string>();
-  var users = new Dictionary<string, (string Username, HashSet<(string Name, bool IsPublic)> Buckets)>();
   var documentNamesMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
   string GetName(string keyName)
   {
@@ -75,7 +74,7 @@ try
     var documentName = kustomizeDoc?.Query("/metadata/name").OfType<YamlScalarNode>().FirstOrDefault()?.Value!;
     documentNamesMapping[documentName] = kustomizeDoc?.Query("/spec/postBuild/substitute/POSTGRES_NAME")
     .OfType<YamlScalarNode>()
-      .SingleOrDefault()
+      .FirstOrDefault()
       ?.Value.Dump("POSTGRES_NAME") ?? documentName;
     var path = kustomizeDoc?.Query(yamlPath: "/spec/path").OfType<YamlScalarNode>().FirstOrDefault()?.Value;
     var components = GetComponents(path, kustomizeDoc?.Query("/spec/components"));
@@ -147,9 +146,9 @@ try
   clusterRoles.Children.Clear();
   clusterRoles.Children.Add(defaultRole);
 
-  var userTemplate = "kubernetes/apps/database/postgres/app/users/postgres-user.yaml";
+  var userTemplate = "kubernetes/apps/database/postgres/app/postgres-user-template.yaml";
   var databaseTemplate = "kubernetes/components/postgres/database.yaml";
-  var pushSecretTemplate = "kubernetes/apps/database/postgres/postgres-push-secrets/postgres-user-push-secret.yaml";
+  var pushSecretTemplate = "kubernetes/apps/database/postgres/postgres-push-secrets/push-secret-template.yaml";
   // We also want to update the kustomization.yaml file to include this user.
   var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
   var pushSecretKustomizationPath = "kubernetes/apps/database/postgres/postgres-push-secrets/kustomization.yaml";
@@ -174,6 +173,19 @@ try
 
   #region Create database users
 
+  var usersOutputPath = "kubernetes/apps/database/postgres/app/users.yaml";
+  var usersOutput = new StringBuilder();
+  var pushSecretsOutputPath = "kubernetes/apps/database/postgres/postgres-push-secrets/push-secrets.yaml";
+  var pushSecretsOutput = new StringBuilder();
+  var sopsOutputPath = "kubernetes/apps/database/postgres/app/passwords.sops.yaml";
+  var sopsOutput = new StringBuilder();
+
+  var existingSops =
+  ReadStream(sopsOutputPath)
+  .Select(z => (name: z.Query("/metadata/name").OfType<YamlScalarNode>().SingleOrDefault()?.Value, node: z))
+  .Where(z => z.name is not null)
+  .ToDictionary(z => z.name!, z => z.node) ?? new Dictionary<string, YamlMappingNode>();
+
   foreach (var database in databases)
   {
     var roleName = GetName(database);
@@ -186,36 +198,21 @@ try
     .Replace("${APP}", database)
     ;
     var pushSecretYaml = File.ReadAllText(pushSecretTemplate)
-    .Replace("postgres-user", $"{roleName}-postgres")
-    .Replace("postgres-user", $"{roleName}-postgres")
+    .Replace("push-secret-template", $"{roleName}-postgres")
+    .Replace("push-secret-template", $"{roleName}-postgres")
     ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
     var pushSecretsFileName = Path.Combine(pushSecretsDirectory, $"{roleName}-postgres-push-secret.yaml");
-    var sopsFileName = Path.Combine(usersDirectory, $"{roleName}.sops.yaml");
-    File.WriteAllText(fileName, $"""
+    usersOutput.AppendLine($"""
   {userYaml}
   {databaseYaml}
   """);
-    File.WriteAllText(pushSecretsFileName, $"""
+    pushSecretsOutput.AppendLine($"""
   {pushSecretYaml}
   """);
-    AnsiConsole.WriteLine($"Updated {fileName} with user {roleName}.");
-  }
-
-  foreach (var item in Directory.EnumerateFiles(Path.GetDirectoryName(userTemplate), "*.yaml")
-  .Where(z => !z.EndsWith("sops.yaml", StringComparison.OrdinalIgnoreCase))
-  .Where(z => !z.EndsWith("kustomization.yaml", StringComparison.OrdinalIgnoreCase))
-  )
-  {
-    var database = GetName(Path.GetFileNameWithoutExtension(item));
-    var sopsFileName = Path.Combine(usersDirectory, $"{database}.sops.yaml");
-    YamlMappingNode? sopsDoc = null;
-    if (File.Exists(sopsFileName))
-    {
-      continue;
-      sopsDoc = ReadStream(sopsFileName).Single();
-    }
-    File.WriteAllText(sopsFileName, $"""
+    existingSops.TryGetValue($"{database}-postgres-password", out var existingNode);
+    sopsOutput.AppendLine($"""
+    ---
     # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
     apiVersion: v1
     kind: Secret
@@ -226,44 +223,25 @@ try
       database: "{database}"
       port: "5432"
       hostname: "postgres-rw.database.svc.cluster.local"
-      password: "{sopsDoc?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
+      password: "{existingNode?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
     """);
-    Process.Start(new ProcessStartInfo
-    {
-      FileName = "sops",
-      Arguments = $"--encrypt --in-place {sopsFileName}",
-      RedirectStandardOutput = true,
-      RedirectStandardError = true,
-      UseShellExecute = false,
-      CreateNoWindow = true
-    }).WaitForExit();
-
   }
 
-  var customizationTemplate = $"""
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - postgres-user.yaml
-  - postgres-user.sops.yaml
-  - postgres-superuser.yaml
-  - postgres-superuser.sops.yaml
-{string.Join(Environment.NewLine, databases.Order().Select(GetName).SelectMany(database => new[] { $"  - {database}.yaml", $"  - {database}.sops.yaml" }))}
-""";
+  await Overwrite(usersOutputPath, usersOutput);
+  await Overwrite(pushSecretsOutputPath, pushSecretsOutput);
+  await Overwrite(sopsOutputPath, sopsOutput);
+  await Task.Delay(100);
 
-  File.WriteAllText(kustomizationPath, customizationTemplate);
+  Process.Start(new ProcessStartInfo
+  {
+    FileName = "sops",
+    Arguments = $"--encrypt --in-place {sopsOutputPath}",
+    RedirectStandardOutput = true,
+    RedirectStandardError = true,
+    UseShellExecute = false,
+    CreateNoWindow = true
+  })?.WaitForExit();
 
-
-  var pushSecretKustomizationTemplate = $"""
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - postgres-user-push-secret.yaml
-  - postgres-superuser-push-secret.yaml
-{string.Join(Environment.NewLine, databases.Order().Select(GetName).Select(database => $"  - {database}-postgres-push-secret.yaml"))}
-""";
-
-  File.WriteAllText(pushSecretKustomizationPath, pushSecretKustomizationTemplate);
 }
 catch (Exception ex)
 {
@@ -271,11 +249,22 @@ catch (Exception ex)
   return;
 }
 
-#endregion
+  #endregion
 
 
+static async Task Overwrite(string path, StringBuilder stringBuilder)
+{
+  await using var stream = File.Open(path, File.Exists(path) ? FileMode.Truncate : FileMode.Create);
+  using var writer = new StreamWriter(stream);
+  await writer.WriteAsync(stringBuilder);
+}
 static IEnumerable<YamlMappingNode> ReadStream(string path)
 {
+  if (!File.Exists(path))
+  {
+    AnsiConsole.MarkupLine($"[red]File {path} does not exist.[/]");
+    return [];
+  }
   var doc = new YamlStream();
   using var reader = new StringReader(File.ReadAllText(path));
   doc.Load(reader);

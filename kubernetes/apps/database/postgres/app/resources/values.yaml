@@ -78,6 +78,12 @@ cluster:
     superuser: false
     passwordSecret:
       name: authentik-postgres
+  - name: oxycloud
+    ensure: present
+    login: true
+    superuser: false
+    passwordSecret:
+      name: oxycloud-postgres
   monitoring:
     enabled: true
     podMonitor:

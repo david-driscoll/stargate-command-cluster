@@ -103,7 +103,7 @@ spec:
         kind: HTTPRoute
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: *app
                 port: *port
             filters:
               - type: ExtensionRef

@@ -186,6 +186,7 @@ try
   .Where(z => z.name is not null)
   .ToDictionary(z => z.name!, z => z.node) ?? new Dictionary<string, YamlMappingNode>();
 
+  var addedSecret = false;
   foreach (var database in databases)
   {
     var roleName = GetName(database);
@@ -210,7 +211,11 @@ try
     pushSecretsOutput.AppendLine($"""
   {pushSecretYaml}
   """);
-    existingSops.TryGetValue($"{database}-postgres-password", out var existingNode);
+    var found = existingSops.TryGetValue($"{database}-postgres-password", out var existingNode);
+    if (!found)
+    {
+      addedSecret = true;
+    }
     sopsOutput.AppendLine($"""
     ---
     # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/secret-v1.json
@@ -229,18 +234,21 @@ try
 
   await Overwrite(usersOutputPath, usersOutput);
   await Overwrite(pushSecretsOutputPath, pushSecretsOutput);
-  await Overwrite(sopsOutputPath, sopsOutput);
-  await Task.Delay(100);
-
-  Process.Start(new ProcessStartInfo
+  if (addedSecret)
   {
-    FileName = "sops",
-    Arguments = $"--encrypt --in-place {sopsOutputPath}",
-    RedirectStandardOutput = true,
-    RedirectStandardError = true,
-    UseShellExecute = false,
-    CreateNoWindow = true
-  })?.WaitForExit();
+    await Overwrite(sopsOutputPath, sopsOutput);
+    await Task.Delay(100);
+
+    Process.Start(new ProcessStartInfo
+    {
+      FileName = "sops",
+      Arguments = $"--encrypt --in-place {sopsOutputPath}",
+      RedirectStandardOutput = true,
+      RedirectStandardError = true,
+      UseShellExecute = false,
+      CreateNoWindow = true
+    })?.WaitForExit();
+  }
 
 }
 catch (Exception ex)

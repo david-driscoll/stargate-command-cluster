@@ -6,3 +6,4 @@ resources:
   # - ./matter/ks.yaml
   - ./mosquitto/ks.yaml
   - ./home-assistant/ks.yaml
+  - ./oxycloud/ks.yaml

@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Headlamp
+  category: ${CLUSTER_TITLE}
+  description: Kubernetes Dashboard and Management UI
+  url: &url https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/headlamp.svg
+  authentik:
+    oauth2:
+      clientType: confidential
+      allowedRedirectUris:
+      - url: "https://${APP}.${ROOT_DOMAIN}/oidc-callback"
+      propertyMappings:
+        - email
+        - openid
+        - profile
+      includeClaimsInIdToken: true
+      subMode: user_email
+  access_policy:
+    groups:
+      - admins
+  gatus:
+    - url: *url
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

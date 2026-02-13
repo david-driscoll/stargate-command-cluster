@@ -1,0 +1,117 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: headlamp
+  namespace: kube-system # Required for Renovate lookups
+spec:
+  interval: 1h
+  url: https://kubernetes-sigs.github.io/headlamp
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app headlamp
+  namespace: &namespace kube-system
+  annotations:
+    # renovate: datasource=helm depName=headlamp registryUrl=https://kubernetes-sigs.github.io/headlamp
+    renovate.flux.cluster.local/chart: headlamp
+spec:
+  chart:
+    spec:
+      chart: headlamp
+      version: 0.26.0
+      sourceRef:
+        kind: HelmRepository
+        name: *app
+        namespace: *namespace
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    replicaCount: 2
+    image:
+      repository: ghcr.io/kubernetes-sigs/headlamp
+      pullPolicy: IfNotPresent
+      tag: ""
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      fsGroup: 1000
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 8080
+    ingress:
+      enabled: false
+    httpRoute:
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: network
+          kind: Gateway
+      hostnames:
+        - headlamp.${CLUSTER_DOMAIN}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+    config:
+      watchPlugins: true
+      oidc:
+        externalSecret:
+          enabled: true
+          name: headlamp-oidc
+    pluginsManager:
+      enabled: true
+      baseImage: node:lts-alpine
+      version: latest  # renovate: datasource=docker depName=node
+      configContent: |
+        plugins:
+          - name: headlamp_cert-manager
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_cert-manager
+            version: 0.1.0  # renovate: depName=headlamp_cert-manager datasource=custom
+          - name: external-secrets-operator
+            source: https://artifacthub.io/packages/headlamp/external-secrets-operator-headlamp-plugin/external-secrets-operator
+            version: 0.1.0-beta7  # renovate: depName=external-secrets-operator datasource=custom
+          - name: headlamp_flux
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_flux
+            version: 0.5.0  # renovate: depName=headlamp_flux datasource=custom
+          - name: prometheus_headlamp_plugin
+            source: https://artifacthub.io/packages/headlamp/test-123/prometheus_headlamp_plugin
+            version: 0.0.3  # renovate: depName=prometheus_headlamp_plugin datasource=custom
+        installOptions:
+          parallel: true
+          maxConcurrent: 2

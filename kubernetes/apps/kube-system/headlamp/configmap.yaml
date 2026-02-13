@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: headlamp-plugins
+  annotations:
+    reloader.stakater.com/auto: "true"
+data:
+  plugins.yaml: |
+    plugins:
+      - name: headlamp_cert-manager
+        source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_cert-manager
+        version: 0.1.0  # renovate: depName=headlamp_cert-manager datasource=custom
+      - name: external-secrets-operator
+        source: https://artifacthub.io/packages/headlamp/external-secrets-operator-headlamp-plugin/external-secrets-operator
+        version: 0.1.0-beta7  # renovate: depName=external-secrets-operator datasource=custom
+      - name: headlamp_flux
+        source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_flux
+        version: 0.5.0  # renovate: depName=headlamp_flux datasource=custom
+      - name: prometheus_headlamp_plugin
+        source: https://artifacthub.io/packages/headlamp/test-123/prometheus_headlamp_plugin
+        version: 0.0.3  # renovate: depName=prometheus_headlamp_plugin datasource=custom
+    installOptions:
+      parallel: true
+      maxConcurrent: 2

@@ -61,6 +61,16 @@ spec:
         drop:
           - ALL
       readOnlyRootFilesystem: true
+    volumeMounts:
+      - name: config
+        mountPath: /home/headlamp/.config
+      - name: tmp
+        mountPath: /tmp
+    volumes:
+      - name: config
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
     service:
       type: ClusterIP
       port: 80

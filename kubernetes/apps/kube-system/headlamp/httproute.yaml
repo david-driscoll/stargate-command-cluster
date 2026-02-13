@@ -13,7 +13,7 @@ spec:
       namespace: network
       kind: Gateway
   hostnames:
-    - "${APP}.${ROOT_DOMAIN}"
+    - "${APP}.${CLUSTER_DOMAIN}"
   rules:
     - backendRefs:
         - name: headlamp

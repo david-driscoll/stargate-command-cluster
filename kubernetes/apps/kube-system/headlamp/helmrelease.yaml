@@ -70,20 +70,6 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
-    service:
-      type: ClusterIP
-      port: 80
-      targetPort: 4466
-    ingress:
-      enabled: false
-    httpRoute:
-      enabled: true
-      parentRefs:
-        - name: internal
-          namespace: network
-          kind: Gateway
-      hostnames:
-        - headlamp.${CLUSTER_DOMAIN}
     resources:
       limits:
         cpu: 500m

@@ -53,7 +53,7 @@ prometheus:
         memory: 1Gi
       limits:
         # cpu: 500m
-        memory: 2Gi
+        memory: 4Gi
     remoteWriteDashboards: true
     remoteWrite:
       - url: http://thanos-receive.observability.svc.cluster.local:19291/api/v1/receive

@@ -13,3 +13,12 @@ spec:
     - apiVersion: volsync.backube/v1alpha1
       kind: ReplicationSource
       expr: status.conditions.filter(c, c.type == "Synchronizing").all(c, c.status == "False")
+    - apiVersion: v1
+      kind: Node
+      expr: status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+
+  # maintenance:
+  #   windows:
+  #     - start: "0 11 * * *"    # Daily at 11
+  #       duration: "2h"         # How long window stays open
+  #       timezone: "${TIMEZONE}"

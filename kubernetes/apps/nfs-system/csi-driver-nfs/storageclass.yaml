@@ -11,8 +11,12 @@ parameters:
   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
 mountOptions:
-  - nfsvers=4.1
+  - nfsvers=4.2
   - hard
   - intr
+  - nconnect=16
+  - noatime
+  - rsize=1048576
+  - wsize=1048576
 reclaimPolicy: Retain
 volumeBindingMode: Immediate

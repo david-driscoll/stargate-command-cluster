@@ -66,11 +66,10 @@ spec:
                   periodSeconds: 10
             securityContext:
               runAsNonRoot: true
-              runAsUser: 568
-              runAsGroup: 568
+              runAsUser: 1001
+              runAsGroup: 1001
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m

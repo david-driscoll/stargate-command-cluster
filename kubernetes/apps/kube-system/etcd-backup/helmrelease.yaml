@@ -95,6 +95,11 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 128Mi
+
+        pod:
+          hostNetwork: true
+          nodeSelector:
+            node-role.kubernetes.io/control-plane: ""
       prune:
         type: cronjob
         cronjob:

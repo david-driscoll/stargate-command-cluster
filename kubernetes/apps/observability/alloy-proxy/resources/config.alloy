@@ -93,6 +93,12 @@ loki.source.kubernetes "pod_logs" {
 // loki.process receives log entries from other Loki components, applies one or more processing stages,
 // and forwards the results to the list of receivers in the component's arguments.
 loki.process "pod_logs" {
+  stage.timestamp {
+    source = "time"
+    format = "RFC3339"
+    action_on_failure = "now"
+  }
+
   stage.static_labels {
       values = {
         cluster = "${CLUSTER_CNAME}",
@@ -118,6 +124,12 @@ loki.source.kubernetes_events "cluster_events" {
 // and forwards the results to the list of receivers in the component's arguments.
 loki.process "cluster_events" {
   forward_to = [loki.write.default.receiver]
+
+  stage.timestamp {
+    source = "timestamp"
+    format = "RFC3339"
+    action_on_failure = "now"
+  }
 
   stage.static_labels {
     values = {

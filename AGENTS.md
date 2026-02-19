@@ -72,6 +72,21 @@ All applications use standardized ks.yaml files with:
 - **SET EXPLICIT TIMEOUTS** (60+ minutes) for bootstrap commands
 - **This is a production config** - exercise extreme caution with changes
 
+# Glance-k8s Extension Service
+
+The glance-k8s extension service is deployed in the `observability` namespace to provide Kubernetes cluster visibility widgets for the Glance dashboard (primarily equestria-cluster's main Glance instance).
+
+- **Service**: `kubernetes/apps/observability/glance-k8s/` with HelmRelease v0.3.0 from `ghcr.io/lukasdietrich/glance-k8s/chart/glance-k8s`
+- **RBAC**: Service account with cluster-wide list permissions for nodes and pods
+- **Security**: fsGroup 1000, runAsNonRoot, runAsUser 1000, dropped ALL capabilities, read-only root filesystem
+- **Endpoints**:
+    - `/extension/nodes` - renders Kubernetes node status and resources
+    - `/extension/apps` - renders pod/application status and resources
+- **Cross-Cluster Access**: Exposed via HTTPRoute at `glance-k8s.sgc.internal` (Tailscale internal DNS) for equestria-cluster to consume
+- **Widget Type**: `extension` type in Glance with `allow-potentially-dangerous-html: true` for HTML rendering
+- **Resource Limits**: 100m CPU request / 500m limit, 128Mi memory request / 512Mi limit
+- **Probes**: Liveness (30s interval, 10s initial delay), Readiness (10s interval, 5s initial delay)
+
 # Application definitions
 
 This system supports a custom kubernetes resource as defined by kubernetes/apps/observability/crds/application-crd.yaml

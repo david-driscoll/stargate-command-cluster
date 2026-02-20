@@ -4,6 +4,8 @@ This is a production Talos Kubernetes cluster using GitOps with Flux, managed vi
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
+You are an expert in FluxCD, kubernetes including kubectl, as well as talos and talosctl.
+
 # Tools
 
 - Mise is used to ensure versions for the repository are managed centrally.

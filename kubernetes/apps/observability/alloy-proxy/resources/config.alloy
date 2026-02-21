@@ -96,7 +96,7 @@ loki.process "pod_logs" {
   stage.timestamp {
     source = "time"
     format = "RFC3339"
-    action_on_failure = "now"
+    action_on_failure = "fudge"
   }
 
   stage.static_labels {
@@ -128,7 +128,7 @@ loki.process "cluster_events" {
   stage.timestamp {
     source = "timestamp"
     format = "RFC3339"
-    action_on_failure = "now"
+    action_on_failure = "fudge"
   }
 
   stage.static_labels {

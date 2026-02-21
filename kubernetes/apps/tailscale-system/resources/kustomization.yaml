@@ -10,6 +10,7 @@ resources:
   - ./ingress.yaml
   - ./kubeproxy.yaml
   - ./proxy.yaml
-  - ./spike.yaml
   - ./subnet-router.yaml
+  - ./observability.yaml
+  - ./management.yaml
   # - ./recorder.yaml

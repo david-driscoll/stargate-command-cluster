@@ -8,4 +8,4 @@ spec:
   hostnamePrefix: ${CLUSTER_CNAME}-observability
   replicas: 2
   tags: ["tag:observability"]
-  proxyClass: accept-routes
+  proxyClass: default

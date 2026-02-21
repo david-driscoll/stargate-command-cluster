@@ -6,6 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "loki.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: "observability"
+    # tailscale.com/tags: "tag:observability"
   name: loki-headless
 spec:
   externalName: unused

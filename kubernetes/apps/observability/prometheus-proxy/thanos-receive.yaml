@@ -6,6 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "thanos-receive.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: "observability"
+    # tailscale.com/tags: "tag:observability"
   name: thanos-receive
 spec:
   externalName: unused

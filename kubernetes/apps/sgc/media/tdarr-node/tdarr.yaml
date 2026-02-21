@@ -6,6 +6,7 @@ metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "tdarr-server.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: "observability"
+    # tailscale.com/tags: "tag:observability"
   name: tdarr-server
 spec:
   externalName: tdarr-server

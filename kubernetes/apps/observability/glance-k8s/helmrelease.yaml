@@ -54,16 +54,7 @@ spec:
     service:
       type: ClusterIP
       port: 8080
-    ingress:
-      enabled: true
-      className: tailscale
-      annotations:
-        tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
-      hosts:
-        - host: ${APP}-${CLUSTER_CNAME}.${TAILSCALE_DOMAIN}
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+
     # Resource limits
     resources:
       requests:

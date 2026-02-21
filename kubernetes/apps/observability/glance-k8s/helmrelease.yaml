@@ -54,6 +54,10 @@ spec:
     service:
       type: ClusterIP
       port: 8080
+      annotations:
+        tailscale.com/expose: "true"
+        tailscale.com/hostname: ${APP}-${CLUSTER_CNAME}
+        tailscale.com/tags: "tag:observability"
 
     # Resource limits
     resources:

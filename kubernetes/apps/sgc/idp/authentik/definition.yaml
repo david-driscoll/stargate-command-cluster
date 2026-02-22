@@ -6,7 +6,7 @@ metadata:
   name: ${APP}
 spec:
   name: Authentik
-  category: Identity
+  category: Applications
   gatus:
     - group: "Applications"
       url: https://${APP}.${ROOT_DOMAIN}

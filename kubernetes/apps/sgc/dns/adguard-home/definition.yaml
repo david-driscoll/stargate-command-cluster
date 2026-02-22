@@ -5,8 +5,8 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-primary
 spec:
-  name: Primary Replica
-  category: DNS
+  name: AdGuard Home (Primary)
+  category: ${CLUSTER_TITLE}
   url: &url https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:
@@ -23,10 +23,10 @@ spec:
 apiVersion: driscoll.dev/v1
 kind: ApplicationDefinition
 metadata:
-  name: ${APP}
+  name: ${APP}-secondary
 spec:
-  name: Secondary Replica
-  category: DNS
+  name: AdGuard Home (Secondary)
+  category: ${CLUSTER_TITLE}
   url: &url https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:
@@ -45,8 +45,8 @@ kind: ApplicationDefinition
 metadata:
   name: ${APP}-tertiary
 spec:
-  name: Tertiary Replica
-  category: DNS
+  name: AdGuard Home (Tertiary)
+  category: ${CLUSTER_TITLE}
   url: &url https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:

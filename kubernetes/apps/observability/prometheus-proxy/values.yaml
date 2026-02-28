@@ -130,6 +130,8 @@ prometheus-node-exporter:
           replacement: $1
           sourceLabels: ["__meta_kubernetes_pod_node_name"]
           targetLabel: kubernetes_node
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: instance
 kube-state-metrics:
   fullnameOverride: kube-state-metrics
   metricLabelsAllowlist:
@@ -145,6 +147,8 @@ kube-state-metrics:
           replacement: $1
           sourceLabels: ["__meta_kubernetes_pod_node_name"]
           targetLabel: kubernetes_node
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: instance
 kubelet:
   serviceMonitor:
     resourceInterval: 30s

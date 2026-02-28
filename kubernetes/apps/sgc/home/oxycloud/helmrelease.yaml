@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: diocrafts/oxicloud
-              tag: 0.4.2@sha256:e65bed9272ff3617bf6e0a28bafa8b01092a0e6a3b6fa336882c68cda09aa39b
+              tag: 0.5.0@sha256:8639fe156310c7ff6ee922ec8b51159c495fb7807caa54f39177b89ff74b35ca
             env:
               TZ: "${TIMEZONE}"
             envFrom:

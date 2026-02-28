@@ -96,7 +96,7 @@ function apply_crds() {
         # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
         # https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.20.0/docs/sources/crd/crd-manifest.yaml
         # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
-        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
+        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml
         https://raw.githubusercontent.com/external-secrets-inc/reloader/refs/heads/main/config/crd/bases/reloader.external-secrets.io_configs.yaml
         "${ROOT_DIR}/kubernetes/apps/observability/crds/application-crd.yaml"
         "${ROOT_DIR}/kubernetes/apps/observability/crds/cluster-crd.yaml"

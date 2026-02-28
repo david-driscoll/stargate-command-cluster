@@ -6,7 +6,7 @@ metadata:
   name: ${APP}
 spec:
   name: Mosquitto
-  category: ${CLUSTER_TITLE}
+  category: Infrastructure
   description: Mosquitto MQTT broker
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mosquitto.svg
   access_policy:

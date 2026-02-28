@@ -6,7 +6,7 @@ metadata:
   name: tsidp
 spec:
   name: Tailscale IDP
-  category: ${CLUSTER_TITLE}
+  category: Infrastructure
   description: Tailscale Identity Provider
   url: &url https://idp.${TAILSCALE_DOMAIN}
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale.svg

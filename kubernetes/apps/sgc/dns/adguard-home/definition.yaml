@@ -6,7 +6,7 @@ metadata:
   name: ${APP}-primary
 spec:
   name: AdGuard Home (Primary)
-  category: ${CLUSTER_TITLE}
+  category: Infrastructure
   url: &url https://${APP}-primary.${CLUSTER_DOMAIN}/index.html
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:
@@ -26,7 +26,7 @@ metadata:
   name: ${APP}-secondary
 spec:
   name: AdGuard Home (Secondary)
-  category: ${CLUSTER_TITLE}
+  category: Infrastructure
   url: &url https://${APP}-secondary.${CLUSTER_DOMAIN}/index.html
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:
@@ -46,7 +46,7 @@ metadata:
   name: ${APP}-tertiary
 spec:
   name: AdGuard Home (Tertiary)
-  category: ${CLUSTER_TITLE}
+  category: Infrastructure
   url: &url https://${APP}-tertiary.${CLUSTER_DOMAIN}/index.html
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg
   access_policy:

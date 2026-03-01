@@ -22,9 +22,6 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-    substituteFrom:
-      - kind: ConfigMap
-        name: versions
   sourceRef:
     kind: GitRepository
     name: flux-system

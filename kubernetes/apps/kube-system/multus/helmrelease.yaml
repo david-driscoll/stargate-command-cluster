@@ -14,46 +14,4 @@ spec:
   url: oci://ghcr.io/bjw-s-labs/helm/multus
   verify:
     provider: cosign
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: &app multus
-spec:
-  chartRef:
-    kind: OCIRepository
-    name: multus
-  maxHistory: 3
-  interval: 1h
-  timeout: 10m
-  install:
-    createNamespace: true
-    replace: true
-    remediation:
-      retries: 7
-  upgrade:
-    crds: CreateReplace
-    cleanupOnFail: true
-    remediation:
-      retries: 7
-      strategy: rollback
-  rollback:
-    force: true
-    cleanupOnFail: true
-    recreate: true
-  uninstall:
-    keepHistory: false
-  dependsOn: []
-  values:
-    cni-plugins:
-      image:
-        repository: ghcr.io/home-operations/cni-plugins
-        tag: 1.9.0@sha256:33d3631495860fdae028df9a8509a8af91b70c41142432d7832b2c7bb76cf999
-      # resources: {}
 
-    multus:
-      image:
-        repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-        tag: v4.2.4@sha256:c3b12d1b56d7607a302ec23ececa236256bc940c04b3be5c1f39e0234398c4c9
-      # resources: {}

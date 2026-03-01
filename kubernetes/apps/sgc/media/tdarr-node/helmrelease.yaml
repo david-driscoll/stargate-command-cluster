@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/haveagitgat/tdarr_node
-              tag: 2.59.01@sha256:3cc1a444e58ad2be51254fe7255957a1f18c952d2954292c5de5dd3b3a0d2571
+              tag: 2.59.03@sha256:4fd38b1803f6d819e79d286812701591a8d96f8c3e92b596cd524ed5bf107291
             env:
               TZ: ${TIMEZONE}
               PUID: 1000

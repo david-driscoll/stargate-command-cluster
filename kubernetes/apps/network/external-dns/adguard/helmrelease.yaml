@@ -67,6 +67,8 @@ spec:
             value: "http://10.10.10.9:4000"
           - name: SERVER_HOST
             value: 0.0.0.0
+          - name: SERVER_PORT
+            value: "8888"
           - name: ADGUARD_USER
             valueFrom:
               secretKeyRef:
@@ -79,9 +81,7 @@ spec:
                 key: password
         securityContext:
           readOnlyRootFilesystem: true
-    extraArgs:
-      # - --ingress-class=internal
-      - --webhook-provider-url=http://localhost:8080
+    extraArgs: []
     sources:
       - "traefik-proxy"
       - "crd"

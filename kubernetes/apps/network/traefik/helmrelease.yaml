@@ -19,11 +19,12 @@ spec:
   timeout: 10m
   install:
     createNamespace: true
+    crds: Skip
     replace: true
     remediation:
       retries: 7
   upgrade:
-    crds: CreateReplace
+    crds: Skip
     cleanupOnFail: true
     remediation:
       retries: 7

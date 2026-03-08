@@ -14,7 +14,7 @@ spec:
     oauth2:
       clientType: confidential
       allowedRedirectUris:
-      - url: "https://${APP}.${ROOT_DOMAIN}/oidc-callback"
+      - url: "https://${APP}.${CLUSTER_DOMAIN}/oidc-callback"
       propertyMappings:
         - email
         - openid

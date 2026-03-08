@@ -20,6 +20,8 @@ metadata:
   name: &name prometheus
 spec:
   interval: 1h
+  driftDetection:
+    mode: enabled
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack

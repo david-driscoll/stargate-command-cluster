@@ -27,6 +27,8 @@ spec:
   maxHistory: 3
   interval: 1h
   timeout: 10m
+  driftDetection:
+    mode: enabled
   install:
     createNamespace: true
     replace: true

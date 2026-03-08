@@ -81,7 +81,7 @@ spec:
           readOnlyRootFilesystem: true
     extraArgs:
       # - --ingress-class=internal
-      - --webhook-provider-url=http://localhost:8888
+      - --webhook-provider-url=http://localhost:8080
     sources:
       - "traefik-proxy"
       - "crd"

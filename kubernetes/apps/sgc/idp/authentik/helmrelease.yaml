@@ -25,8 +25,6 @@ spec:
         name: authentik
   maxHistory: 3
   interval: 1h
-  driftDetection:
-    mode: enabled
   timeout: 20m
   install:
     createNamespace: true

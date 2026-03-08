@@ -26,6 +26,8 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  components:
+    - ../../../components/failover/fast-node-eviction
   postBuild:
     substitute:
       APP: *app

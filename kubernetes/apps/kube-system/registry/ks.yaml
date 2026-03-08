@@ -27,6 +27,7 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   components:
+    - ../../../components/failover/fast-node-eviction
     - ../../../components/volsync
   postBuild:
     substitute:

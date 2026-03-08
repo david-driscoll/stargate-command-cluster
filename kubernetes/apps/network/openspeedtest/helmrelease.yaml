@@ -5,6 +5,8 @@ metadata:
   name: openspeedtest
 spec:
   interval: 15m
+  driftDetection:
+    mode: enabled
   url: oci://ghcr.io/bjw-s-labs/helm/app-template
   ref:
     tag: 4.6.2

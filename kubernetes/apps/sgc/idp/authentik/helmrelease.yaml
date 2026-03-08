@@ -6,6 +6,8 @@ metadata:
   name: authentik
 spec:
   interval: 1h
+  driftDetection:
+    mode: enabled
   url: https://charts.goauthentik.io/
   timeout: 3m
 ---

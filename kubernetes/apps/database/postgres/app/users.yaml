@@ -95,7 +95,7 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name authentik-postgres
+  name: &name grafana-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -152,7 +152,7 @@ spec:
               templateAs: Values
   dataFrom:
     - extract:
-        key: "authentik-postgres-password"
+        key: "grafana-postgres-password"
       rewrite:
         - regexp:
             source: "[\\W]"
@@ -163,31 +163,31 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: &app authentik
+  name: &app grafana
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   cluster:
     name: postgres
-  name: authentik
-  owner: authentik
+  name: grafana
+  owner: grafana
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
   schemas:
     - ensure: present
       name: public
-      owner: authentik
+      owner: grafana
     - ensure: present
-      name: authentik
-      owner: authentik
+      name: grafana
+      owner: grafana
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: &name oxycloud-postgres
+  name: &name tandoor-postgres
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -244,7 +244,7 @@ spec:
               templateAs: Values
   dataFrom:
     - extract:
-        key: "oxycloud-postgres-password"
+        key: "tandoor-postgres-password"
       rewrite:
         - regexp:
             source: "[\\W]"
@@ -255,24 +255,760 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: &app oxycloud
+  name: &app tandoor
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   cluster:
     name: postgres
-  name: oxycloud
-  owner: oxycloud
+  name: tandoor
+  owner: tandoor
   ensure: present
   allowConnections: true
   databaseReclaimPolicy: retain
   schemas:
     - ensure: present
       name: public
-      owner: oxycloud
+      owner: tandoor
     - ensure: present
-      name: oxycloud
-      owner: oxycloud
+      name: tandoor
+      owner: tandoor
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name immich-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "immich-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app immich
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: immich
+  owner: immich
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: immich
+    - ensure: present
+      name: immich
+      owner: immich
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name vikunja-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "vikunja-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app vikunja
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: vikunja
+  owner: vikunja
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: vikunja
+    - ensure: present
+      name: vikunja
+      owner: vikunja
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name windmill-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "windmill-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app windmill
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: windmill
+  owner: windmill
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: windmill
+    - ensure: present
+      name: windmill
+      owner: windmill
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name n8n-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "n8n-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app n8n
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: n8n
+  owner: n8n
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: n8n
+    - ensure: present
+      name: n8n
+      owner: n8n
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name retrom-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "retrom-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app retrom
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: retrom
+  owner: retrom
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: retrom
+    - ensure: present
+      name: retrom
+      owner: retrom
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name questarr-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "questarr-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app questarr
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: questarr
+  owner: questarr
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: questarr
+    - ensure: present
+      name: questarr
+      owner: questarr
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name romm-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "romm-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app romm
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: romm
+  owner: romm
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: romm
+    - ensure: present
+      name: romm
+      owner: romm
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: &name pulsarr-postgres
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 4m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: database
+  target:
+    name: *name
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      templateFrom:
+        - target: Data
+          configMap:
+            name: pgsql-user-template
+            items:
+            - key: username
+              templateAs: Values
+            - key: password
+              templateAs: Values
+            - key: hostname
+              templateAs: Values
+            - key: public-hostname
+              templateAs: Values
+            - key: port
+              templateAs: Values
+            - key: database
+              templateAs: Values
+            - key: pgpass
+              templateAs: Values
+            - key: jdbc-uri
+              templateAs: Values
+            - key: uri
+              templateAs: Values
+            - key: uriql
+              templateAs: Values
+            - key: public-jdbc-uri
+              templateAs: Values
+            - key: public-uri
+              templateAs: Values
+            - key: public-uriql
+              templateAs: Values
+            - key: connection-string
+              templateAs: Values
+            - key: public-connection-string
+              templateAs: Values
+  dataFrom:
+    - extract:
+        key: "pulsarr-postgres-password"
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: &app pulsarr
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  cluster:
+    name: postgres
+  name: pulsarr
+  owner: pulsarr
+  ensure: present
+  allowConnections: true
+  databaseReclaimPolicy: retain
+  schemas:
+    - ensure: present
+      name: public
+      owner: pulsarr
+    - ensure: present
+      name: pulsarr
+      owner: pulsarr
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/external-secrets.io/externalsecret_v1.json

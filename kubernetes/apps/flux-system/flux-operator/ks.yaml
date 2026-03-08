@@ -20,6 +20,8 @@ spec:
   wait: false
   force: false
   interval: 1h
+  driftDetection:
+    mode: enabled
   retryInterval: 2m
   timeout: 10m
   sourceRef:

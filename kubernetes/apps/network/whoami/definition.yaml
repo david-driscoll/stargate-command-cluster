@@ -9,7 +9,6 @@ spec:
   category: ${CLUSTER_TITLE}
   description: Debug information about the user
   url: &url https://whoami.${CLUSTER_DOMAIN}
-  # TODO: Change me someday
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homebox.svg
   authentik:
     proxy:

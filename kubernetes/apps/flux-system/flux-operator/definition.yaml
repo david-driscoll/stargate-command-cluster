@@ -9,7 +9,6 @@ spec:
   category: ${CLUSTER_TITLE}
   description: Access to the Flux Operator dashboard
   url: &url https://flux.${CLUSTER_DOMAIN}
-  # TODO: Change me someday
   icon: https://fluxoperator.dev/favicon.svg
   access_policy:
     groups:

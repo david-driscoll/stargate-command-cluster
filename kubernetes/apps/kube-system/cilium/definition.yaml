@@ -9,7 +9,6 @@
 #   category: ${CLUSTER_TITLE}
 #   description: Access to the Cilium Hubble dashboard
 #   url: &url https://hubble.${CLUSTER_DOMAIN}
-#   # TODO: Change me someday
 #   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cilium.svg
 #   access_policy:
 #     groups:

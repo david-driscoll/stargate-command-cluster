@@ -9,7 +9,6 @@ spec:
   category: ${CLUSTER_TITLE}
   description: A container registry mirror for faster image pulls
   url: &url https://registry.${CLUSTER_DOMAIN}
-  # TODO: Change me someday
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/zot-registry.svg
   access_policy:
     groups:

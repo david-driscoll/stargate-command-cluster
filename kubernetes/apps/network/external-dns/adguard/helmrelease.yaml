@@ -51,10 +51,11 @@ spec:
         image:
           repository: ghcr.io/muhlba91/external-dns-provider-adguard
           tag: v11.0.2@sha256:162561ce7af084ee736a4c62c0bd3c0f12a3842d0ca8d96ac3665c15ef05add8
+          pullPolicy: IfNotPresent
         livenessProbe: &probe
           httpGet:
             path: /healthz
-            port: 8080
+            port: 8888
           initialDelaySeconds: 10
           periodSeconds: 60
           timeoutSeconds: 10
@@ -65,8 +66,6 @@ spec:
             value: debug
           - name: ADGUARD_URL
             value: "http://10.10.10.9:4000"
-          - name: SERVER_HOST
-            value: 0.0.0.0
           - name: ADGUARD_USER
             valueFrom:
               secretKeyRef:
@@ -79,8 +78,9 @@ spec:
                 key: password
         securityContext:
           readOnlyRootFilesystem: true
+    registry: noop
     extraArgs:
-      - --webhook-provider-url=http://localhost:8080
+      - --webhook-provider-url=http://localhost:8888
     sources:
       - "traefik-proxy"
       - "crd"

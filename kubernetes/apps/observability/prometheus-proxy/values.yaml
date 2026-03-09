@@ -71,9 +71,9 @@ prometheus:
     enableAdminAPI: true
     enableOTLPReceiver: true
     otlp:
-      translation_strategy: NoUTF8EscapingWithSuffixes
+      translationStrategy: NoUTF8EscapingWithSuffixes
       # Recommended attributes to be promoted to labels.
-      promote_resource_attributes:
+      promoteResourceAttributes:
         - service.instance.id
         - service.name
         - service.namespace

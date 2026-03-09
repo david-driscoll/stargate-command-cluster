@@ -54,7 +54,7 @@ spec:
         livenessProbe: &probe
           httpGet:
             path: /healthz
-            port: 8888
+            port: 8080
           initialDelaySeconds: 10
           periodSeconds: 60
           timeoutSeconds: 10
@@ -67,8 +67,6 @@ spec:
             value: "http://10.10.10.9:4000"
           - name: SERVER_HOST
             value: 0.0.0.0
-          - name: SERVER_PORT
-            value: "8888"
           - name: ADGUARD_USER
             valueFrom:
               secretKeyRef:
@@ -82,7 +80,7 @@ spec:
         securityContext:
           readOnlyRootFilesystem: true
     extraArgs:
-      - --webhook-provider-url=http://localhost:8888
+      - --webhook-provider-url=http://localhost:8080
     sources:
       - "traefik-proxy"
       - "crd"

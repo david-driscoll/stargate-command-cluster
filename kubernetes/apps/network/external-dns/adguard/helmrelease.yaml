@@ -54,7 +54,7 @@ spec:
         livenessProbe: &probe
           httpGet:
             path: /healthz
-            port: 8888
+            port: 8080
           initialDelaySeconds: 10
           periodSeconds: 60
           timeoutSeconds: 10
@@ -81,7 +81,8 @@ spec:
                 key: password
         securityContext:
           readOnlyRootFilesystem: true
-    extraArgs: []
+    extraArgs:
+      - --webhook-provider-url=http://localhost:8080
     sources:
       - "traefik-proxy"
       - "crd"

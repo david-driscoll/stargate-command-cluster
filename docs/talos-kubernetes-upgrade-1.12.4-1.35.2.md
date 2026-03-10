@@ -1,12 +1,12 @@
-# Talos and Kubernetes Upgrade Runbook (v1.11.6 -> v1.12.5, v1.33.4 -> v1.33.9)
+# Talos and Kubernetes Upgrade Runbook (v1.11.6 -> v1.12.5, v1.33.4 -> v1.35.2)
 
 ## Scope
 
 This runbook covers direct-jump upgrade preparation and execution for:
 
 - Talos: v1.11.6 -> v1.12.5
-- Kubernetes/kubelet: v1.33.4 -> v1.33.9
-- Tooling alignment: kubectl 1.33.4 -> 1.33.9, talosctl 1.11.6 -> 1.12.5
+- Kubernetes/kubelet: v1.33.4 -> v1.35.2
+- Tooling alignment: kubectl 1.33.4 -> 1.35.2, talosctl 1.11.6 -> 1.12.5
 
 Primary Renovate PRs analyzed:
 

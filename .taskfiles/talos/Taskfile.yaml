@@ -4,12 +4,63 @@ version: '3'
 
 tasks:
 
+  preflight-upgrade:
+    desc: Preflight checks before Talos/Kubernetes minor upgrade
+    dir: '{{.TALOS_DIR}}'
+    cmd: |
+      set -eu
+
+      echo "Target versions from talenv.yaml"
+      echo "  Talos:      $(yq '.talosVersion' {{.TALOS_DIR}}/talenv.yaml)"
+      echo "  Kubernetes: $(yq '.kubernetesVersion' {{.TALOS_DIR}}/talenv.yaml)"
+
+      echo "\nClient tooling versions"
+      kubectl version --client
+      talosctl version --client
+
+      echo "\nCluster node status"
+      kubectl get nodes -o wide
+      not_ready_count="$(kubectl get nodes --no-headers | awk '$2 != "Ready" { print $1 }' | wc -l | tr -d ' ')"
+      if [ "${not_ready_count}" != "0" ]; then
+        echo "One or more nodes are not Ready. Aborting preflight."
+        exit 1
+      fi
+
+      control_plane_nodes="$(kubectl get nodes -l node-role.kubernetes.io/control-plane -o json | jq -r '[.items[].status.addresses[] | select(.type == "InternalIP") | .address] | join(",")')"
+      all_nodes="$(kubectl get nodes -o json | jq -r '[.items[].status.addresses[] | select(.type == "InternalIP") | .address] | unique | join(",")')"
+      init_node="$(echo "${control_plane_nodes}" | cut -d',' -f1)"
+
+      echo "\nTalos API health"
+      for node in $(echo "${all_nodes}" | tr ',' ' '); do
+        echo "  checking Talos API on ${node} via endpoint ${init_node}"
+        talosctl --nodes "${node}" --endpoints "${init_node}" get machinestatus >/dev/null
+      done
+
+      echo "\nChecking VolSync synchronization state"
+      if kubectl get crd replicationsources.volsync.backube.io >/dev/null 2>&1; then
+        unsynced="$(kubectl get replicationsources.volsync.backube -A -o json | jq -r '.items[]? | select(any(.status.conditions[]?; .type == "Synchronizing" and .status == "True")) | "\(.metadata.namespace)/\(.metadata.name)"')"
+        if [ -n "${unsynced}" ]; then
+          echo "ReplicationSource objects still synchronizing:"
+          echo "${unsynced}"
+          exit 1
+        fi
+      else
+        echo "ReplicationSource CRD not found; skipping VolSync gate."
+      fi
+
+      echo "\nPreflight checks passed."
+    preconditions:
+      - talosctl config info
+      - test -f {{.TALOSCONFIG}}
+      - which kubectl talosctl jq yq
+
   backup-etcd:
     desc: Backup etcd before major upgrade
     dir: '{{.TALOS_DIR}}'
     cmd: |
       echo "Backing up etcd from control plane node..."
-      talosctl -n 192.168.1.77 etcd snapshot etcd-pre-upgrade-$(date +%Y%m%d-%H%M%S).db
+      cp_node_ip="$(kubectl get nodes -l node-role.kubernetes.io/control-plane -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')"
+      talosctl -n "${cp_node_ip}" etcd snapshot etcd-pre-upgrade-$(date +%Y%m%d-%H%M%S).db
       echo "Backup completed successfully"
     preconditions:
       - talosctl config info
@@ -25,6 +76,29 @@ tasks:
       - test -f {{.ROOT_DIR}}/.sops.yaml
       - test -f {{.SOPS_AGE_KEY_FILE}}
       - which talhelper
+
+  validate-config:
+    desc: Validate generated Talos machine configuration files
+    dir: '{{.TALOS_DIR}}'
+    cmd: |
+      set -eu
+      expected_talos_version="$(yq '.talosVersion' ./talenv.yaml)"
+      expected_talos_mise_version="${expected_talos_version#v}"
+      talosctl_version="$(mise exec talosctl@${expected_talos_mise_version} -- talosctl version --client | awk '/Tag:/ {print $2}')"
+      if [ "${talosctl_version}" != "${expected_talos_version}" ]; then
+        echo "talosctl version (${talosctl_version}) does not match talosVersion (${expected_talos_version})."
+        echo "Install the pinned tools first (for example: mise install)."
+        exit 1
+      fi
+      for cfg in ./clusterconfig/*.yaml; do
+        echo "Validating ${cfg}"
+        mise exec talosctl@${expected_talos_mise_version} -- talosctl validate --mode metal --strict --config "${cfg}"
+      done
+      echo "Talos config validation passed."
+    deps:
+      - generate-config
+    preconditions:
+      - which talosctl
 
   apply:
     desc: Reapply the config
@@ -43,11 +117,10 @@ tasks:
     desc: Reboot the cluster without downtime
     dir: '{{.TALOS_DIR}}'
     cmd: |
-      talosctl reboot -n 10.10.209.10 --wait
-      sleep 10s
-      talosctl reboot -n 10.10.209.11 --wait
-      sleep 10s
-      talosctl reboot -n 10.10.209.12 --wait
+      for node in $(kubectl get nodes -l node-role.kubernetes.io/control-plane -o jsonpath='{range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address}{" "}{end}'); do
+        talosctl reboot -n "${node}" --wait
+        sleep 10s
+      done
     vars:
       MODE: '{{.MODE | default "auto"}}'
     deps:
@@ -62,7 +135,7 @@ tasks:
     dir: '{{.TALOS_DIR}}'
     cmd: talhelper gencommand upgrade --extra-flags "--timeout=20m --wait" | bash
     deps:
-      - generate-config
+      - validate-config
     preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
@@ -120,7 +193,25 @@ tasks:
       KUBERNETES_VERSION:
         sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/talenv.yaml
     deps:
-      - generate-config
+      - validate-config
+    preconditions:
+      - talosctl config info
+      - test -f {{.TALOSCONFIG}}
+      - which talhelper talosctl yq
+
+  upgrade-k8s-to:
+    desc: Upgrade Kubernetes to an explicit intermediate version [VERSION=required]
+    dir: '{{.TALOS_DIR}}'
+    cmd: |
+      set -eu
+      tmpfile="$(mktemp)"
+      trap 'rm -f "${tmpfile}"' EXIT
+      echo "kubernetesVersion: {{.VERSION}}" > "${tmpfile}"
+      talhelper gencommand upgrade-k8s --env-file talenv.yaml --env-file "${tmpfile}" | bash
+    requires:
+      vars: [VERSION]
+    deps:
+      - validate-config
     preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}

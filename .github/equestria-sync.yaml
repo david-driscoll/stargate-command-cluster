@@ -27,14 +27,10 @@ david-driscoll/equestria-cluster:
   - source: kubernetes/apps/database/
     dest: kubernetes/apps/database/
     exclude: |
-      storage/config.yaml
-      storage/s3/generated/
-      storage/s3/helmrelease.yaml
-      storage/s3/resources/
-      postgres/app/cluster.yaml
-      postgres/app/users/
+      postgres/app/passwords.sops.yaml
+      postgres/app/users.yaml
       postgres/app/resources/
-      postgres/postgres-push-secrets/
+      postgres/postgres-push-secrets/push-secrets.yaml
   - source: kubernetes/apps/kube-system/
     dest: kubernetes/apps/kube-system/
     exclude: |

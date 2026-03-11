@@ -15,6 +15,13 @@ spec:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
   path: ./kubernetes/apps/observability/smartctl-exporter
+  dependsOn:
+    - name: grafana
+      namespace: observability
+    - name: grafana-operator
+      namespace: observability
+    - name: prometheus
+      namespace: observability
   prune: true
   wait: true
   force: false

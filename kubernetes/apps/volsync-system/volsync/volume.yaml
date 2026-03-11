@@ -12,9 +12,11 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   mountOptions:
-    - nfsvers=4.1
+    - nfsvers=4.2
     - hard
     - intr
+    - nconnect=16
+    - noatime
   capacity:
     storage: 100Gi
   storageClassName: nfs-csi

@@ -35,6 +35,8 @@ david-driscoll/equestria-cluster:
     dest: kubernetes/apps/kube-system/
     exclude: |
       features/kustomization.yaml
+      features/amd/
+      features/nvidia/
     deleteOrphaned: true
   - source: kubernetes/apps/flux-system/weave/
     dest: kubernetes/apps/flux-system/weave/

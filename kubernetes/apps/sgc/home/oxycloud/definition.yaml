@@ -19,6 +19,7 @@ spec:
       clientType: confidential
       allowedRedirectUris:
       - url: "https://cloud.${ROOT_DOMAIN}/oidc/callback/authentik"
+      - url: "https://cloud.${TAILSCALE_DOMAIN}/oidc/callback/authentik"
       propertyMappings:
         - email
         - openid

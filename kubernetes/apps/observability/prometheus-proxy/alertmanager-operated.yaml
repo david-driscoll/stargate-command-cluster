@@ -5,8 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "alertmanager.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: "inbound"
-    tailscale.com/tags: "tag:observability"
+    tailscale.com/proxy-group: inbound
   name: alertmanager-operated
 spec:
   externalName: unused

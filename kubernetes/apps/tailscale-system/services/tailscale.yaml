@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "idp.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: egress
+    tailscale.com/proxy-group: inbound
   name: tsidp
 spec:
   externalName: idp

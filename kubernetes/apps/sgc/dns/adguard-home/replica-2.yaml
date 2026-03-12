@@ -107,8 +107,9 @@ spec:
     #     cpu: "500m"
     #     memory: "4Gi"
     retain:
-      hourly: 24
+      hourly: 0
       daily: 7
-      monthly: 1
-      last: "10"
+      monthly: 4
+      yearly: 1
       weekly: 4
+      last: "5"

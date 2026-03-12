@@ -2,10 +2,10 @@
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyGroup
 metadata:
-  name: ingress
+  name: outbound
 spec:
   type: ingress
-  hostnamePrefix: ${CLUSTER_CNAME}-ingress
+  hostnamePrefix: ${CLUSTER_CNAME}-outbound
   replicas: 2
   tags: ["tag:ingress", "tag:apps"]
   proxyClass: default

@@ -10,16 +10,3 @@ spec:
       enable: true
   # tailscale:
   #   acceptRoutes: true
-
----
-apiVersion: tailscale.com/v1alpha1
-kind: ProxyClass
-metadata:
-  name: accept-routes
-spec:
-  metrics:
-    enable: true
-    serviceMonitor:
-      enable: true
-  tailscale:
-    acceptRoutes: true

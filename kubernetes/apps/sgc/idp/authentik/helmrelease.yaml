@@ -168,7 +168,7 @@ spec:
         annotations:
           tailscale.com/expose: "true"
           tailscale.com/hostname: authentik
-          tailscale.com/proxy-group: outbound
+          tailscale.com/proxy-group: tailnet-outbound
 
       route:
         main:

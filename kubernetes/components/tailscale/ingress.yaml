@@ -5,7 +5,7 @@ kind: Ingress
 metadata:
   name: ${APP}-tailscale-ingress
   annotations:
-    tailscale.com/proxy-group: outbound
+    tailscale.com/proxy-group: tailnet-outbound
     tailscale.com/experimental-forward-cluster-traffic-via-ingress: "true"
     tailscale.com/tags: "tag:apps"
 spec:

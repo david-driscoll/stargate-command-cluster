@@ -5,7 +5,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: inbound
+    tailscale.com/proxy-group: tailnet-inbound
   name: proxmox-luna
 spec:
   externalName: luna
@@ -27,7 +27,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: inbound
+    tailscale.com/proxy-group: tailnet-inbound
   name: proxmox-celestia
 spec:
   externalName: celestia
@@ -47,7 +47,7 @@ kind: Service
 metadata:
   annotations:
     tailscale.com/tailnet-fqdn: "alpha-site.${TAILSCALE_DOMAIN}"
-    tailscale.com/proxy-group: inbound
+    tailscale.com/proxy-group: tailnet-inbound
   name: proxmox-alpha-site
 spec:
   externalName: alpha-site

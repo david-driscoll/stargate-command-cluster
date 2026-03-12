@@ -8,6 +8,9 @@ spec:
     enable: true
     serviceMonitor:
       enable: true
+  # tailscale:
+  #   acceptRoutes: true
+
 ---
 apiVersion: tailscale.com/v1alpha1
 kind: ProxyClass

@@ -74,7 +74,7 @@ spec:
           defrag:
             image:
               repository: ghcr.io/siderolabs/talosctl
-              tag: v1.12.5
+              tag: v1.12.5@sha256:7ea3247867d69d143e264707be67c191dc028a0d5aac85672ff84cd6dc4e12de
             args:
               - -n
               - "$(CP_NODE_IP)"

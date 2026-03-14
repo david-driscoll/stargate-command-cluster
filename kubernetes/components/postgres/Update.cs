@@ -232,7 +232,7 @@ try
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {(user.Contains("postgres") ? user : $"{user}-postgres")}
+      name: {(user.Contains("postgres") ? user : $"{user}-postgres")}-password
     stringData:
       username: "{user}"
       database: "{user}"

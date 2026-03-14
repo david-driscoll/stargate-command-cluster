@@ -233,7 +233,7 @@ try
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {user}-postgres-password
+      name: {user}-password
     stringData:
       username: "{user}"
       database: "{user}"

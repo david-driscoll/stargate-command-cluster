@@ -219,7 +219,6 @@ try
   var addedSecret = false;
   foreach (var user in databases
   .Select(GetName)
-  .Select(x => x += "-postgres")
   .Concat(["postgres-user", "postgres-superuser"]))
   {
     var found = existingSops.TryGetValue($"{user}-password", out var existingNode);
@@ -233,7 +232,7 @@ try
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {user}-password
+      name: {(user.Contains("postgres") ? user : $"{user}-postgres")}
     stringData:
       username: "{user}"
       database: "{user}"

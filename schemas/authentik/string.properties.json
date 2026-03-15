@@ -2,17 +2,19 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ssf": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "ssf" },
         "eventRetention": { "type": "string" },
-        "jwtFederationProviders":{ "type": "string" },
+        "jwtFederationProviders": { "type": "string" },
 
         "providerSsfId": { "type": "string" },
         "signingKey": { "type": "string" }
       }
     },
     "scim": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "scim" },
@@ -21,8 +23,8 @@
         "excludeUsersServiceAccount": { "type": "boolean" },
         "filterGroup": { "type": "string" },
 
-        "propertyMappings":{ "type": "string" },
-        "propertyMappingsGroups":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
+        "propertyMappingsGroups": { "type": "string" },
         "providerScimId": { "type": "string" },
         "token": { "type": "string" },
         "url": { "type": "string" }
@@ -30,6 +32,7 @@
       "required": ["token", "url"]
     },
     "saml": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "saml" },
@@ -47,7 +50,7 @@
         "issuer": { "type": "string" },
 
         "nameIdMapping": { "type": "string" },
-        "propertyMappings":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
         "providerSamlId": { "type": "string" },
         "sessionValidNotOnOrAfter": { "type": "string" },
         "signAssertion": { "type": "boolean" },
@@ -65,6 +68,7 @@
       "required": ["acsUrl"]
     },
     "proxy": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "proxy" },
@@ -81,15 +85,15 @@
         "internalHost": { "type": "string" },
         "internalHostSslValidation": { "type": "boolean" },
         "invalidationFlow": { "type": "string" },
-        "jwksSources":{ "type": "string" },
-        "jwtFederationProviders":{ "type": "string" },
-        "jwtFederationSources":{ "type": "string" },
+        "jwksSources": { "type": "string" },
+        "jwtFederationProviders": { "type": "string" },
+        "jwtFederationSources": { "type": "string" },
         "mode": {
           "type": "string",
           "enum": ["proxy", "forward_single", "forward_domain"]
         },
         "name": { "type": "string" },
-        "propertyMappings":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
         "providerProxyId": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
         "logoutUri": { "type": "string" },
@@ -97,6 +101,7 @@
       }
     },
     "radius": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "radius" },
@@ -105,13 +110,14 @@
         "invalidationFlow": { "type": "string" },
         "mfaSupport": { "type": "boolean" },
 
-        "propertyMappings":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
         "providerRadiusId": { "type": "string" },
         "sharedSecret": { "type": "string" }
       },
       "required": ["sharedSecret"]
     },
     "rac": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "rac" },
@@ -119,18 +125,19 @@
         "authorizationFlow": { "type": "string" },
         "connectionExpiry": { "type": "string" },
 
-        "propertyMappings":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
         "providerRacId": { "type": "string" },
         "settings": { "type": "string" }
       }
     },
     "oauth2": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "oauth2" },
         "accessCodeValidity": { "type": "string" },
         "accessTokenValidity": { "type": "string" },
-        "allowedRedirectUris":{ "type": "string" },
+        "allowedRedirectUris": { "type": "string" },
         "authenticationFlow": { "type": "string" },
         "authorizationFlow": { "type": "string" },
         "clientId": { "type": "string" },
@@ -141,10 +148,10 @@
         "invalidationFlow": { "type": "string" },
         "issuerMode": { "type": "string" },
         "jwksSources": { "type": "string" },
-        "jwtFederationProviders":{ "type": "string" },
-        "jwtFederationSources":{ "type": "string" },
+        "jwtFederationProviders": { "type": "string" },
+        "jwtFederationSources": { "type": "string" },
 
-        "propertyMappings":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
         "providerOauth2Id": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },
         "logoutUri": { "type": "string" },
@@ -154,6 +161,7 @@
       "required": []
     },
     "microsoftEntra": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "microsoftEntra" },
@@ -164,8 +172,8 @@
         "filterGroup": { "type": "string" },
         "groupDeleteAction": { "type": "string" },
 
-        "propertyMappings":{ "type": "string" },
-        "propertyMappingsGroups":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
+        "propertyMappingsGroups": { "type": "string" },
         "providerMicrosoftEntraId": { "type": "string" },
         "tenantId": { "type": "string" },
         "userDeleteAction": { "type": "string" }
@@ -173,6 +181,7 @@
       "required": ["clientId", "clientSecret", "tenantId"]
     },
     "ldap": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "ldap" },
@@ -192,6 +201,7 @@
       "required": ["baseDn"]
     },
     "googleWorkspace": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "googleWorkspace" },
@@ -203,8 +213,8 @@
         "filterGroup": { "type": "string" },
         "groupDeleteAction": { "type": "string" },
 
-        "propertyMappings":{ "type": "string" },
-        "propertyMappingsGroups":{ "type": "string" },
+        "propertyMappings": { "type": "string" },
+        "propertyMappingsGroups": { "type": "string" },
         "providerGoogleWorkspaceId": { "type": "string" },
         "userDeleteAction": { "type": "string" }
       },

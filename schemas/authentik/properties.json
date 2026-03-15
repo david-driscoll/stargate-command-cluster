@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ssf": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "ssf" },
@@ -16,6 +17,7 @@
       }
     },
     "scim": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "scim" },
@@ -39,6 +41,7 @@
       "required": ["token", "url"]
     },
     "saml": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "saml" },
@@ -77,6 +80,7 @@
       "required": ["acsUrl"]
     },
     "proxy": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "proxy" },
@@ -121,6 +125,7 @@
       }
     },
     "radius": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "radius" },
@@ -139,6 +144,7 @@
       "required": ["sharedSecret"]
     },
     "rac": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "rac" },
@@ -155,6 +161,7 @@
       }
     },
     "oauth2": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "oauth2" },
@@ -203,6 +210,7 @@
       "required": []
     },
     "microsoftEntra": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "microsoftEntra" },
@@ -228,6 +236,7 @@
       "required": ["clientId", "clientSecret", "tenantId"]
     },
     "ldap": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "ldap" },
@@ -247,6 +256,7 @@
       "required": ["baseDn"]
     },
     "googleWorkspace": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "type": { "const": "googleWorkspace" },

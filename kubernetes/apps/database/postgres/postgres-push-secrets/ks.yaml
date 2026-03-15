@@ -17,7 +17,7 @@ spec:
   path: ./kubernetes/apps/database/postgres/postgres-push-secrets
   dependsOn:
     - name: postgres
-      namespace: *namespace
+      namespace: database
   prune: true
   wait: false
   suspend: false

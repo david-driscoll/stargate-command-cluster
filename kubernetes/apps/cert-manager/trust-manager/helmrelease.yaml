@@ -46,7 +46,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: cert-manager
-      namespace: *namespace
+      namespace: cert-manager
   valuesFrom:
     - kind: ConfigMap
       name: trust-manager-values

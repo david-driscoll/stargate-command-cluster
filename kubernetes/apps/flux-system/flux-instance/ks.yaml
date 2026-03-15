@@ -13,7 +13,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: flux-operator
-      namespace: *namespace
+      namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/flux-system/flux-instance
   prune: true

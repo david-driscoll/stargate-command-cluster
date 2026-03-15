@@ -17,7 +17,7 @@ spec:
   path: ./kubernetes/apps/database/postgres/backups
   dependsOn:
     - name: postgres
-      namespace: *namespace
+      namespace: database
     - name: external-secrets
       namespace: kube-system
   prune: true

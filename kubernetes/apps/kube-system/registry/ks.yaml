@@ -11,7 +11,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: external-secrets
-      namespace: *namespace
+      namespace: kube-system
     - name: volsync
       namespace: volsync-system
   path: ./kubernetes/apps/kube-system/registry

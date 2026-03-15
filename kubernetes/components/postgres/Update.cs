@@ -218,13 +218,21 @@ try
 
   var addedSecret = false;
   foreach (var user in databases
-  .Select(GetName)
-  .Concat(["postgres-user", "postgres-superuser"]))
+  .Select(db => (name: GetName(db), key: $"{GetName(db)}-postgres"))
+  .Concat([(name: "postgres-user", key: "postgres-user"), (name: "postgres-superuser", key: "postgres-superuser")]))
   {
-    var found = existingSops.TryGetValue($"{user}-password", out var existingNode);
+    var found = existingSops.TryGetValue($"{user.key}-password", out var existingNode);
+
+    string password;
     if (!found)
     {
       addedSecret = true;
+      password = Guid.NewGuid().ToString("N");
+    }
+    else
+    {
+      if (existingNode is null) throw new InvalidOperationException($"Existing secret for {user.key}-password is not a mapping node.");
+      password = existingNode?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? throw new InvalidOperationException($"Existing secret for {user.key}-password does not contain a password field.");
     }
     sopsOutput.AppendLine($"""
     ---
@@ -232,13 +240,13 @@ try
     apiVersion: v1
     kind: Secret
     metadata:
-      name: {(user.Contains("postgres") ? user : $"{user}-postgres")}-password
+      name: {user.key}-password
     stringData:
-      username: "{user}"
-      database: "{user}"
+      username: "{user.name}"
+      database: "{user.name}"
       port: "5432"
       hostname: "postgres-rw.database.svc.cluster.local"
-      password: "{existingNode?.Query("/stringData/password").OfType<YamlScalarNode>().SingleOrDefault()?.Value ?? Guid.NewGuid().ToString("N")}"
+      password: "{password}"
     """);
   }
 

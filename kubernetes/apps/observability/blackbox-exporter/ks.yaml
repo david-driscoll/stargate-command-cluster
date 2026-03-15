@@ -17,7 +17,7 @@ spec:
   path: ./kubernetes/apps/observability/blackbox-exporter
   dependsOn:
     - name: prometheus
-      namespace: *namespace
+      namespace: observability
   prune: true
   retryInterval: 2m
   sourceRef:

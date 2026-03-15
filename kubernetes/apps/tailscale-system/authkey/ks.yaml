@@ -14,7 +14,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: tailscale-operator
-      namespace: *namespace
+      namespace: tailscale-system
   path: ./kubernetes/apps/tailscale-system/authkey
   prune: true
   wait: false

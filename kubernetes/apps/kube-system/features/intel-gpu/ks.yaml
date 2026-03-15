@@ -12,7 +12,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: intel-device-plugin-operator
-      namespace: kube-system
+      namespace: *namespace
   healthCheckExprs:
     - apiVersion: deviceplugin.intel.com/v1
       kind: GpuDevicePlugin

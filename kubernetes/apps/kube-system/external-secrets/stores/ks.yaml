@@ -24,9 +24,9 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: external-secrets
-      namespace: kube-system
+      namespace: *namespace
     - name: onepassword-connect
-      namespace: kube-system
+      namespace: *namespace
   postBuild:
     substitute:
       APP: *app

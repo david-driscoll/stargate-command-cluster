@@ -29,8 +29,17 @@ tasks:
         # For each resource type, get resources in the target namespace
         for resource in $RESOURCE_TYPES; do
           echo -e "\n--- Resource: $resource ---"
-          (kubectl get "$resource" -l app.kubernetes.io/name={{.NAME}} -n "{{.NAMESPACE}}" -o name || '') | xargs kubectl patch -p '{"metadata":{"finalizers":[]}}' --type=merge -n {{.NAMESPACE}} || true
+          kubectl get "$resource" -l app.kubernetes.io/name={{.NAME}} -n "{{.NAMESPACE}}" -o name 2>/dev/null | xargs -I {} kubectl patch {} -p '{"metadata":{"finalizers":[]}}' --type=merge -n {{.NAMESPACE}} 2>/dev/null || true
           kubectl delete "$resource" -l app.kubernetes.io/name={{.NAME}} -n "{{.NAMESPACE}}" --ignore-not-found=true || true
+        done
+
+        # Clean up Flux/Helm release secrets (sh.helm.release.v1.${app}.*)
+        echo -e "\n--- Resource: Helm Release Secrets ---"
+        kubectl get secret -n "{{.NAMESPACE}}" 2>/dev/null | grep "sh.helm.release.v1.{{.NAME}}" | awk '{print $1}' | while read -r secret_name; do
+          if [ -n "$secret_name" ]; then
+            kubectl patch secret "$secret_name" -p '{"metadata":{"finalizers":[]}}' --type=merge -n {{.NAMESPACE}} 2>/dev/null || true
+            kubectl delete secret "$secret_name" -n {{.NAMESPACE}} 2>/dev/null || true
+          fi
         done
   restart-flux:
     cmd: kubectl rollout restart deployment,statefulset,daemonset -n flux-system

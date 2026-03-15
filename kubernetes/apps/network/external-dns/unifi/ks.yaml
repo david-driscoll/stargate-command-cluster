@@ -15,7 +15,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: network-secrets
-      namespace: *namespace
+      namespace: network
   path: ./kubernetes/apps/network/external-dns/unifi
   prune: true
   wait: true

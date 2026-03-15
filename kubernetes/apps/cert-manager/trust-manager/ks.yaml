@@ -13,7 +13,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: cert-manager
-      namespace: cert-manager
+      namespace: *namespace
   path: ./kubernetes/apps/cert-manager/trust-manager
   prune: true
   wait: true

@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/kube-system/etcd
   dependsOn:
     - name: external-secrets
-      namespace: kube-system
+      namespace: *namespace
   prune: true
   sourceRef:
     kind: GitRepository

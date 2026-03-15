@@ -20,7 +20,7 @@ spec:
   timeout: 10m
   dependsOn:
     - name: tailscale-resources
-      namespace: *namespace
+      namespace: tailscale-system
   sourceRef:
     kind: GitRepository
     name: flux-system

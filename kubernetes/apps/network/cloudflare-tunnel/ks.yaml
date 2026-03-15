@@ -16,7 +16,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: cloudflare-dns
-      namespace: network
+      namespace: *namespace
   path: ./kubernetes/apps/network/cloudflare-tunnel
   prune: true
   wait: true

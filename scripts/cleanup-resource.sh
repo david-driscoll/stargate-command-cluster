@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# Function to try deleting and remove finalizers from a resource type
+try_delete_and_remove_finalizers() {
+  local resource="$1"
+  shift
+  echo "Trying to delete: $resource"
+  for selector in "$@"; do
+    kubectl get "$resource" -l "$selector" -n "$NAMESPACE" -o name 2>/dev/null | \
+      xargs -r kubectl patch -n "$NAMESPACE" --type json -p='[{"op":"remove","path":"/metadata/finalizers"}]' 2>/dev/null
+
+    # Try deletion first
+    kubectl get "$resource" -l "$selector" -n "$NAMESPACE" -o name 2>/dev/null | \
+      xargs -r kubectl delete -n "$NAMESPACE" 2>/dev/null
+  done
+}
+
 NAME="$1"
 NAMESPACE="$2"
 
@@ -11,21 +26,22 @@ fi
 echo "Cleaning up all resources for: $NAME in namespace: $NAMESPACE"
 echo ""
 
+# Define label selectors to try
+LABEL_SELECTORS=(
+  "app.kubernetes.io/instance=$NAME"
+  "app.kubernetes.io/name=$NAME"
+  "driscoll.dev/name=$NAME"
+  "helm.toolkit.fluxcd.io/name=$NAME"
+  "kustomize.toolkit.fluxcd.io/name=$NAME"
+)
+
 # Loop over all namespaced resource types
 RESOURCE_TYPES=$(kubectl api-resources --namespaced=true -o name 2>/dev/null)
 
 for resource in $RESOURCE_TYPES; do
   echo "Checking $resource..."
 
-  # Try multiple label patterns
-  kubectl get "$resource" -l app.kubernetes.io/instance=$NAME -n $NAMESPACE -o name 2>/dev/null | \
-    xargs -r kubectl delete "$resource" -n $NAMESPACE 2>/dev/null
-
-  kubectl get "$resource" -l helm.toolkit.fluxcd.io/name=$NAME -n $NAMESPACE -o name 2>/dev/null | \
-    xargs -r kubectl delete "$resource" -n $NAMESPACE 2>/dev/null
-
-  kubectl get "$resource" -l app.kubernetes.io/name=$NAME -n $NAMESPACE -o name 2>/dev/null | \
-    xargs -r kubectl delete "$resource" -n $NAMESPACE 2>/dev/null
+  try_delete_and_remove_finalizers "$resource" "${LABEL_SELECTORS[@]}"
 done
 
 # Delete Helm release secrets explicitly

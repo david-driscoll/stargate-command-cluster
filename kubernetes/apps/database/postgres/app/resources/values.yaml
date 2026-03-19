@@ -90,6 +90,11 @@ cluster:
       enabled: true
     prometheusRule:
       enabled: true
+      excludeRules:
+      - CNPGClusterLogicalReplicationErrorsCritical
+      - CNPGClusterLogicalReplicationErrors
+      - CNPGClusterLogicalReplicationStoppedCritical
+      - CNPGClusterLogicalReplicationStopped
     disableDefaultQueries: false
   postgresql:
     parameters:

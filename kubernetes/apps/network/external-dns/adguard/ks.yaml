@@ -16,7 +16,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: network-secrets
-      namespace: *namespace
+      namespace: network
   path: ./kubernetes/apps/network/external-dns/adguard
   prune: true
   wait: true

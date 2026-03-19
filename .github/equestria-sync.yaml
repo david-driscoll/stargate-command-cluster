@@ -73,6 +73,7 @@ david-driscoll/equestria-cluster:
     exclude: |
       kustomization.yaml
       idp/
+      taildrive/
   - source: talos/talenv.yaml
     dest: talos/talenv.yaml
   - source: talos/patches/global/machine-kubelet.yaml

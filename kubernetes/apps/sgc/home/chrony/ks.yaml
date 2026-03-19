@@ -15,7 +15,7 @@ spec:
       driscoll.dev/name: *app
   dependsOn:
     - name: sgc-secrets
-      namespace: *namespace
+      namespace: sgc
   path: ./kubernetes/apps/sgc/home/chrony
   prune: true
   wait: true

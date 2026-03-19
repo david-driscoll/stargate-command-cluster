@@ -161,9 +161,8 @@ try
   foreach (var database in databases)
   {
     var roleName = GetName(database);
-    var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres");
+    var roleNode = UpdateRoleNode(serializer, defaultRole, roleName, $"{roleName}-postgres-password");
     clusterRoles.Children.Add(item: roleNode);
-
   }
 
   File.WriteAllText(postgresClusterPath, $"""
@@ -218,8 +217,8 @@ try
 
   var addedSecret = false;
   foreach (var user in databases
-  .Select(db => (name: GetName(db), key: $"{GetName(db)}-postgres"))
-  .Concat([(name: "postgres-user", key: "postgres-user"), (name: "postgres-superuser", key: "postgres-superuser")]))
+  .Select(db => (name: GetName(db), database: GetName(db), key: $"{GetName(db)}-postgres"))
+  .Concat([(name: "${CLUSTER_CNAME}", database: "postgres", key: "postgres-user"), (name: "postgres-superuser", database: "postgres", key: "postgres-superuser")]))
   {
     var found = existingSops.TryGetValue($"{user.key}-password", out var existingNode);
 
@@ -241,9 +240,11 @@ try
     kind: Secret
     metadata:
       name: {user.key}-password
+      labels:
+        cnpg.io/reload: "true"
     stringData:
       username: "{user.name}"
-      database: "{user.name}"
+      database: "{user.database}"
       port: "5432"
       hostname: "postgres-rw.database.svc.cluster.local"
       password: "{password}"

@@ -58,43 +58,38 @@ cluster:
   affinity:
     topologyKey: kubernetes.io/hostname
   enableSuperuserAccess: true
-  superuserSecret: "postgres-superuser"
+  superuserSecret: "postgres-superuser-password"
   roles:
   - name: ${CLUSTER_CNAME}
     ensure: present
     login: true
     superuser: true
     passwordSecret:
-      name: postgres-user
+      name: postgres-user-password
   - name: crowdsec
     ensure: present
     login: true
     superuser: false
     passwordSecret:
-      name: crowdsec-postgres
+      name: crowdsec-postgres-password
   - name: authentik
     ensure: present
     login: true
     superuser: false
     passwordSecret:
-      name: authentik-postgres
+      name: authentik-postgres-password
   - name: oxycloud
     ensure: present
     login: true
     superuser: false
     passwordSecret:
-      name: oxycloud-postgres
+      name: oxycloud-postgres-password
   monitoring:
     enabled: true
     podMonitor:
       enabled: true
     prometheusRule:
       enabled: true
-      excludeRules:
-      - CNPGClusterLogicalReplicationErrorsCritical
-      - CNPGClusterLogicalReplicationErrors
-      - CNPGClusterLogicalReplicationStoppedCritical
-      - CNPGClusterLogicalReplicationStopped
     disableDefaultQueries: false
   postgresql:
     parameters:

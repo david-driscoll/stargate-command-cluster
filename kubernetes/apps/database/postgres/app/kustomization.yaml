@@ -10,6 +10,7 @@ resources:
   - ./definition.yaml
   - ./passwords.sops.yaml
   - ./users.yaml
+  - ./role-broad-access.yaml
 configMapGenerator:
 - name: ${APP}-values
   files:

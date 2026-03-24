@@ -72,6 +72,9 @@ spec:
         runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
+      env:
+        name: AUTHENTIK_POSTGRESQL__CONN_MAX_AGE
+        value: "1"
       envFrom: &envFrom
         - secretRef:
             name: authentik

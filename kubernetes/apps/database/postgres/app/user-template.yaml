@@ -10,6 +10,7 @@ data:
   database: "{{ .database }}"
   pgpass: "{{ .hostname }}:{{ .port }}:{{ .database }}:{{ .username }}:{{ .password }}"
   hostname: "{{ .hostname }}"
+  host: "{{ .host }}"
   public-hostname: "${APP}.${CLUSTER_DOMAIN}"
   jdbc-uri: "jdbc:postgres://{{ .hostname }}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}&sslmode=disable"
   public-jdbc-uri: "jdbc:postgres://${APP}.${CLUSTER_DOMAIN}:{{ .port }}/{{ .database }}?password={{ .password }}&user={{ .username }}&sslmode=disable"

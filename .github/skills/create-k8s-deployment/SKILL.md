@@ -449,7 +449,7 @@ How dataFrom / rewrite works
 Examples (Outline)
 - Postgres from repo-managed cluster secret:
   - dataFrom extracts `${APP}-postgres` from `database` store and rewrites fields to `postgres_*`.
-  - In `template.data`, use `DATABASE_URL: "{{ .postgres_uri }}"` or `DB_HOST: "{{ .postgres_host }}"`, etc.
+  - In `template.data`, use `DATABASE_URL: "{{ .postgres_uri }}"` or `DB_HOST: "{{ .postgres_hostname }}"`, etc.
 - OIDC from cluster or 1Password:
   - Create a secret item `${APP}-oidc-credentials` with fields `client_id`, `client_secret`, `issuer` (or an openid configuration url).
   - dataFrom.rewrite -> `oidc_client_id`, `oidc_client_secret`, `oidc_issuer`.

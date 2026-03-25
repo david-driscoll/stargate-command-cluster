@@ -34,8 +34,6 @@ spec:
               templateAs: Values
             - key: hostname
               templateAs: Values
-            - key: host
-              templateAs: Values
             - key: public-hostname
               templateAs: Values
             - key: port

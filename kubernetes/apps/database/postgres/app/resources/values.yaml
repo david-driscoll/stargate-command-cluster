@@ -8,7 +8,7 @@ version:
 mode: standalone
 recovery:
   method: object_store
-  clusterName: "${CLUSTER_CNAME}"
+  clusterName: "restore"
   endpointURL: "{{ .minio_endpoint }}"
   provider: s3
   s3:

@@ -11,4 +11,3 @@ resources:
   - ./backblaze.yaml
   - ./postgres
   - ./valkey/ks.yaml
-  - ./cloudbeaver/ks.yaml

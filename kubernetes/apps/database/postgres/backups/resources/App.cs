@@ -36,26 +36,33 @@ async Task<FullItem> GetItemByTitle(string title)
 }
 static string GetField(FullItem item, string label) => item.Fields.Single(f => f.Label == label).Value ?? throw new InvalidOperationException($"{label} field not found in {item.Title}");
 var backblaze = await GetItemByTitle("Backblaze S3 ${CLUSTER_TITLE} Database");
-var postgres = await GetItemByTitle("${CLUSTER_KEY}-postgres-superuser");
-var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
 
 var backupDir = "/backups";
 
 Console.WriteLine($"Starting PostgreSQL backup at {DateTime.UtcNow}");
 
+const string clusterKey = "${CLUSTER_KEY}";
 // Create backup directory
 Directory.CreateDirectory(backupDir);
 
-await using var dataSource = NpgsqlDataSource.Create(connectionString);
-
-// Get list of databases
-Console.WriteLine("Fetching list of databases...");
-var databases = await GetDatabases(dataSource);
-Console.WriteLine($"Found databases: {string.Join(", ", databases)}");
+List<string> databases;
+{
+  // Get list of databases
+  var postgres = await GetItemByTitle("${CLUSTER_KEY}-postgres-user");
+  var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
+  Console.WriteLine("Fetching list of databases...");
+  await using var dataSource = NpgsqlDataSource.Create(connectionString);
+  databases = await GetDatabases(dataSource);
+  Console.WriteLine($"Found databases: {string.Join(", ", databases)}");
+}
 
 // Create individual database dumps
 foreach (var db in databases)
 {
+  var postgres = await GetItemByTitle($"${clusterKey}-{db}-postgres");
+  var connectionString = (await GetItemByTitle($"${clusterKey}-{db}-postgres")).Fields.Single(f => f.Label == "connection-string").Value.Dump();
+  await using var dataSource = NpgsqlDataSource.Create(connectionString);
+
   Console.WriteLine($"Backing up database: {db}");
   var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
   Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));

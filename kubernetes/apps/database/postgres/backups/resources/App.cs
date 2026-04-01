@@ -41,14 +41,14 @@ var backupDir = "/backups";
 
 Console.WriteLine($"Starting PostgreSQL backup at {DateTime.UtcNow}");
 
-const string clusterKey = "${CLUSTER_KEY}";
+const string clusterKey = "${CLUSTER_CNAME}";
 // Create backup directory
 Directory.CreateDirectory(backupDir);
 
 List<string> databases;
 {
   // Get list of databases
-  var postgres = await GetItemByTitle("${CLUSTER_KEY}-postgres-user");
+  var postgres = await GetItemByTitle("${CLUSTER_CNAME}-postgres-user");
   var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
   Console.WriteLine("Fetching list of databases...");
   await using var dataSource = NpgsqlDataSource.Create(connectionString);
@@ -59,24 +59,30 @@ List<string> databases;
 // Create individual database dumps
 foreach (var db in databases)
 {
-  var postgres = await GetItemByTitle($"${clusterKey}-{db}-postgres");
-  var connectionString = (await GetItemByTitle($"${clusterKey}-{db}-postgres")).Fields.Single(f => f.Label == "connection-string").Value.Dump();
-  await using var dataSource = NpgsqlDataSource.Create(connectionString);
-
-  Console.WriteLine($"Backing up database: {db}");
-  var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
-  Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
-
-  await CreateDatabaseDump(postgres, db, backupFile);
-
-  if (File.Exists(backupFile))
+  try
   {
-    Console.WriteLine($"Successfully created backup: {backupFile}");
+    var postgres = await GetItemByTitle($"${clusterKey}-{db}-postgres");
+    var connectionString = (await GetItemByTitle($"${clusterKey}-{db}-postgres")).Fields.Single(f => f.Label == "connection-string").Value.Dump();
+    await using var dataSource = NpgsqlDataSource.Create(connectionString);
+
+    Console.WriteLine($"Backing up database: {db}");
+    var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
+    Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
+
+    await CreateDatabaseDump(postgres, db, backupFile);
+
+    if (File.Exists(backupFile))
+    {
+      Console.WriteLine($"Successfully created backup: {backupFile}");
+    }
+    else
+    {
+      Console.WriteLine($"Failed to create backup for database: {db}");
+    }
   }
-  else
+  catch (Exception ex)
   {
-    Console.WriteLine($"Failed to create backup for database: {db}");
-    Environment.Exit(1);
+    Console.WriteLine($"Error backing up database {db}: {ex.Message}");
   }
 }
 

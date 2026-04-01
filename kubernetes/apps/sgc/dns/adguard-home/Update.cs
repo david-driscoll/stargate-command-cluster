@@ -69,7 +69,7 @@ foreach (var node in doc.AllNodes.OfType<YamlMappingNode>())
     }
     if (first.Children.TryGetValue("accessMode", out var volumeAccessModeNode) && volumeAccessModeNode is YamlScalarNode { Value: { Length: > 0 } } volumeAccessModeScalar)
     {
-      defaults["VOLSYNC_ACCESS_MODE"] = volumeAccessModeScalar.Value;
+      defaults["VOLSYNC_ACCESSMODES"] = volumeAccessModeScalar.Value;
     }
     templateName = volumeNameScalar.Value;
   }

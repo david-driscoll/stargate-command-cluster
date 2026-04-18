@@ -36,7 +36,7 @@ age = "1.2.1"
 cilium-cli = "0.18.4"
 cloudflared = "2025.6.1"
 cue = "0.13.2"
-gh = "2.89.0"
+gh = "2.90.0"
 "aqua:brumhard/krewfile" = "0.7.0"
 "pipx:flux-local" = "8.2.0"
 

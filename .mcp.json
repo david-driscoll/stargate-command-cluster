@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "flux-operator-mcp": {
+      "command": "flux-operator-mcp",
+      "args": [
+        "serve"
+      ],
+      "env": {
+        "KUBECONFIG": "./kubeconfig"
+      }
+    },
+    "talos-mcp": {
+      "command": "/Users/david/.local/bin/talos-mcp-server",
+      "env": {
+        "TALOSCONFIG": "./talos/clusterconfig/talosconfig"
+      }
+    }
+  }
+}

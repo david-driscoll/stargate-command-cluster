@@ -29,6 +29,8 @@ spec:
               - /var/run/secrets/talos.dev/config
               - -n
               - "$(CP_NODE_IP)"
+              - -e
+              - "$(CP_NODE_IP)"
               - etcd
               - snapshot
               - /data/etcd.snapshot
@@ -123,7 +125,7 @@ spec:
               - path: /var/run/secrets/talos.dev
                 readOnly: true
           backup:
-            backup:
+            talosctl:
               - path: /var/run/secrets/talos.dev
                 readOnly: true
       backupdata:

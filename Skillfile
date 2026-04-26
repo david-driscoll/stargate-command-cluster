@@ -1,0 +1,12 @@
+# install  <platform>  <scope>
+install  claude-code  local
+install  copilot  local
+
+# --- Skills ---
+# github  skill  [name]  <owner/repo>  <path-or-dir>  [ref]
+
+github  skill  fluxcd/agent-skills  skills/gitops-cluster-debug
+
+github  skill  jeffallan/claude-skills  skills/kubernetes-specialist
+
+github  skill  majiayu000/claude-skill-registry  skills/data/flux-gitops

@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: technitium-equestria
+spec:
+  name: Technitium DNS
+  category: ${CLUSTER_TITLE}
+  description: Primary Technitium DNS cluster node
+  url: &url https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/technitium.png
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    oauth2:
+      clientType: confidential
+      allowedRedirectUris:
+      - url: "https://${APP}.${ROOT_DOMAIN}/sso/callback"
+      propertyMappings:
+        - email
+        - openid
+        - profile
+      includeClaimsInIdToken: true
+      subMode: user_email
+  gatus:
+    - group: "Technitium DNS"
+      url: *url
+      method: GET
+      conditions:
+        - "[STATUS] < 400"

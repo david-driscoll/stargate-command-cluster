@@ -1,0 +1,162 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app technitium
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          *app :
+            image:
+              repository: technitium/dns-server
+              tag: 14.3.0@sha256:322b236403ca25028032f28736e2270a860527b030b162c9f82451c6494c4698
+            env:
+              # These are applied on first start only (ignored if /etc/dns config already exists)
+              DNS_SERVER_DOMAIN: ${CLUSTER_CNAME}.technitium.driscoll.tech
+              DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS: "true"
+              DNS_SERVER_WEB_SERVICE_USE_SELF_SIGNED_CERT: "true"
+              DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks
+              # DNS_SERVER_FORWARDERS: "1.1.1.1, 1.0.0.1, 9.9.9.9"
+              # DNS_SERVER_FORWARDER_PROTOCOL: Tls
+              DNS_SERVER_ENABLE_BLOCKING: "true"
+              DNS_SERVER_OPTIONAL_PROTOCOL_DNS_OVER_HTTP: "true"
+            envFrom:
+              - secretRef:
+                  name: ${APP}-env
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &adminPort 5380
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *adminPort
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 30
+            securityContext:
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: false
+              capabilities:
+                add:
+                  - NET_BIND_SERVICE
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        seccompProfile:
+          type: RuntimeDefault
+
+    service:
+      dns:
+        controller: *app
+        type: LoadBalancer
+        loadBalancerIP: "${TECHNITIUM_VIP}"
+        annotations:
+          io.cilium/lb-ipam-ips: "${TECHNITIUM_VIP}"
+          tailscale.com/expose: "true"
+          tailscale.com/hostname: ${APP}-${CLUSTER_CNAME}
+          tailscale.com/tailnet-ip: "${TECHNITIUM_TAILSCALE_VIP}"
+          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+        externalIPs:
+          - "${TECHNITIUM_VIP}"
+        externalTrafficPolicy: Cluster
+        ports:
+          dns-udp:
+            port: 53
+            protocol: UDP
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dot:
+            port: 853
+            protocol: TCP
+          doq:
+            port: 853
+            protocol: UDP
+          doh-https-tcp:
+            port: 443
+            protocol: TCP
+          doh-https-udp:
+            port: 443
+            protocol: UDP
+          doh-http:
+            port: 80
+            protocol: TCP
+          admin-https:
+            port: 53443
+            protocol: TCP
+      admin:
+        controller: *app
+        ports:
+          admin:
+            port: *adminPort
+            protocol: TCP
+
+    persistence:
+      config:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /etc/dns
+
+    route:
+      admin:
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - ${APP}.${CLUSTER_DOMAIN}
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: admin
+                port: admin

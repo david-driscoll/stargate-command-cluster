@@ -1,0 +1,14 @@
+{
+  "github/skill/flux-gitops": {
+    "sha": "dea85cea057460f47f4bdf790d50a3b376b2328f",
+    "raw_url": "https://api.github.com/repos/majiayu000/claude-skill-registry/contents/skills/data/flux-gitops?ref=dea85cea057460f47f4bdf790d50a3b376b2328f"
+  },
+  "github/skill/gitops-cluster-debug": {
+    "sha": "a9f66c4ca5e07e5a298099c8e47f140750d03a64",
+    "raw_url": "https://api.github.com/repos/fluxcd/agent-skills/contents/skills/gitops-cluster-debug?ref=a9f66c4ca5e07e5a298099c8e47f140750d03a64"
+  },
+  "github/skill/kubernetes-specialist": {
+    "sha": "3d95bb16b030af43bd838dc99fdc77dd40b29014",
+    "raw_url": "https://api.github.com/repos/jeffallan/claude-skills/contents/skills/kubernetes-specialist?ref=3d95bb16b030af43bd838dc99fdc77dd40b29014"
+  }
+}

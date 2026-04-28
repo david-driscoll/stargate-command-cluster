@@ -53,9 +53,20 @@
       },
     },
     {
-      description: "Siderolabs",
-      groupName: "Siderolabs",
-      matchDepNames: ["ghcr.io/siderolabs/*"],
+      description: "Siderolabs Talos",
+      groupName: "Siderolabs Talos",
+      matchDepNames: [
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/talosctl",
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Siderolabs Kubernetes",
+      groupName: "Siderolabs Kubernetes",
+      matchDepNames: ["ghcr.io/siderolabs/kubelet"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },

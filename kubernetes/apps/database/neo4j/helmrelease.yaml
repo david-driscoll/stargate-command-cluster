@@ -1,0 +1,135 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app neo4j
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  driftDetection:
+    mode: enabled
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn: []
+  values:
+    controllers:
+      *app :
+        enabled: true
+        pod:
+          restartPolicy: Always
+          terminationGracePeriodSeconds: 30
+        containers:
+          *app :
+            image:
+              repository: neo4j
+              tag: "2026.04.0-trixie@sha256:b2f03d52eb851667fea13cfb125459a88589a62a1514abb60e31b2a8bd9590ff"
+              pullPolicy: IfNotPresent
+            env:
+              TZ: "${TIMEZONE}"
+              NEO4J_PLUGINS: '["apoc", "apoc-extended", "genai"]'
+              NEO4J_AUTH:
+                secretKeyRef:
+                  name: "${APP}-config"
+                  key: NEO4J_AUTH
+            ports:
+              - containerPort: &http-port 7474
+              - containerPort: &bolt-port 7687
+            securityContext:
+              runAsNonRoot: true
+              runAsGroup: 568
+              runAsUser: 568
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+
+    service:
+      *app :
+        controller: *app
+        type: ClusterIP
+        ports:
+          http:
+            port: *http-port
+          bolt:
+            port: *bolt-port
+
+    persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /logs
+            subPath: logs
+          - path: /config
+            subPath: config
+          - path: /data
+            subPath: data
+          - path: /plugins
+            subPath: plugins
+
+    route:
+      internal:
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "${APP}.${ROOT_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: *http-port
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: traefik.io
+                  kind: Middleware
+                  name: local-user
+      bolt:
+        parentRefs:
+          - name: internal
+            namespace: network
+            kind: Gateway
+        hostnames:
+          - "${APP}.${ROOT_DOMAIN}"
+        kind: HTTPRoute
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: *bolt-port
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: traefik.io
+                  kind: Middleware
+                  name: local-user
+    # serviceMonitor:
+    #   *app :
+    #     endpoints:
+    #       - port: 2004
+

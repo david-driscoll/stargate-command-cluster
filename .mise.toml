@@ -15,7 +15,7 @@ CONNECT_TOKEN = "op://Eris/Eris 1Password Connect Access Token/credential"
 [tools]
 python = "3.14.4"
 "pipx:makejinja" = "2.8.2"
-krew = "0.4.5"
+krew = "0.5.0"
 
 kubectl = "1.36.0"
 powershell-core = "7.5.1"

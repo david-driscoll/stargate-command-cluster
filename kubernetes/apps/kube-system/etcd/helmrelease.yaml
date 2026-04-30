@@ -79,13 +79,17 @@ spec:
             args:
               - --talosconfig
               - /var/run/secrets/talos.dev/config
+              - -e
+              - "$(CP_NODE_IP)"
               - -n
               - "$(CP_NODE_IP)"
               - etcd
               - defrag
             env:
               - name: CP_NODE_IP
-                value: "${CLUSTER_API_IP}"
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
 
         pod:
           hostNetwork: true

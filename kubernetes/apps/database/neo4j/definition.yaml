@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: Neo4J
+  category: ${CLUSTER_TITLE}
+  description: Neo4J - graph database
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/neo4j.svg
+  url: &url "https://${APP}.${CLUSTER_DOMAIN}"
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    proxy:
+      mode: "forward_single"
+      externalHost: *url
+  gatus:
+    - url: *url
+      conditions:
+        - "[STATUS] == 200"
+    - url: "tcp://${APP}.${CLUSTER_DOMAIN}:7687"
+      interval: 30s
+      conditions:
+        - "[CONNECTED] == true"

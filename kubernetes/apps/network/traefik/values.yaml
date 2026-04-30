@@ -20,6 +20,7 @@ additionalArguments:
   - --entryPoints.websecure.address=:443/tcp
   - --entryPoints.postgres.address=:5432/tcp
   - --entryPoints.mariadb.address=:3306/tcp
+  - --entryPoints.bolt.address=:7687/tcp
 volumes:
   # - name: le-staging-tls
   - name: le-production-tls
@@ -81,6 +82,15 @@ ports:
       default: true
     port: 3306
     exposedPort: 3306
+    protocol: TCP
+    transport:
+      respondingTimeouts:
+        readTimeout: "0s"
+  bolt:
+    expose:
+      default: true
+    port: 7687
+    exposedPort: 7687
     protocol: TCP
     transport:
       respondingTimeouts:
@@ -202,5 +212,11 @@ gateway:
     mariadb:
       protocol: TCP
       port: 3306
+      namespacePolicy:
+        from: All
+
+    bolt:
+      protocol: TCP
+      port: 7687
       namespacePolicy:
         from: All

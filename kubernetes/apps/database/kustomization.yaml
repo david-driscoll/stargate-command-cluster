@@ -11,3 +11,4 @@ resources:
   - ./backblaze.yaml
   - ./postgres
   - ./valkey/ks.yaml
+  - ./neo4j/ks.yaml

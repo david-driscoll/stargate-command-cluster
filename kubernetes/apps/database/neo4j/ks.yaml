@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app neo4j
+  namespace: &namespace database
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
+  dependsOn: []
+  path: ./kubernetes/apps/database/neo4j
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../components/failover/fast-node-eviction
+    - ../../../components/tailscale
+    - ../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_ACCESSMODES: ReadWriteOnce

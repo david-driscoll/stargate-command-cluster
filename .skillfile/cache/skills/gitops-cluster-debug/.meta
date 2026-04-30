@@ -1,8 +1,0 @@
-{
-  "owner_repo": "fluxcd/agent-skills",
-  "path_in_repo": "skills/gitops-cluster-debug",
-  "raw_url": "https://api.github.com/repos/fluxcd/agent-skills/contents/skills/gitops-cluster-debug?ref=a9f66c4ca5e07e5a298099c8e47f140750d03a64",
-  "ref": "main",
-  "sha": "a9f66c4ca5e07e5a298099c8e47f140750d03a64",
-  "source_type": "github"
-}

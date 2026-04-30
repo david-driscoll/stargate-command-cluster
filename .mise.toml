@@ -40,7 +40,7 @@ gh = "2.92.0"
 "aqua:brumhard/krewfile" = "0.7.0"
 "pipx:flux-local" = "8.2.0"
 "github:eljulians/skillfile" = { version = "v1.5.0", bin = "skillfile" }
-
+dotnet = { postinstall = "dotnet tool restore && dotnet restore", version = "10.0.203" }
 
 [tasks.update]
 description = 'Update all apps that have an update script'
@@ -48,3 +48,5 @@ run = [
   'dotnet run .mise/tasks/do-update.cs',
   'flux-local test --enable-helm --all-namespaces --path ./kubernetes/flux/ --verbosity 1',
 ]
+[[hooks.enter]]
+script = "dotnet tool restore"

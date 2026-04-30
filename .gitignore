@@ -21,3 +21,4 @@ talosconfig
 Thumbs.db
 kubernetes/temp/
 *.db
+.skillfile/cache/

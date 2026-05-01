@@ -19,7 +19,7 @@ krew = "0.5.0"
 
 kubectl = "1.36.0"
 powershell-core = "7.6.1"
-"vfox:mise-plugins/vfox-1password" = "2.30.3"
+1password-cli = "2.34.0"
 talos = "1.12.5"
 talosctl = "1.13.0"
 talhelper = "3.1.9"

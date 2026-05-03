@@ -37,7 +37,7 @@ spec:
           *app :
             image:
               repository: technitium/dns-server
-              tag: 15.0.1@sha256:7d8dad8fd8571b04989e26e6dbab8aa0004aa0cf333dc870a3f34acda750f4e9
+              tag: 15.1.0@sha256:9f26522bf1d484e85f7753a324876c5cb4a3ab6deab5a753997007de98fda300
             env:
               # These are applied on first start only (ignored if /etc/dns config already exists)
               DNS_SERVER_DOMAIN: ${CLUSTER_CNAME}.technitium.driscoll.tech

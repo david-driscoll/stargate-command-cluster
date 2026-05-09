@@ -7,7 +7,10 @@ metadata:
 spec:
   allowFirstLastIPs: "No"
   blocks:
-    - cidr: "${INTERNAL_NETWORK}"
+    - start: ${LOADBALANCER_RANGE}.100
+      stop: ${LOADBALANCER_RANGE}.200
+    - start: ${LOADBALANCER_RANGE}.202
+      stop: ${LOADBALANCER_RANGE}.252
 ---
 # yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/cilium.io/ciliuml2announcementpolicy_v2alpha1.json
 apiVersion: cilium.io/v2alpha1

@@ -272,6 +272,7 @@ spec:
         pod:
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
+          automountServiceAccountToken: true
         containers:
           manager:
             args:

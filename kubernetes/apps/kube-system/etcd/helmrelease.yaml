@@ -118,7 +118,8 @@ spec:
             env:
               - name: RESTIC_REPOSITORY
                 value: /repository/etcd
-
+    defaultPodOptions:
+      automountServiceAccountToken: true
     persistence:
       serviceaccount:
         type: secret

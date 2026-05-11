@@ -134,7 +134,6 @@ patches:
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-time.yaml"
   - "@./patches/global/machine-registries.yaml"
-  - "@./patches/global/cluster-admissionregistration.yaml"
 
 # Controller patches
 controlPlane:

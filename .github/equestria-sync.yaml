@@ -80,8 +80,6 @@ david-driscoll/equestria-cluster:
     dest: talos/patches/global/machine-kubelet.yaml
   - source: talos/patches/global/machine-files.yaml
     dest: talos/patches/global/machine-files.yaml
-  - source: talos/patches/global/cluster-admissionregistration.yaml
-    dest: talos/patches/global/cluster-admissionregistration.yaml
   - source: talos/patches/global/machine-time.yaml
     dest: talos/patches/global/machine-time.yaml
   - source: talos/patches/controller/cluster.yaml

@@ -1,0 +1,254 @@
+lockfile_version: '1'
+generated_at: '2026-05-15T02:45:04.490846+00:00'
+apm_version: 0.13.0
+dependencies:
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/app-template
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/app-template
+  - .claude/skills/app-template
+  content_hash: sha256:2c99c1c27acc1d87f559daa75fdc780f1f27ddb672f30b0221aea8de62057f7e
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/architecture-review
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/architecture-review
+  - .claude/skills/architecture-review
+  content_hash: sha256:66759d03955d378f9995f4277a515deeff51cdb0d1ebf0735fb8ecb03417e18e
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/cnpg-database
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/cnpg-database
+  - .claude/skills/cnpg-database
+  content_hash: sha256:189e9d379bcdb39de246a359e0d21ee973de4c835949af0f83403e2b20a38884
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/deploy-app
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/deploy-app
+  - .claude/skills/deploy-app
+  content_hash: sha256:94401563658a3531df36ec4fd77e3563e3677e53752eaf3364490419c3a8af38
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/flux-gitops
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/flux-gitops
+  - .claude/skills/flux-gitops
+  content_hash: sha256:d79ef1476938c271c00c1f1d57466400ad236c3bd9c16ec7e67540f5e188bc06
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/gateway-routing
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/gateway-routing
+  - .claude/skills/gateway-routing
+  content_hash: sha256:70e15a3d97d9ef30fcb793053c380d9e0d8716e27ecfda3e277a24ba3d35e347
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/gha-pipelines
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/gha-pipelines
+  - .claude/skills/gha-pipelines
+  content_hash: sha256:9ec76efd133ef9915e74d6381bbe39fca8b21cc4757154f8ea9b6d9a2a1692ec
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/grafana-dashboards
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/grafana-dashboards
+  - .claude/skills/grafana-dashboards
+  content_hash: sha256:555f70440d8f94b1844f1d6a8f62efd8563d30e29abfed0f9eab0ff473aa4914
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/instruction-eval
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/instruction-eval
+  - .claude/skills/instruction-eval
+  content_hash: sha256:812f0647f16efd35aaf540633560b193ad0cdbcee007839ff4e7317efdb7ee2e
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/k8s
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/k8s
+  - .claude/skills/k8s
+  content_hash: sha256:f894fd4897a66b709f3804779d9b314c13beb9c6ee7236d562f6f8ded596255e
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/kubesearch
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/kubesearch
+  - .claude/skills/kubesearch
+  content_hash: sha256:032329754d4e89171dcb783d5a9c0b35201548f188748baf4fe6750d124359e2
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/loki
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/loki
+  - .claude/skills/loki
+  content_hash: sha256:999457e56c39548bb32d45923a35342333c72465d13d601be365f9264eafa041
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/monitoring-authoring
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/monitoring-authoring
+  - .claude/skills/monitoring-authoring
+  content_hash: sha256:17ad6ecff06b1f87e2b98cc426839ac7b36856a2b37fc32d2dee966ed670a81f
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/network-policy
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/network-policy
+  - .claude/skills/network-policy
+  content_hash: sha256:8a5fe80b9637a24e3024087363d5b4c60569a8bff79903499249de5063394683
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/opentofu-modules
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/opentofu-modules
+  - .claude/skills/opentofu-modules
+  content_hash: sha256:1a00e78f97984469753eb0faae9dd68037f0c7451c86d963eaafada133e367d2
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/prometheus
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/prometheus
+  - .claude/skills/prometheus
+  content_hash: sha256:747f5dc415b3fadbf837e4a9e9c585a1ec64738f3fd1f4f0ba65ed1ed14b4970
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/promotion-pipeline
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/promotion-pipeline
+  - .claude/skills/promotion-pipeline
+  content_hash: sha256:6af8e957dab1f92c55c34028b244fc2e0123898533eafd836d0ec1b36099977f
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/secrets
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/secrets
+  - .claude/skills/secrets
+  content_hash: sha256:a1de7918123679661bbdbc583b3ccea2bcac730abe69ab544939ea3d7c19df41
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/security-testing
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/security-testing
+  - .claude/skills/security-testing
+  content_hash: sha256:13d89bcc8e126e1e91fc513ceade39a578f11b889c283ac95dd7f3abf26c1425
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/self-improvement
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/self-improvement
+  - .claude/skills/self-improvement
+  content_hash: sha256:acc41e2600af71c0188ceae0cdef6f12be4708f1fbed65d1282262516edf5ea1
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/sre
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/sre
+  - .claude/skills/sre
+  content_hash: sha256:d94fddd82e880311ba4442447a2c34595bcb4f2f6b06c98c60b2f79754a21891
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/sync-claude
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/sync-claude
+  - .claude/skills/sync-claude
+  content_hash: sha256:865b18bb96e9fdf2f6dc24393b82a1e34e39e6e448a0172c2a23a8e1f2f4f339
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/taskfiles
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/taskfiles
+  - .claude/skills/taskfiles
+  content_hash: sha256:e690acbec9f46f3caf1a44a4936a461334b5996453aaaeb93693d03531640b32
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/terragrunt
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/terragrunt
+  - .claude/skills/terragrunt
+  content_hash: sha256:f0eea7f3f27ca13349974b072c2af6ccc4be670616eb0c70d99db576ba00d565
+- repo_url: ionfury/homelab
+  host: github.com
+  resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
+  virtual_path: .claude/skills/versions-renovate
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/versions-renovate
+  - .claude/skills/versions-renovate
+  content_hash: sha256:de9f4b703d412d6d4434c67df5bb295caaab33d1e4bd570f8965645a4d34f378

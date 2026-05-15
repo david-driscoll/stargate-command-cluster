@@ -30,6 +30,37 @@ spec:
       static:
         - dockge-luna.${TAILSCALE_DOMAIN}:22
 ---
+# Blackbox exporter probes for dockge and proxmox services
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-skystar-https
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://dockge-skystar.${TAILSCALE_DOMAIN}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: dockge-skystar-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - dockge-skystar.${TAILSCALE_DOMAIN}:22
+---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
@@ -109,6 +140,22 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
+  name: proxmox-skystar
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://skystar.${TAILSCALE_DOMAIN}:8006
+        - https://skystar.${TAILSCALE_DOMAIN}:8007
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
   name: proxmox-luna-ssh
   namespace: tailscale-system
 spec:
@@ -120,6 +167,21 @@ spec:
     staticConfig:
       static:
         - luna.${TAILSCALE_DOMAIN}:22
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: proxmox-skystar-ssh
+  namespace: tailscale-system
+spec:
+  interval: 5m
+  module: ssh_banner
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - skystar.${TAILSCALE_DOMAIN}:22
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe

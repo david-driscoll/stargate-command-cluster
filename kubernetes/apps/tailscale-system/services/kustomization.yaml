@@ -3,8 +3,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./dockge-services.yaml
-  - ./proxmox-services.yaml
   - ./tailscale.yaml
-  - ./probes.yaml
   - ./prometheusrule.yaml
+  - ./alpha-site.yaml
+  - ./as.yaml
+  - ./celestia.yaml
+  - ./luna.yaml

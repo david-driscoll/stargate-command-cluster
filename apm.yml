@@ -1,0 +1,37 @@
+name: equestria-cluster
+version: 1.0.0
+description: APM project for equestria-cluster
+author: David Driscoll
+targets:
+- claude
+- copilot
+dependencies:
+  apm:
+  - ionfury/homelab/.claude/skills/app-template
+  - ionfury/homelab/.claude/skills/architecture-review
+  - ionfury/homelab/.claude/skills/cnpg-database
+  - ionfury/homelab/.claude/skills/deploy-app
+  - ionfury/homelab/.claude/skills/flux-gitops
+  - ionfury/homelab/.claude/skills/gateway-routing
+  - ionfury/homelab/.claude/skills/gha-pipelines
+  - ionfury/homelab/.claude/skills/grafana-dashboards
+  - ionfury/homelab/.claude/skills/instruction-eval
+  - ionfury/homelab/.claude/skills/k8s
+  - ionfury/homelab/.claude/skills/kubesearch
+  - ionfury/homelab/.claude/skills/loki
+  - ionfury/homelab/.claude/skills/monitoring-authoring
+  - ionfury/homelab/.claude/skills/network-policy
+  - ionfury/homelab/.claude/skills/opentofu-modules
+  - ionfury/homelab/.claude/skills/prometheus
+  - ionfury/homelab/.claude/skills/promotion-pipeline
+  - ionfury/homelab/.claude/skills/secrets
+  - ionfury/homelab/.claude/skills/security-testing
+  - ionfury/homelab/.claude/skills/self-improvement
+  - ionfury/homelab/.claude/skills/sre
+  - ionfury/homelab/.claude/skills/sync-claude
+  - ionfury/homelab/.claude/skills/taskfiles
+  - ionfury/homelab/.claude/skills/terragrunt
+  - ionfury/homelab/.claude/skills/versions-renovate
+  mcp: []
+includes: auto
+scripts: {}

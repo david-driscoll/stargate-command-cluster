@@ -22,3 +22,7 @@ Thumbs.db
 kubernetes/temp/
 *.db
 .skillfile/cache/
+
+
+# APM dependencies
+apm_modules/

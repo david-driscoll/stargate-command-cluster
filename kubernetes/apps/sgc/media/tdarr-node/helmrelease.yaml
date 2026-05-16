@@ -32,7 +32,7 @@ spec:
                     fieldPath: spec.nodeName
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
                 memory: 512Mi
                 gpu.intel.com/i915: 2
               limits:

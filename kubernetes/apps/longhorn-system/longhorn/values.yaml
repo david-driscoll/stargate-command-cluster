@@ -34,6 +34,7 @@ defaultSettings:
   # replicaDiskSoftAntiAffinity: false
 
   allowEmptyDiskSelectorVolume: true
+  nodeDrainPolicy: block-for-eviction-if-contains-last-replica
 ingress:
   enabled: true
   ingressClassName: internal

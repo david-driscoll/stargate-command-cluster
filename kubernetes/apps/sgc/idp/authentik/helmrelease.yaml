@@ -46,7 +46,7 @@ spec:
   values:
 
     global:
-      priorityClassName: authentik-critical
+      priorityClassName: system-node-critical
       # fullnameOverride: authentik
       revisionHistoryLimit: 3
 

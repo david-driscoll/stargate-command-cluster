@@ -20,7 +20,7 @@ feature:
 
 controller:
   name: csi-nfs-controller
-  replicas: 2
+  replicas: 1
   enableSnapshotter: false
 
 externalSnapshotter:

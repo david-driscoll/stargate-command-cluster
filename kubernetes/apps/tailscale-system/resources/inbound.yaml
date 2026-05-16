@@ -6,7 +6,7 @@ metadata:
 spec:
   type: egress
   hostnamePrefix: ${CLUSTER_CNAME}-in
-  replicas: 2
+  replicas: 1
   tags:
     - "tag:egress"
     - "tag:management"

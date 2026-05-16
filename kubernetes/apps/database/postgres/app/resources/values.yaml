@@ -102,6 +102,8 @@ cluster:
       shared_buffers: "${POSTGRES_SHARED_BUFFERS}"
       pg_stat_statements.max: "10000"
       pg_stat_statements.track: all
+      wal_keep_size: "1GB"
+      max_slot_wal_keep_size: "5GB"
       wal_sender_timeout: "120s"
       wal_receiver_timeout: "120s"
       tcp_keepalives_idle: "10"

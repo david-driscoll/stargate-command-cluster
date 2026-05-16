@@ -93,8 +93,8 @@ if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
   }
   catch (Exception ex)
   {
-    AnsiConsole.MarkupLine($"[red]Tailscale API error: {ex.Message} — falling back to static list[/]");
-    serverKinds.Clear();
+    AnsiConsole.WriteException(ex, new ExceptionSettings { Format = ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes | ExceptionFormats.ShortenMethods });
+    Environment.Exit(0);
   }
 }
 
@@ -443,7 +443,7 @@ kustomizationContent.AppendLine("apiVersion: kustomize.config.k8s.io/v1beta1");
 kustomizationContent.AppendLine("kind: Kustomization");
 kustomizationContent.AppendLine("resources:");
 kustomizationContent.AppendLine("  - ./tailscale.yaml");
-kustomizationContent.AppendLine("  - ./prometheusrule.yaml");
+kustomizationContent.AppendLine("  # - ./prometheusrule.yaml");
 foreach (var f in generatedFiles)
   kustomizationContent.AppendLine($"  - ./{f}");
 await File.WriteAllTextAsync(Path.Combine(outputDir, "kustomization.yaml"), kustomizationContent.ToString());

@@ -100,6 +100,7 @@ if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
 
 if (serverKinds.Count == 0)
 {
+  Environment.Exit(0);
   AnsiConsole.MarkupLine("[yellow]Using static device list (set TAILSCALE_API_KEY to use Tailscale API)[/]");
   // Static device list — update this when adding/removing servers
   var staticDevices = new (string Server, ServiceKind Kind)[]

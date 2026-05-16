@@ -139,7 +139,7 @@ static string ExternalName(string server, ServiceKind kind) => kind switch
   ServiceKind.Dockge => $"dockge-{server}",
   // proxmox and pbs share the same underlying node "<server>"
   ServiceKind.Proxmox => server,
-  ServiceKind.Pbs => server,
+  ServiceKind.Pbs => $"pbs-{server}",
   _ => throw new ArgumentOutOfRangeException(nameof(kind)),
 };
 
@@ -147,7 +147,7 @@ static string TailnetFqdn(string server, ServiceKind kind) => kind switch
 {
   ServiceKind.Dockge => $"dockge-{server}.${{TAILSCALE_DOMAIN}}",
   ServiceKind.Proxmox => $"{server}.${{TAILSCALE_DOMAIN}}",
-  ServiceKind.Pbs => $"{server}.${{TAILSCALE_DOMAIN}}",
+  ServiceKind.Pbs => $"pbs-{server}.${{TAILSCALE_DOMAIN}}",
   _ => throw new ArgumentOutOfRangeException(nameof(kind)),
 };
 

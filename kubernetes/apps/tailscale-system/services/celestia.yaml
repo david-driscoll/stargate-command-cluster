@@ -155,11 +155,11 @@ kind: Service
 metadata:
   name: pbs-celestia
   annotations:
-    tailscale.com/tailnet-fqdn: "celestia.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "pbs-celestia.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: tailnet-inbound
 spec:
   type: ExternalName
-  externalName: celestia
+  externalName: pbs-celestia
   ports:
     - name: pbs
       port: 8007

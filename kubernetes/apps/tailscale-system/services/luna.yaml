@@ -155,11 +155,11 @@ kind: Service
 metadata:
   name: pbs-luna
   annotations:
-    tailscale.com/tailnet-fqdn: "luna.${TAILSCALE_DOMAIN}"
+    tailscale.com/tailnet-fqdn: "pbs-luna.${TAILSCALE_DOMAIN}"
     tailscale.com/proxy-group: tailnet-inbound
 spec:
   type: ExternalName
-  externalName: luna
+  externalName: pbs-luna
   ports:
     - name: pbs
       port: 8007

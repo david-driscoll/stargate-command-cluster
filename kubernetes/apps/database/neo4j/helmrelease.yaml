@@ -98,7 +98,7 @@ spec:
             namespace: network
             kind: Gateway
         hostnames:
-          - "${APP}.${ROOT_DOMAIN}"
+          - "${APP}.${CLUSTER_DOMAIN}"
         kind: HTTPRoute
         rules:
           - backendRefs:
@@ -116,7 +116,7 @@ spec:
             namespace: network
             kind: Gateway
         hostnames:
-          - "${APP}.${ROOT_DOMAIN}"
+          - "${APP}.${CLUSTER_DOMAIN}"
         kind: HTTPRoute
         rules:
           - backendRefs:

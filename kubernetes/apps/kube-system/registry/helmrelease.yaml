@@ -67,7 +67,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/project-zot/zot
-              tag: v2.1.16@sha256:bf6264b4f89b1b313fe64661b9eb9adf9fa851a5b66e15d5128976b3becabe0b
+              tag: v2.1.17@sha256:48b0c11c8c61a07246e047f22e02aad615816683fd8d8073b2862fb7ed0a3cc0
             env: []
             envFrom: []
             resources:

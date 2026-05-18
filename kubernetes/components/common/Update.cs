@@ -57,7 +57,7 @@ try
 }
 catch (HttpOperationException ex) when (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
 {
-  AnsiConsole.WriteLine("Tailscale DNS configuration not found. Please ensure the Tailscale operator is running and the DNS configuration is created.");
+  Environment.Exit(0);
 }
 
 static async IAsyncEnumerable<YamlMappingNode> ReadStream(string path)

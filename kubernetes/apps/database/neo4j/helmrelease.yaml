@@ -47,6 +47,7 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               NEO4J_PLUGINS: '["apoc", "apoc-extended", "genai"]'
+              NEO4J_server_default_advertised_address: "neo4j.${CLUSTER_DOMAIN}"
               NEO4J_AUTH:
                 secretKeyRef:
                   name: "${APP}-config"

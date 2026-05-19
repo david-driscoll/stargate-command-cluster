@@ -141,6 +141,7 @@ ingressRoute:
   dashboard:
     enabled: true
     annotations:
+      kubernetes.io/ingress.class: internal
       external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
       external-dns.alpha.kubernetes.io/hostname: internal.${CLUSTER_DOMAIN}
     matchRule: Host(`internal.${CLUSTER_DOMAIN}`)

@@ -74,25 +74,37 @@ spec:
         containers:
           defrag:
             image:
-              repository: ghcr.io/siderolabs/talosctl
-              tag: v1.13.2@sha256:6382e6f6f8b08ab7c5cc9f77446cfd79975fe0055c0a6d73455a9dc6a6c4b98d
+              repository: ghcr.io/ahrtr/etcd-defrag
+              tag: v0.40.0@sha256:3cc3433d51caabfff917268b3c8aa8f0274d5422127085a7d9f6cf219b6c4b55
             args:
-              - --talosconfig
-              - /var/run/secrets/talos.dev/config
-              - -e
-              - "$(CP_NODE_IP)"
-              - -n
-              - "$(CP_NODE_IP)"
-              - etcd
-              - defrag
-            env:
-              - name: CP_NODE_IP
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.hostIP
+              - --endpoints=https://127.0.0.1:2379
+              - --cluster
+              - --cacert=/certs/ca.crt
+              - --cert=/certs/server.crt
+              - --key=/certs/server.key
+              # Defrag when DB quota usage > 50% OR free space > 100MB
+              - --defrag-rule=dbQuotaUsage > 0.5 || dbSizeFree > 100*1024*1024
+              # Move leader during defrag (safe for single-node)
+              - --move-leader
+              # Wait 30s between defrags
+              - --wait-between-defrags=30s
+              # Match the quota-backend-bytes set in Talos config
+              - --etcd-storage-quota-bytes=8589934592
+              # Auto-disalarm space quota alarms
+              - --auto-disalarm
+              - --disalarm-threshold=0.8
+            resources:
+              requests:
+                cpu: 25m
+                memory: 128Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              privileged: true
 
         pod:
           hostNetwork: true
+          hostPID: true
           nodeSelector:
             node-role.kubernetes.io/control-plane: ""
       prune:
@@ -125,13 +137,17 @@ spec:
         type: secret
         name: etcd-talos
         advancedMounts:
-          defrag:
-            defrag:
-              - path: /var/run/secrets/talos.dev
-                readOnly: true
           backup:
             talosctl:
               - path: /var/run/secrets/talos.dev
+                readOnly: true
+      certs:
+        type: hostPath
+        hostPath: /system/secrets/etcd
+        advancedMounts:
+          defrag:
+            defrag:
+              - path: /certs
                 readOnly: true
       backupdata:
         type: emptyDir

@@ -47,7 +47,7 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               NEO4J_PLUGINS: '["apoc", "apoc-extended", "genai"]'
-              NEO4J_server_http_x_forward_private_ips_enabled: TRUE
+              NEO4J_server__http__x_forward__private_ips_enabled: "true"
               NEO4J_AUTH:
                 secretKeyRef:
                   name: "${APP}-config"

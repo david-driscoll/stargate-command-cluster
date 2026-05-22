@@ -101,6 +101,7 @@ spec:
                 memory: 128Mi
             securityContext:
               privileged: true
+              runAsUser: 0
 
         pod:
           hostNetwork: true

@@ -151,3 +151,87 @@ loki.write "default" {
     url = "http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push"
   }
 }
+
+// ── OpenTelemetry Pipeline ──────────────────────────────────────────────────
+
+// Receive OTLP signals from pods in-cluster
+otelcol.receiver.otlp "default" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+  output {
+    metrics = [otelcol.processor.attributes.default.input]
+    logs    = [otelcol.processor.attributes.default.input]
+    traces  = [otelcol.processor.attributes.default.input]
+  }
+}
+
+// Inject cluster/environment labels onto all signals
+otelcol.processor.attributes "default" {
+  action {
+    key    = "cluster"
+    value  = "${CLUSTER_CNAME}"
+    action = "insert"
+  }
+  action {
+    key    = "environment"
+    value  = "homelab"
+    action = "insert"
+  }
+  action {
+    key    = "region"
+    value  = "home"
+    action = "insert"
+  }
+  output {
+    metrics = [otelcol.processor.batch.default.input]
+    logs    = [otelcol.processor.batch.default.input]
+    traces  = [otelcol.processor.batch.default.input]
+  }
+}
+
+// Batch signals before forwarding
+otelcol.processor.batch "default" {
+  output {
+    metrics = [otelcol.exporter.prometheus.default.input]
+    logs    = [otelcol.exporter.loki.default.input]
+    traces  = [otelcol.exporter.otlphttp.tempo.input]
+  }
+}
+
+// OTLP metrics → forward to Equestria via thanos-receive ExternalName service
+otelcol.exporter.prometheus "default" {
+  forward_to = [prometheus.remote_write.equestria.receiver]
+}
+
+prometheus.remote_write "equestria" {
+  endpoint {
+    url = "http://thanos-receive.observability.svc.cluster.local:19291/api/v1/receive"
+    queue_config {
+      max_samples_per_send = 10000
+    }
+  }
+  external_labels = {
+    cluster     = "${CLUSTER_CNAME}",
+    environment = "homelab",
+    region      = "home",
+  }
+}
+
+// OTLP logs → Equestria Loki (via loki-headless ExternalName service)
+otelcol.exporter.loki "default" {
+  forward_to = [loki.write.default.receiver]
+}
+
+// OTLP traces → Equestria Tempo (via tempo-headless ExternalName service)
+otelcol.exporter.otlphttp "tempo" {
+  client {
+    endpoint = "http://tempo-headless.observability.svc.cluster.local:4318"
+    tls {
+      insecure = true
+    }
+  }
+}

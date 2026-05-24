@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "tempo.${TAILSCALE_DOMAIN}"
+    tailscale.com/proxy-group: tailnet-inbound
+  name: tempo-headless
+spec:
+  externalName: unused
+  type: ExternalName
+  ports:
+    - port: 4318
+      targetPort: 4318
+      name: otlp-http

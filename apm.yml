@@ -83,64 +83,76 @@ dependencies:
   - name: unifi-access
     registry: false
     transport: stdio
-    command: uvx
+    command: op
     env:
-      UNIFI_HOST: "${UNIFI_ACCESS_HOST:-}"
-      UNIFI_USERNAME: "${UNIFI_ACCESS_USERNAME:-}"
-      UNIFI_PASSWORD: "${UNIFI_ACCESS_PASSWORD:-}"
-      UNIFI_PORT: "${UNIFI_ACCESS_PORT:-443}"
-      UNIFI_VERIFY_SSL: "${UNIFI_ACCESS_VERIFY_SSL:-false}"
-      UNIFI_ACCESS_HOST: "${UNIFI_ACCESS_HOST:-}"
-      UNIFI_ACCESS_USERNAME: "${UNIFI_ACCESS_USERNAME:-}"
-      UNIFI_ACCESS_PASSWORD: "${UNIFI_ACCESS_PASSWORD:-}"
-      UNIFI_ACCESS_API_KEY: "${UNIFI_ACCESS_API_KEY:-}"
-      UNIFI_ACCESS_PORT: "${UNIFI_ACCESS_PORT:-443}"
-      UNIFI_ACCESS_API_PORT: "${UNIFI_ACCESS_API_PORT:-12445}"
-      UNIFI_ACCESS_VERIFY_SSL: "${UNIFI_ACCESS_VERIFY_SSL:-false}"
+      UNIFI_HOST: "${UNIFI_HOST:-}"
+      UNIFI_USERNAME: "${UNIFI_USERNAME:-}"
+      UNIFI_PASSWORD: "${UNIFI_PASSWORD:-}"
+      UNIFI_PORT: "${UNIFI_PORT:-443}"
+      UNIFI_VERIFY_SSL: "${UNIFI_VERIFY_SSL:-false}"
+      UNIFI_ACCESS_HOST: "${UNIFI_HOST:-}"
+      UNIFI_ACCESS_USERNAME: "${UNIFI_USERNAME:-}"
+      UNIFI_ACCESS_PASSWORD: "${UNIFI_PASSWORD:-}"
+      UNIFI_ACCESS_API_KEY: "${UNIFI_API_KEY:-}"
+      UNIFI_ACCESS_PORT: "${UNIFI_PORT:-443}"
+      UNIFI_ACCESS_API_PORT: "${UNIFI_API_PORT:-12445}"
+      UNIFI_ACCESS_VERIFY_SSL: "${UNIFI_VERIFY_SSL:-false}"
       UNIFI_TOOL_REGISTRATION_MODE: "${UNIFI_TOOL_REGISTRATION_MODE:-lazy}"
     args:
+      - run
+      - --no-masking
+      - --
+      - uvx
       - "--python-preference"
       - "system"
       - "unifi-access-mcp==0.3.1"
   - name: unifi-network
     registry: false
     transport: stdio
-    command: uvx
+    command: op
     env:
-      UNIFI_HOST: "${UNIFI_NETWORK_HOST:-}"
-      UNIFI_USERNAME: "${UNIFI_NETWORK_USERNAME:-}"
-      UNIFI_PASSWORD: "${UNIFI_NETWORK_PASSWORD:-}"
-      UNIFI_PORT: "${UNIFI_NETWORK_PORT:-443}"
-      UNIFI_SITE: "${UNIFI_NETWORK_SITE:-default}"
-      UNIFI_VERIFY_SSL: "${UNIFI_NETWORK_VERIFY_SSL:-false}"
-      UNIFI_NETWORK_HOST: "${UNIFI_NETWORK_HOST:-}"
-      UNIFI_NETWORK_USERNAME: "${UNIFI_NETWORK_USERNAME:-}"
-      UNIFI_NETWORK_PASSWORD: "${UNIFI_NETWORK_PASSWORD:-}"
-      UNIFI_NETWORK_PORT: "${UNIFI_NETWORK_PORT:-443}"
-      UNIFI_NETWORK_SITE: "${UNIFI_NETWORK_SITE:-default}"
-      UNIFI_NETWORK_VERIFY_SSL: "${UNIFI_NETWORK_VERIFY_SSL:-false}"
+      UNIFI_HOST: "${UNIFI_HOST:-}"
+      UNIFI_USERNAME: "${UNIFI_USERNAME:-}"
+      UNIFI_PASSWORD: "${UNIFI_PASSWORD:-}"
+      UNIFI_PORT: "${UNIFI_PORT:-443}"
+      UNIFI_SITE: "${UNIFI_SITE:-default}"
+      UNIFI_VERIFY_SSL: "${UNIFI_VERIFY_SSL:-false}"
+      UNIFI_NETWORK_HOST: "${UNIFI_HOST:-}"
+      UNIFI_NETWORK_USERNAME: "${UNIFI_USERNAME:-}"
+      UNIFI_NETWORK_PASSWORD: "${UNIFI_PASSWORD:-}"
+      UNIFI_NETWORK_PORT: "${UNIFI_PORT:-443}"
+      UNIFI_NETWORK_SITE: "${UNIFI_SITE:-default}"
+      UNIFI_NETWORK_VERIFY_SSL: "${UNIFI_VERIFY_SSL:-false}"
       UNIFI_TOOL_REGISTRATION_MODE: "${UNIFI_TOOL_REGISTRATION_MODE:-lazy}"
     args:
+      - run
+      - --no-masking
+      - --
+      - uvx
       - "--python-preference"
       - "system"
       - "unifi-network-mcp==0.18.2"
   - name: unifi-protect
     registry: false
     transport: stdio
-    command: uvx
+    command: op
     env:
-      UNIFI_HOST: "${UNIFI_PROTECT_HOST:-}"
-      UNIFI_USERNAME: "${UNIFI_PROTECT_USERNAME:-}"
-      UNIFI_PASSWORD: "${UNIFI_PROTECT_PASSWORD:-}"
-      UNIFI_PORT: "${UNIFI_PROTECT_PORT:-443}"
-      UNIFI_VERIFY_SSL: "${UNIFI_PROTECT_VERIFY_SSL:-false}"
-      UNIFI_PROTECT_HOST: "${UNIFI_PROTECT_HOST:-}"
-      UNIFI_PROTECT_USERNAME: "${UNIFI_PROTECT_USERNAME:-}"
-      UNIFI_PROTECT_PASSWORD: "${UNIFI_PROTECT_PASSWORD:-}"
-      UNIFI_PROTECT_PORT: "${UNIFI_PROTECT_PORT:-443}"
-      UNIFI_PROTECT_VERIFY_SSL: "${UNIFI_PROTECT_VERIFY_SSL:-false}"
+      UNIFI_HOST: "${UNIFI_HOST:-}"
+      UNIFI_USERNAME: "${UNIFI_USERNAME:-}"
+      UNIFI_PASSWORD: "${UNIFI_PASSWORD:-}"
+      UNIFI_PORT: "${UNIFI_PORT:-443}"
+      UNIFI_VERIFY_SSL: "${UNIFI_VERIFY_SSL:-false}"
+      UNIFI_PROTECT_HOST: "${UNIFI_HOST:-}"
+      UNIFI_PROTECT_USERNAME: "${UNIFI_USERNAME:-}"
+      UNIFI_PROTECT_PASSWORD: "${UNIFI_PASSWORD:-}"
+      UNIFI_PROTECT_PORT: "${UNIFI_PORT:-443}"
+      UNIFI_PROTECT_VERIFY_SSL: "${UNIFI_VERIFY_SSL:-false}"
       UNIFI_TOOL_REGISTRATION_MODE: "${UNIFI_TOOL_REGISTRATION_MODE:-lazy}"
     args:
+      - run
+      - --no-masking
+      - --
+      - uvx
       - "--python-preference"
       - "system"
       - "unifi-protect-mcp==0.4.2"

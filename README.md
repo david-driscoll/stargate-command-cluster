@@ -1,6 +1,21 @@
-# ⛵ Cluster Template
+# ⛵ Stargate Command Cluster (SGC)
 
-Welcome to my minimalist template for deploying a single Kubernetes cluster. The goal of this project is to make it easier for people interested in using Kubernetes to deploy a cluster at home on bare-metal or VMs. This template closely mirrors my personal [home-ops](https://github.com/onedr0p/home-ops) repository. At a high level this project makes use of [makejinja](https://github.com/mirkolenz/makejinja) to read in configuration files ([cluster.yaml](./cluster.sample.yaml) & [nodes.yaml](./nodes.sample.yaml)). Makejinja will render out templates that will allow you to install a Kubernetes cluster with the features mentioned below.
+This is a production Talos Linux Kubernetes cluster using GitOps with Flux CD. Built on the template from [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template), this repository implements a declarative, infrastructure-as-code approach to cluster management.
+
+## Documentation
+
+**Start here:** [Documentation Index](./docs/codebase/INDEX.md)
+
+| Document | What it covers |
+|----------|----------------|
+| [Architecture](./docs/codebase/ARCHITECTURE.md) | Cluster design, GitOps flow, node specs |
+| [Flux GitOps](./docs/codebase/FLUX.md) | Reconciliation, Kustomize components, SOPS |
+| [Applications](./docs/codebase/APPLICATIONS.md) | All namespaces and deployed services |
+| [Networking](./docs/codebase/NETWORKING.md) | Cilium, DNS, ingress, Tailscale VPN, Alertmanager |
+| [Storage](./docs/codebase/STORAGE.md) | Longhorn, OpenEBS, NFS, Volsync |
+| [Talos](./docs/codebase/TALOS.md) | OS config, node setup, bootstrap, upgrades |
+| [Stack & Tools](./docs/codebase/STACK.md) | All tool versions and key commands |
+| [Operations](./docs/OPERATIONS.md) | Daily ops, alert queries, troubleshooting |
 
 ## ✨ Features
 
@@ -374,6 +389,15 @@ or [synology-csi](https://github.com/SynologyOpenSource/synology-csi).
 ### Community Repositories
 
 Community member [@whazor](https://github.com/whazor) created [Kubesearch](https://kubesearch.dev) to allow searching Flux HelmReleases across Github and Gitlab repositories with the `kubesearch` topic.
+
+## 🔗 Integration with Ecosystem
+
+This cluster is part of a larger home-ops ecosystem:
+
+- **[home-operations](https://github.com/david-driscoll/home-operations)** - Pulumi stack managing cluster applications, Authentik SSO, and multi-cluster orchestration
+- **[equestria-cluster](https://github.com/david-driscoll/equestria-cluster)** - Primary multi-cluster hub with Glance dashboard consuming this cluster's K8s metrics
+- **Application Definitions** - Custom CRD synced to Pulumi for automatic Authentik integration
+- **Tailscale VPN** - Provides secure internal access across clusters
 
 ## 🙌 Related Projects
 

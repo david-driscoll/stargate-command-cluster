@@ -1,0 +1,299 @@
+
+=== DIRECTORY TREE (max depth 3, source files only) ===
+.DS_Store
+.agents
+.agents/skills
+.agents/skills/app-template
+.agents/skills/app-template/SKILL.md
+.agents/skills/app-template/references
+.agents/skills/app-template/tests.yaml
+.agents/skills/architecture-review
+.agents/skills/architecture-review/SKILL.md
+.agents/skills/architecture-review/references
+.agents/skills/architecture-review/tests.yaml
+.agents/skills/cnpg-database
+.agents/skills/cnpg-database/SKILL.md
+.agents/skills/cnpg-database/references
+.agents/skills/cnpg-database/scripts
+.agents/skills/cnpg-database/tests.yaml
+.agents/skills/deploy-app
+.agents/skills/deploy-app/SKILL.md
+.agents/skills/deploy-app/references
+.agents/skills/deploy-app/scripts
+.agents/skills/deploy-app/tests.yaml
+.agents/skills/flux-gitops
+.agents/skills/flux-gitops/SKILL.md
+.agents/skills/flux-gitops/templates.md
+.agents/skills/flux-gitops/tests.yaml
+.agents/skills/gateway-routing
+.agents/skills/gateway-routing/SKILL.md
+.agents/skills/gateway-routing/references
+.agents/skills/gateway-routing/scripts
+.agents/skills/gateway-routing/tests.yaml
+.agents/skills/gha-pipelines
+.agents/skills/gha-pipelines/SKILL.md
+.agents/skills/gha-pipelines/tests.yaml
+.agents/skills/grafana-dashboards
+.agents/skills/grafana-dashboards/SKILL.md
+.agents/skills/grafana-dashboards/references
+.agents/skills/grafana-dashboards/tests.yaml
+.agents/skills/instruction-eval
+.agents/skills/instruction-eval/SKILL.md
+.agents/skills/instruction-eval/references
+.agents/skills/instruction-eval/results
+.agents/skills/instruction-eval/scripts
+.agents/skills/instruction-eval/tests.yaml
+.agents/skills/k8s
+.agents/skills/k8s/SKILL.md
+.agents/skills/k8s/services.md
+.agents/skills/k8s/tests.yaml
+.agents/skills/kubesearch
+.agents/skills/kubesearch/SKILL.md
+.agents/skills/kubesearch/references
+.agents/skills/kubesearch/tests.yaml
+.agents/skills/loki
+.agents/skills/loki/SKILL.md
+.agents/skills/loki/references
+.agents/skills/loki/scripts
+.agents/skills/loki/tests.yaml
+.agents/skills/monitoring-authoring
+.agents/skills/monitoring-authoring/SKILL.md
+.agents/skills/monitoring-authoring/references
+.agents/skills/monitoring-authoring/scripts
+.agents/skills/monitoring-authoring/tests.yaml
+.agents/skills/network-policy
+.agents/skills/network-policy/SKILL.md
+.agents/skills/network-policy/references
+.agents/skills/network-policy/scripts
+.agents/skills/network-policy/tests.yaml
+.agents/skills/opentofu-modules
+.agents/skills/opentofu-modules/SKILL.md
+.agents/skills/opentofu-modules/references
+.agents/skills/opentofu-modules/tests.yaml
+.agents/skills/prometheus
+.agents/skills/prometheus/SKILL.md
+.agents/skills/prometheus/references
+.agents/skills/prometheus/scripts
+.agents/skills/prometheus/tests.yaml
+.agents/skills/promotion-pipeline
+.agents/skills/promotion-pipeline/SKILL.md
+.agents/skills/promotion-pipeline/references
+.agents/skills/promotion-pipeline/scripts
+.agents/skills/promotion-pipeline/tests.yaml
+.agents/skills/secrets
+.agents/skills/secrets/SKILL.md
+.agents/skills/secrets/reference.md
+.agents/skills/secrets/scripts
+.agents/skills/secrets/tests.yaml
+.agents/skills/security-testing
+.agents/skills/security-testing/SKILL.md
+.agents/skills/security-testing/references
+.agents/skills/security-testing/tests.yaml
+.agents/skills/self-improvement
+.agents/skills/self-improvement/SKILL.md
+.agents/skills/self-improvement/references
+.agents/skills/self-improvement/tests.yaml
+.agents/skills/sre
+.agents/skills/sre/SKILL.md
+.agents/skills/sre/investigation-guide.md
+.agents/skills/sre/scripts
+.agents/skills/sre/tests.yaml
+.agents/skills/sync-claude
+.agents/skills/sync-claude/SKILL.md
+.agents/skills/sync-claude/scripts
+.agents/skills/sync-claude/tests.yaml
+.agents/skills/taskfiles
+.agents/skills/taskfiles/SKILL.md
+.agents/skills/taskfiles/references
+.agents/skills/taskfiles/tests.yaml
+.agents/skills/terragrunt
+.agents/skills/terragrunt/SKILL.md
+.agents/skills/terragrunt/references
+.agents/skills/terragrunt/tests.yaml
+.agents/skills/versions-renovate
+.agents/skills/versions-renovate/SKILL.md
+.agents/skills/versions-renovate/tests.yaml
+.claude
+.claude/settings.local.json
+.claude/skills
+.claude/skills/app-template
+.claude/skills/app-template/SKILL.md
+.claude/skills/app-template/references
+.claude/skills/app-template/tests.yaml
+.claude/skills/architecture-review
+.claude/skills/architecture-review/SKILL.md
+.claude/skills/architecture-review/references
+.claude/skills/architecture-review/tests.yaml
+.claude/skills/cnpg-database
+.claude/skills/cnpg-database/SKILL.md
+.claude/skills/cnpg-database/references
+.claude/skills/cnpg-database/scripts
+.claude/skills/cnpg-database/tests.yaml
+.claude/skills/deploy-app
+.claude/skills/deploy-app/SKILL.md
+.claude/skills/deploy-app/references
+.claude/skills/deploy-app/scripts
+.claude/skills/deploy-app/tests.yaml
+.claude/skills/flux-gitops
+.claude/skills/flux-gitops/SKILL.md
+.claude/skills/flux-gitops/templates.md
+.claude/skills/flux-gitops/tests.yaml
+.claude/skills/gateway-routing
+.claude/skills/gateway-routing/SKILL.md
+.claude/skills/gateway-routing/references
+.claude/skills/gateway-routing/scripts
+.claude/skills/gateway-routing/tests.yaml
+.claude/skills/gha-pipelines
+.claude/skills/gha-pipelines/SKILL.md
+.claude/skills/gha-pipelines/tests.yaml
+.claude/skills/gitops-cluster-debug
+.claude/skills/gitops-cluster-debug/.meta
+.claude/skills/gitops-cluster-debug/SKILL.md
+.claude/skills/gitops-cluster-debug/assets
+.claude/skills/gitops-cluster-debug/evals
+.claude/skills/gitops-cluster-debug/references
+.claude/skills/grafana-dashboards
+.claude/skills/grafana-dashboards/SKILL.md
+.claude/skills/grafana-dashboards/references
+.claude/skills/grafana-dashboards/tests.yaml
+.claude/skills/instruction-eval
+.claude/skills/instruction-eval/SKILL.md
+.claude/skills/instruction-eval/references
+.claude/skills/instruction-eval/results
+.claude/skills/instruction-eval/scripts
+.claude/skills/instruction-eval/tests.yaml
+.claude/skills/k8s
+.claude/skills/k8s/SKILL.md
+.claude/skills/k8s/services.md
+.claude/skills/k8s/tests.yaml
+.claude/skills/kubernetes-specialist
+.claude/skills/kubernetes-specialist/.meta
+.claude/skills/kubernetes-specialist/SKILL.md
+.claude/skills/kubernetes-specialist/references
+.claude/skills/kubesearch
+.claude/skills/kubesearch/SKILL.md
+.claude/skills/kubesearch/references
+.claude/skills/kubesearch/tests.yaml
+.claude/skills/loki
+.claude/skills/loki/SKILL.md
+.claude/skills/loki/references
+.claude/skills/loki/scripts
+.claude/skills/loki/tests.yaml
+.claude/skills/monitoring-authoring
+.claude/skills/monitoring-authoring/SKILL.md
+.claude/skills/monitoring-authoring/references
+.claude/skills/monitoring-authoring/scripts
+.claude/skills/monitoring-authoring/tests.yaml
+.claude/skills/network-policy
+.claude/skills/network-policy/SKILL.md
+.claude/skills/network-policy/references
+.claude/skills/network-policy/scripts
+.claude/skills/network-policy/tests.yaml
+.claude/skills/opentofu-modules
+.claude/skills/opentofu-modules/SKILL.md
+.claude/skills/opentofu-modules/references
+.claude/skills/opentofu-modules/tests.yaml
+.claude/skills/prometheus
+.claude/skills/prometheus/SKILL.md
+.claude/skills/prometheus/references
+.claude/skills/prometheus/scripts
+.claude/skills/prometheus/tests.yaml
+.claude/skills/promotion-pipeline
+.claude/skills/promotion-pipeline/SKILL.md
+
+=== STACK DETECTION (manifest files) ===
+No recognized manifest files found in project root.
+
+=== ENTRY POINTS ===
+No common entry points found. Check 'main' or 'scripts.start' in manifest files above.
+
+=== LINTING AND FORMATTING CONFIG ===
+Found: .editorconfig
+
+=== ENVIRONMENT VARIABLE TEMPLATES ===
+No .env.example or .env.template found. Identify required environment variables by searching the code and config for environment variable reads.
+
+=== TODO / FIXME / HACK (production code only, test dirs excluded) ===
+None found.
+
+=== GIT RECENT COMMITS (last 20) ===
+b99a1804d fix(etcd-defrag): add runAsUser: 0 to fix cert permission denied
+084ffa5c4 enable
+2ec7173aa disable
+435ef4cae librespeed
+f2f2afbab chore(container): update image golang ( 252599a → 5742fba ) (#1348)
+fc387edb3 chore(container): update image neo4j ( 17073aa → 7d8d70f ) (#1349)
+f3dd52a26 fix(deps): update dependency cilium-cli ( 0.19.2 → 0.19.4 ) (#1350)
+d4ba652f4 fix(deps): update dependency flux2 ( 2.8.7 → 2.8.8 ) (#1351)
+e1a4a7c35 fix(github-release): update release controlplaneio-fluxcd/distribution ( v2.8.7 → v2.8.8 ) (#1352)
+ec4aa89fc fix(github-release): update release github:microsoft/apm ( v0.14.0 → v0.14.1 ) (#1353)
+689d57b8a feat(container): update flux operator group ( 0.49.0 → 0.50.0 ) (#1354)
+e00d2b73d chore(container): update image ghcr.io/valkey-io/valkey ( e69af20 → 4963247 ) (#1344)
+620e426ad fix(container): update image adguard/adguardhome ( v0.107.74 → v0.107.75 ) (#1345)
+7e32340b4 fix(container): update image ghcr.io/home-operations/home-assistant ( 2026.5.2 → 2026.5.3 ) (#1346)
+84959ad32 feat(container): update image ghcr.io/prometheus-community/charts/kube-prometheus-stack ( 85.1.3 → 85.2.0 ) (#1347)
+779d02336 fix etcd defrags
+eb93dfd6a disable neo4j
+fbb7f0d71 updates
+2035db400 MORE NE4J
+4ed16c694 try and fix neo4j
+
+=== HIGH-CHURN FILES (last 90 days, top 20) ===
+  71 .mise.toml
+  28 kubernetes/apps/observability/prometheus-proxy/helmrelease.yaml
+  22 bootstrap/helmfile.yaml
+  22 kubernetes/apps/sgc/home/home-assistant/helmrelease.yaml
+  19 kubernetes/apps/sgc/idp/authentik/helmrelease.yaml
+  16 kubernetes/apps/system-upgrade/tuppr/helmrelease.yaml
+  16 kubernetes/apps/sgc/media/tdarr-node/helmrelease.yaml
+  13 kubernetes/apps/kube-system/etcd/helmrelease.yaml
+  13 kubernetes/apps/network/traefik/values.yaml
+  12 kubernetes/apps/flux-system/flux-instance/helmrelease.yaml
+  12 kubernetes/apps/network/external-dns/adguard/helmrelease.yaml
+  11 kubernetes/apps/flux-system/flux-operator/helmrelease.yaml
+  11 talos/talenv.yaml
+  10 kubernetes/apps/kube-system/headlamp/helmrelease.yaml
+   9 kubernetes/apps/kube-system/github-token/cronjob.yaml
+   9 kubernetes/apps/kube-system/secrets/github-auth/github-auth.yaml
+   9 kubernetes/apps/tailscale-system/authkey/authkey.yaml
+   9 kubernetes/apps/network/traefik/helmrelease.yaml
+   9 .github/workflows/flux-local.yaml
+   8 kubernetes/apps/network/librespeed/helmrelease.yaml
+
+=== MONOREPO SIGNALS ===
+No monorepo signals detected.
+
+=== CODE METRICS ===
+Total files scanned: 1014
+Total lines of code: 34773
+
+Files by language:
+  Other: 1002
+  Python: 6
+  C#: 6
+
+Top 10 largest files:
+talos/etcd-pre-upgrade-20260308-225331.db: 287768.0KB
+talos/etcd-pre-upgrade-20260308-230300.db: 287768.0KB
+.skillfile/cache/skills/gitops-cluster-debug/assets/schemas/helmrelease-helm-v2.json: 65.6KB
+.claude/skills/gitops-cluster-debug/assets/schemas/helmrelease-helm-v2.json: 65.6KB
+.github/skills/gitops-cluster-debug/assets/schemas/helmrelease-helm-v2.json: 65.6KB
+kubernetes/apps/observability/crds/application-crd.yaml: 46.9KB
+.skillfile/cache/skills/gitops-cluster-debug/assets/schemas/kustomization-kustomize-v1.json: 31.2KB
+.claude/skills/gitops-cluster-debug/assets/schemas/kustomization-kustomize-v1.json: 31.2KB
+.github/skills/gitops-cluster-debug/assets/schemas/kustomization-kustomize-v1.json: 31.2KB
+.github/skills/create-k8s-deployment/SKILL.md: 30.3KB
+
+=== CI/CD PIPELINES ===
+CI/CD: GitHub Actions
+
+=== CONTAINERS & ORCHESTRATION ===
+No containerization configs detected.
+
+=== SECURITY & COMPLIANCE ===
+No security configs detected.
+
+=== PERFORMANCE & TESTING ===
+No performance testing configs detected.
+
+=== SCAN COMPLETE ===

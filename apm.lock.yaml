@@ -1,7 +1,38 @@
 lockfile_version: '1'
-generated_at: '2026-05-15T02:45:04.490846+00:00'
-apm_version: 0.13.0
+generated_at: '2026-05-24T16:17:53.147090+00:00'
+apm_version: 0.14.1
 dependencies:
+- repo_url: cloudflare/skills
+  host: github.com
+  resolved_commit: 60147cbb773649eadca89cee92b4e0caf02234b4
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/agents-sdk
+  - .agents/skills/cloudflare
+  - .agents/skills/cloudflare-email-service
+  - .agents/skills/durable-objects
+  - .agents/skills/sandbox-sdk
+  - .agents/skills/web-perf
+  - .agents/skills/workers-best-practices
+  - .agents/skills/wrangler
+  - .claude/commands/build-agent.md
+  - .claude/commands/build-mcp.md
+  - .claude/skills/agents-sdk
+  - .claude/skills/cloudflare
+  - .claude/skills/cloudflare-email-service
+  - .claude/skills/durable-objects
+  - .claude/skills/sandbox-sdk
+  - .claude/skills/web-perf
+  - .claude/skills/workers-best-practices
+  - .claude/skills/wrangler
+  - .github/prompts/build-agent.prompt.md
+  - .github/prompts/build-mcp.prompt.md
+  deployed_file_hashes:
+    .claude/commands/build-agent.md: sha256:2a047542742e35246d9eff4128b1543c5ffa41dc44d347e8dd1bc554cf33d494
+    .claude/commands/build-mcp.md: sha256:78ee1ce2ad9a4904a45843f0aeaeb509cdd67b8931275f1277e80d655753c223
+    .github/prompts/build-agent.prompt.md: sha256:4d2f9777e0bfdd7581921f81459b9a66f78bbbce47a6d890de0a317852b4f46a
+    .github/prompts/build-mcp.prompt.md: sha256:265c29d38cd8f2e59ae097e4d23e53635792a9d34a1187d8208b12775cad5ce6
+  content_hash: sha256:5584fb5c3177456c6f32042aa9fd01a8958ca3d4c3ebeb9b5643f09462e4beed
 - repo_url: ionfury/homelab
   host: github.com
   resolved_commit: 52dfd7c2cd2381c5e8d398c28df907ea84b6f17b
@@ -252,3 +283,178 @@ dependencies:
   - .agents/skills/versions-renovate
   - .claude/skills/versions-renovate
   content_hash: sha256:de9f4b703d412d6d4434c67df5bb295caaab33d1e4bd570f8965645a4d34f378
+- repo_url: sirkirby/unifi-mcp
+  host: github.com
+  resolved_commit: 3785a0fc7459ed335cf6eefad3bf4173dca242ee
+  virtual_path: plugins/unifi-access
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/unifi-access
+  - .agents/skills/unifi-access-setup
+  - .claude/skills/unifi-access
+  - .claude/skills/unifi-access-setup
+  content_hash: sha256:14772840c9bebed8337471a8681bf17883ceb6b905930a3a8f9007ff903fdfae
+- repo_url: sirkirby/unifi-mcp
+  host: github.com
+  resolved_commit: 3785a0fc7459ed335cf6eefad3bf4173dca242ee
+  virtual_path: plugins/unifi-network
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/firewall-auditor
+  - .agents/skills/firewall-manager
+  - .agents/skills/network-health-check
+  - .agents/skills/unifi-network
+  - .agents/skills/unifi-network-setup
+  - .claude/skills/firewall-auditor
+  - .claude/skills/firewall-manager
+  - .claude/skills/network-health-check
+  - .claude/skills/unifi-network
+  - .claude/skills/unifi-network-setup
+  content_hash: sha256:4e9a42628707e208da7fc6bc2c5d90645cee1f1d4d884024a63ab1355a49cdde
+- repo_url: sirkirby/unifi-mcp
+  host: github.com
+  resolved_commit: 3785a0fc7459ed335cf6eefad3bf4173dca242ee
+  virtual_path: plugins/unifi-protect
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/security-digest
+  - .agents/skills/unifi-protect
+  - .agents/skills/unifi-protect-setup
+  - .claude/skills/security-digest
+  - .claude/skills/unifi-protect
+  - .claude/skills/unifi-protect-setup
+  content_hash: sha256:797eb2ae9154f7d1d8bf2633ea6bb4b5869342b443b99924f7496e6447f05b8e
+mcp_servers:
+- cloudflare-api
+- cloudflare-bindings
+- cloudflare-builds
+- cloudflare-docs
+- cloudflare-observability
+- kubernetes
+- mise
+- pulumi
+- unifi-access
+- unifi-network
+- unifi-protect
+mcp_configs:
+  cloudflare-api:
+    name: cloudflare-api
+    transport: http
+    registry: false
+    url: https://mcp.cloudflare.com/mcp
+  cloudflare-bindings:
+    name: cloudflare-bindings
+    transport: http
+    registry: false
+    url: https://bindings.mcp.cloudflare.com/mcp
+  cloudflare-builds:
+    name: cloudflare-builds
+    transport: http
+    registry: false
+    url: https://builds.mcp.cloudflare.com/mcp
+  cloudflare-docs:
+    name: cloudflare-docs
+    transport: http
+    registry: false
+    url: https://docs.mcp.cloudflare.com/mcp
+  cloudflare-observability:
+    name: cloudflare-observability
+    transport: http
+    registry: false
+    url: https://observability.mcp.cloudflare.com/mcp
+  kubernetes:
+    name: kubernetes
+    transport: stdio
+    args:
+    - -y
+    - kubernetes-mcp-server
+    registry: false
+    command: npx
+  mise:
+    name: mise
+    transport: stdio
+    env:
+      MISE_EXPERIMENTAL: '1'
+    args:
+    - mcp
+    registry: false
+    command: mise
+  pulumi:
+    name: pulumi
+    transport: stdio
+    args:
+    - -y
+    - '@pulumi/mcp-server'
+    - stdio
+    registry: false
+    command: npx
+  unifi-access:
+    name: unifi-access
+    transport: stdio
+    env:
+      UNIFI_HOST: ${UNIFI_ACCESS_HOST:-}
+      UNIFI_USERNAME: ${UNIFI_ACCESS_USERNAME:-}
+      UNIFI_PASSWORD: ${UNIFI_ACCESS_PASSWORD:-}
+      UNIFI_PORT: ${UNIFI_ACCESS_PORT:-443}
+      UNIFI_VERIFY_SSL: ${UNIFI_ACCESS_VERIFY_SSL:-false}
+      UNIFI_ACCESS_HOST: ${UNIFI_ACCESS_HOST:-}
+      UNIFI_ACCESS_USERNAME: ${UNIFI_ACCESS_USERNAME:-}
+      UNIFI_ACCESS_PASSWORD: ${UNIFI_ACCESS_PASSWORD:-}
+      UNIFI_ACCESS_API_KEY: ${UNIFI_ACCESS_API_KEY:-}
+      UNIFI_ACCESS_PORT: ${UNIFI_ACCESS_PORT:-443}
+      UNIFI_ACCESS_API_PORT: ${UNIFI_ACCESS_API_PORT:-12445}
+      UNIFI_ACCESS_VERIFY_SSL: ${UNIFI_ACCESS_VERIFY_SSL:-false}
+      UNIFI_TOOL_REGISTRATION_MODE: ${UNIFI_TOOL_REGISTRATION_MODE:-lazy}
+    args:
+    - --python-preference
+    - system
+    - unifi-access-mcp==0.3.1
+    registry: false
+    command: uvx
+  unifi-network:
+    name: unifi-network
+    transport: stdio
+    env:
+      UNIFI_HOST: ${UNIFI_NETWORK_HOST:-}
+      UNIFI_USERNAME: ${UNIFI_NETWORK_USERNAME:-}
+      UNIFI_PASSWORD: ${UNIFI_NETWORK_PASSWORD:-}
+      UNIFI_PORT: ${UNIFI_NETWORK_PORT:-443}
+      UNIFI_SITE: ${UNIFI_NETWORK_SITE:-default}
+      UNIFI_VERIFY_SSL: ${UNIFI_NETWORK_VERIFY_SSL:-false}
+      UNIFI_NETWORK_HOST: ${UNIFI_NETWORK_HOST:-}
+      UNIFI_NETWORK_USERNAME: ${UNIFI_NETWORK_USERNAME:-}
+      UNIFI_NETWORK_PASSWORD: ${UNIFI_NETWORK_PASSWORD:-}
+      UNIFI_NETWORK_PORT: ${UNIFI_NETWORK_PORT:-443}
+      UNIFI_NETWORK_SITE: ${UNIFI_NETWORK_SITE:-default}
+      UNIFI_NETWORK_VERIFY_SSL: ${UNIFI_NETWORK_VERIFY_SSL:-false}
+      UNIFI_TOOL_REGISTRATION_MODE: ${UNIFI_TOOL_REGISTRATION_MODE:-lazy}
+    args:
+    - --python-preference
+    - system
+    - unifi-network-mcp==0.18.2
+    registry: false
+    command: uvx
+  unifi-protect:
+    name: unifi-protect
+    transport: stdio
+    env:
+      UNIFI_HOST: ${UNIFI_PROTECT_HOST:-}
+      UNIFI_USERNAME: ${UNIFI_PROTECT_USERNAME:-}
+      UNIFI_PASSWORD: ${UNIFI_PROTECT_PASSWORD:-}
+      UNIFI_PORT: ${UNIFI_PROTECT_PORT:-443}
+      UNIFI_VERIFY_SSL: ${UNIFI_PROTECT_VERIFY_SSL:-false}
+      UNIFI_PROTECT_HOST: ${UNIFI_PROTECT_HOST:-}
+      UNIFI_PROTECT_USERNAME: ${UNIFI_PROTECT_USERNAME:-}
+      UNIFI_PROTECT_PASSWORD: ${UNIFI_PROTECT_PASSWORD:-}
+      UNIFI_PROTECT_PORT: ${UNIFI_PROTECT_PORT:-443}
+      UNIFI_PROTECT_VERIFY_SSL: ${UNIFI_PROTECT_VERIFY_SSL:-false}
+      UNIFI_TOOL_REGISTRATION_MODE: ${UNIFI_TOOL_REGISTRATION_MODE:-lazy}
+    args:
+    - --python-preference
+    - system
+    - unifi-protect-mcp==0.4.2
+    registry: false
+    command: uvx

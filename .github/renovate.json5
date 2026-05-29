@@ -33,6 +33,18 @@
     managerFilePatterns: ["/(^|/)kustomization\\.ya?ml$/"],
     pinDigests: true,
   },
+  customDatasources: {
+    "1password-cli": {
+      defaultRegistryUrlTemplate: "https://app-updates.agilebits.com/product_history/CLI2",
+      format: "html",
+      // Renovate html format extracts all <a href> values as {version: href}.
+      // Filter to darwin_arm64 downloads (one per release), extract version string.
+      // Beta URLs contain "beta" in path; mark those isStable: false.
+      transformTemplates: [
+        '{"releases": releases[$contains(version, "/op_darwin_arm64_v") and $contains(version, ".zip")].{"version": $replace(version, /^.*\\/op_darwin_arm64_(v[0-9.]+(?:-[a-zA-Z0-9.]+)?)\\.zip$/, "$1"), "isStable": $not($contains(version, "beta"))}, "sourceUrl": "https://app-updates.agilebits.com/product_history/CLI2", "homepage": "https://1password.com/downloads/command-line/"}',
+      ],
+    },
+  },
   packageRules: [
     {
       description: "CoreDNS Group",
@@ -182,6 +194,12 @@
     {
       matchDatasources: ["github-releases"],
       addLabels: ["renovate/github-release"],
+    },
+    {
+      description: "Override 1password-cli datasource: aqua type:http uses AgileBits CDN, no GitHub releases exist",
+      matchManagers: ["mise"],
+      matchDepNames: ["1password-cli"],
+      overrideDatasource: "custom.1password-cli",
     },
   ],
   customManagers: [

@@ -22,7 +22,7 @@ var defaultPorts = new Dictionary<ServiceKind, List<PortDef>>
 {
   [ServiceKind.Dockge] = [new("https", 443, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
   [ServiceKind.Proxmox] = [new("pve", 8006, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
-  [ServiceKind.Pbs] = [new("pbs", 8007, true, "http_2xx")],
+  [ServiceKind.Pbs] = [new("pbs", 8007, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
 };
 
 // Maps Tailscale tag → (ServiceKind, fn to extract the physical server name)
@@ -163,6 +163,7 @@ static string ProbeSshTarget(string server, ServiceKind kind) => kind switch
 {
   ServiceKind.Dockge => $"dockge-{server}.${{TAILSCALE_DOMAIN}}:22",
   ServiceKind.Proxmox => $"{server}.${{TAILSCALE_DOMAIN}}:22",
+  ServiceKind.Pbs => $"pbs-{server}.${{TAILSCALE_DOMAIN}}:22",
   _ => throw new ArgumentOutOfRangeException(nameof(kind)),
 };
 
@@ -305,6 +306,15 @@ string PbsAlertYaml(string server)
   sb.AppendLine($"            summary: \"PBS {server} is unhealthy\"");
   sb.AppendLine($"          expr: |");
   sb.AppendLine($"            probe_success{{probe=\"pbs-{server}\"}} < 1");
+  sb.AppendLine($"          for: 10m");
+  sb.AppendLine($"          labels:");
+  sb.AppendLine($"            severity: warning");
+  sb.AppendLine($"        - alert: PBSSSHConnectivityLost");
+  sb.AppendLine($"          annotations:");
+  sb.AppendLine($"            description: \"SSH connectivity to PBS on {server} has been lost.\"");
+  sb.AppendLine($"            summary: \"PBS {server} SSH lost\"");
+  sb.AppendLine($"          expr: |");
+  sb.AppendLine($"            probe_success{{probe=\"pbs-{server}-ssh\"}} < 1");
   sb.AppendLine($"          for: 10m");
   sb.AppendLine($"          labels:");
   sb.AppendLine($"            severity: warning");

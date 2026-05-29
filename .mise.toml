@@ -50,7 +50,7 @@ gh = "2.93.0"
 "aqua:brumhard/krewfile" = "0.7.0"
 "pipx:flux-local" = "8.2.0"
 "github:microsoft/apm" = { version = "v0.16.0", bin = "apm" }
-"github:eljulians/skillfile" = { version = "v1.6.3", bin = "skillfile" }
+"github:eljulians/skillfile" = { version = "v1.6.4", bin = "skillfile" }
 dotnet = { postinstall = "dotnet tool restore && dotnet restore", version = "10.0.203" }
 
 [tasks.update]

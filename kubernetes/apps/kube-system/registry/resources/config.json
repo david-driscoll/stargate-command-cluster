@@ -5,7 +5,7 @@
     "commit": true,
     "gc": true,
     "gcDelay": "1h",
-    "gcInterval": "12h"
+    "gcInterval": "6h"
   },
   "http": {
     "address": "0.0.0.0",
@@ -19,7 +19,7 @@
     "search": {
       "enable": true,
       "cve": {
-        "updateInterval": "2h"
+        "updateInterval": "168h"
       }
     },
     "scrub": {
@@ -45,23 +45,13 @@
           "content": [
             {
               "prefix": "library/**",
-              "destination": "/docker.io"
+              "destination": "/docker.io",
+              "deleteUntagged": true
             },
             {
               "prefix": "**",
-              "destination": "/docker.io"
-            },
-            {
-              "prefix": "library/**"
-            },
-            {
-              "prefix": "moby/**"
-            },
-            {
-              "prefix": "docker/**"
-            },
-            {
-              "prefix": "multiarch/**"
+              "destination": "/docker.io",
+              "deleteUntagged": true
             }
           ]
         },
@@ -75,7 +65,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/quay.io"
+              "destination": "/quay.io",
+              "deleteUntagged": true
             }
           ]
         },
@@ -89,7 +80,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/gcr.io"
+              "destination": "/gcr.io",
+              "deleteUntagged": true
             }
           ]
         },
@@ -103,7 +95,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/ghcr.io"
+              "destination": "/ghcr.io",
+              "deleteUntagged": true
             }
           ]
         },
@@ -117,7 +110,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/registry.k8s.io"
+              "destination": "/registry.k8s.io",
+              "deleteUntagged": true
             }
           ]
         },
@@ -131,7 +125,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/public.ecr.aws"
+              "destination": "/public.ecr.aws",
+              "deleteUntagged": true
             }
           ]
         },
@@ -145,7 +140,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/cgr.dev"
+              "destination": "/cgr.dev",
+              "deleteUntagged": true
             }
           ]
         },
@@ -159,7 +155,8 @@
           "content": [
             {
               "prefix": "**",
-              "destination": "/mcr.microsoft.com"
+              "destination": "/mcr.microsoft.com",
+              "deleteUntagged": true
             }
           ]
         }

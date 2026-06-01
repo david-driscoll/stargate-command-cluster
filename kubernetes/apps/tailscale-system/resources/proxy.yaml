@@ -4,6 +4,9 @@ kind: ProxyClass
 metadata:
   name: default
 spec:
+  statefulSet:
+    annotations:
+      reloader.stakater.com/auto: "true"
   metrics:
     enable: true
     serviceMonitor:

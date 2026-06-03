@@ -19,6 +19,9 @@ spec:
     - name: ssh
       port: 22
       targetPort: 22
+    - name: adguard
+      port: 4000
+      targetPort: 4000
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe

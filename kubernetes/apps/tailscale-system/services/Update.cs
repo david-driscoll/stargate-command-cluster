@@ -45,7 +45,15 @@ var tagMap = new Dictionary<string, (ServiceKind Kind, Func<string, string> Serv
 var extraPorts = new Dictionary<string, Dictionary<ServiceKind, PortDef[]>>
 {
   // alpha-site hosts a NUT UPS daemon on 3493
-  ["alpha-site"] = new() { [ServiceKind.Proxmox] = [new("nut", 3493, false, null)] },
+  ["alpha-site"] = new()
+  {
+    [ServiceKind.Proxmox] = [new("nut", 3493, false, null)],
+  },
+  // as hosts a primary adguard host on 4000
+  ["as"] = new()
+  {
+    [ServiceKind.Dockge] = [new("adguard", 4000, false, null)]
+  },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -104,25 +112,6 @@ if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
 if (serverKinds.Count == 0)
 {
   Environment.Exit(0);
-  AnsiConsole.MarkupLine("[yellow]Using static device list (set TAILSCALE_API_KEY to use Tailscale API)[/]");
-  // Static device list — update this when adding/removing servers
-  var staticDevices = new (string Server, ServiceKind Kind)[]
-  {
-        ("luna",       ServiceKind.Dockge),
-        ("luna",       ServiceKind.Proxmox),
-        ("luna",       ServiceKind.Pbs),
-        ("celestia",   ServiceKind.Dockge),
-        ("celestia",   ServiceKind.Proxmox),
-        ("celestia",   ServiceKind.Pbs),
-        ("as",         ServiceKind.Dockge),
-        ("alpha-site", ServiceKind.Proxmox),
-  };
-  foreach (var (server, kind) in staticDevices)
-  {
-    if (!serverKinds.TryGetValue(server, out var kinds))
-      serverKinds[server] = kinds = [];
-    kinds.Add(kind);
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

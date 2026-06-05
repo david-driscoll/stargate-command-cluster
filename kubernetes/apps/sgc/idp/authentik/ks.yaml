@@ -35,6 +35,7 @@ spec:
     - ../../../../components/failover/fast-node-eviction
     - ../../../../components/volsync
     - ../../../../components/postgres
+    - ../../../../components/tailscale
   postBuild:
     substitute:
       APP: *app

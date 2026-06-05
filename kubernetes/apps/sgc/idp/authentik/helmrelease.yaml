@@ -164,12 +164,6 @@ spec:
         serviceMonitor:
           enabled: true
 
-      service:
-        annotations:
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: authentik
-          tailscale.com/proxy-group: tailnet-outbound
-
       route:
         main:
           enabled: true

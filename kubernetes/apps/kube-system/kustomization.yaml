@@ -26,4 +26,3 @@ resources:
   - ./etcd/ks.yaml
   - ./headlamp/ks.yaml
   - ./multus/ks.yaml
-  - ./github-token/ks.yaml

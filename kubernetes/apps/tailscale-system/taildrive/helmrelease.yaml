@@ -68,7 +68,7 @@ spec:
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:
-                    name: authkey
+                    name: tailscale-authkey
                     key: authkey
             securityContext:
               privileged: true

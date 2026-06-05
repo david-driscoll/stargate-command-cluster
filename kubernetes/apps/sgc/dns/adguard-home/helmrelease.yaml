@@ -177,8 +177,7 @@ spec:
           tailscale.com/hostname: ${APP}
           tailscale.com/tailnet-ip: "${ADGUARD_TAILSCALE_VIP}"
           external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-        externalIPs:
-          - "${ADGUARD_VIP}"
+          tailscale.com/proxy-group: tailnet-outbound
         externalTrafficPolicy: Cluster
         ports: &dns-ports
           dns-tcp:

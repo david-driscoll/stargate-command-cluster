@@ -129,8 +129,7 @@ spec:
           tailscale.com/expose: "true"
           tailscale.com/hostname: "${AUTOMATION_CNAME}"
           tailscale.com/tags: "tag:observability"
-        externalIPs:
-          - "${AUTOMATION_VIP}"
+          tailscale.com/proxy-group: tailnet-outbound
         ports:
           mqtt:
             protocol: TCP

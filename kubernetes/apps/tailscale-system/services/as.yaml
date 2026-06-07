@@ -26,20 +26,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-as-https
-spec:
-  interval: 5m
-  module: http_2xx
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - https://dockge-as.${TAILSCALE_DOMAIN}
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
   name: dockge-as-ssh
 spec:
   interval: 5m
@@ -59,15 +45,6 @@ spec:
   groups:
     - name: dockge-as
       rules:
-        - alert: DockgeServiceUnhealthy
-          annotations:
-            description: "Dockge service on as is unhealthy."
-            summary: "Dockge as is unhealthy"
-          expr: |
-            probe_success{probe="dockge-as-https"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: DockgeSSHConnectivityLost
           annotations:
             description: "SSH connectivity to Dockge on as has been lost."

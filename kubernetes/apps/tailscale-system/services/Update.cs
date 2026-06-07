@@ -23,7 +23,7 @@ var serializer = new YamlDotNet.Serialization.Serializer();
 // Default ports for each service kind (portName, portNumber, probe?)
 var defaultPorts = new Dictionary<ServiceKind, List<PortDef>>
 {
-  [ServiceKind.Dockge] = [new("https", 443, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
+  [ServiceKind.Dockge] = [new("https", 443, false, null), new("ssh", 22, true, "ssh_banner")],
   [ServiceKind.Proxmox] = [new("pve", 8006, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
   [ServiceKind.Pbs] = [new("pbs", 8007, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
 };
@@ -225,15 +225,6 @@ string DockgeAlertYaml(string server)
   sb.AppendLine($"  groups:");
   sb.AppendLine($"    - name: dockge-{server}");
   sb.AppendLine($"      rules:");
-  sb.AppendLine($"        - alert: DockgeServiceUnhealthy");
-  sb.AppendLine($"          annotations:");
-  sb.AppendLine($"            description: \"Dockge service on {server} is unhealthy.\"");
-  sb.AppendLine($"            summary: \"Dockge {server} is unhealthy\"");
-  sb.AppendLine($"          expr: |");
-  sb.AppendLine($"            probe_success{{probe=\"dockge-{server}-https\"}} < 1");
-  sb.AppendLine($"          for: 10m");
-  sb.AppendLine($"          labels:");
-  sb.AppendLine($"            severity: warning");
   sb.AppendLine($"        - alert: DockgeSSHConnectivityLost");
   sb.AppendLine($"          annotations:");
   sb.AppendLine($"            description: \"SSH connectivity to Dockge on {server} has been lost.\"");
@@ -294,15 +285,6 @@ string PbsAlertYaml(string server)
   sb.AppendLine($"  groups:");
   sb.AppendLine($"    - name: pbs-{server}");
   sb.AppendLine($"      rules:");
-  sb.AppendLine($"        - alert: PBSServiceUnhealthy");
-  sb.AppendLine($"          annotations:");
-  sb.AppendLine($"            description: \"Proxmox Backup Server on {server} is unhealthy.\"");
-  sb.AppendLine($"            summary: \"PBS {server} is unhealthy\"");
-  sb.AppendLine($"          expr: |");
-  sb.AppendLine($"            probe_success{{probe=\"pbs-{server}\"}} < 1");
-  sb.AppendLine($"          for: 10m");
-  sb.AppendLine($"          labels:");
-  sb.AppendLine($"            severity: warning");
   sb.AppendLine($"        - alert: PBSSSHConnectivityLost");
   sb.AppendLine($"          annotations:");
   sb.AppendLine($"            description: \"SSH connectivity to PBS on {server} has been lost.\"");

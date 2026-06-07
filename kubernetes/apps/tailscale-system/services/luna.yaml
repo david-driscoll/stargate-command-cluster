@@ -23,20 +23,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-luna-https
-spec:
-  interval: 5m
-  module: http_2xx
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - https://dockge-luna.${TAILSCALE_DOMAIN}
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
   name: dockge-luna-ssh
 spec:
   interval: 5m
@@ -56,15 +42,6 @@ spec:
   groups:
     - name: dockge-luna
       rules:
-        - alert: DockgeServiceUnhealthy
-          annotations:
-            description: "Dockge service on luna is unhealthy."
-            summary: "Dockge luna is unhealthy"
-          expr: |
-            probe_success{probe="dockge-luna-https"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: DockgeSSHConnectivityLost
           annotations:
             description: "SSH connectivity to Dockge on luna has been lost."
@@ -204,15 +181,6 @@ spec:
   groups:
     - name: pbs-luna
       rules:
-        - alert: PBSServiceUnhealthy
-          annotations:
-            description: "Proxmox Backup Server on luna is unhealthy."
-            summary: "PBS luna is unhealthy"
-          expr: |
-            probe_success{probe="pbs-luna"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: PBSSSHConnectivityLost
           annotations:
             description: "SSH connectivity to PBS on luna has been lost."

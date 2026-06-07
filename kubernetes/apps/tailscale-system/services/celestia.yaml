@@ -23,20 +23,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-celestia-https
-spec:
-  interval: 5m
-  module: http_2xx
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - https://dockge-celestia.${TAILSCALE_DOMAIN}
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
   name: dockge-celestia-ssh
 spec:
   interval: 5m
@@ -56,15 +42,6 @@ spec:
   groups:
     - name: dockge-celestia
       rules:
-        - alert: DockgeServiceUnhealthy
-          annotations:
-            description: "Dockge service on celestia is unhealthy."
-            summary: "Dockge celestia is unhealthy"
-          expr: |
-            probe_success{probe="dockge-celestia-https"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: DockgeSSHConnectivityLost
           annotations:
             description: "SSH connectivity to Dockge on celestia has been lost."
@@ -204,15 +181,6 @@ spec:
   groups:
     - name: pbs-celestia
       rules:
-        - alert: PBSServiceUnhealthy
-          annotations:
-            description: "Proxmox Backup Server on celestia is unhealthy."
-            summary: "PBS celestia is unhealthy"
-          expr: |
-            probe_success{probe="pbs-celestia"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: PBSSSHConnectivityLost
           annotations:
             description: "SSH connectivity to PBS on celestia has been lost."

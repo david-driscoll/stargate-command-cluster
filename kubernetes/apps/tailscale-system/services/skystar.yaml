@@ -23,20 +23,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: dockge-skystar-https
-spec:
-  interval: 5m
-  module: http_2xx
-  prober:
-    url: blackbox-exporter.observability.svc.cluster.local:9115
-  targets:
-    staticConfig:
-      static:
-        - https://dockge-skystar.${TAILSCALE_DOMAIN}
----
-apiVersion: monitoring.coreos.com/v1
-kind: Probe
-metadata:
   name: dockge-skystar-ssh
 spec:
   interval: 5m
@@ -56,15 +42,6 @@ spec:
   groups:
     - name: dockge-skystar
       rules:
-        - alert: DockgeServiceUnhealthy
-          annotations:
-            description: "Dockge service on skystar is unhealthy."
-            summary: "Dockge skystar is unhealthy"
-          expr: |
-            probe_success{probe="dockge-skystar-https"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: DockgeSSHConnectivityLost
           annotations:
             description: "SSH connectivity to Dockge on skystar has been lost."
@@ -204,15 +181,6 @@ spec:
   groups:
     - name: pbs-skystar
       rules:
-        - alert: PBSServiceUnhealthy
-          annotations:
-            description: "Proxmox Backup Server on skystar is unhealthy."
-            summary: "PBS skystar is unhealthy"
-          expr: |
-            probe_success{probe="pbs-skystar"} < 1
-          for: 10m
-          labels:
-            severity: warning
         - alert: PBSSSHConnectivityLost
           annotations:
             description: "SSH connectivity to PBS on skystar has been lost."

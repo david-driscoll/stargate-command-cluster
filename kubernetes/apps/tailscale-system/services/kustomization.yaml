@@ -11,3 +11,5 @@ resources:
   - ./luna.yaml
   - ./skystar.yaml
   - ./twilight-sparkle.yaml
+  - ./sgc-kubeproxy.yaml
+  - ./equestria-kubeproxy.yaml

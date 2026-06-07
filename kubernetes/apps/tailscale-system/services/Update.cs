@@ -62,9 +62,11 @@ var extraPorts = new Dictionary<string, Dictionary<ServiceKind, PortDef[]>>
 
 var tailscaleStaticServices = new List<TailscaleServiceDef>
 {
-  new("alertmanager",   [new("http", 9093,  true, "http_2xx")]),
-  new("loki",           [new("http", 3100,  true, "http_2xx")]),
-  new("thanos-receive", [new("http", 10902, true, "http_2xx"), new("grpc", 10901, false, null)]),
+  // new("alertmanager",   [new("http", 9093,  true, "http_2xx")]),
+  // new("loki",           [new("http", 3100,  true, "http_2xx")]),
+  // new("thanos-receive", [new("http", 10902, true, "http_2xx"), new("grpc", 10901, false, null)]),
+  new ("sgc-kubeproxy", [new ("http", 443, true, "http_2xx")]),
+  new ("equestria-kubeproxy", [new ("http", 443, true, "http_2xx")]),
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -418,7 +420,7 @@ foreach (var svc in tailscaleStaticServices)
 
   var fileName = $"{svc.Name}.yaml";
   await File.WriteAllTextAsync(Path.Combine(outputDir, fileName), sb.ToString());
-  // generatedFiles.Add(fileName);
+  generatedFiles.Add(fileName);
   AnsiConsole.MarkupLine($"[green]Generated {fileName}[/]");
 }
 

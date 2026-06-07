@@ -8,6 +8,7 @@ metadata:
 spec:
   type: kube-apiserver
   kubeAPIServer:
-    mode: noauth
+    mode: auth
   tags:
     - "tag:k8s"
+    - "tag:${CLUSTER_CNAME}"

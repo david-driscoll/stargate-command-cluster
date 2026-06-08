@@ -13,10 +13,10 @@ spec:
   ports:
     - port: 10901
       targetPort: 10901
-      name: http
+      name: grpc
     - port: 10902
       targetPort: 10902
-      name: grpc
+      name: http
     - port: 19291
       targetPort: 19291
       name: remote

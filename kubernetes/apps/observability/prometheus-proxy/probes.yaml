@@ -13,7 +13,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - http://thanos-receive.observability.svc.cluster.local:10902
+        - http://thanos-receive.observability.svc.cluster.local:10901
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe

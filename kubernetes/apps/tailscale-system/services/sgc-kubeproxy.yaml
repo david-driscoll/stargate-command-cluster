@@ -13,7 +13,7 @@ spec:
   type: ExternalName
   externalName: sgc-kubeproxy
   ports:
-    - name: http
+    - name: https
       port: 443
       targetPort: 443
 ---
@@ -29,4 +29,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - http://sgc-kubeproxy.${TAILSCALE_DOMAIN}:443
+        - https://sgc-kubeproxy.${TAILSCALE_DOMAIN}/healthz

@@ -65,8 +65,8 @@ var tailscaleStaticServices = new List<TailscaleServiceDef>
   // new("alertmanager",   [new("http", 9093,  true, "http_2xx")]),
   // new("loki",           [new("http", 3100,  true, "http_2xx")]),
   // new("thanos-receive", [new("http", 10902, true, "http_2xx"), new("grpc", 10901, false, null)]),
-  new ("sgc-kubeproxy", [new ("http", 443, true, "http_2xx")]),
-  new ("equestria-kubeproxy", [new ("http", 443, true, "http_2xx")]),
+  new ("sgc-kubeproxy", [new ("https", 443, true, "http_2xx", "/healthz")]),
+  new ("equestria-kubeproxy", [new ("https", 443, true, "http_2xx", "/healthz")]),
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -323,8 +323,10 @@ string TailscaleStaticServiceYaml(TailscaleServiceDef svc)
   return sb.ToString();
 }
 
-static string StaticServiceProbeUrl(string name, int port)
-  => $"http://{name}.${{TAILSCALE_DOMAIN}}:{port}";
+static string StaticServiceProbeUrl(string name, int port, string? path = null)
+  => port == 443
+    ? $"https://{name}.${{TAILSCALE_DOMAIN}}{path ?? ""}"
+    : $"https://{name}.${{TAILSCALE_DOMAIN}}:{port}{path ?? ""}";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Generate per-device YAML files
@@ -397,7 +399,7 @@ foreach (var svc in tailscaleStaticServices)
     var probeName = svc.Ports.Count(p => p.HasProbe) > 1
         ? $"{svc.Name}-{port.Name}"
         : svc.Name;
-    sb.Append(ProbeYaml(probeName, port.ProbeModule!, StaticServiceProbeUrl(svc.Name, port.Port)));
+    sb.Append(ProbeYaml(probeName, port.ProbeModule!, StaticServiceProbeUrl(svc.Name, port.Port, port.ProbePath)));
   }
 
   var fileName = $"{svc.Name}.yaml";
@@ -497,7 +499,7 @@ AnsiConsole.MarkupLine("[green]Updated kustomization.yaml[/]");
 
 enum ServiceKind { Dockge, Proxmox, Pbs }
 
-record PortDef(string Name, int Port, bool HasProbe, string? ProbeModule);
+record PortDef(string Name, int Port, bool HasProbe, string? ProbeModule, string? ProbePath = null);
 
 record TailscaleServiceDef(string Name, List<PortDef> Ports);
 

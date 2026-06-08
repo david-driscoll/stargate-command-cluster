@@ -25,7 +25,7 @@ kind: Probe
 metadata:
   name: dockge-luna-ssh
 spec:
-  interval: 5m
+  interval: 2m
   module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -76,7 +76,7 @@ kind: Probe
 metadata:
   name: proxmox-luna
 spec:
-  interval: 5m
+  interval: 2m
   module: http_2xx
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -90,7 +90,7 @@ kind: Probe
 metadata:
   name: proxmox-luna-ssh
 spec:
-  interval: 5m
+  interval: 2m
   module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -150,7 +150,7 @@ kind: Probe
 metadata:
   name: pbs-luna
 spec:
-  interval: 5m
+  interval: 2m
   module: http_2xx
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
@@ -164,7 +164,7 @@ kind: Probe
 metadata:
   name: pbs-luna-ssh
 spec:
-  interval: 5m
+  interval: 2m
   module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115

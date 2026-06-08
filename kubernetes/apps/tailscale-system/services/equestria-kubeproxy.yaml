@@ -22,7 +22,7 @@ kind: Probe
 metadata:
   name: equestria-kubeproxy
 spec:
-  interval: 5m
+  interval: 2m
   module: http_2xx
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115

@@ -28,7 +28,7 @@ kind: Probe
 metadata:
   name: dockge-as-ssh
 spec:
-  interval: 5m
+  interval: 2m
   module: ssh_banner
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115

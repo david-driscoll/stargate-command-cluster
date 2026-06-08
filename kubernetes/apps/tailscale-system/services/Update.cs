@@ -28,6 +28,12 @@ var defaultPorts = new Dictionary<ServiceKind, List<PortDef>>
   [ServiceKind.Pbs] = [new("pbs", 8007, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
 };
 
+var remoteMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+{
+  ["skystar"] = true,
+  // ["luna"] = true,
+};
+
 // Maps Tailscale tag → (ServiceKind, fn to extract the physical server name)
 var tagMap = new Dictionary<string, (ServiceKind Kind, Func<string, string> ServerName)>
 {
@@ -189,7 +195,7 @@ string ServiceYaml(string server, ServiceKind kind, List<PortDef> ports)
   return sb.ToString();
 }
 
-string ProbeYaml(string probeName, string module, string target)
+string ProbeYaml(string probeName, string module, string target, bool isRemote = false)
 {
   var sb = new StringBuilder();
   sb.AppendLine("---");
@@ -198,7 +204,7 @@ string ProbeYaml(string probeName, string module, string target)
   sb.AppendLine($"metadata:");
   sb.AppendLine($"  name: {probeName}");
   sb.AppendLine($"spec:");
-  sb.AppendLine($"  interval: 5m");
+  sb.AppendLine($"  interval: 2m");
   sb.AppendLine($"  module: {module}");
   sb.AppendLine($"  prober:");
   sb.AppendLine($"    url: blackbox-exporter.observability.svc.cluster.local:9115");
@@ -206,6 +212,11 @@ string ProbeYaml(string probeName, string module, string target)
   sb.AppendLine($"    staticConfig:");
   sb.AppendLine($"      static:");
   sb.AppendLine($"        - {target}");
+  if (isRemote)
+  {
+    sb.AppendLine($"      labels:");
+    sb.AppendLine($"        remote: \"true\"");
+  }
   return sb.ToString();
 }
 
@@ -213,7 +224,7 @@ string ProbeYaml(string probeName, string module, string target)
 // Alert generators per service kind
 // ─────────────────────────────────────────────────────────────────────────────
 
-string DockgeAlertYaml(string server)
+string DockgeAlertYaml(string server, bool isRemote)
 {
   var sb = new StringBuilder();
   sb.AppendLine("---");
@@ -231,13 +242,13 @@ string DockgeAlertYaml(string server)
   sb.AppendLine($"            summary: \"Dockge {server} SSH lost\"");
   sb.AppendLine($"          expr: |");
   sb.AppendLine($"            probe_success{{probe=\"dockge-{server}-ssh\"}} < 1");
-  sb.AppendLine($"          for: 10m");
+  sb.AppendLine($"          for: {(isRemote ? "2h" : "10m")}");
   sb.AppendLine($"          labels:");
   sb.AppendLine($"            severity: warning");
   return sb.ToString();
 }
 
-string ProxmoxAlertYaml(string server, bool hasSsh)
+string ProxmoxAlertYaml(string server, bool hasSsh, bool isRemote)
 {
   var sb = new StringBuilder();
   sb.AppendLine("---");
@@ -255,7 +266,7 @@ string ProxmoxAlertYaml(string server, bool hasSsh)
   sb.AppendLine($"            summary: \"Proxmox {server} is unhealthy\"");
   sb.AppendLine($"          expr: |");
   sb.AppendLine($"            probe_success{{probe=\"proxmox-{server}\"}} < 1");
-  sb.AppendLine($"          for: 10m");
+  sb.AppendLine($"          for: {(isRemote ? "2h" : "10m")}");
   sb.AppendLine($"          labels:");
   sb.AppendLine($"            severity: warning");
   if (hasSsh)
@@ -266,14 +277,14 @@ string ProxmoxAlertYaml(string server, bool hasSsh)
     sb.AppendLine($"            summary: \"Proxmox {server} SSH lost\"");
     sb.AppendLine($"          expr: |");
     sb.AppendLine($"            probe_success{{probe=\"proxmox-{server}-ssh\"}} < 1");
-    sb.AppendLine($"          for: 10m");
+    sb.AppendLine($"          for: {(isRemote ? "2h" : "10m")}");
     sb.AppendLine($"          labels:");
     sb.AppendLine($"            severity: warning");
   }
   return sb.ToString();
 }
 
-string PbsAlertYaml(string server)
+string PbsAlertYaml(string server, bool isRemote)
 {
   var sb = new StringBuilder();
   sb.AppendLine("---");
@@ -291,7 +302,7 @@ string PbsAlertYaml(string server)
   sb.AppendLine($"            summary: \"PBS {server} SSH lost\"");
   sb.AppendLine($"          expr: |");
   sb.AppendLine($"            probe_success{{probe=\"pbs-{server}-ssh\"}} < 1");
-  sb.AppendLine($"          for: 10m");
+  sb.AppendLine($"          for: {(isRemote ? "2h" : "10m")}");
   sb.AppendLine($"          labels:");
   sb.AppendLine($"            severity: warning");
   return sb.ToString();
@@ -352,6 +363,8 @@ foreach (var (server, kinds) in serverKinds.OrderBy(x => x.Key))
     // Service
     sb.Append(ServiceYaml(server, kind, ports));
 
+    var isRemote = remoteMap.TryGetValue(server, out var remote) && remote;
+
     // Probes
     foreach (var port in ports.Where(p => p.HasProbe))
     {
@@ -363,15 +376,15 @@ foreach (var (server, kinds) in serverKinds.OrderBy(x => x.Key))
           ? ProbeSshTarget(server, kind)
           : ProbeHttpUrl(server, kind, port.Port);
 
-      sb.Append(ProbeYaml(probeName, port.ProbeModule!, target));
+      sb.Append(ProbeYaml(probeName, port.ProbeModule!, target, isRemote));
     }
 
     // Per-kind alerts
     sb.Append(kind switch
     {
-      ServiceKind.Dockge => DockgeAlertYaml(server),
-      ServiceKind.Proxmox => ProxmoxAlertYaml(server, ports.Any(p => p.Name == "ssh")),
-      ServiceKind.Pbs => PbsAlertYaml(server),
+      ServiceKind.Dockge => DockgeAlertYaml(server, isRemote),
+      ServiceKind.Proxmox => ProxmoxAlertYaml(server, ports.Any(p => p.Name == "ssh"), isRemote),
+      ServiceKind.Pbs => PbsAlertYaml(server, isRemote),
       _ => ""
     });
   }
@@ -423,18 +436,18 @@ metadata:
 spec:
   groups:
     - name: blackbox_probes
-      interval: 30s
+      interval: 2m
       rules:
-        - record: blackbox:probe:success:rate5m
+        - record: blackbox:probe:success:rate10m
           expr: |
-            avg by (probe) (rate(probe_success[5m]))
+            avg by (probe) (rate(probe_success[10m]))
         - alert: BlackboxProbeFailing
           annotations:
             description: "Blackbox probe '{{ $labels.instance }}' has been failing."
             summary: "Blackbox probe failing"
           expr: |
-            avg_over_time(probe_success[5m]) < 0.9
-          for: 5m
+            avg_over_time(probe_success{remote!="true"}[10m]) < 0.9
+          for: 10m
           labels:
             severity: warning
         - alert: BlackboxProbeFailingCritical
@@ -442,8 +455,26 @@ spec:
             description: "Blackbox probe '{{ $labels.instance }}' is critically failing."
             summary: "Blackbox probe critically failing"
           expr: |
-            avg_over_time(probe_success[5m]) < 0.5
+            avg_over_time(probe_success{remote!="true"}[10m]) < 0.5
           for: 2m
+          labels:
+            severity: critical
+        - alert: BlackboxProbeFailingRemote
+          annotations:
+            description: "Blackbox probe '{{ $labels.instance }}' (remote) has been failing."
+            summary: "Blackbox probe failing (remote)"
+          expr: |
+            avg_over_time(probe_success{remote="true"}[10m]) < 0.9
+          for: 2h
+          labels:
+            severity: warning
+        - alert: BlackboxProbeFailingCriticalRemote
+          annotations:
+            description: "Blackbox probe '{{ $labels.instance }}' (remote) is critically failing."
+            summary: "Blackbox probe critically failing (remote)"
+          expr: |
+            avg_over_time(probe_success{remote="true"}[10m]) < 0.5
+          for: 30m
           labels:
             severity: critical
         - alert: BlackboxProbeHighLatency
@@ -451,7 +482,7 @@ spec:
             description: "Blackbox probe '{{ $labels.instance }}' p99 latency is {{ $value | humanizeDuration }}."
             summary: "Blackbox probe high latency"
           expr: |
-            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket[5m]))) > 10
+            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket{remote!="true"}[10m]))) > 10
           for: 10m
           labels:
             severity: warning
@@ -469,7 +500,7 @@ spec:
             description: "Blackbox probe '{{ $labels.instance }}' is timing out."
             summary: "Blackbox probe timeout"
           expr: |
-            probe_success == 0 and probe_duration_seconds > 9
+            probe_success{remote!="true"} == 0 and probe_duration_seconds{remote!="true"} > 9
           for: 2m
           labels:
             severity: warning

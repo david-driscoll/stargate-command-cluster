@@ -7,18 +7,18 @@ metadata:
 spec:
   groups:
     - name: blackbox_probes
-      interval: 30s
+      interval: 2m
       rules:
-        - record: blackbox:probe:success:rate5m
+        - record: blackbox:probe:success:rate10m
           expr: |
-            avg by (probe) (rate(probe_success[5m]))
+            avg by (probe) (rate(probe_success[10m]))
         - alert: BlackboxProbeFailing
           annotations:
             description: "Blackbox probe '{{ $labels.instance }}' has been failing."
             summary: "Blackbox probe failing"
           expr: |
-            avg_over_time(probe_success[5m]) < 0.9
-          for: 5m
+            avg_over_time(probe_success{remote!="true"}[10m]) < 0.9
+          for: 10m
           labels:
             severity: warning
         - alert: BlackboxProbeFailingCritical
@@ -26,8 +26,26 @@ spec:
             description: "Blackbox probe '{{ $labels.instance }}' is critically failing."
             summary: "Blackbox probe critically failing"
           expr: |
-            avg_over_time(probe_success[5m]) < 0.5
+            avg_over_time(probe_success{remote!="true"}[10m]) < 0.5
           for: 2m
+          labels:
+            severity: critical
+        - alert: BlackboxProbeFailingRemote
+          annotations:
+            description: "Blackbox probe '{{ $labels.instance }}' (remote) has been failing."
+            summary: "Blackbox probe failing (remote)"
+          expr: |
+            avg_over_time(probe_success{remote="true"}[10m]) < 0.9
+          for: 2h
+          labels:
+            severity: warning
+        - alert: BlackboxProbeFailingCriticalRemote
+          annotations:
+            description: "Blackbox probe '{{ $labels.instance }}' (remote) is critically failing."
+            summary: "Blackbox probe critically failing (remote)"
+          expr: |
+            avg_over_time(probe_success{remote="true"}[10m]) < 0.5
+          for: 30m
           labels:
             severity: critical
         - alert: BlackboxProbeHighLatency
@@ -35,7 +53,7 @@ spec:
             description: "Blackbox probe '{{ $labels.instance }}' p99 latency is {{ $value | humanizeDuration }}."
             summary: "Blackbox probe high latency"
           expr: |
-            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket[5m]))) > 10
+            histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket{remote!="true"}[10m]))) > 10
           for: 10m
           labels:
             severity: warning
@@ -53,7 +71,7 @@ spec:
             description: "Blackbox probe '{{ $labels.instance }}' is timing out."
             summary: "Blackbox probe timeout"
           expr: |
-            probe_success == 0 and probe_duration_seconds > 9
+            probe_success{remote!="true"} == 0 and probe_duration_seconds{remote!="true"} > 9
           for: 2m
           labels:
             severity: warning

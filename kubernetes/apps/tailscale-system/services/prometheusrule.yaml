@@ -14,7 +14,7 @@ spec:
             avg by (probe) (rate(probe_success[5m]))
         - alert: BlackboxProbeFailing
           annotations:
-            description: "Blackbox probe '{{ $labels.probe }}' has been failing."
+            description: "Blackbox probe '{{ $labels.instance }}' has been failing."
             summary: "Blackbox probe failing"
           expr: |
             avg_over_time(probe_success[5m]) < 0.9
@@ -23,7 +23,7 @@ spec:
             severity: warning
         - alert: BlackboxProbeFailingCritical
           annotations:
-            description: "Blackbox probe '{{ $labels.probe }}' is critically failing."
+            description: "Blackbox probe '{{ $labels.instance }}' is critically failing."
             summary: "Blackbox probe critically failing"
           expr: |
             avg_over_time(probe_success[5m]) < 0.5
@@ -32,7 +32,7 @@ spec:
             severity: critical
         - alert: BlackboxProbeHighLatency
           annotations:
-            description: "Blackbox probe '{{ $labels.probe }}' p99 latency is {{ $value | humanizeDuration }}."
+            description: "Blackbox probe '{{ $labels.instance }}' p99 latency is {{ $value | humanizeDuration }}."
             summary: "Blackbox probe high latency"
           expr: |
             histogram_quantile(0.99, sum by (probe, le) (rate(probe_duration_seconds_bucket[5m]))) > 10
@@ -41,7 +41,7 @@ spec:
             severity: warning
         - alert: BlackboxProbeSslCertificateExpiringSoon
           annotations:
-            description: "SSL certificate for probe '{{ $labels.probe }}' expires in {{ $value | humanizeDuration }}."
+            description: "SSL certificate for probe '{{ $labels.instance }}' expires in {{ $value | humanizeDuration }}."
             summary: "SSL certificate expiring soon"
           expr: |
             probe_ssl_earliest_cert_expiry - time() < 86400 * 7
@@ -50,7 +50,7 @@ spec:
             severity: warning
         - alert: BlackboxProbeTimeout
           annotations:
-            description: "Blackbox probe '{{ $labels.probe }}' is timing out."
+            description: "Blackbox probe '{{ $labels.instance }}' is timing out."
             summary: "Blackbox probe timeout"
           expr: |
             probe_success == 0 and probe_duration_seconds > 9

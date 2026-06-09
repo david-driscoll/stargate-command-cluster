@@ -49,7 +49,7 @@ cue = "0.16.1"
 gh = "2.93.0"
 "aqua:brumhard/krewfile" = "0.7.0"
 "pipx:flux-local" = "8.2.0"
-"github:microsoft/apm" = { version = "v0.18.0", bin = "apm" }
+"github:microsoft/apm" = { version = "v0.19.0", bin = "apm" }
 "github:eljulians/skillfile" = { version = "v1.7.1", bin = "skillfile" }
 dotnet = { postinstall = "dotnet tool restore && dotnet restore", version = "10.0.203" }
 

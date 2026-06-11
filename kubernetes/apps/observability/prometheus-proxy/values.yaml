@@ -62,6 +62,18 @@ prometheus:
           batchSendDeadline: 5s
           minShards: 1
           maxShards: 4
+        writeRelabelConfigs:
+          # Prefer pod name as instance label for pod-level metrics
+          - sourceLabels: [pod]
+            regex: (.+)
+            targetLabel: instance
+            action: replace
+          # Fall back to node name for node-level metrics (only when pod is empty)
+          - sourceLabels: [pod, node]
+            separator: ";"
+            regex: ";(.+)"
+            targetLabel: instance
+            action: replace
     externalLabels:
       cluster: ${CLUSTER_CNAME}
       environment: homelab

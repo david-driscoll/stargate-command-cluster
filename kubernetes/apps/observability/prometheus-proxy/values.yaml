@@ -65,7 +65,8 @@ prometheus:
     externalLabels:
       cluster: ${CLUSTER_CNAME}
       environment: homelab
-      region: home
+      region: ${LOCATION}
+      machine_type: kubernetes
     tsdb:
       outOfOrderTimeWindow: 30m
     enableAdminAPI: true

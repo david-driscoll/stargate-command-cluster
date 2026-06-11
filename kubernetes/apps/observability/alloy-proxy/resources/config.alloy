@@ -103,7 +103,8 @@ loki.process "pod_logs" {
       values = {
         cluster = "${CLUSTER_CNAME}",
         environment = "homelab",
-        region = "home",
+        region = "${LOCATION}",
+        machine_type = "kubernetes",
       }
   }
 
@@ -135,7 +136,8 @@ loki.process "cluster_events" {
     values = {
       cluster = "${CLUSTER_CNAME}",
       environment = "homelab",
-      region = "home",
+      region = "${LOCATION}",
+      machine_type = "kubernetes",
     }
   }
 
@@ -183,7 +185,12 @@ otelcol.processor.attributes "default" {
   }
   action {
     key    = "region"
-    value  = "home"
+    value  = "${LOCATION}"
+    action = "insert"
+  }
+  action {
+    key    = "machine_type"
+    value  = "kubernetes"
     action = "insert"
   }
   output {
@@ -217,7 +224,8 @@ prometheus.remote_write "equestria" {
   external_labels = {
     cluster     = "${CLUSTER_CNAME}",
     environment = "homelab",
-    region      = "home",
+    region      = "${LOCATION}",
+    machine_type = "kubernetes",
   }
 }
 

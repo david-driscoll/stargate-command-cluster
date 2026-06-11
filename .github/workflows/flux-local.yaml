@@ -41,7 +41,7 @@ jobs:
           cache: true
 
       - name: Run flate test
-        run: flate test all --path ./kubernetes/flux/cluster
+        run: flate test all --path ./kubernetes/flux/cluster --allow-missing-secrets --source-retry-attempts 10
 
   diff:
     name: Diff
@@ -66,7 +66,7 @@ jobs:
       - name: Run flate diff
         id: diff
         run: |
-          flate diff all --path ./kubernetes/flux/cluster -o github > diff.patch
+          flate diff all --path ./kubernetes/flux/cluster --allow-missing-secrets --source-retry-attempts 10 -o github > diff.patch
           cat diff.patch >> "$GITHUB_STEP_SUMMARY"
           {
             echo 'diff<<EOF'

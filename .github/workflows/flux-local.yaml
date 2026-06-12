@@ -38,7 +38,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup flate
-        uses: home-operations/flate/action@cb51c417b0ff69e73e0569fdb4f95defd9efa90f # v0.4.1
+        uses: home-operations/flate/action@ee29b6f74f26eba61564406749e2a5ed46a8d98d # v0.4.5
         with:
           cache: true
 
@@ -60,7 +60,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup flate
-        uses: home-operations/flate/action@cb51c417b0ff69e73e0569fdb4f95defd9efa90f # v0.4.1
+        uses: home-operations/flate/action@ee29b6f74f26eba61564406749e2a5ed46a8d98d # v0.4.5
         with:
           base: ${{ github.event.repository.default_branch }}
           cache: true

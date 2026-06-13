@@ -47,6 +47,13 @@ spec:
           port: 4318
           targetPort: 4318
           protocol: TCP
+      resources:
+        requests:
+          cpu: 100m
+          memory: 1Gi
+        limits:
+          cpu: 400m
+          memory: 4Gi
 
     controller:
       podAnnotations:

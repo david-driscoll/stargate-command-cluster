@@ -22,7 +22,7 @@ spec:
       - url: "https://home.${TAILSCALE_DOMAIN}/auth/oidc/callback"
       - url: "https://${APP}.${ROOT_DOMAIN}/auth/oidc/callback"
       propertyMappings:
-        - email-verified
+        - email
         - openid
         - profile
       includeClaimsInIdToken: true

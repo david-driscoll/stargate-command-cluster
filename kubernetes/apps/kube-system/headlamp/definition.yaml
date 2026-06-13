@@ -16,7 +16,7 @@ spec:
       allowedRedirectUris:
       - url: "https://${APP}.${CLUSTER_DOMAIN}/oidc-callback"
       propertyMappings:
-        - email-verified
+        - email
         - openid
         - profile
       includeClaimsInIdToken: true

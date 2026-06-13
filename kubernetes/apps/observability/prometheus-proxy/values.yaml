@@ -49,10 +49,10 @@ prometheus:
       - otlp-deltatocumulative
     resources:
       requests:
-        cpu: 50m
+        cpu: 100m
         memory: 1Gi
       limits:
-        # cpu: 500m
+        cpu: 400m
         memory: 4Gi
     remoteWriteDashboards: true
     remoteWrite:

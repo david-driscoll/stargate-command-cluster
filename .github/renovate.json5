@@ -116,6 +116,14 @@
       },
     },
     {
+      description: "CloudNative-PG Cluster",
+      groupName: "CloudNative-PG Cluster",
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Spegel Group",
       groupName: "Spegel",
       matchDatasources: ["docker"],
@@ -222,6 +230,10 @@
       matchStrings: [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)",
+        // Quoted YAML string values: key: "1.2.3"
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n[^:]+:\\s\"(?<currentValue>[^\"]+)\"",
+        // Full docker image references: key: registry/image:tag
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n[^:\\n]+:\\s[^:\\n]+:(?<currentValue>[^\\s@]+)",
       ],
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
     },

@@ -108,6 +108,14 @@
       },
     },
     {
+      description: "CloudNative-PG Cluster",
+      groupName: "CloudNative-PG Cluster",
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Spegel Group",
       groupName: "Spegel",
       matchDatasources: ["docker"],

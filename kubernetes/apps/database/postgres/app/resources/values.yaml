@@ -55,6 +55,12 @@ cluster:
     limits:
       memory: ${POSTGRES_LIMITS_MEMORY}
   logLevel: "info"
+  probes:
+    liveness:
+      isolationCheck:
+        enabled: true
+        connectionTimeout: 5000
+        requestTimeout: 5000
   affinity:
     topologyKey: kubernetes.io/hostname
   enableSuperuserAccess: true

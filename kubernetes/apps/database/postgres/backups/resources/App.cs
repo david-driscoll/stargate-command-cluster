@@ -61,8 +61,8 @@ foreach (var db in databases)
 {
   try
   {
-    var postgres = await GetItemByTitle($"${clusterKey}-{db}-postgres");
-    var connectionString = (await GetItemByTitle($"${clusterKey}-{db}-postgres")).Fields.Single(f => f.Label == "connection-string").Value.Dump();
+    var postgres = await GetItemByTitle($"{clusterKey}-{db}-postgres");
+    var connectionString = (await GetItemByTitle($"{clusterKey}-{db}-postgres")).Fields.Single(f => f.Label == "connection-string").Value.Dump();
     await using var dataSource = NpgsqlDataSource.Create(connectionString);
 
     Console.WriteLine($"Backing up database: {db}");

@@ -21,7 +21,7 @@ spec:
       - url: "https://cloud.${ROOT_DOMAIN}/oidc/callback/authentik"
       - url: "https://cloud.${TAILSCALE_DOMAIN}/oidc/callback/authentik"
       propertyMappings:
-        - email
+        - email-verified
         - openid
         - profile
       includeClaimsInIdToken: true

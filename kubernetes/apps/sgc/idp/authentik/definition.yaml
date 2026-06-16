@@ -7,6 +7,9 @@ metadata:
 spec:
   name: Authentik
   category: Applications
+  url: https://${APP}.${ROOT_DOMAIN}
+  description: Authentik is an open-source identity provider focused on flexibility and security.
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/authentik.svg
   gatus:
     - group: "Applications"
       url: https://${APP}.${ROOT_DOMAIN}

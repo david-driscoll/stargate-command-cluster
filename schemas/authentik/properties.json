@@ -109,6 +109,21 @@
           "type": "array",
           "items": { "type": "string" }
         },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "authorization_code",
+              "client_credentials",
+              "refresh_token",
+              "password",
+              "implicit",
+              "hybrid",
+              "urn:ietf:params:oauth:grant-type:device_code"
+            ]
+          }
+        },
         "mode": {
           "type": "string",
           "enum": ["proxy", "forward_single", "forward_domain"]
@@ -196,7 +211,21 @@
           "type": "array",
           "items": { "type": "string" }
         },
-
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "authorization_code",
+              "client_credentials",
+              "refresh_token",
+              "password",
+              "implicit",
+              "hybrid",
+              "urn:ietf:params:oauth:grant-type:device_code"
+            ]
+          }
+        },
         "propertyMappings": {
           "type": "array",
           "items": { "type": "string" }

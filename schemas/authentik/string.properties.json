@@ -88,6 +88,7 @@
         "jwksSources": { "type": "string" },
         "jwtFederationProviders": { "type": "string" },
         "jwtFederationSources": { "type": "string" },
+        "grantTypes": { "type": "string" },
         "mode": {
           "type": "string",
           "enum": ["proxy", "forward_single", "forward_domain"]
@@ -150,7 +151,7 @@
         "jwksSources": { "type": "string" },
         "jwtFederationProviders": { "type": "string" },
         "jwtFederationSources": { "type": "string" },
-
+        "grantTypes": { "type": "string" },
         "propertyMappings": { "type": "string" },
         "providerOauth2Id": { "type": "string" },
         "refreshTokenValidity": { "type": "string" },

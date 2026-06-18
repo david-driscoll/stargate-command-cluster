@@ -9,6 +9,7 @@ resources:
   - ./outbound.yaml
   - ./inbound.yaml
   - ./kubeproxy.yaml
+  - ./tailnet-cluster-ops.yaml
+  - ./glance-readonly.yaml
   - ./proxy.yaml
-  - ./kubeproxy-rbac.yaml
   # - ./recorder.yaml

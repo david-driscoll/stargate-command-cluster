@@ -129,14 +129,14 @@ providers:
     experimentalChannel: true
     statusAddress:
       ip: "${INTERNAL_IP}"
-logs:
+log:
   access:
     enabled: true
   general:
     # -- Set [logs format](https://doc.traefik.io/traefik/observability/logs/#format)
     format: common
     # -- Alternative logging levels are TRACE, DEBUG, INFO, WARN, ERROR, FATAL, and PANIC.
-    level: "INFO"
+    level: "WARN"
 ingressRoute:
   dashboard:
     enabled: true

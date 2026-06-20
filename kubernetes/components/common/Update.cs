@@ -5,7 +5,7 @@
 #:package Spectre.Console.Json@0.50.0
 #:package KubernetesClient@*
 #:package Microsoft.Extensions.Logging@9.*
-#:package Dumpify@0.6.6
+#:package Dumpify@0.7.0
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
 #:package ProcessX@1.5.6
 #:property JsonSerializerIsReflectionEnabledByDefault=true

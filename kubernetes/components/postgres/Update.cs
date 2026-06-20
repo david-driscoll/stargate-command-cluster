@@ -1,5 +1,5 @@
 #!/usr/bin/dotnet run
-#:package YamlDotNet@16.3.0
+#:package YamlDotNet@18.0.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package System.Collections.Immutable@10.0.0-preview.5.25277.114
 #:package Spectre.Console@0.50.0

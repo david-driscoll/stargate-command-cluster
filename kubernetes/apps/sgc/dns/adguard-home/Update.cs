@@ -1,5 +1,5 @@
 #!/usr/bin/dotnet run
-#:package YamlDotNet@16.3.0
+#:package YamlDotNet@18.0.0
 #:package Spectre.Console@0.50.0
 #:package Spectre.Console.Json@0.50.0
 #:package Dumpify@0.6.6

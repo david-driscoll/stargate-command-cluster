@@ -1,8 +1,8 @@
 #!/usr/bin/dotnet run
 // #:package YamlDotNet@16.3.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
-#:package Spectre.Console@0.50.0
-#:package Spectre.Console.Json@0.50.0
+#:package Spectre.Console@0.57.0
+#:package Spectre.Console.Json@0.57.0
 #:package KubernetesClient@*
 #:package Microsoft.Extensions.Logging@10.*
 #:package Dumpify@0.7.0

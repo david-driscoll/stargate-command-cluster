@@ -1,6 +1,6 @@
 #!/usr/bin/dotnet run
 #:package YamlDotNet@18.0.0
-#:package Spectre.Console@0.50.0
+#:package Spectre.Console@0.57.0
 #:package System.Net.Http.Json@10.*
 #:package Duende.IdentityModel@8.1.0
 

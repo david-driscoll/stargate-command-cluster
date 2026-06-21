@@ -2,8 +2,8 @@
 #:package YamlDotNet@18.0.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package System.Collections.Immutable@10.0.9
-#:package Spectre.Console@0.50.0
-#:package Spectre.Console.Json@0.50.0
+#:package Spectre.Console@0.57.0
+#:package Spectre.Console.Json@0.57.0
 #:package Dumpify@0.7.0
 #:package ProcessX@1.5.6
 

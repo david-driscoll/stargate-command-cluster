@@ -38,7 +38,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup flate
-        uses: home-operations/flate/action@a87d9ab5dc3fa376d70019549de8785f56a88069 # v0.4.8
+        uses: home-operations/flate/action@a13598d5cb2faa79c2638e7bfe61711b1a1c1a5f # v0.4.9
         with:
           cache: true
 
@@ -60,7 +60,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup flate
-        uses: home-operations/flate/action@a87d9ab5dc3fa376d70019549de8785f56a88069 # v0.4.8
+        uses: home-operations/flate/action@a13598d5cb2faa79c2638e7bfe61711b1a1c1a5f # v0.4.9
         with:
           base: ${{ github.event.repository.default_branch }}
           cache: true
@@ -79,7 +79,7 @@ jobs:
       - name: Add Comment
         if: ${{ steps.diff.outputs.diff != '' }}
         continue-on-error: true
-        uses: mshick/add-pr-comment@8e4927817251f1ff60c001f04568532b38e0b4a0 # v3.11
+        uses: mshick/add-pr-comment@ec328af66588ab8f77cdeb2c264f14aba45bbf59 # v3.12
         with:
           message-id: "${{ github.event.pull_request.number }}/kubernetes"
           message-failure: Diff was not successful

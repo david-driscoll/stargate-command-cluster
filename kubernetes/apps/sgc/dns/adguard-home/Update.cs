@@ -2,7 +2,7 @@
 #:package YamlDotNet@16.3.0
 #:package Spectre.Console@0.50.0
 #:package Spectre.Console.Json@0.50.0
-#:package Dumpify@0.6.6
+#:package Dumpify@0.7.0
 
 using Spectre.Console;
 using Spectre.Console.Json;

@@ -4,7 +4,7 @@
 #:package System.Collections.Immutable@10.0.9
 #:package Spectre.Console@0.50.0
 #:package Spectre.Console.Json@0.50.0
-#:package Dumpify@0.6.6
+#:package Dumpify@0.7.0
 #:package ProcessX@1.5.6
 
 

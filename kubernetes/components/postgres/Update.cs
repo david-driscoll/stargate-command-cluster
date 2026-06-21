@@ -2,8 +2,6 @@
 #:package YamlDotNet@18.0.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package System.Collections.Immutable@10.0.9
-#:package Spectre.Console@0.57.0
-#:package Spectre.Console.Json@0.57.0
 #:package Dumpify@0.7.0
 #:package ProcessX@1.5.6
 
@@ -24,7 +22,6 @@ using gfs.YamlDotNet.YamlPath;
 using Microsoft.VisualBasic;
 using Spectre.Console;
 using Spectre.Console.Advanced;
-using Spectre.Console.Json;
 using YamlDotNet;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;

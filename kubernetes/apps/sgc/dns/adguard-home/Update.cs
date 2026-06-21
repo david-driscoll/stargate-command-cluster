@@ -1,11 +1,8 @@
 #!/usr/bin/dotnet run
 #:package YamlDotNet@18.0.0
-#:package Spectre.Console@0.57.0
-#:package Spectre.Console.Json@0.57.0
 #:package Dumpify@0.7.0
 
 using Spectre.Console;
-using Spectre.Console.Json;
 using System.Reflection;
 using Spectre.Console.Advanced;
 using Dumpify;

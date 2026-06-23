@@ -40,7 +40,7 @@ spec:
               tag: 15.2.0@sha256:23d3b63d959e997800b095fe93009b3fae271b5258234ff2ade8535cb33682c8
             env:
               # These are applied on first start only (ignored if /etc/dns config already exists)
-              DNS_SERVER_DOMAIN: technitium.${ROOT_DOMAIN}
+              DNS_SERVER_DOMAIN: dns.${ROOT_DOMAIN}
               DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS: "true"
               DNS_SERVER_WEB_SERVICE_USE_SELF_SIGNED_CERT: "true"
               DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks

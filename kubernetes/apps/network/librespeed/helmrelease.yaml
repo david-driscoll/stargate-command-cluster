@@ -19,7 +19,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/librespeed/speedtest
-              tag: latest@sha256:54e4bc13f2b66610204906d4fec5925f4dc7bd0e1859ec8e05b2cfa83752b58e
+              tag: latest@sha256:a57731182416f08e61d0d93595b0874b2f21394393510c8befadb428303f7e26
             resources:
               requests:
                 cpu: 50m

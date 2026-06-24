@@ -38,7 +38,7 @@ spec:
           init-config:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.22@sha256:914f529386804c8278a4e581526b9be5e1604df44b30daabc70aa97dcefe5268
+              tag: 2.0.22@sha256:212f89e1eaeb2c322d6441b64396e3346026674db8fa9c27beac293405c32b3c
               pullPolicy: IfNotPresent
             command: ["/bin/sh", "-c"]
             args: |-
@@ -53,7 +53,7 @@ spec:
               - exec mosquitto -c "/config/$(hostname).conf"
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: "2.0.22@sha256:914f529386804c8278a4e581526b9be5e1604df44b30daabc70aa97dcefe5268"
+              tag: "2.0.22@sha256:212f89e1eaeb2c322d6441b64396e3346026674db8fa9c27beac293405c32b3c"
             probes:
               liveness:
                 enabled: true

@@ -1,5 +1,5 @@
 #!/usr/bin/dotnet run
-#:package YamlDotNet@18.0.0
+#:package YamlDotNet@18.1.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package System.Collections.Immutable@10.0.9
 #:package Dumpify@0.7.0

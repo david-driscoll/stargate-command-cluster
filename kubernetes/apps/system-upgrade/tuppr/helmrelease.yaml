@@ -9,7 +9,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.2.7
+    tag: 0.2.8
+    digest: sha256:4b1785a2e63d6e4dbeb762c0880051210185c08c47cb4609fea3dbe08bb8f09a
   url: oci://ghcr.io/home-operations/charts/tuppr
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2

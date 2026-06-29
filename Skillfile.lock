@@ -10,5 +10,9 @@
   "github/skill/kubernetes-specialist": {
     "sha": "3d95bb16b030af43bd838dc99fdc77dd40b29014",
     "raw_url": "https://api.github.com/repos/jeffallan/claude-skills/contents/skills/kubernetes-specialist?ref=3d95bb16b030af43bd838dc99fdc77dd40b29014"
+  },
+  "github/skill/renovate": {
+    "sha": "298d7be20ecda92a6229b1dba8ba650739e5b7cc",
+    "raw_url": "https://api.github.com/repos/TerminalSkills/skills/contents/skills/renovate?ref=298d7be20ecda92a6229b1dba8ba650739e5b7cc"
   }
 }

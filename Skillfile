@@ -3,7 +3,9 @@ install  claude-code  local
 install  copilot  local
 
 # --- Skills ---
-# github  skill  [name]  <owner/repo>  <path-or-dir>  [ref]
+# github  skill  [name]  <owner/repo[@ref]>  <path-or-dir>  [ref]
+
+github  skill  TerminalSkills/skills  skills/renovate
 
 github  skill  fluxcd/agent-skills  skills/gitops-cluster-debug
 

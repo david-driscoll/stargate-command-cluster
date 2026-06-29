@@ -11,7 +11,13 @@
   ],
   dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  suppressNotifications: [
+    "prEditedNotification",
+    "prIgnoreNotification",
+    // Overlapping managers (flux/helm-values/kubernetes globbing the same
+    // kubernetes/**.yaml) yield "Excess registryUrls" lookup warnings; benign.
+    "dependencyLookupWarnings",
+  ],
   schedule: ["every weekend"],
   ignorePaths: ["**/*.sops.*"],
   flux: {
@@ -141,6 +147,31 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       minimumReleaseAge: "3 days",
       ignoreTests: true,
+    },
+    {
+      // Flux OCIRepository Helm charts are cosign-verified and tag-pinned; the
+      // flux manager owns these files with pinDigests: false and will never
+      // write a digest. The global docker:pinDigests (shared preset) otherwise
+      // generates phantom pinDigest updates that park in "Awaiting Schedule"
+      // forever and never produce a branch. Suppress them.
+      description: "Don't pin digests on flux-managed OCI Helm charts",
+      matchManagers: ["flux"],
+      matchUpdateTypes: ["pinDigest"],
+      enabled: false,
+    },
+    {
+      // Talos/Kubernetes upgrade manifests carry a plain `version: vX.Y.Z`
+      // field (TalosUpgrade/KubernetesUpgrade) extracted via the custom regex
+      // manager. A digest does not belong in that field, so suppress the
+      // docker:pinDigests-driven pinDigest updates for these images.
+      description: "Don't pin digests on siderolabs upgrade image versions",
+      matchDatasources: ["docker"],
+      matchDepNames: [
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/kubelet",
+      ],
+      matchUpdateTypes: ["pinDigest"],
+      enabled: false,
     },
     {
       matchUpdateTypes: ["major"],

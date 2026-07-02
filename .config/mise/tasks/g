@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Run dynacat for testing"
+
+cd "$MISE_CONFIG_ROOT/kubernetes/apps/equestria/home/dynacat/resources"
+open http://localhost:8080
+mise exec -- ./test.sh

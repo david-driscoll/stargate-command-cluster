@@ -35,4 +35,4 @@ spec:
     substitute:
       APP: *app
       NAMESPACE: *namespace
-      POSTGRES_STORAGE: "20Gi"
+      POSTGRES_STORAGE: "40Gi"

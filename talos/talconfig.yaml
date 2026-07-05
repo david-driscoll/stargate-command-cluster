@@ -140,4 +140,3 @@ controlPlane:
   patches:
     - "@./patches/controller/cluster.yaml"
     - "@./patches/controller/machine-rbac.yaml"
-

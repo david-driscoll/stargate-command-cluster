@@ -42,6 +42,7 @@ spec:
         pod:
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
+          priorityClassName: system-cluster-critical
         initContainers:
           fix-permissions:
             image:
@@ -81,11 +82,11 @@ spec:
               TZ: "${TIMEZONE}"
             resources:
               requests:
-                memory: 2Gi
+                memory: 1Gi
                 cpu: 200m
               limits:
                 # cpu: 2
-                memory: 5Gi
+                memory: 2Gi
             probes:
               startup:
                 enabled: true

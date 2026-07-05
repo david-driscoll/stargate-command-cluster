@@ -32,6 +32,8 @@ spec:
       *app :
         type: statefulset
         replicas: 2
+        podDisruptionBudget:
+          maxUnavailable: 1
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -94,7 +96,15 @@ spec:
           persistentVolumeClaimRetentionPolicy:
             whenDeleted: Delete
             whenScaled: Delete
+            
     defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: "DoNotSchedule"
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
 
       securityContext:
         fsGroup: 568

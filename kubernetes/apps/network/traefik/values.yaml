@@ -1,5 +1,8 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/traefik/traefik-helm-chart/refs/heads/master/traefik/values.schema.json
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
 image:
   registry: ghcr.io
   repository: traefik/traefik
@@ -7,6 +10,23 @@ image:
 deployment:
   kind: Deployment
   replicas: 2
+  priorityClassName: system-node-critical
+  tolerations:
+    - key: node.kubernetes.io/not-ready
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 60
+    - key: node.kubernetes.io/unreachable
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 60
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
 service:
   annotations:
     reloader.stakater.com/auto: "true"

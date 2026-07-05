@@ -12,9 +12,7 @@ defaultSettings:
   defaultDataLocality: best-effort
   defaultLonghornStaticStorageClass: longhorn
   defaultReplicaCount: 2
-  guaranteedEngineManagerCPU: 12
-  guaranteedReplicaManagerCPU: 12
-  guaranteedInstanceManagerCpu: 12
+  guaranteedInstanceManagerCpu: 5
   nodeDownPoddeletionPolicy: Delete-both-statefulset-and-deployment-pod
   volumeAttachmentRecoveryPolicy: never
   orphanAutoDeletion: true
@@ -26,7 +24,7 @@ defaultSettings:
   defaultDataPath: /var/mnt/longhorn/
   storageOverProvisioningPercentage: 600
   upgradeChecker: true
-  priorityClass: high-priority
+  priorityClass: system-node-critical
   # taintToleration: key1=value1:NoSchedule; key2:NoExecute
   # systemManagedComponentsNodeSelector: "label-key1:label-value1"
   # disableSchedulingOnCordonedNode: false
@@ -34,7 +32,7 @@ defaultSettings:
   # replicaDiskSoftAntiAffinity: false
 
   allowEmptyDiskSelectorVolume: true
-  nodeDrainPolicy: allow-if-replica-is-stopped
+  nodeDrainPolicy: block-for-eviction-if-contains-last-replica
 ingress:
   enabled: true
   ingressClassName: internal

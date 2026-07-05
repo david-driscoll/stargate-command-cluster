@@ -11,6 +11,16 @@ resources:
   - ./external-gateway.yaml
   - ./error-pages.yaml
 
+patches:
+  - target:
+      group: helm.toolkit.fluxcd.io
+      version: v2
+      kind: HelmRelease
+      name: traefik
+    patch: |-
+      - op: remove
+        path: /spec/values/defaultPodOptions
+
 configMapGenerator:
   - name: traefik-values
     files:

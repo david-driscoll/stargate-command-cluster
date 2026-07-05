@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: descheduler
+  namespace: kube-system
+spec:
+  interval: 1h
+  url: https://kubernetes-sigs.github.io/descheduler/
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: descheduler
+  namespace: kube-system
+spec:
+  chart:
+    spec:
+      chart: descheduler
+      version: 0.36.0
+      sourceRef:
+        kind: HelmRepository
+        name: descheduler
+        namespace: kube-system
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    kind: CronJob
+    schedule: "*/2 * * * *"
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    priorityClassName: system-cluster-critical
+    deschedulerPolicy:
+      apiVersion: "descheduler/v1alpha2"
+      kind: "DeschedulerPolicy"
+      profiles:
+        - name: DefaultProfile
+          plugins:
+            evict:
+              enabled:
+                - DefaultEvictor
+            deschedule:
+              enabled:
+                - RemoveDuplicates
+                - RemovePodsViolatingTopologySpreadConstraint
+            balance:
+              enabled:
+                - LowNodeUtilization
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                evictSystemCriticalPods: false
+                evictLocalStoragePods: false
+            - name: LowNodeUtilization
+              args:
+                thresholds:
+                  cpu: 20
+                  memory: 20
+                  pods: 20
+                targetThresholds:
+                  cpu: 50
+                  memory: 50
+                  pods: 50

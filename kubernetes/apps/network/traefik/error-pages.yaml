@@ -34,6 +34,8 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         replicas: 2
+        podDisruptionBudget:
+          maxUnavailable: 1
         containers:
           *app :
             image:
@@ -48,6 +50,14 @@ spec:
             probes:
               liveness:
                 enabled: false
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: "DoNotSchedule"
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
     service:
       main:
         ports:

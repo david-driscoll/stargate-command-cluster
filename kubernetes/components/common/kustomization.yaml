@@ -9,6 +9,7 @@ resources:
   - ./sops-age.sops.yaml
   - ./service-account.yaml
   - ./middleware.yaml
+  - ./limit-range.yaml
   - ./templates
 configMapGenerator:
   - name: cluster-versions

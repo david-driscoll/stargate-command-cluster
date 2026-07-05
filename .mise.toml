@@ -51,7 +51,7 @@ gh = "2.95.0"
 "github:home-operations/flate" = "v0.4.10"
 "github:microsoft/apm" = { version = "v0.22.0", bin = "apm" }
 "github:eljulians/skillfile" = { version = "v1.7.1", bin = "skillfile" }
-dotnet = { postinstall = "dotnet tool restore && dotnet restore", version = "10.0.203" }
+dotnet = { version = "10.0.203" }
 
 [tasks.update]
 description = 'Update all apps that have an update script'
@@ -59,5 +59,3 @@ run = [
   'dotnet run .mise/tasks/do-update.cs',
   'flate test all --path ./kubernetes/flux/ --allow-missing-secrets --source-retry-attempts 10',
 ]
-[[hooks.enter]]
-script = "dotnet tool restore"

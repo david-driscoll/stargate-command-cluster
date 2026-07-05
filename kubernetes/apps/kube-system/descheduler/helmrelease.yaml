@@ -59,12 +59,10 @@ spec:
             evict:
               enabled:
                 - DefaultEvictor
-            deschedule:
+            balance:
               enabled:
                 - RemoveDuplicates
                 - RemovePodsViolatingTopologySpreadConstraint
-            balance:
-              enabled:
                 - LowNodeUtilization
           pluginConfig:
             - name: DefaultEvictor

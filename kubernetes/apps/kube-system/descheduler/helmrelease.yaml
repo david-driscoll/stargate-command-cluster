@@ -69,6 +69,8 @@ spec:
               args:
                 evictSystemCriticalPods: false
                 evictLocalStoragePods: false
+            - name: RemoveDuplicates
+            - name: RemovePodsViolatingTopologySpreadConstraint
             - name: LowNodeUtilization
               args:
                 thresholds:

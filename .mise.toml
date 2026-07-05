@@ -57,5 +57,11 @@ dotnet = { version = "10.0.203" }
 description = 'Update all apps that have an update script'
 run = [
   'dotnet run .mise/tasks/do-update.cs',
-  'flate test all --path ./kubernetes/flux/ --allow-missing-secrets --source-retry-attempts 10',
+  'mise task flate',
+]
+
+[tasks.flate]
+description = 'Run flate'
+run = [
+  'flate test all --allow-missing-secrets --source-retry-attempts 10',
 ]

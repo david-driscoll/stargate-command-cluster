@@ -37,6 +37,7 @@ david-driscoll/equestria-cluster:
       features/kustomization.yaml
       features/amd/
       features/nvidia/
+      features/intel-gpu/
   - source: kubernetes/apps/flux-system/weave/
     dest: kubernetes/apps/flux-system/weave/
     deleteOrphaned: true

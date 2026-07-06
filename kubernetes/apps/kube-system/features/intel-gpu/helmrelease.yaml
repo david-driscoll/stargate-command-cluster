@@ -45,5 +45,5 @@ spec:
   values:
     name: intel-gpu-plugin
     nodeFeatureRule: true
-    sharedDevNum: 5 # Allow 5 containers per GPU (10 total slots across 2 nodes)
+    sharedDevNum: 2 # Allow 2 containers per GPU (4 total slots across 2 nodes)
     allocationPolicy: balanced # Spread workloads evenly across available GPUs

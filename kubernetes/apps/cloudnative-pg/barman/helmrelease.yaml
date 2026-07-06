@@ -24,6 +24,6 @@ spec:
   uninstall:
     keepHistory: false
   valuesFrom:
-    - kind: Secret
+    - kind: ConfigMap
       name: ${APP}-values
       valuesKey: values.yaml

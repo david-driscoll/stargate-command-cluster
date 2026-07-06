@@ -12,6 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cloudnative-pg
+        namespace: cloudnative-pg
   maxHistory: 3
   install:
     createNamespace: true

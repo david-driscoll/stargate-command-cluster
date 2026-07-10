@@ -110,7 +110,7 @@ spec:
                 extensionRef:
                   group: traefik.io
                   kind: Middleware
-                  name: local-user
+                  name: local-api
       bolt:
         parentRefs:
           - name: internal
@@ -128,9 +128,8 @@ spec:
                 extensionRef:
                   group: traefik.io
                   kind: Middleware
-                  name: local-user
+                  name: local-api
     # serviceMonitor:
     #   *app :
     #     endpoints:
     #       - port: 2004
-

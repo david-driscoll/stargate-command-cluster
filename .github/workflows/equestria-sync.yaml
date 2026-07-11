@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetching Local Repository
-        uses: actions/checkout@4f1f4aec02e41874fa0262ea8ff5172d7978ad1e # main
+        uses: actions/checkout@e8d4307400f9427dba7cb98e488d6ab85f1cec5f # main
       - name: Run GitHub File Sync
         uses: BetaHuhn/repo-file-sync-action@8b92be3375cf1d1b0cd579af488a9255572e4619 # v1.21.1
         with:

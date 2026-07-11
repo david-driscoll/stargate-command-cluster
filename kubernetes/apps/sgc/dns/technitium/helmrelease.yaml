@@ -37,7 +37,7 @@ spec:
           *app :
             image:
               repository: technitium/dns-server
-              tag: 15.3.0@sha256:c5ea91d9018688ef7e671fbbba2b7c0ff6434b0cc18b4edfa6a68142b39984eb
+              tag: 15.4.0@sha256:df7d90ef0f7b6fff6916d291a7022cd902290cc31c3141d4158b6c375a641b41
             env:
               # These are applied on first start only (ignored if /etc/dns config already exists)
               DNS_SERVER_DOMAIN: dns.${ROOT_DOMAIN}

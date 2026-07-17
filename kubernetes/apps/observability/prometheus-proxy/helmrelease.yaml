@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 87.15.1
-    digest: sha256:ee7b5474b6f1fd83a730d1f0b246893ec1cdd2951524bffced129157c49bb3cd
+    tag: 87.16.1
+    digest: sha256:68268aff2017d9b1c2bdce70742e65d6e7f6722beb680cd18b4fb5c22061fc36
   url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json

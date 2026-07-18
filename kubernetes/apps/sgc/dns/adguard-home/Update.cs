@@ -1,6 +1,7 @@
 #!/usr/bin/dotnet run
 #:package YamlDotNet@18.1.0
 #:package Dumpify@0.7.0
+#:property PublishAot=false
 
 using Spectre.Console;
 using System.Reflection;
@@ -79,7 +80,7 @@ var app = nameNode.Value;
 var secretTemplate = GetTemplate("kubernetes/components/volsync/externalsecret.yaml");
 var replicationSourceTemplate = GetTemplate("kubernetes/components/volsync/replicationsource.yaml");
 var pvcTemplate = GetTemplate("kubernetes/components/volsync/pvc.yaml");
-var destinationTemplate = GetTemplate("kubernetes/components/volsync/replicationdestination.yaml", z =>
+var destinationTemplate = GetTemplate("kubernetes/components/volsync-restore/replicationdestination.yaml", z =>
 {
   if (!z.TryGetValue("VOLSYNC_CACHE_CAPACITY", out var cacheCapacity)) { return; }
   if (!defaults.TryGetValue("VOLSYNC_CAPACITY", out var capacity)) { return; }

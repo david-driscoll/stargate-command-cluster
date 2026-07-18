@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app volsync-restore-cleanup
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+  values:
+    serviceAccount:
+      *app : {}
+
+    rbac:
+      roles:
+        *app :
+          type: ClusterRole
+          rules:
+            - apiGroups: ["volsync.backube"]
+              resources: ["replicationdestinations"]
+              verbs: ["get", "list", "delete"]
+      bindings:
+        *app :
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: *app
+          subjects:
+            - identifier: *app
+
+    controllers:
+      *app :
+        type: cronjob
+        serviceAccount:
+          identifier: *app
+        cronjob:
+          schedule: "30 3 * * *"
+          concurrencyPolicy: Forbid
+          backoffLimit: 2
+          activeDeadlineSeconds: 300
+          successfulJobsHistory: 3
+          failedJobsHistory: 3
+        containers:
+          main:
+            image:
+              repository: bitnami/kubectl
+              tag: latest
+              digest: sha256:558420daf32bbc382e3e9af4537f4073085b336ddd47399a3b70e70087115978
+              pullPolicy: IfNotPresent
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                # Delete ReplicationDestination objects whose one-time bootstrap
+                # restore has completed (spec.trigger.manual == status.lastManualSync
+                # == "restore-once", the value set by components/volsync-restore).
+                # This cascades via ownerReferences to delete the dst-dest/dst-cache
+                # PVCs it provisioned. The app's real PVC is unaffected - it only
+                # referenced the ReplicationDestination at create time.
+                kubectl get replicationdestinations.volsync.backube -A \
+                  -o custom-columns='NS:.metadata.namespace,NAME:.metadata.name,TRIGGER:.spec.trigger.manual,SYNCED:.status.lastManualSync' \
+                  --no-headers | while read -r ns name trigger synced; do
+                    if [ "$trigger" = "restore-once" ] && [ "$trigger" = "$synced" ]; then
+                      echo "Deleting completed restore-once ReplicationDestination $ns/$name"
+                      kubectl delete replicationdestinations.volsync.backube "$name" -n "$ns"
+                    fi
+                  done
+                echo "Done."
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 64Mi

@@ -27,5 +27,7 @@ spec:
     monitoring:
       serviceMonitor:
         enabled: true
+      prometheusRule:
+        enabled: true
     webhook:
       enabled: true

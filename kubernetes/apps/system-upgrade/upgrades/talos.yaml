@@ -10,12 +10,24 @@ spec:
   policy:
     rebootMode: default
   healthChecks:
+    # A wedged VolSync mover (e.g. a failed snapshot clone) can hold Synchronizing:
+    # True indefinitely with no built-in timeout of its own. Bound this check so
+    # one stuck backup job can't silently freeze node upgrades for days (2026-07
+    # incident: fluttershy/othalla stayed cordoned a week because of this).
     - apiVersion: volsync.backube/v1alpha1
       kind: ReplicationSource
       expr: status.conditions.filter(c, c.type == "Synchronizing").all(c, c.status == "False")
+      timeout: 15m
     - apiVersion: v1
       kind: Node
       expr: status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+      timeout: 15m
+    - apiVersion: longhorn.io/v1beta2
+      kind: Volume
+      namespace: longhorn-system
+      description: Wait for degraded Longhorn volumes to finish rebuilding before draining the next node, so its replica isn't the last healthy copy
+      expr: status.robustness != "degraded"
+      timeout: 15m
 
   # maintenance:
   #   windows:

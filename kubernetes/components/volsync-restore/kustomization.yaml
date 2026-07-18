@@ -1,11 +1,8 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-  - ./externalsecret.yaml
-  - ./replicationsource.yaml
-  - ./pvc.yaml
+  - ./replicationdestination.yaml
 commonLabels:
   app.kubernetes.io/name: "${APP}"
   driscoll.dev/name: "${APP}"

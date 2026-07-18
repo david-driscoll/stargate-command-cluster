@@ -154,8 +154,13 @@
       // write a digest. The global docker:pinDigests (shared preset) otherwise
       // generates phantom pinDigest updates that park in "Awaiting Schedule"
       // forever and never produce a branch. Suppress them.
+      // helm-values/kubernetes also scan kubernetes/**.yaml with pinDigests:
+      // true and race flux to patch the same OCI chart ref, which surfaces as
+      // "Error updating branch" for grouped/digest-lookup deps (flux-operator,
+      // coredns, spegel, cert-manager) instead of a normal PR. Excluding all
+      // three managers here stops the collision.
       description: "Don't pin digests on flux-managed OCI Helm charts",
-      matchManagers: ["flux"],
+      matchManagers: ["flux", "helm-values", "kubernetes"],
       matchUpdateTypes: ["pinDigest"],
       enabled: false,
     },

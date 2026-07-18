@@ -53,6 +53,8 @@ spec:
     controllers:
       *app :
         type: cronjob
+        pod:
+          automountServiceAccountToken: true
         serviceAccount:
           identifier: *app
         cronjob:
@@ -80,9 +82,13 @@ spec:
                 # This cascades via ownerReferences to delete the dst-dest/dst-cache
                 # PVCs it provisioned. The app's real PVC is unaffected - it only
                 # referenced the ReplicationDestination at create time.
-                kubectl get replicationdestinations.volsync.backube -A \
+                # (out=$(...) form, not a trailing pipe, so a kubectl failure here
+                # actually fails the job under `set -e` instead of being masked by
+                # the exit status of the downstream `while read` loop.)
+                out=$(kubectl get replicationdestinations.volsync.backube -A \
                   -o custom-columns='NS:.metadata.namespace,NAME:.metadata.name,TRIGGER:.spec.trigger.manual,SYNCED:.status.lastManualSync' \
-                  --no-headers | while read -r ns name trigger synced; do
+                  --no-headers)
+                echo "$out" | while read -r ns name trigger synced; do
                     if [ "$trigger" = "restore-once" ] && [ "$trigger" = "$synced" ]; then
                       echo "Deleting completed restore-once ReplicationDestination $ns/$name"
                       kubectl delete replicationdestinations.volsync.backube "$name" -n "$ns"

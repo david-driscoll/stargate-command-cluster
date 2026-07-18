@@ -6,6 +6,7 @@ namespace: volsync-system
 components:
   - ../../components/alerts
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./volsync/ks.yaml
   - ./restore-cleanup/ks.yaml

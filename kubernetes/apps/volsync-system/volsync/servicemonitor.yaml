@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: volsync-metrics
+  namespace: volsync-system
+spec:
+  selector:
+    matchLabels:
+      control-plane: volsync-controller
+  endpoints:
+    - port: https
+      scheme: http
+      path: /metrics
+      interval: 1m

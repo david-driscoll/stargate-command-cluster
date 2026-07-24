@@ -19,6 +19,13 @@ defaultSettings:
   replicaAutoBalance: best-effort
   storageMinimalAvailablePercentage: 5
   storageReservedPercentageForDefaultDisk: 10
+  autoCleanupSnapshotAfterOnDemandBackupCompleted: true
+  autoCleanupSnapshotWhenDeleteBackup: true
+  autoCleanupSystemGeneratedSnapshot: true
+  autoCleanupRecurringJobBackupSnapshot: true
+  removeSnapshotsDuringFilesystemTrim: true
+  snapshotMaxCount: 5
+  snapshotCountWarningThreshold: 4
 
   # backupTargetCredentialSecret: s3-secret
   defaultDataPath: /var/mnt/longhorn/

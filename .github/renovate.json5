@@ -18,26 +18,40 @@
     // kubernetes/**.yaml) yield "Excess registryUrls" lookup warnings; benign.
     "dependencyLookupWarnings",
   ],
-  schedule: ["every weekend"],
-  ignorePaths: ["**/*.sops.*"],
+  schedule: [
+    "every weekend"
+  ],
+  ignorePaths: [
+    "**/*.sops.*"
+  ],
   flux: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+    managerFilePatterns: [
+      "/(^|/)kubernetes/.+\\.ya?ml$/"
+    ],
     pinDigests: false,
   },
   "helm-values": {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+    managerFilePatterns: [
+      "/(^|/)kubernetes/.+\\.ya?ml$/"
+    ],
     pinDigests: true,
   },
   helmfile: {
-    managerFilePatterns: ["/(^|/)helmfile\\.ya?ml$/"],
+    managerFilePatterns: [
+      "/(^|/)helmfile\\.ya?ml$/"
+    ],
     pinDigests: false,
   },
   kubernetes: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+    managerFilePatterns: [
+      "/(^|/)kubernetes/.+\\.ya?ml$/"
+    ],
     pinDigests: true,
   },
   kustomize: {
-    managerFilePatterns: ["/(^|/)kustomization\\.ya?ml$/"],
+    managerFilePatterns: [
+      "/(^|/)kustomization\\.ya?ml$/"
+    ],
     pinDigests: true,
   },
   customDatasources: {
@@ -56,8 +70,12 @@
     {
       description: "CoreDNS Group",
       groupName: "CoreDNS",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/coredns/"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/coredns/"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -65,8 +83,13 @@
     {
       description: "Flux Operator Group",
       groupName: "Flux Operator",
-      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
-      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "/flux-operator/",
+        "/flux-instance/"
+      ],
+      matchDatasources: [
+        "docker"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -85,7 +108,9 @@
     {
       description: "Siderolabs Kubernetes",
       groupName: "Siderolabs Kubernetes",
-      matchDepNames: ["ghcr.io/siderolabs/kubelet"],
+      matchDepNames: [
+        "ghcr.io/siderolabs/kubelet"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -93,7 +118,11 @@
     {
       description: "Tailscale",
       groupName: "Tailscale",
-      matchPackageNames: ["ghcr.io/tailscale/*", "tailscale/*", "tailscale*"],
+      matchPackageNames: [
+        "ghcr.io/tailscale/*",
+        "tailscale/*",
+        "tailscale*"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -101,7 +130,11 @@
     {
       description: "Traefik",
       groupName: "Traefik",
-      matchPackageNames: ["ghcr.io/traefik/*", "traefik/*", "traefik*"],
+      matchPackageNames: [
+        "ghcr.io/traefik/*",
+        "traefik/*",
+        "traefik*"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -109,7 +142,9 @@
     {
       description: "Immich",
       groupName: "Immich",
-      matchPackageNames: ["ghcr.io/immich-app/*"],
+      matchPackageNames: [
+        "ghcr.io/immich-app/*"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -117,7 +152,9 @@
     {
       description: "CloudNative-PG Cluster",
       groupName: "CloudNative-PG Cluster",
-      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      matchPackageNames: [
+        "ghcr.io/cloudnative-pg/postgresql"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -125,7 +162,9 @@
     {
       description: "CloudNative-PG Cluster",
       groupName: "CloudNative-PG Cluster",
-      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      matchPackageNames: [
+        "ghcr.io/cloudnative-pg/postgresql"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -133,18 +172,28 @@
     {
       description: "Spegel Group",
       groupName: "Spegel",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/spegel/"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/spegel/"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
     {
       description: "Auto-merge GitHub Actions",
-      matchManagers: ["github-actions"],
+      matchManagers: [
+        "github-actions"
+      ],
       automerge: true,
       automergeType: "branch",
-      matchUpdateTypes: ["minor", "patch", "digest"],
+      matchUpdateTypes: [
+        "minor",
+        "patch",
+        "digest"
+      ],
       minimumReleaseAge: "3 days",
       ignoreTests: true,
     },
@@ -160,9 +209,32 @@
       // coredns, spegel, cert-manager) instead of a normal PR. Excluding all
       // three managers here stops the collision.
       description: "Don't pin digests on flux-managed OCI Helm charts",
-      matchManagers: ["flux", "helm-values", "kubernetes"],
-      matchUpdateTypes: ["pinDigest"],
+      matchManagers: [
+        "flux",
+        "helm-values",
+        "kubernetes"
+      ],
+      matchUpdateTypes: [
+        "pinDigest"
+      ],
       enabled: false,
+    },
+    {
+      // bootstrap/helmfile.yaml mirrors chart versions that are otherwise
+      // owned by the flux manager (kubernetes/apps/**/helmrelease.yaml).
+      // Renovate treats same-named deps found by different managers as one
+      // logical update and tries to combine both files' edits into a single
+      // branch. For high-churn grouped deps (CoreDNS/Flux Operator/Spegel
+      // groups, cert-manager) that branch falls behind main faster than it
+      // can be rebased and Renovate fails with "Error updating branch:
+      // update failure" instead of opening a PR. Force helmfile-manager
+      // updates onto their own branch namespace so they never share a
+      // branch with the flux-managed update for the same chart.
+      description: "Keep bootstrap helmfile chart bumps off the flux-managed branch",
+      matchManagers: [
+        "helmfile"
+      ],
+      additionalBranchPrefix: "helmfile-",
     },
     {
       // Talos/Kubernetes upgrade manifests carry a plain `version: vX.Y.Z`
@@ -170,88 +242,140 @@
       // manager. A digest does not belong in that field, so suppress the
       // docker:pinDigests-driven pinDigest updates for these images.
       description: "Don't pin digests on siderolabs upgrade image versions",
-      matchDatasources: ["docker"],
+      matchDatasources: [
+        "docker"
+      ],
       matchDepNames: [
         "ghcr.io/siderolabs/installer",
         "ghcr.io/siderolabs/kubelet",
       ],
-      matchUpdateTypes: ["pinDigest"],
+      matchUpdateTypes: [
+        "pinDigest"
+      ],
       enabled: false,
     },
     {
-      matchUpdateTypes: ["major"],
+      matchUpdateTypes: [
+        "major"
+      ],
       semanticCommitType: "feat",
       commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
       commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      matchUpdateTypes: ["minor"],
+      matchUpdateTypes: [
+        "minor"
+      ],
       semanticCommitType: "feat",
       commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      matchUpdateTypes: ["patch"],
+      matchUpdateTypes: [
+        "patch"
+      ],
       semanticCommitType: "fix",
       commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      matchUpdateTypes: ["digest"],
+      matchUpdateTypes: [
+        "digest"
+      ],
       semanticCommitType: "chore",
       commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
     },
     {
-      matchDatasources: ["docker"],
+      matchDatasources: [
+        "docker"
+      ],
       semanticCommitScope: "container",
       commitMessageTopic: "image {{depName}}",
     },
     {
-      matchDatasources: ["helm"],
+      matchDatasources: [
+        "helm"
+      ],
       semanticCommitScope: "helm",
       commitMessageTopic: "chart {{depName}}",
     },
     {
-      matchManagers: ["github-actions"],
+      matchManagers: [
+        "github-actions"
+      ],
       semanticCommitType: "ci",
       semanticCommitScope: "github-action",
       commitMessageTopic: "action {{depName}}",
     },
     {
-      matchDatasources: ["github-releases"],
+      matchDatasources: [
+        "github-releases"
+      ],
       semanticCommitScope: "github-release",
       commitMessageTopic: "release {{depName}}",
     },
     {
-      matchUpdateTypes: ["major"],
-      labels: ["type/major"],
+      matchUpdateTypes: [
+        "major"
+      ],
+      labels: [
+        "type/major"
+      ],
     },
     {
-      matchUpdateTypes: ["minor"],
-      labels: ["type/minor"],
+      matchUpdateTypes: [
+        "minor"
+      ],
+      labels: [
+        "type/minor"
+      ],
     },
     {
-      matchUpdateTypes: ["patch"],
-      labels: ["type/patch"],
+      matchUpdateTypes: [
+        "patch"
+      ],
+      labels: [
+        "type/patch"
+      ],
     },
     {
-      matchDatasources: ["docker"],
-      addLabels: ["renovate/container"],
+      matchDatasources: [
+        "docker"
+      ],
+      addLabels: [
+        "renovate/container"
+      ],
     },
     {
-      matchDatasources: ["helm"],
-      addLabels: ["renovate/helm"],
+      matchDatasources: [
+        "helm"
+      ],
+      addLabels: [
+        "renovate/helm"
+      ],
     },
     {
-      matchManagers: ["github-actions"],
-      addLabels: ["renovate/github-action"],
+      matchManagers: [
+        "github-actions"
+      ],
+      addLabels: [
+        "renovate/github-action"
+      ],
     },
     {
-      matchDatasources: ["github-releases"],
-      addLabels: ["renovate/github-release"],
+      matchDatasources: [
+        "github-releases"
+      ],
+      addLabels: [
+        "renovate/github-release"
+      ],
     },
     {
       description: "Override 1password-cli datasource: aqua type:http uses AgileBits CDN, no GitHub releases exist",
-      matchManagers: ["mise"],
-      matchDepNames: ["1password-cli"],
+      matchManagers: [
+        "mise"
+      ],
+      matchDepNames: [
+        "1password-cli"
+      ],
       overrideDatasource: "custom.1password-cli",
     },
   ],

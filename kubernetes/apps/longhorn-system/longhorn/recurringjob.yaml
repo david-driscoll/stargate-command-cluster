@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/longhorn.io/recurringjob_v1beta2.json
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: snapshot-cleanup
+  namespace: longhorn-system
+spec:
+  name: snapshot-cleanup
+  groups:
+    - default
+  task: snapshot-cleanup
+  cron: "0 10 * * *"
+  retain: 0
+  concurrency: 2
+  labels: {}

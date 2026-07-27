@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app technitium-dns
+  namespace: &namespace network
+spec:
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.21.1
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: onepassword-connect
+      namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
+  values:
+    fullnameOverride: *app
+    logLevel: debug
+    interval: 10m
+    triggerLoopOnEvent: true
+    policy: sync
+    provider:
+      name: rfc2136
+    extraArgs:
+      # RFC2136 dynamic updates go to the Technitium cluster primary (celestia's
+      # dockge host LAN IP — DHCP-reserved by the unifi-network pulumi stack).
+      # The tailscale IP (celestia.dns.driscoll.tech) is not reachable from pods.
+      - --rfc2136-host=10.10.18.4
+      - --rfc2136-port=53
+      - --rfc2136-zone=${ROOT_DOMAIN}
+      - --rfc2136-tsig-secret-alg=hmac-sha256
+      # external-dns reads zone state via AXFR, which must also be TSIG-signed
+      - --rfc2136-tsig-axfr
+    env:
+      # TSIG key name + shared secret from the "Technitium TSIG Key" 1Password
+      # item (username = key name, credential = shared secret). The key is
+      # registered in Technitium under Settings → TSIG, and the driscoll.tech
+      # zone allows updates + zone transfer for it.
+      - name: EXTERNAL_DNS_RFC2136_TSIG_KEYNAME
+        valueFrom:
+          secretKeyRef:
+            name: technitium-tsig-key
+            key: username
+      - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: technitium-tsig-key
+            key: credential
+    sources:
+      - "traefik-proxy"
+      - "crd"
+      - "ingress"
+      - "service"
+      - gateway-httproute
+      - gateway-grpcroute
+      - gateway-tlsroute
+      - gateway-tcproute
+      - gateway-udproute
+    txtPrefix: "${CLUSTER_CNAME}."
+    txtOwnerId: "${CLUSTER_CNAME}"
+    domainFilters: ["${ROOT_DOMAIN}"]
+    serviceMonitor:
+      enabled: true
+    podAnnotations:
+      reloader.stakater.com/auto: "true"

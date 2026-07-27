@@ -22,6 +22,10 @@ spec:
   commonName: ${CLUSTER_CNAME}.dns.${ROOT_DOMAIN}
   dnsNames:
     - ${CLUSTER_CNAME}.dns.${ROOT_DOMAIN}
+  privateKey:
+    # Keep the key stable across renewals: the cluster's DANE TLSA records pin
+    # the SPKI hash, so a rotated key silently breaks node-to-node heartbeats.
+    rotationPolicy: Never
   keystores:
     pkcs12:
       create: true

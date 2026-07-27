@@ -1,0 +1,74 @@
+# Crew — Claude Code agent dispatch
+#
+# Claude-harness counterpart to the @copilot coding-agent routing in
+# crew-issue-assign.yml. Runs Claude Code (anthropics/claude-code-action)
+# as an autonomous crew team member:
+#
+#   - Issues labeled `crew:claude` — Claude picks up the issue, acts as the
+#     crew coordinator (protocol: .github/agents/crew.agent.md), implements
+#     on a `claude/*` branch and opens a draft PR.
+#   - `@claude` mentions in issue or PR comments — Claude responds in-thread.
+#
+# Setup (one-time):
+#   1. Add an ANTHROPIC_API_KEY repository secret
+#      (or a CLAUDE_CODE_OAUTH_TOKEN secret from `claude setup-token` —
+#      then swap the input below).
+#   2. Optionally run `sync-crew-labels` to create the `crew:claude` label.
+#
+# Docs: https://github.com/anthropics/claude-code-action
+
+name: Crew — Claude agent
+
+on:
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Task for the Claude crew agent'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+  actions: read
+
+concurrency:
+  group: crew-claude-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  claude:
+    # Run when: issue labeled crew:claude, @claude mentioned in a comment,
+    # or manually dispatched.
+    if: >-
+      (github.event_name == 'issues' && github.event.label.name == 'crew:claude') ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Claude Code as crew agent
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # For issue-label dispatch, hand Claude the crew coordinator role and
+          # the issue. For @claude comment mentions the action builds its own
+          # prompt from the thread, so `prompt` stays empty there.
+          prompt: >-
+            ${{ github.event_name == 'workflow_dispatch' && inputs.prompt ||
+                (github.event_name == 'issues' &&
+                 format('You are the Crew coordinator for this repository. Read the coordinator protocol in .github/agents/crew.agent.md and the team roster in .crew/team.md, then handle issue #{0} ({1}) end to end: route it to the right specialist charter under .crew/agents/, implement the change on a branch named claude/issue-{0}, run the project checks, and open a draft PR that references the issue. Log the decision per the protocol.', github.event.issue.number, github.event.issue.title) || '') }}
+          claude_args: '--max-turns 60'

@@ -9,3 +9,10 @@
 *.yaml linguist-detectable linguist-language=YAML
 *.yaml.j2 linguist-detectable linguist-language=YAML
 *.sops.yaml diff=sopsdiffer
+# Crew: union merge for append-only team state files
+.crew/decisions.md merge=union
+.crew/agents/*/history.md merge=union
+.crew/log/** merge=union
+.crew/orchestration-log/** merge=union
+.crew/rai/audit-trail.md merge=union
+.crew/fact-checker/audit-trail.md merge=union

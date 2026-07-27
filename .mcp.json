@@ -143,6 +143,16 @@
         "system",
         "unifi-protect-mcp==0.4.2"
       ]
+    },
+    "crew_state": {
+      "command": "crew",
+      "args": [
+        "state-mcp"
+      ],
+      "env": {},
+      "tools": [
+        "*"
+      ]
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "stargate-command-cluster-crew",
+  "version": "1.0.0",
+  "description": "Talos/Kubernetes GitOps crew for the Stargate Command cluster. Flux CD, sops/age, mise, Taskfile.",
+  "role": "spoke",
+  "capabilities": [
+    "kubernetes",
+    "flux-gitops",
+    "talos",
+    "helm",
+    "kustomize",
+    "cnpg",
+    "longhorn",
+    "sops-age"
+  ],
+  "contact": {
+    "repo": "david-driscoll/vault",
+    "labels": ["crew:tank"]
+  },
+  "accepts": ["issues", "prs"],
+  "skills": ["flux-gitops", "k8s", "cnpg-database", "app-template", "versions-renovate"],
+  "upstream": ["home-operations-crew"],
+  "notes": "Spoke crew. Governed by home-operations-crew (the hub) via upstream inheritance. Issues are filed in david-driscoll/vault, NOT in this repo."
+}

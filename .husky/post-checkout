@@ -1,0 +1,27 @@
+#!/bin/sh
+# --- crew-sync-hook ---
+# Auto-fetch crew-state branches on branch switch.
+# Installed by: crew init / crew upgrade --state-backend
+# Only run on branch checkout (3rd arg = 1), not file checkout.
+if [ "$3" = "1" ] && [ -z "$CREW_SYNC_ACTIVE" ]; then
+  export CREW_SYNC_ACTIVE=1
+  REMOTE=$(git config "branch.$(git symbolic-ref --short HEAD 2>/dev/null).remote" 2>/dev/null || echo origin)
+  git fetch "$REMOTE" '+refs/heads/crew-state:refs/remotes/'"$REMOTE"'/crew-state' '+refs/heads/crew-state/*:refs/remotes/'"$REMOTE"'/crew-state/*' 2>/dev/null || true
+  for remote_ref in $(git for-each-ref --format='%(refname:short)' "refs/remotes/$REMOTE/crew-state" "refs/remotes/$REMOTE/crew-state/*" 2>/dev/null); do
+    local_name=${remote_ref#"$REMOTE/"}
+    local_sha=$(git rev-parse "refs/heads/$local_name" 2>/dev/null) || { git update-ref "refs/heads/$local_name" "$(git rev-parse "$remote_ref")" 2>/dev/null; continue; }
+    remote_sha=$(git rev-parse "$remote_ref" 2>/dev/null) || continue
+    [ "$local_sha" = "$remote_sha" ] && continue
+    git merge-base --is-ancestor "$local_sha" "$remote_sha" 2>/dev/null && git update-ref "refs/heads/$local_name" "$remote_sha" 2>/dev/null || true
+  done
+  git fetch "$REMOTE" '+refs/notes/crew*:refs/notes/crew*' 2>/dev/null || true
+  unset CREW_SYNC_ACTIVE
+fi
+
+# --- crew-upstream-sync ---
+# Refresh inherited hub state (git-type upstream -> home-operations).
+# Non-fatal and silent by design: a network blip must never block a
+# merge/checkout, and this runs on every pull. See .crew/upstream.json.
+if [ -z "$CREW_UPSTREAM_SYNC_ACTIVE" ] && command -v crew >/dev/null 2>&1; then
+  CREW_UPSTREAM_SYNC_ACTIVE=1 crew upstream sync >/dev/null 2>&1 || true
+fi

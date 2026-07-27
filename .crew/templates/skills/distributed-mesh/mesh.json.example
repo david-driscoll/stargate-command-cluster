@@ -1,0 +1,30 @@
+{
+  "crews": {
+    "auth-crew": {
+      "zone": "local",
+      "path": "../auth-crew/.mesh"
+    },
+    "api-crew": {
+      "zone": "local",
+      "path": "../api-crew/.mesh"
+    },
+    "ci-crew": {
+      "zone": "remote-trusted",
+      "source": "git@github.com:our-org/ci-crew.git",
+      "ref": "main",
+      "sync_to": ".mesh/remotes/ci-crew"
+    },
+    "data-crew": {
+      "zone": "remote-trusted",
+      "source": "git@github.com:our-org/data-pipeline.git",
+      "ref": "main",
+      "sync_to": ".mesh/remotes/data-crew"
+    },
+    "partner-fraud": {
+      "zone": "remote-opaque",
+      "source": "https://partner.example.com/crew-contracts/fraud/SUMMARY.md",
+      "sync_to": ".mesh/remotes/partner-fraud",
+      "auth": "bearer"
+    }
+  }
+}

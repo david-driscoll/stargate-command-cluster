@@ -2,3 +2,20 @@
 . "$(dirname "$0")/_/husky.sh"
 dotnet husky run
 git add .
+
+# --- crew-sync-hook ---
+# WI-1: Guard against accidentally committing two-layer mutable state into the
+# working tree. If the user has staged any .crew/ paths that are owned by the
+# two-layer/orphan backend (decisions.md, agents/*/history.md, routing/),
+# warn and abort so the state stays on the crew-state orphan branch.
+# Installed by: crew init / crew upgrade --state-backend (two-layer/orphan)
+if [ -z "$CREW_SYNC_ACTIVE" ]; then
+  STAGED=$(git diff --cached --name-only 2>/dev/null | grep -E '^\.crew/(decisions\.md|agents/.+/history\.md|routing/)' || true)
+  if [ -n "$STAGED" ]; then
+    echo "⚠ crew pre-commit: refusing to commit two-layer state into the working tree." >&2
+    echo "  These paths belong on the 'crew-state' orphan branch, not in your normal commits:" >&2
+    echo "$STAGED" | sed 's/^/    /' >&2
+    echo "  Use 'git restore --staged <path>' to unstage, or set CREW_SYNC_ACTIVE=1 to bypass." >&2
+    exit 1
+  fi
+fi

@@ -1,0 +1,12 @@
+{
+  "upstreams": [
+    {
+      "name": "home-operations-crew",
+      "type": "git",
+      "source": "https://github.com/david-driscoll/home-operations.git",
+      "added_at": "2026-07-27T03:33:18.496Z",
+      "last_synced": "2026-07-27T03:33:19.337Z",
+      "ref": "main"
+    }
+  ]
+}

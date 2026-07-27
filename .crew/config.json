@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "stateBackend": "two-layer",
+  "defaultModel": "claude-sonnet-5",
+  "agentModelOverrides": {
+    "crew": "claude-opus-5"
+  }
+}

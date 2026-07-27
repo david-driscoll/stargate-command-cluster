@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./adguard-home/ks.yaml
   - ./records/ks.yaml
-  # - ./technitium/ks.yaml
+  - ./technitium/ks.yaml

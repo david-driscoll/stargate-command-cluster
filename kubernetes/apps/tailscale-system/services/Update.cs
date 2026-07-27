@@ -32,6 +32,8 @@ var defaultPorts = new Dictionary<ServiceKind, List<PortDef>>
     new("dot", 853, true, "tcp_connect"),
     new("doq", 853, false, null, Protocol: "UDP"),
     new("doh", 443, true, "http_2xx"),
+    // Technitium admin/API TLS port — used by the pulumi operator's technitium provider
+    new("admin", 53443, false, null),
   ],
 };
 

@@ -230,6 +230,9 @@ spec:
     - name: doh
       port: 443
       targetPort: 443
+    - name: admin
+      port: 53443
+      targetPort: 53443
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe

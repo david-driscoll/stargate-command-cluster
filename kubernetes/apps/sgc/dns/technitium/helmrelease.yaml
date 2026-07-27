@@ -104,7 +104,7 @@ spec:
                 cpu: 50m
                 memory: 256Mi
               limits:
-                memory: 512Mi
+                memory: 1Gi
 
     defaultPodOptions:
       securityContext:
@@ -161,6 +161,11 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /etc/dns
+      tls:
+        type: secret
+        name: technitium-tls
+        globalMounts:
+          - path: /etc/technitium/certs/${CLUSTER_CNAME}.dns.${ROOT_DOMAIN}
 
     route:
       admin:

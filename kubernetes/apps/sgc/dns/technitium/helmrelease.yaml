@@ -111,9 +111,7 @@ spec:
           type: RuntimeDefault
 
     service:
-      # LAN DNS traffic arrives directly on the ipvlan interface (see nad);
-      # tailnet DNS traffic arrives via the dedicated tailscale proxy service
-      # (see tailscale-service.yaml). Only admin/cluster ports need a Service.
+      # LAN DNS traffic arrives directly on the ipvlan interface (see nad).
       admin:
         controller: *app
         ports:
@@ -121,6 +119,36 @@ spec:
             port: *adminPort
             protocol: TCP
           cluster-https:
+            port: 53443
+            protocol: TCP
+      # Dedicated per-service tailscale proxy (NOT a ProxyGroup/Tailscale
+      # Service — those cannot forward UDP today). Defined here rather than as
+      # a raw manifest so kustomize commonLabels cannot rewrite the selector.
+      # The device joins the tailnet as dns-<cluster> with tag:dns.
+      tailscale:
+        controller: *app
+        type: LoadBalancer
+        loadBalancerClass: tailscale
+        annotations:
+          tailscale.com/hostname: dns-${CLUSTER_CNAME}
+          tailscale.com/tags: tag:dns
+        ports:
+          dns-udp:
+            port: 53
+            protocol: UDP
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dot:
+            port: 853
+            protocol: TCP
+          doq:
+            port: 853
+            protocol: UDP
+          doh:
+            port: 443
+            protocol: TCP
+          admin-tls:
             port: 53443
             protocol: TCP
 

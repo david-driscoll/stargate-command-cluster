@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/secret.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tailscale-authkey
+  annotations:
+    # mirrored from tailscale-system by emberstack reflector (the source secret
+    # carries reflection-allowed=true)
+    reflector.v1.k8s.emberstack.com/reflects: tailscale-system/tailscale-authkey

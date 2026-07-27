@@ -19,7 +19,7 @@ spec:
       namespace: volsync-system
     - name: external-secrets
       namespace: kube-system
-  path: ./kubernetes/apps/equestria/home/technitium
+  path: ./kubernetes/apps/sgc/dns/technitium
   prune: true
   wait: false
   force: false

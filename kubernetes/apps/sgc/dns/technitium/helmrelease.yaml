@@ -33,21 +33,36 @@ spec:
       *app :
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: technitium-dns-net
         containers:
           *app :
             image:
               repository: technitium/dns-server
               tag: 15.4.0@sha256:df7d90ef0f7b6fff6916d291a7022cd902290cc31c3141d4158b6c375a641b41
             env:
-              # These are applied on first start only (ignored if /etc/dns config already exists)
+              # First-start only (ignored once /etc/dns config exists) — kept in
+              # lockstep with docker/_common/technitium/.env in home-operations.
+              # After the node joins the Technitium cluster, cluster sync owns
+              # most of these settings.
               DNS_SERVER_DOMAIN: dns.${ROOT_DOMAIN}
               DNS_SERVER_WEB_SERVICE_ENABLE_HTTPS: "true"
               DNS_SERVER_WEB_SERVICE_USE_SELF_SIGNED_CERT: "true"
               DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks
-              # DNS_SERVER_FORWARDERS: "1.1.1.1, 1.0.0.1, 9.9.9.9"
-              # DNS_SERVER_FORWARDER_PROTOCOL: Tls
+              DNS_SERVER_FORWARDERS: "9.9.9.9, 149.112.112.112"
+              DNS_SERVER_FORWARDER_PROTOCOL: Tls
+              DNS_SERVER_PREFER_IPV6: "false"
               DNS_SERVER_ENABLE_BLOCKING: "true"
+              DNS_SERVER_ALLOW_TXT_BLOCKING_REPORT: "false"
+              DNS_SERVER_LOG_USING_LOCAL_TIME: "true"
+              DNS_SERVER_STATS_ENABLE_IN_MEMORY_STATS: "true"
               DNS_SERVER_OPTIONAL_PROTOCOL_DNS_OVER_HTTP: "true"
+              DNS_SERVER_SSO_ENABLED: "true"
+              DNS_SERVER_SSO_ALLOW_SIGNUP: "true"
+              DNS_SERVER_SSO_ALLOW_SIGNUP_ONLY_FOR_MAPPED_USERS: "true"
+              DNS_SERVER_SSO_GROUP_MAP: "admins:Administrators"
+              DNS_SERVER_SSO_SCOPES: "openid,profile,email"
             envFrom:
               - secretRef:
                   name: ${APP}-env
@@ -82,7 +97,7 @@ spec:
                   - ALL
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
                 memory: 256Mi
               limits:
                 memory: 512Mi
@@ -96,48 +111,17 @@ spec:
           type: RuntimeDefault
 
     service:
-      dns:
-        controller: *app
-        type: LoadBalancer
-        loadBalancerIP: "${TECHNITIUM_VIP}"
-        annotations:
-          io.cilium/lb-ipam-ips: "${TECHNITIUM_VIP}"
-          tailscale.com/expose: "true"
-          tailscale.com/hostname: ${APP}-${CLUSTER_CNAME}
-          tailscale.com/tailnet-ip: "${TECHNITIUM_TAILSCALE_VIP}"
-          external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
-          tailscale.com/proxy-group: tailnet-outbound
-        externalTrafficPolicy: Cluster
-        ports:
-          dns-udp:
-            port: 53
-            protocol: UDP
-          dns-tcp:
-            port: 53
-            protocol: TCP
-          dot:
-            port: 853
-            protocol: TCP
-          doq:
-            port: 853
-            protocol: UDP
-          doh-https-tcp:
-            port: 443
-            protocol: TCP
-          doh-https-udp:
-            port: 443
-            protocol: UDP
-          doh-http:
-            port: 80
-            protocol: TCP
-          admin-https:
-            port: 53443
-            protocol: TCP
+      # LAN DNS traffic arrives directly on the ipvlan interface (see nad);
+      # tailnet DNS traffic arrives via the dedicated tailscale proxy service
+      # (see tailscale-service.yaml). Only admin/cluster ports need a Service.
       admin:
         controller: *app
         ports:
           admin:
             port: *adminPort
+            protocol: TCP
+          cluster-https:
+            port: 53443
             protocol: TCP
 
     persistence:

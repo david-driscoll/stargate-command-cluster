@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: dns-${CLUSTER_CNAME}
+  annotations:
+    # Dedicated per-service tailscale proxy (NOT a ProxyGroup/Tailscale Service —
+    # those cannot forward UDP today). The device joins the tailnet as
+    # dns-<cluster> with tag:dns, so acl-manager's dns-* prefix collection picks
+    # it up automatically as a tailnet nameserver once it serves DNS.
+    tailscale.com/hostname: dns-${CLUSTER_CNAME}
+    tailscale.com/tags: tag:dns
+spec:
+  type: LoadBalancer
+  loadBalancerClass: tailscale
+  selector:
+    app.kubernetes.io/name: technitium
+    app.kubernetes.io/instance: technitium
+  ports:
+    - name: dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP
+    - name: dns-tcp
+      port: 53
+      targetPort: 53
+      protocol: TCP
+    - name: dot
+      port: 853
+      targetPort: 853
+      protocol: TCP
+    - name: doq
+      port: 853
+      targetPort: 853
+      protocol: UDP
+    - name: doh
+      port: 443
+      targetPort: 443
+      protocol: TCP
+    - name: admin-tls
+      port: 53443
+      targetPort: 53443
+      protocol: TCP

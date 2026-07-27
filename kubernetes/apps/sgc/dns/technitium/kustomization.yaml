@@ -6,3 +6,5 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./definition.yaml
+  - ./macvlan-nad.yaml
+  - ./tailscale-service.yaml

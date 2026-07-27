@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/k8s.cni.cncf.io/networkattachmentdefinition_v1.json
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: technitium-dns-net
+  namespace: network
+  annotations:
+    # Purpose: gives the Technitium pod a dedicated DNS interface (net1) with a
+    # static LAN IP. DNS traffic (53 UDP/TCP, 853, 443) arrives directly on this
+    # interface without traversing kube-proxy or any LoadBalancer service.
+    #
+    # ipvlan L2 shares the parent MAC, so it works on the Talos nodes without
+    # switch/promiscuous configuration. All sgc nodes expose enp3s0.
+    #
+    # NOTE: intentionally NOT ${TECHNITIUM_VIP} (10.10.209.202) — that address
+    # is still held by the adguard-home-dns Cilium LoadBalancer. Swap this to
+    # the VIP after adguard-home is decommissioned.
+spec:
+  config: |
+    {
+      "cniVersion": "0.3.1",
+      "name": "technitium-dns-net",
+      "type": "ipvlan",
+      "master": "enp3s0",
+      "mode": "l2",
+      "ipam": {
+        "type": "static",
+        "addresses": [
+          {
+            "address": "10.10.209.205/16"
+          }
+        ]
+      }
+    }

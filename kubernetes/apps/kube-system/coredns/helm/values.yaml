@@ -38,6 +38,24 @@ servers:
       - name: loop
       - name: reload
       - name: loadbalance
+  # Technitium cluster node names: rewrite <node>.dns.driscoll.tech to the
+  # node's tailnet name (dns-<node>) and resolve it via the tailscale operator
+  # nameserver, which maps it to the in-cluster egress service ClusterIP. This
+  # is what lets the in-cluster technitium secondary reach its cluster peers
+  # (heartbeat/config sync) without hardcoded addresses.
+  - zones:
+      - zone: dns.driscoll.tech
+        scheme: dns://
+        use_tcp: false
+    port: 53
+    plugins:
+      - name: errors
+      - name: cache
+        parameters: 30
+      - name: rewrite
+        parameters: name regex ([a-z0-9-]+)\.dns\.driscoll\.tech dns-{1}.${TAILSCALE_DOMAIN} answer auto
+      - name: forward
+        parameters: . "${TAILSCALE_NAMESERVER_IP}"
   # Tailscale DNS stub zone for ts.net domains
   - zones:
       - zone: ts.net

@@ -7,8 +7,8 @@ metadata:
 spec:
   name: Technitium DNS
   category: ${CLUSTER_TITLE}
-  description: Primary Technitium DNS cluster node
-  url: &url https://${APP}.${CLUSTER_DOMAIN}
+  description: Technitium DNS cluster node
+  url: &url https://${CLUSTER_KEY}.dns.${ROOT_DOMAIN}:53443
   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/technitium.png
   access_policy:
     groups:
@@ -17,7 +17,7 @@ spec:
     oauth2:
       clientType: confidential
       allowedRedirectUris:
-      - url: "https://${APP}.${ROOT_DOMAIN}/sso/callback"
+      - url: "https://${CLUSTER_KEY}.dns.${ROOT_DOMAIN}:53443/sso/callback"
       propertyMappings:
         - email
         - openid
@@ -25,8 +25,13 @@ spec:
       includeClaimsInIdToken: true
       subMode: user_email
   gatus:
-    - group: "Technitium DNS"
+    - group: ${CLUSTER_TITLE}
       url: *url
       method: GET
       conditions:
         - "[STATUS] < 400"
+    - group: ${CLUSTER_TITLE}
+      url: https://${CLUSTER_KEY}.dns.${ROOT_DOMAIN}
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

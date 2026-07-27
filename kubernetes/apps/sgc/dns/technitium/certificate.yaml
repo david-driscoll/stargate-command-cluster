@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/secret.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: technitium-pkcs12-password
+stringData:
+  # protects the pkcs12 keystore inside the technitium-tls secret; set as the
+  # per-node certificate password via the technitium API after joining
+  password: technitium
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: technitium-tls
+spec:
+  secretName: technitium-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-production
+  commonName: ${CLUSTER_CNAME}.dns.${ROOT_DOMAIN}
+  dnsNames:
+    - ${CLUSTER_CNAME}.dns.${ROOT_DOMAIN}
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: technitium-pkcs12-password
+        key: password

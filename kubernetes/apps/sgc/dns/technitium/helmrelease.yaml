@@ -107,20 +107,6 @@ spec:
                 memory: 512Mi
 
     defaultPodOptions:
-      # Cluster peers are reached by their canonical names, which resolve to
-      # tailscale IPs that pods cannot route. Pin them to the tailscale-system
-      # egress service ClusterIPs (stable while those services exist) so
-      # heartbeat/config sync to the primary works from inside the cluster.
-      hostAliases:
-        - ip: "10.199.54.181"
-          hostnames:
-            - celestia.dns.driscoll.tech
-        - ip: "10.199.84.153"
-          hostnames:
-            - luna.dns.driscoll.tech
-        - ip: "10.199.189.207"
-          hostnames:
-            - skystar.dns.driscoll.tech
       securityContext:
         runAsNonRoot: false
         runAsUser: 0

@@ -8,7 +8,9 @@ resources:
   - ./alpha-site.yaml
   - ./as.yaml
   - ./celestia.yaml
+  - ./equestria.yaml
   - ./luna.yaml
+  - ./sgc.yaml
   - ./skystar.yaml
   - ./twilight-sparkle.yaml
   - ./sgc-kubeproxy.yaml

@@ -26,6 +26,13 @@ var defaultPorts = new Dictionary<ServiceKind, List<PortDef>>
   [ServiceKind.Dockge] = [new("https", 443, false, null), new("ssh", 22, true, "ssh_banner")],
   [ServiceKind.Proxmox] = [new("pve", 8006, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
   [ServiceKind.Pbs] = [new("pbs", 8007, true, "http_2xx"), new("ssh", 22, true, "ssh_banner")],
+  [ServiceKind.Dns] = [
+    new("dns-tcp", 53, true, "dns_soa"),
+    new("dns-udp", 53, false, null, Protocol: "UDP"),
+    new("dot", 853, true, "tcp_connect"),
+    new("doq", 853, false, null, Protocol: "UDP"),
+    new("doh", 443, true, "http_2xx"),
+  ],
 };
 
 var remoteMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
@@ -40,6 +47,7 @@ var tagMap = new Dictionary<string, (ServiceKind Kind, Func<string, string> Serv
   ["tag:dockge"] = (ServiceKind.Dockge, h => h.StartsWith("dockge-") ? h["dockge-".Length..] : h),
   ["tag:proxmox"] = (ServiceKind.Proxmox, h => h),
   ["tag:backups"] = (ServiceKind.Pbs, h => h.StartsWith("pbs-") ? h["pbs-".Length..] : h),
+  ["tag:dns"] = (ServiceKind.Dns, h => h.StartsWith("dns-") ? h["dns-".Length..] : h),
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -142,6 +150,7 @@ static string ServiceName(string server, ServiceKind kind) => kind switch
   ServiceKind.Dockge => $"dockge-{server}",
   ServiceKind.Proxmox => $"proxmox-{server}",
   ServiceKind.Pbs => $"pbs-{server}",
+  ServiceKind.Dns => $"dns-{server}",
   _ => throw new ArgumentOutOfRangeException(nameof(kind)),
 };
 
@@ -152,6 +161,8 @@ static string ExternalName(string server, ServiceKind kind) => kind switch
   // proxmox and pbs share the same underlying node "<server>"
   ServiceKind.Proxmox => server,
   ServiceKind.Pbs => $"pbs-{server}",
+  // technitium nodes live on the tailnet as "dns-<server>"
+  ServiceKind.Dns => $"dns-{server}",
   _ => throw new ArgumentOutOfRangeException(nameof(kind)),
 };
 
@@ -191,7 +202,11 @@ string ServiceYaml(string server, ServiceKind kind, List<PortDef> ports)
   sb.AppendLine($"  externalName: {extName}");
   sb.AppendLine($"  ports:");
   foreach (var p in ports)
+  {
     sb.AppendLine($"    - name: {p.Name}\n      port: {p.Port}\n      targetPort: {p.Port}");
+    if (p.Protocol is not null)
+      sb.AppendLine($"      protocol: {p.Protocol}");
+  }
   return sb.ToString();
 }
 
@@ -308,6 +323,30 @@ string PbsAlertYaml(string server, bool isRemote)
   return sb.ToString();
 }
 
+string DnsAlertYaml(string server, bool isRemote)
+{
+  var sb = new StringBuilder();
+  sb.AppendLine("---");
+  sb.AppendLine($"apiVersion: monitoring.coreos.com/v1");
+  sb.AppendLine($"kind: PrometheusRule");
+  sb.AppendLine($"metadata:");
+  sb.AppendLine($"  name: dns-{server}-alerts");
+  sb.AppendLine($"spec:");
+  sb.AppendLine($"  groups:");
+  sb.AppendLine($"    - name: dns-{server}");
+  sb.AppendLine($"      rules:");
+  sb.AppendLine($"        - alert: TechnitiumDnsUnhealthy");
+  sb.AppendLine($"          annotations:");
+  sb.AppendLine($"            description: \"Technitium DNS on {server} is not answering SOA queries.\"");
+  sb.AppendLine($"            summary: \"Technitium DNS {server} unhealthy\"");
+  sb.AppendLine($"          expr: |");
+  sb.AppendLine($"            probe_success{{probe=\"dns-{server}\"}} < 1");
+  sb.AppendLine($"          for: {(isRemote ? "2h" : "10m")}");
+  sb.AppendLine($"          labels:");
+  sb.AppendLine($"            severity: critical");
+  return sb.ToString();
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // YAML generators for static Tailscale services
 // ─────────────────────────────────────────────────────────────────────────────
@@ -369,12 +408,16 @@ foreach (var (server, kinds) in serverKinds.OrderBy(x => x.Key))
     foreach (var port in ports.Where(p => p.HasProbe))
     {
       var probeName = $"{ServiceName(server, kind)}";
-      if (port.Name != "pve" && port.Name != "pbs")     // pve/pbs probes use the service name as-is
+      if (port.Name != "pve" && port.Name != "pbs" && port.Name != "dns-tcp")     // pve/pbs/dns probes use the service name as-is
         probeName = $"{probeName}-{port.Name}";
 
-      string target = port.ProbeModule == "ssh_banner"
-          ? ProbeSshTarget(server, kind)
-          : ProbeHttpUrl(server, kind, port.Port);
+      string target = port.ProbeModule switch
+      {
+        "ssh_banner" => ProbeSshTarget(server, kind),
+        "http_2xx" => ProbeHttpUrl(server, kind, port.Port),
+        // tcp_connect / dns_soa probe the raw host:port
+        _ => $"{TailnetFqdn(server, kind)}:{port.Port}",
+      };
 
       sb.Append(ProbeYaml(probeName, port.ProbeModule!, target, isRemote));
     }
@@ -385,6 +428,7 @@ foreach (var (server, kinds) in serverKinds.OrderBy(x => x.Key))
       ServiceKind.Dockge => DockgeAlertYaml(server, isRemote),
       ServiceKind.Proxmox => ProxmoxAlertYaml(server, ports.Any(p => p.Name == "ssh"), isRemote),
       ServiceKind.Pbs => PbsAlertYaml(server, isRemote),
+      ServiceKind.Dns => DnsAlertYaml(server, isRemote),
       _ => ""
     });
   }
@@ -528,9 +572,9 @@ AnsiConsole.MarkupLine("[green]Updated kustomization.yaml[/]");
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-enum ServiceKind { Dockge, Proxmox, Pbs }
+enum ServiceKind { Dockge, Proxmox, Pbs, Dns }
 
-record PortDef(string Name, int Port, bool HasProbe, string? ProbeModule, string? ProbePath = null);
+record PortDef(string Name, int Port, bool HasProbe, string? ProbeModule, string? ProbePath = null, string? Protocol = null);
 
 record TailscaleServiceDef(string Name, List<PortDef> Ports);
 

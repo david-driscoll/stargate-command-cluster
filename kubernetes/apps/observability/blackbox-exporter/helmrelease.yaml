@@ -66,6 +66,13 @@ spec:
           timeout: 5s
           tcp:
             preferred_ip_protocol: ip4
+        dns_soa:
+          prober: dns
+          timeout: 5s
+          dns:
+            query_name: "dns.driscoll.tech"
+            query_type: "SOA"
+            preferred_ip_protocol: ip4
         ssh_banner:
           prober: tcp
           timeout: 5s

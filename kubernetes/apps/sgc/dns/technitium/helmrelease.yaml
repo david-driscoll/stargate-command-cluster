@@ -105,6 +105,43 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+          tailscale:
+            # Same shape as docker/_common/technitium/compose.yaml: the pod IS
+            # the tailnet node dns-<cluster>. technitium shares this network
+            # namespace, so its listeners (53, 853, 443, 53443) are reachable on
+            # the node's own tailscale IP — and, critically, its OUTBOUND
+            # cluster traffic (zone refresh, config sync, heartbeats) sources
+            # from that same registered IP. The operator's L3 ingress could only
+            # ever serve inbound.
+            image:
+              repository: tailscale/tailscale
+              tag: v1.98.9@sha256:f15d5d3f4a68773a853180b72496f70ba614b64de0878c43fe3da39fe0afba47
+            env:
+              TS_STATE_DIR: /var/lib/tailscale
+              TS_USERSPACE: "false"
+              TS_AUTH_ONCE: "true"
+              # leave pod DNS alone — technitium resolves via its own engine and
+              # the cluster resolver must stay intact for everything else
+              TS_ACCEPT_DNS: "false"
+              TS_HOSTNAME: dns-${CLUSTER_CNAME}
+              # No --advertise-tags: a tagged auth key forces its own tags onto
+              # the device, and mismatched tags are rejected at registration.
+              # The key must therefore carry tag:dns (see stacks/vault/
+              # KubernetesTailscaleAuthKey.ts) — tag:dns is what the ACL grants
+              # port 53/853/443 on, and tag:apps alone would leave DNS blocked.
+              TS_AUTHKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: tailscale-authkey
+                    key: authkey
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
 
     defaultPodOptions:
       securityContext:
@@ -125,42 +162,21 @@ spec:
           cluster-https:
             port: 53443
             protocol: TCP
-      # Dedicated per-service tailscale proxy (NOT a ProxyGroup/Tailscale
-      # Service — those cannot forward UDP today). Defined here rather than as
-      # a raw manifest so kustomize commonLabels cannot rewrite the selector.
-      # The device joins the tailnet as dns-<cluster> with tag:dns.
-      tailscale:
-        controller: *app
-        type: LoadBalancer
-        loadBalancerClass: tailscale
-        annotations:
-          tailscale.com/hostname: dns-${CLUSTER_CNAME}
-          tailscale.com/tags: tag:dns
-        ports:
-          dns-udp:
-            port: 53
-            protocol: UDP
-          dns-tcp:
-            port: 53
-            protocol: TCP
-          dot:
-            port: 853
-            protocol: TCP
-          doq:
-            port: 853
-            protocol: UDP
-          doh:
-            port: 443
-            protocol: TCP
-          admin-tls:
-            port: 53443
-            protocol: TCP
 
     persistence:
       config:
         existingClaim: ${APP}
         globalMounts:
           - path: /etc/dns
+      tailscale-state:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: longhorn
+        advancedMounts:
+          technitium:
+            tailscale:
+              - path: /var/lib/tailscale
       tls:
         type: secret
         name: technitium-tls

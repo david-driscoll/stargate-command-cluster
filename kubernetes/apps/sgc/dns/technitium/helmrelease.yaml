@@ -118,6 +118,10 @@ spec:
               tag: v1.98.9@sha256:f15d5d3f4a68773a853180b72496f70ba614b64de0878c43fe3da39fe0afba47
             env:
               TS_STATE_DIR: /var/lib/tailscale
+              # containerboot defaults to storing state in a kube Secret when it
+              # detects kubernetes; we keep state on the volsync PVC instead, and
+              # the pod has no service-account token mounted.
+              TS_KUBE_SECRET: ""
               TS_USERSPACE: "false"
               TS_AUTH_ONCE: "true"
               # leave pod DNS alone — technitium resolves via its own engine and

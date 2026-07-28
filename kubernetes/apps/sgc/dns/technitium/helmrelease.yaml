@@ -162,17 +162,16 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}
-        globalMounts:
-          - path: /etc/dns
-      tailscale-state:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
         advancedMounts:
           technitium:
+            technitium:
+              - path: /etc/dns
+            # tailscale node state lives on the same volsync-managed volume, so
+            # the device identity (and its pinned IP) is covered by the nightly
+            # restic backup and survives a restore — no second PVC to own.
             tailscale:
               - path: /var/lib/tailscale
+                subPath: .tailscale-state
       tls:
         type: secret
         name: technitium-tls

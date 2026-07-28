@@ -128,7 +128,6 @@ spec:
               # the cluster resolver must stay intact for everything else
               TS_ACCEPT_DNS: "false"
               TS_HOSTNAME: dns-${CLUSTER_CNAME}
-              TS_EXTRA_ARGS: --advertise-tags=tag:dns
               TS_AUTHKEY:
                 valueFrom:
                   secretKeyRef:

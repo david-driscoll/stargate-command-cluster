@@ -165,10 +165,7 @@ spec:
         globalMounts:
           - path: /etc/dns
       tailscale-state:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
+        existingClaim: technitium-tailscale-state
         advancedMounts:
           technitium:
             tailscale:

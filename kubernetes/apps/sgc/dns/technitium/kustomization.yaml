@@ -7,5 +7,6 @@ resources:
   - ./externalsecret.yaml
   - ./certificate.yaml
   - ./tailscale-authkey.yaml
+  - ./tailscale-state-pvc.yaml
   - ./definition.yaml
   - ./macvlan-nad.yaml

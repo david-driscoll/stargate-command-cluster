@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/persistentvolumeclaim.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: technitium-tailscale-state
+spec:
+  # Managed here rather than by the HelmRelease on purpose: a failed helm
+  # upgrade with cleanupOnFail deletes release-owned PVCs — that is how the
+  # config volume got destroyed twice. Helm only mounts this via existingClaim.
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn

@@ -31,7 +31,13 @@ var defaultPorts = new Dictionary<ServiceKind, List<PortDef>>
     new("dns-udp", 53, false, null, Protocol: "UDP"),
     new("dot", 853, true, "tcp_connect"),
     new("doq", 853, false, null, Protocol: "UDP"),
-    new("doh", 443, true, "http_2xx"),
+    // DoH is the one probe that must target the split-horizon name: Technitium
+    // serves a Let's Encrypt cert whose only SAN is "<server>.dns.driscoll.tech",
+    // so probing the tailnet name fails TLS hostname verification. Inside the
+    // cluster CoreDNS rewrites "<server>.dns.${ROOT_DOMAIN}" back to the tailnet
+    // name and forwards to the Tailscale operator nameserver, so this resolves
+    // over MagicDNS to the same endpoint and stays independent of Technitium.
+    new("doh", 443, true, "http_2xx", ProbeDomain: "dns.${ROOT_DOMAIN}"),
     // Technitium admin/API TLS port — used by the pulumi operator's technitium provider
     new("admin", 53443, false, null),
   ],
@@ -170,11 +176,19 @@ static string ExternalName(string server, ServiceKind kind) => kind switch
 
 static string TailnetFqdn(string server, ServiceKind kind) => $"{ExternalName(server, kind)}.${{TAILSCALE_DOMAIN}}";
 
+// The hostname a probe should target. Defaults to the tailnet FQDN; a port may
+// opt into a different domain via PortDef.ProbeDomain, which is appended to the
+// bare server name (e.g. "celestia" + "dns.${ROOT_DOMAIN}").
+static string ProbeFqdn(string server, ServiceKind kind, PortDef port)
+  => port.ProbeDomain is { } domain
+    ? $"{server}.{domain}"
+    : TailnetFqdn(server, kind);
+
 // Returns the URL used in HTTP probes (includes port for non-standard 80/443)
-static string ProbeHttpUrl(string server, ServiceKind kind, int port)
+static string ProbeHttpUrl(string server, ServiceKind kind, PortDef port)
 {
-  var fqdn = TailnetFqdn(server, kind);
-  return port == 443 ? $"https://{fqdn}" : $"https://{fqdn}:{port}";
+  var fqdn = ProbeFqdn(server, kind, port);
+  return port.Port == 443 ? $"https://{fqdn}" : $"https://{fqdn}:{port.Port}";
 }
 
 static string ProbeSshTarget(string server, ServiceKind kind) => $"{TailnetFqdn(server, kind)}:22";
@@ -416,9 +430,9 @@ foreach (var (server, kinds) in serverKinds.OrderBy(x => x.Key))
       string target = port.ProbeModule switch
       {
         "ssh_banner" => ProbeSshTarget(server, kind),
-        "http_2xx" => ProbeHttpUrl(server, kind, port.Port),
+        "http_2xx" => ProbeHttpUrl(server, kind, port),
         // tcp_connect / dns_soa probe the raw host:port
-        _ => $"{TailnetFqdn(server, kind)}:{port.Port}",
+        _ => $"{ProbeFqdn(server, kind, port)}:{port.Port}",
       };
 
       sb.Append(ProbeYaml(probeName, port.ProbeModule!, target, isRemote));
@@ -576,7 +590,11 @@ AnsiConsole.MarkupLine("[green]Updated kustomization.yaml[/]");
 
 enum ServiceKind { Dockge, Proxmox, Pbs, Dns }
 
-record PortDef(string Name, int Port, bool HasProbe, string? ProbeModule, string? ProbePath = null, string? Protocol = null);
+// ProbeDomain: optional per-port override for the probe hostname. When set, the
+// probe targets "<server>.<ProbeDomain>" instead of the tailnet FQDN. Use it
+// where the endpoint presents a certificate for a name other than its tailnet
+// name; leave it null so probes stay on the tailnet FQDN.
+record PortDef(string Name, int Port, bool HasProbe, string? ProbeModule, string? ProbePath = null, string? Protocol = null, string? ProbeDomain = null);
 
 record TailscaleServiceDef(string Name, List<PortDef> Ports);
 

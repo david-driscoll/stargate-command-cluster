@@ -74,7 +74,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://dns-sgc.${TAILSCALE_DOMAIN}
+        - https://sgc.dns.${ROOT_DOMAIN}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule

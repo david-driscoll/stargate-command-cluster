@@ -278,7 +278,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://dns-skystar.${TAILSCALE_DOMAIN}
+        - https://skystar.dns.${ROOT_DOMAIN}
       labels:
         remote: "true"
 ---

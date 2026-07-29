@@ -264,7 +264,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://dns-celestia.${TAILSCALE_DOMAIN}
+        - https://celestia.dns.${ROOT_DOMAIN}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule

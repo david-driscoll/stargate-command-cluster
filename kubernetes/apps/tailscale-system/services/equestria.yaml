@@ -74,7 +74,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://dns-equestria.${TAILSCALE_DOMAIN}
+        - https://equestria.dns.${ROOT_DOMAIN}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule

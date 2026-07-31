@@ -102,51 +102,86 @@ var clientId = Environment.GetEnvironmentVariable("TAILSCALE_CLIENT_ID");
 var clientSecret = Environment.GetEnvironmentVariable("TAILSCALE_CLIENT_SECRET");
 var tailnet = Environment.GetEnvironmentVariable("TAILSCALE_TAILNET") ?? "-";
 
-if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
+// Fail CLOSED when credentials are absent.
+//
+// The device list is the only input that decides which per-device files exist. If we
+// skipped the API call and carried on with an empty `serverKinds`, the generator would
+// happily rewrite kustomization.yaml with nothing but the static services and drop every
+// per-device Service/Probe/PrometheusRule — and because these files are Flux-managed,
+// that prunes the live objects for the whole tailnet, monitoring included.
+//
+// Exit NON-ZERO (not 0) so `mise run update` fails loudly and the pre-commit hook aborts
+// the commit, rather than letting a destructive regeneration look like an intentional diff.
+if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
 {
-  AnsiConsole.MarkupLine("[blue]Fetching Tailscale devices from API...[/]");
-  try
-  {
-    using var http = new HttpClient();
-    var tokenResponse = await http.RequestTokenAsync(new TokenRequest()
-    {
-      Address = "https://api.tailscale.com/api/v2/oauth/token",
-      GrantType = OidcConstants.GrantTypes.ClientCredentials,
-      ClientId = clientId,
-      ClientSecret = clientSecret,
-    });
-    AnsiConsole.MarkupLine("[green]Successfully obtained access token from Tailscale API[/]");
-
-    http.DefaultRequestHeaders.Authorization = new("Bearer", tokenResponse.AccessToken);
-    var response = await http.GetFromJsonAsync<TailscaleDevicesResponse>(
-        $"https://api.tailscale.com/api/v2/tailnet/{tailnet}/devices",
-        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-    foreach (var device in response!.Devices)
-    {
-      AnsiConsole.MarkupLine($"[blue]Processing device: {device.Hostname}[/]");
-      foreach (var tag in device.Tags ?? [])
-      {
-        AnsiConsole.MarkupLine($"[blue]  Checking tag: {tag}[/]");
-        if (!tagMap.TryGetValue(tag, out var mapping)) continue;
-        var server = mapping.ServerName(device.Hostname);
-        if (!serverKinds.TryGetValue(server, out var kinds))
-          serverKinds[server] = kinds = [];
-        kinds.Add(mapping.Kind);
-      }
-    }
-    AnsiConsole.MarkupLine($"[green]Found {serverKinds.Count} servers from Tailscale API[/]");
-  }
-  catch (Exception ex)
-  {
-    AnsiConsole.WriteException(ex, new ExceptionSettings { Format = ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes | ExceptionFormats.ShortenMethods });
-    Environment.Exit(0);
-  }
+  AnsiConsole.MarkupLine("[red]TAILSCALE_CLIENT_ID / TAILSCALE_CLIENT_SECRET are not set — refusing to regenerate.[/]");
+  AnsiConsole.MarkupLine("[red]Regenerating without the Tailscale API would delete every per-device service, probe and alert.[/]");
+  AnsiConsole.MarkupLine("[yellow]Run through 1Password (e.g. `op run --no-masking -- mise run update`) so the credentials resolve.[/]");
+  AnsiConsole.MarkupLine("[yellow]No files were written.[/]");
+  Environment.Exit(1);
 }
 
-if (serverKinds.Count == 0 && tailscaleStaticServices.Count == 0)
+// .mise.toml sets both variables to literal `op://…` references that only `op run` expands.
+// Running this script directly under mise (without `op run`) therefore yields credentials that
+// are non-empty but unusable — which would sail past the emptiness check above and fail later
+// as an opaque OAuth error. Name the real problem instead.
+if (clientId.StartsWith("op://", StringComparison.OrdinalIgnoreCase) ||
+    clientSecret.StartsWith("op://", StringComparison.OrdinalIgnoreCase))
 {
+  AnsiConsole.MarkupLine("[red]Tailscale credentials are unresolved 1Password references (`op://…`) — refusing to regenerate.[/]");
+  AnsiConsole.MarkupLine("[yellow]Wrap the command in `op run --no-masking --` so 1Password expands them.[/]");
+  AnsiConsole.MarkupLine("[yellow]No files were written.[/]");
+  Environment.Exit(1);
+}
+
+AnsiConsole.MarkupLine("[blue]Fetching Tailscale devices from API...[/]");
+try
+{
+  using var http = new HttpClient();
+  var tokenResponse = await http.RequestTokenAsync(new TokenRequest()
+  {
+    Address = "https://api.tailscale.com/api/v2/oauth/token",
+    GrantType = OidcConstants.GrantTypes.ClientCredentials,
+    ClientId = clientId,
+    ClientSecret = clientSecret,
+  });
+  AnsiConsole.MarkupLine("[green]Successfully obtained access token from Tailscale API[/]");
+
+  http.DefaultRequestHeaders.Authorization = new("Bearer", tokenResponse.AccessToken);
+  var response = await http.GetFromJsonAsync<TailscaleDevicesResponse>(
+      $"https://api.tailscale.com/api/v2/tailnet/{tailnet}/devices",
+      new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+  foreach (var device in response!.Devices)
+  {
+    AnsiConsole.MarkupLine($"[blue]Processing device: {device.Hostname}[/]");
+    foreach (var tag in device.Tags ?? [])
+    {
+      AnsiConsole.MarkupLine($"[blue]  Checking tag: {tag}[/]");
+      if (!tagMap.TryGetValue(tag, out var mapping)) continue;
+      var server = mapping.ServerName(device.Hostname);
+      if (!serverKinds.TryGetValue(server, out var kinds))
+        serverKinds[server] = kinds = [];
+      kinds.Add(mapping.Kind);
+    }
+  }
+  AnsiConsole.MarkupLine($"[green]Found {serverKinds.Count} servers from Tailscale API[/]");
+}
+catch (Exception ex)
+{
+  AnsiConsole.WriteException(ex, new ExceptionSettings { Format = ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes | ExceptionFormats.ShortenMethods });
   Environment.Exit(0);
+}
+
+// Credentials were present and the API answered, but no tagged device came back. That is a
+// different failure from "no credentials" — most likely the OAuth client lost its scopes or
+// the tag mapping drifted — and it is still not a reason to prune everything.
+if (serverKinds.Count == 0)
+{
+  AnsiConsole.MarkupLine("[red]The Tailscale API returned no devices matching any known tag — refusing to regenerate.[/]");
+  AnsiConsole.MarkupLine($"[red]Expected tags: {string.Join(", ", tagMap.Keys)} on tailnet '{tailnet}'.[/]");
+  AnsiConsole.MarkupLine("[yellow]No files were written.[/]");
+  Environment.Exit(1);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -400,6 +435,54 @@ static string StaticServiceProbeUrl(string name, int port, string? path = null)
 
 var outputDir = "kubernetes/apps/tailscale-system/services";
 var generatedFiles = new List<string>();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sanity floor — nothing has been written yet, and this is the last chance to bail.
+//
+// The credential guard above catches a *total* loss of the device list. This catches a
+// *partial* one: a degraded API response, an OAuth client that lost visibility of some
+// tags, or a tailnet mid-migration. Any of those would quietly prune live Flux-managed
+// objects. Losing a device or two is normal decommissioning; losing a third of the estate
+// in a single run is a bug somewhere upstream.
+//
+// Override with TAILSCALE_UPDATE_ALLOW_SHRINK=1 for a genuine bulk decommission.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Tolerate shrinking to 70% of the previous device count; refuse below that.
+const double MinDeviceRetentionRatio = 0.7;
+
+var previousDeviceCount = CountPreviousDeviceFiles(outputDir, tailscaleStaticServices);
+var allowShrink = Environment.GetEnvironmentVariable("TAILSCALE_UPDATE_ALLOW_SHRINK") == "1";
+
+if (previousDeviceCount > 0 && serverKinds.Count < previousDeviceCount * MinDeviceRetentionRatio && !allowShrink)
+{
+  AnsiConsole.MarkupLine($"[red]Device count dropped from {previousDeviceCount} to {serverKinds.Count} — refusing to regenerate.[/]");
+  AnsiConsole.MarkupLine($"[red]That is below the {MinDeviceRetentionRatio:P0} sanity floor and would prune live services, probes and alerts.[/]");
+  AnsiConsole.MarkupLine($"[yellow]Devices seen this run: {string.Join(", ", serverKinds.Keys.OrderBy(x => x))}[/]");
+  AnsiConsole.MarkupLine("[yellow]If this shrink is intentional, re-run with TAILSCALE_UPDATE_ALLOW_SHRINK=1. No files were written.[/]");
+  Environment.Exit(1);
+}
+
+// Counts the per-device files the previous run registered in kustomization.yaml, i.e.
+// every listed resource that is neither hand-maintained nor a static Tailscale service.
+static int CountPreviousDeviceFiles(string dir, List<TailscaleServiceDef> statics)
+{
+  var kustomization = Path.Combine(dir, "kustomization.yaml");
+  if (!File.Exists(kustomization)) return 0;
+
+  var notADevice = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+  {
+    "tailscale.yaml",      // hand-maintained
+    "prometheusrule.yaml", // shared generic rules
+  };
+  foreach (var svc in statics) notADevice.Add($"{svc.Name}.yaml");
+
+  return File.ReadLines(kustomization)
+    .Select(line => line.Trim())
+    .Where(line => line.StartsWith("- ./") && line.EndsWith(".yaml"))
+    .Select(line => line["- ./".Length..])
+    .Count(file => !notADevice.Contains(file));
+}
 
 foreach (var (server, kinds) in serverKinds.OrderBy(x => x.Key))
 {

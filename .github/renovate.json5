@@ -14,8 +14,18 @@
   suppressNotifications: [
     "prEditedNotification",
     "prIgnoreNotification",
-    // Overlapping managers (flux/helm-values/kubernetes globbing the same
-    // kubernetes/**.yaml) yield "Excess registryUrls" lookup warnings; benign.
+    // "Excess registryUrls found for datasource lookup - using first
+    // configured only" is NOT caused by overlapping managers, as previously
+    // assumed here. The flux manager resolves a HelmRelease's sourceRef by
+    // filtering every HelmRepository in the repo on name + namespace
+    // (modules/manager/flux/extract.ts resolveHelmRepository), so two
+    // HelmRepository documents that share a name and namespace produce the
+    // same URL twice in registryUrls and trigger the warning. This repo hit
+    // exactly that with two `authentik` HelmRepositories both pointing at
+    // https://charts.goauthentik.io/; #1720 collapsed them into
+    // kubernetes/flux/meta/repos/authentik.yaml and the warning cleared.
+    // Suppression is kept only to keep unrelated lookup noise off the
+    // dashboard; it does not make a duplicate registry safe.
     "dependencyLookupWarnings",
   ],
   schedule: [
@@ -40,6 +50,15 @@
     managerFilePatterns: [
       "/(^|/)helmfile\\.ya?ml$/"
     ],
+    // WARNING: this line does nothing on its own. Manager-level config is
+    // merged before packageRules (workers/repository/process/fetch.ts calls
+    // applyPackageRules at 'pre-lookup' *after* the manager config), so the
+    // shared preset's `docker:pinDigests` rule
+    // ({ matchDatasources: ["docker"], pinDigests: true }) overrides it, and
+    // helmfile's oci:// charts use the docker datasource. The effective
+    // suppression is a packageRule in local>david-driscoll/.github:renovate-config
+    // ({ matchManagers: ["helmfile"], pinDigests: false }). Kept here as
+    // documentation of intent — do not rely on it alone.
     pinDigests: false,
   },
   kubernetes: {
@@ -199,15 +218,24 @@
     },
     {
       // Flux OCIRepository Helm charts are cosign-verified and tag-pinned; the
-      // flux manager owns these files with pinDigests: false and will never
-      // write a digest. The global docker:pinDigests (shared preset) otherwise
-      // generates phantom pinDigest updates that park in "Awaiting Schedule"
-      // forever and never produce a branch. Suppress them.
-      // helm-values/kubernetes also scan kubernetes/**.yaml with pinDigests:
-      // true and race flux to patch the same OCI chart ref, which surfaces as
-      // "Error updating branch" for grouped/digest-lookup deps (flux-operator,
-      // coredns, spegel, cert-manager) instead of a normal PR. Excluding all
-      // three managers here stops the collision.
+      // flux manager owns these files and should never write a digest. The
+      // shared preset's docker:pinDigests otherwise generates pinDigest
+      // updates for them. helm-values/kubernetes also scan kubernetes/**.yaml
+      // with pinDigests: true and race flux to patch the same OCI chart ref.
+      // Excluding all three managers here stops both.
+      //
+      // Note this rule does NOT cover the helmfile manager, which is why the
+      // four "pin image ..." entries for coredns / spegel / cert-manager /
+      // flux-operator survived it and sat on the dashboard indefinitely. That
+      // is fixed in the shared preset, not here — see vault#104 and
+      // david-driscoll/.github#2.
+      //
+      // matchUpdateTypes is a post-lookup matcher (updateType does not exist
+      // pre-lookup), so this rule does not prevent the lookup; the update is
+      // generated and then dropped by the `enabled !== false` filter in
+      // workers/repository/updates/flatten.ts. That is fine here, but it is
+      // why the helmfile fix uses `pinDigests: false` + matchManagers instead:
+      // that form is evaluated pre-lookup and suppresses generation outright.
       description: "Don't pin digests on flux-managed OCI Helm charts",
       matchManagers: [
         "flux",
@@ -224,12 +252,18 @@
       // owned by the flux manager (kubernetes/apps/**/helmrelease.yaml).
       // Renovate treats same-named deps found by different managers as one
       // logical update and tries to combine both files' edits into a single
-      // branch. For high-churn grouped deps (CoreDNS/Flux Operator/Spegel
-      // groups, cert-manager) that branch falls behind main faster than it
-      // can be rebased and Renovate fails with "Error updating branch:
-      // update failure" instead of opening a PR. Force helmfile-manager
-      // updates onto their own branch namespace so they never share a
-      // branch with the flux-managed update for the same chart.
+      // branch. Force helmfile-manager updates onto their own branch
+      // namespace so they never share a branch with the flux-managed update
+      // for the same chart.
+      //
+      // Correction: the "Error updating branch: update failure" warning that
+      // originally motivated this rule was NOT a rebase race. It was the
+      // helmfile manager being handed pinDigest updates it cannot apply —
+      // helmfile's extractor never sets currentDigest and the manager exports
+      // no updateDependency/autoReplaceStringTemplate, so doAutoReplace always
+      // throws WORKER_FILE_UPDATE_FAILED. Fixed in the shared preset
+      // (david-driscoll/.github#2). This rule is kept because separate branch
+      // namespaces are still the right shape for a mirrored chart version.
       description: "Keep bootstrap helmfile chart bumps off the flux-managed branch",
       matchManagers: [
         "helmfile"

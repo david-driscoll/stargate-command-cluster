@@ -1,0 +1,135 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app intel-gpu-exporter
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      intel-gpu-exporter:
+        type: daemonset
+        containers:
+          app:
+            image:
+              repository: ghcr.io/clambin/intel-gpu-exporter
+              tag: 0.7.1@sha256:0fb61d5266001731f8e57dc1e2ac9fc0b29788f3c33f536a7d43ba0ecdc6f20d
+            args:
+              # Sampling interval handed to `intel_gpu_top -s`. The exporter
+              # aggregates (medians) every sample it has seen since the last
+              # scrape, so this is the resolution of the engine-busy signal,
+              # not the scrape interval.
+              - --interval=5s
+            env:
+              TZ: ${TIMEZONE}
+            securityContext:
+              # Least privilege, established empirically top-down (vault#110).
+              # Three independent gates have to be satisfied to read the i915 PMU:
+              #
+              #  1. capability — intel_gpu_top calls perf_event_open(2) for
+              #     system-wide (task == NULL) i915 PMU events. With
+              #     kernel.perf_event_paranoid > 0 the kernel requires
+              #     perfmon_capable(), which CAP_PERFMON satisfies (>= 5.8; nodes
+              #     run 6.18.39-talos). CAP_SYS_ADMIN would also work and is
+              #     strictly wider, so it is deliberately NOT used.
+              #  2. seccomp — containerd's RuntimeDefault profile denies
+              #     perf_event_open UNLESS the container holds CAP_PERFMON or
+              #     CAP_SYS_ADMIN, in which case it is added to the allow list
+              #     (containerd contrib/seccomp/seccomp_default.go). Since Talos
+              #     sets defaultRuntimeSeccompProfileEnabled: true cluster-wide,
+              #     RuntimeDefault applies whether or not it is declared here, so
+              #     it is declared explicitly rather than left to look accidental.
+              #     If the PMU ever returns EPERM with the capability present,
+              #     the next step is seccompProfile: { type: Unconfined }, NOT a
+              #     wider capability set.
+              #  3. sysctl — kernel.perf_event_paranoid is 3 on every node
+              #     (Talos default; not overridden in talos/patches). Verified
+              #     the kernel is built WITHOUT
+              #     CONFIG_SECURITY_PERF_EVENTS_RESTRICT, so there is no
+              #     Debian/AOSP-style "paranoid > 2 blocks everyone" tier — the
+              #     mainline gates are all `&& !perfmon_capable()` and CAP_PERFMON
+              #     clears them. No Talos machine-config change is required.
+              #
+              # runAsUser 0 is required, not incidental: /dev/dri/card0 is
+              # crw------- root:root on Talos, so only uid 0 can open the card
+              # node. Running non-root would need CAP_DAC_OVERRIDE, which is
+              # wider than staying root with everything else dropped.
+              runAsUser: 0
+              runAsGroup: 0
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+                add: ["PERFMON"]
+              seccompProfile: { type: RuntimeDefault }
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: 9100
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probe
+            resources:
+              requests:
+                cpu: 15m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+                # Grants /dev/dri access via the Intel device plugin, which runs
+                # with -enable-monitoring. This resource hands the pod EVERY GPU
+                # on the node and — unlike `gpu.intel.com/i915` — does not consume
+                # one of the shared transcode slots (5 per node on equestria,
+                # 2 on sgc) that plex/jellyfin/tdarr/stremio/dispatcharr contend
+                # for.
+                #
+                # DEPRECATION: upstream now prefers a unified
+                # `gpu.intel.com/monitoring` covering all KMD types. The deployed
+                # plugin still advertises i915_monitoring (confirmed in node
+                # allocatable on all 5 Intel nodes), so use what is advertised.
+                # Revisit when Renovate bumps intel-device-plugins.
+                gpu.intel.com/i915_monitoring: 1
+    defaultPodOptions:
+      # Only the Intel Quick Sync nodes (equestria: fluttershy, kerfuffle;
+      # sgc: milky-way, othalla, pegasus). The label is published by the Intel
+      # GPU plugin's NFD rules — verified present on exactly those five nodes
+      # and on neither AMD node.
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
+      # hostPID is deliberately NOT set, though upstream's README uses it.
+      # It is only needed for the per-client breakdown (intel_gpu_top reads
+      # /proc/*/fdinfo to attribute usage to processes), which powers
+      # gpumon_clients_count. Engine busyness, frequency, power and IMC
+      # bandwidth all come from the PMU and need no host PID namespace.
+      # gpumon_clients_count will therefore report 0 with an empty `name`
+      # label; that is an accepted trade for not exposing the host process
+      # table to this pod.
+    service:
+      metrics:
+        controller: *app
+        ipFamilyPolicy: PreferDualStack
+        ports:
+          metrics:
+            port: 9100
+    persistence:
+      # readOnlyRootFilesystem: true — igt-gpu-tools scratch space.
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

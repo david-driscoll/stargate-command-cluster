@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: intel-gpu-exporter-rules
+spec:
+  groups:
+    - name: intel-gpu-exporter.rules
+      rules:
+        # Absence, not threshold. There is no baseline for what normal
+        # engine utilisation looks like on either silicon generation
+        # (0x46a6 Alder Lake-P on equestria, 0x46d4 Alder Lake-N on sgc),
+        # so any threshold picked today would be a guess. This needs no
+        # baseline: the correct value is "not empty".
+        #
+        # The failure it catches is the nasty one and is NOT covered by
+        # `up`: the pod is Running and being scraped successfully, but
+        # perf_event_open has started returning EPERM — a Talos upgrade
+        # tightening kernel.perf_event_paranoid, a containerd seccomp
+        # profile change, or an Intel device-plugin bump renaming the
+        # i915_monitoring resource. In every one of those cases the
+        # exporter serves /metrics happily and exports nothing.
+        #
+        # `up == 0` is deliberately NOT duplicated here — the standard
+        # ServiceMonitor machinery already pages for a dead target, and
+        # two alerts for one event is how alert fatigue starts.
+        - alert: IntelGpuMetricsAbsent
+          annotations:
+            summary: Intel GPU engine metrics have disappeared from this cluster.
+            description: >-
+              intel-gpu-exporter is not producing gpumon_engine_usage. If the
+              DaemonSet pods are Running and `up` is healthy, the i915 PMU is
+              refusing perf_event_open — check CAP_PERFMON, the seccomp
+              profile, kernel.perf_event_paranoid, and that
+              gpu.intel.com/i915_monitoring is still advertised by the
+              Intel device plugin.
+          expr: absent(gpumon_engine_usage)
+          for: 30m
+          labels:
+            severity: warning
+
+# Deliberately NOT in this iteration: MediaHardwareTranscodeFallback
+# ("Plex silently fell back to CPU"). It is a joint GPU/CPU condition with
+# two thresholds that cannot be guessed — "idle" is not zero on either
+# part, Plex burns real CPU during direct play too, and tdarr legitimately
+# pins the video engine for hours. It needs ~14 days of data, which is the
+# same soak window vault#84 needs for the capacity report, so it costs
+# nothing on the critical path. The label join it depends on is already
+# proven: see the `node` relabeling in servicemonitor.yaml.

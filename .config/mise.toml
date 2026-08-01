@@ -1,27 +1,3 @@
-[env]
-_.python.venv = { path = "{{config_root}}/.venv", create = true }
-KUBECONFIG = "{{config_root}}/kubeconfig"
-SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
-TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
-BOOTSTRAP_DIR = "{{config_root}}/bootstrap"
-KUBERNETES_DIR = "{{config_root}}/kubernetes"
-ROOT_DIR = "{{config_root}}"
-SCRIPTS_DIR = "{{config_root}}/scripts"
-TALOS_DIR = "{{config_root}}/talos"
-CONNECT_HOST = "https://op-connect.equestria.driscoll.tech/"
-CONNECT_VAULT = "Eris"
-CONNECT_TOKEN = "op://Eris/Eris 1Password Connect Access Token/credential"
-TAILSCALE_CLIENT_ID = "op://Eris/Tailscale Terraform OAuth Client/username"
-TAILSCALE_CLIENT_SECRET = "op://Eris/Tailscale Terraform OAuth Client/credential"
-UNIFI_HOST = "unifi.driscoll.tech"
-UNIFI_USERNAME = "op://Eris/unifipoller/username"
-UNIFI_PASSWORD = "op://Eris/unifipoller/password"
-UNIFI_API_KEY = "op://Eris/Unifi Api Key Eris Cluster/credential"
-UNIFI_PORT = "443"
-UNIFI_SITE = "default"
-UNIFI_VERIFY_SSL = "false"
-UNIFI_TOOL_REGISTRATION_MODE = "lazy"
-
 [tools]
 python = "3.14.6"
 "pipx:makejinja" = "2.8.2"
@@ -78,3 +54,40 @@ description = 'Run flate'
 run = [
   'flate test all --allow-missing-secrets --source-retry-attempts 10',
 ]
+
+[settings]
+experimental = true
+prereleases = true
+idiomatic_version_file_enable_tools = ["dotnet"]
+
+[env]
+_.python.venv = { path = "{{config_root}}/.venv", create = true }
+KUBECONFIG = "{{config_root}}/kubeconfig"
+SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
+TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
+BOOTSTRAP_DIR = "{{config_root}}/bootstrap"
+KUBERNETES_DIR = "{{config_root}}/kubernetes"
+ROOT_DIR = "{{config_root}}"
+SCRIPTS_DIR = "{{config_root}}/scripts"
+TALOS_DIR = "{{config_root}}/talos"
+CONNECT_HOST = "https://op-connect.equestria.driscoll.tech/"
+CONNECT_VAULT = "Eris"
+CONNECT_TOKEN = "op://Eris/Eris 1Password Connect Access Token/credential"
+TAILSCALE_CLIENT_ID = "op://Eris/Tailscale Terraform OAuth Client/username"
+TAILSCALE_CLIENT_SECRET = "op://Eris/Tailscale Terraform OAuth Client/credential"
+UNIFI_HOST = "unifi.driscoll.tech"
+UNIFI_USERNAME = "op://Eris/unifipoller/username"
+UNIFI_PASSWORD = "op://Eris/unifipoller/password"
+UNIFI_API_KEY = "op://Eris/Unifi Api Key Eris Cluster/credential"
+UNIFI_PORT = "443"
+UNIFI_SITE = "default"
+UNIFI_VERIFY_SSL = "false"
+UNIFI_TOOL_REGISTRATION_MODE = "lazy"
+HK_MISE = 1
+# Keep npm's download cache inside the mise data dir so jdx/mise-action's
+# cache (which caches MISE_DATA_DIR / ~/.local/share/mise) also persists npm
+# tarballs across CI runs. `npm ci` still wipes node_modules, but reuses these.
+npm_config_cache = "{{env.HOME}}/.local/share/mise/npm-cache"
+
+[hooks]
+postinstall = ["hk install --mise"]

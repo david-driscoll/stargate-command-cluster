@@ -9,4 +9,3 @@ components:
 resources:
   - ./longhorn/ks.yaml
   - ./storageclass/ks.yaml
-

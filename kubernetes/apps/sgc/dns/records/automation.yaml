@@ -9,4 +9,3 @@ spec:
     - dnsName: "${AUTOMATION_DOMAIN}"
       recordType: A
       targets: ["${AUTOMATION_VIP}"]
-

@@ -11,4 +11,3 @@ spec:
     - dnsName: "truenas.${ROOT_DOMAIN}"
       recordType: CNAME
       targets: ["${SPIKE_DOMAIN}"]
-

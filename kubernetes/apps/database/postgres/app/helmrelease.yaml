@@ -8,7 +8,10 @@ spec:
   chart:
     spec:
       chart: cluster
-      version: 0.7.0
+      # 0.8.x is the first cluster chart that can emit a barmancloud.cnpg.io
+      # ObjectStore and wire the plugin into .spec.plugins. 0.7.0 only knows
+      # the deprecated in-core .spec.backup.barmanObjectStore.
+      version: 0.8.1
       sourceRef:
         kind: HelmRepository
         name: cloudnative-pg

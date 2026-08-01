@@ -18,13 +18,23 @@ recovery:
     accessKey: "{{ .minio_username }}"
     secretKey: "{{ .minio_password }}"
 backups:
-  enabled: false
+  enabled: true
+  # `plugin` routes backups through plugin-barman-cloud (already deployed at
+  # v0.7.1) rather than the operator's in-core barmanObjectStore, which is
+  # deprecated upstream and slated for removal. This renders an
+  # ObjectStore/postgres-backups and attaches the plugin to the Cluster as the
+  # WAL archiver, which is what gives us continuous archiving and PITR.
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
   endpointURL: "{{ .minio_endpoint }}"
   provider: s3
   s3:
     region: "{{ .minio_region }}"
     bucket: "{{ .backblaze_bucket }}"
-    path: "/"
+    # Dedicated prefix so barman's base backups + WAL never share a namespace
+    # with the logical dumps or the `-restore` staging bucket.
+    path: "/barman/${CLUSTER_CNAME}"
     accessKey: "{{ .minio_username }}"
     secretKey: "{{ .minio_password }}"
   wal:
@@ -39,7 +49,9 @@ backups:
   - name: daily-backup
     schedule: "${POSTGRES_BACKUP_SCHEDULE:=0 0 16 * * *}"
     backupOwnerReference: self
-    method: barmanObjectStore
+    method: plugin
+    pluginConfiguration:
+      name: barman-cloud.cloudnative-pg.io
   retentionPolicy: "30d"
 cluster:
   instances: 3

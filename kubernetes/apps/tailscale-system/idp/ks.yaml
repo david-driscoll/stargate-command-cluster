@@ -36,4 +36,3 @@ spec:
       NAMESPACE: *namespace
       VOLSYNC_PUID: "1000"
       VOLSYNC_PGID: "1000"
-

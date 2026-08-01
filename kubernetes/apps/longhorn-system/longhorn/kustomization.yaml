@@ -12,4 +12,3 @@ configMapGenerator:
       - values.yaml=./values.yaml
     options:
       disableNameSuffixHash: true
-

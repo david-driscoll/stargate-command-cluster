@@ -9,4 +9,3 @@ spec:
     - dnsName: "${SCRYPTED_DOMAIN}"
       recordType: A
       targets: ["${SCRYPTED_VIP}"]
-

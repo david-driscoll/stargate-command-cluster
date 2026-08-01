@@ -46,8 +46,7 @@ done
 
 # Delete Helm release secrets explicitly
 echo "Cleaning up Helm release secrets..."
-kubectl get secret -n $NAMESPACE 2>/dev/null | grep "sh.helm.release.v1.$NAME" | awk '{print $1}' | \
-  xargs -r kubectl delete secret -n $NAMESPACE 2>/dev/null
+kubectl get secret -n "$NAMESPACE" 2>/dev/null | grep "sh.helm.release.v1.$NAME" | awk '{print $1}' | \
+  xargs -r kubectl delete secret -n "$NAMESPACE" 2>/dev/null
 
 echo "✓ Cleanup completed"
-

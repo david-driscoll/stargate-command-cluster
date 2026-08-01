@@ -96,7 +96,7 @@ spec:
           persistentVolumeClaimRetentionPolicy:
             whenDeleted: Delete
             whenScaled: Delete
-            
+
     defaultPodOptions:
       topologySpreadConstraints:
         - maxSkew: 1

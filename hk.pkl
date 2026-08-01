@@ -1,0 +1,175 @@
+amends "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtins.pkl"
+
+// hk hook configuration for stargate-command-cluster.
+// Mirrors the design already landed in david-driscoll/home-operations, adapted
+// from that repo's TypeScript linter set to this repo's YAML / Talos / shell
+// shape. See vault#81.
+//
+// WHY THIS FILE LIVES AT THE REPO ROOT
+//
+// hk resolves exactly one project config, and a root `hk.pkl` takes precedence
+// over `.config/hk.pkl` with NO warning of any kind -- the loser is silently
+// inert. `hk init` and the `hk-setup` skill both emit a root `hk.pkl` by
+// default, so anything parked in `.config/` stays permanently shadowable by a
+// stray root file. Living at the winning path is the whole point.
+//
+// DELIBERATE SAFETY POSTURE -- do not "fix" this
+//
+//   * `fix = false` on pre-commit / pre-push. hk NEVER mutates the working
+//     tree during a commit or a push. This checkout is frequently shared by
+//     several concurrent agents; an auto-fixer that rewrites files mid-commit
+//     can pick up a neighbour's unstaged edits and fold them into someone
+//     else's commit. Auto-fixing stays available on demand via `hk fix`.
+//   * `stash = "none"` follows from the above -- with no mutation there is
+//     nothing to stash, so hk never runs `git stash` and can never strand a
+//     concurrent agent's work in the stash if it is interrupted.
+//
+// RELATIONSHIP TO HUSKY AND TO CREW
+//
+// This repo sets `core.hooksPath=.husky` and all six crew hooks plus
+// Husky.Net's `dotnet husky run` live in the committed `.husky/` directory.
+// Nothing here touches that. hk registers itself through git *config*
+// (`hook.hk-pre-commit.command`), which is a separate channel that git runs
+// alongside `core.hooksPath`, so husky and hk coexist and no crew hook is
+// displaced, rewritten, or re-expressed. `.husky/**/*` is excluded below so
+// that even `hk fix` cannot reformat a hook file.
+
+local excludes = new Listing<String> {
+  // SOPS-ENCRYPTED FILES -- HIGHEST-SEVERITY EXCLUSION. DO NOT REMOVE.
+  // This repo has 10 tracked `*.sops.*` files. Any byte-level rewrite
+  // (trailing whitespace, final newline, reformat) invalidates the SOPS MAC
+  // and renders the file PERMANENTLY UNDECRYPTABLE -- including
+  // `talos/talsecret.sops.yaml` and `kubernetes/components/common/sops-age.sops.yaml`,
+  // which are not recoverable from anywhere else.
+  // The `trailing-whitespace` and `newlines` steps below were verified to
+  // rewrite a sops file under `hk fix --all` when NOT excluded here.
+  // Note: a per-step `exclude` type-checks but does NOT actually filter in
+  // hk 1.53/1.54 -- the exclusion has to live at this top level to take effect.
+  "**/*.sops.yaml"
+  "**/*.sops.yml"
+  "**/*.sops.json"
+  "**/*.sops.env"
+  "**/*.sops.toml"
+  "**/*.agekey"
+
+  // Hook files. Six crew hooks and Husky.Net's runner live here; hk must not
+  // rewrite them under any circumstance.
+  ".husky/**/*"
+
+  // crew owns and rewrites everything under .crew/ -- keep hk out of it,
+  // otherwise the two tools fight over .crew/casting/*.json and
+  // .crew/templates/*.
+  ".crew/**/*"
+
+  // Vendored / generated agent trees. `Skillfile` installs the same upstream
+  // skills into BOTH `.claude/skills` and `.github/skills`, `apm.yml` populates
+  // `.agents/`, and `.github/agents/crew.agent.md` is generated from
+  // `.crew/templates/crew.agent.md.template`. Linting generated copies just
+  // creates churn that the next sync reverts.
+  // These also carry the only `detect-private-key` false positives in the repo:
+  // `skills/secret-handling/SKILL.md` and
+  // `skills/kubernetes-specialist/references/configuration.md` both quote the
+  // PEM private-key banner verbatim as documentation examples (no key body).
+  ".claude/**/*"
+  ".agents/**/*"
+  ".apm/**/*"
+  ".codex/**/*"
+  ".copilot/**/*"
+  ".github/skills/**/*"
+  ".github/agents/**/*"
+  "apm_modules/**/*"
+
+  // Editor / tooling state.
+  ".vscode/**/*"
+  ".idea/**/*"
+  ".venv/**/*"
+
+  // `#!/usr/bin/env zsh`. ShellCheck only supports sh/bash/dash/ksh and hard
+  // errors with SC1071 on zsh, so this is out of the tool's scope rather than
+  // a finding to fix.
+  "scripts/restore-databases.sh"
+}
+
+local linters = new Mapping<String, Step> {
+    // --- YAML: the primary artifact of this repo (494 tracked files) ---
+    // Configured by `.yamllint`, which disables the purely cosmetic rules and
+    // keeps the ones that catch manifests Flux would silently mis-apply --
+    // above all `key-duplicates`, where a repeated key in a HelmRelease drops
+    // the earlier value with no error anywhere in the pipeline.
+    ["yamllint"] = Builtins.yamllint
+
+    // --- GitHub Actions ---
+    // Shells out to shellcheck for `run:` blocks, which is the second reason
+    // shellcheck is pinned in .mise.toml.
+    ["actionlint"] = Builtins.actionlint
+
+    // --- Shell ---
+    // `.shellcheckrc` (disable=SC1091,SC2155) is already committed at the repo
+    // root; the tool was simply never wired to anything. This connects it.
+    ["shellcheck"] = Builtins.shellcheck
+
+    // --- Whitespace hygiene ---
+    // These DO rewrite files under a fix-enabled hook, which is exactly why
+    // the sops exclusions above are load-bearing.
+    //
+    // `trailing-whitespace` carries an explicit allowlist that omits Markdown.
+    // Two trailing spaces are a MEANINGFUL hard line break in Markdown, and
+    // stripping them silently joins paragraphs -- `hk fix --all` did exactly
+    // that to three sites in a documentation file before this was
+    // scoped. pre-commit solves this with `--markdown-linebreak-ext`; hk's
+    // builtin has no equivalent flag, and in hk 1.54 neither a per-step
+    // `exclude` nor a `!` negation inside `glob` actually filters (both
+    // type-check and are then ignored -- measured: 864/864 files still matched).
+    // A positive `glob` allowlist is the only mechanism that works, so that is
+    // what this is. Add extensions here as new file types arrive.
+    // `newlines` is left global: appending a missing final newline is
+    // semantically inert in every format here, Markdown included.
+    ["trailing-whitespace"] = (Builtins.trailing_whitespace) {
+        glob = List(
+            "**/*.yaml", "**/*.yml",
+            "**/*.json", "**/*.json5", "**/*.jsonl",
+            "**/*.toml",
+            "**/*.sh", "**/*.bash", "**/*.ps1",
+            "**/*.cs", "**/*.py", "**/*.js", "**/*.ts",
+            "**/*.env", "**/*.txt"
+        )
+    }
+    ["newlines"] = Builtins.newlines
+
+    // --- Repo-hygiene guards. Pure checks; they never rewrite a file. ---
+    ["check-merge-conflict"] = Builtins.check_merge_conflict
+    // High value in this repo specifically: `age.key`, `sgc.age.key`,
+    // `github-deploy.key` and `github-push-token.txt` all sit in the repo root,
+    // correctly gitignored today. This is the backstop against a future
+    // `git add -f` or a .gitignore edit.
+    ["detect-private-key"] = Builtins.detect_private_key
+    ["check-added-large-files"] = Builtins.check_added_large_files
+}
+
+exclude = excludes
+
+hooks {
+    ["pre-commit"] {
+        fix = false
+        stash = "none"
+        steps = linters
+    }
+
+    ["pre-push"] {
+        fix = false
+        stash = "none"
+        steps = linters
+    }
+
+    // `hk check` -- read-only, used by CI and by hand.
+    ["check"] {
+        steps = linters
+    }
+
+    // `hk fix` -- explicit, human-invoked auto-fix.
+    ["fix"] {
+        fix = true
+        steps = linters
+    }
+}

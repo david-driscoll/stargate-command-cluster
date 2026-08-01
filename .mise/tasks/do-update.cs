@@ -17,4 +17,3 @@ foreach (var item in Directory.EnumerateFiles("kubernetes", "Update.cs", SearchO
     Console.Error.WriteLine(line);
   }
 }
-

@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: tsiam
+spec:
+  name: Tailscale IAM
+  category: Infrastructure
+  description: >-
+    Tailscale-powered workload identity. Issues short-lived JWTs to machines
+    based on their tailnet node identity -- the machine-side counterpart to
+    tsidp, which authenticates humans.
+  url: https://tsiam.${TAILSCALE_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale.svg
+  # Deliberately NO `authentik:` block. tsidp sits behind an authentik forward-auth
+  # proxy because its callers are browsers; tsiam's callers are machines holding no
+  # session, so a forward-auth proxy in front of it would break every token request.
+  # Authorization is tailnet ACL capabilities (`italypaleale.me/tsiam`), not SSO.
+  gatus:
+    - group: "Applications"
+      url: https://tsiam.${TAILSCALE_DOMAIN}/.well-known/openid-configuration
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

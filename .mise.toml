@@ -40,6 +40,19 @@ helmfile = "1.7.2"
 kubeconform = "0.8.0"
 kustomize = "5.8.1"
 task = "3.52.0"
+# Git hook manager (see hk.pkl). MUST stay pinned here: hk registers itself as
+# `hk run pre-commit --from-hook` via git config, and an unpinned mise shim
+# fails inside the hook with `mise ERROR No version is set for shim: hk`.
+# The hook exits non-zero, git aborts the commit, and every later hook
+# (post-commit -> `crew sync`, pre-push -> crew-state push) silently never runs.
+hk = "1.54.0"
+# Linters invoked by hk. Same pinning rule applies -- an unpinned shim here
+# fails the step rather than the whole commit, but still breaks the hook.
+# actionlint shells out to `shellcheck` for `run:` blocks, so it hard-fails
+# with a `fatal error` if shellcheck is on PATH as an unpinned shim.
+actionlint = "1.7.12"
+shellcheck = "0.11.0"
+"pipx:yamllint" = "1.38.0"
 sops = "3.13.3"
 flux2 = "2.9.3"
 age = "1.3.1"

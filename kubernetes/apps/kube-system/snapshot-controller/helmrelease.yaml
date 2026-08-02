@@ -59,7 +59,13 @@ spec:
         annotations:
           snapshot.storage.kubernetes.io/is-default-class: "true"
         driver: driver.longhorn.io
-        deletionPolicy: Retain
+        # Must be Delete. VolSync's restic mover snapshots the source PVC, backs
+        # it up, then deletes the VolumeSnapshot. Under Retain the
+        # VolumeSnapshotContent -- and the Longhorn snapshot behind it -- was
+        # never reclaimed, so every VolSync-protected volume grew one permanent
+        # Longhorn snapshot per day until it hit snapshotMaxCount and deadlocked.
+        # See vault#123.
+        deletionPolicy: Delete
         parameters:
           # needed for successful VolumeSnapshots
           # see: https://github.com/longhorn/longhorn/issues/2534#issuecomment-1010508714

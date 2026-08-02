@@ -14,3 +14,22 @@ spec:
     - port: 443
       targetPort: 443
       name: https
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.2/service.json
+# Egress-only, exactly like the tsidp entry above: `tailnet-fqdn` + `proxy-group`.
+# NOT `tailscale.com/expose` -- an expose+proxy-group Service is the combination
+# that wedges in Terminating with a ghost tailnet device.
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: "tsiam.${TAILSCALE_DOMAIN}"
+    tailscale.com/proxy-group: tailnet-inbound
+  name: tsiam
+spec:
+  externalName: tsiam
+  type: ExternalName
+  ports:
+    - port: 443
+      targetPort: 443
+      name: https

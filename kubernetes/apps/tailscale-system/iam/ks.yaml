@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app tsiam
+  namespace: &namespace tailscale-system
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
+  dependsOn:
+    - name: tailscale-operator
+      namespace: tailscale-system
+    - name: volsync
+      namespace: volsync-system
+  path: ./kubernetes/apps/tailscale-system/iam
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../components/failover/fast-node-eviction
+    - ../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace
+      # distroless nonroot uid/gid -- must match the pod securityContext so the
+      # restic mover restores the signing key with ownership tsiam can read.
+      VOLSYNC_PUID: "65532"
+      VOLSYNC_PGID: "65532"
+      # Named explicitly: this cluster has TWO default StorageClasses (longhorn and
+      # openebs-hostpath), so an unqualified PVC can silently land on non-replicated
+      # node-local storage. See david-driscoll/vault#113.
+      VOLSYNC_STORAGECLASS: longhorn
+      # A JWK and a tsnet state dir. Kilobytes, not gigabytes.
+      VOLSYNC_CAPACITY: 1Gi

@@ -20,7 +20,10 @@ instance:
     path: kubernetes/flux/cluster
   kustomize:
     patches:
-    - # Increase the number of workers
+    - # Increase the number of workers.
+      # Effective concurrency: helm/source-controller = 10; kustomize-controller = 20,
+      # because the "in-memory kustomize builds" patch below appends a second
+      # --concurrent and Go's flag package takes the last occurrence.
       patch: |
         - op: add
           path: /spec/template/spec/containers/0/args/-
@@ -31,7 +34,24 @@ instance:
       target:
         kind: Deployment
         name: (kustomize-controller|helm-controller|source-controller)
-    - # Increase the memory limits
+    - # Memory limits, and NO CPU limit.
+      #
+      # `cpu: null` deletes the upstream 1000m limit rather than lowering it.
+      # CPU limits are enforced by the CFS quota, which throttles inside every
+      # 100ms period even when the node is completely idle — so a limit on a
+      # bursty, latency-sensitive reconciler buys nothing and costs latency.
+      # CPU limits also play no part in scheduling; only requests do, which are
+      # left untouched here, so the N-1 reservation math is unaffected.
+      #
+      # History: this patch previously set `cpu: 100m` (== the request), added by
+      # the 2026-07-04 N-1 resilience plan on the premise that oversized limits
+      # "distort scheduling/eviction math". They do not — requests do. The result
+      # was a kustomize-controller pegged at 100m and CFS-throttled up to 99.9%,
+      # no-op Kustomization reconciles taking 1-3 minutes (p95 103s vs equestria's
+      # 2.1s at ~2x the tree), and 14 liveness-probe failures in 7 days. The probe
+      # (/healthz, timeoutSeconds 1, failureThreshold 3) cannot answer inside a
+      # throttled slice, so kubelet SIGTERMs the container; it exits 0/Completed
+      # and the whole tree re-reconciles, which throttles it again. See vault#118.
       patch: |
         apiVersion: apps/v1
         kind: Deployment
@@ -44,12 +64,16 @@ instance:
                 - name: manager
                   resources:
                     limits:
-                      cpu: 100m
+                      cpu: null
                       memory: 1Gi
       target:
         kind: Deployment
         name: (kustomize-controller|helm-controller|source-controller)
-    - # Enable in-memory kustomize builds
+    - # Enable in-memory kustomize builds.
+      # The temp dir is a tmpfs, so build scratch space is charged to this pod's
+      # memory cgroup. With the CPU limit gone these 20 workers actually run in
+      # parallel instead of queueing, so raise the ceiling above the 436Mi peak
+      # observed while they were serialised by throttling.
       patch: |
         - op: add
           path: /spec/template/spec/containers/0/args/-
@@ -60,6 +84,9 @@ instance:
             name: temp
             emptyDir:
               medium: Memory
+        - op: add
+          path: /spec/template/spec/containers/0/resources/limits/memory
+          value: 2Gi
       target:
         kind: Deployment
         name: kustomize-controller

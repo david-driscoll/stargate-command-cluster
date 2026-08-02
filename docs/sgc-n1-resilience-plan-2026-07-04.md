@@ -199,6 +199,16 @@ This phase alone makes both documented incidents non-repeatable.
 **Files:** `kubernetes/apps/flux-system/flux-instance/**`
 **Scope:** S
 
+> **⚠️ REVERSED 2026-08-02 — this task was based on a false premise. Do not re-apply it.** See [vault#118](https://github.com/david-driscoll/vault/issues/118).
+>
+> CPU **limits** play no part in scheduling or in eviction ranking — only **requests** do, and this task never touched requests. So the ~6c of CPU limits it removed were not distorting anything, and trimming them bought zero N-1 headroom.
+>
+> What it did buy was harm. The plan's own text suggested 500m; the commit shipped `cpu: 100m`, equal to the request, and the second acceptance box ("controllers stay Ready; reconciliation unaffected") was never ticked. Measured a month later, kustomize-controller was CFS-throttled up to **99.9%**, no-op Kustomization reconciles ran at **p95 103s** (equestria, uncapped, ~2× the tree: **p95 2.1s**), and the `/healthz` liveness probe (`timeoutSeconds: 1`, `failureThreshold: 3`) failed **14 times in 7 days** — each trio of failures SIGTERMing the container, which then re-reconciled all 77 Kustomizations and throttled itself again.
+>
+> The CPU limit on kustomize/helm/source-controller is now removed outright (`cpu: null`) rather than raised, because a CFS quota throttles a bursty reconciler even on a fully idle node. Requests are unchanged at 100m/50m, so the N-1 reservation math this plan cared about is untouched.
+>
+> The memory half of the task stands: `memory: 1Gi` was and is a real ceiling.
+
 #### Task 2.3: Right-size home-assistant memory limit
 **Description:** home-assistant limit is 6 GiB vs 816 MiB used. Lower to a realistic ceiling (e.g. 2 GiB) to reduce the oversized reservation footprint.
 **Acceptance criteria:**

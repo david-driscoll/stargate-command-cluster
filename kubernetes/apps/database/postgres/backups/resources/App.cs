@@ -55,19 +55,25 @@ List<string> databases;
 }
 
 // Create individual database dumps
+var failed = new List<string>();
 foreach (var db in databases)
 {
+  var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
+  // Dump to a sibling temp file and only replace the existing backup once pg_dump
+  // has exited 0. Writing straight to backupFile truncates the last known-good
+  // dump before the new one is known to be valid.
+  var stagingFile = $"{backupFile}.tmp";
   try
   {
     var postgres = await GetItemByTitle($"{clusterKey}-{db}-postgres");
-    var connectionString = (await GetItemByTitle($"{clusterKey}-{db}-postgres")).Fields.Single(f => f.Label == "connection-string").Value.Dump();
+    var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
     await using var dataSource = NpgsqlDataSource.Create(connectionString);
 
     Console.WriteLine($"Backing up database: {db}");
-    var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
     Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
 
-    await CreateDatabaseDump(postgres, db, backupFile);
+    await CreateDatabaseDump(postgres, db, stagingFile);
+    File.Move(stagingFile, backupFile, overwrite: true);
 
     if (File.Exists(backupFile))
     {
@@ -75,16 +81,29 @@ foreach (var db in databases)
     }
     else
     {
-      Console.WriteLine($"Failed to create backup for database: {db}");
+      Console.Error.WriteLine($"Failed to create backup for database: {db}");
+      failed.Add(db);
     }
   }
   catch (Exception ex)
   {
-    Console.WriteLine($"Error backing up database {db}: {ex.Message}");
+    Console.Error.WriteLine($"Error backing up database {db}: {ex.Message}");
+    failed.Add(db);
+  }
+  finally
+  {
+    if (File.Exists(stagingFile)) File.Delete(stagingFile);
   }
 }
 
-Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow}");
+if (failed.Count > 0)
+{
+  Console.Error.WriteLine($"PostgreSQL backup FAILED at {DateTime.UtcNow}: {failed.Count} of {databases.Count} database(s) were not backed up: {string.Join(", ", failed)}");
+  return 1;
+}
+
+Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow} ({databases.Count} databases)");
+return 0;
 
 // Helper methods
 async Task<List<string>> GetDatabases(NpgsqlDataSource dataSource)
@@ -123,16 +142,23 @@ async Task CreateDatabaseDump(FullItem postgres, string database, string outputF
   using var process = Process.Start(psi);
   if (process == null) throw new InvalidOperationException("Failed to start pg_dump process");
 
-  // Compress the output
-  using var fileStream = File.Create(outputFile);
-  using var gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
+  // --verbose writes progress to stderr throughout the dump. Drain it concurrently
+  // with stdout: reading it only after the process exits deadlocks once the stderr
+  // pipe buffer fills, because pg_dump then blocks before it can finish writing stdout.
+  var errorTask = process.StandardError.ReadToEndAsync();
 
-  await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
+  // Compress the output
+  await using (var fileStream = File.Create(outputFile))
+  await using (var gzipStream = new GZipStream(fileStream, CompressionMode.Compress))
+  {
+    await process.StandardOutput.BaseStream.CopyToAsync(gzipStream);
+  }
+
   await process.WaitForExitAsync();
+  var error = await errorTask;
 
   if (process.ExitCode != 0)
   {
-    var error = await process.StandardError.ReadToEndAsync();
     throw new InvalidOperationException($"pg_dump failed: {error}");
   }
 }

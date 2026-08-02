@@ -3,7 +3,6 @@
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package KubernetesClient@*
 #:package Microsoft.Extensions.Logging@10.*
-#:package Dumpify@0.7.0
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
 #:package ProcessX@1.5.6
 #:package 1Password.Connect.Sdk@1.0.4
@@ -13,7 +12,6 @@
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Text.Json;
-using Dumpify;
 using Npgsql;
 using OnePassword.Connect.Sdk;
 using OnePassword.Connect.Sdk.Models;
@@ -47,7 +45,9 @@ List<string> databases;
 {
   // Get list of databases
   var postgres = await GetItemByTitle("${CLUSTER_CNAME}-postgres-user");
-  var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
+  // NEVER log this — the connection string embeds the plaintext password and
+  // pod stdout is shipped to Loki.
+  var connectionString = GetField(postgres, "connection-string");
   Console.WriteLine("Fetching list of databases...");
   await using var dataSource = NpgsqlDataSource.Create(connectionString);
   databases = await GetDatabases(dataSource);
@@ -66,10 +66,9 @@ foreach (var db in databases)
   try
   {
     var postgres = await GetItemByTitle($"{clusterKey}-{db}-postgres");
-    var connectionString = postgres.Fields.Single(f => f.Label == "connection-string").Value.Dump();
-    await using var dataSource = NpgsqlDataSource.Create(connectionString);
 
-    Console.WriteLine($"Backing up database: {db}");
+    // Host/port/user only — never the password or the full connection string.
+    Console.WriteLine($"Backing up database: {db} ({GetField(postgres, "username")}@{GetField(postgres, "hostname")}:{GetField(postgres, "port")})");
     Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
 
     await CreateDatabaseDump(postgres, db, stagingFile);

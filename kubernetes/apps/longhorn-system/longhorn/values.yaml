@@ -1,7 +1,12 @@
 ---
 
+# The dollars below are DOUBLED, which is the escape. configMapGenerator
+# slurps this file whole and Flux postBuild envsubst then runs over the built
+# output, comments included -- unescaped, this commented-out example put the
+# real Spike IP and cluster name into the deployed ConfigMap. Halve them again
+# when uncommenting.
 # defaultBackupStore:
-#   backupTarget: nfs://${SPIKE_IP}:/mnt/stash/backup/${CLUSTER_CNAME}/longhorn
+#   backupTarget: nfs://$${SPIKE_IP}:/mnt/stash/backup/$${CLUSTER_CNAME}/longhorn
   # backupTargetCredentialSecret: s3-secret
 preUpgradeChecker:
   upgradeVersionCheck: false

@@ -15,7 +15,20 @@ defaultSettings:
   guaranteedInstanceManagerCpu: 5
   nodeDownPoddeletionPolicy: Delete-both-statefulset-and-deployment-pod
   volumeAttachmentRecoveryPolicy: never
-  orphanAutoDeletion: true
+  # Chart key is orphanResourceAutoDeletion (chart 1.12.0) and the value is a
+  # SEMICOLON-separated list of resource types, not a boolean. The old
+  # `orphanAutoDeletion: true` matched no key in the chart, so it was dropped
+  # silently and orphan-resource-auto-deletion has been empty -- nothing was
+  # ever cleaned up. Valid items: `instance` (engine and replica runtime
+  # instances) and `replica-data` (replica data directories on disk).
+  #
+  # Only `instance` is enabled. Every orphan on both clusters is an
+  # engine-instance left behind by the VolSync movers, and those are what drive
+  # the respawn loop on milky-way. `replica-data` deletes actual replica data
+  # directories and has never been active on this estate, so turning it on is a
+  # separate, deliberate decision -- not a side effect of this fix. See vault#123.
+  orphanResourceAutoDeletion: instance
+  orphanResourceAutoDeletionGracePeriod: 300
   replicaAutoBalance: best-effort
   storageMinimalAvailablePercentage: 5
   storageReservedPercentageForDefaultDisk: 10

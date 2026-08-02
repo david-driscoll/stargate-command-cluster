@@ -82,7 +82,13 @@ spec:
         runAsNonRoot: true
         runAsUser: 65532
         runAsGroup: 65532
+        # fsGroup is load-bearing, not decoration: it is what makes the PVC root
+        # group-writable + setgid (0:65532 mode 2775) so tsiam can create and own
+        # its own subdirectories under /var/lib/tsiam. It cannot make tsiam own
+        # the root itself -- fsGroup never changes uid. See signingKey.file below.
         fsGroup: 65532
+        # OnRootMismatch, not Always: the walk is group-only either way, so Always
+        # buys nothing here and just re-chowns the tree on every mount.
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
@@ -136,7 +142,35 @@ spec:
               storage: file
               algorithm: ES256
               file:
-                storagePath: /var/lib/tsiam/signing-key.json
+                # A SUBDIRECTORY, never the volume mount root. tsiam's
+                # NewFileKeyStorage (pkg/keystorage/keystorage-file.go) does
+                # MkdirAll(dir, 0700) followed by an *unconditional* Chmod(dir, 0700)
+                # on filepath.Dir(storagePath), on every single start.
+                #
+                # chmod(2) requires the caller to own the file or hold CAP_FOWNER, and
+                # it enforces that before it compares modes -- so it fails even when
+                # the mode is already correct. This container drops ALL capabilities,
+                # so it must own the directory outright.
+                #
+                # It cannot own the mount root. fsGroup only ever chowns the *group*
+                # (kubelet calls chown(path, -1, fsGroup) and adds g+rwX plus setgid),
+                # so a freshly provisioned Longhorn volume roots at
+                # `0:65532 mode 2775` and stays uid 0 forever. Pointing storagePath at
+                # the root made tsiam chmod / that root and crash-loop on
+                # "chmod /var/lib/tsiam: operation not permitted" (see sgc#1739
+                # follow-up). fsGroupChangePolicy: Always does NOT help -- it re-runs
+                # the same group-only walk; verified against the live volume.
+                #
+                # Under a subdirectory it works without touching the security context:
+                # the root is 2775 and group-writable by fsGroup 65532, so tsiam
+                # creates `keys/` itself and therefore owns it, and the setgid bit
+                # carries gid 65532 down. This also survives a VolSync restore: the
+                # restic mover runs as VOLSYNC_PUID/PGID 65532, so a restored
+                # `keys/` comes back owned by 65532 too, while the mount root is
+                # re-created as uid 0 by the filesystem every time regardless.
+                #
+                # tsnet.stateDir above is a subdirectory for the same reason.
+                storagePath: /var/lib/tsiam/keys/signing-key.json
 
             logs:
               level: info

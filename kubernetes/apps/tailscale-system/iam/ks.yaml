@@ -30,32 +30,21 @@ spec:
   components:
     - ../../../components/failover/fast-node-eviction
     - ../../../components/volsync
-    # BOOTSTRAP ONLY -- REMOVE ONCE THE RESTORE HAS COMPLETED.
+    # NOTE: components/volsync-restore was here for the #1739 bootstrap and has
+    # now been removed -- its removal obligation is discharged. The RD completed
+    # (status.lastManualSync=restore-once, lastSyncTime 2026-08-02T01:16:01Z,
+    # "No eligible snapshots found / No data will be restored" -- the intended
+    # empty-volume bootstrap path), the PVC is Bound, and the ReplicationSource
+    # is backing up. Dropping the component prunes the RD and cascades away the
+    # volsync-tsiam-dst-dest / volsync-dst-tsiam-dst-cache pair, which is exactly
+    # what the nightly cleanup CronJob would have done at 03:30. Leaving it in
+    # would have Flux recreate the RD every reconcile and fight that job -- the
+    # permanent -dst-dest/-dst-cache pair caused the 2026-07 Longhorn incident.
     #
-    # components/volsync always stamps the app PVC with a dataSourceRef to a
-    # ReplicationDestination named ${APP}-dst, but the ReplicationDestination
-    # itself lives here, in components/volsync-restore. Without it the PVC is
-    # claimed by the VolSync volume populator, Longhorn stands down
-    # ("assuming an external populator will provision the volume"), and the
-    # populator waits forever for an object nothing creates -- so the PVC never
-    # binds and the pod never schedules. That is exactly what happened on the
-    # initial tsiam deploy (#1737).
-    #
-    # tsiam has no backup to restore: the restic repository at /repository/tsiam
-    # does not exist yet. That is fine and is the intended bootstrap path. The
-    # restic mover runs `ensure_initialized` (creating the repo) and then
-    # do_restore finds nothing, logs "No eligible snapshots found / No data will
-    # be restored", and exits 0. The result is an empty volume, a bound PVC, and
-    # an initialized repository for the ReplicationSource to back up into.
-    #
-    # Lifecycle from here (see components/volsync-restore/AGENTS.md):
-    #   1. RD restores (no-op), sets status.lastManualSync=restore-once, PVC binds.
-    #   2. The nightly volsync-restore-cleanup CronJob (03:30) deletes the
-    #      completed RD, cascading away the -dst-dest/-dst-cache PVCs.
-    #   3. This component MUST then be removed from this list, or Flux recreates
-    #      the RD every reconcile and fights the cleanup job -- the permanent
-    #      -dst-dest/-dst-cache pair is what caused the 2026-07 Longhorn incident.
-    - ../../../components/volsync-restore
+    # Re-add it (temporarily, same removal obligation) only if the tsiam PVC ever
+    # has to be rebuilt: components/volsync stamps the PVC with a dataSourceRef to
+    # a ReplicationDestination that only that component creates, so without it a
+    # fresh PVC never binds.
   postBuild:
     substitute:
       APP: *app

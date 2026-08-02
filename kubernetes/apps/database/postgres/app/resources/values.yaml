@@ -31,7 +31,17 @@ backups:
   provider: s3
   s3:
     region: "{{ .minio_region }}"
-    bucket: "{{ .backblaze_bucket }}"
+    # A Minio bucket, because the endpoint URL, access key and secret key
+    # around it are all Minio-on-truenas. What stood here until vault#119 was
+    # a templated reference to the backblaze item's bucket field, which names
+    # a bucket that exists only on Backblaze B2 -- so every WAL archive died
+    # with NoSuchBucket, reported as barman's opaque "exit status 4". Do not
+    # reintroduce a backblaze-prefixed reference here: the two 1Password items
+    # this file is templated from are told apart only by that prefix, and
+    # nothing downstream will catch the mismatch. The bucket is provisioned in
+    # home-operations stacks/home and must exist before this reconciles,
+    # because barman-cloud does not create buckets.
+    bucket: "cnpg-${CLUSTER_CNAME}"
     # Dedicated prefix so barman's base backups + WAL never share a namespace
     # with the logical dumps or the `-restore` staging bucket.
     path: "/barman/${CLUSTER_CNAME}"

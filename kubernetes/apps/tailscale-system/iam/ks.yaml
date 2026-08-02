@@ -30,6 +30,32 @@ spec:
   components:
     - ../../../components/failover/fast-node-eviction
     - ../../../components/volsync
+    # BOOTSTRAP ONLY -- REMOVE ONCE THE RESTORE HAS COMPLETED.
+    #
+    # components/volsync always stamps the app PVC with a dataSourceRef to a
+    # ReplicationDestination named ${APP}-dst, but the ReplicationDestination
+    # itself lives here, in components/volsync-restore. Without it the PVC is
+    # claimed by the VolSync volume populator, Longhorn stands down
+    # ("assuming an external populator will provision the volume"), and the
+    # populator waits forever for an object nothing creates -- so the PVC never
+    # binds and the pod never schedules. That is exactly what happened on the
+    # initial tsiam deploy (#1737).
+    #
+    # tsiam has no backup to restore: the restic repository at /repository/tsiam
+    # does not exist yet. That is fine and is the intended bootstrap path. The
+    # restic mover runs `ensure_initialized` (creating the repo) and then
+    # do_restore finds nothing, logs "No eligible snapshots found / No data will
+    # be restored", and exits 0. The result is an empty volume, a bound PVC, and
+    # an initialized repository for the ReplicationSource to back up into.
+    #
+    # Lifecycle from here (see components/volsync-restore/AGENTS.md):
+    #   1. RD restores (no-op), sets status.lastManualSync=restore-once, PVC binds.
+    #   2. The nightly volsync-restore-cleanup CronJob (03:30) deletes the
+    #      completed RD, cascading away the -dst-dest/-dst-cache PVCs.
+    #   3. This component MUST then be removed from this list, or Flux recreates
+    #      the RD every reconcile and fights the cleanup job -- the permanent
+    #      -dst-dest/-dst-cache pair is what caused the 2026-07 Longhorn incident.
+    - ../../../components/volsync-restore
   postBuild:
     substitute:
       APP: *app
@@ -44,3 +70,8 @@ spec:
       VOLSYNC_STORAGECLASS: longhorn
       # A JWK and a tsnet state dir. Kilobytes, not gigabytes.
       VOLSYNC_CAPACITY: 1Gi
+      # Both movers read this. It defaults to 2Gi in the ReplicationSource but
+      # 8Gi in the ReplicationDestination, so leaving it unset would provision an
+      # 8Gi replicated Longhorn cache volume to restore zero bytes. Restic only
+      # caches index/metadata here, and the payload is a JWK plus tsnet state.
+      VOLSYNC_CACHE_CAPACITY: 1Gi

@@ -5,7 +5,21 @@ localpv-provisioner:
   hostpathClass:
     enabled: true
     name: openebs-hostpath
-    isDefaultClass: true
+    # NOT default. `longhorn` is the sole default StorageClass on this cluster.
+    #
+    # Both classes used to carry storageclass.kubernetes.io/is-default-class=true.
+    # With two defaults the API server picks the most recently created one, so
+    # which class an unqualified PVC binds to depended on cluster history and
+    # could flip silently on any recreate (Helm upgrade, Flux prune-and-reapply,
+    # cluster rebuild). openebs-hostpath is node-local: no replication, no
+    # Longhorn snapshots, no VolSync coverage -- and the PVC still binds and the
+    # pod still starts, so nothing surfaces the difference until a node is lost.
+    #
+    # Setting this false makes the chart omit the annotation entirely; Helm's
+    # three-way merge removes it from the live StorageClass. The class itself
+    # stays available for anything that asks for it by name.
+    # See david-driscoll/vault#113.
+    isDefaultClass: false
     basePath: *basePath
 openebs-crds:
   csi:

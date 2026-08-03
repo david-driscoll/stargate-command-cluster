@@ -19,6 +19,15 @@ spec:
     - name: ssh
       port: 22
       targetPort: 22
+    - name: llm
+      port: 8080
+      targetPort: 8080
+    - name: stt
+      port: 10300
+      targetPort: 10300
+    - name: tts
+      port: 10200
+      targetPort: 10200
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Probe

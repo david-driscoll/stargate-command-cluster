@@ -76,6 +76,23 @@ var extraPorts = new Dictionary<string, Dictionary<ServiceKind, PortDef[]>>
   {
     [ServiceKind.Dockge] = [new("adguard", 4000, false, null)]
   },
+  // luna hosts the Home Assistant voice pipeline: llama.cpp (gemma-4-E2B) on
+  // 8080 and wyoming whisper/piper STT/TTS on 10300/10200. HA runs on this
+  // cluster (hostNetwork) and reaches them through this egress service — the
+  // dockge-* DNS names resolve to tailnet IPs that SGC nodes cannot route.
+  ["luna"] = new()
+  {
+    [ServiceKind.Dockge] = [
+      new("llm", 8080, false, null),
+      new("stt", 10300, false, null),
+      new("tts", 10200, false, null),
+    ]
+  },
+  // celestia hosts llama-agent (gemma-4-E4B, Hermes' backend) on 8081
+  ["celestia"] = new()
+  {
+    [ServiceKind.Dockge] = [new("llm-agent", 8081, false, null)]
+  },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

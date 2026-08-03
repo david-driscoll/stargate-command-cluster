@@ -56,6 +56,31 @@ servers:
         parameters: name regex ([a-z0-9-]+)\.dns\.driscoll\.tech dns-{1}.${TAILSCALE_DOMAIN} answer auto
       - name: forward
         parameters: . "${TAILSCALE_NAMESERVER_IP}"
+  # Dockge hosts by their canonical names: dockge-*.driscoll.tech resolves to
+  # tailnet IPs on the estate's split-horizon DNS, which SGC nodes cannot
+  # route. Same trick as the dns.driscoll.tech block above — exact-name zones
+  # (so every other driscoll.tech query is untouched), rewritten to the
+  # tailnet name and resolved via the tailscale operator nameserver to the
+  # in-cluster egress service ClusterIP (tailscale-system/services/*.yaml).
+  # This is what lets Home Assistant use dockge-luna.driscoll.tech for the
+  # voice pipeline (llm 8080 / stt 10300 / tts 10200) and
+  # dockge-celestia.driscoll.tech for llama-agent (8081).
+  - zones:
+      - zone: dockge-luna.driscoll.tech
+        scheme: dns://
+        use_tcp: false
+      - zone: dockge-celestia.driscoll.tech
+        scheme: dns://
+        use_tcp: false
+    port: 53
+    plugins:
+      - name: errors
+      - name: cache
+        parameters: 30
+      - name: rewrite
+        parameters: name regex (dockge-[a-z0-9-]+)\.driscoll\.tech {1}.${TAILSCALE_DOMAIN} answer auto
+      - name: forward
+        parameters: . "${TAILSCALE_NAMESERVER_IP}"
   # Tailscale DNS stub zone for ts.net domains
   - zones:
       - zone: ts.net

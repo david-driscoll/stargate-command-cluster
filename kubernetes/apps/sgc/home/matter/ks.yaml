@@ -31,6 +31,7 @@ spec:
     namespace: flux-system
   components:
     - ../../../../components/volsync
+    - ../../../../components/volsync-restore
   postBuild:
     substitute:
       APP: *app

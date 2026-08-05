@@ -57,7 +57,22 @@ defaultSettings:
   # replicaDiskSoftAntiAffinity: false
 
   allowEmptyDiskSelectorVolume: true
-  nodeDrainPolicy: block-for-eviction-if-contains-last-replica
+  # `block-for-eviction-if-contains-last-replica` deadlocks Talos upgrades on any
+  # node holding a `longhorn-local` volume. That policy tells Longhorn to REBUILD
+  # the last replica on another node before releasing the drain -- but those
+  # volumes are `strict-local` with `numberOfReplicas: 1` and hard PV nodeAffinity,
+  # so the rebuild can never be scheduled ("hard affinity cannot be satisfied").
+  # Longhorn then holds the volume attached forever, keeps the per-node
+  # instance-manager PDB at 0 allowed disruptions, and tuppr's drain retries until
+  # it times out. Meanwhile the pinned workloads (valkey, postgres-3, technitium)
+  # sit Pending because their PV only matches the cordoned node. See vault#TBD.
+  #
+  # `allow-if-replica-is-stopped` still refuses to drain a node whose last replica
+  # is actively RUNNING, but lets the drain through once the workload is gone and
+  # the replica has stopped -- which is exactly the upgrade case. Trade-off: if a
+  # drained node never comes back, a single-replica volume on it is lost. That is
+  # already true for every `longhorn-local` volume by construction.
+  nodeDrainPolicy: allow-if-replica-is-stopped
 ingress:
   enabled: true
   ingressClassName: internal

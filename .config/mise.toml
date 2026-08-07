@@ -21,7 +21,7 @@ task = "3.52.0"
 # fails inside the hook with `mise ERROR No version is set for shim: hk`.
 # The hook exits non-zero, git aborts the commit, and every later hook
 # (post-commit -> `crew sync`, pre-push -> crew-state push) silently never runs.
-hk = "1.54.0"
+hk = "1.54.1"
 # Linters invoked by hk. Same pinning rule applies -- an unpinned shim here
 # fails the step rather than the whole commit, but still breaks the hook.
 # actionlint shells out to `shellcheck` for `run:` blocks, so it hard-fails

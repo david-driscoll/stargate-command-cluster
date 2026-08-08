@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./ocirepository.yaml
+  - ./helmrelease.yaml
+  - ./httproute.yaml
+  - ./definition.yaml
+  - ./externalsecret.yaml
+  - ./secret.sops.yaml
+  #
+  # The two secret-bearing values arrive by different routes, and the split is
+  # deliberate:
+  #
+  #   externalsecret.yaml  pg-connection-url → BAO_PG_CONNECTION_URL, read from
+  #                        the generated `openbao-postgres` secret via
+  #                        ClusterSecretStore/database. Not copied, so it
+  #                        rotates with the role.
+  #
+  #   secret.sops.yaml     transit-token → VAULT_TRANSIT_SEAL_TOKEN. An orphan
+  #                        periodic token carrying only update on
+  #                        transit/encrypt/openbao-equestria-unseal and
+  #                        transit/decrypt/openbao-equestria-unseal. Minted
+  #                        against bao-transit; nothing here can regenerate it,
+  #                        so it is mirrored at
+  #                        vault/bootstrap/openbao/transit-token.sops.yaml per
+  #                        that repo's INVENTORY.md.
+  #
+  # Everything else about the server config is plaintext in helmrelease.yaml.

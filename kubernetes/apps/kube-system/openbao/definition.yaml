@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: OpenBao
+  category: Applications
+  description: Secrets management — source of truth for the estate
+  url: https://bao.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/openbao.svg
+  access_policy:
+    groups:
+      - admins
+      - family
+  authentik:
+    oauth2:
+      clientType: confidential
+      allowedRedirectUris:
+        # The UI login callback. The path segment appears twice by design:
+        # /auth/<mount-path>/oidc/callback with the default mount path "oidc".
+        - url: "https://bao.${CLUSTER_DOMAIN}/ui/vault/auth/oidc/oidc/callback"
+        # `bao login -method=oidc` runs a local listener on 8250 for the CLI flow.
+        - url: "http://localhost:8250/oidc/callback"
+      propertyMappings:
+        - email
+        - openid
+        # profile carries the `groups` claim, which the OpenBao roles bind on:
+        # admins -> policy admin, family -> policy viewer (see
+        # vault:bootstrap/openbao/equestria-init.sh `oidc`).
+        - profile
+      includeClaimsInIdToken: true
+      subMode: user_email
+  gatus:
+    # Probe the health endpoint rather than the UI root, which redirects.
+    # standbyok=true so a standby answering the probe reports 200 instead of
+    # 429 — without it this alerts every time the route lands on a non-leader.
+    # A sealed node still returns 503 and an uninitialised one 501, so the
+    # cases worth being paged for continue to fail.
+    - url: "https://bao.${CLUSTER_DOMAIN}/v1/sys/health?standbyok=true"
+      method: GET
+      interval: 1m
+      conditions:
+        - "[STATUS] == 200"

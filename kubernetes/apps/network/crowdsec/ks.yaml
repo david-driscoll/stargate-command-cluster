@@ -14,11 +14,36 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
+  # D5: previously absent. The LAPI keeps all of its state in the shared CNPG
+  # cluster and its Helm values Secret is rendered by external-secrets, so both
+  # have to be up before this can succeed.
+  dependsOn:
+    - name: postgres
+      namespace: database
+    - name: external-secrets
+      namespace: kube-system
   path: ./kubernetes/apps/network/crowdsec
+  # D4 (superseded): this entry was previously dropped on the grounds that
+  # ../../../components/postgres is `resources: []` and only re-stamps the two
+  # labels commonMetadata already applies. That is true of the component as
+  # *kustomize* sees it, but it missed the second job the entry does:
+  #
+  #   components/postgres/Update.cs discovers which apps need a database by
+  #   scanning every ks.yaml for this exact reference in spec.components.
+  #
+  # With it absent, crowdsec was invisible to the generator. Its role, Database
+  # CR, password Secret and PushSecrets survived only because nobody re-ran
+  # `task update` -- and the moment someone did (1056ef2), all four were
+  # regenerated away while crowdsec's ExternalSecret went on extracting
+  # `${APP}-postgres`. Restored so the generator can see it again.
+  #
+  # Do not drop this again to tidy up. It is load-bearing.
   components:
     - ../../../components/postgres
   prune: true
-  wait: false
+  # D5: wait: true so crowdsec-ui can dependsOn this and get a real readiness
+  # signal instead of "the HelmRelease object exists".
+  wait: true
   force: false
   interval: 1h
   retryInterval: 2m

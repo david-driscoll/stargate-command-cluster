@@ -1,12 +1,18 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: crowdsec-charts
+  name: crowdsec
 spec:
-  interval: 2h
-  url: https://crowdsecurity.github.io/helm-charts
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.24.0
+    digest: sha256:a2c4fbf4f4692d9fca09d51d102c7e417fbe93b609356c4777f9cc31cb202458
+  url: oci://ghcr.io/crowdsecurity/helm-charts/crowdsec
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -15,14 +21,9 @@ metadata:
   name: crowdsec
   namespace: network
 spec:
-  chart:
-    spec:
-      chart: crowdsec
-      version: 0.21.1
-      sourceRef:
-        kind: HelmRepository
-        name: crowdsec-charts
-      interval: 10m
+  chartRef:
+    kind: OCIRepository
+    name: crowdsec
   maxHistory: 3
   interval: 1h
   timeout: 10m
@@ -43,7 +44,86 @@ spec:
     recreate: true
   uninstall:
     keepHistory: false
+  # ConfigMap, not Secret. values.yaml carries no secret material at all now --
+  # the LAPI pulls every credential from the `crowdsec-secrets` Secret through
+  # secretKeyRef env vars. That is what lets values.yaml be consumed raw, with
+  # nothing rendering it as a Go template on the way here. See
+  # externalsecret.yaml for the outage this replaced.
   valuesFrom:
-    - kind: Secret
+    - kind: ConfigMap
       name: ${APP}-values
       valuesKey: values.yaml
+  # Inline rather than in values.yaml on purpose. The chart hard-fails template
+  # rendering when neither `acquisition` nor `additionalAcquisition` is set
+  # (agent-daemonSet.yaml), and flate resolves NO valuesFrom reference at all --
+  # not Secrets and not ConfigMaps, verified by rendering longhorn and traefik
+  # through it and getting chart defaults back. Keeping this one key inline is
+  # what lets `flate test` render this release instead of erroring. spec.values
+  # deep-merges over valuesFrom, so the rest of `agent:` still comes from
+  # values.yaml.
+  #
+  # Corollary, and the reason #2977 and #2980 both shipped broken: a green
+  # `flate test` says nothing about whether this release's real values are
+  # sound. It never sees them. `scripts/eso-values-lint` is the check that does.
+  values:
+    agent:
+      acquisition:
+        - namespace: network
+          podName: traefik-*
+          program: traefik
+  # ---- console-enrolment guard -------------------------------------------
+  # Makes `cscli console enroll` unable to kill the LAPI.
+  #
+  # WHY A POSTRENDERER AND NOT A CHART VALUE: there is no chart value for this,
+  # verified rather than assumed against chart 0.24.0 itself. The entrypoint is
+  # embedded with `.Files.Get "files/docker-start-custom.sh"` into a fixed
+  # ConfigMap name (templates/docker-start-configmap.yaml), the `command` below
+  # is a hardcoded string in templates/lapi-deployment.yaml with no value hook,
+  # and neither values.yaml nor values.schema.json exposes any enrol-related
+  # toggle. 0.24.0 is also the newest published chart, and the call is still
+  # unguarded on the chart's main branch, so there is no upgrade to wait for.
+  # The only remaining lever is the command line, hence this.
+  #
+  # WHAT IT DOES: rewrites the one `cscli console enroll` line of the entrypoint
+  # to append `|| echo ...` before running it, so a rejected key logs and the
+  # script continues to bouncer registration instead of aborting under `set -e`.
+  # The rewrite is a copy to /tmp; the ConfigMap mount stays read-only.
+  #
+  # FAILS OPEN: if a future chart changes that line so the pattern stops
+  # matching, sed passes the script through untouched and behaviour is exactly
+  # what it is today -- the guard can stop protecting, it cannot itself break
+  # startup. Grep for CROWDSEC_CONSOLE_ENROLL_FAILED_NONFATAL in the LAPI log to
+  # see the guard actually catch something.
+  #
+  # COUPLING TO WATCH: the `cp`/`ln` half of this command is copied verbatim
+  # from templates/lapi-deployment.yaml (emitted only when
+  # lapi.persistentVolume.config.enabled is true, which it is). The chart is
+  # pinned by digest above, so a bump is a deliberate act -- re-diff this
+  # command against the chart's own when you take one.
+  #
+  # Deliberately no dollar signs anywhere in the command: this file is subject
+  # to Flux postBuild envsubst, and a bare or braced name would be eaten.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: crowdsec-lapi
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: crowdsec-lapi
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: crowdsec-lapi
+                        command:
+                          - sh
+                          - -c
+                          - >-
+                            cp -nR /staging/etc/crowdsec/* /etc/crowdsec_data/
+                            && ln -s /etc/crowdsec_data /etc/crowdsec
+                            && sed 's#^\( *\)cscli console enroll \(.*\)#\1cscli console enroll \2 || echo CROWDSEC_CONSOLE_ENROLL_FAILED_NONFATAL#' /docker_start.sh > /tmp/docker_start.sh
+                            && bash /tmp/docker_start.sh

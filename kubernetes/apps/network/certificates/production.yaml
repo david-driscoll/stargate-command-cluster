@@ -24,3 +24,6 @@ spec:
     # - "*.web.${CLUSTER_DOMAIN}"
     - "*.${INTERNAL_DOMAIN}"
     - "*.${EXTERNAL_DOMAIN}"
+    # Coder per-workspace app subdomains (code.${ROOT_DOMAIN} itself is already
+    # covered by the *.${ROOT_DOMAIN} wildcard above).
+    - "*.code.${ROOT_DOMAIN}"

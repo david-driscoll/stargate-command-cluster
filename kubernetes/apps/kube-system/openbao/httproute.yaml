@@ -1,0 +1,22 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ${APP}
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "${INTERNAL_DOMAIN}"
+spec:
+  parentRefs:
+    - name: internal
+      namespace: network
+      kind: Gateway
+  hostnames:
+    - "bao.${CLUSTER_DOMAIN}"
+  rules:
+    - backendRefs:
+        # The plain service fronts every replica. Standbys forward writes to the
+        # active node, so this is correct for both reads and writes; the chart
+        # also emits an ${APP}-active service if you would rather pin to the
+        # leader and skip the forwarding hop.
+        - name: ${APP}
+          port: 8200

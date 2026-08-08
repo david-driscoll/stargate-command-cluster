@@ -1,0 +1,189 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app openbao
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      enabled: true
+    # The agent injector and the CSI provider are alternative ways to get
+    # secrets into pods. This estate uses external-secrets for that, so both
+    # stay off — they would only add another moving part with its own webhook.
+    injector:
+      enabled: false
+    csi:
+      enabled: false
+    ui:
+      enabled: true
+    server:
+      # The whole config below is delivered as a ConfigMap, and OpenBao reads it
+      # once at process start. A config-only change therefore leaves the
+      # StatefulSet's pod template untouched, so nothing rolls and the running
+      # servers keep serving the OLD config indefinitely — Flux reports success
+      # the entire time. That bit us on the OIDC bootstrap: the generate-root
+      # listener toggle sat in the mounted file for 15h while every request
+      # still 403'd. Reloader (estate-wide convention) watches the mounted
+      # ConfigMap and rolls the StatefulSet when it changes.
+      #
+      # RollingUpdate is the other half, and without it the annotation above is
+      # inert: the chart defaults to updateStrategyType OnDelete, under which
+      # the StatefulSet controller never replaces a pod on its own — not even
+      # when the pod template changes, which is exactly what reloader patches.
+      # (`kubectl rollout restart` also refuses outright on an OnDelete
+      # StatefulSet, so that workaround was never going to work either.)
+      #
+      # OnDelete is the right default for upstream Vault, where a Shamir-sealed
+      # server needs a human to unseal every restarted pod. That reasoning does
+      # not apply here: this cluster auto-unseals through the transit seal
+      # against bao-transit, so a restarted pod comes back unsealed on its own.
+      # With 3 HA replicas replaced one at a time, rolling is safe.
+      updateStrategyType: RollingUpdate
+      statefulSet:
+        annotations:
+          reloader.stakater.com/auto: "true"
+      ha:
+        enabled: true
+        replicas: 3
+        # Storage is Postgres, not the integrated Raft backend. Leader election
+        # happens through the openbao_ha_locks table instead of Raft consensus,
+        # so there is no quorum to maintain here.
+        raft:
+          enabled: false
+        disruptionBudget:
+          maxUnavailable: 1
+        # The two secret-bearing values — the Postgres password inside
+        # connection_url, and the transit token — are injected as environment
+        # variables below rather than written here, so this config stays
+        # reviewable in git. Both are documented as env-overridable and both
+        # were confirmed against the OpenBao source, not just the docs:
+        #   BAO_PG_CONNECTION_URL       physical/postgresql/postgresql.go:282
+        #   VAULT_TRANSIT_SEAL_TOKEN    go-kms-wrapping transit_client.go:31
+        # In every case the environment variable takes precedence over the
+        # config file, so omitting the field here is the intended usage.
+        config: |
+          ui = true
+
+          listener "tcp" {
+            address     = "0.0.0.0:8200"
+            // TLS terminates at the internal gateway and this listener is only
+            // reachable in-cluster, matching the other kube-system services.
+            tls_disable = true
+
+            // ██ TEMPORARY BOOTSTRAP TOGGLE — REVERT AS SOON AS THE WINDOW CLOSES ██
+            //
+            // OpenBao >= 2.5.3 disables the unauthenticated sys/generate-root/*
+            // endpoints by default — they 403 even from localhost inside the
+            // pod, so the recovery shares alone cannot mint a root token (see
+            // vault:docs/openbao-migration/STATUS.md, "Facts established the
+            // hard way").
+            //
+            // Second time this has been opened. It is needed for work that only
+            // an `admin` token can do, and nothing automated holds that policy:
+            //   - vault#155: re-write the `pulumi` policy so it can reach
+            //     sys/mounts/auth/oidc, without which the OIDC AuthBackend
+            //     update 403s and the admin/family roles never get created
+            //   - vault:bootstrap/openbao/restore-test.sh init: mint the
+            //     restore-test policy/AppRole for the Phase 5 monthly restore
+            //     test, which currently ships PROVISION-ME placeholders
+            //
+            // Both are done in ONE window on purpose — each open/close cycle
+            // costs two pod rolls and leaves generate-root reachable
+            // unauthenticated in between.
+            //
+            // REVERT THIS LINE in a follow-up commit the moment both complete.
+            // The pods must roll for the revert to take effect, same as for
+            // this commit (reloader + RollingUpdate now make that automatic).
+            disable_unauthed_generate_root_endpoints = false
+          }
+
+          storage "postgresql" {
+            // connection_url comes from BAO_PG_CONNECTION_URL.
+            table      = "openbao_kv_store"
+            ha_enabled = "true"
+            ha_table   = "openbao_ha_locks"
+          }
+
+          seal "transit" {
+            // token comes from VAULT_TRANSIT_SEAL_TOKEN.
+            //
+            // The address is not secret, and it is deliberately a MagicDNS name
+            // rather than a tailnet IP. Pods here have no route to the tailnet —
+            // both 100.111.10.9:8200 and 100.111.10.200:8200 were probed from a
+            // pod in this namespace and neither is reachable. Tailnet hosts are
+            // reached only through the tailscale-operator egress Services in
+            // tailscale-system, and the operator's nameserver resolves the
+            // MagicDNS name to that egress proxy's ClusterIP: from a pod,
+            // dockge-as.opossum-yo.ts.net and
+            // dockge-as.tailscale-system.svc.cluster.local both answer
+            // 10.196.81.163. The egress proxy forwards only the ports declared
+            // in the Service's spec.ports, so 8200 is declared for dockge-as in
+            // apps/tailscale-system/services/Update.cs.
+            //
+            // This previously read "http://${ALPHA_SITE_TAILSCALE_IP}:8200",
+            // which was wrong twice: that variable is the alpha-site Proxmox
+            // host, while bao-transit runs in the dockge-as LXC — and a raw
+            // tailnet IP could not have worked from a pod regardless.
+            //
+            // Careful: leaving the address unset would NOT be harmless. The
+            // wrapper falls back to api.DefaultConfig(), which reads BAO_ADDR /
+            // VAULT_ADDR — pointing the seal at this pod's own listener and
+            // deadlocking the unseal. It must be set explicitly.
+            address    = "http://dockge-as.${TAILSCALE_DOMAIN}:8200"
+            key_name   = "openbao-equestria-unseal"
+            mount_path = "transit/"
+            disable_renewal = "false"
+          }
+
+          // Lets OpenBao label its own pods active/standby so the chart's
+          // -active and -standby Services route correctly.
+          service_registration "kubernetes" {}
+      # Two different sources, on purpose.
+      #
+      # The connection URL comes from externalsecret.yaml, which reads the
+      # generated `openbao-postgres` secret through ClusterSecretStore/database
+      # — a `kubernetes` provider, not 1Password and not OpenBao, so this is not
+      # the bootstrap cycle. One source of truth for that password means it
+      # rotates without a second edit.
+      #
+      # The transit token comes from secret.sops.yaml because nothing in the
+      # cluster can produce it: it is minted against bao-transit on alpha-site.
+      # SOPS is the one source guaranteed available before OpenBao is.
+      extraSecretEnvironmentVars:
+        - envName: BAO_PG_CONNECTION_URL
+          secretName: openbao-storage
+          secretKey: pg-connection-url
+        - envName: VAULT_TRANSIT_SEAL_TOKEN
+          secretName: openbao-seal
+          secretKey: transit-token
+      # No PVCs: all state lives in the CNPG cluster.
+      dataStorage:
+        enabled: false
+      auditStorage:
+        enabled: false
+      # Ingress is an HTTPRoute on the internal gateway (httproute.yaml), the
+      # same as every other internal service here.
+      ingress:
+        enabled: false
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi

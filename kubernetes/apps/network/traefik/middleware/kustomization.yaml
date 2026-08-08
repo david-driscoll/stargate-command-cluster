@@ -15,6 +15,9 @@ resources:
   - ./error-pages.yaml
   - ./default-cors.yaml
   - ./outpost.yaml
+  # Creates the crowdsec-bouncer Middleware object. Inert on its own: the
+  # plugin ships with `enabled: false` and no HTTPRoute references it yet.
+  # See docs/crowdsec-enforcement-rollout.md before changing either.
+  - ./crowdsec.yaml
   # - ./fail2ban.yaml
-  # - ./crowdsec.yaml
   # - ./tailscale-redirect.yaml

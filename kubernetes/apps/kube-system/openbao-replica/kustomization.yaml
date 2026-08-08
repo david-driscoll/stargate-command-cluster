@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helmrelease.yaml
+  - ./externalsecret.yaml
+  - ./secret.sops.yaml
+configMapGenerator:
+  - name: openbao-replica-scripts
+    files:
+      - dump.sh=./resources/dump.sh
+      - restore-test.sh=./resources/restore-test.sh
+      - age-recipients.txt=./resources/age-recipients.txt
+generatorOptions:
+  disableNameSuffixHash: true
+#
+# Credential routing, because three different trust roots meet here:
+#
+#   externalsecret.yaml   PG_URI from the generated `openbao-postgres` secret
+#                         via ClusterSecretStore/database (same reasoning as
+#                         the openbao app: referenced, never copied), and the
+#                         SFTP private key from 1Password ("Rclone SFTP Key" —
+#                         the same keypair DockgeLxc seeds into every
+#                         rclone-sftp receiver). Dual-run: the store ref moves
+#                         to OpenBao at Phase 6, the key itself is already
+#                         migrated data.
+#
+#   secret.sops.yaml      The restore-test AppRole (minted by
+#                         vault/bootstrap/openbao/restore-test.sh —
+#                         placeholders until that runs). SOPS because it has
+#                         no other in-cluster source.
+#
+#   Referenced, not copied: the transit seal token comes from the existing
+#   `openbao-seal` Secret owned by the openbao app, and the age identity for
+#   decrypting dumps comes from the `sops-age` Secret the common component
+#   already stamps into this namespace.

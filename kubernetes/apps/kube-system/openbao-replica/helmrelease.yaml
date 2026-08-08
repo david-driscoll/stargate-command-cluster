@@ -1,0 +1,253 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+#
+# Phase 5 break-glass replication — two cronjobs, one trust boundary:
+#
+#   dump          nightly: pg_dump the `openbao` database, age-encrypt it to
+#                 the three estate recipients, ship it to the bao-standby dump
+#                 receiver on alpha-site over SFTP, prune to 30 days.
+#
+#   restore-test  monthly: pull the newest dump BACK from alpha-site, decrypt,
+#                 restore into a scratch Postgres sidecar, start a throwaway
+#                 bao against it, let it unseal via transit, read a canary key
+#                 with a purpose-made AppRole, and report to Gatus. An
+#                 unverified backup is not a backup (RUNBOOK Scenario D).
+#
+# Both run HERE, not on alpha-site, and that placement is load-bearing: the
+# dump must never be decryptable on alpha-site alone (that host also holds the
+# transit key), so no age identity may ever land there. The cluster already
+# holds an age identity (Flux's sops-age), so decrypting here adds no new
+# exposure — and the restore test doubles as proof the dump actually left the
+# building and can be fetched back.
+#
+# Both containers use the OpenBao image: the restore test needs the `bao`
+# binary anyway, the dump job gets an image the estate already pins, and the
+# missing client tools (pg_dump/psql 17, age, rclone, curl, jq) are installed
+# at runtime — the same pattern as the postgres-backup cronjob in
+# database/postgres/backups.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app openbao-replica
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: openbao
+      namespace: kube-system
+    - name: external-secrets
+      namespace: kube-system
+  values:
+    controllers:
+      dump:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        type: cronjob
+        cronjob:
+          # PLAN §E: nightly at 03:00, an hour after the general postgres
+          # backup at 02:00 so the two never contend for the database.
+          schedule: "0 3 * * *"
+          backoffLimit: 3
+          concurrencyPolicy: Forbid
+          startingDeadlineSeconds: 300
+          successfulJobsHistory: 3
+          failedJobsHistory: 3
+          suspend: false
+        containers:
+          main:
+            image: &baoImage
+              repository: ghcr.io/openbao/openbao
+              tag: 2.6.1@sha256:5b2486ab0fb90bbc788cc345b0a08616dfb375873ee8be5df3a2fd4d378a67e0
+              pullPolicy: IfNotPresent
+            # Root: apk needs it. kube-system is a privileged-PSS namespace.
+            securityContext: &rootCtx
+              runAsUser: 0
+              runAsGroup: 0
+            envFrom:
+              # PG_URI — the generated `openbao-postgres` uri, referenced via
+              # ClusterSecretStore/database exactly like the openbao app itself.
+              - secretRef:
+                  name: openbao-replica-db
+            env:
+              SFTP_HOST: dockge-as.${TAILSCALE_DOMAIN}
+              SFTP_PORT: "2023"
+              SFTP_KEY_FILE: /secrets/sftp/id_ed25519
+              RETENTION_DAYS: "30"
+              GATUS_URL: https://uptime.${ROOT_DOMAIN}
+              # Pods have no route to the tailnet and no DNS answer for
+              # uptime.${ROOT_DOMAIN} that they can reach — Gatus is reported
+              # to through the dockge-as egress on 443, with --connect-to
+              # keeping the Host/SNI intact so Traefik routes and the LE cert
+              # validates.
+              GATUS_CONNECT_TO: uptime.${ROOT_DOMAIN}:443:dockge-as.${TAILSCALE_DOMAIN}:443
+              GATUS_TOKEN: openbao-break-glass_nightly-dump
+            command:
+              - /bin/sh
+              - -c
+              - >-
+                set -eu;
+                apk add --no-cache bash postgresql17-client age rclone curl
+                && exec bash /scripts/dump.sh
+            resources:
+              requests:
+                memory: 256Mi
+                cpu: 20m
+              limits:
+                memory: 512Mi
+                cpu: 500m
+
+      restore-test:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        type: cronjob
+        cronjob:
+          # Monthly, two hours after that night's dump.
+          schedule: "0 5 1 * *"
+          backoffLimit: 2
+          concurrencyPolicy: Forbid
+          startingDeadlineSeconds: 3600
+          successfulJobsHistory: 1
+          failedJobsHistory: 3
+          suspend: false
+        initContainers:
+          # Native sidecar (restartPolicy: Always on an init container): stays
+          # up while main runs, dies with the pod, and — unlike a plain second
+          # container — does not stop the Job from ever completing.
+          postgres:
+            image:
+              # Same major as the CNPG cluster (17.5) so the restored dump is
+              # read by the engine version that wrote it.
+              repository: docker.io/library/postgres
+              tag: 18.4-alpine@sha256:9a8afca54e7861fd90fab5fdf4c42477a6b1cb7d293595148e674e0a3181de15
+              pullPolicy: IfNotPresent
+            restartPolicy: Always
+            env:
+              # Scratch database, lives exactly as long as this pod, holds
+              # only ciphertext OpenBao already encrypted. The password guards
+              # nothing an attacker inside the pod does not already have.
+              POSTGRES_USER: &scratchUser openbao
+              POSTGRES_PASSWORD: &scratchPw restore-test
+              POSTGRES_DB: &scratchDb openbao
+            resources:
+              requests:
+                memory: 256Mi
+                cpu: 50m
+              limits:
+                memory: 1Gi
+                cpu: "1"
+        containers:
+          main:
+            image: *baoImage
+            securityContext: *rootCtx
+            env:
+              SFTP_HOST: dockge-as.${TAILSCALE_DOMAIN}
+              SFTP_PORT: "2023"
+              SFTP_KEY_FILE: /secrets/sftp/id_ed25519
+              GATUS_URL: https://uptime.${ROOT_DOMAIN}
+              GATUS_CONNECT_TO: uptime.${ROOT_DOMAIN}:443:dockge-as.${TAILSCALE_DOMAIN}:443
+              GATUS_TOKEN: openbao-break-glass_restore-test
+              # The estate age identity, from the same Secret/sops-age the
+              # common component stamps into every namespace for Flux. The
+              # cluster already holds this material; mounting it here adds no
+              # new exposure — and it is exactly the key RUNBOOK Scenario B
+              # says a human will use, so the test exercises the real path.
+              AGE_KEY_FILE: /secrets/sops-age/age.agekey
+              # A dump older than this is treated as a FAILED test even if it
+              # restores cleanly — it means replication has silently stopped
+              # and the "latest" backup is stale.
+              MAX_DUMP_AGE_DAYS: "3"
+              SCRATCH_PG_URI: postgres://openbao:restore-test@localhost:5432/openbao
+              SCRATCH_PG_USER: *scratchUser
+              SCRATCH_PG_PASSWORD: *scratchPw
+              SCRATCH_PG_DB: *scratchDb
+              # Same transit path the real cluster unseals through.
+              TRANSIT_ADDR: http://dockge-as.${TAILSCALE_DOMAIN}:8200
+              CANARY_PATH: secrets/data/shared/cloudflare-driscoll-tech
+              VAULT_TRANSIT_SEAL_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    # Owned by the openbao app — referenced, not copied, so a
+                    # re-minted token never needs a second edit here.
+                    name: openbao-seal
+                    key: transit-token
+              BAO_ROLE_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: openbao-replica-restore
+                    key: role-id
+              BAO_SECRET_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: openbao-replica-restore
+                    key: secret-id
+            command:
+              - /bin/sh
+              - -c
+              - >-
+                set -eu;
+                apk add --no-cache bash coreutils postgresql17-client age rclone curl jq
+                && exec bash /scripts/restore-test.sh
+            resources:
+              requests:
+                memory: 512Mi
+                cpu: 50m
+              limits:
+                memory: 1Gi
+                cpu: "1"
+
+    persistence:
+      scripts:
+        type: configMap
+        name: openbao-replica-scripts
+        defaultMode: 493
+        globalMounts:
+          - path: /scripts
+      sftp-key:
+        type: secret
+        name: openbao-replica-sftp
+        defaultMode: 256
+        advancedMounts:
+          dump:
+            main:
+              - path: /secrets/sftp
+          restore-test:
+            main:
+              - path: /secrets/sftp
+      sops-age:
+        type: secret
+        name: sops-age
+        defaultMode: 256
+        advancedMounts:
+          restore-test:
+            main:
+              - path: /secrets/sops-age
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      pgdata:
+        type: emptyDir
+        advancedMounts:
+          restore-test:
+            postgres:
+              - path: /var/lib/postgresql/data

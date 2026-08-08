@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app openbao-replica
+  namespace: &namespace kube-system
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
+  path: ./kubernetes/apps/kube-system/openbao-replica
+  # Break-glass replication (migration Phase 5): a nightly age-encrypted
+  # pg_dump of the `openbao` database shipped to alpha-site, and a monthly
+  # restore test that proves the dump is actually usable. See
+  # vault/bootstrap/RUNBOOK.md Scenarios B and D.
+  #
+  # NO `components: - ../../../components/postgres` here, deliberately: this
+  # app reads the existing `openbao` database with the credential the postgres
+  # generator already provisions for the openbao app. Adding the component
+  # would make components/postgres/Update.cs provision a SECOND database
+  # named after this app.
+  dependsOn:
+    # The database being dumped, and the app that owns it. Depending on the
+    # openbao ks (not just postgres) means we never dump a half-initialised
+    # database during a bootstrap.
+    - name: openbao
+      namespace: kube-system
+    # ClusterSecretStore/database (the dump credential) and
+    # ClusterSecretStore/onepassword-connect (the SFTP key — dual-run: 1Password
+    # is still authoritative for estate credentials until Phase 11).
+    - name: external-secrets-stores
+      namespace: kube-system
+    # Both jobs cross to alpha-site only through the dockge-as egress Service:
+    # port 2023 (dump receiver), 8200 (transit unseal for the restore test) and
+    # 443 (Gatus heartbeat reports) are declared in
+    # apps/tailscale-system/services/Update.cs.
+    - name: tailscale-services
+      namespace: tailscale-system
+  prune: true
+  wait: false
+  force: false
+  suspend: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace

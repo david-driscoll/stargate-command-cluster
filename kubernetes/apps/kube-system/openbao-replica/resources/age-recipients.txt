@@ -1,0 +1,11 @@
+# The three estate age recipients — the same set as .sops.yaml in this repo,
+# vault, and stargate-command-cluster. MUST stay identical to those files: a
+# divergent set is how a dump becomes undecryptable by the one key that
+# survives (vault/bootstrap/RUNBOOK.md, "Things that will bite you").
+#
+# No alpha-site-resident key is ever added here. The whole point of this
+# layer is that the host holding the ciphertext (and the transit key) cannot
+# decrypt it alone.
+age1eurl2t7pepw66guv8m7lxh5fjhs4t4frsntqjp08lmypwudlsp7qdusgnf
+age1klzrc4tp666ykn8u4y2nt80n0tcx52lvezrr54zswz55w2pdsgyqhcdfyr
+age150z0s36kl9vud8728c5e4zqq6nmyywekk76rwvjclcsfc8mrxuuqr0qfg6

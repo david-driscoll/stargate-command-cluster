@@ -27,3 +27,5 @@ resources:
   - ./etcd/ks.yaml
   - ./headlamp/ks.yaml
   - ./multus/ks.yaml
+  - ./openbao/ks.yaml
+  - ./openbao-replica/ks.yaml

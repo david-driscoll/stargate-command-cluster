@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app openbao
+  namespace: &namespace kube-system
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
+  path: ./kubernetes/apps/kube-system/openbao
+  # Storage is the shared CNPG cluster, so postgres has to be up first.
+  #
+  # external-secrets IS a dependency, for the Postgres connection URL only. That
+  # is not the loop this migration exists to remove: ClusterSecretStore/database
+  # is a `kubernetes` provider reading the `database` namespace directly, so it
+  # is not backed by 1Password today and will not be backed by OpenBao later —
+  # OpenBao is never a link in the chain that starts OpenBao. The seal token,
+  # which genuinely has no in-cluster source, still comes from secret.sops.yaml.
+  #
+  # tailscale-services is a dependency because the unseal path runs through it:
+  # these pods reach bao-transit on alpha-site only via the tailscale-operator
+  # egress Service for dockge-as, and that Service forwards port 8200 only
+  # because it is declared in apps/tailscale-system/services/Update.cs. Without
+  # this ordering the pods can come up before the port exists and sit
+  # crash-looping on a seal they cannot reach.
+  dependsOn:
+    - name: postgres
+      namespace: database
+    # The stores ks, not the controller ks — ClusterSecretStore/database is
+    # defined there. Note it currently dependsOn onepassword-connect, so until
+    # Phase 11 drops that, OpenBao transitively waits on 1Password Connect at
+    # boot. Irritating but not circular, and it resolves itself at cutover.
+    - name: external-secrets-stores
+      namespace: kube-system
+    - name: tailscale-services
+      namespace: tailscale-system
+  # SUSPENDED UNTIL BOOTSTRAP IS COMPLETE. All four preconditions now hold:
+  #   1. DONE — `bao-transit` is initialised and unsealed on alpha-site, with
+  #      the transit key `openbao-equestria-unseal` and the `equestria-unseal`
+  #      policy in place (migration Phase 2).
+  #   2. DONE — `task update` has been run: the `openbao` role exists in
+  #      kubernetes/apps/database/postgres/app/resources/values.yaml, its
+  #      password in passwords.sops.yaml, and the generated `openbao-postgres`
+  #      secret is live in the `database` namespace. The components entry below
+  #      is what makes components/postgres/Update.cs discover this app — do not
+  #      remove it as a tidy-up, it silently drops the whole database.
+  #   3. DONE — secret.sops.yaml exists here with the transit token, and
+  #      externalsecret.yaml supplies the connection URL.
+  #   4. DONE — port 8200 is declared on the dockge-as egress Service, so these
+  #      pods can actually reach bao-transit. Verified by port-scanning the
+  #      egress proxy from a pod in this namespace.
+  #
+  # What remains is the deliberate go-live decision. Flipping this to `false`
+  # creates the StatefulSet, which will initialise the `openbao` database and
+  # take the transit seal live. Reverting after that point is no longer just a
+  # `git revert` — the database will have been written to.
+  suspend: false
+  prune: true
+  wait: true
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  components:
+    - ../../../components/postgres
+  postBuild:
+    substitute:
+      APP: *app
+      NAMESPACE: *namespace

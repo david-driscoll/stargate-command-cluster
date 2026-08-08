@@ -1,12 +1,112 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/traefik.io/middleware_v1alpha1.json
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: crowdsec-bouncer
 spec:
   plugin:
-    crowdsec-bouncer:
-      enabled: true
-      forwardedHeadersTrustedIps: ${CLUSTER_NETWORK},${SERVICE_NETWORK},10.0.0.0/8,192.168.0.0/16,100.64.0.0/10
+    # This key MUST match the key under `experimental.plugins` in
+    # traefik/values.yaml. It previously read `crowdsec-bouncer` while Traefik
+    # declares `crowdsec-bouncer-traefik-plugin`, so the middleware could never
+    # have resolved to a loaded plugin. The Middleware's metadata.name stays
+    # `crowdsec-bouncer` -- that is what routes reference.
+    crowdsec-bouncer-traefik-plugin:
+      # ===================== KILL SWITCH ==============================
+      # This one line is the standing rollback for every enforcement stage.
+      # `false` makes the plugin pass every request through regardless of how
+      # many HTTPRoutes reference this middleware -- which matters because
+      # middlewares attach per-route via ExtensionRef filters and there are 74
+      # HTTPRoutes across 69 files in this repo. "Detach it from the routes" is
+      # not a rollback at that scale; this is.
+      #
+      # Shipped OFF. Turning it on is a deliberate, separate change, gated on
+      # the client-IP verification in docs/crowdsec-enforcement-rollout.md.
+      #
+      # NOTE: `enabled: false` does NOT skip config validation. The plugin runs
+      # ValidateParams unconditionally in New(), so a missing or empty
+      # crowdsecLapiKeyFile fails middleware construction and breaks every route
+      # that references it, kill switch or not. The key has to be right before
+      # this middleware is attached to anything.
+      enabled: false
+      # ================================================================
+      logLevel: INFO
+      # stream mode keeps a local copy of the decision list refreshed on an
+      # interval, so a LAPI outage degrades to a stale list instead of putting
+      # the LAPI in the synchronous request path. Non-negotiable for an ingress
+      # this is attached to everywhere.
       crowdsecMode: stream
+      crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.network.svc.cluster.local:8080
-      crowdsecLapiKeyFile: /etc/secrets/crowdsec/lapi
+      # The 1Password field `apikey_bouncer` on item 'Crowdsec ApiKey' is synced
+      # into the `crowdsec-secret` Secret by traefik/crowdsec-secret.yaml
+      # (a OnePasswordItem), and mounted at /etc/secrets/crowdsec by
+      # traefik/values.yaml. The 1Password operator syncs field names verbatim
+      # and has no rename facility, so the file name IS the field name.
+      #
+      # This used to point at `/etc/secrets/crowdsec/lapi`, a name that exists
+      # nowhere. Repointed at the real name rather than inventing an
+      # ExternalSecret whose only job would be to rename the key -- that would
+      # be a second mapping to keep in sync, which is how this broke in the
+      # first place. The LAPI reads the same field as BOUNCER_KEY_traefik, so
+      # both ends are the same 1Password field by construction.
+      crowdsecLapiKeyFile: /etc/secrets/crowdsec/apikey_bouncer
+
+      # ---- Fail-open posture -------------------------------------------
+      # The plugin's defaults are tuned for "security first". Traefik is this
+      # estate's ingress critical path, so several are inverted here. Revisit
+      # once the LAPI has weeks of uptime; do not tighten them on day one.
+      #
+      # Default `true`. In stream mode that BLOCKS TRAFFIC during plugin
+      # initialisation until the first LAPI sync completes. Traefik runs 2
+      # replicas and restarts on config changes; a LAPI that is not ready when a
+      # Traefik pod starts would take that pod's ingress down.
+      streamStartupBlock: false
+      # Default `0` -- consecutive LAPI failures tolerated before the plugin
+      # starts blocking. `0` turns a LAPI restart into a 403 storm. `-1` never
+      # blocks on LAPI unavailability.
+      #
+      # TRADE-OFF, stated plainly: fail-open means an authentication failure
+      # against the LAPI (wrong bouncer key) is indistinguishable from "no
+      # decisions to apply" -- traffic passes and nothing looks wrong. That is
+      # the silent-allow failure mode, and this setting makes it quieter, not
+      # louder. `cscli bouncers list` showing a recent "Last API pull" for the
+      # `traefik` bouncer is the only positive proof the key works.
+      updateMaxFailure: -1
+      # Default 10. Ten seconds of added latency on a sick LAPI is itself an
+      # outage. Stream mode only uses this for the sync call, but 10 is still
+      # generous.
+      httpTimeoutSeconds: 3
+      updateIntervalSeconds: 60
+      # Distinguishable from a 5xx in Gatus and in Traefik access logs, which is
+      # how a false-positive ban gets noticed.
+      remediationStatusCode: 403
+
+      # ---- Trusted IPs -------------------------------------------------
+      # These two are easy to confuse and do different jobs.
+      #
+      # forwardedHeadersTrustedIps: which PROXIES to trust when reading
+      # X-Forwarded-For. All external traffic arrives via cloudflared and then
+      # Traefik, so without this every request's apparent source is a pod IP.
+      #
+      # Was a single comma-separated scalar. That did in fact work -- Traefik
+      # decodes plugin config with mapstructure using
+      # StringToSliceHookFunc(",") -- but the upstream-documented form is a
+      # list, and a list is what a reader can check against `cscli` output.
+      forwardedHeadersTrustedIPs:
+        - "${CLUSTER_NETWORK}"
+        - "${SERVICE_NETWORK}"
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "100.64.0.0/10"
+      # clientTrustedIPs: which RESOLVED CLIENTS to never evaluate at all.
+      # Previously absent. This is a per-network escape hatch that does not need
+      # the LAPI to be healthy -- LAN and tailnet traffic bypasses the bouncer
+      # entirely, which is what makes break-glass from a laptop on Tailscale
+      # survivable even mid-incident.
+      clientTrustedIPs:
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "100.64.0.0/10"
+      # Deliberately NOT set: defaultDecisionSeconds is live-mode only and does
+      # nothing in stream mode.

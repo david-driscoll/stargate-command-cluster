@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: CrowdSec Console
+  category: Applications
+  description: Alerts, decisions and metrics for the CrowdSec LAPI.
+  url: https://${APP}.${CLUSTER_DOMAIN}
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/crowdsec.svg
+  # admins ONLY. Not family, not friends. This console can issue and revoke
+  # bans across every service behind the bouncer.
+  access_policy:
+    groups:
+      - admins
+  authentik:
+    oauth2:
+      clientType: confidential
+      # The callback must match the public scheme, host, port and base path
+      # exactly. Both hostnames the app is reachable on are registered.
+      allowedRedirectUris:
+        - url: https://${APP}.${CLUSTER_DOMAIN}/api/auth/oidc/callback
+        - url: https://${APP}.${TAILSCALE_DOMAIN}/api/auth/oidc/callback
+      propertyMappings:
+        - email
+        - openid
+        - profile
+      includeClaimsInIdToken: true
+      subMode: user_email
+  gatus:
+    # /api/health is public by design (upstream keeps it outside the auth
+    # boundary) and does not wait on the LAPI, so it is a true liveness signal
+    # rather than "did the OIDC redirect happen". The route still sits behind
+    # the internal-network middleware, so this only works from the LAN, tailnet
+    # or the cluster -- the same as every other internal check here.
+    - group: Applications
+      url: https://${APP}.${CLUSTER_DOMAIN}/api/health
+      method: GET
+      conditions:
+        - "[STATUS] == 200"

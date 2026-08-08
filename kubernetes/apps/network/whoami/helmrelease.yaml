@@ -64,6 +64,21 @@ spec:
               - identifier: main
                 port: *httpPort
             filters:
+              # Stage 3 of docs/crowdsec-enforcement-rollout.md. Listed FIRST so
+              # a ban returns 403 before the Authentik outpost redirect, which
+              # makes `cscli decisions add` -> 403 a clean, unambiguous test.
+              #
+              # With the plugin's `enabled: false` this is a pass-through, so
+              # attaching it here enforces nothing. It is deliberately the first
+              # route to reference the middleware: the plugin validates its
+              # config (including reading crowdsecLapiKeyFile) even when
+              # disabled, so if the bouncer key is missing or unreadable this
+              # ONE route breaks loudly and everything else is untouched.
+              - type: ExtensionRef
+                extensionRef:
+                  group: traefik.io
+                  kind: Middleware
+                  name: crowdsec-bouncer
               - type: ExtensionRef
                 extensionRef:
                   group: traefik.io

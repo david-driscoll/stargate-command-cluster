@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/david-driscoll/stargate-command-cluster/refs/heads/main/schemas/definition.schema.json
+apiVersion: driscoll.dev/v1
+kind: ApplicationDefinition
+metadata:
+  name: ${APP}
+spec:
+  name: CrowdSec
+  category: ${CLUSTER_TITLE}
+  description: Intrusion detection and remediation engine behind Traefik.
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/crowdsec.svg
+  # No `url` and no `gatus` block on purpose.
+  #
+  # The LAPI has no browser UI and must never be routed -- it is the thing that
+  # issues and revokes bans. Its /health endpoint is ClusterIP-only, and Gatus
+  # probes from outside this cluster, so a check here could only ever be a
+  # permanently-red entry pointing at an unreachable address.
+  #
+  # LAPI liveness is covered by the chart's own readiness/liveness probes and by
+  # lapi.metrics.serviceMonitor (Prometheus). The human-facing Gatus check for
+  # this stack lives on crowdsec-ui, which does have a URL.

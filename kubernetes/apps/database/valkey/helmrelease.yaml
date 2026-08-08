@@ -44,14 +44,11 @@ spec:
         size: 4Gi
         # Was `longhorn-local` (strict-local, 1 replica) until 2026-08-04. That
         # class gives the PV a hard nodeAffinity to a single node, so any drain
-        # of that node leaves valkey unschedulable ("didn't match PersistentVolume's
-        # node affinity") and takes authentik's Redis backend down with it. It also
-        # wedges the drain itself: Longhorn cannot rebuild a strict-local replica
-        # elsewhere, so it holds the volume attached and the per-node
-        # instance-manager PDB stays at 0 allowed disruptions. Both happened on
-        # equestria during the Talos v1.13.8 rollout; SGC had the same exposure.
-        # `longhorn` is replicated (3 replicas, dataLocality best-effort), so the
-        # pod can move. Cache/broker state only; volume recreated empty.
+        # of that node left valkey unschedulable ("3 node(s) didn't match
+        # PersistentVolume's node affinity") and took immich, romm, dispatcharr,
+        # searxng, outline, pinepods and n8n down with it. `longhorn` is
+        # replicated (3 replicas, dataLocality best-effort), so the pod can move.
+        # The volume is pure cache/broker state and was recreated empty.
         storageClass: longhorn
     service:
       *app :

@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./onepassword-store.yaml
   - ./kubernetes.yaml
+  - ./openbao-store.yaml

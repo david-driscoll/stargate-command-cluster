@@ -31,7 +31,6 @@ async Task<FullItem> GetItemByTitle(string title)
   return await opClient.GetVaultItemByIdAsync(vaultId, (items.SingleOrDefault(i => i.Title == title) ?? throw new InvalidOperationException($"{title} item not found")).Id);
 }
 static string GetField(FullItem item, string label) => item.Fields.Single(f => f.Label == label).Value ?? throw new InvalidOperationException($"{label} field not found in {item.Title}");
-var backblaze = await GetItemByTitle("Backblaze S3 ${CLUSTER_TITLE} Database");
 
 var backupDir = "/backups";
 

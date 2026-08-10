@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/rbac.authorization.k8s.io/clusterrolebinding_v1.json
+#
+# ---- WHY external-secrets NEEDS system:auth-delegator IN THIS CLUSTER -------
+#
+# OpenBao runs in equestria and validates a login by calling TokenReview
+# against THIS cluster's API server. The usual cross-cluster recipe hands
+# OpenBao a long-lived `token_reviewer_jwt` — a permanent ServiceAccount token
+# stored inside the auth mount — which is a standing credential in exactly the
+# place the OpenBao migration is trying to stop keeping them.
+#
+# The `kubernetes-sgc` mount deliberately has NO reviewer JWT (see
+# home-operations components/openbao/clusterAuth.ts). OpenBao instead performs
+# the TokenReview using the CLIENT's own token — the one external-secrets
+# presents at login — which only works if that ServiceAccount may create
+# TokenReviews. That is what `system:auth-delegator` grants, and it is the
+# whole of the privilege: it does not read secrets and it does not confer any
+# access in this cluster beyond asking "is this token valid?".
+#
+# Delete this binding and every SGC ExternalSecret fails at LOGIN with
+# "permission denied" from the TokenReview call — not at read, and not in a way
+# that names this binding. It is load-bearing.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-secrets-openbao-token-review
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+  - kind: ServiceAccount
+    name: external-secrets
+    namespace: kube-system
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/external-secrets.io/clustersecretstore_v1.json
+#
+# Phase 7: SGC reads from the ONE OpenBao, which runs in equestria.
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: openbao
+spec:
+  provider:
+    vault:
+      # The public ingress hostname, NOT a Service — this cluster has no route
+      # to equestria's ClusterIPs. equestria's own store points at
+      # `openbao-active` to skip a hop; that is unavailable from here and is an
+      # optimisation rather than a requirement, because standbys FORWARD client
+      # requests to the active node over port 8201 rather than redirecting.
+      # (Verified: every OpenBao API call made while building this phase went
+      # through this same hostname and none saw a redirect. Note `/v1/sys/health`
+      # answers 429 through it, which is the documented "unsealed and standby"
+      # code and is healthy — do not read it as rate limiting.)
+      server: https://bao.equestria.driscoll.tech
+      # The kv-v2 mount holding real secrets.
+      path: secrets
+      version: v2
+      auth:
+        kubernetes:
+          # A SECOND mount, not the `kubernetes` one equestria uses. That mount
+          # is configured with kubernetes_host=https://kubernetes.default.svc:443,
+          # which resolves to equestria's OWN API server, so it can only validate
+          # equestria ServiceAccount tokens. Pointing this store at it fails at
+          # login with "service account name not authorized" — which reads like a
+          # role misconfiguration rather than a wrong cluster.
+          mountPath: kubernetes-sgc
+          # Bound in OpenBao to exactly this ServiceAccount + namespace, and
+          # carries the `eso-sgc` policy: read on secrets/shared/* and
+          # secrets/clusters/sgc/*. Nothing wider.
+          role: eso-sgc
+          serviceAccountRef:
+            name: external-secrets
+            namespace: kube-system

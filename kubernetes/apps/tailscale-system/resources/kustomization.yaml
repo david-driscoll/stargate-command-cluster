@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./connector.yaml
   - ./dns-config.yaml
-  - ./externalsecret.yaml
   - ./outbound.yaml
   - ./inbound.yaml
   - ./kubeproxy.yaml

@@ -33,8 +33,10 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: *namespace
-    - apiVersion: onepassword.com/v1
-      kind: OnePasswordItem
+    # Phase 7: the tunnel token is an ExternalSecret against
+    # ClusterSecretStore/openbao now, not a OnePasswordItem CR.
+    - apiVersion: external-secrets.io/v1
+      kind: ExternalSecret
       name: cloudflare-tunnel
       namespace: *namespace
   postBuild:

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#MISE description="Resolve ref+ values in the environment with vals, then run the command (the `op run` replacement)"
+#MISE dir="{{cwd}}"
+#
+# dir={{cwd}} because mise runs tasks from the CONFIG ROOT by default, and
+# these commands are per-stack: without it `mise run vals-run pulumi preview`
+# executes in the repo root and picks up the wrong Pulumi.yaml.
+#
+# vals-run — resolve every `ref+…` value in the environment, then exec.
+#
+#   mise run vals-run pulumi preview --stack home-operations
+#   mise run vals-run kubectl get pods
+#
+# This replaces `op run`. `op run` substituted `op://` values it found in the
+# environment; `vals exec` only resolves what is in its `-f` file, so this
+# builds that file from the environment and hands it over. Same ergonomics,
+# any backend vals supports — each value in .config/mise.toml names its own
+# (`ref+openbao://`, `ref+sops://`, `ref+op://`, …).
+#
+# Resolution happens per command rather than in mise's `[env]` on purpose:
+# mise re-evaluates env on EVERY load with no caching, so resolving there
+# would hit OpenBao on every `cd` into the repo and break the shell whenever
+# you are off-network or without an age key.
+#
+# The temp file holds REFERENCES, never resolved values — the secrets exist
+# only in the environment vals hands to the child. It is a real file rather
+# than a pipe because `-f /dev/stdin` leaves the child with a consumed stdin,
+# which breaks anything interactive (a `pulumi up` confirmation).
+set -Eeuo pipefail
+
+[[ $# -gt 0 ]] || { printf 'usage: mise run vals-run <command> [args…]\n' >&2; exit 2; }
+
+# A temp DIRECTORY, not `mktemp <tpl>.yaml`: BSD mktemp requires the X's at the
+# end of the template, so a suffixed template fails on macOS — where this is
+# mostly run. vals picks its parser from the extension, so the file needs one.
+refsdir="$(mktemp -d "${TMPDIR:-/tmp}/vals-run.XXXXXX")"
+refs="${refsdir}/refs.yaml"
+trap 'rm -rf "${refsdir}"' EXIT
+
+while IFS= read -r line; do
+  name="${line%%=*}"
+  value="${line#*=}"
+  case "${value}" in
+    ref+*) printf '%s: %s\n' "${name}" "$(printf '%s' "${value}" | sed 's/"/\\"/g; s/^/"/; s/$/"/')" >> "${refs}" ;;
+  esac
+done < <(env)
+
+if [[ ! -s "${refs}" ]]; then
+  # Nothing to resolve is not an error, but say so: the alternative is a silent
+  # run against unresolved config that fails much further along, somewhere that
+  # does not mention secrets at all.
+  printf 'vals-run: no ref+ values in the environment; running unchanged.\n' >&2
+  exec "$@"
+fi
+
+command -v vals >/dev/null || { printf 'vals-run: vals is not installed — `mise install` in this repo.\n' >&2; exit 127; }
+exec vals exec -i -f "${refs}" -- "$@"

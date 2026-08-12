@@ -6,4 +6,3 @@ resources:
   - ./application-crd.yaml
   - ./cluster-crd.yaml
   - ./service-account.yaml
-  - ./push-secret.yaml

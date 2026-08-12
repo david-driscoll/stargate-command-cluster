@@ -33,6 +33,28 @@ spec:
     - name: external-secrets
       namespace: kube-system
   values:
+    # Reads the per-database credential Secrets in this namespace directly.
+    # `get` only, and only in this namespace: the CronJob never lists Secrets,
+    # so a Role beats a ClusterRole and a name-scoped read beats a wildcard.
+    serviceAccount:
+      *app : {}
+
+    rbac:
+      roles:
+        *app :
+          type: Role
+          rules:
+            - apiGroups: [""]
+              resources: ["secrets"]
+              verbs: ["get"]
+      bindings:
+        *app :
+          type: RoleBinding
+          roleRef:
+            identifier: *app
+          subjects:
+            - identifier: *app
+
     controllers:
       *app :
         annotations:
@@ -46,15 +68,27 @@ spec:
           successfulJobsHistory: 3
           suspend: false
         type: cronjob
+        pod:
+          automountServiceAccountToken: true
+        serviceAccount:
+          identifier: *app
         containers:
           main:
             image:
               repository: mcr.microsoft.com/dotnet/sdk
               tag: '10.0-noble@sha256:e1fc6e423f543119c406d24e2e687d67c569f18f04a37a8b0005d80ad0dcee80'
               pullPolicy: IfNotPresent
-            envFrom:
-              - secretRef:
-                  name: postgres-backups
+            env:
+              # Explicit in the manifest rather than inferred from the
+              # service-account token dir, so the namespace the credentials are
+              # read from is visible where the RBAC that permits it is.
+              POD_NAMESPACE:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+              # Databases still in postgres whose application has been removed;
+              # see the equestria copy for the rationale. SGC has none today.
+              DECOMMISSIONED_DATABASES: ""
             command:
               - /bin/sh
               - -c

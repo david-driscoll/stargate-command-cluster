@@ -9,10 +9,23 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 BACKUP_DIR="/Volumes/backup/postgres/temp"
-APP_NAMESPACE="equestria"
-POSTGRES_CONNECTIONSTRING=$(op read "op://Eris/equestria-postgres-superuser/public-uri")
+APP_NAMESPACE="sgc"
 
-DATABASES=("pulsarr" "questarr")
+# Set these per restore -- this script drops and recreates each database listed.
+DATABASES=()
+
+# The superuser connection string comes from the cluster kubectl is CURRENTLY
+# pointed at, not from a hardcoded 1Password item (Phase 10 of the
+# 1Password->OpenBao migration). That is not just one less credential store: the
+# op:// reference named a specific cluster, so running this script against a
+# different context read one cluster's password and ran DROP/CREATE against
+# whatever `kubectl` happened to be pointed at. Now the two cannot disagree.
+echo -e "${YELLOW}Reading superuser credentials from $(kubectl config current-context)...${NC}"
+POSTGRES_CONNECTIONSTRING=$(kubectl -n database get secret postgres-superuser -o jsonpath='{.data.public-uri}' | base64 -d)
+if [ -z "$POSTGRES_CONNECTIONSTRING" ]; then
+    echo -e "${RED}Error: could not read database/postgres-superuser from the current cluster${NC}"
+    exit 1
+fi
 
 # Track original replica counts
 typeset -A ORIGINAL_REPLICAS

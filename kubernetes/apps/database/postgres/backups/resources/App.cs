@@ -5,58 +5,116 @@
 #:package Microsoft.Extensions.Logging@10.*
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
 #:package ProcessX@1.5.6
-#:package 1Password.Connect.Sdk@1.0.4
 #:package Npgsql@*
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 
+// Postgres backup. Credentials come from the Kubernetes Secrets in THIS
+// namespace -- the same objects the ExternalSecrets in
+// kubernetes/apps/database/postgres/app/users.yaml render from the sops-held
+// per-app passwords.
+//
+// This used to read them back out of 1Password, where a PushSecret had pushed
+// these very Secrets 24h earlier (Phase 10 of the 1Password->OpenBao
+// migration; vault repo docs/openbao-migration/PLAN.md SS-G row 10). That was a
+// round trip out of the cluster and back into the same namespace, and it cost
+// more than an indirection: the copy was up to a refreshInterval stale, and a
+// database whose PushSecret had been removed kept being backed up from a
+// FROZEN item -- invisibly, because a stale credential still authenticates.
+// Reading the Secret directly makes a missing credential an error at the
+// moment it goes missing.
+
 using System.Diagnostics;
 using System.IO.Compression;
-using System.Text.Json;
+using System.Text;
+using k8s;
 using Npgsql;
-using OnePassword.Connect.Sdk;
-using OnePassword.Connect.Sdk.Models;
 using File = System.IO.File;
 
-var opClient = new OnePasswordConnectClient(new OnePasswordConnectOptions()
-{
-  BaseUrl = Environment.GetEnvironmentVariable("CONNECT_HOST") ?? throw new InvalidOperationException("CONNECT_HOST is required"),
-  ApiKey = Environment.GetEnvironmentVariable("CONNECT_TOKEN") ?? throw new InvalidOperationException("CONNECT_TOKEN is required"),
-});
+var config = KubernetesClientConfiguration.InClusterConfig();
+using var kubernetes = new Kubernetes(config);
 
-var vaultId = (await opClient.GetVaultsAsync("")).Single(z => z.Name == "Eris").Id ?? throw new InvalidOperationException("Eris vault not found");
+// The Secrets live alongside this CronJob. Downward-API first so the value is
+// explicit in the manifest; the service-account namespace file is the fallback.
+var secretNamespace = Environment.GetEnvironmentVariable("POD_NAMESPACE")
+  ?? config.Namespace
+  ?? throw new InvalidOperationException("POD_NAMESPACE is not set and no in-cluster namespace could be determined");
 
-async Task<FullItem> GetItemByTitle(string title)
+async Task<IDictionary<string, byte[]>> GetSecret(string name)
 {
-  var items = await opClient.GetVaultItemsAsync(vaultId, $"title eq \"{title}\"");
-  return await opClient.GetVaultItemByIdAsync(vaultId, (items.SingleOrDefault(i => i.Title == title) ?? throw new InvalidOperationException($"{title} item not found")).Id);
+  try
+  {
+    var secret = await kubernetes.CoreV1.ReadNamespacedSecretAsync(name, secretNamespace);
+    return secret.Data ?? throw new InvalidOperationException($"secret {secretNamespace}/{name} has no data");
+  }
+  catch (k8s.Autorest.HttpOperationException ex) when (ex.Response?.StatusCode == System.Net.HttpStatusCode.NotFound)
+  {
+    // Named explicitly: this is what a database with no matching credential
+    // Secret looks like, and it is the case the 1Password round trip used to
+    // hide behind a stale copy.
+    throw new InvalidOperationException($"secret {secretNamespace}/{name} does not exist -- the database has no credential Secret in this cluster", ex);
+  }
 }
-static string GetField(FullItem item, string label) => item.Fields.Single(f => f.Label == label).Value ?? throw new InvalidOperationException($"{label} field not found in {item.Title}");
+
+static string GetField(IDictionary<string, byte[]> secret, string name, string key) =>
+  secret.TryGetValue(key, out var value)
+    ? Encoding.UTF8.GetString(value)
+    : throw new InvalidOperationException($"{key} key not found in secret {name}");
+
+// Databases whose application has been decommissioned but whose data is still
+// in postgres. They have no credential Secret, so without this they would fail
+// the run. The list is per-cluster config, set in cronjob.yaml, where each name
+// carries the date its application was removed.
+//
+// Deliberately an explicit allowlist and never a "skip anything with no Secret"
+// fallback: a missing Secret is exactly how a LIVE database silently drops out
+// of the backup set, and making that loud is the point of this phase.
+var decommissioned = (Environment.GetEnvironmentVariable("DECOMMISSIONED_DATABASES") ?? "")
+  .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+  .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
 var backupDir = "/backups";
 
 Console.WriteLine($"Starting PostgreSQL backup at {DateTime.UtcNow}");
 
-const string clusterKey = "${CLUSTER_CNAME}";
 // Create backup directory
 Directory.CreateDirectory(backupDir);
 
 List<string> databases;
 {
   // Get list of databases
-  var postgres = await GetItemByTitle("${CLUSTER_CNAME}-postgres-user");
-  // NEVER log this — the connection string embeds the plaintext password and
+  var postgres = await GetSecret("postgres-user");
+  // NEVER log this -- the connection string embeds the plaintext password and
   // pod stdout is shipped to Loki.
-  var connectionString = GetField(postgres, "connection-string");
+  var connectionString = GetField(postgres, "postgres-user", "connection-string");
   Console.WriteLine("Fetching list of databases...");
   await using var dataSource = NpgsqlDataSource.Create(connectionString);
   databases = await GetDatabases(dataSource);
   Console.WriteLine($"Found databases: {string.Join(", ", databases)}");
 }
 
+// A listed database that no longer exists means the entry outlived its
+// database -- harmless, but it rots, so say so rather than letting the list
+// grow stale silently.
+var staleEntries = decommissioned.Except(databases, StringComparer.OrdinalIgnoreCase).ToList();
+if (staleEntries.Count > 0)
+{
+  Console.WriteLine($"Note: DECOMMISSIONED_DATABASES lists {string.Join(", ", staleEntries)}, which no longer exist in postgres -- remove the entries");
+}
+
 // Create individual database dumps
 var failed = new List<string>();
+var skipped = new List<string>();
 foreach (var db in databases)
 {
+  if (decommissioned.Contains(db))
+  {
+    // Printed every run, by name: a database leaving the backup set should be
+    // visible in the log of the job that stopped backing it up.
+    Console.WriteLine($"SKIPPING {db}: decommissioned, not backed up (DECOMMISSIONED_DATABASES)");
+    skipped.Add(db);
+    continue;
+  }
+
   var backupFile = Path.Combine(backupDir, $"{db}.sql.gz");
   // Dump to a sibling temp file and only replace the existing backup once pg_dump
   // has exited 0. Writing straight to backupFile truncates the last known-good
@@ -64,13 +122,14 @@ foreach (var db in databases)
   var stagingFile = $"{backupFile}.tmp";
   try
   {
-    var postgres = await GetItemByTitle($"{clusterKey}-{db}-postgres");
+    var secretName = $"{db}-postgres";
+    var postgres = await GetSecret(secretName);
 
-    // Host/port/user only — never the password or the full connection string.
-    Console.WriteLine($"Backing up database: {db} ({GetField(postgres, "username")}@{GetField(postgres, "hostname")}:{GetField(postgres, "port")})");
+    // Host/port/user only -- never the password or the full connection string.
+    Console.WriteLine($"Backing up database: {db} ({GetField(postgres, secretName, "username")}@{GetField(postgres, secretName, "hostname")}:{GetField(postgres, secretName, "port")})");
     Directory.CreateDirectory(Path.GetDirectoryName(backupFile) ?? throw new InvalidOperationException("Failed to get directory name for backup file"));
 
-    await CreateDatabaseDump(postgres, db, stagingFile);
+    await CreateDatabaseDump(postgres, secretName, db, stagingFile);
     File.Move(stagingFile, backupFile, overwrite: true);
 
     if (File.Exists(backupFile))
@@ -96,11 +155,11 @@ foreach (var db in databases)
 
 if (failed.Count > 0)
 {
-  Console.Error.WriteLine($"PostgreSQL backup FAILED at {DateTime.UtcNow}: {failed.Count} of {databases.Count} database(s) were not backed up: {string.Join(", ", failed)}");
+  Console.Error.WriteLine($"PostgreSQL backup FAILED at {DateTime.UtcNow}: {failed.Count} of {databases.Count - skipped.Count} database(s) were not backed up: {string.Join(", ", failed)}");
   return 1;
 }
 
-Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow} ({databases.Count} databases)");
+Console.WriteLine($"PostgreSQL backup completed successfully at {DateTime.UtcNow} ({databases.Count - skipped.Count} databases{(skipped.Count > 0 ? $", {skipped.Count} skipped: {string.Join(", ", skipped)}" : "")})");
 return 0;
 
 // Helper methods
@@ -120,12 +179,12 @@ async Task<List<string>> GetDatabases(NpgsqlDataSource dataSource)
   return databases;
 }
 
-async Task CreateDatabaseDump(FullItem postgres, string database, string outputFile)
+async Task CreateDatabaseDump(IDictionary<string, byte[]> postgres, string secretName, string database, string outputFile)
 {
-  var host = GetField(postgres, "hostname");
-  var port = GetField(postgres, "port");
-  var user = GetField(postgres, "username");
-  var password = GetField(postgres, "password");
+  var host = GetField(postgres, secretName, "hostname");
+  var port = GetField(postgres, secretName, "port");
+  var user = GetField(postgres, secretName, "username");
+  var password = GetField(postgres, secretName, "password");
   var psi = new ProcessStartInfo
   {
     FileName = "pg_dump",

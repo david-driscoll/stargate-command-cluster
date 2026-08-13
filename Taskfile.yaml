@@ -31,6 +31,9 @@ tasks:
   reconcile:
     desc: Force Flux to pull in changes from your Git repository
     cmd: |
+      flux --namespace flux-system reconcile source git flux-system
+      flux --namespace flux-system reconcile source git home-operations
+      flux --namespace flux-system reconcile source git vault
       flux --namespace flux-system reconcile kustomization flux-system --with-source
     preconditions:
       - test -f {{.KUBECONFIG}}

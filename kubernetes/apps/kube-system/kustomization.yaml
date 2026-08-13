@@ -27,3 +27,4 @@ resources:
   - ./etcd/ks.yaml
   - ./headlamp/ks.yaml
   - ./multus/ks.yaml
+  - ./vsc-retention/ks.yaml

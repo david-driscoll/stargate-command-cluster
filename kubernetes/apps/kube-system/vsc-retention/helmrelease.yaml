@@ -1,0 +1,143 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app vsc-retention
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  interval: 1h
+  timeout: 10m
+  install:
+    createNamespace: true
+    replace: true
+    remediation:
+      retries: 7
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 7
+      strategy: rollback
+  rollback:
+    force: false
+    cleanupOnFail: true
+    recreate: true
+  uninstall:
+    keepHistory: false
+  values:
+    serviceAccount:
+      *app : {}
+
+    rbac:
+      roles:
+        *app :
+          type: ClusterRole
+          rules:
+            - apiGroups: ["snapshot.storage.k8s.io"]
+              resources: ["volumesnapshotcontents"]
+              verbs: ["get", "list", "patch", "delete"]
+            - apiGroups: ["snapshot.storage.k8s.io"]
+              resources: ["volumesnapshots"]
+              verbs: ["get", "list"]
+      bindings:
+        *app :
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: *app
+          subjects:
+            - identifier: *app
+
+    controllers:
+      *app :
+        type: cronjob
+        pod:
+          automountServiceAccountToken: true
+        serviceAccount:
+          identifier: *app
+        cronjob:
+          # Before either of Longhorn's own snapshot-cleanup (10:00)/snapshot-delete
+          # (11:00) RecurringJobs -- this operates on a different object class
+          # (CSI VolumeSnapshotContent, not Longhorn's native snapshots.longhorn.io)
+          # but there's no reason to race them.
+          schedule: "30 2 * * *"
+          concurrencyPolicy: Forbid
+          backoffLimit: 2
+          activeDeadlineSeconds: 600
+          successfulJobsHistory: 3
+          failedJobsHistory: 3
+        containers:
+          main:
+            image:
+              repository: bitnami/kubectl
+              tag: latest
+              digest: sha256:558420daf32bbc382e3e9af4537f4073085b336ddd47399a3b70e70087115978
+              pullPolicy: IfNotPresent
+            env:
+              RETENTION_DAYS: "7"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                # vault#123 was a Longhorn snapshot leak (a VolumeSnapshotClass defaulted to
+                # deletionPolicy: Retain) that hit this cluster too. vault#134's follow-up
+                # cleanup then stalled here specifically -- this cluster's count hadn't moved
+                # in 10 days when last checked by hand. #123's fix (longhorn-snapclass:
+                # deletionPolicy Delete, confirmed live and still this cluster's only/default
+                # class) stops that specific leak at the source -- this job is the backstop
+                # for the general case: any VolumeSnapshotContent, on ANY VolumeSnapshotClass
+                # policy, that no VolumeSnapshot references anymore is dead weight, and one
+                # that's sat orphaned for RETENTION_DAYS is safe to reclaim regardless of why
+                # it was created. See home-operations:docs/cluster-consolidation/11-volumesnapshotcontents-trim.md.
+                #
+                # Deliberately narrow: only ORPHANED (no live VolumeSnapshot pointing at it)
+                # AND aged objects are touched. A VSC with a live VolumeSnapshot is never
+                # touched here no matter how old -- that's someone's deliberate retention,
+                # not a leak, and this job has no way to know it's safe to remove.
+                #
+                # Known gap, not solved here: an object stuck in Terminating behind a stale
+                # finalizer (the vault#134 case) won't be caught by a plain `kubectl delete`
+                # -- that needs a finalizer strip, which is a human decision, not something
+                # this job does unattended. The growth alert (VolumeSnapshotContentsGrowing)
+                # is what catches that class of stall.
+                RETENTION_DAYS="${RETENTION_DAYS:-7}"
+                CUTOFF_EPOCH=$(date -u -d "-${RETENTION_DAYS} days" +%s)
+                echo "Reclaiming orphaned VolumeSnapshotContents older than ${RETENTION_DAYS} days (cutoff epoch ${CUTOFF_EPOCH})"
+
+                live_vscs=$(kubectl get volumesnapshots.snapshot.storage.k8s.io -A \
+                  -o custom-columns='VSC:.status.boundVolumeSnapshotContentName' --no-headers 2>/dev/null \
+                  | grep -v '<none>' || true)
+
+                out=$(kubectl get volumesnapshotcontents \
+                  -o custom-columns='NAME:.metadata.name,CREATED:.metadata.creationTimestamp,POLICY:.spec.deletionPolicy,PHASE:.metadata.deletionTimestamp' \
+                  --no-headers)
+                echo "$out" | while read -r name created policy deleting; do
+                  # Already being deleted (e.g. a stuck finalizer case) -- not this job's job.
+                  if [ "$deleting" != "<none>" ]; then
+                    continue
+                  fi
+                  # A live VolumeSnapshot still references this VSC -- never touch it.
+                  if echo "$live_vscs" | grep -qx "$name"; then
+                    continue
+                  fi
+                  created_epoch=$(date -u -d "$created" +%s)
+                  if [ "$created_epoch" -gt "$CUTOFF_EPOCH" ]; then
+                    continue
+                  fi
+                  echo "Reclaiming orphaned VolumeSnapshotContent $name (created $created, policy $policy)"
+                  if [ "$policy" != "Delete" ]; then
+                    kubectl patch volumesnapshotcontent "$name" --type=merge -p '{"spec":{"deletionPolicy":"Delete"}}'
+                  fi
+                  kubectl delete volumesnapshotcontent "$name" --wait=false
+                  sleep 1
+                done
+                echo "Done."
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 64Mi

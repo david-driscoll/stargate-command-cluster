@@ -105,24 +105,12 @@ cluster:
     superuser: true
     passwordSecret:
       name: postgres-user-password
-  - name: crowdsec
-    ensure: present
-    login: true
-    superuser: false
-    passwordSecret:
-      name: crowdsec-postgres-password
   - name: authentik
     ensure: present
     login: true
     superuser: false
     passwordSecret:
       name: authentik-postgres-password
-  - name: oxycloud
-    ensure: present
-    login: true
-    superuser: false
-    passwordSecret:
-      name: oxycloud-postgres-password
   monitoring:
     enabled: true
     podMonitor:

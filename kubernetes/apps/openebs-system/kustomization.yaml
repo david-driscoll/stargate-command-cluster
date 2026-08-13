@@ -11,4 +11,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./openebs/ks.yaml
+  - ./home-operations.openebs-system.yaml

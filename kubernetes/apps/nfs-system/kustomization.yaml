@@ -10,4 +10,4 @@ components:
   - ../../components/alerts
   - ../../components/common
 resources:
-  - ./csi-driver-nfs/ks.yaml
+  - ./home-operations.nfs-system.yaml

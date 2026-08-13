@@ -3,29 +3,27 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app openebs
-  namespace: &namespace openebs-system
+  name: &app cert-manager
+  namespace: &namespace cert-manager
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
-  dependsOn:
-    - name: onepassword-connect
-      namespace: kube-system
-    - name: external-secrets
-      namespace: kube-system
-  path: ./kubernetes/apps/openebs-system/openebs
+  path: ./kubernetes/apps/cert-manager
   prune: true
-  wait: true
+  wait: false
   force: false
   interval: 1h
   retryInterval: 2m
-  timeout: 10m
+  timeout: 20m
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: home-operations
     namespace: flux-system
   postBuild:
     substitute:

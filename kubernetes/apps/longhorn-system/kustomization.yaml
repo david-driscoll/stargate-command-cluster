@@ -7,5 +7,4 @@ components:
   - ../../components/alerts
   - ../../components/common
 resources:
-  - ./longhorn/ks.yaml
-  - ./storageclass/ks.yaml
+  - ./home-operations.longhorn-system.yaml

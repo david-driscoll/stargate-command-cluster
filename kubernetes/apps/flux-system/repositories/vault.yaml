@@ -1,0 +1,46 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: vault
+spec:
+  interval: 1h
+  url: ssh://git@github.com/david-driscoll/vault
+  ref:
+    branch: main
+  secretRef:
+    name: vault-ssh-credentials
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vault-ssh-credentials
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: openbao
+  refreshPolicy: Periodic
+  refreshInterval: 1m
+  target:
+    name: vault-ssh-credentials
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+      data:
+        identity: "{{ .private_key }}"
+        known_hosts: "{{ .known_hosts }}"
+  dataFrom:
+    - extract:
+        # was: GitHub david-driscoll/vault Deploy Key
+        key: shared/github-david-driscoll-vault-deploy-key
+      rewrite:
+        - regexp:
+            source: "[\\W]"
+            target: _

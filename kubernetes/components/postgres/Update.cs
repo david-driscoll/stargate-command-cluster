@@ -29,6 +29,7 @@ using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
+throw new Exception("Currently disabled due to migration to another repository");
 #region Find all applications using postgres
 try
 {
@@ -148,12 +149,9 @@ try
 
   var userTemplate = "kubernetes/apps/database/postgres/app/postgres-user-template.yaml";
   var databaseTemplate = "kubernetes/components/postgres/database.yaml";
-  var pushSecretTemplate = "kubernetes/apps/database/postgres/postgres-push-secrets/push-secret-template.yaml";
   // We also want to update the kustomization.yaml file to include this user.
   var kustomizationPath = "kubernetes/apps/database/postgres/app/users/kustomization.yaml";
-  var pushSecretKustomizationPath = "kubernetes/apps/database/postgres/postgres-push-secrets/kustomization.yaml";
   var usersDirectory = Path.GetDirectoryName(kustomizationPath)!;
-  var pushSecretsDirectory = Path.GetDirectoryName(pushSecretKustomizationPath)!;
 
   foreach (var database in databases)
   {
@@ -174,8 +172,6 @@ try
 
   var usersOutputPath = "kubernetes/apps/database/postgres/app/users.yaml";
   var usersOutput = new StringBuilder();
-  var pushSecretsOutputPath = "kubernetes/apps/database/postgres/postgres-push-secrets/push-secrets.yaml";
-  var pushSecretsOutput = new StringBuilder();
   var sopsOutputPath = "kubernetes/apps/database/postgres/app/passwords.sops.yaml";
   var sopsOutput = new StringBuilder();
 
@@ -197,18 +193,10 @@ try
     var databaseYaml = (await ReadFile(databaseTemplate))
     .Replace("${APP}", databaseName)
     ;
-    var pushSecretYaml = (await ReadFile(pushSecretTemplate))
-    .Replace("push-secret-template", roleName)
-    .Replace("push-secret-template", roleName)
-    ;
     var fileName = Path.Combine(usersDirectory, $"{roleName}.yaml");
-    var pushSecretsFileName = Path.Combine(pushSecretsDirectory, $"{roleName}-postgres-push-secret.yaml");
     usersOutput.AppendLine($"""
   {userYaml}
   {(databaseName is null ? "" : databaseYaml)}
-  """);
-    pushSecretsOutput.AppendLine($"""
-  {pushSecretYaml}
   """);
   }
 
@@ -249,7 +237,6 @@ try
   }
 
   await Overwrite(usersOutputPath, usersOutput);
-  await Overwrite(pushSecretsOutputPath, pushSecretsOutput);
   if (addedSecret)
   {
     await Overwrite(sopsOutputPath, sopsOutput);

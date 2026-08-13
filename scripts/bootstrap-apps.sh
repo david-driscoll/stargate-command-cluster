@@ -59,9 +59,9 @@ function apply_sops_secrets() {
 
     local -r secrets=(
         # "${ROOT_DIR}/bootstrap/github-deploy-key.sops.yaml"
-        "${ROOT_DIR}/kubernetes/components/common/cluster-secrets.sops.yaml"
-        "${ROOT_DIR}/kubernetes/components/common/shared-secrets.sops.yaml"
-        "${ROOT_DIR}/kubernetes/components/common/sops-age.sops.yaml"
+        "${ROOT_DIR}/kubernetes/flux/meta/cluster-secrets.sops.yaml"
+        "${ROOT_DIR}/kubernetes/flux/meta/shared-secrets.sops.yaml"
+        "${ROOT_DIR}/kubernetes/flux/meta/sops-age.sops.yaml"
         "${ROOT_DIR}/kubernetes/apps/kube-system/1password/secret.sops.yaml"
     )
 
@@ -96,7 +96,8 @@ function apply_crds() {
         # renovate: datasource=github-releases depName=kubernetes-sigs/external-dns
         # https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.21.0/docs/sources/crd/crd-manifest.yaml
         # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
-        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+        https://raw.githubusercontent.com/external-secrets/external-secrets/refs/heads/main/deploy/crds/bundle.yaml
+        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml
         https://raw.githubusercontent.com/external-secrets-inc/reloader/refs/heads/main/config/crd/bases/reloader.external-secrets.io_configs.yaml
         "${ROOT_DIR}/kubernetes/apps/observability/crds/application-crd.yaml"
         "${ROOT_DIR}/kubernetes/apps/observability/crds/cluster-crd.yaml"
@@ -107,7 +108,6 @@ function apply_crds() {
         "https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/crds/tailscale.com_recorders.yaml"
         "https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml"
         "https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml"
-
     )
 
     for crd in "${crds[@]}"; do
@@ -147,7 +147,7 @@ function main() {
     # wait_for_nodes
     apply_namespaces
     apply_sops_secrets
-    apply_crds
+    # apply_crds
     # apply_helm_releases
 
     log info "Congrats! The cluster is bootstrapped and Flux is syncing the Git repository"

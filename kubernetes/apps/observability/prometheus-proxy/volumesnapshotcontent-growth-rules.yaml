@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: volumesnapshotcontent-growth-rules
+  namespace: observability
+spec:
+  groups:
+    - name: volumesnapshotcontent-growth.rules
+      rules:
+        # vault#123 was a Longhorn snapshot leak (longhorn-snapclass defaulted to
+        # deletionPolicy: Retain) that grew to hundreds of dangling
+        # VolumeSnapshotContents on this cluster before anyone noticed -- via
+        # apiserver memory pressure, not a metric. vault#134 was the bulk cleanup
+        # that followed, and it stalled here specifically -- this cluster's count
+        # hadn't moved in 10 days when last checked by hand. Neither would have
+        # needed a live-cluster archaeology session if this had existed: #123's fix
+        # stops that specific leak at the source, but a future VolumeSnapshotClass
+        # added with deletionPolicy: Retain (a legitimate choice for some other
+        # workflow) would recreate this exact problem silently. Alerts on sustained
+        # growth over a week, not a fixed count, so a genuine one-off batch of
+        # snapshots doesn't false-positive -- see
+        # docs/cluster-consolidation/11-volumesnapshotcontents-trim.md §3 in
+        # home-operations for the reasoning and the manual cross-reference/cleanup
+        # procedure.
+        - alert: VolumeSnapshotContentsGrowing
+          annotations:
+            summary: "volumesnapshotcontents has grown by {{ $value | humanize }} objects over 7 days"
+            description: >-
+              apiserver_storage_objects{resource="volumesnapshotcontents.snapshot.storage.k8s.io"}
+              is up {{ $value | humanize }} from 7 days ago with no corresponding drop --
+              the same shape as vault#123's leak and vault#134's stalled cleanup. Check
+              for a VolumeSnapshotClass with deletionPolicy: Retain (only
+              longhorn-snapclass should exist, and it must stay deletionPolicy: Delete),
+              and see home-operations:docs/cluster-consolidation/11-volumesnapshotcontents-trim.md
+              for the cross-reference/cleanup procedure if this is a real leak.
+          expr: |
+            apiserver_storage_objects{resource="volumesnapshotcontents.snapshot.storage.k8s.io"}
+              - (apiserver_storage_objects{resource="volumesnapshotcontents.snapshot.storage.k8s.io"} offset 7d)
+              > 20
+          for: 1h
+          labels:
+            severity: warning

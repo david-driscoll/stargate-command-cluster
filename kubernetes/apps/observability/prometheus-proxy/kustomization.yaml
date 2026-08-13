@@ -10,6 +10,7 @@ resources:
   - ./externalsecret.yaml
   - ./probes.yaml
   - ./prometheusrule.yaml
+  - ./volumesnapshotcontent-growth-rules.yaml
 configMapGenerator:
   - name: prometheus-values
     files:

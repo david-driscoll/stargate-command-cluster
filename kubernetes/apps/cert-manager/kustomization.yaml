@@ -7,7 +7,4 @@ components:
   - ../../components/alerts
   - ../../components/common
 resources:
-  - ./cert-issuers/ks.yaml
-  - ./trust-manager/ks.yaml
-  - ./trust-bundles/ks.yaml
-  - ./cert-manager/ks.yaml
+  - ./cert-manager.pulumi.yaml

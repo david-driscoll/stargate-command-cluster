@@ -103,9 +103,9 @@ spec:
                 # -- that needs a finalizer strip, which is a human decision, not something
                 # this job does unattended. The growth alert (VolumeSnapshotContentsGrowing)
                 # is what catches that class of stall.
-                RETENTION_DAYS="${RETENTION_DAYS:-7}"
-                CUTOFF_EPOCH=$(date -u -d "-${RETENTION_DAYS} days" +%s)
-                echo "Reclaiming orphaned VolumeSnapshotContents older than ${RETENTION_DAYS} days (cutoff epoch ${CUTOFF_EPOCH})"
+                RETENTION_DAYS="$${RETENTION_DAYS:-7}"
+                CUTOFF_EPOCH=$(date -u -d "-$${RETENTION_DAYS} days" +%s)
+                echo "Reclaiming orphaned VolumeSnapshotContents older than $${RETENTION_DAYS} days (cutoff epoch $${CUTOFF_EPOCH})"
 
                 live_vscs=$(kubectl get volumesnapshots.snapshot.storage.k8s.io -A \
                   -o custom-columns='VSC:.status.boundVolumeSnapshotContentName' --no-headers 2>/dev/null \

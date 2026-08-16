@@ -160,26 +160,28 @@ spec:
           enabled: true
           apiVersion: gateway.networking.k8s.io/v1
           kind: HTTPRoute
-          # CUTOVER, step 5 of docs/cluster-consolidation/07-authentik-to-alpha-site.md
-          # in the home-operations repo: authentik has moved to alpha-site, and
-          # this route releases the three vanity names so external-dns retracts
-          # them and alpha-site can claim them.
+          # ROLLBACK 2026-08-16 — the three vanity names come back here.
           #
-          # This is the release half of a two-part change and MUST land first.
-          # All three names are external-dns-published from this HTTPRoute across
-          # THREE providers (cloudflare, technitium, unifi), so as long as they are
-          # listed here external-dns keeps re-asserting them at SGC's gateway and
-          # wins against anything alpha-site publishes.
+          # The alpha-site cutover was released from this route, but the claim
+          # half could not land: the Pulumi state backend is estate-wide broken
+          # (every stack fails "S3 PutObject ... InvalidArgument: Invalid checksum
+          # provided" against Minio), so stacks/home cannot run and alpha-site
+          # never claimed the names. They were retracted from Cloudflare while
+          # internal DNS still pointed here, and this route no longer answered for
+          # them — SSO returned 404 estate-wide.
           #
-          # The workload below is deliberately left running and untouched. This
-          # removes the NAMES, not the server — which is also what makes the
-          # rollback "put these three lines back", not "scale something up".
+          # Restoring them here is the documented rollback (section 4.1 of
+          # docs/cluster-consolidation/07-authentik-to-alpha-site.md): this
+          # workload was never touched, so it serves them again as soon as
+          # external-dns re-publishes.
           #
-          # authentik.${CLUSTER_DOMAIN} keeps this instance directly reachable
-          # during the soak, for comparing against alpha-site without going
-          # through the names that now point there. Same pattern alpha-site used
-          # while IT was the staging copy, in reverse.
+          # Re-apply the release (PR #1831) once the Minio checksum failure is
+          # fixed and stacks/home can run — alpha-site still holds a verified
+          # restore and is ready to take over.
           hostnames:
+            - "authentik.${ROOT_DOMAIN}"
+            - "iris.${ROOT_DOMAIN}"
+            - "canterlot.${ROOT_DOMAIN}"
             - "authentik.${CLUSTER_DOMAIN}"
           parentRefs:
             - name: internal

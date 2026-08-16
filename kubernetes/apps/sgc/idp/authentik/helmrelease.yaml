@@ -160,28 +160,23 @@ spec:
           enabled: true
           apiVersion: gateway.networking.k8s.io/v1
           kind: HTTPRoute
-          # ROLLBACK 2026-08-16 — the three vanity names come back here.
+          # CUTOVER, second attempt (2026-08-16). Releases the three vanity names
+          # so external-dns retracts them and alpha-site can claim them.
           #
-          # The alpha-site cutover was released from this route, but the claim
-          # half could not land: the Pulumi state backend is estate-wide broken
-          # (every stack fails "S3 PutObject ... InvalidArgument: Invalid checksum
-          # provided" against Minio), so stacks/home cannot run and alpha-site
-          # never claimed the names. They were retracted from Cloudflare while
-          # internal DNS still pointed here, and this route no longer answered for
-          # them — SSO returned 404 estate-wide.
+          # The first attempt (#1831) was rolled back by #1832 — not because
+          # anything here was wrong, but because the Pulumi state backend was
+          # broken estate-wide, so alpha-site could never run the claim half and
+          # the names ended up retracted with nothing serving them.
           #
-          # Restoring them here is the documented rollback (section 4.1 of
-          # docs/cluster-consolidation/07-authentik-to-alpha-site.md): this
-          # workload was never touched, so it serves them again as soon as
-          # external-dns re-publishes.
+          # That is fixed and the gate it earned has been met: stacks/home has
+          # completed a clean run. alpha-site holds a freshly re-synced restore
+          # verified against this database minutes ago — identical row counts,
+          # 215 tables, correct ownership, serving on its staging hostname.
           #
-          # Re-apply the release (PR #1831) once the Minio checksum failure is
-          # fixed and stacks/home can run — alpha-site still holds a verified
-          # restore and is ready to take over.
+          # Still the release half only: the workload below is untouched and keeps
+          # serving authentik.${CLUSTER_DOMAIN}, so rollback remains "put these
+          # three lines back".
           hostnames:
-            - "authentik.${ROOT_DOMAIN}"
-            - "iris.${ROOT_DOMAIN}"
-            - "canterlot.${ROOT_DOMAIN}"
             - "authentik.${CLUSTER_DOMAIN}"
           parentRefs:
             - name: internal

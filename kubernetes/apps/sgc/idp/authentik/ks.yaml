@@ -35,10 +35,19 @@ spec:
     - ../../../../components/failover/fast-node-eviction
     - ../../../../components/volsync
     - ../../../../components/postgres
-    - ../../../../components/tailscale
+    # CUTOVER: components/tailscale removed on purpose. It rendered
+    # authentik-tailscale-ingress, which is what advertised the tailnet VIP
+    # svc:authentik from the sgc-out ProxyGroup (machine sgc-out-0, tag:ingress).
+    #
+    # That name is NOT one of the three public vanity aliases and did not move
+    # with them: DockgeLxc.ts:700 hands `remote: true` hosts
+    # authentik.${TAILSCALE_DOMAIN} as their CLUSTER_AUTHENTIK_DOMAIN, and skystar
+    # is such a host. alpha-site already registered itself as a second backing
+    # host for the VIP, but home-operations cannot own the Service object while
+    # this ingress still holds it — the create becomes an update and fails with
+    # "addrs must contain 2 elements". Releasing here lets that create succeed.
   postBuild:
     substitute:
       APP: *app
       NAMESPACE: *namespace
       VOLSYNC_ACCESSMODES: ReadWriteMany
-      TAILSCALE_SERVICE: authentik-server

@@ -7,7 +7,6 @@ resources:
   - ./definition.yaml
   - ./thanos-receive.yaml
   - ./alertmanager-operated.yaml
-  - ./externalsecret.yaml
   - ./probes.yaml
   - ./prometheusrule.yaml
   - ./volumesnapshotcontent-growth-rules.yaml

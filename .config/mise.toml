@@ -15,7 +15,7 @@ helm = "4.2.4"
 helmfile = "1.7.4"
 kubeconform = "0.8.0"
 kustomize = "5.8.1"
-task = "3.52.0"
+task = "3.53.1"
 # Git hook manager (see hk.pkl). MUST stay pinned here: hk registers itself as
 # `hk run pre-commit --from-hook` via git config, and an unpinned mise shim
 # fails inside the hook with `mise ERROR No version is set for shim: hk`.

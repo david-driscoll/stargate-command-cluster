@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clambin/intel-gpu-exporter
-              tag: 0.7.3@sha256:2c6eb94f524d460842d676ff3cbd65e44442f39cbf25d579bc24cbe7ac332605
+              tag: 0.7.4@sha256:d78761fef018834c759db154fe9dcf3dd9db5974703fa50ca21f6abc35221be1
             args:
               # Sampling interval handed to `intel_gpu_top -s`. The exporter
               # aggregates (medians) every sample it has seen since the last

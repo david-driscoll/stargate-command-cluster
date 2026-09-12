@@ -12,7 +12,24 @@ spec:
       name: sops-age
   interval: 1h
   path: ./kubernetes/flux/meta
-  prune: true
+  # TEMPORARY, for the piece 21 Phase C root flip. Restored to `true` only
+  # after the flip is verified. See
+  # home-operations:docs/cluster-consolidation/21-repo-consolidation-flux-repoint.md.
+  #
+  # This MUST be live HERE, in equestria-cluster's copy, BEFORE the flip.
+  # home-operations' copy also carries it, but that copy does not become live
+  # until the flip itself -- which is too late. At the instant
+  # `instance.sync.url` changes, GitRepository/flux-system re-resolves and
+  # cluster-apps reconciles against a tree it has never read, using the spec it
+  # holds AT THAT MOMENT. The root Kustomization updating that spec is a
+  # separate reconcile, and the two race. Losing that race with prune enabled
+  # means cluster-apps garbage-collects everything it cannot find in the new
+  # tree.
+  #
+  # Setting it here removes the race entirely: prune is already disabled before
+  # the source moves, so whichever order the reconciles land in, nothing is
+  # pruned.
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
@@ -38,7 +55,24 @@ spec:
       namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps
-  prune: true
+  # TEMPORARY, for the piece 21 Phase C root flip. Restored to `true` only
+  # after the flip is verified. See
+  # home-operations:docs/cluster-consolidation/21-repo-consolidation-flux-repoint.md.
+  #
+  # This MUST be live HERE, in equestria-cluster's copy, BEFORE the flip.
+  # home-operations' copy also carries it, but that copy does not become live
+  # until the flip itself -- which is too late. At the instant
+  # `instance.sync.url` changes, GitRepository/flux-system re-resolves and
+  # cluster-apps reconciles against a tree it has never read, using the spec it
+  # holds AT THAT MOMENT. The root Kustomization updating that spec is a
+  # separate reconcile, and the two race. Losing that race with prune enabled
+  # means cluster-apps garbage-collects everything it cannot find in the new
+  # tree.
+  #
+  # Setting it here removes the race entirely: prune is already disabled before
+  # the source moves, so whichever order the reconciles land in, nothing is
+  # pruned.
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

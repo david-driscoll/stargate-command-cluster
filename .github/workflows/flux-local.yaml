@@ -45,6 +45,34 @@ jobs:
       - name: Run flate test
         run: flate test all --path ./kubernetes/flux/cluster --allow-missing-secrets --source-retry-attempts 10
 
+  # `flate test` renders Helm charts. It does NOT run Flux postBuild envsubst
+  # and it does NOT run the external-secrets template engine, so it passes
+  # cleanly on a values file that will take an app to zero pods. It did exactly
+  # that on #2977 and again on #2980 (vault#111). This job runs those two
+  # renderers, which is the only way this class of break is visible before it
+  # reaches the cluster. Not gated on `pre-job`: it also has to run when only
+  # the linter itself changes.
+  eso-values-lint:
+    name: ESO Values Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: scripts/eso-values-lint/go.mod
+          cache-dependency-path: scripts/eso-values-lint/go.sum
+
+      # The linter's own regression tests, including the negative case that
+      # `$${...}` must not be flagged. A checker nobody trusts gets disabled.
+      - name: Test eso-values-lint
+        run: go -C scripts/eso-values-lint test ./...
+
+      - name: Run eso-values-lint
+        run: go -C scripts/eso-values-lint run . "${GITHUB_WORKSPACE}/kubernetes"
+
   diff:
     name: Diff
     needs: pre-job
@@ -88,7 +116,7 @@ jobs:
 
   flux-local-status:
     name: flate Success
-    needs: ["test", "diff"]
+    needs: ["test", "diff", "eso-values-lint"]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:

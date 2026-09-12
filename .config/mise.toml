@@ -1,10 +1,10 @@
 [tools]
 python = "3.14.7"
-"pipx:makejinja" = "2.8.2"
+"pipx:makejinja" = "2.8.3"
 krew = "0.5.0"
 
 kubectl = "1.36.4"
-powershell-core = "7.6.5"
+powershell-core = "7.6.6"
 1password-cli = "2.38.1"
 talos = "1.13.9"
 talosctl = "1.13.9"

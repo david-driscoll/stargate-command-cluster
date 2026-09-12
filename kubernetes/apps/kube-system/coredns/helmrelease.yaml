@@ -11,8 +11,8 @@ spec:
     operation: copy
   url: oci://ghcr.io/coredns/charts/coredns
   ref:
-    tag: 1.47.0
-    digest: sha256:e85b145c62884d3ff38143303775d58a43cd2fa02013a476785bb535bce9c9bd
+    tag: 1.47.1
+    digest: sha256:83bf7deed035acad44ea77c8079bd73c8a148d278da0d4cdc681be1de00d0e3f
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2

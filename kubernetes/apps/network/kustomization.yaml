@@ -8,13 +8,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./certificates/ks.yaml
-  - ./cloudflare-tunnel/ks.yaml
-  - ./external-dns
-  - ./k8s-gateway/ks.yaml
-  - ./secrets/ks.yaml
-  - ./traefik-crds/ks.yaml
-  - ./traefik/ks.yaml
-  - ./whoami/ks.yaml
-  - ./openspeedtest/ks.yaml
-  - ./librespeed/ks.yaml
+  - ./home-operations.network.yaml

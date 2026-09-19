@@ -3,8 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app openebs-system-ref
-  namespace: &namespace openebs-system
+  name: &app observability-ref
+  namespace: &namespace observability
   labels:
     app.kubernetes.io/name: *app
     driscoll.dev/name: *app
@@ -14,12 +14,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
-  path: ./kubernetes/apps/openebs-system
+  path: ./kubernetes/apps/observability
   prune: true
-  # Blanket protection for the piece 21 migration sweep: a Kustomization
-  # ownership change must never cascade-delete live resources. Removed
-  # again on the home-operations side once each namespace has landed.
-  # See docs/cluster-consolidation/27-migration-churn-failure-modes.md.
+  # Protects against deletion when piece 21's observability redirect
+  # migration lands -- see home-operations:docs/cluster-consolidation/27-migration-churn-failure-modes.md.
   deletionPolicy: Orphan
   wait: false
   force: false

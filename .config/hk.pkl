@@ -1,19 +1,11 @@
 amends "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Config.pkl"
 import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtins.pkl"
 
-// hk hook configuration for stargate-command-cluster.
+// hk hook configuration for equestria-cluster.
 // Mirrors the design already landed in david-driscoll/home-operations, adapted
 // from that repo's TypeScript linter set to this repo's YAML / Talos / shell
 // shape. See vault#81.
-//
-// WHY THIS FILE LIVES AT THE REPO ROOT
-//
-// hk resolves exactly one project config, and a root `hk.pkl` takes precedence
-// over `.config/hk.pkl` with NO warning of any kind -- the loser is silently
-// inert. `hk init` and the `hk-setup` skill both emit a root `hk.pkl` by
-// default, so anything parked in `.config/` stays permanently shadowable by a
-// stray root file. Living at the winning path is the whole point.
-//
+
 // DELIBERATE SAFETY POSTURE -- do not "fix" this
 //
 //   * `fix = false` on pre-commit / pre-push. hk NEVER mutates the working
@@ -37,7 +29,7 @@ import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtin
 
 local excludes = new Listing<String> {
   // SOPS-ENCRYPTED FILES -- HIGHEST-SEVERITY EXCLUSION. DO NOT REMOVE.
-  // This repo has 10 tracked `*.sops.*` files. Any byte-level rewrite
+  // This repo has 14 tracked `*.sops.*` files. Any byte-level rewrite
   // (trailing whitespace, final newline, reformat) invalidates the SOPS MAC
   // and renders the file PERMANENTLY UNDECRYPTABLE -- including
   // `talos/talsecret.sops.yaml` and `kubernetes/components/common/sops-age.sops.yaml`,
@@ -68,9 +60,8 @@ local excludes = new Listing<String> {
   // `.crew/templates/crew.agent.md.template`. Linting generated copies just
   // creates churn that the next sync reverts.
   // These also carry the only `detect-private-key` false positives in the repo:
-  // `skills/secret-handling/SKILL.md` and
-  // `skills/kubernetes-specialist/references/configuration.md` both quote the
-  // PEM private-key banner verbatim as documentation examples (no key body).
+  // `skills/secret-handling/SKILL.md` documents secret *detection patterns* and
+  // quotes the PEM private-key banner verbatim as an example (no key body).
   ".claude/**/*"
   ".agents/**/*"
   ".apm/**/*"
@@ -92,7 +83,7 @@ local excludes = new Listing<String> {
 }
 
 local linters = new Mapping<String, Step> {
-    // --- YAML: the primary artifact of this repo (494 tracked files) ---
+    // --- YAML: the primary artifact of this repo (810 tracked files) ---
     // Configured by `.yamllint`, which disables the purely cosmetic rules and
     // keeps the ones that catch manifests Flux would silently mis-apply --
     // above all `key-duplicates`, where a repeated key in a HelmRelease drops
@@ -116,7 +107,7 @@ local linters = new Mapping<String, Step> {
     // `trailing-whitespace` carries an explicit allowlist that omits Markdown.
     // Two trailing spaces are a MEANINGFUL hard line break in Markdown, and
     // stripping them silently joins paragraphs -- `hk fix --all` did exactly
-    // that to three sites in a documentation file before this was
+    // that to three sites in docs/codebase/KUBERNETES_APPS.md before this was
     // scoped. pre-commit solves this with `--markdown-linebreak-ext`; hk's
     // builtin has no equivalent flag, and in hk 1.54 neither a per-step
     // `exclude` nor a `!` negation inside `glob` actually filters (both
@@ -139,7 +130,7 @@ local linters = new Mapping<String, Step> {
 
     // --- Repo-hygiene guards. Pure checks; they never rewrite a file. ---
     ["check-merge-conflict"] = Builtins.check_merge_conflict
-    // High value in this repo specifically: `age.key`, `sgc.age.key`,
+    // High value in this repo specifically: `age.key`, `eq.age.key`,
     // `github-deploy.key` and `github-push-token.txt` all sit in the repo root,
     // correctly gitignored today. This is the backstop against a future
     // `git add -f` or a .gitignore edit.

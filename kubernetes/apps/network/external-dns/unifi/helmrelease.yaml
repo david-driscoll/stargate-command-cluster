@@ -10,7 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.21.1
+    tag: 1.23.0
+    digest: sha256:c7b8f2a30597547cde3008f2a1e3b5647a4ac0ea2dd3add0fffe2b84e0429aac
   url: oci://ghcr.io/home-operations/charts-mirror/external-dns
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/helm.toolkit.fluxcd.io/helmrelease_v2.json

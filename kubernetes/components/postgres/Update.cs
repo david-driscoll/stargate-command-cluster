@@ -2,7 +2,7 @@
 #:package YamlDotNet@18.1.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package System.Collections.Immutable@10.0.11
-#:package Dumpify@0.7.0
+#:package Dumpify@0.8.0
 #:package ProcessX@1.5.6
 
 

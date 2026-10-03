@@ -8,6 +8,5 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./postgres
-  - ./valkey/ks.yaml
+  - ./home-operations.database.yaml
   # - ./neo4j/ks.yaml

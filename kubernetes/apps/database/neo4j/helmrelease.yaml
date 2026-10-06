@@ -42,7 +42,7 @@ spec:
           *app :
             image:
               repository: neo4j
-              tag: "2026.07.1-trixie@sha256:dca31d0d938dd8bb199c8846abedd897c3a07ddb629eca46a8009ac9e87aece2"
+              tag: "2026.09.0-trixie@sha256:6f3f17e72d69bb6f26b03f6186f5afb15a201f8b460bb69b0cd8030717f9f01a"
               pullPolicy: IfNotPresent
             env:
               TZ: "${TIMEZONE}"

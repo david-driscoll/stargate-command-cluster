@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app observability-ref
+  namespace: &namespace observability
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      driscoll.dev/name: *app
+  path: ./kubernetes/apps/observability
+  prune: true
+  # Protects against deletion when piece 21's observability redirect
+  # migration lands -- see home-operations:docs/cluster-consolidation/27-migration-churn-failure-modes.md.
+  deletionPolicy: Orphan
+  wait: false
+  force: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 20m
+  sourceRef:
+    kind: GitRepository
+    name: home-operations
+    namespace: flux-system

@@ -3,7 +3,7 @@
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package KubernetesClient@*
 #:package Microsoft.Extensions.Logging@10.*
-#:package Dumpify@0.7.0
+#:package Dumpify@0.8.0
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
 #:package ProcessX@1.5.6
 #:property JsonSerializerIsReflectionEnabledByDefault=true

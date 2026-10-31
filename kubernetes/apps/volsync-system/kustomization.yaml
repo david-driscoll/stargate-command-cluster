@@ -8,5 +8,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./volsync/ks.yaml
-  - ./restore-cleanup/ks.yaml
+  - ./home-operations.volsync-system.yaml

@@ -11,20 +11,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./1password/ks.yaml
-  - ./cilium/ks.yaml
-  - ./coredns/ks.yaml
-  - ./descheduler/ks.yaml
-  - ./metrics-server/ks.yaml
-  - ./reloader/ks.yaml
-  - ./features
-  - ./secrets
-  - ./spegel/ks.yaml
-  - ./reflector/ks.yaml
-  - ./snapshot-controller/ks.yaml
-  - ./external-secrets
-  - ./registry/ks.yaml
-  - ./etcd/ks.yaml
-  - ./headlamp/ks.yaml
-  - ./multus/ks.yaml
-  - ./vsc-retention/ks.yaml
+  - ./home-operations.kube-system.yaml

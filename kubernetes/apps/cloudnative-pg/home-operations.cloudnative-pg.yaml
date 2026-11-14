@@ -3,29 +3,27 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app plugin-barman-cloud
+  name: &app cloudnative-pg-ref
   namespace: &namespace cloudnative-pg
+  labels:
+    app.kubernetes.io/name: *app
+    driscoll.dev/name: *app
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
       driscoll.dev/name: *app
-  dependsOn:
-    - name: postgres-operator
-      namespace: *namespace
-  path: ./kubernetes/apps/cloudnative-pg/barman
+  path: ./kubernetes/apps/cloudnative-pg
   prune: true
-  wait: true
+  # See home-operations:docs/cluster-consolidation/27-migration-churn-failure-modes.md.
+  deletionPolicy: Orphan
+  wait: false
   force: false
   interval: 1h
   retryInterval: 2m
-  timeout: 10m
+  timeout: 20m
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: home-operations
     namespace: flux-system
-  postBuild:
-    substitute:
-      APP: *app
-      NAMESPACE: *namespace

@@ -2,7 +2,7 @@
 // #:package YamlDotNet@16.3.0
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package KubernetesClient@*
-#:package Microsoft.Extensions.Logging@10.*
+#:package Microsoft.Extensions.Logging@11.*
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
 #:package ProcessX@1.5.6
 #:package Npgsql@*

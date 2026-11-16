@@ -23,7 +23,7 @@ spec:
           talosctl:
             image:
               repository: ghcr.io/siderolabs/talosctl
-              tag: v1.13.9@sha256:46174be488e0250fc9e8f1b15a1d260fd971f82fbaf66237d10609f5a41c084f
+              tag: v1.14.6@sha256:82c9a9985fc7292a222e680414c65955ac0566db588b84d88f620b05d16b1d5b
             args:
               - --talosconfig
               - /var/run/secrets/talos.dev/config

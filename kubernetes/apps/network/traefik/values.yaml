@@ -6,7 +6,7 @@ podDisruptionBudget:
 image:
   registry: ghcr.io
   repository: traefik/traefik
-  tag: v3.7.10@sha256:9c3b91d5fb7770853ca5c1124a23c34bf2d9b47ffaebeab2614cbaf410dcb2ac
+  tag: v3.7.19@sha256:a6c0194dda77bcb804824580f36fa7edc56e315b1acfe933366c8b52844a78a4
 deployment:
   kind: Deployment
   replicas: 2

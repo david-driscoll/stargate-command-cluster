@@ -7,5 +7,4 @@ components:
   - ../../components/alerts
   - ../../components/common
 resources:
-  - ./operator/ks.yaml
-  - ./barman/ks.yaml
+  - ./home-operations.cloudnative-pg.yaml

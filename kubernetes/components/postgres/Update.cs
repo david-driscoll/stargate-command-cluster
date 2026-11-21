@@ -3,7 +3,7 @@
 #:package gstocco.YamlDotNet.YamlPath@1.0.26
 #:package System.Collections.Immutable@10.0.11
 #:package Dumpify@0.7.0
-#:package ProcessX@1.5.6
+#:package ProcessX@2.0.0
 
 
 using System.Buffers.Text;

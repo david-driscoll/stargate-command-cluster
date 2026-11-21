@@ -4,7 +4,7 @@
 #:package KubernetesClient@*
 #:package Microsoft.Extensions.Logging@10.*
 #:package Lunet.Extensions.Logging.SpectreConsole@1.2.0
-#:package ProcessX@1.5.6
+#:package ProcessX@2.0.0
 #:package Npgsql@*
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 

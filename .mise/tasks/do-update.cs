@@ -1,6 +1,6 @@
 #!/usr/bin/dotnet run
 
-#:package ProcessX@1.5.6
+#:package ProcessX@2.0.0
 
 using Cysharp.Diagnostics;
 

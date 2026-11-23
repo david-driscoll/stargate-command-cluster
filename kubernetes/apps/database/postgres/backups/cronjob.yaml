@@ -76,7 +76,7 @@ spec:
           main:
             image:
               repository: mcr.microsoft.com/dotnet/sdk
-              tag: '10.0-noble@sha256:e1fc6e423f543119c406d24e2e687d67c569f18f04a37a8b0005d80ad0dcee80'
+              tag: '10.0-noble@sha256:8c6edfb26c85153f236d26efebd9ad349aec403583f343f201ee67838b23658d'
               pullPolicy: IfNotPresent
             env:
               # Explicit in the manifest rather than inferred from the

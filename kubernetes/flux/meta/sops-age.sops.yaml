@@ -7,6 +7,7 @@ metadata:
     reloader.stakater.com/auto: "true"
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    kustomize.toolkit.fluxcd.io/prune: disabled
 stringData:
   age.agekey: ENC[AES256_GCM,data:NZaCuKDGV70neSSsoT6i+4XFVoPhB5i1p7Ub+2YY0b9wetm8/+tWNG/izZfA3KyzLa7BJZMjB2d370TQMiccbTIvSfqVcF6tj+A=,iv:j7RWqbhfZr7zut3+T1JXkS5goCckHy19EfLwL5meqCw=,tag:m1ZP99r7yiCJZCw/iXRiPg==,type:str]
 sops:

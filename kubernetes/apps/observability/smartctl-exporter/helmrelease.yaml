@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.17.1
-    digest: sha256:3b205562ffcb1fc6228c9216b3f1b1d6451e647cb73d02548c402e780ac8289f
+    tag: 0.19.3
+    digest: sha256:90bf0301a6a7b74b28ce0dba3a2f6e08a33f108b06e54c2bb549186cad8391f0
   url: oci://ghcr.io/prometheus-community/charts/prometheus-smartctl-exporter
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
